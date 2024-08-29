@@ -2861,6 +2861,8 @@ Route::post('ugc_dislike', 'UGCController@ugc_dislike')->name('ugc_dislike');
 Route::get('/profile/{username}', 'UGCController@showugcprofile')->name('profile.show');
 Route::post('/subscribe', 'UGCController@subscribe')->name('subscribe');
 Route::post('/unsubscribe', 'UGCController@unsubscribe')->name('unsubscribe');
+Route::get('ugc/view_all_profile', 'UGCController@viewallprofile')->name('viewallprofile');
+
 // UGC management admin
 Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');
 Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcvideos_index');

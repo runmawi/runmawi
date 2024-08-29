@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUgcBannerImageToUsersTable extends Migration
+class AddShortsMinisToHomeSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddUgcBannerImageToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('ugc_banner');
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->tinyInteger('shorts_minis')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ class AddUgcBannerImageToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('ugc_banner');
+        Schema::table('home_settings', function (Blueprint $table) {
+            $table->dropColumn('shorts_minis');
         });
     }
 }

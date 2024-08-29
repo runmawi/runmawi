@@ -528,11 +528,19 @@
                         </div>
                        <div class="col" style="padding-top: 40px;" >
                         <div>
-                        <h4>{{$user->username}}</h4>
+                        <h6>{{$user->username}}</h6>
                         </div>
-                        {{-- <div>
-                           <h5>Entertainmnt channel </h5>
-                        </div> --}}
+                        <div class="py-2" >
+                            @if($user->subscribers_count == 0 )
+                            <p style="color: white; font-size:18px;" >No Subscribers</p>
+                            @elseif($user->subscribers_count == 1 )
+                            <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
+                            @else
+                            <p style="color: white; font-size:18px;" >
+                             <span class="subscriber-count"> {{ $user->subscribers_count }} </span> Members Subscribed
+                            </p>
+                            @endif
+                        </div>
                        </div>
                     </div>
                    
@@ -602,10 +610,12 @@
                                 <div class="col-lg-6 col-md-12 mb-4"> 
                                     <h2>Profile Details</h2>
                                     <div class="text-white pt-4">
-                                    <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >nemisa.com</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >
+                                    <a href="{{ route('profile.show', ['username' => $user->username]) }}"> {{ route('profile.show', ['username' => $user->username]) }} </a>
+                                    </span></p> 
                                     </div>
                                     <div class=" text-white">
-                                    <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >{{ $user->ugcVideos->count() ? $user->ugcVideos->count() : 0 }}</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >{{ $totalVideos ? $totalVideos : 0 }}</span></p> 
                                     </div>
                                     <div class=" text-white">
                                     <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >{{ $totalViews ? $totalViews : 0 }} views</span></p> 
@@ -617,7 +627,7 @@
                                     <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                                     </div>
                                     <div>
-                                    <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer;"  class="ugc-button" >Share Profile</button>
+                                    <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
                                     </div>
                                     <div class="shareprofile">
                                         <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
@@ -719,9 +729,9 @@
         
                                     <div class="text-white pt-3">
                                         <h6>{{$eachugcvideos->title}}</h6>
-                                        <p style="margin:5px 0px;">{{$user->name}}</p>
+                                        <p style="margin:5px 0px;">{{$user->username}}</p>
                                         <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
-                                            | 90k Likes</p>
+                                            | {{$eachugcvideos->like_count}} Likes</p>
                                     </div>
                         </a>
                     </div>
@@ -767,9 +777,9 @@
             
                                         <div class="text-white pt-3">
                                             <h6>{{$eachugcvideos->title}}</h6>
-                                            <p style="margin:5px 0px;">{{$user->name}}</p>
+                                            <p style="margin:5px 0px;">{{$user->username}}</p>
                                             <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
-                                                | 90k Likes</p>
+                                                | {{ $eachugcvideos->like_count}} Likes</p>
                                         </div>
                             </a>
                         </div>

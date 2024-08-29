@@ -184,7 +184,7 @@ class WebCommentController extends Controller
 
     public function like(Request $request, $id)
 {
-    $userId = auth()->id(); // Get the authenticated user's ID
+    $userId = $request->user_id; // Get the user ID from the request
 
     try {
         // Find the comment
@@ -193,7 +193,6 @@ class WebCommentController extends Controller
             return response()->json(['status' => false, 'message' => 'Comment not found.']);
         }
 
-        // Determine current like and dislike states
         $hasLiked = $comment->has_liked; // Check if the user has liked the comment
         $hasDisliked = $comment->has_disliked; // Check if the user has disliked the comment
 
@@ -223,9 +222,10 @@ class WebCommentController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Like toggled.',
             'new_like_count' => $comment->comment_like,
             'new_dislike_count' => $comment->comment_dislike,
+            'has_liked' => $comment->has_liked,
+            'has_disliked' => $comment->has_disliked,
         ]);
     } catch (\Exception $e) {
         return response()->json(['status' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
@@ -234,7 +234,7 @@ class WebCommentController extends Controller
 
 public function dislike(Request $request, $id)
 {
-    $userId = auth()->id(); // Get the authenticated user's ID
+    $userId = $request->user_id; // Get the user ID from the request
 
     try {
         // Find the comment
@@ -273,9 +273,10 @@ public function dislike(Request $request, $id)
 
         return response()->json([
             'status' => true,
-            'message' => 'Dislike toggled.',
             'new_like_count' => $comment->comment_like,
             'new_dislike_count' => $comment->comment_dislike,
+            'has_liked' => $comment->has_liked,
+            'has_disliked' => $comment->has_disliked,   
         ]);
     } catch (\Exception $e) {
         return response()->json(['status' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);

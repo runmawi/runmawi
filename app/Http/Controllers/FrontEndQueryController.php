@@ -928,11 +928,28 @@ class FrontEndQueryController extends Controller
         return $content_Partner ;
     }
 
-    // public function UGCVideos()
-    // {
-    //     $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
-    //     return $ugcvideos ;
-    // }
+    public function UGCVideos()
+    {
+        $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
+        return $ugcvideos ;
+    }
+
+    public function UGCShortsMinis()
+    {
+        $ugcshortsminis = UGCVideo::where('active',1)
+        ->withCount([
+            'likesDislikes as like_count' => function($query) {
+                $query->where('liked', 1);
+            }
+        ])->get();
+        return $ugcshortsminis ;
+    }
+
+    public function UGCUsers()
+    {
+        $users = User::has('ugcVideos')->limit(5)->get();
+        return $users ;
+    }
 
     public function watchLater() {
         if (!Auth::guest()) {

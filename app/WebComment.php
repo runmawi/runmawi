@@ -12,7 +12,7 @@ class WebComment extends Model
 
     public static $rules = array();
 
-    protected $fillable = [ 'user_id', 'user_name', 'first_letter', 'user_role', 'commenter_type', 'guest_name', 'guest_email', 'commentable_type', 'source', 'source_id', 'comment', 'approved', 'child_id', 'sub_child_id', 'comment_like', 'comment_dislike'];
+    protected $fillable = [ 'user_id', 'user_name', 'first_letter', 'user_role', 'commenter_type', 'guest_name', 'guest_email', 'commentable_type', 'source', 'source_id', 'comment', 'approved', 'child_id', 'sub_child_id', 'comment_like', 'comment_dislike', 'has_liked', 'has_disliked'];
 
     public function child_comment() 
     {

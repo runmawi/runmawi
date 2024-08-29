@@ -948,31 +948,15 @@ class AdminUsersController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-        if ($request->has('username')) {
-            $user->username = $request->get('username');
-        }
-    
-        if ($request->has('mobile')) {
-            $user->mobile = $request->get('mobile');
-        }
-    
-        if ($request->has('email')) {
-            $user->email = $request->get('email');
-        }
-    
-        if ($request->has('DOB')) {
-            $user->DOB = $request->get('DOB');
-        }
-        if ($request->has('username')) {
-            $user->username = $request->get('username');
-        }
-        if ($request->has('ccode')) {
-            $user->ccode = $request->get('ccode');
-        }
-    
-        if ($request->has('gender')) {
-            $user->gender = $request->get('gender');
-        }
+
+
+        $user->username = $request->get('name');
+        $user->mobile = $request->get('mobile');
+        $user->email = $request->get('email');
+        $user->DOB = $request->get('DOB');
+        $user->ccode = $request->get('ccode');
+        $user->username = $request->get('username');
+        $user->gender = $request->get('gender');
 
 
         if ($request->get('password') != null)
@@ -3096,9 +3080,8 @@ class AdminUsersController extends Controller
 
             $user_id = Auth::user()->id;
             $user_role = Auth::user()->role;
-            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)->get();
-            $video_quality = SubscriptionPlan::all();
-
+            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
+                ->get();
             $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
@@ -3156,7 +3139,7 @@ class AdminUsersController extends Controller
             }
             $user_role = Auth::user()->role;
 
-            $user_details = User::find($user_id);
+            $user_details = User::withCount('subscribers')->find($user_id);
             $recent_videos = RecentView::orderBy('id', 'desc')->take(10)
                 ->get();
             $recent_view = $recent_videos->unique('video_id');
@@ -3201,39 +3184,28 @@ class AdminUsersController extends Controller
             }
 
 
-            // $ugcvideo_ids = UGCVideo::pluck('id');
-            
-            // $updatedVideos = [];
-
-            // foreach ($ugcvideo_ids as $ugcvideo_id) {
-            //     $viewcount = $this->handleViewCount_ugc($ugcvideo_id);
-            //     if ($viewcount) {
-            //         $updatedVideos[] = $viewcount; // Store the updated object
-            //     }
-            // }
-
             $ugcvideo = UGCVideo::where('user_id', $user_details->id)
+            ->withCount([
+                'likesDislikes as like_count' => function($query) {
+                    $query->where('liked', 1);
+                }
+                ])
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->paginate(9);
-
-            $video_data = [];
-
-            foreach ($ugcvideo as $video) {
-                $video_data[] = [
-                    'profile_url' => route('profile.show', ['username' => $video->user->username]),
-                ];
-            }
-
+            $user_data = User::withCount('subscribers')->find($user_details->id);
             $updated_ugcvideos =  $this->handleViewCounts($ugcvideo);
-            $totalViews = $user_details->ugcVideos()->sum('views');
+            $ugc_total = $user_details->ugcVideos();
+            $totalViews = $ugc_total->sum('views');
+            $totalVideos = $ugc_total->where('active',1)->count();
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
                 'ugcvideos' => $ugcvideo,
                 'viewcount' =>  $updated_ugcvideos,
                 'totalViews' => $totalViews,
-                'video_data' => $video_data,
+                'totalVideos' => $totalVideos,
+                'subscriber_count' => $user_data->subscribers_count,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
                 'user' => $user_details,
@@ -3245,11 +3217,10 @@ class AdminUsersController extends Controller
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
-                'video_quality'  => $video_quality,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
             );
-
+            
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
                 return Theme::view('myprofile', $data);
             }else{

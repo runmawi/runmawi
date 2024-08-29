@@ -14,9 +14,6 @@
                     <div class="img-box">
                         <a  href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $ugc_video->slug ?>" aria-label="videos">
                              <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $ugc_video->title; ?>">
-                           <!-- <video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image;  ?>" data-play="hover">
-                                <source src="<?php echo $ugc_video->trailer;  ?>" type="video/mp4" />
-                            </video>-->
                         </a>
                     </div>
                 </div>

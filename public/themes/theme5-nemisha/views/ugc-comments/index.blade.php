@@ -16,7 +16,7 @@
 <div class="row pt-3">
     <div class="col-1 d-none d-md-block">
         <img class="rounded-circle"
-        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 70px; width: 70px;">
+        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile" style="height: 70px; width: 70px;">
     </div>
 
     <div class="col-12 col-md-11">
@@ -42,16 +42,16 @@
 
         
         <div>
-            <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
+            <?php if( Auth::user() != null ):?>
             <div class="d-flex py-2">   
-                <div>
-                    <a data-comment-id="<?= $comment->id ?>" onclick="handleLike(this)">
-                        <i class=" <?= $comment->has_liked ? 'ri-thumb-down-fill' : 'ri-thumb-up-line' ?> px-1 text-white" style="font-size:15px;" ></i><?= $comment->comment_like ?>
+                <div class="like-button" >
+                    <a data-comment-id="<?= $comment->id ?>" data-user-id="<?= auth()->id() ?>" onclick="handleLike(this)">
+                        <i class=" <?= $comment->has_liked ? 'ri-thumb-up-fill p-2 rounded-circle' : 'ri-thumb-up-line p-2 rounded-circle' ?> px-1 text-white" style="background-color: #ED563C;" ></i>  <span class="like-count" style="color: white;" ><?= $comment->comment_like ? $comment->comment_like : 0 ?></span>
                     </a>
                 </div>
-                <div class="px-2">
-                    <a data-comment-id="<?= $comment->id ?>" onclick="handleDislike(this)" >
-                        <i class="<?= $comment->has_disliked ? 'ri-thumb-down-fill' : 'ri-thumb-up-line' ?> px-1 text-white" style="font-size:15px;" ></i><?= $comment->comment_dislike ?>
+                <div class="px-3 dislike-button">
+                    <a data-comment-id="<?= $comment->id ?>" data-user-id="<?= auth()->id() ?>" onclick="handleDislike(this)" >
+                        <i class="<?= $comment->has_disliked ? 'ri-thumb-down-fill p-2 rounded-circle' : 'ri-thumb-down-line p-2 rounded-circle' ?> px-1 text-white" style="background-color: #ED563C;"></i> <span class="dislike-count" style="color: white;" ><?= $comment->comment_dislike ? $comment->comment_dislike : 0 ?></span>
                     </a>
                 </div>
                 
@@ -149,13 +149,15 @@
 
     function handleLike(ele) {
         let commentId = $(ele).data('comment-id');
+        let userId = $(ele).data('user-id');
         let url = likeUrlBase.replace('placeholder', commentId);
 
         $.ajax({
             url: url,
             method: 'post',
             data: {
-                "_token": "<?= csrf_token() ?>"
+                "_token": "<?= csrf_token() ?>",
+                "user_id": userId
             },
             success: function(response) {
                 if (response.status) {
@@ -170,17 +172,17 @@
                     }
 
                     // Update the dislike button if it's active
-                    let dislikeBtn = $(ele).siblings().find('i.ri-thumb-down-fill');
+                    let dislikeBtn = $(ele).siblings('a').find('i.ri-thumb-down-fill');
                     if (dislikeBtn.length) {
                         dislikeBtn.removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
                     }
 
                     // Update like count display
                     $(ele).find('.like-count').text(response.new_like_count);
-                    // Update dislike count display
-                    $(ele).siblings().find('.dislike-count').text(response.new_dislike_count);
 
-                    alert(response.message);
+                    // Update dislike count display
+                    $(ele).siblings('a').find('.dislike-count').text(response.new_dislike_count);
+
                 } else {
                     alert('An error occurred: ' + response.message);
                 }
@@ -194,13 +196,15 @@
 
     function handleDislike(ele) {
         let commentId = $(ele).data('comment-id');
+        let userId = $(ele).data('user-id');
         let url = dislikeUrlBase.replace('placeholder', commentId);
 
         $.ajax({
             url: url,
             method: 'post',
             data: {
-                "_token": "<?= csrf_token() ?>"
+                "_token": "<?= csrf_token() ?>",
+                "user_id": userId
             },
             success: function(response) {
                 if (response.status) {
@@ -215,17 +219,17 @@
                     }
 
                     // Update the like button if it's active
-                    let likeBtn = $(ele).siblings().find('i.ri-thumb-up-fill');
+                    let likeBtn = $(ele).siblings('a').find('i.ri-thumb-up-fill');
                     if (likeBtn.length) {
                         likeBtn.removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
                     }
 
                     // Update like count display
-                    $(ele).siblings().find('.like-count').text(response.new_like_count);
+                    $(ele).siblings('a').find('.like-count').text(response.new_like_count);
+                    
                     // Update dislike count display
                     $(ele).find('.dislike-count').text(response.new_dislike_count);
 
-                    alert(response.message);
                 } else {
                     alert('An error occurred: ' + response.message);
                 }

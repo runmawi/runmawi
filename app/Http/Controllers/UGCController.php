@@ -575,20 +575,30 @@ class UGCController extends Controller
 
     public function showugcprofile($username)
     {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::where('username', $username)->withCount('subscribers')->firstOrFail();
 
         $ugcvideos = UGCVideo::where('user_id', $user->id)
+            ->withCount([
+            'likesDislikes as like_count' => function($query) {
+                $query->where('liked', 1);
+            }
+            ])
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->paginate(9);
+
+        // $user_data = User::withCount('subscribers')->find($profileUser->id);
         
         $viewcount = $this->handleViewCounts($ugcvideos);
-        $totalViews = $user->ugcVideos()->sum('views');
+        $ugc_total = $user->ugcVideos();
+        $totalViews = $ugc_total->sum('views');
+        $totalVideos = $ugc_total->where('active',1)->count();
         $data = [
             'user' => $user,
             'ugcvideos' => $ugcvideos,
             'viewcount' => $viewcount,
             'totalViews' => $totalViews,
+            'totalVideos' => $totalVideos,
         ];
 
         return Theme::view("UserGeneratedContent.showugcprofile", $data );
@@ -724,18 +734,14 @@ class UGCController extends Controller
             $user_data = User::withCount('subscribers')->find($profileUser->id);
 
             $user_details = User::find($user_id);
-    
-            $ugcvideo = UGCVideo::withCount([
-                'likesDislikes as like_count' => function ($query) {
-                    $query->where('type', 'liked');
-                }
-            ])
-            ->with(['user' => function ($query) {
-                $query->withCount('subscribers');
-            }])
-            ->where('active', 1)
-            ->orderBy('created_at', 'DESC')
-            ->paginate(9);
+
+            $ugcvideo = UGCVideo::where('active', 1)
+                ->withCount([
+                    'likesDislikes as like_count' => function($query) {
+                        $query->where('liked', 1);
+                    }
+                    ])
+                ->orderBy('created_at', 'DESC')->get(); 
     
             $subscribe_button = UGCSubscriber::where('user_id', $profileUser->id)
                             ->where('subscriber_id', auth()->user()->id)
@@ -825,6 +831,17 @@ class UGCController extends Controller
         }
     }
     
+
+    public function viewallprofile(){
+
+        $user_data = User::has('ugcVideos')->withCount('subscribers')->get();
+
+        $data = [
+            'userdata' => $user_data,
+        ];
+
+        return Theme::view("UserGeneratedContent.viewallprofile", $data);
+    }
 
     // public function filedelete($id)
     // {
