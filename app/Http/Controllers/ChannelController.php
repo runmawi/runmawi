@@ -4881,7 +4881,8 @@ class ChannelController extends Controller
                 $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
                 $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
                 
-                if($item['access'] == 'ppv' && Auth::user()->role == "registered" || $item['access'] == 'ppv' && Auth::user()->role == "subscriber"){
+
+                if($item['access'] == 'ppv' && !Auth::guest() && Auth::user()->role == "registered" || $item['access'] == 'ppv' && !Auth::guest() && Auth::user()->role == "subscriber"){
                     $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                 }else{
                     $item['PPV_Plan']   = '';
@@ -5088,7 +5089,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
 
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }

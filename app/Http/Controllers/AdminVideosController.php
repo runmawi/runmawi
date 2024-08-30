@@ -518,10 +518,7 @@ class AdminVideosController extends Controller
         $libraryid = $data['UploadlibraryID'];
         $client = new Client();
 
-        $storage_settings = StorageSetting::first();
-
-        return $this->UploadVideoStreamVideoCipher( $storage_settings,$mp4_url);
-   
+        $storage_settings = StorageSetting::first();   
 
         if($site_theme->enable_bunny_cdn == 1){
             if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
@@ -11818,7 +11815,7 @@ class AdminVideosController extends Controller
 
         public function videocihperplayer(){
 
-            $videoId = "597244970fe8487ab2b6d026719397ac"; 
+            $videoId = "b69110c2cfc54e09b015aa07739311a4"; 
             $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
 
             $curl = curl_init();
