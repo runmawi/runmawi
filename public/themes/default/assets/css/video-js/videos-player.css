@@ -492,7 +492,7 @@ line-height: 2.1em;
     align-items: center;
     font-size: 2em;
     position: absolute;
-    top: -320px;
+    top: -295px;
     width: 60px;
     height: 60px;
 }
@@ -518,7 +518,7 @@ line-height: 2.1em;
     font-size: 2.5em;
     padding: 0px 35px;
     position: absolute;
-    top: -375px;
+    top: -335px;
 }
 
 .vjs-fullscreen .custom-skip-forward-button svg,
