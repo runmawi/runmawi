@@ -119,8 +119,8 @@
                                     </p>
 
                                     @if(strlen($details) > 300)
-                                        <button class="des-more-less-btns p-0" id="read-more-details-{{ $key }}" onclick="detailsReadMore({{ $key }})">{{ __('Read More') }}</button>
-                                        <button class="des-more-less-btns p-0" id="read-less-details-{{ $key }}" onclick="detailsReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-more-details-{{ $key }}" onclick="detailsReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-less-details-{{ $key }}" onclick="detailsReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
                                     @endif
                                 </div>
                             </div>

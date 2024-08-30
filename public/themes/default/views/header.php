@@ -465,6 +465,19 @@
       body.light-theme .navbar-right .iq-sub-dropdown{
       background-color: <?php echo $GetLightBg; ?>;  
       }
+      body.light-theme ul.list-group.home-search{
+      background-color: <?php echo $GetLightBg; ?> !important;  
+      }
+      body.light-theme .iq-search-bar .search-input{
+         background-color: <?php echo $GetLightBg; ?> !important;
+         color: var(--iq-body-text) !important;  
+      }
+      body.light-theme body.light-theme .list-group-item a{
+         color: var(--iq-body-text) !important;
+      }
+      body.light-theme .searchbox h6, body.light-theme .iq-card-body h6{
+         color: var(--iq-body-text) !important;
+      }
       body.light-theme .media-body h6{
       color: <?php echo $GetLightText; ?>;
       font-weight: 400;
@@ -498,9 +511,7 @@
       color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
       } 
-      body.light-theme .list-group-item a{
-      color: <?php echo GetAdminDarkText(); ?> !important;
-      } 
+
       body.light-theme .block-description{
    background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
       backdrop-filter: blur(2px);
@@ -1086,13 +1097,13 @@
                               </a>
 
                               <div class="search-box iq-search-bar d-search">
-                                 <form id="searchResult" action="<?php echo URL::to("searchResult") ; ?>" method="get" class="searchbox">
+                                 <div class="searchbox">
                                     <div class="form-group position-relative">
                                        <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
                                        <i class="search-link ri-search-line"></i>
                                        <?php  include 'public/themes/default/partials/Search_content.php'; ?>
                                     </div>
-                                 </form>
+                                 </div>
                                   <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
                                  <div class="iq-card-body">
                                     <div id="search_list" class="search_list search-toggle device-search" >
@@ -1299,7 +1310,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                       <a href="<?php echo URL::to('watchlater_list') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
@@ -1315,7 +1326,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                       <a href="<?php echo URL::to('wishlist_list') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1530,7 +1541,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <a href="<?php echo URL::to('watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                       <a href="<?php echo URL::to('watchlater_list') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
@@ -1546,7 +1557,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <a href="<?php echo URL::to('mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                       <a href="<?php echo URL::to('wishlist_list') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

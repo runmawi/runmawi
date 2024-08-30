@@ -420,7 +420,7 @@
 
 <style>
     .text{
-        text-transform: capitalize;
+        text-transform: uppercase;
         font-size: 20px !important;
         font-weight: 500;
     }
