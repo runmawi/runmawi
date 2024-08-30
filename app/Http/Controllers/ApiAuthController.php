@@ -14061,8 +14061,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 
-
-      if (1 == 0) {
+      if (!empty($request->page)) {
 
         $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->paginate(3);
       
@@ -15774,8 +15773,7 @@ public function QRCodeMobileLogout(Request $request)
                                                                           }
 
                                                                       })->filter()->first();
-
-
+          $item['source'] = 'EPG';
           return $item;
         });
     }
