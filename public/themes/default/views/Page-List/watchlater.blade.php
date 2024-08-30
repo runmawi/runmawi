@@ -8,13 +8,13 @@
         <div class="row">
             <div class="col-sm-12 page-height">
 
-                <div class="iq-main-header d-flex align-items-center justify-content-between">
-                    <h2 class="main-title fira-sans-condensed-regular">
-                            {{ $order_settings_list[36]->header_name ? __($order_settings_list[36]->header_name) : '' }}
-                    </h2>  
-                </div>
-
                 @if (($watchlater_pagelist)->isNotEmpty())
+
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h2 class="main-title fira-sans-condensed-regular">
+                                {{ $order_settings_list[36]->header_name ? __($order_settings_list[36]->header_name) : '' }}
+                        </h2>  
+                    </div>
 
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
