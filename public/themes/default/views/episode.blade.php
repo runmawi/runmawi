@@ -513,33 +513,25 @@
                         @endif
                     </li>
 
-                    <li>
-                        @if(empty($like_dislike->liked) || (!empty($like_dislike->liked) && $like_dislike->liked == 0))
-                            <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
-                                data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodelike(this)"><i class="ri-thumb-up-line" aria-hidden="true"></i>
-                            </span>
-                        @else
-                            <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
-                                data-list="remove" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodelike(this)"> <i class="ri-thumb-up-fill" aria-hidden="true"></i>
-                            </span>
-                        @endif
-                    </li>
+                    
+  <li>
+    <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
+        data-list="{{ empty($like_dislike->liked) ? $episode->id : 'remove' }}" 
+        data-video-id="{{ $episode->id }}" 
+        onclick="episodelike(this)">
+        <i class="{{ empty($like_dislike->liked) ? 'ri-thumb-up-line' : 'ri-thumb-up-fill' }}" aria-hidden="true"></i>
+    </span>
+</li>
 
-                    <li>
-                        @if(empty($like_dislike->disliked) || (!empty($like_dislike->disliked) && $like_dislike->disliked == 0))
-                            <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
-                                data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodedislike(this)"><i class="ri-thumb-down-line" aria-hidden="true"></i>
-                            </span>
-                        @else
-                            <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
-                                data-list="remove" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i>
-                            </span>
-                        @endif
-                    </li>
+<li>
+    <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
+        data-list="{{ empty($like_dislike->disliked) ? $episode->id : 'remove' }}" 
+        data-video-id="{{ $episode->id }}" 
+        onclick="episodedislike(this)">
+        <i class="{{ empty($like_dislike->disliked) ? 'ri-thumb-down-line' : 'ri-thumb-down-fill' }}" aria-hidden="true"></i>
+    </span>
+</li>
+                    
 
                     <li class="share">
                         <span><i class="ri-share-fill"></i></span>
@@ -1500,120 +1492,72 @@
             })
         }
 
-
-
+        
         function episodelike(ele) {
-            var episode_id = $(ele).attr('data-video-id');
-            var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
-            // alert(key_value);
+    var episode_id = $(ele).attr('data-video-id');
+    var key_value = $(ele).attr('data-list');
+    var url = key_value !== "remove" ? '<?= URL::to('/like-episode') ?>' : '<?= URL::to('/remove_like-episode') ?>';
 
-            // alert(my_value);
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/like-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_like-episode') ?>';
-            }
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: {
-                    episode_id: episode_id,
-                    _token: '<?= csrf_token() ?>'
-                },
-                success: function(data) {
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+            episode_id: episode_id,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(data) {
+            if (data.message === "Added to Like Episode" || data.message === "Added to Like Episode, Dislike Removed if existed") {
+                // Toggle Like button to filled
+                $(ele).find('i').removeClass('ri-thumb-up-line').addClass('ri-thumb-up-fill');
+                $(ele).attr('data-list', 'remove');
 
-                    if (data.message == "Removed from Liked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-fill').toggleClass('ri-thumb-up-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to Like Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
-                    }
+                // Reset Dislike button to outlined if it was filled
+                var dislikeButton = $('#episode_dislike_' + episode_id);
+                if (dislikeButton.length) {
+                    dislikeButton.find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                    dislikeButton.attr('data-list', episode_id);
                 }
-            })
-        }
-
-
-        function episodedislike(ele) {
-            var episode_id = $(ele).attr('data-video-id');
-            var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
-            // alert(key_value);
-
-            // alert(my_value);
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/dislike-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_dislike-episode') ?>';
+            } else if (data.message === "Removed from Like Episode") {
+                // Toggle Like button back to outlined
+                $(ele).find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                $(ele).attr('data-list', episode_id);
             }
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: {
-                    episode_id: episode_id,
-                    _token: '<?= csrf_token() ?>'
-                },
-                success: function(data) {
-
-                    if (data.message == "Removed from DisLiked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-fill').toggleClass(
-                        'ri-thumb-down-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to DisLike Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-line').toggleClass(
-                            'fri-thumb-down-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
-                    }
-                }
-            })
         }
+    });
+}
 
+function episodedislike(ele) {
+    var episode_id = $(ele).attr('data-video-id');
+    var key_value = $(ele).attr('data-list');
+    var url = key_value !== "remove" ? '<?= URL::to('/dislike-episode') ?>' : '<?= URL::to('/remove_dislike-episode') ?>';
 
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+            episode_id: episode_id,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(data) {
+            if (data.message === "Added to Dislike Episode" || data.message === "Added to Dislike Episode, Like Removed if existed") {
+                // Toggle Dislike button to filled
+                $(ele).find('i').removeClass('ri-thumb-down-line').addClass('ri-thumb-down-fill');
+                $(ele).attr('data-list', 'remove');
+
+                // Reset Like button to outlined if it was filled
+                var likeButton = $('#episode_like_' + episode_id);
+                if (likeButton.length) {
+                    likeButton.find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                    likeButton.attr('data-list', episode_id);
+                }
+            } else if (data.message === "Removed from Dislike Episode") {
+                // Toggle Dislike button back to outlined
+                $(ele).find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                $(ele).attr('data-list', episode_id);
+            }
+        }
+    });
+}
 
         function Copy() {
             var media_path = '<?= URL::to('episode/') . '/' . $series->title . '/' . $episode->slug ?>';
