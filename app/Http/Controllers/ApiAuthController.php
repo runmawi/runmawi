@@ -14061,8 +14061,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 
-
-      if (1 == 0) {
+      if (!empty($request->page)) {
 
         $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->paginate(3);
       
@@ -14389,6 +14388,15 @@ public function QRCodeMobileLogout(Request $request)
           $source_type = "Series" ;
         }
 
+        if($OrderHomeSetting['video_name'] == "EPG"){      // EPG
+
+          $data = $this->All_Homepage_EPG($homepage_input_array);
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "EPG" ;
+        }
+
 
         $result[] = array(
           "source"      => $source,
@@ -14550,6 +14558,10 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'Series_Genre_videos');
     }
 
+    if($Homesetting->epg == 1 && $this->All_Homepage_EPG($homepage_input_array)->isNotEmpty() ){
+      array_push($input,'epg');
+    }
+
     return $input;
   }
 
@@ -14679,6 +14691,9 @@ public function QRCodeMobileLogout(Request $request)
                                       });
     
         $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+            $livestream->live_animation = 'true' ;
+
             if ($livestream->publish_type === 'recurring_program') {
         
                 $Current_time = Carbon::now($current_timezone);
@@ -14710,6 +14725,8 @@ public function QRCodeMobileLogout(Request $request)
                 }
 
                 $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+
+                $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
         
                 return $recurring_program_Status;
             }
@@ -14722,6 +14739,8 @@ public function QRCodeMobileLogout(Request $request)
                 $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
                 $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
                 return $publish_later_Status;
             }
@@ -15706,6 +15725,63 @@ public function QRCodeMobileLogout(Request $request)
 
     return $data;
   }
+
+  private static function All_Homepage_EPG($homepage_input_array){
+
+    $epg_status = $homepage_input_array['MobileHomeSetting']->latest_videos;
+    $homepage_geofencing = $homepage_input_array['Geofencing'];
+
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
+
+    if (is_null($epg_status) && $epg_status == 0 ) {
+
+      return $data ;
+
+    }else{
+
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+        $carbon_current_time =  $carbon_now->format('H:i:s');
+        $carbon_today =  $carbon_now->format('n-j-Y');
+
+        $data =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                    
+          $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+          $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+          $item['tv_image_url']     = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+          $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                              
+          $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                      ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                          $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                                          $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                          ->copy()->tz( $current_timezone );
+
+                                                                          $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                          ->copy()->tz( $current_timezone );
+
+                                                                          if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                              $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                              $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                              $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                              return $item ;
+                                                                          }
+
+                                                                      })->filter()->first();
+          $item['source'] = 'EPG';
+          return $item;
+        });
+    }
+    
+    return $data;
+  } 
+
+  // Page List
 
   public function All_Pagelist(Request $request)
   {
@@ -25204,6 +25280,81 @@ public function SendVideoPushNotification(Request $request)
           $current_timezone = $request->current_timezone;
 
           $epg_channel_data =  AdminEPGChannel::where('status',1)->limit(15)->get()->each(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
+
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
+              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+
+              $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::query()
+                                                  
+                                                  ->when( !is_null($request->date), function ($query) use ($request) {
+                                                      return $query->Where('choosed_date', $request->date);
+                                                  })
+
+                                                  ->orderBy('start_time','asc')->where('channe_id',$item->id)->limit(30)->get()->map(function ($item) use ($request) {
+
+                                                      $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                      $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
+
+                                                      $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
+                                                                                                      ->copy()->tz( $request->current_timezone );
+
+                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+
+                                                      $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                      $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+
+                                                      $item['channel_name'] = AdminEPGChannel::where('id',$item->channe_id)->pluck('name')->first();
+                                                      return $item;
+                                                  });
+
+                                                  $item['ChannelVideoScheduler']->each(function ($scheduleItem, $key) use ($item) {
+
+                                                      if ($key < $item['ChannelVideoScheduler']->count() - 1) {
+                                                          $scheduleItem['up_next']  = $item['ChannelVideoScheduler'][$key + 1]->socure_title;
+                                                      }else{
+                                                          $scheduleItem['up_next'] = null;
+                                                      }
+                                                  });
+
+              return $item;
+          });
+
+          $response = array(
+            "status"  => 'true' ,
+            "message" => "Retrieved Channels EPG Successfully" ,
+            "epg_channel_data" => $epg_channel_data,
+          );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        "status"  => 'false' ,
+        "message" => $th->getMessage(),
+      );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function unique_channel_epg(Request $request)
+  {
+    try {
+          $this->validate($request, [
+            'current_timezone'  => 'required' ,
+            'date' => 'required',
+            'epg_channel_id' => 'required',
+          ]);
+
+          $default_vertical_image_url = default_vertical_image_url() ;
+          $default_horizontal_image_url = default_horizontal_image_url();
+          $current_timezone = $request->current_timezone;
+
+          $epg_channel_data =  AdminEPGChannel::where('id',$request->epg_channel_id)->where('status',1)->get()->each(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
 
               $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
               $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;

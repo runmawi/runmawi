@@ -48,7 +48,7 @@ class LiveStreamController extends Controller
   {
 
       $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-      $userIp = $geoip->getip();    
+      $userIp = $geoip->getip();
       $countryName = $geoip->getCountry();
       $regionName = $geoip->getregion();
       $cityName = $geoip->getcity();
@@ -60,7 +60,7 @@ class LiveStreamController extends Controller
 
       $this->Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses($this->Theme);
-     
+
   }
 
     public function Index()
@@ -78,9 +78,9 @@ class LiveStreamController extends Controller
 
               return redirect()->route('landing_page', $landing_page_slug );
           }
-          
+
           $live = LiveStream::where('active', '1')->where('status', 1)->latest()->get();
-          
+
           $livestreams_data = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                                 'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                                 'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
@@ -90,7 +90,7 @@ class LiveStreamController extends Controller
                                        ->latest()
                                         ->get();
 
-          
+
           $livestreams_data = $livestreams_data->filter(function ($livestream) use ($current_timezone) {
 
             if ($livestream->publish_type === 'recurring_program') {
@@ -102,7 +102,7 @@ class LiveStreamController extends Controller
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                     break;
 
                     case 'daily':
@@ -133,8 +133,8 @@ class LiveStreamController extends Controller
                         break;
                     case 'monthly':
                         $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;  
-                        
+                        break;
+
                     default:
                         $recurring_program_live_animation = false;
                     break;
@@ -148,7 +148,7 @@ class LiveStreamController extends Controller
             if( $livestream->publish_type === 'publish_later' ){
 
                 $Current_time = Carbon::now($current_timezone);
-                        
+
                 $publish_later_Status = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
                 return $publish_later_Status;
@@ -167,18 +167,18 @@ class LiveStreamController extends Controller
 
 
           return Theme::view('liveCategoryVideos',$data);
-            
+
       } catch (\Throwable $th) {
 
         return $th->getMessage();
         return abort(404);
       }
     }
-    
+
     public function Play(Request $request,$vid)
     {
-    //   try {  
-        
+    //   try {
+
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
 
@@ -188,7 +188,7 @@ class LiveStreamController extends Controller
       $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
 
          // Channel Livestream videos
-         
+
       if(@$categoryVideos->uploaded_by == 'Channel'){
           $user_id = $categoryVideos->user_id;
 
@@ -199,7 +199,7 @@ class LiveStreamController extends Controller
 
           if(!Auth::guest() &&  $user->user_id == Auth::user()->id){
               $video_access = 'free';
-          }else{ 
+          }else{
               $video_access = 'pay';
           }
 
@@ -231,7 +231,7 @@ class LiveStreamController extends Controller
         $user_id = Auth::user()->id;
       }
 
-           $settings = Setting::first(); 
+           $settings = Setting::first();
 
           if(!Auth::guest()){
               $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
@@ -262,7 +262,7 @@ class LiveStreamController extends Controller
               $password_hash = "";
              }
 
-             $payment_settings = PaymentSetting::first();  
+             $payment_settings = PaymentSetting::first();
               $mode = $payment_settings->live_mode ;
                 if($mode == 0){
                     $secret_key = $payment_settings->test_secret_key ;
@@ -273,8 +273,8 @@ class LiveStreamController extends Controller
                 }else{
                     $secret_key= null;
                     $publishable_key= null;
-                }   
-                     
+                }
+
              $currency = CurrencySetting::first();
              if (!empty($categoryVideos->publish_time))
              {
@@ -333,7 +333,7 @@ class LiveStreamController extends Controller
                                 ->get();
 
                     // Free duration PPV purchase - Note(If PPV purchase - 0 , otherwise 1)
-              
+
             if ($categoryVideos->access == "ppv" && !Auth::guest()) {
 
                 $live_purchase_exists = LivePurchase::where('video_id', $vid)->where('user_id', Auth::user()->id)
@@ -348,7 +348,7 @@ class LiveStreamController extends Controller
 
                 $live_purchase_status = 0;
             }
-                  
+
             $free_duration_condition = $live_purchase_status == 0 && ( ( $categoryVideos->access == "ppv" && Auth::check() == true && Auth::user()->role != "admin" ) || ( $categoryVideos->access == "subscriber" && ( Auth::guest() || Auth::user()->role == "registered"))) && $categoryVideos->free_duration_status == 1 && $categoryVideos->free_duration !== null ? 1 : 0;
 
             // video Js
@@ -356,14 +356,14 @@ class LiveStreamController extends Controller
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
-                
+
             // Adsvariables
 
-            $adsvariable_url = ''; 
+            $adsvariable_url = '';
 
             if ($settings->ads_variable_status == 1) {
                 $adsvariables = Adsvariables::whereNotNull('website')->get();
-            
+
                 foreach ($adsvariables as $key => $ads_variable ) {
                     if ($key === 0) {
                         $adsvariable_url .= "?" . $ads_variable->name . "=" . $ads_variable->website;
@@ -371,9 +371,9 @@ class LiveStreamController extends Controller
                         $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
                     }
                 }
-    
-                $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category 
-                                            ."&ads.content_genre=".$categoryVideos->ads_content_genre 
+
+                $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category
+                                            ."&ads.content_genre=".$categoryVideos->ads_content_genre
                                             ."&ads.content_id=".$categoryVideos->ads_content_id
                                             ."&ads.content_language=".$categoryVideos->ads_content_language
                                             ."&ads.content_title=".$categoryVideos->ads_content_title
@@ -385,15 +385,15 @@ class LiveStreamController extends Controller
                                             ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
 
               $item['users_video_visibility_status']         = true ;
-              $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]); 
-              $item['users_video_visibility_free_duration_status']  = 0 ; 
+              $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]);
+              $item['users_video_visibility_free_duration_status']  = 0 ;
 
                   // Check for guest user
 
               if( Auth::guest()  && $item->access != "guest"  ){
-      
+
                   $item['users_video_visibility_status'] = false ;
-                  $item['users_video_visibility_status_message'] = Str::title( 'this Livestream only for '. $item->access  .' users' ) ;
+                  $item['users_video_visibility_status_message'] = ($item->access == "ppv") ? 'This Livestream only for PPV users' : 'This Livestream only for Subscribed users';
                   $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                   $item['users_video_visibility_Rent_button']      = false ;
                   $item['users_video_visibility_becomesubscriber'] = false ;
@@ -401,81 +401,81 @@ class LiveStreamController extends Controller
 
                   $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
                   $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
-                      
+
                       // Free duration
                   if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                       $item['users_video_visibility_status'] = true ;
-                      $item['users_video_visibility_free_duration_status']  = 1; 
+                      $item['users_video_visibility_free_duration_status']  = 1;
                   }
               }
 
                   // Check for Login user - Register , Subscriber ,PPV
 
               if ( Auth::guest() || Auth::user()->role != 'admin') {
-                  
+
                   if( !Auth::guest() ){
-  
+
                       $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
-  
+
                       $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-          
+
                               // free PPV access for subscriber status Condition
-          
+
                       if( $settings->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
-          
+
                           $PPV_exists = false ;
                       }
-                      
+
                       if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
-          
+
                           $item['users_video_visibility_status'] = false ;
                           $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
                           $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                           $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                           $item['users_video_visibility_register_button']  = false ;
-  
+
                           $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
                           $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
-                          
+
                           if ($item->access == "ppv") {
-  
+
                               $item['users_video_visibility_redirect_url'] =  'live-purchase-now-button' ;
-  
+
                           } elseif( Auth::user()->role == 'registered') {
-  
+
                               $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
                           }
-                          
+
                               // Free duration
 
                           if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                               $item['users_video_visibility_status'] = true ;
-                              $item['users_video_visibility_free_duration_status']  = 1; 
+                              $item['users_video_visibility_free_duration_status']  = 1;
                           }
                       }
 
                       if ( $settings->enable_ppv_rent_live == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                           if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                               $item['users_video_visibility_status'] = true ;
-                              $item['users_video_visibility_free_duration_status']  = 0; 
+                              $item['users_video_visibility_free_duration_status']  = 0;
                           }
                       }
                   }
                       // Block Countries
 
                   if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
-  
+
                       $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
-  
+
                       if ($block_videos_exists) {
-  
+
                           $item['users_video_visibility_status'] = false;
                           $item['users_video_visibility_status_message'] = Str::title( 'this Livestream only Not available in this country')  ;
                           $item['users_video_visibility_Rent_button']    = false ;
                           $item['users_video_visibility_becomesubscriber_button'] = false ;
                           $item['users_video_visibility_register_button']  = false ;
-                          $item['users_video_visibility_redirect_url'] = URL::to('/blocked'); 
-  
+                          $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+
                       }
                   }
               }
@@ -484,9 +484,9 @@ class LiveStreamController extends Controller
               $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
               $item['TV_Thumbnail']     = !is_null($item->video_tv_image)  ? URL::to('public/uploads/images/'.$item->video_tv_image)  : default_horizontal_image_url() ;
               $item['public_current_time'] = !empty($item->publish_time) ? \Carbon\Carbon::parse($item->publish_time)->format('d F Y') : \Carbon\Carbon::parse($item->created_at)->format('d F Y') ;
-               
+
                   //  Livestream URL
-          
+
               switch (true) {
 
                   case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
@@ -523,12 +523,12 @@ class LiveStreamController extends Controller
                     $item['livestream_URL'] =  $item->acc_audio_url ;
                     $item['livestream_player_type'] =  'audio/aac' ;
                   break;
-    
+
                   case $item['url_type'] == "acc_audio_file":
                       $item['livestream_URL'] =  $item->acc_audio_file ;
                       $item['livestream_player_type'] =  'audio/aac' ;
                   break;
-                  
+
                   case $item['url_type'] == "aws_m3u8":
                     $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
                     $item['livestream_player_type'] =  'application/x-mpegURL' ;
@@ -629,16 +629,16 @@ class LiveStreamController extends Controller
         public function videojs_live_watchlater(Request $request)
         {
             try {
-                
+
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    
+
                 $inputs = [
                     'live_id' => $request->live_id,
                     'type' => 'live',
                     'user_id' => !Auth::guest() ? Auth::user()->id : null,
                     'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
                 ];
-    
+
                 $watchlater_exist = Watchlater::where('live_id', $request->live_id)->where('type', 'live')
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -647,40 +647,40 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
-            
+
+
                 !is_null($watchlater_exist) ? $watchlater_exist->delete() : Watchlater::create( $inputs ) ;
-    
+
                 $response = array(
                     'status'=> true,
                     'watchlater_status' => is_null($watchlater_exist) ? "Add" : "Remove "  ,
                     'message'=> is_null($watchlater_exist) ? "This video was successfully added to Watchlater's list" : "This video was successfully remove from Watchlater's list"  ,
                 );
-    
+
             } catch (\Throwable $th) {
-    
+
                 $response = array(
                     'status'=> false,
                     'message'=> $th->getMessage(),
                   );
             }
-    
-            return response()->json(['data' => $response]); 
+
+            return response()->json(['data' => $response]);
         }
-    
+
         public function videojs_live_wishlist(Request $request)
         {
             try {
-                
+
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    
+
                 $inputs = [
                     'live_id' => $request->live_id,
                     'type' => 'live',
                     'user_id' => !Auth::guest() ? Auth::user()->id : null,
                     'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
                 ];
-    
+
                 $wishlist_exist = Wishlist::where('live_id', $request->live_id)->where('type', 'live')
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -689,40 +689,40 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
-            
+
+
                 !is_null($wishlist_exist) ? $wishlist_exist->delete() : Wishlist::create( $inputs ) ;
-    
+
                 $response = array(
                     'status'=> true,
                     'wishlist_status' => is_null($wishlist_exist) ? "Add" : "Remove "  ,
                     'message'=> is_null($wishlist_exist) ? "This video was successfully added to wishlist's list" : "This video was successfully remove from wishlist's list"  ,
                 );
-    
+
             } catch (\Throwable $th) {
-    
+
                 $response = array(
                     'status'=> false,
                     'message'=> $th->getMessage(),
                   );
             }
-    
-            return response()->json(['data' => $response]); 
+
+            return response()->json(['data' => $response]);
         }
-    
+
         public function videojs_live_Like(Request $request)
         {
             try {
-                
+
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    
+
                 $inputs = [
                     'live_id' => $request->live_id,
                     'user_id' => !Auth::guest() ? Auth::user()->id : null,
                     'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
                     'disliked'   => 0 ,
                 ];
-    
+
                 $check_Like_exist = LikeDislike::where('live_id', $request->live_id)->where('liked',1)
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -731,10 +731,10 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
+
                 $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
-    
-                
+
+
                 $Like_exist = LikeDislike::where('live_id', $request->live_id)
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -743,39 +743,39 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
+
                 !is_null($Like_exist) ? $Like_exist->find($Like_exist->id)->update($inputs) : LikeDislike::create( $inputs ) ;
-    
+
                 $response = array(
                     'status'=> true,
                     'like_status' => is_null($check_Like_exist) ? "Add" : "Remove "  ,
                     'message'=> is_null($check_Like_exist) ? "You liked this video." : "You removed from liked this video."  ,
                 );
-    
+
             } catch (\Throwable $th) {
-    
+
                 $response = array(
                     'status'=> false,
                     'message'=> $th->getMessage(),
                   );
             }
-    
-            return response()->json(['data' => $response]); 
+
+            return response()->json(['data' => $response]);
         }
-    
+
         public function videojs_live_disLike(Request $request)
         {
             try {
-                
+
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    
+
                 $inputs = [
                     'live_id' => $request->live_id,
                     'user_id' => !Auth::guest() ? Auth::user()->id : null,
                     'users_ip_address' => Auth::guest() ? $geoip->getIP() : null,
                     'liked'      => 0 ,
                 ];
-    
+
                 $check_dislike_exist = LikeDislike::where('live_id', $request->live_id)->where('disliked',1)
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -784,10 +784,10 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
+
                 $inputs += [ 'disliked'  => is_null($check_dislike_exist) ? 1 : 0 , ];
-    
-    
+
+
                 $dislike_exists = LikeDislike::where('live_id', $request->live_id)
                                             ->where(function ($query) use ($geoip) {
                                                 if (!Auth::guest()) {
@@ -796,33 +796,33 @@ class LiveStreamController extends Controller
                                                     $query->where('users_ip_address', $geoip->getIP());
                                                 }
                                             })->first();
-    
-            
+
+
                 !is_null($dislike_exists) ? $dislike_exists->find($dislike_exists->id)->update($inputs) : LikeDislike::create( $inputs ) ;
-    
+
                 $response = array(
                     'status'=> true,
                     'dislike_status' => is_null($check_dislike_exist) ? "Add" : "Remove "  ,
                     'message'=> is_null($check_dislike_exist) ? "You disliked this video" : "You removed from disliked this video."  ,
                 );
-    
+
             } catch (\Throwable $th) {
-    
+
                 $response = array(
                     'status'=> false,
                     'message'=> $th->getMessage(),
                   );
             }
-    
-            return response()->json(['data' => $response]); 
+
+            return response()->json(['data' => $response]);
         }
 
         public function channelVideos($cid)
         {
-    
+
           $getfeching = Geofencing::first();
           $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-          $userIp = $geoip->getip();    
+          $userIp = $geoip->getip();
           $countryName = $geoip->getCountry();
           $ThumbnailSetting = ThumbnailSetting::first();
           $parentCategories = LiveCategory::where('slug',$cid)->first();
@@ -837,7 +837,7 @@ class LiveStreamController extends Controller
                if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
 
                 $BlockLiveStream = BlockLiveStream::where('country',$countryName)->get();
-                
+
                 if(!$BlockLiveStream->isEmpty()){
                    foreach($BlockLiveStream as $block_LiveStream){
                       $blockLiveStreams[]=$block_LiveStream->live_id;
@@ -859,7 +859,7 @@ class LiveStreamController extends Controller
             $settings = Setting::first();
 
              $currency = CurrencySetting::first();
-            
+
             $data = array(
                 'currency'              => $currency,
                 'ThumbnailSetting'      => $ThumbnailSetting,
@@ -868,8 +868,8 @@ class LiveStreamController extends Controller
                 'parentCategories'      => $parentCategories,
             );
            return Theme::view('livecategoryvids',$data);
-            
-        } 
+
+        }
 
 
         public function EmbedLivePlay($vid)
@@ -881,7 +881,7 @@ class LiveStreamController extends Controller
           // dd($Theme );
           $categoryVideos = LiveStream::where('slug',$vid)->first();
           $vid =  $categoryVideos->id;
-           $settings = Setting::first(); 
+           $settings = Setting::first();
 
 
             $wishlisted = false;
@@ -947,7 +947,7 @@ class LiveStreamController extends Controller
                     'message' => 'Live Purchase status No changes done' ,
                   );
               }
-          } 
+          }
           catch (\Throwable $th) {
 
               $data = array(
@@ -955,7 +955,7 @@ class LiveStreamController extends Controller
                 'message' => $th->getMessage(),
               );
           }
-            
+
           return response()->json($data, 200);
         }
 
@@ -983,7 +983,7 @@ class LiveStreamController extends Controller
                   'message' => 'Unseen Expiry-date cheacking PPV purchase- No changes done' ,
                 );
               }
-          } 
+          }
           catch (\Throwable $th) {
 
               $data = array(
@@ -1039,19 +1039,19 @@ class LiveStreamController extends Controller
           );
 
         }
-        
+
         return response()->json($respond, 200);
 
-        
+
                   // Reference codes - Don't Remove
 
         // $count = count( $match[0] );
         // $result = [];
         // $index = -1;
-        //   for( $i =0; $i < $count; $i++ ){    
-        //     $item = $match[0][$i]; 
+        //   for( $i =0; $i < $count; $i++ ){
+        //     $item = $match[0][$i];
         //     if( !empty($match['tag'][$i])){
-        //         ++$index; 
+        //         ++$index;
         //     }elseif( !empty($match['prop_key'][$i])){
         //         $result[$index][$match['prop_key'][$i]] = $match['prop_val'][$i];
         //     }elseif( !empty($match['something'][$i])){

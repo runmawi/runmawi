@@ -169,7 +169,7 @@
             <div class="col-8">
                 <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                 <p class="trending-dec w-100 mb-0 text-white mb-4"> {!! html_entity_decode(__($Livestream_details->description)) !!}</p>
-           
+
 
                 @if ($Livestream_details->publish_type == "recurring_program")
 
@@ -253,7 +253,7 @@
                                 <div class="d-flex">
                                     @if ( $Livestream_details->users_video_visibility_status == false )
                                         @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
-                                            <a class="btn mr-3" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <a class="btn mr-3" data-toggle="modal" data-target="#live-purchase-now-modal">
                                                 <div class="playbtn text-white" style="gap:5px">
                                                     {!! $play_btn_svg !!}
                                                     <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
@@ -274,13 +274,13 @@
                                         {{-- subscriber & PPV  --}}
 
                                         @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
-                                            <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <a class="btn" data-toggle="modal" data-target="#live-purchase-now-modal">
                                                 <div class="playbtn mr-3" style="gap:5px">
                                                     {!! $play_btn_svg !!}
                                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                                 </div>
                                             </a>
-                                        @endif 
+                                        @endif
                                     @else
                                         <a class="btn" href="{{ $Livestream_details->users_video_visibility_redirect_url }}">
                                             <div class="playbtn" style="gap:5px">
@@ -297,7 +297,7 @@
             </div>
         </div>
 
-          
+
 
     </div>
 
@@ -308,7 +308,7 @@
             <div class="col-8">
                 <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                 <p class="trending-dec w-100 mb-3 text-white"> {!! html_entity_decode(__($Livestream_details->description)) !!}</p>
-            
+
 
                 <h3 class="banner-details text-left">{{ "Live Streaming Coming Soon On ". Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $Livestream_details->publish_time)->format('l, jS F Y g:ia') }}</h3>
 
@@ -336,7 +336,7 @@
                                 <div class="d-flex">
                                     @if ( $Livestream_details->users_video_visibility_status == false )
                                         @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
-                                            <a class="btn mr-3" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <a class="btn mr-3" data-toggle="modal" data-target="#live-purchase-now-modal">
                                                 <div class="playbtn text-white" style="gap:5px">
                                                     {!! $play_btn_svg !!}
                                                     <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
@@ -357,13 +357,13 @@
                                         {{-- subscriber & PPV  --}}
 
                                         @if ( $Livestream_details->access == "subscriber" && !is_null($Livestream_details->ppv_price) )
-                                            <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <a class="btn" data-toggle="modal" data-target="#live-purchase-now-modal">
                                                 <div class="playbtn mr-3" style="gap:5px">
                                                     {!! $play_btn_svg !!}
                                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                                 </div>
                                             </a>
-                                        @endif 
+                                        @endif
                                     @else
                                         <a class="btn" href="{{ $Livestream_details->users_video_visibility_redirect_url }}">
                                             <div class="playbtn" style="gap:5px">
@@ -420,7 +420,7 @@
 
 <style>
     .text{
-        text-transform: capitalize;
+        text-transform: uppercase;
         font-size: 20px !important;
         font-weight: 500;
     }

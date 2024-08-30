@@ -31,7 +31,7 @@
         color: #fff;
         opacity: 1;
     }
-    @media(max-width:2400px){    .my-video.vjs-fluid{height:65vh !important;}}
+    @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}}
     .embed-responsive::before{display: none;}
 </style>
 

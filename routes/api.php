@@ -678,6 +678,7 @@ Route::group(
 
             Route::post('time-zone', 'ApiAuthController@TimeZone'); 
             Route::post('channel-epg', 'ApiAuthController@channel_epg'); 
+            Route::post('unique-channel-epg', 'ApiAuthController@unique_channel_epg'); 
 
             Route::get('storage-setting', 'ApiAuthController@StorageSetting'); 
             Route::get('GeoIPLocation', 'ApiAuthController@GeoIPLocation'); 

@@ -238,7 +238,7 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="{{ $user->avatar !== 'default.png' ? URL::to('/public/uploads/avatars/').'/'.$user->avatar : URL::to('/assets/img/placeholder.webp')}}"  alt="{{ $user->username }}"/>
                     <?php }else{ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
                      <?php } ?>
@@ -420,10 +420,10 @@ $settings = App\Setting::first();
                        <?php }elseif($user_role == 'subscriber'){ ?>
                           <h6><?php echo $role_plan." " .'__(Paid User)'; ?></h6>
                           <br>       
-                       <h5 class="card-title mb-0">{{ __('Available Specification') }} :</h5><br>
-                       <h6> {{ __('Video Quality') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
-                       <h6> {{ __('Video Resolution') }} : <p> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
-                       <h6> {{ __('Available Devices') }} : <p> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
+                       <h4 class="card-title mb-0 text-white">{{ __('Available Specification') }} :</h4><br>
+                       <h6> {{ __('Video Quality') }} : <p class="text-white"> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
+                       <h6> {{ __('Video Resolution') }} : <p class="text-white"> <?php if($plans != null || !empty($plans)) {  echo $plans->resolution ; } else { ' ';} ?>  </p></h6>                               
+                       <h6> {{ __('Available Devices') }} : <p class="text-white"> <?php if($plans != null || !empty($plans) ) {  echo $devices_name ; } else { ' ';} ?> </p></h6>                                                                                                                   
                           <!--<h6>Subscription</h6>-->
                        <?php } ?>
                        </div>

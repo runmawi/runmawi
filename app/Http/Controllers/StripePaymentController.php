@@ -288,6 +288,10 @@ class StripePaymentController extends Controller
     public function Stripe_payment_live_PPV_Purchase( $live_id,$amount)
     {
         try {
+
+            if( Auth::guest()){
+                return redirect('login');
+            }
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$live_id ) ;
@@ -363,7 +367,7 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' =>  $payment_amount * 100, 
                         ],
                         'quantity' => 1,
                     ],
@@ -487,6 +491,10 @@ class StripePaymentController extends Controller
     public function Stripe_payment_video_PPV_Purchase( $video_id,$amount)
     {
         try {
+
+            if( Auth::guest()){
+                return redirect('login');
+            }
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id ) ;
@@ -674,6 +682,10 @@ class StripePaymentController extends Controller
     {
         try {
             
+            if( Auth::guest()){
+                return redirect('login');
+            }
+            
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$SeriesSeason_id ) ;
 
@@ -749,7 +761,7 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' =>  $payment_amount * 100, 
                         ],
                         'quantity' => 1,
                     ],
@@ -858,6 +870,11 @@ class StripePaymentController extends Controller
     public function Stripe_payment_series_PPV_Purchase( $Series_id,$amount)
     {
         try {
+
+            if( Auth::guest()){
+                return redirect('login');
+            }
+
             // $amount = 100 ;
 
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
@@ -933,7 +950,7 @@ class StripePaymentController extends Controller
                             'product_data' => [
                                 'name' => GetWebsiteName(),
                             ],
-                            'unit_amount' => (integer) $payment_amount * 100, 
+                            'unit_amount' =>  $payment_amount * 100, 
                         ],
                         'quantity' => 1,
                     ],
@@ -1039,6 +1056,10 @@ class StripePaymentController extends Controller
     public function Stripe_payment_video_PPV_Plan_Purchase( $ppv_plan,$video_id,$amount)
     {
         try {
+
+            if( Auth::guest()){
+                return redirect('login');
+            }
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_video_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id.'/'. $ppv_plan) ;

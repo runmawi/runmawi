@@ -119,10 +119,10 @@
     .modal {
         top: 2%;
     }
-    div#video-js-trailer-player{height:65vh;}
+    div#video-js-trailer-player{height:65vh !important;}
     @media (min-width: 1400px) and (max-width: 2565px) {
       div#video-js-trailer-player {
-            height: 50vh;
+            height: 50vh !important;
         }
         .modal-dialog-centered {
             max-width: 1400px !important;
@@ -137,7 +137,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
  // dd($series);
  ?>
      <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
-     <div class="container-fluid pl-4" >
+     <div class="container-fluid" >
 	<div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
 
      <div class="row mt-3 align-items-center">
@@ -148,7 +148,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
     || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber' || !Auth::guest() && $settings->enable_ppv_rent == 1 && Auth::user()->role == 'subscriber'):  ?>
 		<div class="col-md-7 p-0">
 			<div id="series_title">
-				<div class="container">
+				<div class="container-fluid">
 					 <h1><?= $series->title ?></h1>
                   
 					<!--<div class="col-md-6 p-0">
@@ -159,7 +159,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 						</select>
 					</div>-->
 					<div class="row p-0 mt-3 text-white">
-                        <div class="col-md-7">
+                        <div class="col-md-10">
                         <?= __('Season') ?>  <span class="sea"> 1 </span> -<?= __('U/A English') ?> 
                             <!-- <p class="desc" style="color:#fff!important;"><?php echo $series->details;?></p> -->
                             <!-- <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 200) ? html_entity_decode(substr($series->description, 0, 200)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p> -->
@@ -197,16 +197,17 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                         }
                                     </script>
 
-                            <div class="row p-0 mt-3 align-items-center">
+                            <div class="d-flex p-0 mt-3 align-items-center" style="gap:3rem;">
+                                <?php if(!empty($season->first()->trailer)) {?>
+                                  <div class="trailerbutton">  
+                                      <a data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
+                                        <img class="ply" src="<?= URL::to('assets/img/default_play_buttons.svg') ;  ?>" alt="ply"/>
+                                      </a>
+                                    </div>
+                                  <?php } ?>
 
-                                <div class="col-md-2 trailerbutton">  
-                                    <a data-video="<?= $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                      <img class="ply" src="<?= URL::to('assets/img/default_play_buttons.svg') ;  ?>" alt="ply"/>
-                                    </a>
-                                  </div>
-
-                                <div class="col-md-1 pls  d-flex text-center mt-2">
-                                    <ul>
+                                <div class="pls  d-flex text-center mt-2">
+                                    <ul class="p-0">
                                       <li class="share">
                                         <span><i class="ri-share-fill"></i></span>
                                         <div class="share-box">
@@ -1268,6 +1269,19 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 <script src="<?= asset('assets/js/video-js/videojs-http-source-selector.js') ?>"></script>
 <script src="<?= asset('assets/js/video-js/videojs-hls-quality-selector.min.js') ?>"></script>
 <script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
+
+<!-- trailer modal video pause -->
+<script>
+    var video = document.getElementsByClassName('vjs-tech'); 
+    if (video) {
+        $('.videoModalClose').on('click', function() {
+            console.log('closed');
+            video[0].pause();
+            video[0].removeAttribute('autoplay');
+        });
+    }
+</script>
+
 
 
 <script>

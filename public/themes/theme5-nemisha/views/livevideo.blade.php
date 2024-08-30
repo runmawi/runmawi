@@ -119,9 +119,11 @@
 
     .responsive-iframe {
         position: relative !important;
+        height: calc(100vh - 80px) !important;
     }
-    .fitvid{
-        height: 80vh;
+
+    .my-video.vjs-fluid {
+        height: calc(100vh - 80px) !important;
     }
 </style>
 
@@ -476,9 +478,9 @@ if(empty($new_date)){
                             <p class="trending-dec w-100 mb-0 text-white"><?php echo __($video->description); ?></p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="padding: 0 10px;">
                         <div class="col-sm-12 col-md-12 col-xs-12">
-                            <div class="video-details-container">
+                            <div class="video-details-container" style="padding: 0 40px;">
                                 <?php if (!empty($video->details)) { ?>
                                 <h6 class="mt-3 mb-1">Live Details</h6>
                                 <p class="trending-dec w-100 mb-3 text-white"><?= $video->details ?></p>
@@ -499,7 +501,7 @@ if(empty($new_date)){
                 </div>
                 <?php endif; ?>
 
-                <div class="row">
+                <div class="row" style="padding: 0 11px;">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos'); ?></h4>
                         <div class="slider">
