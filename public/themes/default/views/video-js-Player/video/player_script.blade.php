@@ -221,20 +221,17 @@
         //     })
         // });
 
-        // Listen for Picture-in-Picture events
         player.on('enterpictureinpicture', function() {
             console.log('Entered Picture-in-Picture mode');
-            // You can add custom logic here if needed
-            player.controlBar.show();
-            // player.userActive(true);
+            player.controlBar.hide();
+            playPauseButton.style.display = "none";
         });
 
         player.on('leavepictureinpicture', function() {
             console.log('Exited Picture-in-Picture mode');
-            // Restore or modify controls if necessary
+            player.controlBar.show();
+            playPauseButton.style.display = "block";
         });
-
-
 
 
         // Skip Intro & Skip Recap
