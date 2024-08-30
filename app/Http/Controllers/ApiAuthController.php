@@ -25394,57 +25394,50 @@ public function SendVideoPushNotification(Request $request)
   {
     try {
           $this->validate($request, [
-            'current_timezone'  => 'required' ,
-            'date' => 'required',
             'epg_channel_id' => 'required',
           ]);
 
+          $current_timezone = current_timezone();
+          $carbon_now = Carbon::now($current_timezone);
+          $carbon_current_time =  $carbon_now->format('H:i:s');
+          $carbon_today =  $carbon_now->format('n-j-Y');
           $default_vertical_image_url = default_vertical_image_url() ;
           $default_horizontal_image_url = default_horizontal_image_url();
-          $current_timezone = $request->current_timezone;
-
-          $epg_channel_data =  AdminEPGChannel::where('id',$request->epg_channel_id)->where('status',1)->get()->each(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request ) {
-
-              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
-              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
-              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
-
-              $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::query()
-                                                  
-                                                  ->when( !is_null($request->date), function ($query) use ($request) {
-                                                      return $query->Where('choosed_date', $request->date);
-                                                  })
-
-                                                  ->orderBy('start_time','asc')->where('channe_id',$item->id)->limit(30)->get()->map(function ($item) use ($request) {
-
-                                                      $item['TimeZone']   = TimeZone::where('id',$item->time_zone)->first();
-
-                                                      $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $item['TimeZone']->time_zone )
-                                                                                                      ->copy()->tz( $request->current_timezone );
-
-                                                      $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $item['TimeZone']->time_zone )
-                                                                                                      ->copy()->tz( $request->current_timezone );
-
-                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
-                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
-
-                                                      $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
-                                                      $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
-
-                                                      $item['channel_name'] = AdminEPGChannel::where('id',$item->channe_id)->pluck('name')->first();
-                                                      return $item;
-                                                  });
-
-                                                  $item['ChannelVideoScheduler']->each(function ($scheduleItem, $key) use ($item) {
-
-                                                      if ($key < $item['ChannelVideoScheduler']->count() - 1) {
-                                                          $scheduleItem['up_next']  = $item['ChannelVideoScheduler'][$key + 1]->socure_title;
-                                                      }else{
-                                                          $scheduleItem['up_next'] = null;
-                                                      }
-                                                  });
-
-              return $item;
+  
+          $epg_channel_data =  AdminEPGChannel::where('id',$request->epg_channel_id)->where('status',1)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                      
+                      $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                      $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                                                          
+                      $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                                  ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+  
+                                                                                      $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+  
+                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                                      ->copy()->tz( $current_timezone );
+  
+                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                                      ->copy()->tz( $current_timezone );
+  
+                                                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+                                
+                                                                                      if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                          $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                          $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                          $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                              
+                                                                                          $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                                                          $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+                                                                                          return $item ;
+                                                                                      }
+  
+                                                                                  })->filter()->first();
+  
+  
+                      return $item;
           });
 
           $response = array(
