@@ -11860,5 +11860,13 @@ class AdminVideosController extends Controller
 
         }
 
+
+        
+        public function shakaplayer(){
+
+            return View("admin.videos.shakaplayer");
+
+        }
+
 }
     
