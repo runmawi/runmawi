@@ -221,24 +221,50 @@
         //     })
         // });
 
-        // Listen for Picture-in-Picture events
         player.on('enterpictureinpicture', function() {
             console.log('Entered Picture-in-Picture mode');
-            // You can add custom logic here if needed
-            player.controlBar.show();
-            // player.userActive(true);
+            player.controlBar.hide();
+            playPauseButton.style.display = "none";
         });
 
         player.on('leavepictureinpicture', function() {
             console.log('Exited Picture-in-Picture mode');
-            // Restore or modify controls if necessary
+            player.controlBar.show();
+            playPauseButton.style.display = "block";
         });
 
+        //Function to Play & Pause when we press "Space Bar Button"
+        function togglePlayPause(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (player.paused()) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+            }
+        }
+        document.addEventListener('keydown', togglePlayPause);
 
+        //Function to "Skip Forward & Backward 10sec" when Arrow key pressed
+        function handleKeydown(e) {
+            if (e.code === 'ArrowRight') {
+                e.preventDefault(); // Prevent default action
+                var currentTime = player.currentTime();
+                var newTime = Math.min(currentTime + 10, player.duration());
+                player.currentTime(newTime);
+            }
+            if (e.code === 'ArrowLeft') {
+                e.preventDefault(); // Prevent default action
+                var currentTime = player.currentTime();
+                var newTime = Math.min(currentTime - 10, player.duration());
+                player.currentTime(newTime);
+            }
+        }
+        document.addEventListener('keydown', handleKeydown);
 
 
         // Skip Intro & Skip Recap
-
         player.on("loadedmetadata", function() {
 
             const player_duration_Seconds        =  player.duration();
