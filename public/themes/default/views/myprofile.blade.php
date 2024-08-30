@@ -238,7 +238,7 @@ $settings = App\Setting::first();
                 <div class="targetDiv" id="div1">
                 <div class=" d-flex justify-content-between mb-3">
                 <?php $data = Session::all(); if($user->provider != 'facebook' || $user->provider != 'google'){ ?> 
-                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= URL::to('/') . '/public/uploads/avatars/' . $user->avatar; ?>"  alt="profile-bg"/>
+                    <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="{{ $user->avatar !== 'default.png' ? URL::to('/public/uploads/avatars/').'/'.$user->avatar : URL::to('/assets/img/placeholder.webp')}}"  alt="{{ $user->username }}"/>
                     <?php }else{ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
                      <?php } ?>
