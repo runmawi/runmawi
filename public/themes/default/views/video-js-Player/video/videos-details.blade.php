@@ -227,6 +227,16 @@
 
                     <div class="row">
                         @if ( $videodetail->users_video_visibility_status == false )
+
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                    </div>
+                                </a>
+                            @else
+                            
                             @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
                                 <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                     <div class="playbtn" style="gap:5px">
@@ -244,6 +254,7 @@
                                     </a>
                                 @endif
 
+                                @endif
                             @endif
 
                             {{-- subscriber & PPV  --}}
@@ -256,6 +267,7 @@
                                     </div>
                                 </a>
                             @endif 
+
                         @else
                             <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                 <div class="playbtn" style="gap:5px">
