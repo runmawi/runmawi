@@ -605,7 +605,7 @@ class HomeController extends Controller
 
                     } catch (\Throwable $th) {
                         
-                        $email_log      = $e->getMessage();
+                        $email_log      = $th->getMessage();
                         $email_template = "0";
                         $user_id = Auth::User()->id;
             
@@ -1425,7 +1425,7 @@ class HomeController extends Controller
 
                     } catch (\Throwable $th) {
                         
-                        $email_log      = $e->getMessage();
+                        $email_log      = $th->getMessage();
                         $email_template = "0";
                         $user_id = Auth::User()->id;
             
