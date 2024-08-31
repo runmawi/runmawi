@@ -1032,7 +1032,7 @@ class AdminVideosController extends Controller
 
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
-                "post_route" => URL::to("admin/videos/fileupdate"),
+                "post_route" => URL::to("admin/videos/VideoCipherFileUpload"),
                 "button_text" => "Add New Video",
                 "admin_user" => Auth::user(),
                 "related_videos" => Video::get(),
@@ -1062,7 +1062,11 @@ class AdminVideosController extends Controller
                 'compress_image_settings' => $compress_image_settings,
             ];
 
-            return View::make("admin.videos.fileupload", $data);
+            if($theme_settings->enable_video_cipher_upload == 1){
+                return View::make("admin.videos.VideoCipherFileUpload", $data);
+            }else{
+                return View::make("admin.videos.fileupload", $data);
+            }
             // 'post_route' => URL::to('admin/videos/store'),
 
             // return View::make('admin.videos.create_edit', $data);
@@ -1686,7 +1690,13 @@ class AdminVideosController extends Controller
                 'theme_settings' => SiteTheme::first(),
             ];
 
-            return View::make("admin.videos.create_edit", $data);
+            $theme_settings = SiteTheme::first();
+
+            if($theme_settings->enable_video_cipher_upload == 1){
+                return View::make("admin.videos.VideoCipher_create_edit", $data);
+            }else{
+                return View::make("admin.videos.create_edit", $data);
+            }
             
         } catch (\Throwable $th) {
 
@@ -2754,7 +2764,10 @@ class AdminVideosController extends Controller
         $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
         $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
         $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
-        
+        $video->video_id_480p = $data['video_id_480p'];
+        $video->video_id_720p = $data['video_id_720p'];
+        $video->video_id_1080p = $data['video_id_1080p'];
+
         $video->save();
 
         if (
@@ -11859,6 +11872,1243 @@ class AdminVideosController extends Controller
             return View("admin.videos.videocipher", $data);
 
         }
+
+
+        
+        public function shakaplayer(){
+
+            return View("admin.videos.shakaplayer");
+
+        }
+
+
+        public function VideoCipherFileUpload(Request $request)
+        {
+            if (!Auth::user()->role == 'admin') {
+                return redirect('/home');
+            }
+    
+
+
+            $user_package = User::where('id', 1)->first();
+            $data = $request->all();
+    
+            $validatedData = $request->validate([
+                'title' => 'required|max:255',
+            ]);
+            
+            $createdVideo = Video::create([
+                            'title' => $request->title,
+                        ]);
+
+            $id = $createdVideo->id;
+            $video = Video::findOrFail($id);
+            Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
+    
+            if (!empty($video->embed_code)) {
+                $embed_code = $video->embed_code;
+            } else {
+                $embed_code = '';
+            }
+    
+            if (!empty($data['ppv_price']) && $data['ppv_price'] > 0) {
+                $video->global_ppv = 1;
+            } else {
+                $video->global_ppv = null;
+            }
+    
+            $settings = Setting::where('ppv_status', '=', 1)->first();
+    
+            // if (!empty($data['global_ppv'])) {
+            //     $data['ppv_price'] = $settings->ppv_price;
+            //     $video->global_ppv = $data['global_ppv'];
+            // } else {
+            //     $video->global_ppv = null;
+            // }
+    
+            if($request->ppv_price == null && empty($data["global_ppv"]) ){
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }else if(empty($data["global_ppv"]) ){
+                $video->global_ppv = null;
+                $data["ppv_price"] = null;
+            }else{
+    
+                if (!empty($data["global_ppv"]) && !empty($data["set_gobal_ppv_price"]) && $request->ppv_option == 1) {
+                    $video->global_ppv = $data["global_ppv"];
+                    $data["ppv_price"] = $data["set_gobal_ppv_price"];
+                } else if(!empty($data["global_ppv"])  && $request->ppv_option == 2) {
+                    $video->global_ppv = $data["global_ppv"];
+                    $data["ppv_price"] = $settings->ppv_price;
+                } else if(!empty($data["global_ppv"])  && !empty($data["set_gobal_ppv_price"])) {
+                    $video->global_ppv = $data["global_ppv"];
+                    $data["ppv_price"] = $data["set_gobal_ppv_price"];
+                }  else if(!empty($data["global_ppv"])) {
+                    $video->global_ppv = $data["global_ppv"];
+                    $data["ppv_price"] = $settings->ppv_price;
+                }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
+                    $data["ppv_price"] = $request->ppv_price;
+                    $video->global_ppv = null;
+                } else {
+                    $video->global_ppv = null;
+                    $data["ppv_price"] = null;
+                }
+            }
+    
+            if ($request->slug == '') {
+                $data['slug'] = $this->createSlug($data['title']);
+            } else {
+                $data['slug'] = $this->createSlug($data['slug']);
+            }
+    
+            $video->free_duration_status  = !empty($request->free_duration_status) ? 1 : 0 ;
+    
+            if (isset($request->free_duration)) {
+                $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+                $video->free_duration = $time_seconds;
+            }
+    
+            $trailer = isset($data['trailer']) ? $data['trailer'] : '';
+            $files = isset($data['subtitle_upload']) ? $data['subtitle_upload'] : '';
+            $image_path = public_path() . '/uploads/images/';
+    
+            // Image
+            if ($request->hasFile('image')) {
+                    $tinyimage = $request->file('image');
+                if (compress_image_enable() == 1) {
+                    $image_filename = time() . '.' . compress_image_format();
+                    $tiny_video_image = 'tiny-image-' . $image_filename;
+                    Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+                } else {
+                    $image_filename = time() . '.' . $tinyimage->getClientOriginalExtension();
+                    $tiny_video_image = 'tiny-image-' . $image_filename;
+                    Image::make($tinyimage)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_image, compress_image_resolution());
+    
+                }
+            }else{
+                $tiny_video_image = null;
+    
+            }
+            if ($request->hasFile('player_image')) {
+    
+                $tinyplayer_image = $request->file('player_image');
+    
+                if (compress_image_enable() == 1) {
+                    $player_image_filename = time() . '.' . compress_image_format();
+                    $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                    Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+                } else {
+                    $image_filename = time() . '.' . $tinyplayer_image->getClientOriginalExtension();
+                    $tiny_player_image = 'tiny-player_image-' . $image_filename;
+                    Image::make($tinyplayer_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_player_image, compress_image_resolution());
+    
+                }
+            }else{
+                $tiny_player_image = null;
+    
+            }
+            if ($request->hasFile('video_title_image')) {
+    
+                $tinyvideo_title_image = $request->file('video_title_image');
+    
+                if (compress_image_enable() == 1) {
+                    $image_filename = time() . '.' . compress_image_format();
+                    $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                    Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+                } else {
+                    $image_filename = time() . '.' . $tinyvideo_title_image->getClientOriginalExtension();
+                    $tiny_video_title_image = 'tiny-video_title_image-' . $image_filename;
+                    Image::make($tinyvideo_title_image)->resize(450,320)->save(base_path() . '/public/uploads/images/' . $tiny_video_title_image, compress_image_resolution());
+    
+                }
+            }else{
+                $tiny_video_title_image = null;
+    
+            }
+    
+            $data["tiny_video_image"] = $tiny_video_image;
+            $data["tiny_player_image"] = $tiny_player_image;
+            $data["tiny_video_title_image"] = $tiny_video_title_image;
+    
+            if ($request->hasFile('image')) {
+                $file = $request->image;
+                if (compress_image_enable() == 1) {
+                    $image_filename = time() . '.' . compress_image_format();
+                    $video_image = 'pc-image-' . $image_filename;
+                    $Mobile_image = 'Mobile-image-' . $image_filename;
+                    $Tablet_image = 'Tablet-image-' . $image_filename;
+    
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image, compress_image_resolution());
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image, compress_image_resolution());
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image, compress_image_resolution());
+                } else {
+                    $image_filename = time() . '.' . $file->getClientOriginalExtension();
+    
+                    $video_image = 'pc-image-' . $image_filename;
+                    $Mobile_image = 'Mobile-image-' . $image_filename;
+                    $Tablet_image = 'Tablet-image-' . $image_filename;
+    
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $video_image);
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Mobile_image);
+                    Image::make($file)->save(base_path() . '/public/uploads/images/' . $Tablet_image);
+                }
+    
+                $data["image"] = $video_image;
+                $data["mobile_image"] = $Mobile_image;
+                $data["tablet_image"] = $Tablet_image;
+    
+            }else if (!empty($request->video_image_url)) {
+                $data["image"] = $request->video_image_url;
+            } else {
+                // Default Image
+    
+                $data["image"]  = default_vertical_image() ;
+                $data["mobile_image"] = default_vertical_image();
+                $data["tablet_image"] = default_vertical_image();
+    
+            }
+    
+            // Player Image
+            // $request->selected_image_url = '';
+            if ($request->hasFile('player_image')) {
+                $player_image = $request->player_image;
+    
+                if (compress_image_enable() == 1) {
+                    $player_filename = time() . '.' . compress_image_format();
+                    $players_image = 'player-image-' . $player_filename;
+                    Image::make($player_image)->save(base_path() . '/public/uploads/images/' . $players_image, compress_image_resolution());
+                } else {
+                    $player_filename = time() . '.' . $player_image->getClientOriginalExtension();
+                    $players_image = 'player-image-' . $player_filename;
+                    Image::make($player_image)->save(base_path() . '/public/uploads/images/' . $players_image);
+                }
+    
+                $data["player_image"] = $players_image;
+    
+            }else if (!empty($request->selected_image_url)) {
+                $data["player_image"] = $request->selected_image_url;
+            } else {
+                $data["player_image"] = default_horizontal_image();
+            }
+            // dd($data["player_image"]);
+            // Tv video Image
+    
+            if ($request->hasFile('video_tv_image')) {
+                $video_tv_image = $request->video_tv_image;
+    
+                if (compress_image_enable() == 1) {
+                    $Tv_image_format = time() . '.' . compress_image_format();
+                    $Tv_image_filename = 'tv-live-image-' . $Tv_image_format;
+                    Image::make($video_tv_image)->save(base_path() . '/public/uploads/images/' . $Tv_image_filename, compress_image_resolution());
+                } else {
+                    $Tv_image_format = time() . '.' . $video_tv_image->getClientOriginalExtension();
+                    $Tv_image_filename = 'tv-live-image-' . $Tv_image_format;
+                    Image::make($video_tv_image)->save(base_path() . '/public/uploads/images/' . $Tv_image_filename);
+                }
+    
+                $data["video_tv_image"] = $Tv_image_filename;
+    
+            }else if (!empty($request->selected_tv_image_url)) {
+                $data["video_tv_image"] = $request->selected_tv_image_url;
+            } else {
+                $data["video_tv_image"] = default_horizontal_image();
+            }
+    
+            // Video Title Thumbnail
+    
+            if ($request->hasFile('video_title_image')) {
+                $video_title_image = $request->video_title_image;
+    
+                if (compress_image_enable() == 1) {
+                    $video_title_image_format = time() . '.' . compress_image_format();
+                    $video_title_image_filename = 'video-title-' . $video_title_image_format;
+                    Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename, compress_image_resolution());
+                } else {
+                    $video_title_image_format = time() . '.' . $video_title_image->getClientOriginalExtension();
+                    $video_title_image_filename = 'video-title-' . $video_title_image_format;
+                    Image::make($video_title_image)->save(base_path() . '/public/uploads/images/' . $video_title_image_filename);
+                }
+    
+                $video->video_title_image = $video_title_image_filename;
+            }
+    
+            if (empty($data['active'])) {
+                $data['active'] = 0;
+            }
+    
+            if (empty($data['webm_url'])) {
+                $data['webm_url'] = 0;
+            } else {
+                $data['webm_url'] = $data['webm_url'];
+            }
+    
+            if (empty($data['ogg_url'])) {
+                $data['ogg_url'] = 0;
+            } else {
+                $data['ogg_url'] = $data['ogg_url'];
+            }
+    
+            if (empty($data['year'])) {
+                $data['year'] = 0;
+            } else {
+                $data['year'] = $data['year'];
+            }
+            if (empty($data['searchtags'])) {
+                $searchtags = null;
+            } else {
+                $searchtags = $data['searchtags'];
+            }
+    
+            if (empty($data['language'])) {
+                $data['language'] = 0;
+            } else {
+                $data['language'] = $data['language'];
+            }
+    
+            if (empty($data['featured'])) {
+                $featured = 0;
+            } else {
+                $featured = 1;
+            }
+    
+            if (empty($data['featured'])) {
+                $data['featured'] = 0;
+            }
+    
+            if (!empty($data['embed_code'])) {
+                $data['embed_code'] = $data['embed_code'];
+            }
+    
+            if (empty($data['active'])) {
+                $data['active'] = 0;
+            }
+    
+            if (empty($data['video_gif'])) {
+                $data['video_gif'] = '';
+            }
+    
+            if (empty($data['status'])) {
+                $data['status'] = 0;
+            }
+    
+            $package = User::where('id', 1)->first();
+            $pack = $package->package;
+    
+            if (Auth::user()->role == 'admin') {
+                $data['status'] = 1;
+            }
+            $settings = Setting::first();
+    
+            if (Auth::user()->role == 'admin' && $pack != 'Business') {
+                $data['status'] = 1;
+            } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 1) {
+                if ($video->processed_low < 100) {
+                    $data['status'] = 0;
+                } else {
+                    $data['status'] = 1;
+                }
+            } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 0) {
+                $data['status'] = 1;
+            } else {
+                $data['status'] = 1;
+            }
+    
+            if (Auth::user()->role == 'admin' && Auth::user()->sub_admin == 1) {
+                $data['status'] = 0;
+            }
+    
+            if (!empty($data['Recommendation'])) {
+                $video->Recommendation = $data['Recommendation'];
+            }
+            if (empty($data['publish_type'])) {
+                $publish_type = 0;
+            } else {
+                $publish_type = $data['publish_type'];
+            }
+    
+            if (empty($data['publish_time'])) {
+                $publish_time = 0;
+            } else {
+                $publish_time = $data['publish_time'];
+            }
+    
+            $path = public_path() . '/uploads/videos/';
+            $image_path = public_path() . '/uploads/images/';
+    
+            // Enable Video Title Thumbnail
+    
+            $video->enable_video_title_image = $request->enable_video_title_image ? '1' : '0';
+    
+            $video->trailer_type = $data['trailer_type'];
+            $StorageSetting = StorageSetting::first();
+            // dd($StorageSetting);
+            if ($StorageSetting->site_storage == 1) {
+                if ($data['trailer_type'] == 'video_mp4') {
+                    $settings = Setting::first();
+    
+                    if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+                        $settings = Setting::first();
+                        // $resolution = explode(",",$settings->transcoding_resolution);
+                        if ($settings->transcoding_resolution != null) {
+                            $convertresolution = [];
+                            $resolution = explode(',', $settings->transcoding_resolution);
+    
+                            foreach ($resolution as $value) {
+                                if ($value == '240p') {
+                                    $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
+                                    array_push($convertresolution, $r_240p);
+                                }
+                                if ($value == '360p') {
+                                    $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
+                                    array_push($convertresolution, $r_360p);
+                                }
+                                if ($value == '480p') {
+                                    $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+                                    array_push($convertresolution, $r_480p);
+                                }
+                                if ($value == '720p') {
+                                    $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
+                                    array_push($convertresolution, $r_720p);
+                                }
+                                if ($value == '1080p') {
+                                    $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
+                                    array_push($convertresolution, $r_1080p);
+                                }
+                            }
+                        }
+                        $trailer = $data['trailer'];
+                        $trailer_path = URL::to('storage/app/trailer/');
+                        $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
+                        $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
+    
+                        // $trailer_Video =
+                        //     time() . "_" . $trailer->getClientOriginalName();
+                        $trailer->move(storage_path('app/trailer/'), $trailer_Video);
+                        $trailer_video_name = strtok($trailer_Video, '.');
+                        $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
+                        $storepath = URL::to('storage/app/trailer/');
+    
+                        $data['trailer'] = $M3u8_save_path;
+                        $data['trailer_type'] = 'm3u8';
+                    } else {
+                        if ($trailer != '') {
+                            //code for remove old file
+                            if ($trailer != '' && $trailer != null) {
+                                $file_old = $path . $trailer;
+                                if (file_exists($file_old)) {
+                                    unlink($file_old);
+                                }
+                            }
+                            //upload new file
+                            $randval = Str::random(16);
+                            $file = $trailer;
+                            $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
+                            $file->move($path, $trailer_vid);
+                            $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
+                        } else {
+                            $data['trailer'] = $video->trailer;
+                        }
+                    }
+                } elseif ($data['trailer_type'] == 'm3u8_url') {
+                    $data['trailer'] = $data['m3u8_trailer'];
+                } elseif ($data['trailer_type'] == 'mp4_url') {
+                    $data['trailer'] = $data['mp4_trailer'];
+                } elseif ($data['trailer_type'] == 'embed_url') {
+                    $data['trailer'] = $data['embed_trailer'];
+                }
+            } elseif ($StorageSetting->aws_storage == 1 && !empty($data['trailer'])) {
+                if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+                    $file = $request->file('trailer');
+                    $file_folder_name = $file->getClientOriginalName();
+                    $name_mp4 = $file->getClientOriginalName();
+                    $newfile = explode('.mp4', $name_mp4);
+                    // $name = $newfile[0].'.m3u8';
+                    $name = $namem3u8 == null ? str_replace(' ', '_', 'S3' . $namem3u8) : str_replace(' ', '_', 'S3' . $namem3u8);
+                    $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
+                    $transcode_path = @$StorageSetting->aws_transcode_path . '/' . $name;
+                    Storage::disk('s3')->put($transcode_path, file_get_contents($file));
+                    $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
+                    $M3u8_path = $path . $filePath;
+                    $M3u8_save_path = $path . $transcode_path;
+    
+                    $data['trailer'] = $M3u8_save_path;
+                    $video->trailer_type = 'm3u8';
+                    $data['trailer_type'] = 'm3u8';
+                } else {
+                    $file = $request->file('trailer');
+                    $file_folder_name = $file->getClientOriginalName();
+                    $name = time() . $file->getClientOriginalName();
+                    $filePath = $StorageSetting->aws_video_trailer_path . '/' . $name;
+                    Storage::disk('s3')->put($filePath, file_get_contents($file));
+                    $path = 'https://' . env('AWS_BUCKET') . '.s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com';
+                    $trailer = $path . $filePath;
+                    $data['trailer'] = $trailer;
+                    $data['trailer_type'] = 'video_mp4';
+                }
+            } else {
+                if ($data['trailer_type'] == 'video_mp4') {
+                    $settings = Setting::first();
+    
+                    if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $data['trailer_type'] == 'video_mp4') {
+                        $settings = Setting::first();
+                        // $resolution = explode(",",$settings->transcoding_resolution);
+                        if ($settings->transcoding_resolution != null) {
+                            $convertresolution = [];
+                            $resolution = explode(',', $settings->transcoding_resolution);
+                            foreach ($resolution as $value) {
+                                if ($value == '240p') {
+                                    $r_240p = (new Representation())->setKiloBitrate(150)->setResize(426, 240);
+                                    array_push($convertresolution, $r_240p);
+                                }
+                                if ($value == '360p') {
+                                    $r_360p = (new Representation())->setKiloBitrate(276)->setResize(640, 360);
+                                    array_push($convertresolution, $r_360p);
+                                }
+                                if ($value == '480p') {
+                                    $r_480p = (new Representation())->setKiloBitrate(750)->setResize(854, 480);
+                                    array_push($convertresolution, $r_480p);
+                                }
+                                if ($value == '720p') {
+                                    $r_720p = (new Representation())->setKiloBitrate(2048)->setResize(1280, 720);
+                                    array_push($convertresolution, $r_720p);
+                                }
+                                if ($value == '1080p') {
+                                    $r_1080p = (new Representation())->setKiloBitrate(4096)->setResize(1920, 1080);
+                                    array_push($convertresolution, $r_1080p);
+                                }
+                            }
+                        }
+                        $trailer = $data['trailer'];
+                        $trailer_path = URL::to('storage/app/trailer/');
+                        $trailer_Videoname = Str::lower($trailer->getClientOriginalName());
+                        $trailer_Video = time() . '_' . str_replace(' ', '_', $trailer_Videoname);
+                        // $trailer_Video =
+                        //     time() . "_" . $trailer->getClientOriginalName();
+                        $trailer->move(storage_path('app/trailer/'), $trailer_Video);
+                        $trailer_video_name = strtok($trailer_Video, '.');
+                        $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
+                        $storepath = URL::to('storage/app/trailer/');
+    
+                        $data['trailer'] = $M3u8_save_path;
+                        $data['trailer_type'] = 'm3u8';
+                    } else {
+                        if ($trailer != '') {
+                            //code for remove old file
+                            if ($trailer != '' && $trailer != null) {
+                                $file_old = $path . $trailer;
+                                if (file_exists($file_old)) {
+                                    unlink($file_old);
+                                }
+                            }
+                            //upload new file
+                            $randval = Str::random(16);
+                            $file = $trailer;
+                            $trailer_vid = $randval . '.' . $request->file('trailer')->extension();
+                            $file->move($path, $trailer_vid);
+                            $data['trailer'] = URL::to('/') . '/public/uploads/videos/' . $trailer_vid;
+                        } else {
+                            $data['trailer'] = $video->trailer;
+                        }
+                    }
+                } elseif ($data['trailer_type'] == 'm3u8_url') {
+                    $data['trailer'] = $data['m3u8_trailer'];
+                } elseif ($data['trailer_type'] == 'mp4_url') {
+                    $data['trailer'] = $data['mp4_trailer'];
+                } elseif ($data['trailer_type'] == 'embed_url') {
+                    $data['trailer'] = $data['embed_trailer'];
+                }
+            }
+    
+            if (isset($data['duration'])) {
+                //$str_time = $data
+                $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $data['duration']);
+                sscanf($str_time, '%d:%d:%d', $hours, $minutes, $seconds);
+                $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+                $data['duration'] = $time_seconds;
+            }
+    
+            if (!empty($data['embed_code'])) {
+                $video->embed_code = $data['embed_code'];
+            } else {
+                $video->embed_code = '';
+            }
+            if (!empty($data['age_restrict'])) {
+                $video->age_restrict = $data['age_restrict'];
+            }
+            if (!empty($data['banner'])) {
+                $banner = 1;
+            } else {
+                $banner = 0;
+            }
+    
+            if (!empty($data['video_category_id'])) {
+                $video_category_id = implode(',', $request->video_category_id);
+    
+                $category_id = $video_category_id;
+            }
+    
+            if ($request->pdf_file != null) {
+                $pdf_files = time() . '.' . $request->pdf_file->extension();
+                $request->pdf_file->move(public_path('uploads/videoPdf'), $pdf_files);
+                $video->pdf_files = $pdf_files;
+            }
+    
+            // Reels videos
+            $reels_videos = $request->reels_videos;
+            if ($request->enable_reel_conversion == 1 && $reels_videos != null) {
+                ReelsVideo::where("video_id", $video->id)->delete();
+    
+                foreach ($reels_videos as $Reel_Videos) {
+                    $reelvideo_name =
+                        time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                    $reel_videos_slug = substr(
+                        $Reel_Videos->getClientOriginalName(),
+                        0,
+                        strpos($Reel_Videos->getClientOriginalName(), ".")
+                    );
+    
+                    $reelvideo_names = "reels" . $reelvideo_name;
+    
+                
+                    $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+    
+                    $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+                    $shorts_name = 'shorts_'.$reelvideo_name; 
+                    $videoPath = str_replace('\\', '/', $videoPath);
+                    $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+                    // Ensure the output directory exists
+                    File::ensureDirectoryExists(dirname($outputPath));
+                    // FFmpeg command to resize to 9:16 aspect ratio
+                    $command = [
+                        'ffmpeg',
+                        '-y', // Add this option to force overwrite
+                        '-i', $videoPath,
+                        '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+                        '-c:a', 'copy',
+                        $outputPath,
+                    ];
+    
+                    $process = new Process($command);
+    
+                    try {
+                        $process->mustRun();
+                        // return 'Video resized successfully!';
+                    } catch (ProcessFailedException $exception) {
+                        // Error message
+                        throw new \Exception('Error resizing video: ' . $exception->getMessage());
+                    }
+    
+                    $Reels_videos = new ReelsVideo();
+                    $Reels_videos->video_id = $video->id;
+                    // $Reels_videos->reels_videos = $reelvideo_name;
+                    $Reels_videos->reels_videos = $shorts_name;
+                    $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                    $Reels_videos->save();
+    
+                    $video->reels_thumbnail = "default.jpg";
+                }
+            }else if($reels_videos != null){
+                ReelsVideo::where("video_id", $video->id)->delete();
+    
+                foreach ($reels_videos as $Reel_Videos) {
+                    $reelvideo_name =
+                        time() . rand(1, 50) . "." . $Reel_Videos->extension();
+                    $reel_videos_slug = substr(
+                        $Reel_Videos->getClientOriginalName(),
+                        0,
+                        strpos($Reel_Videos->getClientOriginalName(), ".")
+                    );
+    
+                    $reelvideo_names = "reels" . $reelvideo_name;
+                    $reelvideo = $Reel_Videos->move(
+                        public_path("uploads/reelsVideos/shorts"),
+                        $reelvideo_name
+                    );
+    
+                    $Reels_videos = new ReelsVideo();
+                    $Reels_videos->video_id = $video->id;
+                    $Reels_videos->reels_videos = $reelvideo_name;
+                    // $Reels_videos->reels_videos = $shorts_name;
+                    $Reels_videos->reels_videos_slug = $reel_videos_slug;
+                    $Reels_videos->save();
+    
+                    $video->reels_thumbnail = "default.jpg";
+                }
+            }
+            // if ($reels_videos != null) {
+            //     foreach ($reels_videos as $Reel_Videos) {
+            //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
+            //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
+            //         $reelvideo_names = 'reels' . $reelvideo_name;
+    
+            //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
+    
+            //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
+            //         $shorts_name = 'shorts_'.$reelvideo_name; 
+            //         $videoPath = str_replace('\\', '/', $videoPath);
+            //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
+            //         // Ensure the output directory exists
+            //         File::ensureDirectoryExists(dirname($outputPath));
+            //         // FFmpeg command to resize to 9:16 aspect ratio
+            //         $command = [
+            //             'ffmpeg',
+            //             '-y', // Add this option to force overwrite
+            //             '-i', $videoPath,
+            //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
+            //             '-c:a', 'copy',
+            //             $outputPath,
+            //         ];
+            //         $process = new Process($command);
+    
+            //         try {
+            //             $process->mustRun();
+            //             // return 'Video resized successfully!';
+            //         } catch (ProcessFailedException $exception) {
+            //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
+            //         }
+    
+    
+            //         $ffmpeg = \FFMpeg\FFMpeg::create();
+            //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
+            //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
+            //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
+    
+            //         unlink($reelvideo);
+    
+            //         $Reels_videos = new ReelsVideo();
+            //         $Reels_videos->video_id = $video->id;
+            //         $Reels_videos->reels_videos = $shorts_name;
+            //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
+            //         $Reels_videos->save();
+    
+            //         $video->reels_thumbnail = default_vertical_image();
+            //     }
+            // }
+    
+            // Reels Thumbnail
+    
+            if (!empty($request->reels_thumbnail)) {
+                $Reels_thumbnail = 'reels_' . time() . '.' . $request->reels_thumbnail->extension();
+                $request->reels_thumbnail->move(public_path('uploads/images'), $Reels_thumbnail);
+    
+                $video->reels_thumbnail = $Reels_thumbnail;
+            }
+    
+            //URL Link
+            $url_link = $request->url_link;
+    
+            if ($url_link != null) {
+                $video->url_link = $url_link;
+            }
+    
+            $url_linktym = $request->url_linktym;
+    
+            if ($url_linktym != null) {
+                $StartParse = date_parse($request->url_linktym);
+                $startSec = $StartParse['hour'] * 60 * 60 + $StartParse['minute'] * 60 + $StartParse['second'];
+                $video->url_linktym = $url_linktym;
+                $video->url_linksec = $startSec;
+                $video->urlEnd_linksec = $startSec + 60;
+            }
+    
+            if (compress_responsive_image_enable() == 1){
+    
+                    $mobileimages = public_path('/uploads/mobileimages');
+                    $Tabletimages = public_path('/uploads/Tabletimages');
+                    $PCimages = public_path('/uploads/PCimages');
+    
+                if (!file_exists($mobileimages)) {
+                    mkdir($mobileimages, 0755, true);
+                }
+    
+                if (!file_exists($Tabletimages)) {
+                    mkdir($Tabletimages, 0755, true);
+                }
+    
+                if (!file_exists($PCimages)) {
+                    mkdir($PCimages, 0755, true);
+                }
+    
+                if ($request->hasFile('image')) {
+    
+                    $image = $request->file('image');
+    
+                        $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                        $image_filename = $image_filename;
+    
+                        Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                        Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                        Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                        
+                        $responsive_image = $image_filename;
+    
+                }else{
+    
+                    $responsive_image = default_vertical_image(); 
+                }
+    
+                if ($request->hasFile('player_image')) {
+    
+                    $player_image = $request->file('player_image');
+    
+                        $player_image_filename = 'video_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+    
+                        Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                        Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                        Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                        
+                        $responsive_player_image = $player_image_filename;
+    
+                }else{
+                    $responsive_player_image = default_horizontal_image(); 
+                }
+    
+    
+                
+                if ($request->hasFile('video_tv_image')) {
+    
+                    $video_tv_image = $request->file('video_tv_image');
+    
+                        $video_tv_image_filename = 'video_' .time() . '_tv_image.' . $video_tv_image->getClientOriginalExtension();
+    
+                        Image::make($video_tv_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $video_tv_image_filename, compress_image_resolution());
+                        Image::make($video_tv_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $video_tv_image_filename, compress_image_resolution());
+                        Image::make($video_tv_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $video_tv_image_filename, compress_image_resolution());
+                        
+                        $responsive_tv_image = $video_tv_image_filename;
+    
+                }else{
+    
+                    $responsive_tv_image = default_horizontal_image(); 
+                }
+    
+            }else{
+                $responsive_image = null;
+                $responsive_player_image = null;
+                $responsive_tv_image = null;
+            }
+            
+            if ($video->type == "VideoCipher") {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+    
+            $shortcodes = $request['short_code'];
+            $languages = $request['sub_language'];
+            $video->video_category_id = null;
+            $video->skip_recap = $data['skip_recap'];
+            $video->recap_start_time = $data['recap_start_time'];
+            $video->recap_end_time = $data['recap_end_time'];
+            $video->skip_intro = $data['skip_intro'];
+            $video->intro_start_time = $data['intro_start_time'];
+            $video->intro_end_time = $data['intro_end_time'];
+            $video->description = $data['description'];
+            $video->trailer_description = $data['trailer_description'];
+            $video->uploaded_by = Auth::user()->role;
+            $video->draft = 1;
+            $video->active = 1;
+            $video->status = $status;
+            $video->embed_code = $embed_code;
+            $video->publish_type = $publish_type;
+            $video->publish_time = $publish_time;
+            $video->age_restrict = $data['age_restrict'];
+            $video->ppv_price = $data['ppv_price'];
+            $video->access = $data['access'];
+            $video->banner = $banner;
+            $video->featured = $featured;
+            $video->country = !empty($request['video_country']) ? json_encode($request['video_country']) : ['All'];
+            $video->enable = 1;
+            $video->search_tags = $searchtags;
+            $video->ios_ppv_price = $data['ios_ppv_price'];
+            $video->player_image = $data["player_image"] ;
+            $video->video_tv_image = $data["video_tv_image"] ;
+            $video->today_top_video = !empty($data["today_top_video"]) ? $data["today_top_video"] : 0 ;
+            $video->tiny_video_image = $data["tiny_video_image"] ;
+            $video->tiny_player_image = $data["tiny_player_image"] ;
+            $video->tiny_video_title_image = $data["tiny_video_title_image"] ;
+            $video->responsive_image = $responsive_image;
+            $video->responsive_player_image = $responsive_player_image;
+            $video->responsive_tv_image = $responsive_tv_image;
+            $video->ppv_option = $request->ppv_option;
+            // $video->ppv_price_240p = $data['ppv_price_240p'];
+            // $video->ppv_price_360p = $data['ppv_price_360p'];
+            $video->ppv_price_480p = $data['ppv_price_480p'];
+            $video->ppv_price_720p = $data['ppv_price_720p'];
+            $video->ppv_price_1080p = $data['ppv_price_1080p'];
+            // $video->ios_ppv_price_240p = $data['ios_ppv_price_240p'];
+            // $video->ios_ppv_price_360p = $data['ios_ppv_price_360p'];
+            $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
+            $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
+            $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
+            $video->video_id_480p = $data['video_id_480p'];
+            $video->video_id_720p = $data['video_id_720p'];
+            $video->video_id_1080p = $data['video_id_1080p'];
+            $video->type = 'VideoCipher';
+            $video->status = 1;
+            // Ads videos
+            if (!empty($data['ads_tag_url_id']) == null) {
+                $video->ads_tag_url_id = null;
+                $video->tag_url_ads_position = null;
+            }
+    
+            if (!empty($data['ads_tag_url_id']) != null) {
+                $video->ads_tag_url_id = $data['ads_tag_url_id'];
+                $video->tag_url_ads_position = $data['tag_url_ads_position'];
+            }
+    
+            if (!empty($data['default_ads'])) {
+                $video->default_ads = $data['default_ads'];
+            } else {
+                $video->default_ads = 0;
+            }
+    
+            $video->update($data);
+    
+            if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
+                ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
+            }
+            $video = Video::findOrFail($id);
+            //  $users = User::all();
+            //  if($video['draft'] == 1){
+            //  foreach ($users as $key => $user) {
+            //     //  $userid[]= $user->id;
+            //     if(!empty($user->token)){
+            // send_password_notification('Notification From FLICKNEXS','New Videp Added','',$user->id);
+            //     }
+            //  }
+            //      foreach ($userid as $key => $user_id) {
+            //    send_password_notification('Notification From FLICKNEXS','New Video Added','',$user_id);
+            //     }
+    
+            // }
+            if (!empty($data['video_category_id'])) {
+                $category_id = $data['video_category_id'];
+                unset($data['video_category_id']);
+                /*save artist*/
+                if (!empty($category_id)) {
+                    CategoryVideo::where('video_id', $video->id)->delete();
+                    foreach ($category_id as $key => $value) {
+                        $category = new CategoryVideo();
+                        $category->video_id = $video->id;
+                        $category->category_id = $value;
+                        $category->save();
+    
+                        \LogActivity::addVideoCategoryLog('Added Category for Video.', $video->id, $value);
+                    }
+                }
+            } else {
+                CategoryVideo::where('video_id', $video->id)->delete();
+    
+                $other_category = VideoCategory::where('slug', 'other_category')->first();
+    
+                if ($other_category == null) {
+                    VideoCategory::create([
+                        'user_id' => null,
+                        'parent_id' => null,
+                        'order' => '1',
+                        'name' => 'Other category',
+                        'image' => 'default.jpg',
+                        'slug' => 'other_category',
+                        'in_home' => '1',
+                        'footer' => null,
+                        'banner' => '0',
+                        'in_menu' => null,
+                        'banner_image' => 'default.jpg',
+                    ]);
+                }
+    
+                $other_category_id = VideoCategory::where('slug', 'other_category')
+                    ->pluck('id')
+                    ->first();
+    
+                $category = new CategoryVideo();
+                $category->video_id = $video->id;
+                $category->category_id = $other_category_id;
+                $category->save();
+            }
+    
+            if (!empty($data['related_videos'])) {
+                $related_videos = $data['related_videos'];
+                // unset($data['related_videos']);
+                /*save artist*/
+                if (!empty($related_videos)) {
+                    foreach ($related_videos as $key => $vid) {
+                        $videos = Video::where('id', $vid)->get();
+                        foreach ($videos as $key => $val) {
+                            $RelatedVideo = new RelatedVideo();
+                            $RelatedVideo->video_id = $id;
+                            $RelatedVideo->user_id = Auth::user()->id;
+                            $RelatedVideo->related_videos_id = $val->id;
+                            $RelatedVideo->related_videos_title = $val->title;
+                            $RelatedVideo->save();
+                        }
+                    }
+                }
+            }
+    
+            if (!empty($data['language'])) {
+                $language_id = $data['language'];
+                unset($data['language']);
+                /*save artist*/
+                if (!empty($language_id)) {
+                    LanguageVideo::where('video_id', $video->id)->delete();
+                    foreach ($language_id as $key => $value) {
+                        $languagevideo = new LanguageVideo();
+                        $languagevideo->video_id = $video->id;
+                        $languagevideo->language_id = $value;
+                        $languagevideo->save();
+                        \LogActivity::addVideoLanguageLog('Added Language for Video.', $video->id, $value);
+                    }
+                }
+            }
+            if (!empty($data['artists'])) {
+                $artistsdata = $data['artists'];
+                unset($data['artists']);
+                /*save artist*/
+                if (!empty($artistsdata)) {
+                    Videoartist::where('video_id', $video->id)->delete();
+                    foreach ($artistsdata as $key => $value) {
+                        $artist = new Videoartist();
+                        $artist->video_id = $video->id;
+                        $artist->artist_id = $value;
+                        $artist->save();
+                        \LogActivity::addVideoArtistLog('Added Artist for Video.', $video->id, $value);
+                    }
+                }
+            }
+    
+            if (!empty($data['searchtags'])) {
+                $searchtags = explode(',', $data['searchtags']);
+                VideoSearchTag::where('video_id', $video->id)->delete();
+                foreach ($searchtags as $key => $value) {
+                    $videosearchtags = new VideoSearchTag();
+                    $videosearchtags->user_id = Auth::User()->id;
+                    $videosearchtags->video_id = $video->id;
+                    $videosearchtags->search_tag = $value;
+                    $videosearchtags->save();
+                }
+            }
+    
+            // playlist
+            if (!empty($data["playlist"])) {
+                $playlist_id = $data["playlist"];
+                unset($data["playlist"]);
+                if (!empty($playlist_id)) {
+                    VideoPlaylist::where("video_id", $video->id)->delete();
+    
+                    foreach ($playlist_id as $key => $value) {
+                        $VideoPlaylist = new VideoPlaylist();
+                        $VideoPlaylist->user_id = Auth::user()->id;
+                        $VideoPlaylist->video_id = $video->id;
+                        $VideoPlaylist->playlist_id = $value;
+                        $VideoPlaylist->save();
+                    }
+                }
+            }
+    
+            if (!empty($data['country'])) {
+                $country = $data['country'];
+                unset($data['country']);
+                /*save country*/
+                if (!empty($country)) {
+                    BlockVideo::where('video_id', $video->id)->delete();
+                    foreach ($country as $key => $value) {
+                        $country = new BlockVideo();
+                        $country->video_id = $video->id;
+                        $country->country_id = $value;
+                        $country->save();
+                    }
+                }
+            }
+    
+            //  if(!empty( $files != ''  && $files != null)){
+            // /*if($request->hasFile('subtitle_upload'))
+            // {
+            //     $files = $request->file('subtitle_upload');*/
+    
+            //     foreach ($files as $key => $val) {
+            //         if(!empty($files[$key])){
+    
+            //             $destinationPath ='public/uploads/subtitles/';
+            //             $filename = $video->id. '-'.$shortcodes[$key].'.srt';
+            //             $files[$key]->move($destinationPath, $filename);
+            //             $subtitle_data['sub_language'] =$languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+            //             $subtitle_data['shortcode'] = $shortcodes[$key];
+            //             $subtitle_data['movie_id'] = $id;
+            //             $subtitle_data['url'] = URL::to('/').'/public/uploads/subtitles/'.$filename;
+            //             $video_subtitle = MoviesSubtitles::updateOrCreate(array('shortcode' => 'en','movie_id' => $id), $subtitle_data);
+            //         }
+            //     }
+            // }
+            // if (!empty($files != '' && $files != null)) {
+            //     foreach ($files as $key => $val) {
+            //         if (!empty($files[$key])) {
+            //             $destinationPath = 'public/uploads/subtitles/';
+            //             $filename = $video->id . '-' . $shortcodes[$key] . '.srt';
+            //             $files[$key]->move($destinationPath, $filename);
+            //             $subtitle_data['sub_language'] = $languages[$key]; /*URL::to('/').$destinationPath.$filename; */
+            //             $subtitle_data['shortcode'] = $shortcodes[$key];
+            //             $subtitle_data['movie_id'] = $id;
+            //             $subtitle_data['url'] = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+            //             $video_subtitle = new MoviesSubtitles();
+            //             $video_subtitle->movie_id = $video->id;
+            //             $video_subtitle->shortcode = $shortcodes[$key];
+            //             $video_subtitle->sub_language = $languages[$key];
+            //             $video_subtitle->url = URL::to('/') . '/public/uploads/subtitles/' . $filename;
+            //             $video_subtitle->save();
+            //         }
+            //     }
+            // }
+    
+                // Define the convertTimeFormat function globally
+    
+                function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
+                    $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
+                    $formattedTime = gmdate("H:i:s", $totalSeconds);
+                    $formattedMilliseconds = str_pad($milliseconds, 3, '0', STR_PAD_LEFT);
+                    return "{$formattedTime},{$formattedMilliseconds}";
+                }
+    
+                if (!empty($files != "" && $files != null)) {
+                    foreach ($files as $key => $val) {
+                        if (!empty($files[$key])) {
+                            $destinationPath = "public/uploads/subtitles/";
+    
+                            if (!file_exists($destinationPath)) {
+                                mkdir($destinationPath, 0755, true);
+                            }
+    
+                            $filename = $video->id . "-" . $shortcodes[$key] . ".srt";
+    
+                            MoviesSubtitles::where('movie_id', $video->id)->where('shortcode', $shortcodes[$key])->delete();
+    
+                            // Move uploaded file to destination path
+                            move_uploaded_file($val->getPathname(), $destinationPath . $filename);
+    
+                            // Read contents of the uploaded file
+                            $contents = file_get_contents($destinationPath . $filename);
+    
+                            // Convert time format and add line numbers
+                            $lineNumber = 0;
+                            $convertedContents = preg_replace_callback(
+                                '/(\d{2}):(\d{2}).(\d{3}) --> (\d{2}):(\d{2}).(\d{3})/',
+                                function ($matches) use (&$lineNumber) {
+                                    // Increment line number for each match
+                                    $lineNumber++;
+                                    // Convert time format and return with the line number
+                                    return "{$lineNumber}\n" . convertTimeFormat(0, $matches[1], $matches[2], $matches[3]) . " --> " . convertTimeFormat(0, $matches[4], $matches[5], $matches[6]);
+                                },
+                                $contents
+                            );
+    
+                            // Store converted contents to a new file
+                            $newDestinationPath = "public/uploads/convertedsubtitles/";
+                            if (!file_exists($newDestinationPath)) {
+                                mkdir($newDestinationPath, 0755, true);
+                            }
+                            file_put_contents($newDestinationPath . $filename, $convertedContents);
+    
+                            // Save subtitle data to database
+                            $subtitle_data = [
+                                "movie_id" => $video->id,
+                                "shortcode" => $shortcodes[$key],
+                                "sub_language" => $languages[$key],
+                                "url" => URL::to("/") . "/public/uploads/subtitles/" . $filename,
+                                "Converted_Url" => URL::to("/") . "/public/uploads/convertedsubtitles/" . $filename
+                            ];
+                            $video_subtitle = MoviesSubtitles::create($subtitle_data);
+                        }
+                    }
+                }
+    
+            /*Advertisement Video update starts*/
+            //  if($data['ads_id'] != 0){
+    
+            //         $ad_video = new AdsVideo;
+            //         $ad_video->video_id = $video->id;
+            //         $ad_video->ads_id = $data['ads_id'];
+            //         $ad_video->ad_roll = null;
+            //         $ad_video->save();
+            // }
+            /*Advertisement Video update End*/
+    
+                    // Admin Video Ads inputs
+    
+            if( !empty($request->ads_devices)){
+    
+                $Admin_Video_Ads_inputs = array(
+    
+                    'video_id' => $video->id ,
+                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ?  $request->website_vj_pre_postion_ads : null ,
+                    'website_vj_mid_ads_category'  =>  in_array("website", $request->ads_devices) ? $request->website_vj_mid_ads_category : null ,
+                    'website_vj_post_position_ads' =>  in_array("website", $request->ads_devices) ? $request->website_vj_post_position_ads : null,
+                    'website_vj_pre_postion_ads'   =>  in_array("website", $request->ads_devices) ? $request->website_vj_pre_postion_ads : null,
+    
+                    'andriod_vj_pre_postion_ads'   => in_array("android", $request->ads_devices) ? $request->andriod_vj_pre_postion_ads : null,
+                    'andriod_vj_mid_ads_category'  => in_array("android", $request->ads_devices) ? $request->andriod_vj_mid_ads_category : null,
+                    'andriod_vj_post_position_ads' => in_array("android", $request->ads_devices) ? $request->andriod_vj_post_position_ads : null,
+                    'andriod_mid_sequence_time'    => in_array("android", $request->ads_devices) ? $request->andriod_mid_sequence_time : null,
+    
+                    'ios_vj_pre_postion_ads'   => in_array("IOS", $request->ads_devices) ? $request->ios_vj_pre_postion_ads : null,
+                    'ios_vj_mid_ads_category'  => in_array("IOS", $request->ads_devices) ? $request->ios_vj_mid_ads_category : null,
+                    'ios_vj_post_position_ads' => in_array("IOS", $request->ads_devices) ? $request->ios_vj_post_position_ads : null,
+                    'ios_mid_sequence_time'    => in_array("IOS", $request->ads_devices) ? $request->ios_mid_sequence_time : null,
+    
+                    'tv_vj_pre_postion_ads'   => in_array("TV", $request->ads_devices) ? $request->tv_vj_pre_postion_ads : null,
+                    'tv_vj_mid_ads_category'  => in_array("TV", $request->ads_devices) ? $request->tv_vj_mid_ads_category : null,
+                    'tv_vj_post_position_ads' => in_array("TV", $request->ads_devices) ? $request->tv_vj_post_position_ads : null,
+                    'tv_mid_sequence_time'    => in_array("TV", $request->ads_devices) ? $request->tv_mid_sequence_time : null,
+    
+                    'roku_vj_pre_postion_ads'   => in_array("roku", $request->ads_devices) ? $request->roku_vj_pre_postion_ads : null,
+                    'roku_vj_mid_ads_category'  => in_array("roku", $request->ads_devices) ? $request->roku_vj_mid_ads_category : null,
+                    'roku_vj_post_position_ads' => in_array("roku", $request->ads_devices) ? $request->roku_vj_post_position_ads : null,
+                    'roku_mid_sequence_time'    => in_array("roku", $request->ads_devices) ? $request->roku_mid_sequence_time : null,
+    
+                    'lg_vj_pre_postion_ads'   => in_array("lg", $request->ads_devices) ? $request->lg_vj_pre_postion_ads : null,
+                    'lg_vj_mid_ads_category'  => in_array("lg", $request->ads_devices) ? $request->lg_vj_mid_ads_category : null,
+                    'lg_vj_post_position_ads' => in_array("lg", $request->ads_devices) ? $request->lg_vj_post_position_ads : null,
+                    'lg_mid_sequence_time'    => in_array("lg", $request->ads_devices) ? $request->lg_mid_sequence_time : null,
+    
+                    'samsung_vj_pre_postion_ads'   => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_pre_postion_ads : null,
+                    'samsung_vj_mid_ads_category'  => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_mid_ads_category : null,
+                    'samsung_vj_post_position_ads' => in_array("samsung", $request->ads_devices) ?$request->samsung_vj_post_position_ads : null,
+                    'samsung_mid_sequence_time'    => in_array("samsung", $request->ads_devices) ?$request->samsung_mid_sequence_time : null,
+    
+                    // plyr.io
+    
+                    'website_plyr_tag_url_ads_position' => $request->website_plyr_tag_url_ads_position,
+                    'website_plyr_ads_tag_url_id'       => $request->website_plyr_ads_tag_url_id,
+                    
+                    'andriod_plyr_tag_url_ads_position' => $request->andriod_plyr_tag_url_ads_position,
+                    'andriod_plyr_ads_tag_url_id'       => $request->andriod_plyr_ads_tag_url_id,
+    
+                    'ios_plyr_tag_url_ads_position' => $request->ios_plyr_tag_url_ads_position,
+                    'ios_plyr_ads_tag_url_id'       => $request->ios_plyr_ads_tag_url_id,
+    
+                    'tv_plyr_tag_url_ads_position' => $request->tv_plyr_tag_url_ads_position,
+                    'tv_plyr_ads_tag_url_id'       => $request->tv_plyr_ads_tag_url_id,
+    
+                    'roku_plyr_tag_url_ads_position' => $request->roku_plyr_tag_url_ads_position,
+                    'roku_plyr_ads_tag_url_id'       => $request->roku_plyr_ads_tag_url_id,
+    
+                    'lg_plyr_tag_url_ads_position' => $request->lg_plyr_tag_url_ads_position,
+                    'lg_plyr_ads_tag_url_id'       => $request->lg_plyr_ads_tag_url_id,
+                    
+                    'samsung_plyr_tag_url_ads_position' => $request->samsung_plyr_tag_url_ads_position,
+                    'samsung_plyr_ads_tag_url_id'       => $request->samsung_plyr_ads_tag_url_id,
+    
+                    'ads_devices' => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+                );
+    
+                AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
+                
+            }
+    
+            \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
+    
+            return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
+        }   
 
 }
     
