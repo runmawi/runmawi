@@ -12688,7 +12688,7 @@ class AdminVideosController extends Controller
                 $responsive_tv_image = null;
             }
             
-            if ($video->type == "embed") {
+            if ($video->type == "VideoCipher") {
                 $status = 1;
             } else {
                 $status = 0;
@@ -12708,7 +12708,7 @@ class AdminVideosController extends Controller
             $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1;
-            $video->status = 1;
+            $video->status = $status;
             $video->embed_code = $embed_code;
             $video->publish_type = $publish_type;
             $video->publish_time = $publish_time;
@@ -12745,7 +12745,7 @@ class AdminVideosController extends Controller
             $video->video_id_720p = $data['video_id_720p'];
             $video->video_id_1080p = $data['video_id_1080p'];
             $video->type = 'VideoCipher';
-    
+            $video->status = 1;
             // Ads videos
             if (!empty($data['ads_tag_url_id']) == null) {
                 $video->ads_tag_url_id = null;
