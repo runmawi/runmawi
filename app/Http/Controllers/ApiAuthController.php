@@ -24750,7 +24750,7 @@ public function TV_login(Request $request)
       } catch (\Throwable $th) {
           $response = array(
             "status"  => 'false' ,
-            "message" => $e->getMessage(),
+            "message" => $th->getMessage(),
         );
       }
         return response()->json($response, 200);
