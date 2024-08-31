@@ -585,15 +585,33 @@ class HomeController extends Controller
                     ->where('device_name','=', $device_name)
                     ->delete();
 
-                    Mail::send('emails.register_device_login', array(
-                        'id' => Auth::User()->id,
-                        'name' => Auth::User()->username,
+                    try {
 
-                    ) , function ($message) use ($email, $username)
-                    {
-                        $message->from(AdminMail() , GetWebsiteName());
-                        $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
-                    });
+                        Mail::send('emails.register_device_login', array(
+                            'id' => Auth::User()->id,
+                            'name' => Auth::User()->username,
+    
+                        ) , function ($message) use ($email, $username)
+                        {
+                            $message->from(AdminMail() , GetWebsiteName());
+                            $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
+                        });
+
+                        $email_log      = 'Mail Sent Successfully from register device login ';
+                        $email_template = "0";
+                        $user_id = Auth::User()->id;
+            
+                        Email_sent_log($user_id,$email_log,$email_template);
+
+                    } catch (\Throwable $th) {
+                        
+                        $email_log      = $e->getMessage();
+                        $email_template = "0";
+                        $user_id = Auth::User()->id;
+            
+                        Email_notsent_log($user_id,$email_log,$email_template);
+                    }
+                    
                     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
                     Auth::logout();
                     unset($data['password_hash']);
@@ -1393,12 +1411,27 @@ class HomeController extends Controller
                 {
                     LoggedDevice::where('user_ip','=', $userIp)->where('user_id', Auth::User()->id)->where('device_name', $device_name)->delete();
 
-                    Mail::send('emails.register_device_login', array('id' => Auth::User()->id,'name' => Auth::User()->username,) , function ($message) use ($email, $username)
-                    {
-                        $message->from(AdminMail() , GetWebsiteName());
-                        $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
-                    });
+                    try {
+                        
+                        Mail::send('emails.register_device_login', array('id' => Auth::User()->id,'name' => Auth::User()->username,) , function ($message) use ($email, $username){
+                            $message->from(AdminMail() , GetWebsiteName());
+                            $message->to($email, $username)->subject('Buy Subscriptions Plan To Access Multiple Devices');
+                        });
+                        $email_log      = 'Mail Sent Successfully from register device login ';
+                        $email_template = "0";
+                        $user_id = Auth::User()->id;
+            
+                        Email_sent_log($user_id,$email_log,$email_template);
 
+                    } catch (\Throwable $th) {
+                        
+                        $email_log      = $e->getMessage();
+                        $email_template = "0";
+                        $user_id = Auth::User()->id;
+            
+                        Email_notsent_log($user_id,$email_log,$email_template);
+                    }
+                    
                     $message = 'Buy Subscriptions Plan To Access Multiple Devices.';
                     Auth::logout();
                     unset($data['password_hash']);
