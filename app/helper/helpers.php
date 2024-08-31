@@ -2044,3 +2044,9 @@ function Enable_PPV_Plans()
     $enable_ppv_plans = App\SiteTheme::pluck('enable_ppv_plans')->first();
     return $enable_ppv_plans ;
 }
+
+function Enable_videoCipher_Upload()
+{
+    $enable_ppv_plans = App\SiteTheme::pluck('enable_video_cipher_upload')->first();
+    return $enable_ppv_plans ;
+}
