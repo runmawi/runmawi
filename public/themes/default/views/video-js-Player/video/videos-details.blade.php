@@ -259,14 +259,14 @@
 
                             {{-- subscriber & PPV  --}}
 
-                            @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                            {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
                                 <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
-                            @endif 
+                            @endif  --}}
 
                         @else
                             <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
