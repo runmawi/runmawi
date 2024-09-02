@@ -349,6 +349,30 @@
     line-height: 20px;
     opacity: .5;
 }
+
+/* payment modal */
+#purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+#purchase-modal-dialog .modal-content{height: 100vh;}
+#purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+#purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+#purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+#purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+.col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+.modal-open .modal{overflow-y: hidden;}
+div#video-purchase-now-modal{padding-right: 0 !important;}
+.movie-rent.btn{width: 100%;}
+.col-md-12.btn {margin-top: 2rem;}
+.d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+.btn-primary-dark {
+    background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+}
+
+.btn-primary-light {
+    background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+}
+
+
+
 .scp-breadcrumb { }
 
 @media (min-width: 1400px) and (max-width: 2565px) {
