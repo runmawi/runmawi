@@ -1,4 +1,15 @@
-@php  include public_path("themes/{$current_theme}/views/header.php"); @endphp
+@php  
+    include public_path("themes/{$current_theme}/views/header.php");
+@endphp
+
+@if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
+    @php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    @endphp
+@endif
+
 
 <style>
     body.light-theme h4, body.light-theme p {
@@ -62,6 +73,20 @@
 .quality-options-group .radio-inline {
     margin-right: 0; 
 }
+
+
+
+        .btn-primary {
+            background-color: var(--btn-primary-color);
+        }
+
+        .btn-primary-dark {
+            background-color: rgba(var(--btn-primary-color-rgb), 0.5);
+        }
+
+        .btn-primary-light {
+            background-color: rgba(var(--btn-primary-color-rgb), 0.2);
+        }
 @media (min-width: 1400px) and (max-width: 2565px) {
     .my-video.vjs-fluid{
         height: 50vh !important;
@@ -571,154 +596,172 @@
             @endif
 
         </div>
-
                 {{-- Rent Modal  --}}                
         <div class="modal fade" id="video-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="video-purchase-now-modal-Title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+            <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content container-fluid bg-dark">
 
-                    <div class="modal-header">
-                        <h4 class="modal-title text-center text-black" id="exampleModalLongTitle" >
-                            {{ __('Purchase Now') }}
-                        </h4>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-4 p-0" style="">
-                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="video-image">
+                    <div class="modal-header align-items-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
                             </div>
-
-                            <div class="col-sm-8">
-
-                                <h4 class=" text-black movie mb-3">{{ __(@$videodetail->title) }}</h4>
-
-                                @if ( $videodetail->duration != null )
-                                    <span class="badge badge-secondary  mb-2 ml-1">{{ $videodetail->duration != null ? gmdate('H:i:s', $videodetail->duration)  : null  }} </span><br>
-                                @endif
-
-                                @if (Enable_PPV_Plans() == 0)
-
-                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;" >{{ __('Amount') }}:
-                                    <span class="pl-2" style="font-size:20px;font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  "{$currency->symbol} {$videodetail->ppv_price}" }}</span>
-                                </a><br>
-                                @elseif( Enable_PPV_Plans() == 1 )
-                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;" >{{ __('Amount') }}:
-                                    <span class="pl-2" style="font-size:20px;font-weight:700;" id="price-display"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price_480p) :  $currency->symbol .$videodetail->ppv_price_480p }}</span>
-                                </a><br>
-                                @endif
-
-                                <label class="mb-0 mt-3 p-0" for="method">
-                                    <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
-                                </label>
-
-                                <!-- Stripe Button -->
-                                @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 0)
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
-                                        {{ $stripe_payment_setting->payment_type }}
-                                    </label>
-                                @elseif( $stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 1 )
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
-                                        {{ $stripe_payment_setting->payment_type }}
-                                    </label>
-
-                                    <div id="quality-options" style="display:none;">
-                                        <label class="main-label">Choose Plan</label>
-                                        <div class="quality-options-group">
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="480p" checked>
-                                                Low Quality
-                                            </label>
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="720p">
-                                                Medium Quality
-                                            </label>
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="1080p">
-                                                High Quality
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                <!-- Razorpay Button -->
-    
-                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 0)
-                                     <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
-                                        {{ $Razorpay_payment_setting->payment_type }}
-                                    </label>
-                                @elseif( $Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 1 )
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
-                                        {{ $Razorpay_payment_setting->payment_type }}
-                                    </label>
-
-                                    <div id="razorpay-quality-options" style="display:none;">
-                                        <label class="main-label">Choose Plan</label>
-                                        <div class="quality-options-group">
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="480p" checked>
-                                                Low Quality
-                                            </label>
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="720p">
-                                                Medium Quality
-                                            </label>
-                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                                <input type="radio" class="quality_option" name="quality" value="1080p">
-                                                High Quality
-                                            </label>
-                                        </div>
-                                    </div>
-                                @endif
-
-                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-end">
+                            @if(Auth::user() !== null)
+                                <img src="{{ $user_avatar }}" alt="{{ $user_name }}">
+                                <h5 class="pl-4">{{ $user_name }}</h5>
+                            @endif
+                            
                         </div>
                     </div>
 
-                        <div class="modal-footer">
+                    <div class="modal-body">
+                        <h3 class="font-weight-bold">{{ 'Upgrade to '. $videodetail->title.' pack by just paying the difference'}}</h3>
+                        <p class="text-white">{{ 'You are currently on plan.' }}</p>
+                        <div class="row justify-content-between m-0" style="gap: 4rem;">
+                            <div class="col-sm-4 col-12 p-0" style="">
+                                <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="{{ $videodetail->title }}" style="border-radius: 10px;">
+                            </div>
 
-                        @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
-                                <div class="Stripe_button"> <!-- Stripe Button -->
-                                    <button class="btn btn-primary  btn-outline-primary  "
-                                        onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
-                                        {{ __('Continue') }}
-                                    </button>
+                            <div class="col-sm-7 col-12 details">
+
+                                <div class="movie-rent btn">
+
+                                    <div class="d-flex justify-content-between title">
+                                        <h3 class="font-weight-bold">{{ ( $videodetail->title) }}</h3>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <ul style="padding-left: 1.3rem;">
+                                            <li class="text-white">{{ "Available to watch this video after purchasing" }}</li>
+                                        </ul>
+                                        <div>
+                                            @if (Enable_PPV_Plans() == 0)
+                                                <h3 class="pl-2" style="font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  "{$currency->symbol} {$videodetail->ppv_price}" }}</h3>
+                                            @elseif( Enable_PPV_Plans() == 1 )
+                                                <h3 class="pl-2" style="font-weight:700;" id="price-display"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price_480p) :  $currency->symbol .$videodetail->ppv_price_480p }}</h3>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-0 mt-3 p-0 text-left">
+                                        <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2"> {{ __('Select payment method') }} : </h5>
+                                    </div>
+
+                                    <!-- Stripe Button -->
+                                    @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 0)
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                            {{ $stripe_payment_setting->payment_type }}
+                                        </label>
+                                    @elseif( $stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 1 )
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                            {{ $stripe_payment_setting->payment_type }}
+                                        </label>
+
+                                        <div id="quality-options" style="display:none;">
+                                            <label class="main-label">Choose Plan</label>
+                                            <div class="quality-options-group">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                    Low Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="720p">
+                                                    Medium Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                    High Quality
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Razorpay Button -->
+        
+                                    @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 0)
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                            {{ $Razorpay_payment_setting->payment_type }}
+                                        </label>
+                                    @elseif( $Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 1 )
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                            {{ $Razorpay_payment_setting->payment_type }}
+                                        </label>
+
+                                        <div id="razorpay-quality-options" style="display:none;">
+                                            <label class="main-label">Choose Plan</label>
+                                            <div class="quality-options-group">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                    Low Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="720p">
+                                                    Medium Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                    <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                    High Quality
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
+                                <div class=" becomesubs-page">
+                                    @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
+                                        <div class="row mt-3 justify-content-around">  
+                                            <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
+                                                <button class="btn btn-primary"
+                                                    onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
+                                                    {{ __('Pay now') }}
+                                                </button>
+                                            </div>
+                                            <div class="Stripe_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                    {{'Cancel'}}
+                                                </button>
+                                            </div>
+                                        </div>
 
-                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+                                    @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
 
-                            <div class="Stripe_button"> <!-- Stripe Button -->
-                           
+                                        <div class="Stripe_button"> <!-- Stripe Button -->
+                                    
+                                        </div>
+
+                                    @endif
+
+                                    @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
+                                        <div class="row mt-3 justify-content-around"> 
+                                            <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
+                                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                                    <button class="btn btn-primary  btn-outline-primary  "
+                                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                                        {{ __('Pay now') }}
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            <div class="Stripe_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                    {{'Cancel'}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+
+                                        <div class="Razorpay_button"> <!-- Razorpay Button -->
+
+                                        </div>
+
+                                    @endif
+                                </div>
                             </div>
-
-                        @endif
-
-                        @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
-
-                            <div class="Razorpay_button"> <!-- Razorpay Button -->
-                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                    <button class="btn btn-primary  btn-outline-primary  "
-                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
-                                        {{ __('Continue') }}
-                                    </button>
-                                @endif
-                            </div>
-                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
-
-                            <div class="Razorpay_button"> <!-- Razorpay Button -->
-
-                            </div>
-
-                        @endif
-
+                        </div>
                     </div>
                 </div>
             </div>
@@ -861,6 +904,9 @@
             }
 
         });
+
+
+
     </script>
 @php 
     include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-file.blade.php");
