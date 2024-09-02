@@ -6008,7 +6008,7 @@ return response()->json($response, 200);
     })->first();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
-
+    $series_player_image =  $series->player_image ? $series->player_image : " ";
     $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : " ";
 
     foreach ($seasonlist as $key => $season) {
@@ -6040,6 +6040,7 @@ return response()->json($response, 200);
       $myData[] = array(
         "seriestitle"   => $series->title,
         "series_description"   => $series->description,
+        "series_player_image"   => $series_player_image ,
         "series" => $series,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
@@ -24750,7 +24751,7 @@ public function TV_login(Request $request)
       } catch (\Throwable $th) {
           $response = array(
             "status"  => 'false' ,
-            "message" => $e->getMessage(),
+            "message" => $th->getMessage(),
         );
       }
         return response()->json($response, 200);
