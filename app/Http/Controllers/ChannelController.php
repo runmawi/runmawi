@@ -4369,6 +4369,11 @@ class ChannelController extends Controller
 
                         $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
+                        $current_date = date('Y-m-d h:i:s a', time());
+
+                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)->where('to_time','>',$current_date)->count();
+
+
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
 
                                 // free PPV access for subscriber status Condition
@@ -4556,8 +4561,10 @@ class ChannelController extends Controller
 
                 if($item['access'] == 'ppv' && !Auth::guest()){
                     $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->count();
+                    $item['PPV_Access'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->pluck('ppv_plan')->first();
                 }else{
                     $item['PPV_Exits'] = 0 ;
+                    $item['PPV_Access'] = null ;
                 }
 
 
@@ -4629,7 +4636,7 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
-
+            
             // Payment Gateway Stripe
 
             $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
