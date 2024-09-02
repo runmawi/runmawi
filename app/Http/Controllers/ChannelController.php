@@ -5330,7 +5330,7 @@ class ChannelController extends Controller
            $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-                                   ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url)  {
+                                   ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url, $slug)  {
 
                $item['users_video_visibility_status']         = true ;
                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
@@ -5498,7 +5498,7 @@ class ChannelController extends Controller
                         if($item['PPV_Plan'] > 0){
                             if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                         }else{
-                             return Redirect::to('/category/videos'.'/'.$slug);
+                            //  return Redirect::to('/category/videos'.'/'.$slug);
                         }
                }else{
                    $item['PPV_Plan']   = '';
@@ -5537,14 +5537,27 @@ class ChannelController extends Controller
                     $item['playbackInfo'] = null;
                    
                 } else {
+
                     $responseObj = json_decode($response, true);
-                    $item['otp'] = $responseObj['otp'];
-                    $item['playbackInfo'] = $responseObj['playbackInfo'];
+
+                    if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
+                        $item['otp'] = null;
+                        $item['playbackInfo'] = null;
+                    }else{
+                        $item['otp'] = $responseObj['otp'];
+                        $item['playbackInfo'] = $responseObj['playbackInfo'];
+                    }
+
                    
                 }
 
                return $item;
            })->first();
+
+           if(!empty($videodetail) && $videodetail->otp == null && $videodetail->playbackInfo  == null || !Auth::guest() && Auth::User()->role != 'admin' && $videodetail->PPV_Plan == 0 ){
+                return Redirect::to('/category/videos'.'/'.$slug);
+            }
+
 
            $videoURl = [];
 
