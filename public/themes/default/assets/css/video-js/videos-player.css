@@ -92,12 +92,12 @@
 }
 
 .my-video.video-js .vjs-tech {
-    object-fit: cover;
+    object-fit: fill;
 }
 
-/* .my-video.video-js.vjs-playing{
+.my-video.video-js.vjs-playing{
   pointer-events: auto;
-} */
+}
 
 .vjs-has-started .vjs-big-play-button {
     pointer-events: none;
@@ -486,19 +486,19 @@ line-height: 2.1em;
     color: white;
     background: transparent;
     border: none;
-    padding: 50px;
+    padding: 0px !important;
     cursor: pointer;
     display: flex;
     align-items: center;
     font-size: 2em;
     position: absolute;
-    top: -295px;
-    width: 60px;
-    height: 60px;
+    top: -245px;
+    width: 40px;
+    height: 40px;
 }
 
 .custom-skip-forward-button{
-    left: 58%;
+    left: 63%;
 }
 
 .custom-skip-backward-button{
@@ -955,6 +955,19 @@ display: block !important;
     margin: 1.35em auto;
 }
 
+.vjs-text-track-cue{
+    inset: 166.812px 0px 0px !important;
+    white-space: normal !important;
+    inset: 475.125px 0px 0px !important;
+    height: 65px !important;
+}
+
+.vjs-text-track-cue div{font-size: 22px !important;background-color: rgb(0 0 0 / 25%) !important;}
+
+.vjs-fullscreen .vjs-text-track-cue{
+    inset: 620.125px 0px 0px !important;
+}
+
 /* For screens up to 600px */
 @media only screen and (max-width: 600px) {
     .my-video.vjs-paused .vjs-big-play-button {
@@ -968,20 +981,20 @@ display: block !important;
         left: 10% !important;
     }
     .custom-skip-forward-button{
-        top: -125px !important;
-        left: 53%;
+        top: -82px !important;
+        left: 67%;
     }
     .custom-skip-backward-button {
-        top: -125px !important;
-        left: 15% !important;
+        top: -82px !important;
+        left: 22% !important;
     }
     .vjs-fullscreen .custom-skip-backward-button {
-        left: 16% !important;
-        top: -236px !important;
+        left: 11% !important;
+        top: -245px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button {
-        right: 23%;
-        top: -236px !important;
+        left: 65% !important;
+        top: -245px !important;
     }
     .my-video.vjs-fluid {
         padding-top: 0 !important;
@@ -997,7 +1010,12 @@ display: block !important;
     .my-video.video-js .vjs-live-control {
         line-height: 0.6em;
     }
-
+    .vjs-text-track-cue{
+        inset: 166.812px 0px 0px !important;
+    }
+    .vjs-text-track-cue div{
+        font-size: 10px !important;
+    }
     .staticback-btn {
         top: 3% !important;
         font-size: 15px !important;
@@ -1067,6 +1085,12 @@ display: block !important;
 @media (max-width: 767px) {
     .vjs-volume-panel.vjs-control.vjs-volume-panel-vertical {
         display: none;
+    }
+    .vjs-text-track-cue{
+        inset: 166.812px 0px 0px !important;
+    }
+    .vjs-text-track-cue div{
+        font-size: 10px !important;
     }
 }
 

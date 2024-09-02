@@ -1342,199 +1342,128 @@ class TvshowsController extends Controller
     }
 
     public function LikeEpisode(Request $request)
-    {
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+{
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->when(!Auth::guest(), function ($query) {
-                return $query->where('user_id', Auth::user()->id);
-            })
-            ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                return $query->where('users_ip_address', $geoip->getIP());
-            })->get();
+    $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
+        ->when(!Auth::guest(), function ($query) {
+            return $query->where('user_id', Auth::user()->id);
+        })
+        ->unless(!Auth::guest(), function ($query) use ($geoip) {
+            return $query->where('users_ip_address', $geoip->getIP());
+        })
+        ->first();
 
-        $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->when(!Auth::guest(), function ($query) {
-                return $query->where('user_id', Auth::user()->id);
-            })
-            ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                return $query->where('users_ip_address', $geoip->getIP());
-            })->count();
-
-        if ($episode_count > 0) {
-
-            $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-                })->first();
-
-            $episode_new->liked = 1;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = ['message' => 'Added to Like Episode', ];
-
-        } else {
-
-            $episode_new = new LikeDisLike();
-            $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null ;
-            $episode_new->users_ip_address = Auth::guest() ?  $geoip->getIP() : null ;
-            $episode_new->liked = 1;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = [
-                'message' => 'Added to Like Episode',
-            ];
-
+    if ($episode) {
+        if ($episode->disliked) {
+            $episode->disliked = 0;
         }
-        return $data;
+        $episode->liked = 1;
+        $episode->save();
+
+        $data = ['message' => 'Added to Like Episode, Dislike Removed if existed'];
+    } else {
+        $episode_new = new LikeDisLike();
+        $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null;
+        $episode_new->users_ip_address = Auth::guest() ? $geoip->getIP() : null;
+        $episode_new->liked = 1;
+        $episode_new->episode_id = $request->episode_id;
+        $episode_new->save();
+
+        $data = ['message' => 'Added to Like Episode'];
     }
 
-    public function RemoveLikeEpisode(Request $request)
-    {
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    return $data;
+}
 
-        $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->when(!Auth::guest(), function ($query) {
-                return $query->where('user_id', Auth::user()->id);
-            })
-            ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                return $query->where('users_ip_address', $geoip->getIP());
-            })->get();
+public function RemoveLikeEpisode(Request $request)
+{
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $episode_count = LikeDisLike::where('episode_id', '=', $request->episode_id)
-            ->when(!Auth::guest(), function ($query) {
-                return $query->where('user_id', Auth::user()->id);
-            })
-            ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                return $query->where('users_ip_address', $geoip->getIP());
-            })->count();
+    $episode = LikeDisLike::where('episode_id', '=', $request->episode_id)
+        ->when(!Auth::guest(), function ($query) {
+            return $query->where('user_id', Auth::user()->id);
+        })
+        ->unless(!Auth::guest(), function ($query) use ($geoip) {
+            return $query->where('users_ip_address', $geoip->getIP());
+        })
+        ->first();
 
-        if ($episode_count > 0) {
-
-            $episode_new = LikeDisLike::where('episode_id', '=', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-                })->first();
-
-            $episode_new->liked = 0;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = [ 'message' => 'Removed from Liked Episode', ];
-
-        } else {
-            
-            $data = [ 'message' => 'NO Data', ];
+    if ($episode) {
+        if ($episode->liked) {
+            $episode->liked = 0;
         }
+        $episode->save();
 
-        return $data;
+        $data = ['message' => 'Removed from Like Episode'];
+    } else {
+        $data = ['message' => 'NO Data'];
     }
 
-    public function DisLikeEpisode(Request $request)
-    {
-        
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-       
-        $episode = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-            })->get();
+    return $data;
+}
 
+public function DisLikeEpisode(Request $request)
+{
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $episode_count = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-            })->count();
+    $episode = LikeDisLike::where('episode_id', $request->episode_id)
+        ->when(!Auth::guest(), function ($query) {
+            return $query->where('user_id', Auth::user()->id);
+        })
+        ->unless(!Auth::guest(), function ($query) use ($geoip) {
+            return $query->where('users_ip_address', $geoip->getIP());
+        })
+        ->first();
 
-        if ($episode_count > 0) {
-            
-            $episode_new = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-            })->first();
-
-            $episode_new->disliked = 1;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = [ 'message' => 'Added to DisLike Episode', ];
-
-        } else {
-
-            $episode_new = new LikeDisLike();
-            $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null ;
-            $episode_new->users_ip_address = Auth::guest() ?  $geoip->getIP() : null ;
-            $episode_new->disliked = 1;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = [ 'message' => 'Added to DisLike Episode', ];
+    if ($episode) {
+        if ($episode->liked) {
+            $episode->liked = 0;
         }
+        $episode->disliked = 1;
+        $episode->save();
 
-        return $data;
+        $data = ['message' => 'Added to Dislike Episode, Like Removed if existed'];
+    } else {
+        $episode_new = new LikeDisLike();
+        $episode_new->user_id = !Auth::guest() ? Auth::user()->id : null;
+        $episode_new->users_ip_address = Auth::guest() ? $geoip->getIP() : null;
+        $episode_new->disliked = 1;
+        $episode_new->episode_id = $request->episode_id;
+        $episode_new->save();
+
+        $data = ['message' => 'Added to Dislike Episode'];
     }
 
-    public function RemoveDisLikeEpisode(Request $request)
-    {
-        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+    return $data;
+}
+    
+public function RemoveDisLikeEpisode(Request $request)
+{
+    $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
 
-        $episode = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-            })->get();
+    $episode = LikeDisLike::where('episode_id', $request->episode_id)
+        ->when(!Auth::guest(), function ($query) {
+            return $query->where('user_id', Auth::user()->id);
+        })
+        ->unless(!Auth::guest(), function ($query) use ($geoip) {
+            return $query->where('users_ip_address', $geoip->getIP());
+        })
+        ->first();
 
-
-        $episode_count = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-            })->count();
-
-        if ($episode_count > 0) {
-
-            $episode_new = LikeDisLike::where('episode_id', $request->episode_id)
-                ->when(!Auth::guest(), function ($query) {
-                    return $query->where('user_id', Auth::user()->id);
-                })
-                ->unless(!Auth::guest(), function ($query) use ($geoip) {
-                    return $query->where('users_ip_address', $geoip->getIP());
-                })->first();
-
-
-            $episode_new->disliked = 0;
-            $episode_new->episode_id = $request->episode_id;
-            $episode_new->save();
-
-            $data = [  'message' => 'Removed from Liked Episode',];
-        } 
-        else {
-            $data = [ 'message' => 'NO Data',];
+    if ($episode) {
+        if ($episode->disliked) {
+            $episode->disliked = 0;
         }
+        $episode->save();
 
-        return $data;
+        $data = ['message' => 'Removed from Dislike Episode'];
+    } else {
+        $data = ['message' => 'NO Data'];
     }
+
+    return $data;
+}
 
     public function Embedplay_episode($series_name, $episode_name)
     {
