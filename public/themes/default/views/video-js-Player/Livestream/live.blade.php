@@ -221,6 +221,7 @@
 
     .responsive-iframe {
         position: relative !important;
+        height: calc(100vh - 85px)!important;
     }
 </style>
 
