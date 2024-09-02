@@ -4349,6 +4349,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_Rent_button']      = false ;
                     $item['users_video_visibility_becomesubscriber'] = false ;
                     $item['users_video_visibility_register_button']  = true ;
+                    $item['users_video_visibility_block_button']     = false ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
                     $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
@@ -4390,6 +4391,8 @@ class ChannelController extends Controller
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
+                            $item['users_video_visibility_block_button']     = false ;
+
 
                             if ($item->access == "ppv" && Enable_PPV_Plans() == 0) {
 
@@ -4439,6 +4442,7 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                                 $item['users_video_visibility_register_button']  = false ;
                                 $item['users_video_visibility_redirect_url']     =  URL::to('/becomesubscriber') ;
+                                $item['users_video_visibility_block_button']     = false ;
                             }
                         }
                     }
@@ -4463,8 +4467,8 @@ class ChannelController extends Controller
                             $item['users_video_visibility_Rent_button']    = false ;
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
                             $item['users_video_visibility_register_button']  = false ;
+                            $item['users_video_visibility_block_button'] = true;
                             $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
-
                         }
                     }
 
@@ -4476,6 +4480,7 @@ class ChannelController extends Controller
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
+                        $item['users_video_visibility_block_button'] = true;
                         $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
                     }
                 }
@@ -4858,6 +4863,7 @@ class ChannelController extends Controller
                         if ($block_videos_exists) {
 
                             $item['users_video_visibility_status'] = false;
+                            $item['users_video_visibility_status_button']    =  "Blocked"   ;
                             $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
                             $item['users_video_visibility_Rent_button']    = false ;
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
@@ -4872,6 +4878,7 @@ class ChannelController extends Controller
                     if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
+                        $item['users_video_visibility_status_button']    =  "Blocked"   ;
                         $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
@@ -5454,6 +5461,7 @@ class ChannelController extends Controller
                        if ($block_videos_exists) {
 
                            $item['users_video_visibility_status'] = false;
+                           $item['users_video_visibility_status_button']    =  "Blocked"   ;
                            $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
                            $item['users_video_visibility_Rent_button']    = false ;
                            $item['users_video_visibility_becomesubscriber_button'] = false ;
@@ -5468,6 +5476,7 @@ class ChannelController extends Controller
                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
 
                        $item['users_video_visibility_status'] = false;
+                       $item['users_video_visibility_status_button']    =  "Blocked"   ;
                        $item['users_video_visibility_status_message'] = Str::title( 'this video only Not available in this country')  ;
                        $item['users_video_visibility_Rent_button']    = false ;
                        $item['users_video_visibility_becomesubscriber_button'] = false ;
