@@ -275,6 +275,19 @@
                                     <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                 </div>
                             </a>
+
+                            
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
+                                @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
+                                    <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2"> {{ __( 'Upgrade Now' ) }} </span>
+                                        </div>
+                                    </a>
+                                @endif
+                            @endif
+                            
                         @endif
 
                             
