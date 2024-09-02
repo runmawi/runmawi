@@ -580,7 +580,9 @@ function current_timezone()
 function Country_name(){
 
     try {
-        $countryName = \Location::get()->countryName;
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
+        $countryName = \Location::get($userIp)->countryName;
 
         return $countryName ;
 
@@ -592,6 +594,9 @@ function Country_name(){
 function Country_Code(){
 
     try {
+        
+        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+        $userIp = $geoip->getip();
         $Country_Code = \Location::get()->countryCode;
 
         return $Country_Code ;
