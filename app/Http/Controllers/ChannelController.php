@@ -4330,6 +4330,7 @@ class ChannelController extends Controller
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
 
+
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
@@ -4468,7 +4469,7 @@ class ChannelController extends Controller
                     }
 
                         // Available Country
-                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button'] = 'Not available in your country';
@@ -4635,6 +4636,7 @@ class ChannelController extends Controller
                 return $item;
             })->first();
 
+
             // Payment Gateway Stripe
 
             $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
@@ -4690,7 +4692,7 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -4868,7 +4870,7 @@ class ChannelController extends Controller
 
                         // Available Country
 
-                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -5466,7 +5468,7 @@ class ChannelController extends Controller
 
                        // Available Country
 
-                   if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                   if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
 
                        $item['users_video_visibility_status'] = false;
                        $item['users_video_visibility_status_button']    =  "Blocked"   ;
