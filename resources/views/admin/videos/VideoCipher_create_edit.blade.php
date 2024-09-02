@@ -827,7 +827,7 @@ border-radius: 0px 4px 4px 0px;
                            <select  name="ios_ppv_price_480p" class="form-control" id="ios_ppv_price_480p">
                               <option value= "" >Select 480 IOS PPV Price: </option>
                               @foreach($InappPurchase as $Inapp_Purchase)
-                                 <option value="{{ $Inapp_Purchase->product_id }}" >{{ $Inapp_Purchase->plan_price }}</option>
+                              <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_480p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
                               @endforeach
                            </select>
                      </div>
@@ -836,7 +836,7 @@ border-radius: 0px 4px 4px 0px;
                            <select  name="ios_ppv_price_720p" class="form-control" id="ios_ppv_price_720p">
                               <option value= "" >Select 720 IOS PPV Price: </option>
                               @foreach($InappPurchase as $Inapp_Purchase)
-                                 <option value="{{ $Inapp_Purchase->product_id }}" >{{ $Inapp_Purchase->plan_price }}</option>
+                              <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_720p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
                               @endforeach
                            </select>
                      </div>
@@ -845,7 +845,7 @@ border-radius: 0px 4px 4px 0px;
                            <select  name="ios_ppv_price_1080p" class="form-control" id="ios_ppv_price_1080p">
                               <option value= "" >Select 1080 IOS PPV Price: </option>
                               @foreach($InappPurchase as $Inapp_Purchase)
-                                 <option value="{{ $Inapp_Purchase->product_id }}" >{{ $Inapp_Purchase->plan_price }}</option>
+                              <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_1080p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
                               @endforeach
                            </select>
                      </div>

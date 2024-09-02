@@ -213,13 +213,19 @@
             }
         });
 
-        // player.ready(() => {
-        //     var started = document.querySelector('.vjs-has-started');
-        //     started.addEventListener('click', e=> {
-        //         console.log("pause triggered");
-        //         player.pause();
-        //     })
-        // });
+        player.ready(() => {
+            playPauseButton.addEventListener('click', e=> {
+                var playing = document.querySelector('.vjs-playing');
+                if(playing){
+                    console.log("pause triggered");
+                    player.pause();
+                }
+                else{
+                    console.log("play triggered");
+                    player.play();
+                }
+            })
+        });
 
         player.on('enterpictureinpicture', function() {
             console.log('Entered Picture-in-Picture mode');
@@ -358,13 +364,15 @@
             }
         });
 
-        //Watermark
-        player.ready(function() {
-            var watermark = document.createElement('div');
-            watermark.className = 'vjs-watermark';
-            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->logo ?>" alt="Watermark">';
-            player.el().appendChild(watermark);
-        });
+        // Watermark
+        // player.ready(function() {
+        //     var watermark = document.createElement('div');
+        //     watermark.className = 'vjs-watermark';
+        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->watermark ?>" alt="Watermark">';
+        //     // watermark.innerHTML = '<img src="https://localhost/flicknexs/public/uploads/settings/webnexs-250.png" alt="Watermark">';
+        //     player.el().appendChild(watermark);
+        // });
+
 
         // Advertisement
 
