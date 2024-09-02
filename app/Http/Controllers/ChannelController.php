@@ -4692,7 +4692,7 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }

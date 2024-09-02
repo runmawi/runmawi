@@ -105,14 +105,14 @@
 
                          {{-- subscriber & PPV  --}}
 
-                        @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
-                            <!-- <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
+                        {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                            <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
                                 <div class="playbtn" style="gap:5px">
                                     {!! $play_btn_svg !!}
                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                 </div>
-                            </a> -->
-                        @endif
+                            </a>
+                        @endif --}}
                     </div>
                 </div>
             </div>
@@ -155,14 +155,14 @@
 
                             {{-- subscriber & PPV  --}}
 
-                        @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                        {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
                             <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
                                 <div class="playbtn" style="gap:5px">
                                     {!! $play_btn_svg !!}
                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                 </div>
                             </a>
-                         @endif
+                        @endif --}}
 
                     </div>
                 </div>
