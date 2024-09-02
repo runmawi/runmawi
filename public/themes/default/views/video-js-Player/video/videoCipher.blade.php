@@ -11,3 +11,8 @@
         ></iframe>
 
     </div>
+
+    <style>
+        #main-header{display: none;}
+        .container-fluid.p-0{height: 100vh;overflow: hidden;}
+    </style>
