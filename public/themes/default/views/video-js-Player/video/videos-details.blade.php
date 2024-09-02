@@ -262,7 +262,7 @@
                                 </a>
                             @else
                             
-                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
+                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
                                 <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
@@ -608,7 +608,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end">
-                            @if(Auth::user() !== null)
+                            @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
                                 <img src="{{ $user_avatar }}" alt="{{ $user_name }}">
                                 <h5 class="pl-4">{{ $user_name }}</h5>
                             @endif
@@ -714,7 +714,7 @@
                                 </div>
                                 <div class=" becomesubs-page">
                                     @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
-                                        <div class="row mt-3 justify-content-around">  
+                                        <div class="Stripe_button row mt-3 justify-content-around">  
                                             <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
                                                 <button class="btn btn-primary"
                                                     onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
@@ -746,7 +746,7 @@
                                                     </button>
                                                 @endif
                                             </div>
-                                            <div class="Stripe_button col-md-5 col-5 btn">
+                                            <div class="Razorpay_button col-md-5 col-5 btn">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
                                                     {{'Cancel'}}
                                                 </button>

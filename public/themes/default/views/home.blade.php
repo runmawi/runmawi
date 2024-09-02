@@ -1,12 +1,12 @@
 <!-- Header Start Test MEssage -->
-@php 
+@php
 include (public_path('themes/default/views/header.php'));
 
 $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
 
-$homepage_array_data = [ 
-                      'order_settings_list'      => $order_settings_list, 
-                      'multiple_compress_image'  => $multiple_compress_image, 
+$homepage_array_data = [
+                      'order_settings_list'      => $order_settings_list,
+                      'multiple_compress_image'  => $multiple_compress_image,
                       'videos_expiry_date_status' => $videos_expiry_date_status,
                       'default_vertical_image_url'   => $default_vertical_image_url,
                       'default_horizontal_image_url' => $default_horizontal_image_url,
@@ -15,16 +15,16 @@ $homepage_array_data = [
                       'currency'   => $currency,
                       'settings'   => $settings,
                    ];
-                           
+
   $Slider_array_data = array(
-      'sliders'               => $sliders, 
-      'live_banner'           => $live_banner, 
-      'video_banners'         => $video_banners, 
-      'series_sliders'        => $series_sliders, 
-      'live_event_banners'    => $live_event_banners, 
-      'Episode_sliders'       => $Episode_sliders, 
-      'VideoCategory_banner'  => $VideoCategory_banner, 
-  );   
+      'sliders'               => $sliders,
+      'live_banner'           => $live_banner,
+      'video_banners'         => $video_banners,
+      'series_sliders'        => $series_sliders,
+      'live_event_banners'    => $live_event_banners,
+      'Episode_sliders'       => $Episode_sliders,
+      'VideoCategory_banner'  => $VideoCategory_banner,
+  );
 
 @endphp
 
@@ -38,7 +38,7 @@ $homepage_array_data = [
 
 <!-- MainContent -->
 
-<div class="main-content">
+<div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
 
          {{-- continue watching videos --}}
       @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
@@ -50,13 +50,13 @@ $homepage_array_data = [
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-var lazyloadImages = document.querySelectorAll("img.lazy");    
+var lazyloadImages = document.querySelectorAll("img.lazy");
 var lazyloadThrottleTimeout;
 
 function lazyload () {
 if(lazyloadThrottleTimeout) {
 clearTimeout(lazyloadThrottleTimeout);
-}    
+}
 
 lazyloadThrottleTimeout = setTimeout(function() {
  var scrollTop = window.pageYOffset;
@@ -66,7 +66,7 @@ lazyloadThrottleTimeout = setTimeout(function() {
        img.classList.remove('lazy');
      }
  });
- if(lazyloadImages.length == 0) { 
+ if(lazyloadImages.length == 0) {
    document.removeEventListener("scroll", lazyload);
    window.removeEventListener("resize", lazyload);
    window.removeEventListener("orientationChange", lazyload);
@@ -79,7 +79,7 @@ window.addEventListener("resize", lazyload);
 window.addEventListener("orientationChange", lazyload);
 });
 
-//  family & Kids Mode Restriction   
+//  family & Kids Mode Restriction
 
 $( document ).ready(function() {
 $('.kids_mode').click(function () {
@@ -88,12 +88,12 @@ var kids_mode = $(this).data("custom-value");
         url: "<?php echo URL::to('/kidsMode');?>",
         type: "get",
         data:{
-           kids_mode:kids_mode, 
+           kids_mode:kids_mode,
         },
         success: function (response) {
-           location.reload();               
+           location.reload();
         },
-     });   
+     });
 });
 
 $('.family_mode').click(function () {
@@ -103,12 +103,12 @@ $('.family_mode').click(function () {
         url: "<?php echo URL::to('/FamilyMode');?>",
         type: "get",
         data:{
-           family_mode:family_mode, 
+           family_mode:family_mode,
         },
         success: function (response) {
-           location.reload();               
+           location.reload();
         },
-     });   
+     });
 });
 
 $('.family_mode_off').click(function () {
@@ -118,12 +118,12 @@ $('.family_mode_off').click(function () {
         url: "<?php echo URL::to('/FamilyModeOff');?>",
         type: "get",
         data:{
-           family_mode:family_mode, 
+           family_mode:family_mode,
         },
         success: function (response) {
-           location.reload();               
+           location.reload();
         },
-     });   
+     });
 });
 
 $('#kids_mode_off').click(function () {
@@ -132,12 +132,12 @@ var kids_mode = $(this).data("custom-value");
         url: "<?php echo URL::to('/kidsModeOff');?>",
         type: "get",
         data:{
-           kids_mode:kids_mode, 
+           kids_mode:kids_mode,
         },
         success: function (response) {
-           location.reload();               
+           location.reload();
         },
-     });   
+     });
 });
 
 });
@@ -174,7 +174,7 @@ $(".home-search").hide();
       const description = document.getElementById('details-' + key);
       const readMoreBtn = document.getElementById('read-more-details-' + key);
       const readLessBtn = document.getElementById('read-less-details-' + key);
-   
+
       if (readMoreBtn.style.display === 'none') {
          readMoreBtn.style.display = 'inline';
          readLessBtn.style.display = 'none';
@@ -185,6 +185,31 @@ $(".home-search").hide();
          description.style.maxHeight = 'none';
       }
    }
+
+    var isFetching = false;
+    var scrollFetch;
+
+    $(window).scroll(function () {
+        clearTimeout(scrollFetch);
+
+        scrollFetch = setTimeout(function () {
+            var page_url = $("#home_sections").attr('next-page-url');
+            console.log("scrolled");
+            console.log("page_url",page_url);
+
+
+            if (page_url != null && !isFetching) {
+                isFetching = true;
+                $.ajax({
+                    url: page_url,
+                    success: function (data) {
+                        $("#home_sections").append(data.view);
+                        $("#home_sections").attr('next-page-url', data.url);
+                    },
+                });
+            }
+        }, 100);
+    });
 </script>
 
 <style>
