@@ -186,8 +186,8 @@
 
                     <div class="row">
                         @if ( $videodetail->users_video_visibility_status == false )
-                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button )
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
+                                <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>

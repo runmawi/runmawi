@@ -4474,7 +4474,7 @@ class ChannelController extends Controller
                     }
 
                         // Available Country
-                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) ) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button'] = 'Not available in your country';
@@ -4671,6 +4671,7 @@ class ChannelController extends Controller
                         break;
                 }
             }
+
 
             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
 
@@ -4876,7 +4877,7 @@ class ChannelController extends Controller
 
                         // Available Country
 
-                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -5474,7 +5475,7 @@ class ChannelController extends Controller
 
                        // Available Country
 
-                   if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                        $item['users_video_visibility_status'] = false;
                        $item['users_video_visibility_status_button']    =  "Blocked"   ;
