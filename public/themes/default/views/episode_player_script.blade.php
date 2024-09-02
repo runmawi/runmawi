@@ -113,6 +113,7 @@
                     skipBackwardButton.style.display = 'none';
                     playPauseButton.style.display = 'none';
                     backButton.style.display = 'none';
+                    titleButton.style.display = 'none';
                 }
             }
         });
@@ -124,7 +125,19 @@
             skipBackwardButton.style.display = 'block';
             playPauseButton.style.display = 'block';
             backButton.style.display = 'block';
+            titleButton.style.display = 'block';
         }
+        });
+        player.on('enterpictureinpicture', function() {
+            console.log('Entered Picture-in-Picture mode');
+            player.controlBar.hide();
+            playPauseButton.style.display = "none";
+        });
+
+        player.on('leavepictureinpicture', function() {
+            console.log('Exited Picture-in-Picture mode');
+            player.controlBar.show();
+            playPauseButton.style.display = "block";
         });
 
         // Skip Intro & Skip Recap

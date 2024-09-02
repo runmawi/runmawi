@@ -71,7 +71,7 @@
                             @endforeach
                         @endif
                 </video>
-                
+
             @endif
 
             <div class="video" id="visibilityMessage" style="color: white; display: none; background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
@@ -193,5 +193,4 @@
     /* .staticback-btn{display:none;} */
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .custom-skip-backward-button .custom-skip-forward-button{font-size: 45px;color: white;}
-    .vjs-text-track-cue div{font-size: 24px !important;background-color: rgb(0, 0, 0, 0.5) !important;}
 </style>
