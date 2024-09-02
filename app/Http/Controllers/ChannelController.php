@@ -4352,7 +4352,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_block_button']     = false ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4756,7 +4756,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_register_button']  = true ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4791,7 +4791,7 @@ class ChannelController extends Controller
                             $item['users_video_visibility_register_button']  = false ;
 
                             $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                            $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                            $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                             if ($item->access == "ppv") {
 
@@ -5355,7 +5355,7 @@ class ChannelController extends Controller
                    $item['users_video_visibility_register_button']  = true ;
 
                    $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                   $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                   $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                        // Free duration
                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -5390,7 +5390,7 @@ class ChannelController extends Controller
                            $item['users_video_visibility_register_button']  = false ;
 
                            $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                           $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                           $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                            if ($item->access == "ppv") {
 
