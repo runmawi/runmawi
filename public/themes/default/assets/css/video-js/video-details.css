@@ -500,6 +500,7 @@ div#video-purchase-now-modal{padding-right: 0 !important;}
     }
     .pageWrapper{padding:0 25px;}
     .modal-dialog{ max-width: 600px;}
+    .vpageBanner .content .right .playbtn .text{font-size: 13px;}
 }
 
 @media (max-width:425px){
