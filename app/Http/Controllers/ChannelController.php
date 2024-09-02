@@ -4382,7 +4382,7 @@ class ChannelController extends Controller
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
+                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscribe" : "Purchase" )  .' Now'   ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4785,7 +4785,7 @@ class ChannelController extends Controller
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -5384,7 +5384,7 @@ class ChannelController extends Controller
                        if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                            $item['users_video_visibility_status'] = false ;
-                           $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                           $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                            $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                            $item['users_video_visibility_register_button']  = false ;
