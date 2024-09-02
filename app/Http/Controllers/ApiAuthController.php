@@ -25434,7 +25434,7 @@ public function SendVideoPushNotification(Request $request)
                                                                                           return $item ;
                                                                                       }
   
-                                                                                  })->filter()->get();
+                                                                                  });
   
   
                       return $item;
