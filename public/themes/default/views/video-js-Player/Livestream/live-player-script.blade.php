@@ -5,7 +5,7 @@
     let free_duration_seconds   = "<?php echo $Livestream_details->free_duration; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('live-stream-player', { // Video Js Player 
+        var player = videojs('live-stream-player', { // Video Js Player
             aspectRatio: '16:9',
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
@@ -21,7 +21,7 @@
                     'remainingTimeDisplay': {},
                     'subtitlesButton': {},
                     'playbackRateMenuButton': {},
-                    'fullscreenToggle': {},      
+                    'fullscreenToggle': {},
                 },
                 pictureInPictureToggle: true,
             }
@@ -29,11 +29,13 @@
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        const titleButton = document.querySelector('.titlebutton');
 
         player.on('userinactive', () => {
           if (playPauseButton && backButton) {
             playPauseButton.style.display = 'none';
             backButton.style.display = 'none';
+            titleButton.style.display = 'none';
           }
         });
 
@@ -41,6 +43,7 @@
           if (playPauseButton && backButton) {
             playPauseButton.style.display = 'block';
             backButton.style.display = 'block';
+            titleButton.style.display = 'none';
           }
         });
 
@@ -54,7 +57,7 @@
 
         player.on("loadedmetadata", function() {
 
-            const CheckPreAds  = '<?= $pre_advertisement ?>'; 
+            const CheckPreAds  = '<?= $pre_advertisement ?>';
             const CheckPostAds = '<?= $post_advertisement ?>';
             const midrollincreaseInterval = Number('<?= $video_js_mid_advertisement_sequence_time ?>');
             const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
@@ -68,7 +71,7 @@
                 if( !!CheckPreAds ){
                     markers.push({ time: 0 });
                 }
-                    
+
                 if(!!midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0 ){
                     for (let time = midrollincreaseInterval; time < total; time += midrollincreaseInterval) {
                         markers.push({ time });
@@ -78,7 +81,7 @@
                 if( !!CheckPostAds ){
                     markers.push({ time: total });
                 }
-                
+
                 var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);
 
                 for (var i = 0; i < markers.length; i++) {
@@ -97,7 +100,7 @@
             }
         });
 
-        player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
+        player.hlsQualitySelector({ // Hls Quality Selector - M3U8
             displayCurrentQuality: true,
         });
 
@@ -145,7 +148,7 @@
             var currentTime = player.currentTime();
             var Player_duration = player.duration() ;
 
-            // Mid ads 
+            // Mid ads
 
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
 
@@ -166,7 +169,7 @@
              if ( Player_duration != "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime >=  free_duration_seconds ) {
                 player.pause();
                 player.dispose();
-                player.off('timeupdate');  
+                player.off('timeupdate');
                 $('#visibilityMessage').show();
                 $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
             }
@@ -174,7 +177,7 @@
             // Free Duration - Live
 
             if ( Player_duration == "Infinity" && users_video_visibility_free_duration_status == 1 && currentTime  ) {
-    
+
                 if (timeupdate_counter <= 2) {
                     initial_current_time = player.currentTime();
                     timeupdate_counter++;
@@ -186,7 +189,7 @@
                 if( round_off_time >=  free_duration_seconds ){
                     player.pause();
                     player.dispose();
-                    player.off('timeupdate');  
+                    player.off('timeupdate');
                     $('#visibilityMessage').show();
                     $('.custom-skip-backward-button,.custom-skip-forward-button').hide();
                 }
