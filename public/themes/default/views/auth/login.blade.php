@@ -218,7 +218,7 @@
 
                                     <form id="otpForm" class="otp-form mt-4" method="get">
                                         <div class="row d-flex">
-                                            <div class="col-md-4 form-group">  {{-- Country Code --}}
+                                            <div class="col-md-4 col-4 form-group m-0">  {{-- Country Code --}}
                                                 <select class="form-control text-center mobile_validation" id="ccode" name="ccode" required>
                                                     @foreach($country_json_data as $code)
                                                         <option value="{{  $code['dial_code'] }}" style="background-color:rgba(0,0,0,0.5)!important;" {{ $code['name'] == "India" ? 'selected' : ''}} > {{ "{$code['code']} ({$code['dial_code']})" }}</option>
@@ -226,7 +226,7 @@
                                                  </select> 
                                             </div>
 
-                                            <div class="col-md-8 form-group">  {{-- Mobile No --}}
+                                            <div class="col-md-8 col-8 form-group m-0">  {{-- Mobile No --}}
                                                 <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
                                             </div>
                                         </div>
@@ -253,7 +253,7 @@
                                                     <button type="submit" class="btn btn-hover w-100" id="verify-button" style="line-height:20px" disabled >{{ __('Verify OTP') }}</button>
                                                 </div>
 
-                                                <div class="justify-content-end links text-right">
+                                                <div class="justify-content-end links text-right mt-2">
                                                     <a href="#" id="resend_otp_button">{{ __('Resend OTP') }}</a>
                                                 </div>
                                             </div>
