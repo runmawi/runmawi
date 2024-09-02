@@ -72,6 +72,15 @@
     .view-count .rent-video .btn .btn-primary{
         text-transform: uppercase;
     }
+    .custom-skip-forward-button, .custom-skip-backward-button{
+        top: -250px !important;
+    }
+    .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
+        top: -335px !important;
+    }
+    .custom-skip-backward-button{
+        left: 31% !important;
+    }
     @media (min-width:601px){
         .my-video.vjs-fluid{height: calc(100vh - 85px)!important;}
     }
@@ -132,13 +141,15 @@
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                 </button>
 
-                                <button class="custom-skip-forward-button">
+                                <div class="titlebutton">{{$episode_details->title}}</div>
+
+                                <!-- <button class="custom-skip-forward-button">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                                 </button>
 
                                 <button class="custom-skip-backward-button">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
-                                </button>
+                                </button> -->
 
                                 <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
                                     width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
@@ -505,33 +516,25 @@
                         @endif
                     </li>
 
-                    <li>
-                        @if(empty($like_dislike->liked) || (!empty($like_dislike->liked) && $like_dislike->liked == 0))
-                            <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
-                                data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodelike(this)"><i class="ri-thumb-up-line" aria-hidden="true"></i>
-                            </span>
-                        @else
-                            <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
-                                data-list="remove" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodelike(this)"> <i class="ri-thumb-up-fill" aria-hidden="true"></i>
-                            </span>
-                        @endif
-                    </li>
+                    
+  <li>
+    <span id="episode_like_{{ $episode->id }}" class="episode_like_" aria-hidden="true"
+        data-list="{{ empty($like_dislike->liked) ? $episode->id : 'remove' }}" 
+        data-video-id="{{ $episode->id }}" 
+        onclick="episodelike(this)">
+        <i class="{{ empty($like_dislike->liked) ? 'ri-thumb-up-line' : 'ri-thumb-up-fill' }}" aria-hidden="true"></i>
+    </span>
+</li>
 
-                    <li>
-                        @if(empty($like_dislike->disliked) || (!empty($like_dislike->disliked) && $like_dislike->disliked == 0))
-                            <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
-                                data-list="{{ $episode->id }}" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodedislike(this)"><i class="ri-thumb-down-line" aria-hidden="true"></i>
-                            </span>
-                        @else
-                            <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
-                                data-list="remove" data-myval="10" data-video-id="{{ $episode->id }}"
-                                onclick="episodedislike(this)"> <i class="ri-thumb-down-fill" aria-hidden="true"></i>
-                            </span>
-                        @endif
-                    </li>
+<li>
+    <span id="episode_dislike_{{ $episode->id }}" class="episode_dislike_" aria-hidden="true"
+        data-list="{{ empty($like_dislike->disliked) ? $episode->id : 'remove' }}" 
+        data-video-id="{{ $episode->id }}" 
+        onclick="episodedislike(this)">
+        <i class="{{ empty($like_dislike->disliked) ? 'ri-thumb-down-line' : 'ri-thumb-down-fill' }}" aria-hidden="true"></i>
+    </span>
+</li>
+                    
 
                     <li class="share">
                         <span><i class="ri-share-fill"></i></span>
@@ -1492,120 +1495,72 @@
             })
         }
 
-
-
+        
         function episodelike(ele) {
-            var episode_id = $(ele).attr('data-video-id');
-            var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
-            // alert(key_value);
+    var episode_id = $(ele).attr('data-video-id');
+    var key_value = $(ele).attr('data-list');
+    var url = key_value !== "remove" ? '<?= URL::to('/like-episode') ?>' : '<?= URL::to('/remove_like-episode') ?>';
 
-            // alert(my_value);
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/like-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_like-episode') ?>';
-            }
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: {
-                    episode_id: episode_id,
-                    _token: '<?= csrf_token() ?>'
-                },
-                success: function(data) {
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+            episode_id: episode_id,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(data) {
+            if (data.message === "Added to Like Episode" || data.message === "Added to Like Episode, Dislike Removed if existed") {
+                // Toggle Like button to filled
+                $(ele).find('i').removeClass('ri-thumb-up-line').addClass('ri-thumb-up-fill');
+                $(ele).attr('data-list', 'remove');
 
-                    if (data.message == "Removed from Liked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-fill').toggleClass('ri-thumb-up-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to Like Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
-                    }
+                // Reset Dislike button to outlined if it was filled
+                var dislikeButton = $('#episode_dislike_' + episode_id);
+                if (dislikeButton.length) {
+                    dislikeButton.find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                    dislikeButton.attr('data-list', episode_id);
                 }
-            })
-        }
-
-
-        function episodedislike(ele) {
-            var episode_id = $(ele).attr('data-video-id');
-            var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
-            // alert(key_value);
-
-            // alert(my_value);
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/dislike-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_dislike-episode') ?>';
+            } else if (data.message === "Removed from Like Episode") {
+                // Toggle Like button back to outlined
+                $(ele).find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                $(ele).attr('data-list', episode_id);
             }
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: {
-                    episode_id: episode_id,
-                    _token: '<?= csrf_token() ?>'
-                },
-                success: function(data) {
-
-                    if (data.message == "Removed from DisLiked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-fill').toggleClass(
-                        'ri-thumb-down-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to DisLike Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-line').toggleClass(
-                            'fri-thumb-down-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
-                            );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
-                    }
-                }
-            })
         }
+    });
+}
 
+function episodedislike(ele) {
+    var episode_id = $(ele).attr('data-video-id');
+    var key_value = $(ele).attr('data-list');
+    var url = key_value !== "remove" ? '<?= URL::to('/dislike-episode') ?>' : '<?= URL::to('/remove_dislike-episode') ?>';
 
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+            episode_id: episode_id,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(data) {
+            if (data.message === "Added to Dislike Episode" || data.message === "Added to Dislike Episode, Like Removed if existed") {
+                // Toggle Dislike button to filled
+                $(ele).find('i').removeClass('ri-thumb-down-line').addClass('ri-thumb-down-fill');
+                $(ele).attr('data-list', 'remove');
+
+                // Reset Like button to outlined if it was filled
+                var likeButton = $('#episode_like_' + episode_id);
+                if (likeButton.length) {
+                    likeButton.find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                    likeButton.attr('data-list', episode_id);
+                }
+            } else if (data.message === "Removed from Dislike Episode") {
+                // Toggle Dislike button back to outlined
+                $(ele).find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                $(ele).attr('data-list', episode_id);
+            }
+        }
+    });
+}
 
         function Copy() {
             var media_path = '<?= URL::to('episode/') . '/' . $series->title . '/' . $episode->slug ?>';

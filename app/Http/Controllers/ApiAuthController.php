@@ -6008,7 +6008,7 @@ return response()->json($response, 200);
     })->first();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
-
+    $series_player_image =  $series->player_image ? $series->player_image : " ";
     $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : " ";
 
     foreach ($seasonlist as $key => $season) {
@@ -6040,6 +6040,7 @@ return response()->json($response, 200);
       $myData[] = array(
         "seriestitle"   => $series->title,
         "series_description"   => $series->description,
+        "series_player_image"   => $series_player_image ,
         "series" => $series,
         "season_name"   => $season_name,
         "season_access"   => $season_access,
@@ -14061,8 +14062,7 @@ public function QRCodeMobileLogout(Request $request)
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 
-
-      if (1 == 0) {
+      if (!empty($request->page)) {
 
         $OrderHomeSettings =  OrderHomeSetting::whereIn('video_name', $All_Homepage_homesetting )->orderBy('order_id','asc')->paginate(3);
       
@@ -15748,7 +15748,7 @@ public function QRCodeMobileLogout(Request $request)
         $carbon_current_time =  $carbon_now->format('H:i:s');
         $carbon_today =  $carbon_now->format('n-j-Y');
 
-        $data =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
+        $data =  AdminEPGChannel::where('status',1)->limit($homepage_input_array['limit'])->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
                     
           $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
           $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
@@ -15774,8 +15774,7 @@ public function QRCodeMobileLogout(Request $request)
                                                                           }
 
                                                                       })->filter()->first();
-
-
+          $item['source'] = 'EPG';
           return $item;
         });
     }
@@ -15792,6 +15791,11 @@ public function QRCodeMobileLogout(Request $request)
       $source_name = $request->source_name;
       $data = [];
       $Page_List_Name = 'No data';
+
+      $Pagelist_default_image_url = array(
+        'default_vertical_image_url' => default_vertical_image_url(),
+        'default_horizontal_image_url' => default_horizontal_image_url(),
+      );
       
       if ($source_name != null) {
 
@@ -15931,6 +15935,11 @@ public function QRCodeMobileLogout(Request $request)
               case 'Series_based_on_genre':
                 $data = $this->Series_based_on_genre_Pagelist();
                 $Page_List_Name = 'Series_based_on_genre_Pagelist';
+                break;  
+
+              case 'EPG':
+                $data = $this->EPG_Pagelist( $Pagelist_default_image_url );
+                $Page_List_Name = 'EPG_Pagelist';
                 break;  
           }
       }
@@ -16656,6 +16665,45 @@ public function QRCodeMobileLogout(Request $request)
     
   }
 
+  private static function EPG_Pagelist( $Pagelist_default_image_url ){
+
+    $current_timezone = current_timezone();
+    $carbon_now = Carbon::now($current_timezone);
+    $carbon_current_time =  $carbon_now->format('H:i:s');
+    $carbon_today =  $carbon_now->format('n-j-Y');
+
+    $data =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($Pagelist_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                
+      $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $Pagelist_default_image_url['default_vertical_image_url'] ;
+      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $Pagelist_default_image_url['default_horizontal_image_url'] ;
+      $item['tv_image_url']     = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $Pagelist_default_image_url['default_horizontal_image_url'] ;
+      $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $Pagelist_default_image_url['default_vertical_image_url'] ;
+                                          
+      $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                  ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                      $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                      ->copy()->tz( $current_timezone );
+
+                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                      ->copy()->tz( $current_timezone );
+
+                                                                      if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                          $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                          $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                          $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                          return $item ;
+                                                                      }
+
+                                                                  })->filter()->first();
+      $item['source'] = 'EPG';
+      return $item;
+    });
+    
+    return $data;
+  }
 
   public function website_baseurl()
   {
@@ -24703,7 +24751,7 @@ public function TV_login(Request $request)
       } catch (\Throwable $th) {
           $response = array(
             "status"  => 'false' ,
-            "message" => $e->getMessage(),
+            "message" => $th->getMessage(),
         );
       }
         return response()->json($response, 200);
@@ -25323,6 +25371,74 @@ public function SendVideoPushNotification(Request $request)
                                                   });
 
               return $item;
+          });
+
+          $response = array(
+            "status"  => 'true' ,
+            "message" => "Retrieved Channels EPG Successfully" ,
+            "epg_channel_data" => $epg_channel_data,
+          );
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        "status"  => 'false' ,
+        "message" => $th->getMessage(),
+      );
+    }
+
+    return response()->json($response, 200);
+
+  }
+
+  public function unique_channel_epg(Request $request)
+  {
+    try {
+          $this->validate($request, [
+            'epg_channel_id' => 'required',
+          ]);
+
+          $current_timezone = current_timezone();
+          $carbon_now = Carbon::now($current_timezone);
+          $carbon_current_time =  $carbon_now->format('H:i:s');
+          $carbon_today =  $carbon_now->format('n-j-Y');
+          $default_vertical_image_url = default_vertical_image_url() ;
+          $default_horizontal_image_url = default_horizontal_image_url();
+  
+          $epg_channel_data =  AdminEPGChannel::where('id',$request->epg_channel_id)->where('status',1)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                      
+                      $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                      $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                      $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                                                          
+                      $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                                  ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+  
+                                                                                      $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+  
+                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                                      ->copy()->tz( $current_timezone );
+  
+                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                                      ->copy()->tz( $current_timezone );
+  
+                                                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+                                
+                                                                                      if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                          $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                          $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                          $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                              
+                                                                                          $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                                                          $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+                                                                                          return $item ;
+                                                                                      }
+  
+                                                                                  })->filter()->first();
+  
+  
+                      return $item;
           });
 
           $response = array(
