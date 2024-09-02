@@ -365,25 +365,11 @@
         });
 
         // Watermark
-        player.ready(function() {
-            var watermark = document.createElement('div');
-            watermark.className = 'vjs-watermark';
-            watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->watermark ?>" alt="Watermark">';
-            // watermark.innerHTML = '<img src="https://localhost/flicknexs/public/uploads/settings/webnexs-250.png" alt="Watermark">';
-            player.el().appendChild(watermark);
-        });
-
-        // var watermarkUrl = "<?= URL::to('/') . '/public/uploads/settings/' . $settings->watermark ?>";
         // player.ready(function() {
         //     var watermark = document.createElement('div');
         //     watermark.className = 'vjs-watermark';
-
-        //     var watermarkImg = document.createElement('img');
-        //     watermarkImg.src = watermarkUrl;
-        //     watermarkImg.alt = "Watermark";
-
-        //     watermark.appendChild(watermarkImg);
-
+        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->watermark ?>" alt="Watermark">';
+        //     // watermark.innerHTML = '<img src="https://localhost/flicknexs/public/uploads/settings/webnexs-250.png" alt="Watermark">';
         //     player.el().appendChild(watermark);
         // });
 

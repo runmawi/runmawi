@@ -92,7 +92,7 @@
 }
 
 .my-video.video-js .vjs-tech {
-    object-fit: cover;
+    object-fit: fill;
 }
 
 .my-video.video-js.vjs-playing{
