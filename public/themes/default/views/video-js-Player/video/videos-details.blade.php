@@ -714,7 +714,7 @@
                                 </div>
                                 <div class=" becomesubs-page">
                                     @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
-                                        <div class="row mt-3 justify-content-around">  
+                                        <div class="Stripe_button row mt-3 justify-content-around">  
                                             <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
                                                 <button class="btn btn-primary"
                                                     onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
@@ -746,7 +746,7 @@
                                                     </button>
                                                 @endif
                                             </div>
-                                            <div class="Stripe_button col-md-5 col-5 btn">
+                                            <div class="Razorpay_button col-md-5 col-5 btn">
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
                                                     {{'Cancel'}}
                                                 </button>
