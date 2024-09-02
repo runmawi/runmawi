@@ -27,6 +27,7 @@ Route::get('/ffplayout-token-channel', 'AdminFFplayoutController@login');
 Route::get('/ffplayout-channel', 'AdminFFplayoutController@GetChannels');
 Route::get('/getvideocihperdata', 'AdminVideosController@getvideocihperdata');
 Route::get('/videocihperplayer', 'AdminVideosController@videocihperplayer');
+Route::get('/shakaplayer', 'AdminVideosController@shakaplayer');
 
 Route::get('mytv/quick-response/{tvcode}/{verifytoken}', 'HomeController@TvCodeQuickResponse');
 Route::get('/BunnyCDNUpload', 'AdminDashboardController@BunnyCDNUpload');
@@ -728,6 +729,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/videos/aws_editvideo/{id}', 'AdminVideosController@AWSEditvideo');
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
+    Route::post('/videos/VideoCipherFileUpload', ['before' => 'demo', 'uses' => 'AdminVideosController@VideoCipherFileUpload']);
 
 
     // Music Genre Routes
