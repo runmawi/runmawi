@@ -608,7 +608,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end">
-                            @if(Auth::user() !== null)
+                            @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
                                 <img src="{{ $user_avatar }}" alt="{{ $user_name }}">
                                 <h5 class="pl-4">{{ $user_name }}</h5>
                             @endif
