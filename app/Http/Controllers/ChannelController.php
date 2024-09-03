@@ -5515,7 +5515,7 @@ class ChannelController extends Controller
                }
                elseif( $item['access'] == 'ppv' && !Auth::guest() && Auth::user()->role == "subscriber"){
                     $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
-                        if($item['PPV_Plan'] > 0){
+                    if($item['PPV_Plan'] > 0){
                             if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                         }else{
                             //  return Redirect::to('/category/videos'.'/'.$slug);

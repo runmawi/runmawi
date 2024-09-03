@@ -33,6 +33,8 @@ use App\ModeratorPayout;
 use App\ChannelPayout;
 use App\Channel;
 use App\HomeSetting;
+use App\SeriesSeason;
+use App\Series;
 
 
 class RazorpayController extends Controller
@@ -823,4 +825,166 @@ class RazorpayController extends Controller
         return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
     }
 
+
+    
+    public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
+
+        $recept_id = Str::random(10);
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->amount * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+
+        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+        $series_id = SeriesSeason::where('id',$SeriesSeason_id)->pluck('series_id')->first();
+        $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
+
+
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->amount * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'SeriesSeason_id'=>  $request->SeriesSeason_id,
+            'user_id'        =>  Auth::user()->id ,
+            'description'    =>   null,
+            'address'        =>   null ,
+            'Series_slug'     => $Series_slug ,
+            'address'        =>   null ,
+            'ppv_plan'       =>   null ,
+        );
+
+        return Theme::view('Razorpay.SeriesSeason_rent_checkout',compact('response'),$response);
+    }
+
+    public function RazorpaySeriesSeasonRent_Payment(Request $request)
+    {
+       $setting = Setting::first();  
+       $ppv_hours = $setting->ppv_hours;
+
+       $d = new \DateTime('now');
+       $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+       $now = $d->format('Y-m-d h:i:s a');
+       $time = date('h:i:s', strtotime($now));
+       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+
+        try {
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            
+            $attributes  = array(
+                'razorpay_signature'   => $request->rzp_signature,  
+                'razorpay_payment_id'  => $request->rzp_paymentid ,  
+                'razorpay_order_id'    => $request->rzp_orderid
+            );
+            $order  = $api->utility->verifyPaymentSignature($attributes);
+
+            $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
+
+            $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
+            $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
+
+            if(!empty($SeriesSeason)){
+            $moderators_id = Auth::User()->id;
+            }
+            if(!empty($moderators_id)){
+                $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount = $request->amount;
+                $title =  $SeriesSeason->title;
+                $commssion = SeriesSeason::first();
+                $percentage = $commssion->percentage; 
+                $ppv_price = $request->amount;
+                $admin_commssion = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount = $request->amount;
+                $title =  $SeriesSeason->title;
+                $commssion = VideoCommission::first();
+                $percentage = null; 
+                $ppv_price = $request->amount;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = $request->user_id ;
+            $purchase->season_id     = $request->SeriesSeason_id ;
+            $purchase->series_id    = $series_id ;
+            $purchase->total_amount = $request->amount /100 ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
+            $purchase->ppv_plan = $request->ppv_plan;
+            $purchase->save();
+
+            $respond=array(
+                'status'  => 'true',
+            );
+        
+            return view('Razorpay.Rent_message',compact('respond'),$respond);
+
+        } catch (\Exception $e) {
+
+            $respond=array(
+                'status'  => 'false',
+            );
+
+            return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
+        }
+    }
+
+    public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
+
+        $recept_id = Str::random(10);
+
+        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+
+        $orderData = [
+            'receipt'         => $recept_id,
+            'amount'          => $request->amount * 100, 
+            'currency'        => 'INR',
+            'payment_capture' => 1 ,
+        ];
+        
+        $razorpayOrder = $api->order->create($orderData);
+
+        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+        $series_id = SeriesSeason::where('id',$SeriesSeason_id)->pluck('series_id')->first();
+        $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
+
+
+        $response=array(
+            'razorpaykeyId'  =>   $this->razorpaykeyId,
+            'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'currency'       =>  'INR',
+            'amount'         =>  $request->amount * 100 ,
+            'orderId'        =>  $razorpayOrder['id'],
+            'SeriesSeason_id'=>  $request->SeriesSeason_id,
+            'user_id'        =>  Auth::user()->id ,
+            'description'    =>   null,
+            'address'        =>   null ,
+            'Series_slug'     => $Series_slug ,
+            'address'        =>   null ,
+            'ppv_plan'       =>   $ppv_plan ,
+        );
+
+        return Theme::view('Razorpay.SeriesSeason_rent_checkout',compact('response'),$response);
+    }
+
+
+    
 }
