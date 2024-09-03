@@ -4371,10 +4371,25 @@ class ChannelController extends Controller
 
                         $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
-                        $current_date = date('Y-m-d h:i:s a', time());
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
-                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)->where('to_time','>',$current_date)->count();
+                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
+                        ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
+                        ->count();
 
+                        $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
+                        ->where('user_id', Auth::user()->id)
+                        ->first();
+
+                        if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                            $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                            $currentdate = date("M d , y H:i:s");
+                            $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                        }
+                        else{
+                            $ppv_exists_check_query = null;
+                        }
+ 
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
 
@@ -4415,10 +4430,9 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                             }
                         }
-
                         // Subscriber / PPV
 
-                        if( $item->access == "subscriber" && !is_null($item->ppv_price) ){
+                        if( $item->access == "subscriber" && !is_null($item->ppv_price)   ){
 
                             if (Auth::user()->role == "subscriber") {
                                 $item['users_video_visibility_status']         = true ;
@@ -4426,6 +4440,7 @@ class ChannelController extends Controller
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                             }
                             elseif( $PPV_exists == true ){
+                                
                                 $item['users_video_visibility_status']         = true ;
                                 $item['users_video_visibility_status_button']  = 'Watch now' ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
@@ -4447,6 +4462,7 @@ class ChannelController extends Controller
                             }
                         }
                     }
+
                         // Free duration
                     if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
                         if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -5516,7 +5532,7 @@ class ChannelController extends Controller
                }
                elseif( $item['access'] == 'ppv' && !Auth::guest() && Auth::user()->role == "subscriber"){
                     $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
-                        if($item['PPV_Plan'] > 0){
+                    if($item['PPV_Plan'] > 0){
                             if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                         }else{
                             //  return Redirect::to('/category/videos'.'/'.$slug);

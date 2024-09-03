@@ -632,13 +632,15 @@ $settings  = App\Setting::first();?>
 								</select>
 							</div>
 						</div>
+						@if (Enable_videoCipher_Upload() == 0 && Enable_PPV_Plans() == 0)
 							@if($settings->series_season == 1)
 							<div class="form-group">
 		                        <label>PPV Interval:</label>
 								<p class="p1">Please Mention How Many Episodes are Free:</p>
 		                        <input type="text" id="ppv_interval" name="ppv_interval" value="" class="form-control">
 		                    </div>  
-							@endif                   
+							@endif      
+						@endif                   
 				    </form>
 				</div>
 				
