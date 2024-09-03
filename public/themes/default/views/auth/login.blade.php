@@ -265,17 +265,17 @@
 
                                     <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('SEND OTP') }}</button>
                                 @else
-                                    <form method="POST" action="{{ route('login') }}" class="mt-4">
+                                    <form method="POST" id="email-login-form" action="{{ route('login') }}" class="mt-4">
                                         @csrf
 
                                         <input type="hidden" name="previous" value="{{ url()->previous() }}">
                             
                                         <div class="form-group">  {{-- E-Mail --}}
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" autocomplete="email" autofocus>
+                                            <input id="email" type="email" class="form-control login-inputs-data @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" autocomplete="email" autofocus>
                                         </div>
                                 
                                         <div class="form-group mt-4">  {{-- Password --}}                            
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control login-inputs-data @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" autocomplete="current-password">
                                         </div>
                                         
                                         <div class="position-relative"> {{-- eyeSlash --}}        
@@ -301,7 +301,7 @@
                                         @endif
 
                                         <div class="sign-info">
-                                            <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">{{ __('SIGN IN') }}</button>             
+                                            <button type="submit"id="email-login-button" class="btn btn-hover ab" style="width:100%;color:#fff!important;" disabled >{{ __('SIGN IN') }}</button>             
                                         </div>
                                 @endif
                             
@@ -529,7 +529,31 @@
                     }
                 },
             });
-        })
+        });
+
+        $(document).ready(function() {
+            $(".login-inputs-data").on("input", function() {
+
+                const email = $('#email').val().trim();
+                const password = $('#password').val().trim();
+
+                const loginButton = $('#email-login-button');
+
+                if (email && password) {
+                    loginButton.prop("disabled", false);
+                } else {
+                    loginButton.prop("disabled", true);
+                }
+            });
+
+            $("#email-login-button").click(function(){ 
+                event.preventDefault();
+                $(this).prop("disabled", true); 
+
+                $("#email-login-form").submit(); 
+            });
+        });
+
         </script>
 
     </body>
