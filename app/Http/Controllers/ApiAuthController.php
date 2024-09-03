@@ -25195,7 +25195,7 @@ public function TV_login(Request $request)
             ], 422); 
         }
         
-        $AdminOTPCredentials =  AdminOTPCredentials::where('otp_vai','fast2sms')->where('status',1)->first();
+        $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
 
@@ -25205,15 +25205,20 @@ public function TV_login(Request $request)
               ) , 422);
         }
 
-      
         $random_otp_number = random_int(1000, 9999);
-        $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
-        $Mobile_number     = $request->mobile_number ;
         $user_id           = $request->user_id;
 
         $user = User::find($user_id);
 
-        $response = Http::withOptions(['verify' => false, ])  
+        $ccode = str_replace('+','',$user->ccode );
+        $mobile          = $user->mobile;
+        $Mobile_number   = $ccode.$mobile ;
+
+        if( $AdminOTPCredentials->otp_vai == "fast2sms" ){
+
+          $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
+
+          $response = Http::withOptions(['verify' => false, ])  
           ->get('https://www.fast2sms.com/dev/bulkV2', [
                 'authorization'    => $fast2sms_API_key ,
                 'variables_values' => $random_otp_number,
@@ -25222,29 +25227,84 @@ public function TV_login(Request $request)
                 'flash'   => 1 ,
             ]);
 
-        if ($response->failed()) {
-            
-            $response = array(
-              "status"  => 'false' ,
-              "message" => $response['message'] ,
+          if ($response->failed()) {
+              
+              $response = array(
+                "status"  => 'false' ,
+                "message" => $response['message'] ,
+              );
+
+          } else {
+
+              User::find($user_id)->update([
+                'otp' => $random_otp_number ,
+                'otp_request_id' => $response['request_id'] ,
+                'otp_through' => $AdminOTPCredentials->otp_vai ,
+                'password'    => Hash::make($random_otp_number),
+                'email'       => 'No email for this id - '.$user_id,
+              ]);
+
+              $response = array(
+                "status"     => 'true' ,
+                "request_id" => $response['request_id'] ,
+                "message"    => 'SMS Send Successfully' ,
+                "user_details" => User::where('id',$user_id)->get() ,
+              );
+          }
+        }
+        
+        if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
+
+            $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
+            $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+            $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
+
+            $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
+            $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+
+            $inputs = array(
+                'APIKEY' => $API_key_24x7sms,
+                'MobileNo' => $Mobile_number,
+                'SenderID' => $SenderID,
+                'ServiceName' => $ServiceName,
             );
 
-        } else {
+            if ($ServiceName == "TEMPLATE_BASED") {
+                $inputs += array(
+                    // 'DLTTemplateID' => $DLTTemplateID,
+                    'Message' => $message,
+                );
+            }
 
-            User::find($user_id)->update([
-              'otp' => $random_otp_number ,
-              'otp_request_id' => $response['request_id'] ,
-              'otp_through' => 'fast2sms' ,
-              'password'    => Hash::make($random_otp_number),
-              'email'       => 'No email for this id - '.$user_id,
-            ]);
+            $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
-            $response = array(
-              "status"     => 'true' ,
-              "request_id" => $response['request_id'] ,
-              "message"    => 'SMS Send Successfully' ,
-              "user_details" => User::where('id',$user_id)->get() ,
-            );
+            if (str_contains($response->body(), 'success')) {
+
+                $parts = explode(':', $response->body());
+                $msgId = $parts[1];
+
+                User::find($user_id)->update([
+                  'otp' => $random_otp_number ,
+                  'otp_request_id' => $msgId ,
+                  'otp_through' => $AdminOTPCredentials->otp_vai ,
+                  'password'    => Hash::make($random_otp_number),
+                  'email'       => 'No email for this id - '.$user_id,
+                ]);
+
+                $response = array(
+                  "status"     => 'true' ,
+                  "request_id" => $response['request_id'] ,
+                  "message"    => 'SMS Send Successfully' ,
+                  "user_details" => User::where('id',$user_id)->get() ,
+                );
+
+            }else {
+
+                $response = array(
+                  "status"  => 'false' ,
+                  "message" => 'OTP Not Sent' ,
+                );
+            }      
         }
 
       } catch (\Throwable $th) {
@@ -25253,7 +25313,6 @@ public function TV_login(Request $request)
             "status"  => 'false' ,
             "message" => $th->getMessage(),
           );
-          
       }
 
       return response()->json($response, 200);
@@ -25278,7 +25337,7 @@ public function TV_login(Request $request)
         }
 
         // Only for Play Store Testing 
-        if( $request->mobile_number == "8077744443"){
+        if( $request->mobile_number == "0987654321"){
 
           $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->update([
             "otp" => "1234",
