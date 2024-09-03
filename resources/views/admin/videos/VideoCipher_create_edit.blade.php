@@ -760,7 +760,66 @@ border-radius: 0px 4px 4px 0px;
                            </select>
                      </div>
                </div>
-               <div class="row" id="quality_ppv_price" >
+               <div class="row mt-3" id="quality_ppv_price" >
+                  {{-- ppv price --}}
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">PPV Price for 480p Plan:</label>
+                        <input type="text" class="form-control m-0" placeholder="PPV Price" name="ppv_price_480p"  value="@if(!empty($video->ppv_price_480p)){{ $video->ppv_price_480p }}@endif">
+                        <span id="error_quality_ppv_price_480p" style="color:red;font-size:14px;">*Enter the 480p PPV Price </span>
+                     </div>
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">PPV Price for 720p Plan:</label>
+                        <input type="text" class="form-control m-0" placeholder="PPV Price" name="ppv_price_720p"  value="@if(!empty($video->ppv_price_720p)){{ $video->ppv_price_720p }}@endif">
+                        <span id="error_quality_ppv_price_720p" style="color:red;font-size:14px;">*Enter the 720p PPV Price </span>
+                     </div>
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">PPV Price for 1080p Plan:</label>
+                        <input type="text" class="form-control m-0" placeholder="PPV Price" name="ppv_price_1080p"  value="@if(!empty($video->ppv_price_1080p)){{ $video->ppv_price_1080p }}@endif">
+                        <span id="error_quality_ppv_price_1080p" style="color:red;font-size:14px;">*Enter the 1080p PPV Price </span>
+                     </div>
+
+                     {{-- video id --}}
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">Choose video ID for 480p:</label>
+                        <input type="text" class="form-control" placeholder="Video ID for 480p" name="video_id_480p"  value="@if(!empty($video->video_id_480p)){{ $video->video_id_480p }}@endif">
+                    </div>
+                     <div class="col-sm-4 form-group" >
+                           <label class="m-0">Choose video ID for 720p:</label>
+                           <input type="text" class="form-control" placeholder="Video ID for 720" name="video_id_720p"  value="@if(!empty($video->video_id_720p)){{ $video->video_id_720p }}@endif">
+                     </div>
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">Choose video ID for 1080p:</label>
+                        <input type="text" class="form-control" placeholder="Video ID for 1080" name="video_id_1080p"  value="@if(!empty($video->video_id_1080p)){{ $video->video_id_1080p }}@endif">
+                     </div>
+
+                     {{-- Ios --}}
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">IOS PPV Price for 480p Plan:</label>
+                        <select  name="ios_ppv_price_480p" class="form-control" id="ios_ppv_price_480p">
+                           <option value= "" >Select 480p IOS PPV Price: </option>
+                           @foreach($InappPurchase as $Inapp_Purchase)
+                           <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_480p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">IOS PPV Price for 720p Plan:</label>
+                        <select  name="ios_ppv_price_720p" class="form-control" id="ios_ppv_price_720p">
+                           <option value= "" >Select 720p IOS PPV Price: </option>
+                           @foreach($InappPurchase as $Inapp_Purchase)
+                           <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_720p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                     <div class="col-sm-4 form-group" >
+                        <label class="m-0">IOS PPV Price for 1080p Plan:</label>
+                        <select  name="ios_ppv_price_1080p" class="form-control" id="ios_ppv_price_1080p">
+                           <option value= "" >Select 1080p IOS PPV Price: </option>
+                           @foreach($InappPurchase as $Inapp_Purchase)
+                           <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_1080p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
+                           @endforeach
+                        </select>
+                     </div>
                   <!-- <div class="col-sm-6 form-group" >
                         <label class="m-0">PPV Price:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_240p"  value="@if(!empty($video->ppv_price_240p)){{ $video->ppv_price_240p }}@endif">
@@ -771,7 +830,7 @@ border-radius: 0px 4px 4px 0px;
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_360p"  value="@if(!empty($video->ppv_price_360p)){{ $video->ppv_price_360p }}@endif">
                         <span id="error_ppv_price" style="color:red;">*Enter the 360 PPV Price </span>
                      </div> -->
-                     <div class="col-sm-6 form-group" >
+                     {{-- <div class="col-sm-6 form-group" >
                         <label class="m-0">PPV Price for 480 Plan:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_480p"  value="@if(!empty($video->ppv_price_480p)){{ $video->ppv_price_480p }}@endif">
                         <span id="error_quality_ppv_price" style="color:red;">*Enter the 480 PPV Price </span>
@@ -802,7 +861,7 @@ border-radius: 0px 4px 4px 0px;
                      <div class="col-sm-6 form-group" >
                         <label class="m-0">Choose video Id1080 Plan:</label>
                         <input type="text" class="form-control" placeholder="Video ID 1080" name="video_id_1080p"  value="@if(!empty($video->video_id_1080p)){{ $video->video_id_1080p }}@endif">
-                    </div>
+                    </div> --}}
                      <!-- <div class="col-sm-6 form-group" >
                         <label class="m-0">IOS 240 PPV Price:</label>
                            <select  name="ios_ppv_price_240p" class="form-control" id="ios_ppv_price_240p">
@@ -822,7 +881,7 @@ border-radius: 0px 4px 4px 0px;
                               @endforeach
                            </select>
                      </div> -->
-                     <div class="col-sm-6 form-group" >
+                     {{-- <div class="col-sm-6 form-group" >
                         <label class="m-0">IOS PPV Price for 480 Plan:</label>
                            <select  name="ios_ppv_price_480p" class="form-control" id="ios_ppv_price_480p">
                               <option value= "" >Select 480 IOS PPV Price: </option>
@@ -848,7 +907,7 @@ border-radius: 0px 4px 4px 0px;
                               <option value="{{ $Inapp_Purchase->product_id }}"  @if($video->ios_ppv_price_1080p == $Inapp_Purchase->product_id) selected='selected' @endif >{{ $Inapp_Purchase->plan_price }}</option>
                               @endforeach
                            </select>
-                     </div>
+                     </div> --}}
                   </div>
                <div class="row">
                    <div class="col-sm-6 form-group mt-3" id="ppv_price">
@@ -1749,6 +1808,19 @@ $('#error_video_Category').hide();
    // {
    //     format: 'hh:mm '
    // });
+
+      $(document).ready(function() {
+         $('input[type="text"]').on('input', function() {
+            var inputId = $(this).attr('id');
+            var spanId = '#error_' + inputId;
+
+            if ($(this).val().trim() !== '') {
+                  $(spanId).hide();
+            } else {
+                  $(spanId).show();
+            }
+         });
+      });
 </script>
 
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
