@@ -1733,9 +1733,126 @@ public function verifyandupdatepassword(Request $request)
       }
   }
 
+  public function VideoCipher_Videodetail($data)
+  {
+    try {
+
+      $ppv_purchase = PpvPurchase::where('video_id', $data['videoid'])->orderBy('created_at', 'desc')
+                      ->where('user_id', $data['user_id'])
+                      ->first();
+
+      if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+          $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+          $currentdate = date("M d , y H:i:s");
+          $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+      }
+      else{
+          $ppv_exists_check_query = 0;
+      }
+
+      $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
+
+      if($ppv_exists_check_query == 1 || $userrole == "admin"){
+
+        $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
+        ->get()->map(function ($item) use ( $data)  {
+          $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
+          if( $userrole == "admin"){
+                  $item['videos_url'] =  $item->video_id_1080p ;
+            }elseif($userrole == "registered" &&  $item['access'] == 'ppv'){
+
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  if($item['PPV_Plan'] > 0){
+                      if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+                  }else{
+                      return Redirect::to('/category/videos'.'/'.$slug);
+                }
+            }
+            elseif( $item['access'] == 'ppv' && $userrole == "subscriber"){
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  if($item['PPV_Plan'] > 0){
+                          if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+                      }else{
+                          $item['PPV_Plan']   = '';
+                      }
+            }else{
+                $item['PPV_Plan']   = '';
+            }
+
+              $videoId = $item['videos_url']; 
+              $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+              $curl = curl_init();
+
+              curl_setopt_array($curl, array(
+                  CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => "",
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 30,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => "POST",
+                  CURLOPT_POSTFIELDS => json_encode([
+                      "ttl" => 30000, 
+                  ]),
+                  CURLOPT_HTTPHEADER => array(
+                      "Accept: application/json",
+                      "Authorization: Apisecret $apiKey",
+                      "Content-Type: application/json"
+                  ),
+              ));
+
+              $response = curl_exec($curl);
+              $err = curl_error($curl);
+
+              curl_close($curl);
+
+              if ($err) {
+                  // echo "cURL Error #:" . $err;
+                  $item['otp'] = null;
+                  $item['playbackInfo'] = null;
+                
+              } else {
+
+                  $responseObj = json_decode($response, true);
+
+                  if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
+                      $item['otp'] = null;
+                      $item['playbackInfo'] = null;
+                  }else{
+                      $item['otp'] = $responseObj['otp'];
+                      $item['playbackInfo'] = $responseObj['playbackInfo'];
+                  }
+              }
+
+          return $item;
+        })->first();
+      } else{
+        $videodetail = null;
+      }
+
+      $response = array(
+        'videodetail' => $videodetail,
+      );
+
+    } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+   
+    return response()->json($response, 200);
+  }
+
   public function videodetail(Request $request)
   {
 
+    $data = $request->all();
+    
+    if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+        return $this->VideoCipher_Videodetail($data);
+    }
+    
     try {
 
       $videoid = $request->videoid;
