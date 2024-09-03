@@ -1,8 +1,8 @@
 <head>
    <?php
       $Script = App\Script::pluck('header_script')->toArray();
-    
-      $theme = App\SiteTheme::first();      
+
+      $theme = App\SiteTheme::first();
       $theme_mode = $theme->theme_mode;
 
       $settings = App\Setting::first();
@@ -10,7 +10,7 @@
       $website_default_language = $settings->translate_language ? $settings->translate_language : 'en';
 
       $GetLightText = GetLightText();
-      $GetLightBg   = GetLightBg();  
+      $GetLightBg   = GetLightBg();
       $GetWebsiteName  = GetWebsiteName();
 
       if(Auth::guest()){
@@ -51,9 +51,9 @@
       \App::setLocale(@$translate_language);
 
 
-      $TranslationLanguage = App\TranslationLanguage::where('status',1)->get(); 
+      $TranslationLanguage = App\TranslationLanguage::where('status',1)->get();
       if(!empty(Auth::User()->id)){
-      
+
          $id = Auth::User()->id;
          $users = App\User::find($id);
          $date = date_create($users->created_at);
@@ -61,37 +61,37 @@
          $filldate = date('Y-m-d', strtotime($created_at. ' + 10 day'));
          $currentdate = date('Y-m-d');
          $DOB = $users->DOB;
-      
+
       }else{
-      
+
          $currentdate = null ;
          $filldate = null ;
          $DOB = null;
-         
+
       }
-      
+
       $data = Session::all();
-   
-      // $uri_path = $_SERVER['REQUEST_URI']; 
-      $uri_path = \Request::getPathInfo(); 
-      
+
+      // $uri_path = $_SERVER['REQUEST_URI'];
+      $uri_path = \Request::getPathInfo();
+
       $uri_parts = explode('/', $uri_path);
       $request_url = end($uri_parts);
       $uppercase =  ucfirst($request_url);
-      
+
       if(!Auth::guest() && empty($uppercase) || Auth::guest() && empty($uppercase)){
          $uppercase = "Home" ;
       }else{ }
-      
+
       ?>
 
-   <?php 
+   <?php
       $videos_data = App\Video::where("slug", $request_url)->first();
       $series = App\Series::where("slug", $request_url)->first();
       $episdoe = App\Episode::where("slug", $request_url)->first();
       $livestream = App\LiveStream::where("slug", $request_url)->first();
       $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
-      $SiteMeta_page = App\SiteMeta::where('page_slug',  $request_url)->first(); 
+      $SiteMeta_page = App\SiteMeta::where('page_slug',  $request_url)->first();
       $SiteMeta_image = !is_null($SiteMeta_page) && !is_null($SiteMeta_page->meta_image) ? $SiteMeta_page->meta_image : null ;
    ?>
 
@@ -107,20 +107,20 @@
          elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
          elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->meta_title) .' | '. $settings->website_name ; }
          elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
-         else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} 
+         else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;}
       ?>
    </title>
 
-   <meta name="description" content="<?php 
+   <meta name="description" content="<?php
       if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($dynamic_page)){ echo ($dynamic_page->meta_description) ; }
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
-      else{ echo $settings->website_description   ;}  ?>" 
+      else{ echo $settings->website_description   ;}  ?>"
    />
-         
+
    <meta name="keywords" content="<?php  @$dynamic_page->meta_keywords ? @$dynamic_page->meta_keywords : @$dynamic_page->meta_keywords?>">
 
    <!-- Schema.org markup for Google+ -->
@@ -134,7 +134,7 @@
       else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>"
    />
 
-   <meta itemprop="description" content="<?php 
+   <meta itemprop="description" content="<?php
       if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
@@ -143,7 +143,7 @@
       else{ echo $settings->website_description   ;}  ?>"
    />
 
-   <meta itemprop="image" content="<?php 
+   <meta itemprop="image" content="<?php
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
@@ -167,7 +167,7 @@
       else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>"
    >
 
-   <meta name="twitter:description" content="<?php 
+   <meta name="twitter:description" content="<?php
       if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
@@ -177,7 +177,7 @@
    >
 
    <!-- Twitter summary card with large image must be at least 280x150px -->
-   <meta name="twitter:image:src" content="<?php 
+   <meta name="twitter:image:src" content="<?php
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
@@ -193,18 +193,18 @@
       elseif(!empty($livestream)){ echo urldecode($livestream->title) .' | '. $settings->website_name ; }
       elseif(!empty($dynamic_page)){ echo urldecode($dynamic_page->title) .' | '. $settings->website_name ; }
       elseif(!empty($SiteMeta_page)){ echo urldecode($SiteMeta_page->page_title) .' | '. $settings->website_name ; }
-      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>" 
+      else{ echo urldecode($uppercase) .' | ' . $settings->website_name ;} ?>"
    />
 
-   <meta property="og:image" content="<?php 
+   <meta property="og:image" content="<?php
       if(!empty($videos_data)){ echo URL::to('/public/uploads/images').'/'.$videos_data->player_image;}
       elseif(!empty($episdoe)){ echo URL::to('/public/uploads/images').'/'.$episdoe->player_image  ;}
       elseif(!empty($series)){ echo URL::to('/public/uploads/images').'/'.$series->player_image ;}
       elseif(!empty($SiteMeta_image)){ echo $SiteMeta_image ;}
-      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;}  ?>" 
+      else{  echo URL::to('/').'/public/uploads/settings/'. $settings->default_horizontal_image   ;}  ?>"
    />
 
-   <meta property="og:description" content="<?php 
+   <meta property="og:description" content="<?php
       if (!empty($videos_data)) { echo str_replace('"', "'", $videos_data->description); }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
       elseif(!empty($series)){ echo $series->description ;}
@@ -215,7 +215,7 @@
 
 <?php if(!empty($settings->website_name)){ ?><meta property="og:site_name" content="<?php echo $settings->website_name ;?>" /><?php } ?>
 
-   <?php  $Linking_Setting = App\LinkingSetting::first();  
+   <?php  $Linking_Setting = App\LinkingSetting::first();
       $site_url = \Request::url();
       $http_site_url = explode("http://",$site_url);
       $https_site_url = explode("https://",$site_url);
@@ -246,7 +246,7 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   
+
    <!-- variable-boots-flick -->
    <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
    <!-- Favicon -->
@@ -269,15 +269,15 @@
    <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
 
    <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
-   
+
    <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
    <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
    <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-  
+
 
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
-   
-   
+
+
 
    <!-- <link rel="preload" href="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" as="script"/>
    <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script"/>
@@ -287,11 +287,11 @@
 
    <!-- lazyload script -->
 
-   <?php 
+   <?php
       if(count($Script) > 0){
          foreach($Script as $Scriptheader){   ?>
             <?= $Scriptheader ?>
-         <?php } 
+         <?php }
       } ?>
 
 <style>
@@ -351,7 +351,7 @@
       display: none;
       }
       #main-header{ color: #fff; }
-      .svg{ color: #fff; } 
+      .svg{ color: #fff; }
       #videoPlayer{
       width:100%;
       height: 100%;
@@ -363,7 +363,7 @@
       }
       span.kids {
       color: #f7dc59;
-      }  
+      }
       span.family{
       color: #f7dc59;
       }
@@ -382,7 +382,7 @@
       width: 50px;
       height: 20px;
       }
-      .switch input { 
+      .switch input {
       opacity: 0;
       width: 0;
       height: 0;
@@ -435,12 +435,12 @@
       color: <?php echo $GetLightText; ?>;
       }
       body.light-theme header#main-header{
-      background-color: <?php echo $GetLightBg; ?>!important;  
+      background-color: <?php echo $GetLightBg; ?>!important;
       color: <?php echo $GetLightText; ?> !important;
       box-shadow: 0 0 50px #ccc;
       }
       body.light-theme footer{
-      background: <?php echo $GetLightBg; ?>!important;  
+      background: <?php echo $GetLightBg; ?>!important;
       color: <?php echo $GetLightText; ?>;
       box-shadow: 0 0 50px #ccc;
       }
@@ -449,13 +449,13 @@
       color: <?php echo $GetLightText; ?>;
       }
       body.light-theme .s-icon{
-      background-color: <?php echo $GetLightBg; ?>; 
+      background-color: <?php echo $GetLightBg; ?>;
       box-shadow: 0 0 50px #ccc;
       }
       body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
       }
       body.light-theme .dropdown-menu.categ-head{
-      background-color: <?php echo $GetLightBg; ?>!important;  
+      background-color: <?php echo $GetLightBg; ?>!important;
       color: <?php echo $GetLightText; ?>!important;
       }
       body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
@@ -463,14 +463,14 @@
          font-weight: 500;
       }
       body.light-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo $GetLightBg; ?>;  
+      background-color: <?php echo $GetLightBg; ?>;
       }
       body.light-theme ul.list-group.home-search{
-      background-color: <?php echo $GetLightBg; ?> !important;  
+      background-color: <?php echo $GetLightBg; ?> !important;
       }
       body.light-theme .iq-search-bar .search-input{
          background-color: <?php echo $GetLightBg; ?> !important;
-         color: var(--iq-body-text) !important;  
+         color: var(--iq-body-text) !important;
       }
       body.light-theme body.light-theme .list-group-item a{
          color: var(--iq-body-text) !important;
@@ -485,11 +485,11 @@
       body.light-theme .block-description h6{
       color: <?php echo $GetLightText; ?>;
       font-weight: 400;
-      }  
+      }
       body.light-theme .movie-time i{
       color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
-      }  
+      }
       body.light-theme #translator-table_filter input[type="search"]{
       color: <?php echo $GetLightText; ?>;
       }
@@ -502,7 +502,7 @@
       } body.light-theme .p-tag{
       color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
-      } 
+      }
       body.light-theme .movie-time span{
       color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
@@ -510,7 +510,7 @@
       body.light-theme .block-description a{
       color: <?php echo $GetLightText; ?>!important;
       font-weight: 400;
-      } 
+      }
 
       body.light-theme .block-description{
    background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
@@ -530,7 +530,7 @@
       }
       body.light-theme .filter-option-inner-inner{
       color: <?php echo $GetLightText; ?>!important;
-      } 
+      }
       body.light-theme .vid-title{
       color: <?php echo $GetLightText; ?>!important;
       }
@@ -557,7 +557,7 @@
    } }
    @media (min-width:801px) { li.logout_mobile_view.menu-item{
       display:none !important;
-   } } 
+   } }
 
    .navbar-right .transdropdownlist{
       width:150px;
@@ -579,22 +579,22 @@
       <div id="loader" class="fullpage-loader">
          <div class="fullpage-loader__logo" style="text-align:center;" >
 
-         
+
          <?php if($theme->loader_format == 1 && !(is_null($theme->loader_video))){ ?>
             <video id="loader-video" class="video-js" autoplay muted preload="auto" data-setup='' loop style="width:300px;">
                <source src="<?= URL::to('/public/uploads/settings/'.$theme->loader_video) ?>" type='video/mp4'>
             </video>
-         <?php } else { ?> 
+         <?php } else { ?>
             <?php if($theme_mode == "light" && !empty($theme->light_mode_logo)){ ?>
                <img src="<?= URL::to('/public/uploads/settings/'. $theme->light_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
-            <?php } elseif($theme_mode != "light" && !empty($theme->dark_mode_logo)){ ?> 
+            <?php } elseif($theme_mode != "light" && !empty($theme->dark_mode_logo)){ ?>
                <img src="<?= URL::to('/public/uploads/settings/'. $theme->dark_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
-            <?php } else { ?> 
+            <?php } else { ?>
                <img src="<?= URL::to('/public/uploads/settings/'. $settings->logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
             <?php } ?>
          <?php } ?>
 
- 
+
          </div>
       </div>
    <?php } ?>
@@ -617,36 +617,36 @@
                      </a>
                      <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                      <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-                     <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?> 
+                     <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?>
                      <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
-                     <?php }else { ?> 
+                     <?php }else { ?>
                      <a class="navbar-brand mb-0" style="text-align: center;" href="<?php echo URL::to('/') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a>
                      <?php } ?>
-                   
+
                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                       
+
                         <div class="menu-main-menu-container">
-                              
+
                            <ul id="top-menu" class=" mt-2 nav navbar-nav <?php if ( Session::get('locale') == 'arabic') { echo "navbar-right"; } else { echo "navbar-left";}?>">
-                               
+
                               <?php if(Auth::guest()){ ?>
                                  <?php if($theme->signin_header == 1 ):?>
 
                                     <li class="menu-item dk" style="display:none;">
                                        <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                           <div class="media align-items-center">
-                                             
+
                                              <div class="media-body">
                                                 <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
                                              </div>
                                           </div>
                                        </a>
                                     </li>
-                                    
+
                                     <li class="menu-item dk" style="display:none">
                                        <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                           <div class="media align-items-center">
-                                             
+
                                              <div class="media-body">
                                                 <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
                                              </div>
@@ -658,8 +658,8 @@
                               <li class="menu-item dk" style="display:none;">
                                  <a href="<?php echo URL::to('myprofile') ?>" class="iq-sub-card">
                                     <div class="media align-items-center">
-                                      
-                                        
+
+
                                        <div class="media-body">
                                           <h6 class="mb-0 " style="font-weight: 500;">My Profile</h6>
                                        </div>
@@ -669,8 +669,8 @@
                               <li class="menu-item dk" style="display:none;">
                                  <a href="<?php echo URL::to('/logout') ?>" class="iq-sub-card">
                                     <div class="media align-items-center">
-                                     
-                                        
+
+
                                        <div class="media-body">
                                           <h6 class="mb-0 " style="font-weight: 500;">Logout</h6>
                                        </div>
@@ -684,9 +684,9 @@
                               <div class="col-sm-12 d-flex justify-content-around pt-2 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                            <li class="col-sm-6 ">
-                           <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>      
+                           <a class="navbar-brand mb-0 logout_mobile_view menu-item " style="float:right;" href="<?php echo URL::to('/') ?>"> <img alt="logo" src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>"> </a> </li>
                            <li class="dropdown menu-item col-sm-6">
-                             
+
                         <div class="btn-close" data-toggle="collapse">
                         <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -695,115 +695,115 @@
                         </button>
                         </div>
                      <!-- </a> -->
-                              </li>      
-                           </div> 
+                              </li>
+                           </div>
 
-                             
-                               
+
+
                               <?php
                                  $stripe_plan = SubscriptionPlan();
-                                
+
                                  if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
                                     $menus = App\Menu::orderBy('order', 'asc')->where('in_home','!=',0)->orWhere('in_home', '=', null)->get();
                                  }else{
                                     $menus = App\Menu::orderBy('order', 'asc')->get();
                                  }
-                                
+
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
-                                 foreach ($menus as $menu) { 
-                                 if ( $menu->in_menu == "video" ) { 
+                                 foreach ($menus as $menu) {
+                                 if ( $menu->in_menu == "video" ) {
                                     if(!Auth::guest()){
                                           $Authusers = App\User::where('email',Auth::User()->email)->pluck('role')->first();
                                     }else{
                                        $Authusers = '';
                                     }
-                                    if(!empty($Authusers) && $Authusers == 'admin' ){ 
+                                    if(!empty($Authusers) && $Authusers == 'admin' ){
                                        $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                     }else{
                                        $cat = App\VideoCategory::orderBy('order', 'asc')->where('in_home','=',1)->get();
                                     }
-                                 
+
                                  ?>
-                                 
-                                  
+
+
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $cat as $category) { ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>"> 
-                                       <?php echo (__($category->name)); ?> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>">
+                                       <?php echo (__($category->name)); ?>
                                        </a>
                                     </li>
                                     <?php } ?>
                                  </ul>
                               </li>
-                              <?php } elseif ( $menu->in_menu == "movies") { 
+                              <?php } elseif ( $menu->in_menu == "movies") {
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $languages as $language){ ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>"> 
-                                       <?php echo (__($language->name));?> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">
+                                       <?php echo (__($language->name));?>
                                        </a>
                                     </li>
                                     <?php } ?>
                                  </ul>
                               </li>
-                              <?php }elseif ( $menu->in_menu == "live") { 
+                              <?php }elseif ( $menu->in_menu == "live") {
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $LiveCategory as $category){ ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>"> 
-                                       <?php echo (__($category->name));?> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>">
+                                       <?php echo (__($category->name));?>
                                        </a>
                                     </li>
                                     <?php } ?>
                                  </ul>
                               </li>
 
-                              
+
                               <!-- Audios dropdown -->
-                              <?php }elseif ( $menu->in_menu == "audios") { 
+                              <?php }elseif ( $menu->in_menu == "audios") {
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
-                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">  
+                                 <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
                                  <ul class="dropdown-menu categ-head">
                                     <?php foreach ( $AudioCategory as $category){ ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audios/category/').'/'.$category->name;?>"> 
-                                       <?php echo (__($category->name));?> 
+                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('audios/category/').'/'.$category->name;?>">
+                                       <?php echo (__($category->name));?>
                                        </a>
                                     </li>
                                     <?php } ?>
                                  </ul>
                               </li>
-                              
-                               
+
+
                               <!-- Tv show dropdown -->
 
-                              <?php }elseif ( $menu->in_menu == "tv_show") { 
+                              <?php }elseif ( $menu->in_menu == "tv_show") {
                                  $tv_shows_series = App\SeriesGenre::get();
                                  ?>
                               <li class="dropdown menu-item ">
-                                 <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >  
+                                 <a class="" id="" href="<?php echo URL::to('/').$menu->url;?>" >
                                     <?php echo __($menu->name);?> <i class="fa fa-angle-down"></i>
                                  </a>
 
@@ -812,12 +812,12 @@
                                        <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
                                           <li>
                                              <?php if($key < 5): ?>
-                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/series/category').'/'.$tvshows_series->slug;?>"> 
-                                                   <?php echo $tvshows_series->name;?> 
+                                                <a class="dropdown-item cont-item" href="<?php echo URL::to('/series/category').'/'.$tvshows_series->slug;?>">
+                                                   <?php echo $tvshows_series->name;?>
                                                 </a>
                                              <?php else: ?>
-                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/SeriescategoryList');?>"> 
-                                                   <?php echo 'More...';?> 
+                                                <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/SeriescategoryList');?>">
+                                                   <?php echo 'More...';?>
                                                 </a>
                                              <?php endif; ?>
 
@@ -837,7 +837,7 @@
 
 
 
-                              
+
                               <?php if(Auth::guest()):  ?>
                                        <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                           <!-- <div class="row "> -->
@@ -855,7 +855,7 @@
                                                       </div>
                                                    </div>
                                                 </a>
-                                          </li> 
+                                          </li>
                                           <li class="logout_mobile_view col-sm-6 myp">
                                              <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                 <div class="media align-items-center">
@@ -870,14 +870,14 @@
                                                    </div>
                                                 </div>
                                              </a>
-                                          </li>      
+                                          </li>
                                        </div>
                                  <?php endif; ?>
 
-                     <?php if(!Auth::guest()){ 
-                        
+                     <?php if(!Auth::guest()){
+
                         $ModeratorsUser = App\ModeratorsUser::where('email',Auth::user()->email)->first(); ?>
-                             
+
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                                        <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
@@ -886,11 +886,11 @@
                                        <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                        <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
                                        <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>      
+                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>
                                     </form>
                                        <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
                                           <?php echo __('Logout');?>
-                                                   </a> </li>      
+                                                   </a> </li>
                                  </div>
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
@@ -901,18 +901,18 @@
                                     <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                     <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
                                     <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>      
+                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>
                                  </form>
                                     <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                                    <?php echo __('My Profile');?>
-                                                </a> </li>      
+                                                </a> </li>
                                  </div>
 
-                                 
 
-                                 
-                           
-                           
+
+
+
+
                            <!-- Mobile responsive buttons -->
                            <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn">
                               <div class="row ">
@@ -920,7 +920,7 @@
                                        <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none;">
                                           <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                              <div class="media align-items-center">
-                                                
+
                                                 <div class="media-body">
                                                    <h6 class="mb-0 " style="font-weight: 500;">Signin</h6>
                                                 </div>
@@ -932,7 +932,7 @@
                                        <li class="logout_mobile_view menu-item col-sm-6 myp" style="display:none">
                                           <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                              <div class="media align-items-center">
-                                                
+
                                                 <div class="media-body">
                                                    <h6 class="mb-0 " style="font-weight: 500;">Signup</h6>
                                                 </div>
@@ -940,9 +940,9 @@
                                           </a>
                                        </li>
                                  </div>
-                                 
+
                               </div>
-                           </div> 
+                           </div>
 
                               <!-- </div> -->
                                  <!-- <li class="logout_mobile_view menu-item btn btn-primary">
@@ -955,7 +955,7 @@
                                           <?php echo __('My Profile');?>
                                        </a>
                                  </li> -->
-                              
+
                               <?php } ?>
                               <!-- <li class="nav-item dropdown menu-item"> -->
                               <!-- <a class="dropdown-toggle" href="<?php echo URL::to('/').@$menu->url;?>" data-toggle="dropdown">   -->
@@ -965,7 +965,7 @@
                               <?php //foreach ( $languages as $language) { ?>
                               <li>
                                  <!-- <a class="dropdown-item cont-item" href="<?php //echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">  -->
-                                 <?php //echo $language->name;?> 
+                                 <?php //echo $language->name;?>
                                  <!-- </a> -->
                                  <!-- </li> -->
                                  <?php //} ?>
@@ -977,13 +977,13 @@
                                   <div class="col-lg-12 align-items-center justify-content-center appk">
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
-          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>
               <h5 class="font-weight-bold mb-0  ">Download App</h5>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1"> 
-              <?php if(!empty($app_settings->android_url)){ ?>  
+             <div class="map1">
+              <?php if(!empty($app_settings->android_url)){ ?>
                <a href="<?= $app_settings->android_url ?>">
                   <img src="<?php echo URL::to('/assets/img/apps1.webp') ?>" alt="App Icon" style="width: 100%; height: auto;">
                </a>
@@ -1000,18 +1000,18 @@
                </a>
               <?php } ?>
               </div>
-              
+
             <!--  <p class="p-0 mr-3 mt-3">Questions? Call 000-800-123-123</p>-->
           </div>
           </div>
                                  <!-- signup End  -->
 
-                                  
+
 
 
                                   <div class="mob-w">
-                                    <?php 
-                        if(!Auth::guest()){                                                              
+                                    <?php
+                        if(!Auth::guest()){
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
@@ -1021,7 +1021,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit CPP Portal'));?></button>                          
+                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit CPP Portal'));?></button>
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1030,11 +1030,11 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit Channel Portal'));?>  </button>                          
+                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit Channel Portal'));?>  </button>
                         </form>
                      </div>
                      <?php } ?></div>
-                                   
+
                            </ul>
                         </div>
                      </div>
@@ -1062,11 +1062,11 @@
                         </div>
                      </div>
 
-                     
+
 
                       <div id="desk-top" class="d-flex align-items-center cppporrr">
-                     <?php 
-                        if(!Auth::guest()){                                                              
+                     <?php
+                        if(!Auth::guest()){
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
@@ -1076,7 +1076,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;"><?php echo (__('Visit CPP Portal'));?> </button>                          
+                           <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;"><?php echo (__('Visit CPP Portal'));?> </button>
                         </form>
                      </div>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1085,7 +1085,7 @@
                            <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                            <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                            <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;"><?php echo (__('Visit Channel Portal'));?>  </button>                          
+                           <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;"><?php echo (__('Visit Channel Portal'));?>  </button>
                         </form>
                      </div>
                      <?php } ?></div>
@@ -1112,9 +1112,9 @@
                               </div>
                               </div>
 
-                              
+
                            </li>
-                           
+
                            <?php //if(!Auth::guest()){ ?>
 
                            <!-- Translator Choose -->
@@ -1132,7 +1132,7 @@
                                        <a href="#" class="language-link" id="Language_code" data-Language-code= "<?= @$Language->code ?>"><?= @$Language->name ?></a>
                                     <?php endforeach; ?>
                                  </div> -->
-                                 
+
                               </a>
 
                               <div class="iq-sub-dropdown transdropdownlist">
@@ -1159,7 +1159,7 @@
                                  </div>
                               </div>
                            </li>
-   
+
                            <?php // } ?>
 
                            <li class="nav-item nav-icon">
@@ -1179,7 +1179,7 @@
                               <path d="M4.545 6.714 4.11 8H3l1.862-5h1.284L8 8H6.833l-.435-1.286H4.545zm1.634-.736L5.5 3.956h-.049l-.679 2.022H6.18z"/>
                               <path d="M0 2a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v3h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2zm7.138 9.995c.193.301.402.583.63.846-.748.575-1.673 1.001-2.768 1.292.178.217.451.635.555.867 1.125-.359 2.08-.844 2.886-1.494.777.665 1.739 1.165 2.93 1.472.133-.254.414-.673.629-.890-1.125-.253-2.057-.694-2.820-1.284.681-.747 1.222-1.651 1.621-2.757H14V8h-3v1.047h.765c-.318.844-.740 1.546-1.272 2.13a6.066 6.066 0 0 1-.415-.492 1.988 1.988 0 0 1-.940.31z"/>
                            </svg>
-                              
+
                            </li>
                            <?php if(Auth::guest()): ?>
                               <?php if( $theme->signin_header == 1 ): ?>
@@ -1199,7 +1199,7 @@
                                        </div>
                                     </a>
                                  </li>
-                                 
+
                                  <li class="nav-item nav-icon">
                                     <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                        <div class="media align-items-center">
@@ -1222,7 +1222,7 @@
                                  data-toggle="search-toggle">
                                 <!-- <img src="<?php echo URL::to('/').'/public/uploads/avatars/' . Auth::user()->avatar ?>" class="img-fluid avatar-40 rounded-circle" alt="user">-->
                                  <p class="mt-3" style="font-size: 14px;">
-                                    <?php 
+                                    <?php
                                        $subuser=Session::get('subuser_id');
                                        if($subuser != ''){
                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
@@ -1231,8 +1231,8 @@
                                        else{
                                          echo Auth::user()->username.' '  ;
                                        }
-                                       
-                                       ?> 
+
+                                       ?>
                                     <i class="ri-arrow-down-s-line"></i>
                                  </p>
                               </a>
@@ -1242,7 +1242,7 @@
                                     <div class="iq-card-body p-0 pl-3 pr-3">
                                        <!-- dark mode -->
                                        <div class="toggle mt-2 ">
-                                          <i class="fas fa-moon"></i>      
+                                          <i class="fas fa-moon"></i>
                                           <label class="switch toggle mt-3">
                                           <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                           <span class="sliderk round"></span>
@@ -1469,7 +1469,7 @@
                                           <div class="toggle mt-2 text-left">
                                              <i class="fas fa-moon"></i>
                                              <label class="switch toggle mt-3">
-                                             <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
+                                             <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>
                                                 <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                              <span class="sliderk round"></span>
                                              </label>
@@ -1673,7 +1673,7 @@
                                           </div>
                                        </a> -->
                                        <?php
-                                       if(Auth::User()->role == "admin"){ 
+                                       if(Auth::User()->role == "admin"){
                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){ ?>
                                        <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
@@ -1725,7 +1725,7 @@
                                        <?php
                                           } }
                                           if(Auth::user()->role == "subscriber"){
-                                          
+
                                           ?>
                                        <!-- <a href="<?php echo URL::to('choose-profile') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
@@ -1766,7 +1766,7 @@
             </div>
          </div>
       </div>
-      <?php 
+      <?php
          $playerui_settings = App\Playerui::first();
          if($playerui_settings->watermark == 1){ ?>
       <style>
@@ -1789,56 +1789,56 @@
          $(document).ready(function() {
          $(".dropdown-toggle").dropdown();
          });
-         
+
          $(document).ready(function(){
          var currentdate = "<?=  $currentdate ?>";
          var filldate = "<?= $filldate ?>";
          var DOB = "<?= $DOB ?>";
-         
+
          // console.log(DOB);
          // console.log(currentdate);
-         
-         if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){       
+
+         if(filldate == currentdate &&  DOB != null && !empty(DOB)  &&  currentdate != null &&  filldate != null){
          $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 10%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Add Your DOB for Amazing video experience</div>');
          setTimeout(function() {
          $('.add_watch').slideUp('fast');
          }, 3000);
          }
          });
-         
+
       </script>
 
       <script>
          $("#toggle").click(function(){
-         
+
             var theme_mode = $("#toggle").prop("checked");
-         
+
             $.ajax({
             url: '<?php echo URL::to("theme-mode") ;?>',
             method: 'post',
-            data: 
+            data:
                {
                   "_token": "<?php echo csrf_token(); ?>",
-                  mode: theme_mode 
+                  mode: theme_mode
                },
                success: (response) => {
                   console.log(response);
                },
             })
          });
-         
+
       </script>
 
       <!-- Dark Mode & Light Mode  -->
       <script>
          let theme_modes = $("#toggle").val();
-         
+
          $(document).ready(function(){
-         
+
             if( theme_modes == 'light' ){
-         
+
                body.classList.add('light-theme');
-         
+
             }
          });
       </script>
@@ -1869,7 +1869,7 @@
             }
           });
       </script>
-  
+
 <script>
                   document.getElementById('languageSearch').addEventListener('click', function(event) {
             event.stopPropagation();
@@ -1887,7 +1887,7 @@
                     }
                 });
             });
-            
+
             document.addEventListener("DOMContentLoaded", function() {
                const dropdownIcon = document.querySelector('.dropdown-icon');
                const dropdownContent = document.querySelector('.dropdown-content');
@@ -1900,7 +1900,7 @@
                            dropdownContent.style.display = "none";
                         }
                   });
-               } 
+               }
             });
 
 
@@ -1928,7 +1928,7 @@
       $.ajax({
             url: '<?php echo URL::to("/translate_language") ;?>',
             method: 'post',
-            data: 
+            data:
                {
                   "_token": "<?php echo csrf_token(); ?>",
                   languageCode: languageCode,
@@ -1941,7 +1941,7 @@
                },
             })
          });
-         
+
 
       </script>
 <style>

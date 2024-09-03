@@ -1,9 +1,9 @@
-<?php 
+<?php
 
   use Carbon\Carbon;
 
-  $settings = App\Setting::first(); 
-  $user    = App\User::where('id',1)->first(); 
+  $settings = App\Setting::first();
+  $user    = App\User::where('id',1)->first();
   $app_setting = App\AppSetting::where('id',1)->where('status','hidden')->first();
   $session = session()->all();
 
@@ -15,17 +15,17 @@
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
-         
+
           <div class="col-lg-12 d-flex align-items-center justify-content-center">
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
-          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>  
+          <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>
               <p class="font-weight-bold mb-0"><?php echo (__('Download App')); ?></p>
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1 ml-3"> 
-              <?php if(!empty($app_settings->android_url)){ ?>  
+             <div class="map1 ml-3">
+              <?php if(!empty($app_settings->android_url)){ ?>
                 <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
               <?php if(!empty($app_settings->ios_url)){ ?>
@@ -56,8 +56,8 @@
           </div>
           </div>
       </div>
-      
-      
+
+
       <div class="row  justify-content-center mb-3">
           <div class="col-sm-3. small m-0 text-white text-right">
                <div class="map1">
@@ -85,9 +85,9 @@
                       </a>
                       <?php } ?>
 
-                     
 
-                   
+
+
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
@@ -118,44 +118,50 @@
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" />
                         </a>
                         <?php } ?>
-                        
+
                   </div>
-             
+
               </div>
-                 
+
           </div>
-         
+
       </div>
-      
+
   </div>
 
     <div class="container-fluid">
         <p class="mb-0 text-center font-size-14 text-body" >
-          <?php 
+          <?php
                     // CMS Pages
             $cmspages = App\Page::where('footer_active', 1)->get();
 
-            foreach($cmspages as $key => $page) { 
-              if($page->slug == 'contact-us') { ?> 
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
+            foreach($cmspages as $key => $page) {
+              if($page->slug == 'contact-us') { ?>
+              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
               <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a> 
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
             <?php } } ?>
           </p>
           <p class="text-center">
-            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?> 
+            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?>
           </p>
     </div>
 
 </footer>
+      <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <!-- Popper js -->
+      <link rel="preload" href="<?= URL::to('/'). '/assets/js/popper.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
       <!-- Bootstrap JS -->
+      <link rel="preload" href="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>" as="script">
       <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
       <!-- Slick JS -->
+      <link rel="preload" href="<?= URL::to('/'). '/assets/js/slick.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
       <!-- owl carousel Js -->
+      <link rel="preload" href="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
       <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
@@ -164,10 +170,13 @@
       <!-- Slick Animation-->
       <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
+      <link rel="preload" href="<?= URL::to('/'). '/assets/js/custom.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
+
+      <link rel="preload" href="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>" as="script">
       <script src="<?= URL::to('/'). '/assets/admin/dashassets/js/google_analytics_tracking_id.js';?>"></script>
 
-      
+
        <script>
     $(document).ready(function () {
       $(".thumb-cont").hide();
@@ -192,11 +201,11 @@ function about(evt , id) {
   }
   tablinks = document.getElementsByClassName("tablink");
   for (i = 0; i < tablinks.length; i++) {
-    
+
   }
-	
+
   document.getElementById(id).style.display = "block";
- 
+
 }
 </script>
 
@@ -209,9 +218,9 @@ function about(evt , id) {
 
     $('.searches').on('keyup',function() {
       var query = $(this).val();
-      
+
        if (query !=''){
-      
+
           $.ajax({
           url:"<?php echo URL::to('/search');?>",
           type:"GET",
@@ -246,14 +255,14 @@ function about(evt , id) {
 
 </script>
 
-<?php 
+<?php
       $footer_script = App\Script::pluck('footer_script')->toArray();
       if(count($footer_script) > 0){
         foreach($footer_script as $Scriptfooter){ ?>
         <!-- // echo $Scriptfooter; -->
         <?= $Scriptfooter ?>
 
-      <?php } 
+      <?php }
     }
      ?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
@@ -315,6 +324,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
+<link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
 <script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
 
 <?php
@@ -326,7 +336,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
       elseif ( Route::currentRouteName() == "play_episode"){
         include('episode_player_script.blade.php');
       }elseif( Route::currentRouteName() == "video-js-fullplayer"){
-              // 
+              //
       }
       else{
         include('footerPlayerScript.blade.php');
@@ -350,17 +360,17 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
   //   document.body.appendChild(script);
   // }
 </script>
-<?php  
+<?php
   $Prevent_inspect = $theme->prevent_inspect ;
   if( $Prevent_inspect == 1){
 ?>
 <script>
         $(document).keydown(function (event) {
-            if (event.keyCode == 123) { 
+            if (event.keyCode == 123) {
                 alert("This function has been disabled"); // Prevent F12
                 return false;
-            } 
-            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)){ 
+            }
+            else if(event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)){
                 alert("This function has been disabled ");   // Prevent Ctrl + Shift + I
                 return false;
             }
@@ -378,7 +388,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
             }
         });
 
-        $(document).on("contextmenu", function (e) {        
+        $(document).on("contextmenu", function (e) {
             alert("This function has been disabled");
             e.preventDefault();
         });
