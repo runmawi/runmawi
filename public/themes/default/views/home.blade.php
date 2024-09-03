@@ -225,6 +225,7 @@ margin-bottom: 10px;}
 </style>
 
 <!-- flickity -->
+<link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
 <!-- Trailer -->
