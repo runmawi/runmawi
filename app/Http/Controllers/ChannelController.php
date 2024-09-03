@@ -4469,12 +4469,12 @@ class ChannelController extends Controller
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
                             $item['users_video_visibility_register_button']  = false ;
                             $item['users_video_visibility_block_button'] = true;
-                            $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                            $item['users_video_visibility_redirect_url'] = "#";
                         }
                     }
 
                         // Available Country
-                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && $item->country != '["All"]' && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button'] = 'Not available in your country';
@@ -4482,8 +4482,9 @@ class ChannelController extends Controller
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
                         $item['users_video_visibility_block_button'] = true;
-                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                        $item['users_video_visibility_redirect_url'] = "#";
                     }
+
                 }
 
                     // video details
@@ -4700,7 +4701,7 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -4871,14 +4872,14 @@ class ChannelController extends Controller
                             $item['users_video_visibility_Rent_button']    = false ;
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
                             $item['users_video_visibility_register_button']  = false ;
-                            $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                            $item['users_video_visibility_redirect_url'] = "#";
 
                         }
                     }
 
                         // Available Country
 
-                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && $item->country != '["All"]' && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -4886,7 +4887,7 @@ class ChannelController extends Controller
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
-                        $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                        $item['users_video_visibility_redirect_url'] = "#";
                     }
                 }
 
@@ -5470,14 +5471,14 @@ class ChannelController extends Controller
                            $item['users_video_visibility_Rent_button']    = false ;
                            $item['users_video_visibility_becomesubscriber_button'] = false ;
                            $item['users_video_visibility_register_button']  = false ;
-                           $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                           $item['users_video_visibility_redirect_url'] = "#";
 
                        }
                    }
 
                        // Available Country
 
-                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && $item->country != '["All"]' && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                        $item['users_video_visibility_status'] = false;
                        $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -5485,7 +5486,7 @@ class ChannelController extends Controller
                        $item['users_video_visibility_Rent_button']    = false ;
                        $item['users_video_visibility_becomesubscriber_button'] = false ;
                        $item['users_video_visibility_register_button']  = false ;
-                       $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                       $item['users_video_visibility_redirect_url'] = "#";
                    }
                }
 
