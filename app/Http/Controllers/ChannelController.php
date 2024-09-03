@@ -4330,6 +4330,7 @@ class ChannelController extends Controller
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
 
+
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
@@ -4352,7 +4353,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_block_button']     = false ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4387,7 +4388,7 @@ class ChannelController extends Controller
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscriber" : "Purchase" )  .' Now'   ;
+                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscribe" : "Purchase" )  .' Now'   ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4473,7 +4474,7 @@ class ChannelController extends Controller
                     }
 
                         // Available Country
-                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button'] = 'Not available in your country';
@@ -4671,6 +4672,7 @@ class ChannelController extends Controller
                 }
             }
 
+
             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
 
             $data = array(
@@ -4692,12 +4694,13 @@ class ChannelController extends Controller
                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
                 'stripe_payment_setting'   => $Stripepayment,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
+                'playerui' => Playerui::first(),
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -4763,7 +4766,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_register_button']  = true ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4792,13 +4795,13 @@ class ChannelController extends Controller
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
 
                             $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                            $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                            $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                             if ($item->access == "ppv") {
 
@@ -4875,7 +4878,7 @@ class ChannelController extends Controller
 
                         // Available Country
 
-                    if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                         $item['users_video_visibility_status'] = false;
                         $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -5101,6 +5104,7 @@ class ChannelController extends Controller
                                     </svg>',
                 'currency'         => $currency,
                 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                'playerui' => Playerui::first(),
             );
 
 
@@ -5309,7 +5313,7 @@ class ChannelController extends Controller
    public function VideoCipher_fullplayer( $slug )
    {
 
-    //    try {
+       try {
 
            $settings = Setting::first();
 
@@ -5362,7 +5366,7 @@ class ChannelController extends Controller
                    $item['users_video_visibility_register_button']  = true ;
 
                    $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                   $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                   $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                        // Free duration
                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -5391,13 +5395,13 @@ class ChannelController extends Controller
                        if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
                            $item['users_video_visibility_status'] = false ;
-                           $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                           $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                            $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                            $item['users_video_visibility_register_button']  = false ;
 
                            $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                           $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                           $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
 
                            if ($item->access == "ppv") {
 
@@ -5473,7 +5477,7 @@ class ChannelController extends Controller
 
                        // Available Country
 
-                   if ( in_array(Country_name(), json_decode($item->country, true) )) { // Check if the user's country is blocked
+                    if ( !is_null( $item->country) && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
 
                        $item['users_video_visibility_status'] = false;
                        $item['users_video_visibility_status_button']    =  "Blocked"   ;
@@ -5712,16 +5716,17 @@ class ChannelController extends Controller
                                    </svg>',
                'currency'         => $currency,
                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+               'playerui' => Playerui::first(),
            );
 
 
            return Theme::view('video-js-Player.video.videoCipher', $data);
 
-    //    } catch (\Throwable $th) {
+       } catch (\Throwable $th) {
 
-    //        return $th->getMessage();
-    //        return abort(404);
-    //    }
+        //    return $th->getMessage();
+           return abort(404);
+       }
    }
 
 }
