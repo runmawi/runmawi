@@ -25354,6 +25354,13 @@ public function TV_login(Request $request)
         $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
+          
+          User::find($user->id)->update([
+            'otp' => null ,
+            'otp_request_id' => null ,
+            'otp_through' => null ,
+            'request_id'  => null
+          ]);
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');
