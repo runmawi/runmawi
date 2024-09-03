@@ -365,14 +365,19 @@
         });
 
         // Watermark
-        // player.ready(function() {
-        //     var watermark = document.createElement('div');
-        //     watermark.className = 'vjs-watermark';
-        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->watermark ?>" alt="Watermark">';
-        //     // watermark.innerHTML = '<img src="https://localhost/flicknexs/public/uploads/settings/webnexs-250.png" alt="Watermark">';
-        //     player.el().appendChild(watermark);
-        // });
+        let enable_watermark  = '<?= $playerui->watermark ?>';
 
+        if (enable_watermark == 1 ) {
+
+            player.ready(function() {
+                var watermark = document.createElement('div');
+                watermark.className = 'vjs-watermark';
+                watermark.innerHTML = '<img src="<?= $playerui->watermark_logo ?>" alt="Watermark">';
+                player.el().appendChild(watermark);
+            });
+
+        }   
+        
 
         // Advertisement
 

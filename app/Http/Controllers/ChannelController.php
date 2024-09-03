@@ -4694,6 +4694,7 @@ class ChannelController extends Controller
                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
                 'stripe_payment_setting'   => $Stripepayment,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
+                'playerui' => Playerui::first(),
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
@@ -5103,6 +5104,7 @@ class ChannelController extends Controller
                                     </svg>',
                 'currency'         => $currency,
                 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                'playerui' => Playerui::first(),
             );
 
 
@@ -5311,7 +5313,7 @@ class ChannelController extends Controller
    public function VideoCipher_fullplayer( $slug )
    {
 
-    //    try {
+       try {
 
            $settings = Setting::first();
 
@@ -5714,16 +5716,17 @@ class ChannelController extends Controller
                                    </svg>',
                'currency'         => $currency,
                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+               'playerui' => Playerui::first(),
            );
 
 
            return Theme::view('video-js-Player.video.videoCipher', $data);
 
-    //    } catch (\Throwable $th) {
+       } catch (\Throwable $th) {
 
-    //        return $th->getMessage();
-    //        return abort(404);
-    //    }
+        //    return $th->getMessage();
+           return abort(404);
+       }
    }
 
 }
