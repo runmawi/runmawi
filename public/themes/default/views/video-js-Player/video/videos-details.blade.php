@@ -2,7 +2,7 @@
     include public_path("themes/{$current_theme}/views/header.php");
 @endphp
 
-@if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
+@if(Auth::check() && !Auth::guest())
     @php
         $user_name = Auth::user()->username;
         $user_img = Auth::user()->avatar;
@@ -617,7 +617,12 @@
                     </div>
 
                     <div class="modal-body">
-                        <h3 class="font-weight-bold">{{ 'Upgrade to '. $videodetail->title.' pack by just paying the difference'}}</h3>
+                        <div class="row justify-content-between">
+                            <h3 class="font-weight-bold">{{ 'Upgrade to '. $videodetail->title.' pack by just paying the difference'}}</h3>
+                            <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
                         <p class="text-white">{{ 'You are currently on plan.' }}</p>
                         <div class="row justify-content-between m-0" style="gap: 4rem;">
                             <div class="col-sm-4 col-12 p-0" style="">
@@ -633,10 +638,10 @@
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <ul style="padding-left: 1.3rem;">
-                                            <li class="text-white">{{ "Available to watch this video after purchasing" }}</li>
-                                        </ul>
-                                        <div>
+                                        <div class="col-8 d-flex justify-content-start p-0">
+                                            <span class="descript text-white">{{ "Available to watch this video after purchasing" }}</span>
+                                        </div>
+                                        <div class="col-4">
                                             @if (Enable_PPV_Plans() == 0)
                                                 <h3 class="pl-2" style="font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  "{$currency->symbol} {$videodetail->ppv_price}" }}</h3>
                                             @elseif( Enable_PPV_Plans() == 1 )
@@ -662,17 +667,17 @@
                                         </label>
 
                                         <div id="quality-options" style="display:none;">
-                                            <label class="main-label">Choose Plan</label>
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
                                             <div class="quality-options-group">
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="480p" checked>
                                                     Low Quality
                                                 </label>
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="720p">
                                                     Medium Quality
                                                 </label>
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="1080p">
                                                     High Quality
                                                 </label>
@@ -694,17 +699,17 @@
                                         </label>
 
                                         <div id="razorpay-quality-options" style="display:none;">
-                                            <label class="main-label">Choose Plan</label>
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
                                             <div class="quality-options-group">
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="480p" checked>
                                                     Low Quality
                                                 </label>
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="720p">
                                                     Medium Quality
                                                 </label>
-                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                                     <input type="radio" class="quality_option" name="quality" value="1080p">
                                                     High Quality
                                                 </label>
@@ -754,6 +759,7 @@
                                         </div>
                                     @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
 
+                                    <div class="row mt-3 justify-content-around"></div>
                                         <div class="Razorpay_button"> <!-- Razorpay Button -->
 
                                         </div>
@@ -854,7 +860,7 @@
                             .replace('__AMOUNT__', amount);
 
                             const continueButtonHtml = `
-                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"
                                     onclick="location.href ='${routeUrl}';">
                                     {{ __('Continue') }}
                                 </button>
@@ -870,7 +876,7 @@
                             .replace('__AMOUNT__', amount);
 
                             const continueButtonHtml = `
-                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"
                                     onclick="location.href ='${routeUrl}';">
                                     {{ __('Continue') }}
                                 </button>
