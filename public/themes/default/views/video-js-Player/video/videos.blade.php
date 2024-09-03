@@ -71,7 +71,7 @@
                             @endforeach
                         @endif
                 </video>
-                
+
             @endif
 
             <div class="video" id="visibilityMessage" style="color: white; display: none; background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">
@@ -105,14 +105,14 @@
 
                          {{-- subscriber & PPV  --}}
 
-                        @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
-                            <!-- <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
+                        {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                            <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
                                 <div class="playbtn" style="gap:5px">
                                     {!! $play_btn_svg !!}
                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                 </div>
-                            </a> -->
-                        @endif
+                            </a>
+                        @endif --}}
                     </div>
                 </div>
             </div>
@@ -155,14 +155,14 @@
 
                             {{-- subscriber & PPV  --}}
 
-                        @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                        {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
                             <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}">
                                 <div class="playbtn" style="gap:5px">
                                     {!! $play_btn_svg !!}
                                     <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
                                 </div>
                             </a>
-                         @endif
+                        @endif --}}
 
                     </div>
                 </div>
@@ -193,5 +193,4 @@
     /* .staticback-btn{display:none;} */
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .custom-skip-backward-button .custom-skip-forward-button{font-size: 45px;color: white;}
-    .vjs-text-track-cue div{font-size: 24px !important;background-color: rgb(0, 0, 0, 0.5) !important;}
 </style>

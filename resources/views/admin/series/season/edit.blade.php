@@ -90,7 +90,30 @@
                         <label class="m-0">PPV Price:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
                     </div>
-                    <div class="form-group" >
+
+                    <div id="ppv_price_plan">
+                        <div class="form-group" >
+
+                            <label class="m-0">PPV Price for 480 Plan:</label>
+                            <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_480p"  value="@if(!empty($season->ppv_price_480p)){{ $season->ppv_price_480p }}@endif">
+                            <span id="error_quality_ppv_price" style="color:red;">*Enter the 480 PPV Price </span>
+                        </div>
+
+                        <div class="form-group" >
+                            <label class="m-0">PPV Price for 720 Plan:</label>
+                            <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_720p"  value="@if(!empty($season->ppv_price_720p)){{ $season->ppv_price_720p }}@endif">
+                            <span id="error_quality_ppv_price" style="color:red;">*Enter the 720 PPV Price </span>
+                        </div>
+
+                        <div class="form-group" >
+
+                            <label class="m-0">PPV Price for 1080 Plan:</label>
+                            <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price_1080p"  value="@if(!empty($season->ppv_price_1080p)){{ $season->ppv_price_1080p }}@endif">
+                            <span id="error_quality_ppv_price" style="color:red;">*Enter the 1080 PPV Price </span>
+                        </div>  
+                    </div>
+
+                    <div class="form-group ios_ppv_price_old" id='ios_ppv_price_old' >
                         <label class="m-0">IOS PPV Price:</label>
                         <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                             <option value= "" >Select IOS PPV Price: </option>
@@ -99,6 +122,39 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="form-group ios_ppv_price_plan" id='ios_ppv_price_plan'>
+
+                        <div class="form-group" >
+								<label class="m-0">IOS PPV Price for 480 Plan:</label>
+								<select  name="ios_ppv_price_480p" class="form-control" id="ios_ppv_price_480p">
+									<option value= "" >Select 480 IOS PPV Price: </option>
+									@foreach($InappPurchase as $Inapp_Purchase)
+                                    <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_ppv_price_480p) && $season->ios_ppv_price_480p == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+									@endforeach
+								</select>
+							</div>
+							<div class="form-group" >
+								<label class="m-0">IOS PPV Price for 720 Plan:</label>
+								<select  name="ios_ppv_price_720p" class="form-control" id="ios_ppv_price_720p">
+									<option value= "" >Select 720 IOS PPV Price: </option>
+									@foreach($InappPurchase as $Inapp_Purchase)
+                                    <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_ppv_price_720p) && $season->ios_ppv_price_720p == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+									@endforeach
+								</select>
+							</div>
+							<div class="form-group" >
+								<label class="m-0">IOS PPV Price for 1080 Plan:</label>
+								<select  name="ios_ppv_price_1080p" class="form-control" id="ios_ppv_price_1080p">
+									<option value= "" >Select 1080 IOS PPV Price: </option>
+									@foreach($InappPurchase as $Inapp_Purchase)
+                                    <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_ppv_price_1080p) && $season->ios_ppv_price_1080p == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
+									@endforeach
+								</select>
+							</div>
+                            
+                    </div>
+
                     <div class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
                         <label class="m-0">PPV Interval:</label>
                         <p class="p1">Please Mention How Many Episodes are Free:</p>
@@ -122,6 +178,50 @@
 
 @section('javascript')
 <script>
+          
+        var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
+        var enable_video_cipher_upload = '<?= @$theme_settings->enable_video_cipher_upload ?>';
+        var transcoding_access = '<?= @$settings->transcoding_access ?>';
+
+    	$('#ppv_price').hide();
+        $('#ios_ppv_price_old').hide();
+        $('#ios_ppv_price').hide();
+        $('#ppv_price_plan').hide();
+        $('#ios_ppv_price_plan').hide();
+
+        if(enable_ppv_plans == 1 && enable_video_cipher_upload == 1){
+
+            if($('#ppv_access').val() == "ppv"){
+                $('#ppv_price_plan').show();
+                $('#ios_ppv_price_plan').show();
+                $('#ios_ppv_price').hide();
+                $('#ios_ppv_price_old').hide();
+            	$('#ppv_price').hide();
+    		}else{
+                $('#ppv_price_plan').hide();
+                $('#ios_ppv_price').hide();
+                $('#ios_ppv_price_old').hide();
+                $('#ios_ppv_price_plan').hide();
+            	$('#ppv_price').hide();
+            }
+        }else{
+            if($('#ppv_access').val() == "ppv"){
+                $('#ppv_price').show();
+                $('#ios_ppv_price').show();
+                $('#ios_ppv_price_old').show();
+    		}else{
+                $('#ppv_price').hide();
+                $('#ios_ppv_price').hide();
+                $('#ios_ppv_price_old').hide();
+            }
+        }
+        $('#access').change(function(){
+            if($('#access').val() == "ppv"){
+            $('#ppv_price').show();
+            $('#ios_ppv_price_old').show();
+            $('#ios_ppv_price').show();
+            }
+    	});
         
     $(document).ready(function () {
         $("#submit-update-cat").click(function () {
@@ -139,19 +239,12 @@
 
 <script type="text/javascript">
 
+
+
+    
     jQuery(document).ready(function($){
-    	$('#ppv_price').hide();
-            // alert($('#ppv_access').val());
-    	if($('#ppv_access').val() == "ppv"){
-    		$('#ppv_price').show();
-    		$('#ios_ppv_price').show();
-    		}
-            $('#access').change(function(){
-    		if($('#access').val() == "ppv"){
-    		$('#ppv_price').show();
-    		$('#ios_ppv_price').show();
-    		}
-    	});
+
+
 
     	$('#nestable').nestable({ maxDepth: 3 });
 

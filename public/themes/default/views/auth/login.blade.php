@@ -259,9 +259,9 @@
                                             </div>
                                     </form>
 
-                                    <div class="d-flex justify-content-end links">
+                                    {{-- <div class="d-flex justify-content-end links">
                                         <a href="{{ route('Reset_Password') }}" class="f-link">{{ __('Forgot your password').'?' }}</a>
-                                    </div>
+                                    </div> --}}
 
                                     <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('SEND OTP') }}</button>
                                 @else
