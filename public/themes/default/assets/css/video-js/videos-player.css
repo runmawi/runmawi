@@ -92,7 +92,7 @@
 }
 
 .my-video.video-js .vjs-tech {
-    object-fit: fill;
+    object-fit: contain;
 }
 
 .my-video.video-js.vjs-playing{
@@ -956,16 +956,15 @@ display: block !important;
 }
 
 .vjs-text-track-cue{
-    inset: 166.812px 0px 0px !important;
-    white-space: normal !important;
-    inset: 475.125px 0px 0px !important;
+    white-space: pre-line !important;
+    inset: 470px 0px 0px !important;
     height: 65px !important;
 }
 
 .vjs-text-track-cue div{font-size: 22px !important;background-color: rgb(0 0 0 / 25%) !important;}
 
 .vjs-fullscreen .vjs-text-track-cue{
-    inset: 620.125px 0px 0px !important;
+    inset: 600px 0px 0px !important;
 }
 
 /* For screens up to 600px */
@@ -1098,14 +1097,26 @@ display: block !important;
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     .custom-skip-backward-button,
     .custom-skip-forward-button {
-
-        top: -108px !important;
+        top: -65px !important;
     }
     .custom-skip-backward-button {
-        left: 25% !important;
+        left: 32% !important;
     }
     .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
-        top: -220px !important;
+        top: -230px !important;
+    }
+    .vjs-fullscreen .custom-skip-forward-button {
+        left: 60%;
+    }
+
+    .vjs-text-track-cue{
+        inset: 130px 0px 0px !important;
+    }
+
+    .vjs-text-track-cue div{font-size: 15px !important;}
+
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 446px 0px 0px !important;
     }
 
     .titlebutton {
@@ -1204,7 +1215,10 @@ display: block !important;
 }
 
 /* Screens between 992px and 1199px */
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+    .my-video.video-js .vjs-tech {
+        object-fit: contain;
+    }
     .custom-skip-backward-button {
         top: -247px !important;
         left: 32% !important;
@@ -1222,6 +1236,11 @@ display: block !important;
     }
 }
 
+/* @media (aspect-ratio: 4/3){
+    .vjs-text-track-cue{
+        inset: 540px 0px 0px !important;
+    }
+} */
 /* Screens 1200px and larger */
 /* @media only screen and (min-width: 1200px) {
     .custom-skip-backward-button ,
