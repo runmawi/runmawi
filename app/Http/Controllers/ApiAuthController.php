@@ -1830,8 +1830,177 @@ public function verifyandupdatepassword(Request $request)
         $videodetail = null;
       }
 
+      $videoid = $data['videoid'];
+
+      if ( isset($data['user_id']) && $data['user_id'] != '' ) {
+        $user_id = $data['user_id'];
+        $videoid = $data['videoid'];
+  
+            //Wishlilst
+          $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+          $wishliststatus =  ($cnt == 1) ? "true" : "false";
+
+          //Watchlater
+        $cnt1 = Watchlater::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+        $watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+
+        //Favorite
+        $cnt2 = Favorite::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
+        $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+
+      $userrole = User::where('id','=',$user_id)->first()->role;
+      $status = 'true';
+
+      $like_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+      $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+      $favoritestatus = Favorite::where("video_id","=",$videoid)->where("user_id","=",$user_id)->count();
+      $like = ($like_data == 1) ? "true" : "false";
+      $dislike = ($dislike_data == 1) ? "true" : "false";
+      $favorite = ($favoritestatus > 0) ? "true" : "false";
+    } else{
+      $wishliststatus = 'false';
+      $watchlaterstatus = 'false';
+      $favorite = 'false';
+      $userrole = '';
+      $status = 'true';
+      $like = "false";
+      $dislike = "false";
+    }
+
+
+    
+            // andriodId Wishlist , Watchlater , Favorite
+
+            if(!empty($data['andriodId'])){
+                            
+                 //Wishlilst
+            $Wishlist_cnt = Wishlist::select('video_id')->where('andriodId','=',$data['andriodId'])->where('video_id','=',$videoid)->count();
+            $andriod_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
+
+            // Watchlater
+              $cnt1 = Watchlater::select('video_id')->where('andriodId','=',$data['andriodId'])->where('video_id','=',$videoid)->count();
+              $andriod_watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+      
+            // Favorite
+            $cnt2 = Favorite::select('video_id')->where('andriodId','=',$data['andriodId'])->where('video_id','=',$videoid)->count();
+            $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+              
+              $like_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$data['andriodId'])->where("liked","=",1)->count();
+              $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("andriodId","=",$data['andriodId'])->where("disliked","=",1)->count();
+              $favoritestatus = Favorite::where("video_id","=",$videoid)->where("andriodId","=",$data['andriodId'])->count();
+              $andriod_like = ($like_data == 1) ? "true" : "false";
+              $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
+              $andriod_favorite = ($favoritestatus > 0) ? "true" : "false";
+
+          }else{
+            $andriod_wishliststatus = 'false';
+            $andriod_watchlaterstatus = 'false';
+            $andriod_favorite = 'false';
+            $andriod_like = "false";
+            $andriod_dislike = "false";
+          }
+
+          
+            // IOS  , Wishlist , Watchlater , Favorite
+
+
+            if(!empty($data['IOSId'])){
+                            
+                 //Wishlilst
+            $Wishlist_cnt = Wishlist::select('video_id')->where('IOSId','=',$data['IOSId'])->where('video_id','=',$videoid)->count();
+            $IOS_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
+
+            // Watchlater
+              $cnt1 = Watchlater::select('video_id')->where('IOSId','=',$data['IOSId'])->where('video_id','=',$videoid)->count();
+              $IOS_watchlaterstatus =  ($cnt1 == 1) ? "true" : "false";
+      
+            // Favorite
+            $cnt2 = Favorite::select('video_id')->where('IOSId','=',$data['IOSId'])->where('video_id','=',$videoid)->count();
+            $favoritestatus =  ($cnt2 == 1) ? "true" : "false";
+              
+              $like_data = LikeDisLike::where("video_id","=",$videoid)->where("IOSId","=",$data['IOSId'])->where("liked","=",1)->count();
+              $dislike_data = LikeDisLike::where("video_id","=",$videoid)->where("IOSId","=",$data['IOSId'])->where("disliked","=",1)->count();
+              $favoritestatus = Favorite::where("video_id","=",$videoid)->where("IOSId","=",$data['IOSId'])->count();
+              $IOS_like = ($like_data == 1) ? "true" : "false";
+              $IOS_dislike = ($dislike_data == 1) ? "true" : "false";
+              $IOS_favorite = ($favoritestatus > 0) ? "true" : "false";
+
+
+          }else{
+            $IOS_wishliststatus = 'false';
+            $IOS_watchlaterstatus = 'false';
+            $IOS_favorite = 'false';
+            $IOS_like = "false";
+            $IOS_dislike = "false";
+          }
+         
+          
+
+            // TVID Wishlist 
+
+
+            if(!empty($data['tv_id'])){
+              
+              
+                 //Wishlilst
+            $Wishlist_cnt = Wishlist::select('video_id')->where('tv_id','=',$data['tv_id'])->where('video_id','=',$videoid)->count();
+            $tv_wishliststatus =  ($Wishlist_cnt == 1) ? "true" : "false";
+
+          }else{
+            $tv_wishliststatus = 'false';
+          }
+
+
+           $videos_cat_id = Video::where('id','=',$videoid)->pluck('video_category_id');
+           $moviesubtitles = MoviesSubtitles::where('movie_id',$videoid)->get();
+          $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            ->where('video_id',$videoid)->get('name');
+            foreach($main_genre as $value){
+              $category[] = $value['name'];
+            }
+            if(!empty($category)){
+            $main_genre = implode(",",$category);
+            }else{
+              $main_genre = "";
+            }
+          // $main_genre = CategoryVideo::Join('video_categories','video_categories.id','=','categoryvideos.category_id')
+            $languages = LanguageVideo::Join('languages','languages.id','=','languagevideos.language_id')
+            ->where('languagevideos.video_id',$videoid)->get('name');
+  
+            foreach($languages as $value){
+              $language[] = $value['name'];
+            }
+            if(!empty($language)){
+            $languages = implode(",",$language);
+            }else{
+              $languages = "";
+            }
+
       $response = array(
+        'status' => $status,
+        'wishlist' => $wishliststatus,
+        'andriod_wishliststatus' => $andriod_wishliststatus ,
+        'andriod_like' => $andriod_like ,
+        'andriod_dislike' => $andriod_dislike ,
+        'andriod_watchlaterstatus' => $andriod_watchlaterstatus ,
+        'andriod_favorite' => $andriod_favorite ,
+        'tv_wishliststatus' => $tv_wishliststatus ,
+        'watchlater' => $watchlaterstatus,
+        'favorite' => $favorite                                 ,
+        'ppv_exist' => $ppv_exists_check_query,
+        'userrole' => $userrole,
+        'like' => $like,
+        'dislike' => $dislike,
+        'shareurl' => URL::to('category/videos').'/'.@$videodetail->slug,
         'videodetail' => $videodetail,
+        'videossubtitles' => $moviesubtitles,
+        'main_genre' => $main_genre,
+        'languages' => $languages,
+        'IOS_wishliststatus' => $IOS_wishliststatus ,
+        'IOS_watchlaterstatus' => $IOS_watchlaterstatus ,
+        'IOS_favorite' => $IOS_favorite ,
+        'IOS_like' => $IOS_like ,
+        'IOS_dislike' => $IOS_dislike ,
       );
 
     } catch (\Throwable $th) {
@@ -3789,6 +3958,7 @@ public function verifyandupdatepassword(Request $request)
     $series_id = $request->series_id;
     $audio_id = $request->audio_id;
     $user_id = $request->user_id;
+    $ppv_plan = $request->ppv_plan;
     $daten = date('Y-m-d h:i:s a', time());
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
@@ -3807,11 +3977,12 @@ public function verifyandupdatepassword(Request $request)
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
+      $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       // print_r($live_ppv_count);exit;
-      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0) {
+      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0 || $season_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount, ]
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount,'ppv_plan'=> $ppv_plan ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
@@ -3827,10 +3998,15 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
   
+        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
+          );
         }
+
       } else {
         if(!empty($video_id) && $video_id != ''){
-          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
 
         }else if(!empty($audio_id) && $audio_id != ''){
           DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
@@ -3838,7 +4014,13 @@ public function verifyandupdatepassword(Request $request)
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
+        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+            DB::table('ppv_purchases')->insert(
+              ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
+            );
         }
+      
+
     }
 
       $response = array(
@@ -3860,10 +4042,10 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
+          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv,'ppv_plan'=> $ppv_plan ]
         );
       } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date]);
+        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
 
       if ( $serie_ppv_count == 0 ) {
@@ -3879,14 +4061,14 @@ public function verifyandupdatepassword(Request $request)
 
       if ( $season_ppv_count == 0 ) {
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ]
+          ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
         );
       } else {
         DB::table('ppv_purchases')
         ->where('series_id', $series_id)
         ->where('season_id', $season_id)
         ->where('user_id', $user_id)
-        ->update(['to_time' => $date]);
+        ->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
     
       if ( $live_ppv_count == 0 ) {
