@@ -477,7 +477,7 @@
     
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div class="col-8 d-flex justify-content-start p-0">
-                                                <span class="descript text-white">{{ "Available to watch this Live after purchasing" }}</span>
+                                                <span class="descript text-white">{{ $ppv_live_description }}</span>
                                             </div>
                                             <div class="col-4">
                                                 <h3 class="pl-2" style="font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($Livestream_details->ppv_price) :  $currency->symbol .$Livestream_details->ppv_price }}</h3>
@@ -491,7 +491,7 @@
                                         <!-- Stripe Button -->
                                         @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
                                             <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                                <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                                <input type="radio" class="payment_btn" id="tres_important" name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
                                                 {{ $stripe_payment_setting->payment_type }}
                                             </label>
                                         @endif
