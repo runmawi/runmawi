@@ -6429,12 +6429,179 @@ return response()->json($response, 200);
     return response()->json($response, 200);
   }
 
+  public function VideoCipher_Seasondetail($data)
+  {
+    try {
+      $request = $data;
+
+      $season_id = $request['season_id'];
+      $episode_id = $request['episode_id'];
+      $user_id = $request['user_id'];
+
+      $episode = Episode::where('id','=',$episode_id)->first();
+    // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
+    $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
+    ->orderBy('created_at', 'desc')->first();
+    if(!empty($season)){
+      $ppv_price = $season->ppv_price;
+      $ppv_interval = $season->ppv_interval;
+      $season_id = $season->id;
+      $access = $season->access;
+    }
+    // echo "<pre>";
+    // print_r($season);exit;
+    // Free Interval Episodes
+    $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+    ->where('user_id','=',$user_id)->count();
+
+      $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
+        
+        $ppv_purchase = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)->orderBy('created_at', 'desc')
+        ->where('user_id', $data['user_id'])
+        ->first();
+
+        if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+          $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+          $currentdate = date("M d , y H:i:s");
+          $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+        }
+        else{
+          $ppv_exists_check_query = 0;
+        }     
+
+      if($ppv_exists_check_query > 0 || $userrole == "admin"){
+
+        $free_episode = 'guest';
+        
+        $episode_details = Episode::where('id',$episode_id)->get()->map( function ($item) use ($season,$userrole,$data)  {
+
+          $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+          $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+          $item['TV_Thumbnail'] = !is_null($item->tv_image)  ? URL::to('public/uploads/images/'.$item->tv_image)  : default_horizontal_image_url() ;
+
+
+          $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
+          $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
+          $item['video_intro_end_time_seconds']    = $item->intro_end_time ? Carbon::parse($item->intro_end_time)->secondsSinceMidnight() : null ;
+
+          $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
+          $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
+          $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+          
+
+          if( $userrole == "admin"){
+              $item['Episode_url'] =  $item->episode_id_1080p ;
+         }elseif($userrole == "registered" && $season->access == 'ppv'){
+
+
+              $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
+
+              if($item['PPV_Plan'] > 0){
+                  if($item['PPV_Plan'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+              }else{
+                  $item['PPV_Plan']  = '';
+              }
+         }
+         elseif( $season->access == 'ppv' && $userrole == "subscriber"){
+              $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
+              if($item['PPV_Plan'] > 0){
+                      if($item['PPV_Plan'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+                  }else{
+                      $item['PPV_Plan']  = '';
+                  }
+         }else{
+             $item['PPV_Plan']   = '';
+         }
+
+         
+         $videoId = $item['Episode_url']; 
+         $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+         $curl = curl_init();
+
+         curl_setopt_array($curl, array(
+             CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
+             CURLOPT_RETURNTRANSFER => true,
+             CURLOPT_ENCODING => "",
+             CURLOPT_MAXREDIRS => 10,
+             CURLOPT_TIMEOUT => 30,
+             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+             CURLOPT_CUSTOMREQUEST => "POST",
+             CURLOPT_POSTFIELDS => json_encode([
+                 "ttl" => 30000, 
+             ]),
+             CURLOPT_HTTPHEADER => array(
+                 "Accept: application/json",
+                 "Authorization: Apisecret $apiKey",
+                 "Content-Type: application/json"
+             ),
+         ));
+
+         $response = curl_exec($curl);
+         $err = curl_error($curl);
+
+         curl_close($curl);
+
+         if ($err) {
+             // echo "cURL Error #:" . $err;
+             $item['otp'] = null;
+             $item['playbackInfo'] = null;
+            
+         } else {
+
+             $responseObj = json_decode($response, true);
+
+             if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
+                 $item['otp'] = null;
+                 $item['playbackInfo'] = null;
+             }else{
+                 $item['otp'] = $responseObj['otp'];
+                 $item['playbackInfo'] = $responseObj['playbackInfo'];
+             }
+
+            
+         }
+          return $item;
+
+      });
+
+      }else{
+        $free_episode = 'PPV';
+        $episode_details = [];
+      }
+
+
+
+
+    $response = array(
+      'status' => 'true',
+      'access' => $free_episode,
+      'episode' => $episode_details,
+      'season' => $season,
+    );
+
+
+    } catch (\Throwable $th) {
+        $response = array(
+          'status'=>'false',
+          'message'=>$th->getMessage(),
+        );
+    }
+   
+    return response()->json($response, 200);
+  }
+
   public function SeasonsPPV(Request $request)
   {
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
     $user_id = $request->user_id;
 
+      $data = $request->all();
+      
+      if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+          return $this->VideoCipher_Seasondetail($data);
+      }
+      
     $episode = Episode::where('id','=',$episode_id)->first();
     // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
     $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
@@ -8988,7 +9155,7 @@ public function LocationCheck(Request $request){
           Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
 
           $response = [
-              'status' => 'true',
+              'status' => 'false',
               'status_code' => 200,
               'message' => 'Removed From Your Favorite'
           ];
