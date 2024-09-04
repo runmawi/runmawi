@@ -154,12 +154,13 @@
 							</div>
                             
                     </div>
-
-                    <div class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
-                        <label class="m-0">PPV Interval:</label>
-                        <p class="p1">Please Mention How Many Episodes are Free:</p>
-                        <input type="text" id="ppv_interval" name="ppv_interval" value="@if(!empty($season->ppv_interval)){{ $season->ppv_interval }}@endif" class="form-control" />
-                    </div>
+                    @if (Enable_videoCipher_Upload() == 0 && Enable_PPV_Plans() == 0)
+                        <div class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
+                            <label class="m-0">PPV Interval:</label>
+                            <p class="p1">Please Mention How Many Episodes are Free:</p>
+                            <input type="text" id="ppv_interval" name="ppv_interval" value="@if(!empty($season->ppv_interval)){{ $season->ppv_interval }}@endif" class="form-control" />
+                        </div>
+                    @endif
 
                     <input type="hidden" name="id" id="id" value="{{ $season->id }}" />
                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
