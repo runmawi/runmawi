@@ -365,13 +365,18 @@
         });
 
         // Watermark
-        // player.ready(function() {
-        //     var watermark = document.createElement('div');
-        //     watermark.className = 'vjs-watermark';
-        //     watermark.innerHTML = '<img src="<?= URL::to('/') . '/public/uploads/settings/'. $settings->watermark ?>" alt="Watermark">';
-        //     // watermark.innerHTML = '<img src="https://localhost/flicknexs/public/uploads/settings/webnexs-250.png" alt="Watermark">';
-        //     player.el().appendChild(watermark);
-        // });
+        let enable_watermark  = '<?= $playerui->watermark ?>';
+
+        if (enable_watermark == 1 ) {
+
+            player.ready(function() {
+                var watermark = document.createElement('div');
+                watermark.className = 'vjs-watermark';
+                watermark.innerHTML = '<img src="<?= $playerui->watermark_logo ?>" alt="Watermark">';
+                player.el().appendChild(watermark);
+            });
+
+        }
 
 
         // Advertisement
@@ -574,16 +579,19 @@
         margin-left: -3px;
     }
     .vjs-watermark {
-        position: absolute;
-        width: 5%;
-        height: 5%;
-        top: 65%;
-        left: 90%;
-        opacity: 0.5;
+        opacity: <?php echo $playerui_settings->watermark_opacity; ?>;
         cursor: pointer;
+        width: <?php echo $playerui_settings->watermar_width; ?>;
+        /* float: right; */
+        position: relative;
+        top:<?php echo $playerui_settings->watermark_top; ?>;
+        right: <?php echo $playerui_settings->watermark_right; ?>;
+        left:<?php echo $playerui_settings->watermark_left; ?>;
+        bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
+        transform: translate(-50%, 0%);
     }
     .vjs-watermark:hover{
-        opacity: 1;
+        opacity: 100%;
     }
     .vjs-watermark img{
         width: 100%;

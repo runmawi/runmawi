@@ -480,11 +480,16 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Stripe_payment_series_season_PPV_Purchase/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase')->name('Stripe_payment_series_season_PPV_Purchase');
     Route::get('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}', 'StripePaymentController@Stripe_payment_series_season_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
     
-        // Stripe Series  PPV Purchase
-        Route::get('Stripe_payment_series_PPV_Purchase/{Series_id}/{amount}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase')->name('Stripe_payment_series_PPV_Purchase');
-        Route::get('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{Series_id}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
-        
+    // Stripe Series  PPV Purchase
+    Route::get('Stripe_payment_series_PPV_Purchase/{Series_id}/{amount}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase')->name('Stripe_payment_series_PPV_Purchase');
+    Route::get('Stripe_payment_series_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/{Series_id}', 'StripePaymentController@Stripe_payment_series_PPV_Purchase_verify')->name('Stripe_payment_series_season_PPV_Purchase_verify');
     
+
+                // Stripe Series Season PPV Purchase
+    Route::get('Stripe_payment_series_season_PPV_Plan_Purchase/{ppv_plan}/{SeriesSeason_id}/{amount}', 'StripePaymentController@Stripe_payment_series_season_PPV_Plan_Purchase')->name('Stripe_payment_series_season_PPV_Plan_Purchase');
+    Route::get('Stripe_payment_series_season_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/{SeriesSeason_id}/{ppv_plan}', 'StripePaymentController@Stripe_payment_series_season_PPV_Plan_Purchase_verify')->name('StripeStripe_payment_series_season_PPV_Plan_Purchase_verifyPaymentController');
+    
+
     Route::get('serieslist', ['uses' => 'ChannelController@series', 'as' => 'series']);
     // Route::get('series/category/{id}', 'ChannelController@series_genre' );
     Route::get('watchlater', 'WatchLaterController@show_watchlaters');
@@ -2379,6 +2384,13 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 
     Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+
+
+    Route::get('/RazorpaySeriesSeasonRent/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent')->name('RazorpaySeriesSeasonRent');
+    Route::POST('/RazorpaySeriesSeasonRent_Payment', 'RazorpayController@RazorpaySeriesSeasonRent_Payment')->name('RazorpaySeriesSeasonRent_Payment');
+
+    Route::get('/RazorpaySeriesSeasonRent_PPV/{ppv_plan}/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent_PPV')->name('RazorpaySeriesSeasonRent_PPV');
+
 
     // Route::get('/RazorpayModeratorPayouts/{user_id}/{amount}', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
     Route::POST('/RazorpayModeratorPayouts', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
