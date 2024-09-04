@@ -8988,7 +8988,7 @@ public function LocationCheck(Request $request){
           Favorite::where('user_id', $user_id)->where('episode_id', $episode_id)->delete();
 
           $response = [
-              'status' => 'true',
+              'status' => 'false',
               'status_code' => 200,
               'message' => 'Removed From Your Favorite'
           ];
