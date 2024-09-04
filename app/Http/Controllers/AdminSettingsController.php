@@ -261,6 +261,9 @@ class AdminSettingsController extends Controller
         $settings->ads_on_videos = !empty($request['ads_on_videos']) ? 1 : 0 ;
         $settings->ads_variable_status = !empty($request['ads_variable_status']) ? 1 : 0 ;
         $settings->ads_play_unlimited_period = !empty($request['ads_play_unlimited_period']) ? 1 : 0 ;
+        $settings->video = $request->input('video');
+        $settings->live = $request->input('live');
+        $settings->series = $request->input('series');
 
         $path = storage_path('app/public/');
 
