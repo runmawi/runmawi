@@ -511,6 +511,24 @@ border-radius: 0px 4px 4px 0px;
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <label>{{ "Ppv description for Video" }}</label>
+                                        <input type="text" class="form-control" name="video" id="video" placeholder="Ppv description for video"
+                                                        value="@if(!empty($settings->video)){{ $settings->video }}@endif" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>{{ "Ppv description for Live" }}</label>
+                                        <input type="text" class="form-control" name="live" id="live" placeholder="Ppv description for live"
+                                                        value="@if(!empty($settings->live)){{ $settings->live }}@endif" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>{{ "Ppv description for Series" }}</label>
+                                        <input type="text" class="form-control" name="series" id="series" placeholder="Ppv description for series"
+                                                        value="@if(!empty($settings->series)){{ $settings->series }}@endif" />
+                                    </div>
+                                </div>
                             </div>
                             {{-- End Set Expiry time --}}
                         </div>
