@@ -434,7 +434,7 @@
     </div>
 
             {{-- Rent Modal  --}}
-
+        @if ( $Livestream_details->access == "ppv" && !is_null($Livestream_details->ppv_price) )
             <div class="modal fade" id="live-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="live-purchase-now-modal-Title" aria-hidden="true">
                 <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content container-fluid bg-dark">
@@ -565,6 +565,7 @@
                     </div>
                 </div>
             </div>
+        @endif
     
 
     <div class="clear"></div>
