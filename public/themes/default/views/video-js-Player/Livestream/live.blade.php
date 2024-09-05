@@ -4,6 +4,14 @@
      include( public_path('themes/default/views/video-js-Player/Livestream/live-player-script.blade.php'));
 @endphp
 
+@if(Auth::check() && !Auth::guest())
+    @php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    @endphp
+@endif
+
 <style type="text/css">
 
     .close {
@@ -161,6 +169,7 @@
     .custom-skip-forward-button, .custom-skip-backward-button{
      top: 23% !important;
     }
+    #video_bg p{color: #fff;}
 
     /* <!-- BREADCRUMBS  */
 
@@ -208,20 +217,64 @@
         }
     }
 
-    .modal {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1050;
-        display: none;
-        overflow: hidden;
-        outline: 0;
-    }
-
-    .responsive-iframe {
+        .responsive-iframe {
         position: relative !important;
         height: calc(100vh - 85px)!important;
+    }
+
+    
+/* payment modal */
+    #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+    #purchase-modal-dialog .modal-content{height: 100vh;}
+    #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+    #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+    .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+    .modal-open .modal{overflow-y: hidden;}
+    div#video-purchase-now-modal{padding-right: 0 !important;}
+    .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
+    .col-md-12.btn {margin-top: 2rem;}
+    .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+    .btn-primary-dark {
+        background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+    }
+
+    .btn-primary-light {
+        background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+    }
+    .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
+    .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
+    .quality_option {width: 15px;height: 15px;margin-right: 10px;}
+    span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
+    input[type="radio"].payment_btn,input[type="radio"].quality_option {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        background-color: transparent;
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
+        background-color: black;
+        border-color: white;
+    }
+
+    input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 </style>
 
@@ -265,7 +318,7 @@
 
 <div id="video_bg">
                         {{-- Player --}}
-    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg])->content() !!}
+    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg, 'enable_ppv_rent_live' => $enable_ppv_rent_live])->content() !!}
 
     @php
         $Current_time = Carbon\Carbon::now(current_timezone())->isoFormat('h:mm A');
@@ -277,7 +330,7 @@
         }
     @endphp
 
-    @if(($Livestream_details->publish_type == "publish_now") || ($recurring_program_Status == true))
+    @if( $Livestream_details->publish_type == "publish_now" || $Livestream_details->users_video_visibility_status == true || $recurring_program_Status == true )
 
         <div class="container-fluid video-details">
             <div class="row">
@@ -381,113 +434,139 @@
     </div>
 
             {{-- Rent Modal  --}}
-    @if ( $Livestream_details->access == "ppv" && !is_null($Livestream_details->ppv_price) )
-        <div class="modal fade" id="live-purchase-now-modal" tabindex="-1" role="dialog"aria-labelledby="live-purchase-now-modal-Title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <h4 class="modal-title text-center" id="exampleModalLongTitle" style="color:black">
-                            {{ __('Purchase Now') }}
-                        </h4>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row justify-content-between">
-                            <div class="col-sm-4 p-0" style="">
-                                <img class="img__img w-100" src="{{ $Livestream_details->Thumbnail }}" class="img-fluid" alt="live-image">
+        @if ( $Livestream_details->access == "ppv" && !is_null($Livestream_details->ppv_price) )
+            <div class="modal fade" id="live-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="live-purchase-now-modal-Title" aria-hidden="true">
+                <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content container-fluid bg-dark">
+    
+                        <div class="modal-header align-items-center">
+                            <div class="row">
+                                <div class="col-12">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                                </div>
                             </div>
-
-                            <div class="col-sm-8">
-
-                                <h4 class=" text-black movie mb-3">{{ __(@$Livestream_details->title) }}</h4>
-                                <span class="badge badge-secondary  mb-2 ml-1">{{ $Livestream_details->duration != null ? gmdate('H:i:s', $Livestream_details->duration)  : null  }} </span><br>
-
-                                <a type="button" class="mb-3 mt-3" data-dismiss="modal" style="font-weight:400;">{{ __('Amount') }}:
-                                    <span class="pl-2" style="font-size:20px;font-weight:700;"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($Livestream_details->ppv_price) :  $currency->symbol .$Livestream_details->ppv_price }}</span>
-                                </a><br>
-
-                                <label class="mb-0 mt-3 p-0" for="method">
-                                    <h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"> {{ __('Payment Method') }} : </h5>
-                                </label>
-
-                                <!-- Stripe Button -->
-                                @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
-                                        {{ $stripe_payment_setting->payment_type }}
-                                    </label>
+                            <div class="d-flex align-items-center justify-content-end">
+                                @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
+                                    <img src="{{ $user_avatar }}" alt="{{ $user_name }}">
+                                    <h5 class="pl-4">{{ $user_name }}</h5>
                                 @endif
-
-                                <!-- Razorpay Button -->
-                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
-                                        {{ $Razorpay_payment_setting->payment_type }}
-                                    </label>
-                                @endif
-
-                                <!-- Paystack Button -->
-                                @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $Paystack_payment_setting->payment_type }}" data-value="Paystack">
-                                        {{ $Paystack_payment_setting->payment_type }}
-                                    </label>
-                                @endif
-
-                                <!-- CinetPay Button -->
-                                {{-- @if ( $CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay' && $CinetPay_payment_settings->status == 1)
-                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
-                                        <input type="radio" class="payment_btn" name="payment_method" value="{{ $CinetPay_payment_settings->payment_type }}" data-value="CinetPay">
-                                        {{ $CinetPay_payment_settings->payment_type }}
-                                    </label>
-                                @endif --}}
+                                
                             </div>
                         </div>
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <div class="Stripe_button"> <!-- Stripe Button -->
-                            <button class="btn2  btn-outline-primary "
-                                onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}' ;">
-                                {{ __('Continue') }}
-                            </button>
-                        </div>
-
-                        <div class="Razorpay_button"> <!-- Razorpay Button -->
-                            @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                <button class="btn2  btn-outline-primary "
-                                    onclick="location.href ='{{ route('RazorpayLiveRent', [$Livestream_details->id, $Livestream_details->ppv_price]) }}' ;">
-                                    {{ __('Continue') }}
+    
+                        <div class="modal-body">
+                            <div class="row justify-content-between">
+                                <h3 class="font-weight-bold">{{ 'Upgrade to '. $Livestream_details->title.' pack by just paying the difference'}}</h3>
+                                <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
-                            @endif
-                        </div>
+                            </div>
+                            <p class="text-white">{{ 'You are currently on plan.' }}</p>
+                            <div class="row justify-content-between m-0" style="gap: 4rem;">
+                                <div class="col-sm-4 col-12 p-0" style="">
+                                    <img class="img__img w-100" src="{{ URL::to('public/uploads/images/'.$Livestream_details->player_image) }}" class="img-fluid" alt="{{ $Livestream_details->title }}" style="border-radius: 10px;">
+                                </div>
+    
+                                <div class="col-sm-7 col-12 details">
+    
+                                    <div class="movie-rent btn">
+    
+                                        <div class="d-flex justify-content-between title">
+                                            <h3 class="font-weight-bold">{{ ( $Livestream_details->title) }}</h3>
+                                        </div>
+    
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="col-8 d-flex justify-content-start p-0">
+                                                <span class="descript text-white">{{ $ppv_live_description }}</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <h3 class="pl-2" style="font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($Livestream_details->ppv_price) :  $currency->symbol .$Livestream_details->ppv_price }}</h3>
+                                            </div>
+                                        </div>
+    
+                                        <div class="mb-0 mt-3 p-0 text-left">
+                                            <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2"> {{ __('Select payment method') }} : </h5>
+                                        </div>
+    
+                                        <!-- Stripe Button -->
+                                        @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe')
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                <input type="radio" class="payment_btn" id="tres_important" name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                                {{ $stripe_payment_setting->payment_type }}
+                                            </label>
+                                        @endif
 
-                        <div class="paystack_button"> <!-- Paystack Button -->
-                            @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
-                                <button class="btn2  btn-outline-primary"
-                                    onclick="location.href ='{{ route('Paystack_live_Rent', ['live_id' => $Livestream_details->id, 'amount' => $Livestream_details->ppv_price]) }}' ;">
-                                    {{ __('Continue') }}
-                                </button>
-                            @endif
-                        </div>
+                                        <!-- Razorpay Button -->
+                                        @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                                {{ $Razorpay_payment_setting->payment_type }}
+                                            </label>
+                                        @endif
 
-                        {{-- <div class="cinetpay_button"> <!-- Cinetpay Button -->
-                            @if ($CinetPay_payment_settings && $CinetPay_payment_settings->payment_type == 'CinetPay')
-                                <button onclick="cinetpay_checkout()" id=""
-                                    class="btn2  btn-outline-primary">{{ __('Continue') }}</button>
-                            @endif
-                        </div> --}}
+                                        <!-- Paystack Button -->
+                                        @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                <input type="radio" class="payment_btn" name="payment_method" value="{{ $Paystack_payment_setting->payment_type }}" data-value="Paystack">
+                                                {{ $Paystack_payment_setting->payment_type }}
+                                            </label>
+                                        @endif
+                                    </div>
+                                    <div class=" becomesubs-page">
+                                        <div class="Stripe_button row mt-3 justify-content-around">  
+                                            <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
+                                                <button class="btn text-white"
+                                                    onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_live_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}' ;">
+                                                    {{ __('Continue') }}
+                                                </button>
+                                            </div>
+                                            <div class="Stripe_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
+                                                    {{'Cancel'}}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3 justify-content-around"> 
+                                            <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
+                                                @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                                <button class="btn text-white "
+                                                onclick="location.href ='{{ route('RazorpayLiveRent', [$Livestream_details->id, $Livestream_details->ppv_price]) }}' ;">
+                                                {{ __('Continue') }}
+                                            </button>
+                                                @endif
+                                            </div>
+                                            <div class="Razorpay_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
+                                                    {{'Cancel'}}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3 justify-content-around"> 
+                                            <div class="paystack_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
+                                                @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
+                                                    <button class="btn text-white "
+                                                        onclick="location.href ='{{ route('RazorpayLiveRent', [$Livestream_details->id, $Livestream_details->ppv_price]) }}' ;">
+                                                        {{ __('Continue') }}
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            <div class="paystack_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
+                                                    {{'Cancel'}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
+    
 
     <div class="clear"></div>
 </div>

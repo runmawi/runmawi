@@ -182,6 +182,9 @@ class LiveStreamController extends Controller
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
 
+      $enable_ppv_rent_live = Setting::pluck('enable_ppv_rent_live')->first();
+      $ppv_live_description = Setting::pluck('live')->first();
+
       $data = session()->all();
 
       $categoryVideos = LiveStream::where('slug',$vid)->first();
@@ -602,11 +605,13 @@ class LiveStreamController extends Controller
                  'Livestream_details'      => $Livestream_details ,
                  'setting'                => $settings,
                  'current_theme'          => $this->Theme,
+                 'enable_ppv_rent_live'  => $enable_ppv_rent_live,
+                 'ppv_live_description'   => $ppv_live_description,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
-           );
+           );           
 
            if(  $Theme == "default" ){
               return Theme::view('video-js-Player.Livestream.live', $data);

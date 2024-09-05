@@ -492,7 +492,7 @@ line-height: 2.1em;
     align-items: center;
     font-size: 2em;
     position: absolute;
-    top: -245px;
+    top: -240px;
     width: 40px;
     height: 40px;
 }
@@ -957,14 +957,15 @@ display: block !important;
 
 .vjs-text-track-cue{
     white-space: pre-line !important;
-    inset: 470px 0px 0px !important;
+    inset: 485px 0px 0px !important;
     height: 65px !important;
+    font-size: 20px !important;
 }
 
 .vjs-text-track-cue div{font-size: 22px !important;background-color: rgb(0 0 0 / 25%) !important;}
 
 .vjs-fullscreen .vjs-text-track-cue{
-    inset: 600px 0px 0px !important;
+    inset: 640px 0px 0px !important;
 }
 
 /* For screens up to 600px */
@@ -1086,10 +1087,13 @@ display: block !important;
         display: none;
     }
     .vjs-text-track-cue{
-        inset: 166.812px 0px 0px !important;
+        inset: 150px 0px 0px !important;
     }
     .vjs-text-track-cue div{
         font-size: 10px !important;
+    }
+    .vjs-fullscreen .vjs-text-track-cue {
+        inset: 515px 0px 0px !important;
     }
 }
 
@@ -1097,26 +1101,27 @@ display: block !important;
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     .custom-skip-backward-button,
     .custom-skip-forward-button {
-        top: -65px !important;
+        top: -105px !important;
     }
     .custom-skip-backward-button {
         left: 32% !important;
     }
     .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
-        top: -230px !important;
+        top: -285px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button {
         left: 60%;
     }
 
     .vjs-text-track-cue{
-        inset: 130px 0px 0px !important;
+        inset: 175px 0px 0px !important;
+        height: 45px !important;
     }
 
     .vjs-text-track-cue div{font-size: 15px !important;}
 
     .vjs-fullscreen .vjs-text-track-cue{
-        inset: 446px 0px 0px !important;
+        inset: 560px 0px 0px !important;
     }
 
     .titlebutton {
@@ -1171,7 +1176,12 @@ display: block !important;
         width: 5%;
     }
     .vjs-control-bar {
-        top: 85%;
+        top: 90%;
+        margin-top: 0%;
+    }
+    .vjs-fullscreen-control .vjs-control-bar {
+        top: 95%;
+        margin-top: -3%;
     }
     .vjs-fullscreen-control .vjs-icon-placeholder:before {
         font-size: 20px;
@@ -1189,10 +1199,6 @@ display: block !important;
         left: -3.3em;
         height: 0;
         margin-bottom: 2.7em;
-    }
-
-    .vjs-control-bar {
-        margin-top: -4%;
     }
 
     .my-video.vjs-theme-city .vjs-play-control .vjs-icon-placeholder:before {
@@ -1215,44 +1221,75 @@ display: block !important;
 }
 
 /* Screens between 992px and 1199px */
-@media only screen and (min-width: 992px) and (max-width: 1200px) {
+@media only screen and (min-width: 992px) and (max-width: 1201px) {
     .my-video.video-js .vjs-tech {
         object-fit: contain;
     }
     .custom-skip-backward-button {
-        top: -247px !important;
+        top: -200px !important;
         left: 32% !important;
     }
     .custom-skip-forward-button {
-        left: 54% !important;
-        top: -247px !important;
+        left: 63% !important;
+        top: -200px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button,
     .vjs-fullscreen .custom-skip-backward-button {
-        top: -295px !important;
+        top: -290px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button{
-        left: 57% !important;
+        left: 61% !important;
+    }
+    .vjs-text-track-cue {
+        inset: 395px 0px 0px !important;
+    }
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 550px 0px 0px !important;
     }
 }
 
-/* @media (aspect-ratio: 4/3){
+/* @media screen and (aspect-ratio: 4/3) {
     .vjs-text-track-cue{
         inset: 540px 0px 0px !important;
     }
-} */
-/* Screens 1200px and larger */
-/* @media only screen and (min-width: 1200px) {
-    .custom-skip-backward-button ,
-    .custom-skip-forward-button {
-        top: -274px !important;
+    .custom-skip-forward-button, .custom-skip-backward-button {
+        top: -280px !important;
     }
-    .custom-skip-forward-button{
-        left: 57% !important;
+    .vjs-fullscreen .custom-skip-forward-button, .vjs-fullscreen .custom-skip-backward-button {
+        top: -395px !important;
     }
-    .vjs-fullscreen .custom-skip-forward-button,
-    .vjs-fullscreen .custom-skip-backward-button {
-        top: -325px !important;
+    .vjs-fullscreen .vjs-text-track-cue {
+        inset: 745px 0px 0px !important;
+        font-size: 30px !important;
     }
 } */
 
+/* Screens 1200px and 1339px */
+@media only screen and  (min-width: 1201px) and (max-width: 1339px) {
+    .custom-skip-backward-button,
+    .custom-skip-forward-button {
+        top: -240px !important;
+    }
+    /* .custom-skip-forward-button{
+        left: 57% !important;
+    } */
+    .vjs-fullscreen .custom-skip-forward-button,
+    .vjs-fullscreen .custom-skip-backward-button {
+        top: -335px !important;
+    }
+    .vjs-text-track-cue {
+        inset: 485px 0px 0px !important;
+    }
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 640px 0px 0px !important;
+    }
+}
+
+@media only screen and  (min-width: 1400px) {
+    .vjs-text-track-cue {
+        inset: 450px 0px 0px !important;
+    }
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 630px 0px 0px !important;
+    }
+}

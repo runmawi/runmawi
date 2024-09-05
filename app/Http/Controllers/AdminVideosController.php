@@ -12742,9 +12742,9 @@ class AdminVideosController extends Controller
             $video->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
             $video->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
             $video->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
-            $video->video_id_480p = $data['video_id_480p'];
-            $video->video_id_720p = $data['video_id_720p'];
-            $video->video_id_1080p = $data['video_id_1080p'];
+            $video->video_id_480p = ( !empty($data["video_id_480p"])) ? $data["video_id_480p"] : null;
+            $video->video_id_720p = (!empty($data["video_id_720p"])) ? $data["video_id_720p"] : null;
+            $video->video_id_1080p =( !empty($data["video_id_1080p"])) ? $data["video_id_1080p"] : null;
             $video->type = 'VideoCipher';
             $video->status = 1;
             // Ads videos

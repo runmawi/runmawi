@@ -634,6 +634,24 @@ border-radius: 0px 4px 4px 0px;
                                        </select>
                                  </div>
                               </div>
+                              <div class="row" >
+
+                              <div class="col-sm-6 form-group" >
+                                    <label class="m-0">Choose video Id 480p:</label>
+                                    <input type="text" class="form-control" placeholder="Video ID for 480p" name="video_id_480p"  value="@if(!empty($video->video_id_480p)){{ $video->video_id_480p }}@endif">
+                                 </div>
+
+                                 <div class="col-sm-6 form-group" >
+                                    <label class="m-0">Choose video Id 720p:</label>
+                                    <input type="text" class="form-control" placeholder="Video ID for 720p" name="video_id_720p"  value="@if(!empty($video->video_id_720p)){{ $video->video_id_720p }}@endif">
+                                 </div>
+
+                                 <div class="col-sm-6 form-group" >
+                                    <label class="m-0">Choose video Id 1080p:</label>
+                                    <input type="text" class="form-control" placeholder="Video ID for 1080p" name="video_id_1080p"  value="@if(!empty($video->video_id_1080p)){{ $video->video_id_1080p }}@endif">
+                                 </div>
+
+                              </div> 
 
                               <div class="row" id="quality_ppv_price" >
                               <!-- <div class="col-sm-6 form-group" >
@@ -652,10 +670,10 @@ border-radius: 0px 4px 4px 0px;
                                     <span id="error_quality_ppv_price" style="color:red;">*Enter the 480 PPV Price </span>
                                  </div>
 
-                                 <div class="col-sm-6 form-group" >
+                                 <!-- <div class="col-sm-6 form-group" >
                                     <label class="m-0">Choose video Id 480 Plan:</label>
                                     <input type="text" class="form-control" placeholder="Video ID 480" name="video_id_480p"  value="@if(!empty($video->video_id_480p)){{ $video->video_id_480p }}@endif">
-                                 </div>
+                                 </div> -->
 
                                  <div class="col-sm-6 form-group" >
                                     <label class="m-0">Choose PPV Price for 720 Plan:</label>
@@ -663,10 +681,10 @@ border-radius: 0px 4px 4px 0px;
                                     <span id="error_quality_ppv_price" style="color:red;">*Enter the 720 PPV Price </span>
                                  </div>
 
-                                 <div class="col-sm-6 form-group" >
+                                 <!-- <div class="col-sm-6 form-group" >
                                     <label class="m-0">Choose video Id 720 Plan:</label>
                                     <input type="text" class="form-control" placeholder="Video ID 720" name="video_id_720p"  value="@if(!empty($video->video_id_720p)){{ $video->video_id_720p }}@endif">
-                                 </div>
+                                 </div> -->
 
                                  <div class="col-sm-6 form-group" >
                                     <label class="m-0">Choose PPV Price for 1080 Plan:</label>
@@ -674,10 +692,10 @@ border-radius: 0px 4px 4px 0px;
                                     <span id="error_quality_ppv_price" style="color:red;">*Enter the 1080 PPV Price </span>
                                  </div>
 
-                                 <div class="col-sm-6 form-group" >
-                                    <label class="m-0">Choose video Id1080 Plan:</label>
+                                 <!-- <div class="col-sm-6 form-group" >
+                                    <label class="m-0">Choose video Id 1080 Plan:</label>
                                     <input type="text" class="form-control" placeholder="Video ID 1080" name="video_id_1080p"  value="@if(!empty($video->video_id_1080p)){{ $video->video_id_1080p }}@endif">
-                                 </div>
+                                 </div> -->
                                  
                                  <div class="col-sm-6 form-group" >
                                     <label class="m-0">IOS PPV Price for 480 Plan:</label>

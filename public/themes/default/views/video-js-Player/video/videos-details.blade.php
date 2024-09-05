@@ -639,7 +639,7 @@
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div class="col-8 d-flex justify-content-start p-0">
-                                            <span class="descript text-white">{{ "Available to watch this video after purchasing" }}</span>
+                                            <span class="descript text-white">{{ $setting->video }}</span>
                                         </div>
                                         <div class="col-4">
                                             @if (Enable_PPV_Plans() == 0)
