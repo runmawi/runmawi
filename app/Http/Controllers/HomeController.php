@@ -150,7 +150,7 @@ class HomeController extends Controller
 
         $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
 
-        if($this->HomeSetting->theme_choosen == "theme4" || "default"){
+        if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
             $order_settings = $order_settings->paginate(3);    // Pagination
         }else{
             $order_settings = $order_settings->get();
@@ -484,7 +484,7 @@ class HomeController extends Controller
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
             );
 
-            if ( $this->HomeSetting->theme_choosen == "theme4" || "default" || "theme5-nemisha") {
+            if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                 if($request->ajax()) {
                     return $data = [
                         "view" => Theme::watchPartial('home_sections', $data ),
@@ -1225,7 +1225,7 @@ class HomeController extends Controller
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
                     );
 
-                    if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
+                    if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                         if($request->ajax()) {
                             return $data = [
                                 "view" => Theme::watchPartial('home_sections', $data ),
@@ -1612,7 +1612,7 @@ class HomeController extends Controller
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
 
-                if($this->HomeSetting->theme_choosen == "theme4" || "default"){
+                if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                     $order_settings = $order_settings->paginate(3);    // Pagination
                 }else{
                     $order_settings = $order_settings->get();
@@ -1688,7 +1688,7 @@ class HomeController extends Controller
                     'Epg'                 => $FrontEndQueryController->Epg(),
                 );
 
-                if ($this->HomeSetting->theme_choosen == "theme4" || "default") {
+                if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                     if($request->ajax()) {
                         return $data = [
                             "view" => Theme::watchPartial('home_sections', $data ),
