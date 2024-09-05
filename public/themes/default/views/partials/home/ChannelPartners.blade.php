@@ -12,7 +12,7 @@
                             </a>
                         </h4>
                         @if($settings->homepage_views_all_button_status == 1)
-                            <h4 class="main-title">
+                            <h4 class="main-title view-all">
                                 <a href="{{ $order_settings_list[13]->header_name ? URL::to('/') . '/' . $order_settings_list[13]->url : '' }}">
                                     {{ __('View all') }}
                                 </a>

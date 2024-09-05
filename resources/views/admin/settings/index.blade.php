@@ -149,6 +149,7 @@ border-radius: 0px 4px 4px 0px;
                             <a class="list-group-item list-group-item-action list-group-item-light" id="recpatcha_setting" href="#!">{{  ucwords('recaptcha settings') }}</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="timezone_setting" href="#!">TimeZone Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="search_setting" href="#!">Search Settings</a>
+                            <a class="list-group-item list-group-item-action list-group-item-light " id="custom_css_setting" href="#!">Custom CSS Settings</a>
                             <!-- Content Partner -->
                         </div>
                     </div>
@@ -1699,6 +1700,23 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
                     </div>
+                    <div class="container-fluid" id="css_custom_setting" >
+                        <h5 class="mb-4">Custom Css</h5>
+                        <div class="row p-0">
+                            <form method="POST" action="{{ URL::to('admin/settings/custom_css_settings') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="col-md-12">
+                                    <textarea rows="5" class="form-control" name="custom_css" id="custom_css" placeholder="Custom css" style="background-color: #F0F0F0;">
+                                        @if(!empty($css)){{ $css}}@endif
+                                    </textarea>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <input type="submit" id="csssetting" value="Update Settings" class="btn btn-primary pull-right" />
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
                     <!-- </div> -->
 
                     <div class="container-fluid" id="app" >
@@ -1978,6 +1996,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#cpp_payouts').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 
 
 	$('#site_setting').click(function(){
@@ -2002,6 +2021,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#recpatcha_setting').click(function(){
@@ -2027,6 +2047,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#settingupdate').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
 	$('#ppv_setting').click(function(){
@@ -2052,6 +2073,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#video_setting').click(function(){
@@ -2075,6 +2097,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#registration_setting').click(function(){
@@ -2098,6 +2121,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#email_setting').click(function(){
@@ -2121,6 +2145,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#social_setting').click(function(){
@@ -2145,6 +2170,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#subscription_setting').click(function(){
@@ -2169,6 +2195,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#login_setting').click(function(){
@@ -2194,6 +2221,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
 	$('#advertisement_setting').click(function(){
@@ -2218,6 +2246,8 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
+        $('#css_custom_setting').hide();
 	});
 
 
@@ -2245,6 +2275,33 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
+	});
+    $('#custom_css_setting').click(function(){
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+		$('#app').hide();
+		$('#script').hide();
+		$('#scriptsetting').hide();
+        $("#Defaut_image_setting").hide();
+		$('#settingupdate').hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+        $("#settingupdate").hide();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
+        $('#css_custom_setting').show();
 	});
 
 	$('#app_setting').click(function(){
@@ -2271,6 +2328,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -2300,6 +2358,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
     $("#transcoding_setting").click(function () {
@@ -2326,6 +2385,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
     $("#series_setting").click(function () {
@@ -2353,6 +2413,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -2381,6 +2442,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -2409,6 +2471,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
 
@@ -2435,6 +2498,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#recpatcha_settings').hide();
 		$('#time_zone_setting,#settingupdate').show();
         $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
     });
 
     $("#search_setting").click(function () {
@@ -2461,6 +2525,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
 		$('#search_setting_form').show();
         $('#settingupdate').show();
+        $('#css_custom_setting').hide();
 
 
     });

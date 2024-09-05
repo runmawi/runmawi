@@ -375,11 +375,11 @@
 
                 <div class="col-sm-3 col-md-3 col-xs-12">
                     <div class=" d-flex mt-4 pull-right">
-                        <div class="views">
+                        {{-- <div class="views">
                             <span class="view-count"><i class="fa fa-eye"></i>
                                 {{ isset($view_increment) && $view_increment ? $video->views + 1 : $video->views }} {{  __('Views')  }}
                             </span>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -405,8 +405,8 @@
                 {{-- Description --}}
         <div class="container-fluid">
             <div class="text-white col-md-6 p-0">
-                <p class="trending-dec w-100 mb-0 text-white"> {!! html_entity_decode(__($video->description)) !!}</p>
-                <p class="trending-dec w-100 mb-3 text-white">{!! html_entity_decode(__($video->details)) !!}</p>
+                <p class="trending-dec w-100 mb-3 text-white"> {{ strip_tags(__($video->description)) }}</p>
+                <p class="trending-dec w-100 mb-3 text-white">{{ strip_tags(__($video->details)) }}</p>
             </div>
         </div>
 
@@ -428,7 +428,8 @@
         <div class="container-fluid video-list you-may-like overflow-hidden">
             <h4 style="color:#fffff;">{{ __('Related Videos') }}</h4>
             <div class="slider">
-                <?php include public_path('themes/default/views/partials/live_related_video.blade.php'); ?>
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/live_related_video", ['data' => $Related_videos, 'ThumbnailSetting' => $ThumbnailSetting] )->content() !!}
+
             </div>
         </div>
     </div>
@@ -455,8 +456,8 @@
                         </div>
     
                         <div class="modal-body">
-                            <div class="row justify-content-between">
-                                <h3 class="font-weight-bold">{{ 'Upgrade to '. $Livestream_details->title.' pack by just paying the difference'}}</h3>
+                            <div class="row justify-content-between m-0">
+                                <h3 class="font-weight-bold">{{ $Livestream_details->title}}</h3>
                                 <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
@@ -787,6 +788,21 @@
         });
     }
 </script>
+
+    
+<script>
+    var elem = document.querySelector('.live-rel-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+ </script>
 
 <?php
     // include('m3u_file_live.blade.php');
