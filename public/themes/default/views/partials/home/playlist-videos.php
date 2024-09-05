@@ -21,7 +21,7 @@
   </a>
   </h4>  
   <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
-    <h4 class="main-title"><a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>"><?php echo (__('View all')); ?></a></h4>
+    <h4 class="main-title view-all"><a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>"><?php echo (__('View all')); ?></a></h4>
   <?php endif; ?>
 </div>
 <div class="favorites-contens">

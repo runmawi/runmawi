@@ -12,10 +12,10 @@
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             @if((!preg_match('/^channel\/.+$/', request()->path())))
                                 <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
-                                <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
+                                <h4 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
                             @else
                                 <h4 class="main-title"><a href="{{ URL::to('category/'.$video_category->slug.'/channel/'.$channel_partner_slug) }}">{{ optional($video_category)->name }}</a></h4>
-                                <h4 class="main-title"><a href="{{ URL::to('category/'.$video_category->slug.'/channel/'.$channel_partner_slug) }}">{{ 'view all' }}</a></h4>
+                                <h4 class="main-title view-all"><a href="{{ URL::to('category/'.$video_category->slug.'/channel/'.$channel_partner_slug) }}">{{ 'view all' }}</a></h4>
                             @endif
                         </div>
 
