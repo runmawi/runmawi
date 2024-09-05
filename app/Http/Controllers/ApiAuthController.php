@@ -1764,8 +1764,8 @@ public function verifyandupdatepassword(Request $request)
                   if($item['PPV_Plan'] > 0){
                       if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                   }else{
-                      return Redirect::to('/category/videos'.'/'.$slug);
-                }
+                    $item['PPV_Plan']   = '';
+                  }
             }
             elseif( $item['access'] == 'ppv' && $userrole == "subscriber"){
                   $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
