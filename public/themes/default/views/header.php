@@ -1,6 +1,7 @@
 <head>
    <?php
       $Script = App\Script::pluck('header_script')->toArray();
+      $css = App\Css::pluck('custom_css')->toArray();
 
       $theme = App\SiteTheme::first();
       $theme_mode = $theme->theme_mode;
@@ -293,6 +294,14 @@
             <?= $Scriptheader ?>
          <?php }
       } ?>
+      <!-- custom css -->
+   <?php
+      if(count($css) > 0){
+         foreach($css as $customCss){   ?>
+            <?= $customCss ?>
+         <?php }
+      } 
+   ?>
 
 <style>
       .fullpage-loader {

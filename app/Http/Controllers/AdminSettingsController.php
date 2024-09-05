@@ -30,6 +30,7 @@ use App\CommentSection;
 use App\WebComment;
 use Illuminate\Support\Facades\File;
 use App\Jobs\ConvertVideoClip;
+use App\Css;
 
 //use Illuminate\Http\Request;
 
@@ -86,6 +87,7 @@ class AdminSettingsController extends Controller
                 $resolution = [];
             }
             $script = Script::first();
+            $css = Css::pluck('custom_css')->first();
             $TimeZone = TimeZone::get();
             // dd($script);
             $data = [
@@ -98,6 +100,7 @@ class AdminSettingsController extends Controller
                 'rtmp_url' => RTMP::all(),
                 'captchas' => Captcha::first(),
                 'sitemap' => $sitemap,
+                'css'     => $css,
             ];
 
             return \View::make('admin.settings.index', $data);
@@ -261,6 +264,9 @@ class AdminSettingsController extends Controller
         $settings->ads_on_videos = !empty($request['ads_on_videos']) ? 1 : 0 ;
         $settings->ads_variable_status = !empty($request['ads_variable_status']) ? 1 : 0 ;
         $settings->ads_play_unlimited_period = !empty($request['ads_play_unlimited_period']) ? 1 : 0 ;
+        $settings->video = $request->input('video');
+        $settings->live = $request->input('live');
+        $settings->series = $request->input('series');
 
         $path = storage_path('app/public/');
 
@@ -808,6 +814,24 @@ class AdminSettingsController extends Controller
         }
         return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Site Settings!', 'note_type' => 'success']);
     }
+
+    public function customCssSettings(Request $request)
+    {
+        $validatedData = $request->validate([
+            'custom_css' => 'nullable|string',
+        ]);
+
+        $css = Css::firstOrCreate([]);
+
+        $css->custom_css = $validatedData['custom_css'];
+        $css->save();
+
+        return redirect()->back()->with([
+            'success' => 'Custom CSS settings updated successfully.',
+            'css' => $css
+        ]);
+    }
+
 
     public function ThumbnailSetting(Request $request)
     {

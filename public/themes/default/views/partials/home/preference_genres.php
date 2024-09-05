@@ -1,7 +1,7 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
         <h4 class="main-title"><a href=""><?php echo (__('Preference By Genres')); ?> </a></h4>   
         <?php if( $settings->homepage_views_all_button_status == 1 ):?> 
-            <h4 class="main-title"><a href=""><?php echo (__('View all')); ?></a></h4>      
+            <h4 class="main-title view-all"><a href=""><?php echo (__('View all')); ?></a></h4>      
         <?php endif; ?>             
 </div>
     <div class="favorites-contens">

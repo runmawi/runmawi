@@ -7,22 +7,22 @@
 
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         @if (!preg_match('/^channel\/.+$/', request()->path()))
-                            <h2 class="main-title">
+                            <h4 class="main-title">
                                 <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
                                     {{ $order_settings_list[0]->header_name ? __($order_settings_list[0]->header_name) : '' }}
                                 </a>
-                            </h2>
+                            </h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h2 class="main-title">
+                                <h4 class="main-title view-all">
                                     <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
                                         {{ __('View all') }}
                                     </a>
-                                </h2>
+                                </h4>
                             @endif
                         @else
-                        <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[0])->header_name }}</a></h2>
+                        <h4 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[0])->header_name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h2 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h2>
+                                <h4 class="main-title view-all fira-sans-condensed-regular"><a href="{{ URL::to('channel/Featured_videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h4>
                             @endif
                         @endif
                     </div>
