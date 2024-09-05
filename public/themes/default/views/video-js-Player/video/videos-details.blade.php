@@ -745,12 +745,12 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         
                                     @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 0)
                                         <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
-                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay" checked>
                                             {{ $Razorpay_payment_setting->payment_type }}
                                         </label>
                                     @elseif( $Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 1 )
                                         <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
-                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                            <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay" checked>
                                             {{ $Razorpay_payment_setting->payment_type }}
                                         </label>
 
@@ -869,7 +869,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             
             var Enable_PPV_Plans = '{{ Enable_PPV_Plans() }}';
 
-            $('.Razorpay_button,.Stripe_button').hide();
+            $('.Stripe_button').hide();
 
             if (Enable_PPV_Plans == 1) {
                     // Only execute this block if PPV plans are enabled
