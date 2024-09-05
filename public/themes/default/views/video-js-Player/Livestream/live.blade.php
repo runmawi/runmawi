@@ -456,8 +456,8 @@
                         </div>
     
                         <div class="modal-body">
-                            <div class="row justify-content-between">
-                                <h3 class="font-weight-bold">{{ 'Upgrade to '. $Livestream_details->title.' pack by just paying the difference'}}</h3>
+                            <div class="row justify-content-between m-0">
+                                <h3 class="font-weight-bold">{{ $Livestream_details->title}}</h3>
                                 <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
