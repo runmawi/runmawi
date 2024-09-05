@@ -43,13 +43,13 @@
 
                           {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
-                            <h2 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h2>
+                            <h4 class="main-title"><a href="{{ route('SeriesCategory',[$series_genre->slug] )}}">{{ optional($series_genre)->name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h2 class="main-title">
+                                <h4 class="main-title view-all">
                                     <a href="{{ route('SeriesCategory',[$series_genre->slug] )}}"> 
                                         {{ __('View all') }}
                                     </a>
-                                </h2>
+                                </h4>
                             @endif
                         </div>
 

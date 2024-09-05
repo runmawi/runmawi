@@ -10,7 +10,7 @@
                               {{ $order_settings_list[5]->header_name ? __($order_settings_list[5]->header_name) : '' }}
                            </a>
                      </h4>
-                     <h4 class="main-title">
+                     <h4 class="main-title view-all">
                            <a href="{{ $order_settings_list[5]->header_name ? URL::to('/') . '/' . $order_settings_list[5]->url : '' }}">
                               {{ __('View all') }}
                            </a>

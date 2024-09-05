@@ -8,13 +8,13 @@
          <div class="row">
             <div class="col-sm-12 ">
                <div class="iq-main-header d-flex align-items-center justify-content-between">
-                  <h2 class="main-title">
+                  <h4 class="main-title">
                         <a href="{{ url('continue-watching-list') }}">{{ __('Continue watching') }}</a>
-                  </h2>
+                  </h4>
                   @if($settings->homepage_views_all_button_status == 1)
-                        <h2 class="main-title">
+                        <h4 class="main-title view-all">
                            <a href="{{ url('continue-watching-list') }}">{{ __('View all') }}</a>
-                        </h2>
+                        </h4>
                   @endif
                </div>
                <div class="favorites-contens">
