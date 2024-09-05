@@ -350,59 +350,6 @@
     opacity: .5;
 }
 
-/* payment modal */
-#purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-#purchase-modal-dialog .modal-content{height: 100vh;}
-#purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
-#purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
-#purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
-#purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
-.col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
-.modal-open .modal{overflow-y: hidden;}
-div#video-purchase-now-modal{padding-right: 0 !important;}
-.movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
-.col-md-12.btn {margin-top: 2rem;}
-.d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
-.btn-primary-dark {
-    background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
-}
-
-.btn-primary-light {
-    background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
-}
-.close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
-.payment_btn {width: 20px;height: 20px;margin-right: 10px;}
-.quality_option {width: 15px;height: 15px;margin-right: 10px;}
-span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
-input[type="radio"].payment_btn,input[type="radio"].quality_option {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid white;
-    border-radius: 50%;
-    background-color: transparent;
-    cursor: pointer;
-    position: relative;
-}
-
-input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
-    background-color: black;
-    border-color: white;
-}
-
-input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
-    content: '';
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 
 
 
