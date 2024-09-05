@@ -16327,6 +16327,7 @@ public function QRCodeMobileLogout(Request $request)
       $source_name = $request->source_name;
       $data = [];
       $Page_List_Name = 'No data';
+      $category_name = null;
 
       $Pagelist_default_image_url = array(
         'default_vertical_image_url' => default_vertical_image_url(),
@@ -16420,6 +16421,11 @@ public function QRCodeMobileLogout(Request $request)
               case 'category_videos':
                     $data = $this->Specific_Category_Videos_Pagelist($request->category_id);
                     $Page_List_Name = 'Specific_Category_Videos';
+
+                    $category = VideoCategory::find($request->category_id);
+                    if ($category) {
+                        $category_name = $category->name;
+                    }
                     break;  
 
               case 'live_category':
@@ -16484,6 +16490,7 @@ public function QRCodeMobileLogout(Request $request)
           'status' => 'true',
           'message' => ' Retrieved Page List Successfully',
           'Page_List_Name' => $Page_List_Name,
+          'Category_Name' => $category_name,
           'Page_List' => $data,
         );
 
