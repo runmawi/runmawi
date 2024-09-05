@@ -472,7 +472,7 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Short Description</label>
                     <p class="p1">Add a short description of the Livestream below:</p>
                     <div class="panel-body">
-                        <textarea class="form-control" name="description" id="description">@if(!empty($video->description)){{ htmlspecialchars($video->description) }}@endif</textarea>
+                        <textarea class="form-control" name="description" id="description">@if(!empty($video->description)){{($video->description) }}@endif</textarea>
                     </div>
                 </div>
             </div>
@@ -482,7 +482,7 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Live Stream Details, Links, and Info</label>
 
                     <div class="panel-body">
-                        <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
+                        <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{($video->details) }}@endif</textarea>
                     </div>
                 </div>
             </div>
