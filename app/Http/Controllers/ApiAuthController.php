@@ -1752,24 +1752,23 @@ public function verifyandupdatepassword(Request $request)
 
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
 
-      if($ppv_exists_check_query == 1 || $userrole == "admin"){
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-        ->get()->map(function ($item) use ( $data)  {
+        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query)  {
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
             }elseif($userrole == "registered" &&  $item['access'] == 'ppv'){
 
-                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                   if($item['PPV_Plan'] > 0){
                       if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                   }else{
-                      return Redirect::to('/category/videos'.'/'.$slug);
-                }
+                    $item['PPV_Plan']   = '';
+                  }
             }
             elseif( $item['access'] == 'ppv' && $userrole == "subscriber"){
-                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                   if($item['PPV_Plan'] > 0){
                           if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                       }else{
@@ -1778,6 +1777,8 @@ public function verifyandupdatepassword(Request $request)
             }else{
                 $item['PPV_Plan']   = '';
             }
+
+      if($ppv_exists_check_query == 1 || $userrole == "admin"){
 
               $videoId = $item['videos_url']; 
               $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -1822,13 +1823,13 @@ public function verifyandupdatepassword(Request $request)
                       $item['otp'] = $responseObj['otp'];
                       $item['playbackInfo'] = $responseObj['playbackInfo'];
                   }
+                }
+              }else{
+                $item['otp'] = null;
+                $item['playbackInfo'] = null;
               }
-
           return $item;
         })->first();
-      } else{
-        $videodetail = null;
-      }
 
       $videoid = $data['videoid'];
 
@@ -6472,8 +6473,12 @@ return response()->json($response, 200);
       if($ppv_exists_check_query > 0 || $userrole == "admin"){
 
         $free_episode = 'guest';
+      }else{
+        $free_episode = 'PPV';
+      }
+
         
-        $episode_details = Episode::where('id',$episode_id)->get()->map( function ($item) use ($season,$userrole,$data)  {
+        $episode_details = Episode::where('id',$episode_id)->get()->map( function ($item) use ($season,$userrole,$data,$ppv_exists_check_query)  {
 
           $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
           $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
@@ -6513,6 +6518,7 @@ return response()->json($response, 200);
              $item['PPV_Plan']   = '';
          }
 
+      if($ppv_exists_check_query > 0 || $userrole == "admin"){
          
          $videoId = $item['Episode_url']; 
          $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -6557,19 +6563,15 @@ return response()->json($response, 200);
                  $item['otp'] = $responseObj['otp'];
                  $item['playbackInfo'] = $responseObj['playbackInfo'];
              }
-
+        }
+         }else{
+          $item['otp'] = null;
+          $item['playbackInfo'] = null;
+        }
             
-         }
           return $item;
 
       });
-
-      }else{
-        $free_episode = 'PPV';
-        $episode_details = [];
-      }
-
-
 
 
     $response = array(
@@ -16327,6 +16329,7 @@ public function QRCodeMobileLogout(Request $request)
       $source_name = $request->source_name;
       $data = [];
       $Page_List_Name = 'No data';
+      $category_name = null;
 
       $Pagelist_default_image_url = array(
         'default_vertical_image_url' => default_vertical_image_url(),
@@ -16420,6 +16423,11 @@ public function QRCodeMobileLogout(Request $request)
               case 'category_videos':
                     $data = $this->Specific_Category_Videos_Pagelist($request->category_id);
                     $Page_List_Name = 'Specific_Category_Videos';
+
+                    $category = VideoCategory::find($request->category_id);
+                    if ($category) {
+                        $category_name = $category->name;
+                    }
                     break;  
 
               case 'live_category':
@@ -16484,6 +16492,7 @@ public function QRCodeMobileLogout(Request $request)
           'status' => 'true',
           'message' => ' Retrieved Page List Successfully',
           'Page_List_Name' => $Page_List_Name,
+          'Category_Name' => $category_name,
           'Page_List' => $data,
         );
 
