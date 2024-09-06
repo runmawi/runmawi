@@ -1992,7 +1992,7 @@ public function verifyandupdatepassword(Request $request)
         'userrole' => $userrole,
         'like' => $like,
         'dislike' => $dislike,
-        'shareurl' => URL::to('category/videos').'/'.@$videodetail->slug,
+        'shareurl' => URL::to('category/videos').'/'.@$videodetail[0]->slug,
         'videodetail' => $videodetail,
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
