@@ -181,6 +181,17 @@
             displayCurrentQuality: true,
         });
 
+        // Watermark
+        // let enable_watermark  = '<?= $playerui->watermark ?>';
+        // if (enable_watermark == 1 ) {
+        //     player.ready(function() {
+        //         var watermark = document.createElement('div');
+        //         watermark.className = 'vjs-watermark';
+        //         watermark.innerHTML = '<img src="<?= $playerui->watermark_logo ?>" alt="Watermark">';
+        //         player.el().appendChild(watermark);
+        //     });
+        // }
+
         player.on('loadedmetadata', () => {
             const qualityLevels = player.qualityLevels();
 
@@ -310,5 +321,24 @@
     .vjs-fg-skip-button{
 	    background: #2971ea !important;
 	    border-radius: 10px !important;
+    }
+    .vjs-watermark {
+        opacity: <?php echo $playerui_settings->watermark_opacity; ?>;
+        cursor: pointer;
+        width: <?php echo $playerui_settings->watermar_width; ?>;
+        /* float: right; */
+        position: relative;
+        top:<?php echo $playerui_settings->watermark_top; ?>;
+        right: <?php echo $playerui_settings->watermark_right; ?>;
+        left:<?php echo $playerui_settings->watermark_left; ?>;
+        bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
+        transform: translate(-50%, 0%);
+    }
+    .vjs-watermark:hover{
+        opacity: 100%;
+    }
+    .vjs-watermark img{
+        width: 100%;
+        height: 100%;
     }
 </style>

@@ -492,7 +492,7 @@ line-height: 2.1em;
     align-items: center;
     font-size: 2em;
     position: absolute;
-    top: calc(50% - 310px);
+    top: -255px;
     width: 40px;
     height: 40px;
 }
@@ -518,7 +518,7 @@ line-height: 2.1em;
     font-size: 2.5em;
     padding: 0px 35px;
     position: absolute;
-    top: calc(50% - 410px);
+    top: -335px;
 }
 
 .vjs-fullscreen .custom-skip-forward-button svg,
@@ -957,8 +957,7 @@ display: block !important;
 
 .vjs-text-track-cue{
     white-space: pre-line !important;
-    inset: 0px 0px 0px !important;
-    top: calc(100% - 50px) !important;
+    inset: 485px 0px 0px !important;
     height: 65px !important;
     font-size: 20px !important;
 }
@@ -966,8 +965,7 @@ display: block !important;
 .vjs-text-track-cue div{font-size: 22px !important;background-color: rgb(0 0 0 / 25%) !important;}
 
 .vjs-fullscreen .vjs-text-track-cue{
-    inset: 0px 0px 0px !important;
-    top: calc(100% - 50px) !important;
+    inset: 640px 0px 0px !important;
 }
 
 /* For screens up to 600px */
@@ -982,21 +980,21 @@ display: block !important;
         font-size: 15px !important;
         left: 10% !important;
     }
-    .custom-skip-forward-button {
-        top: calc(50% - 110px) !important;
+    .custom-skip-forward-button{
+        top: -82px !important;
         left: 67%;
     }
     .custom-skip-backward-button {
-        top: calc(50% - 110px) !important;
+        top: -82px !important;
         left: 22% !important;
     }
     .vjs-fullscreen .custom-skip-backward-button {
         left: 11% !important;
-        top: calc(50% - 272px) !important;
+        top: -245px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button {
         left: 65% !important;
-        top: calc(50% - 272px) !important;
+        top: -245px !important;
     }
     .my-video.vjs-fluid {
         padding-top: 0 !important;
@@ -1012,17 +1010,17 @@ display: block !important;
     .my-video.video-js .vjs-live-control {
         line-height: 0.6em;
     }
-    .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
+    .vjs-text-track-cue{
+        inset: 166.812px 0px 0px !important;
     }
-    .vjs-text-track-cue div {
+    .vjs-text-track-cue div{
         font-size: 10px !important;
     }
     .staticback-btn {
         top: 3% !important;
         font-size: 15px !important;
     }
+
     .my-video.video-js button {
         font-size: 9px;
     }
@@ -1035,7 +1033,9 @@ display: block !important;
     .video-js .vjs-mute-control .vjs-icon-placeholder:before,
     .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before,
     .vjs-icon-volume-mute::before,
-    .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before {
+    .my-video.video-js
+        .vjs-picture-in-picture-control
+        .vjs-icon-placeholder:before {
         content: "" !important;
         display: none !important;
     }
@@ -1056,7 +1056,8 @@ display: block !important;
     .vjs-button > .vjs-icon-placeholder {
         line-height: 5em !important;
     }
-    /* resolution & settings */
+
+    /* resoltion & settings */
     .vjs-menu-button-popup .vjs-menu {
         position: absolute;
         bottom: 0;
@@ -1065,35 +1066,19 @@ display: block !important;
         height: 0;
         margin-bottom: 2.7em;
     }
+
     .vjs-control-bar {
         margin-top: -4%;
     }
+
     .my-video.video-js .vjs-time-control {
         font-size: 1.2em;
         line-height: 5.5em;
     }
+
     .vjs-watermark {
         top: 65% !important;
         left: 80% !important;
-    }
-}
-
-@-moz-document url-prefix() {
-    @media only screen and (max-width: 600px) {
-        .custom-skip-backward-button,
-        .custom-skip-forward-button {
-          top: calc(50% - 148px) !important;
-        }
-        .custom-skip-backward-button {
-            left: 24% !important;
-        }
-        .vjs-fullscreen .custom-skip-forward-button,
-        .vjs-fullscreen .custom-skip-backward-button {
-            top: calc(50% - 308px) !important;
-        }
-        .vjs-fullscreen .custom-skip-backward-button {
-            left: 23% !important;
-        }
     }
 }
 
@@ -1101,16 +1086,14 @@ display: block !important;
     .vjs-volume-panel.vjs-control.vjs-volume-panel-vertical {
         display: none;
     }
-    .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 40px) !important;
+    .vjs-text-track-cue{
+        inset: 150px 0px 0px !important;
     }
-    .vjs-text-track-cue div {
+    .vjs-text-track-cue div{
         font-size: 10px !important;
     }
     .vjs-fullscreen .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 110px) !important;
+        inset: 515px 0px 0px !important;
     }
 }
 
@@ -1118,35 +1101,35 @@ display: block !important;
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     .custom-skip-backward-button,
     .custom-skip-forward-button {
-        top: calc(50% - 135px) !important;
+        top: -105px !important;
     }
     .custom-skip-backward-button {
         left: 32% !important;
     }
-    .vjs-fullscreen .custom-skip-backward-button,
-    .vjs-fullscreen .custom-skip-forward-button {
-        top: calc(50% - 320px) !important;
+    .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
+        top: -285px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button {
         left: 60%;
     }
-    .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 10px) !important;
+
+    .vjs-text-track-cue{
+        inset: 175px 0px 0px !important;
         height: 45px !important;
     }
-    .vjs-text-track-cue div {
-        font-size: 15px !important;
+
+    .vjs-text-track-cue div{font-size: 15px !important;}
+
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 560px 0px 0px !important;
     }
-    .vjs-fullscreen .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
-    }
+
     .titlebutton {
         font-size: 15px !important;
         left: 6% !important;
         top: 5% !important;
     }
+
     .my-video.vjs-fluid {
         padding-top: 0 !important;
         height: 45vh !important;
@@ -1161,10 +1144,12 @@ display: block !important;
     .my-video.video-js .vjs-live-control {
         line-height: 0.6em;
     }
+
     .staticback-btn {
         top: 3% !important;
         font-size: 15px !important;
     }
+
     .my-video.video-js button {
         font-size: 9px;
     }
@@ -1177,7 +1162,9 @@ display: block !important;
     .video-js .vjs-mute-control .vjs-icon-placeholder:before,
     .video-js .vjs-mute-control.vjs-vol-0 .vjs-icon-placeholder::before,
     .vjs-icon-volume-mute::before,
-    .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before {
+    .my-video.video-js
+        .vjs-picture-in-picture-control
+        .vjs-icon-placeholder:before {
         content: "" !important;
         display: none !important;
     }
@@ -1203,7 +1190,8 @@ display: block !important;
     .vjs-button > .vjs-icon-placeholder {
         line-height: 5em !important;
     }
-    /* resolution & settings */
+
+    /* resoltion & settings */
     .vjs-menu-button-popup .vjs-menu {
         position: absolute;
         bottom: 0;
@@ -1212,42 +1200,23 @@ display: block !important;
         height: 0;
         margin-bottom: 2.7em;
     }
+
     .my-video.vjs-theme-city .vjs-play-control .vjs-icon-placeholder:before {
         font-size: 25px !important;
     }
+
     /* .vjs-watermark{
     top: 65% !important;
     left: 80% !important;
   } */
 }
-@-moz-document url-prefix() {
-    @media only screen and (min-width: 600px) and (max-width: 768px) {
-        .custom-skip-backward-button, .custom-skip-forward-button {
-          top: calc(50% - 199px) !important;
-        }
-        .custom-skip-backward-button {
-            left: 28% !important;
-        }
-        .vjs-fullscreen .custom-skip-backward-button, 
-        .vjs-fullscreen .custom-skip-forward-button {
-            top: calc(50% - 375px) !important;
-        }
-        .vjs-fullscreen .custom-skip-forward-button {
-            left: 62%;
-        }
-    }
-}
 
 /* Screens between 768px and 991px */
-/* @media only screen and (min-width: 769px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
     .custom-skip-backward-button
     .custom-skip-forward-button {
         right: 30%;
-        top: calc(50% - 230px) !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button,
-    .vjs-fullscreen .custom-skip-backward-button {
-        top: calc(50% - 320px) !important;
+        top: -108px !important;
     }
 } */
 
@@ -1257,97 +1226,54 @@ display: block !important;
         object-fit: contain;
     }
     .custom-skip-backward-button {
-        top: calc(50% - 235px) !important;
+        top: -200px !important;
         left: 32% !important;
     }
     .custom-skip-forward-button {
         left: 63% !important;
-        top: calc(50% - 235px) !important;
+        top: -200px !important;
     }
     .vjs-fullscreen .custom-skip-forward-button,
     .vjs-fullscreen .custom-skip-backward-button {
-        top: calc(50% - 325px) !important;
+        top: -290px !important;
     }
-    .vjs-fullscreen .custom-skip-forward-button {
+    .vjs-fullscreen .custom-skip-forward-button{
         left: 61% !important;
     }
     .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
+        inset: 395px 0px 0px !important;
     }
-    .vjs-fullscreen .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
-    }
-}
-
-@-moz-document url-prefix() {
-    @media only screen and (min-width: 769px) and (max-width: 1201px) {
-        .custom-skip-forward-button, .custom-skip-backward-button {
-          top: calc(50% - 401px) !important;
-        }
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 550px 0px 0px !important;
     }
 }
 
 /* Screens 1200px and 1339px */
-@media only screen and (min-width: 1201px) and (max-width: 1440px) {
+@media only screen and  (min-width: 1201px) and (max-width: 1339px) {
     .custom-skip-backward-button,
     .custom-skip-forward-button {
-        top: calc(50% - 235px) !important;
+        top: -240px !important;
     }
     /* .custom-skip-forward-button{
         left: 57% !important;
     } */
     .vjs-fullscreen .custom-skip-forward-button,
     .vjs-fullscreen .custom-skip-backward-button {
-        top: calc(50% - 320px) !important;
+        top: -335px !important;
     }
     .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
-    }
-    .vjs-fullscreen .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
-    }
-}
-@-moz-document url-prefix() {
-    @media only screen and (min-width: 1201px) and (max-width: 1440px) {
-        .custom-skip-backward-button, .custom-skip-forward-button {
-          top: calc(50% - 401px) !important;
-        }
-    }
-    .vjs-fullscreen .custom-skip-forward-button, .vjs-fullscreen .custom-skip-backward-button {
-        top: calc(50% - 417px) !important;
-    }
-}
-
-@media only screen and  (min-width: 1400px) and (min-height: 568px) {
-    .vjs-text-track-cue {
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
+        inset: 485px 0px 0px !important;
     }
     .vjs-fullscreen .vjs-text-track-cue{
-        inset: 0px 0px 0px !important;
-        top: calc(100% - 50px) !important;
-    }
-    .custom-skip-backward-button,
-    .custom-skip-forward-button {
-        top: calc(50% - 260px) !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button,
-    .vjs-fullscreen .custom-skip-backward-button {
-        top: calc(50% - 350px) !important;
+        inset: 640px 0px 0px !important;
     }
 }
 
-@-moz-document url-prefix() {
-    @media only screen and (min-width: 1400px) and (min-height: 569px) {
-        .custom-skip-backward-button, .custom-skip-forward-button {
-          top: calc(50% - 401px) !important;
-        }
-        .vjs-fullscreen .custom-skip-forward-button, .vjs-fullscreen .custom-skip-backward-button {
-            top: calc(50% - 417px) !important;
-        }
+@media only screen and  (min-width: 1400px) {
+    .vjs-text-track-cue {
+        inset: 450px 0px 0px !important;
+    }
+    .vjs-fullscreen .vjs-text-track-cue{
+        inset: 630px 0px 0px !important;
     }
 }
