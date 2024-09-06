@@ -1753,7 +1753,7 @@ public function verifyandupdatepassword(Request $request)
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
 
 
-        $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )
+        $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
         ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query)  {
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
@@ -1992,7 +1992,7 @@ public function verifyandupdatepassword(Request $request)
         'userrole' => $userrole,
         'like' => $like,
         'dislike' => $dislike,
-        'shareurl' => URL::to('category/videos').'/'.@$videodetail->slug,
+        'shareurl' => URL::to('category/videos').'/'.@$videodetail[0]->slug,
         'videodetail' => $videodetail,
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
