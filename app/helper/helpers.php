@@ -2055,3 +2055,15 @@ function Enable_videoCipher_Upload()
     $enable_ppv_plans = App\SiteTheme::pluck('enable_video_cipher_upload')->first();
     return $enable_ppv_plans ;
 }
+
+function Enable_Flussonic_Upload()
+{
+    $Enable_Flussonic_Upload = App\StorageSetting::pluck('flussonic_storage')->first();
+    return $Enable_Flussonic_Upload ;
+}
+
+function Enable_Flussonic_Upload_Details()
+{
+    $Enable_Flussonic_Upload_Details = App\StorageSetting::select('flussonic_storage','flussonic_storage_site_base_url','flussonic_storage_Auth_Key','flussonic_storage_tag')->first();
+    return $Enable_Flussonic_Upload_Details ;
+}
