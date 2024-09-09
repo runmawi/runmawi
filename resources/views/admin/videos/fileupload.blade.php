@@ -261,6 +261,23 @@
                   </div>
                   <!-- Video upload -->   
                   <div id="video_upload" style="">
+
+                  @if(Enable_Flussonic_Upload() == 1)
+                        
+                        <label for="flussonic_upload_video">Flussonic Library:</label>
+                        <!-- FlussonicUploadlibraryID -->
+                        <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                                 <option value="">{{ __('Choose Stream Library from Flussonic') }}</option>
+                                    @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                    <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                    @endforeach
+                           </select>  
+
+                           <br>
+                     @else
+                        <input type="hidden" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" value="">
+                     @endif
+
                      @if(@$theme_settings->enable_bunny_cdn == 1)
                         
                         <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
@@ -360,13 +377,25 @@
       <script>
 
          var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
-         if(enable_bunny_cdn == 1){
+         var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
             $('.UploadEnable').hide();
          }
 
             $('#UploadlibraryID').change(function(){
                if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
                // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
+
+
+            $('#FlussonicUploadlibraryID').change(function(){
+               if($('#FlussonicUploadlibraryID').val() != null && $('#FlussonicUploadlibraryID').val() != ''){
+               // alert($('#FlussonicUploadlibraryID').val());
                   $('.UploadEnable').show();
                }else{
                   $('.UploadEnable').hide();
@@ -2287,7 +2316,9 @@ $(document).ready(function($){
             previewTemplate: document.getElementById('template').innerHTML,
             init: function() {
                 this.on("sending", function(file, xhr, formData) {
+
                     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
                     formData.append("_token", CSRF_TOKEN);
 
                     // Initialize retry counter and canceled flag if they don't exist
