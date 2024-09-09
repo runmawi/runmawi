@@ -4160,7 +4160,6 @@ class AdminVideosController extends Controller
         } else {
             $status = 0;
         }
-        dd($shortcodes);
 
         $shortcodes = $request['short_code'];
         $languages = $request['sub_language'];
@@ -13270,6 +13269,90 @@ class AdminVideosController extends Controller
             }
 
         }
+
+
+        
+        public function FlussonicUploadlibrary(Request $request)
+        {
+
+            if($this->Enable_Flussonic_Upload == 1){
+           
+                try {
+                    $client = new \GuzzleHttp\Client();
+                    // http://localhost:8080/streamer/api/v3/vods/{prefix}/storages/{storage_index}/files
+
+                    
+                    $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$request->FlussonicUploadlibraryID}/files", [
+                        'headers' => [
+                            'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                            'Content-Type' => 'application/json', 
+                        ]
+                    ]);
+                  
+            
+                $response = json_decode($response->getBody(), true);
+                $url = "{$this->Flussonic_Server_Base_URL}";
+                $StreamURL = str_replace('http://', 'https://', $url);
+
+                $responseData = [
+                    'streamvideos' => $response,
+                    'StreamURL' => $StreamURL,
+                ];
+            
+                return $responseData;
+
+            }catch (RequestException $e) {
+                $value["success"] = 2;
+                // echo"<pre>";
+                // print_r($e->getMessage());exit;
+                \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                return $value ;
+            }
+        }
+    }
+
+
+    
+        
+    public function Flussonic_Storage_UploadURL(Request $request)
+    {
+
+
+
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["Flussonic_linked_video"])) {
+
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->title = $data["Flussonic_linked_video"];
+            $video->m3u8_url = $data["Flussonic_linked_video"];
+            $video->type = "m3u8_url";
+            $video->status = 1;
+            $video->draft = 1;
+            $video->active = 0;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+
+            \LogActivity::addVideoLog("Added Flussonic VIDEO URl Video.", $video_id);
+
+            return $value;
+            
+        }
+    }
+
 
 }
     
