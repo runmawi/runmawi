@@ -35,6 +35,7 @@
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const backButton = document.querySelector('.staticback-btn');
         const titleButton = document.querySelector('.vjs-title-bar');
+        var controlBar = player.getChild('controlBar');
 
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
