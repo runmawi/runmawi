@@ -91,6 +91,7 @@ class AdminPaymentSettingsController extends Controller
 		$payment_settings->payment_type = "Stripe";
 		$payment_settings->subscription_trail_days = $request["subscription_trail_days"] ;
 		$payment_settings->subscription_trail_status = empty($input['subscription_trail_status']) ? 0 : 1 ;
+		$payment_settings->stripe_p24_mode = empty($input['stripe_p24_mode']) ? 0 : 1 ;
 
 
 		if(empty($payment_settings->stripe_lable)){

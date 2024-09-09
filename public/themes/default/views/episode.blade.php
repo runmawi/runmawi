@@ -73,13 +73,13 @@
         text-transform: uppercase;
     }
     .custom-skip-forward-button, .custom-skip-backward-button{
-        top: -250px !important;
+        top: -220px !important;
     }
     .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
         top: -335px !important;
     }
     .custom-skip-backward-button{
-        left: 31% !important;
+        left: 33% !important;
     }
     @media (min-width:601px){
         .my-video.vjs-fluid{height: calc(100vh - 85px)!important;}

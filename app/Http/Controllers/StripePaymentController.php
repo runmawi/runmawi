@@ -33,6 +33,8 @@ class StripePaymentController extends Controller
     {
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
+
+        $this->stripe_payment = PaymentSetting::where('payment_type','Stripe')->where('status',1)->first();
     }
 
     // Subscription
@@ -355,6 +357,17 @@ class StripePaymentController extends Controller
                                                             ->pluck('code')->first();
             }
 
+                // p24 Payment Mode
+
+            $payment_method_types = ['card'];
+
+            if( $this->stripe_payment->stripe_p24_mode == 1 ){
+
+                $To_Currency_symbol = 'pln';
+                $payment_method_types =  ['card', 'p24'];
+                
+            }
+
             // Stripe Checkout
 
             $Checkout_details = array(
@@ -372,6 +385,7 @@ class StripePaymentController extends Controller
                         'quantity' => 1,
                     ],
                 ],
+                'payment_method_types' => $payment_method_types,
                 'mode' => 'payment', 
                 'customer_email' => Auth::user()->email, 
             );
@@ -558,8 +572,16 @@ class StripePaymentController extends Controller
                                                             ->pluck('code')->first();
             }
 
-            // Stripe Checkout 
-            // 'unit_amount' => (integer) $payment_amount * 100, 
+            // p24 Payment Mode
+
+            $payment_method_types = ['card'];
+
+            if( $this->stripe_payment->stripe_p24_mode == 1 ){
+
+                $To_Currency_symbol = 'pln';
+                $payment_method_types =  ['card', 'p24'];
+
+            }
 
             $Checkout_details = array(
                 'success_url' => $success_url,
@@ -577,6 +599,7 @@ class StripePaymentController extends Controller
                     ],
                 ],
                 'mode' => 'payment', 
+                'payment_method_types' => $payment_method_types,
                 'customer_email' => Auth::user()->email, 
             );
             
@@ -749,6 +772,17 @@ class StripePaymentController extends Controller
                                                             ->pluck('code')->first();
             }
 
+             // p24 Payment Mode
+
+            $payment_method_types = ['card'];
+
+            if( $this->stripe_payment->stripe_p24_mode == 1 ){
+
+                $To_Currency_symbol = 'pln';
+                $payment_method_types =  ['card', 'p24'];
+                
+            }
+            
             // Stripe Checkout
 
             $Checkout_details = array(
@@ -766,6 +800,7 @@ class StripePaymentController extends Controller
                         'quantity' => 1,
                     ],
                 ],
+                'payment_method_types' => $payment_method_types,
                 'mode' => 'payment', 
                 'customer_email' => Auth::user()->email, 
             );
@@ -938,6 +973,17 @@ class StripePaymentController extends Controller
                                                             ->pluck('code')->first();
             }
 
+            // p24 Payment Mode
+
+            $payment_method_types = ['card'];
+
+            if( $this->stripe_payment->stripe_p24_mode == 1 ){
+
+                $To_Currency_symbol = 'pln';
+                $payment_method_types =  ['card', 'p24'];
+                
+            }
+
             // Stripe Checkout
 
             $Checkout_details = array(
@@ -956,6 +1002,7 @@ class StripePaymentController extends Controller
                     ],
                 ],
                 'mode' => 'payment', 
+                'payment_method_types' => $payment_method_types,
                 'customer_email' => Auth::user()->email, 
             );
             
@@ -1126,6 +1173,17 @@ class StripePaymentController extends Controller
             // Stripe Checkout 
             // 'unit_amount' => (integer) $payment_amount * 100, 
 
+             // p24 Payment Mode
+
+             $payment_method_types = ['card'];
+
+             if( $this->stripe_payment->stripe_p24_mode == 1 ){
+ 
+                 $To_Currency_symbol = 'pln';
+                 $payment_method_types =  ['card', 'p24'];
+                 
+             }
+             
             $Checkout_details = array(
                 'success_url' => $success_url,
                 
@@ -1142,6 +1200,7 @@ class StripePaymentController extends Controller
                     ],
                 ],
                 'mode' => 'payment', 
+                'payment_method_types' => $payment_method_types,
                 'customer_email' => Auth::user()->email, 
             );
             
@@ -1322,6 +1381,17 @@ class StripePaymentController extends Controller
                     $To_Currency_symbol = CurrencySetting::query()->join('currencies','currencies.country','=','currency_settings.country') 
                                                                 ->pluck('code')->first();
                 }
+
+                  // p24 Payment Mode
+
+             $payment_method_types = ['card'];
+
+             if( $this->stripe_payment->stripe_p24_mode == 1 ){
+ 
+                 $To_Currency_symbol = 'pln';
+                 $payment_method_types =  ['card', 'p24'];
+                 
+             }
     
                 // Stripe Checkout
     
@@ -1341,6 +1411,7 @@ class StripePaymentController extends Controller
                         ],
                     ],
                     'mode' => 'payment', 
+                    'payment_method_types' => $payment_method_types,
                     'customer_email' => Auth::user()->email, 
                 );
                 

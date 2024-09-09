@@ -1829,7 +1829,7 @@ public function verifyandupdatepassword(Request $request)
                 $item['playbackInfo'] = null;
               }
           return $item;
-        })->first();
+        });
 
       $videoid = $data['videoid'];
 
@@ -1992,7 +1992,7 @@ public function verifyandupdatepassword(Request $request)
         'userrole' => $userrole,
         'like' => $like,
         'dislike' => $dislike,
-        'shareurl' => URL::to('category/videos').'/'.@$videodetail->slug,
+        'shareurl' => URL::to('category/videos').'/'.@$videodetail[0]->slug,
         'videodetail' => $videodetail,
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
@@ -2002,6 +2002,9 @@ public function verifyandupdatepassword(Request $request)
         'IOS_favorite' => $IOS_favorite ,
         'IOS_like' => $IOS_like ,
         'IOS_dislike' => $IOS_dislike ,
+        'ppv_exist' => $ppv_exists_check_query,
+        'ppv_video_status' => $ppv_exists_check_query,
+
       );
 
     } catch (\Throwable $th) {
