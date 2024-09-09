@@ -545,7 +545,6 @@ class AdminVideosController extends Controller
             }
         }               
 
-        print_r('$request->all()');exit;
 
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
