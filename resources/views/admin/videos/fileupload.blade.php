@@ -249,6 +249,30 @@
                         <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
                      </div>
                   </div>
+
+
+                                             <!-- Flussonic Video -->        
+                  <div id="flussonicstoragevideo" style="">
+                     <div class="new-audio-file mt-3">
+                        <label for="Flussonic_linked_video">Flussonic Upload Path:</label>
+                        <!-- FlussonicUploadlibraryID -->
+                        <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                                 <option>{{ __('Choose Stream Library from Flussonic Path') }}</option>
+                                    @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                        <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                    @endforeach
+                           </select>  
+                     </div>
+                           
+                     <div class="new-audio-file mt-3">
+                        <select class="form-control" id="Flussonic_linked_video" name="Flussonic_linked_video">
+                        </select>
+                     </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_Flussonic_storage">Submit</button>
+                     </div>
+                  </div>
+
                   <!-- MP4 Video -->        
                   <div id="video_mp4" style="">
                      <div class="new-audio-file mt-3" >
@@ -261,6 +285,23 @@
                   </div>
                   <!-- Video upload -->   
                   <div id="video_upload" style="">
+
+                  @if(Enable_Flussonic_Upload() == 1)
+                        
+                        <label for="flussonic_upload_video">Flussonic Library:</label>
+                        <!-- FlussonicUploadlibraryID -->
+                        <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                                 <option value="">{{ __('Choose Stream Library from Flussonic') }}</option>
+                                    @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                    <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                    @endforeach
+                           </select>  
+
+                           <br>
+                     @else
+                        <input type="hidden" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" value="">
+                     @endif
+
                      @if(@$theme_settings->enable_bunny_cdn == 1)
                         
                         <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
@@ -346,6 +387,11 @@
                   @if(@$theme_settings->enable_bunny_cdn == 1)
                      <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
                   @endif
+
+                  @if(Enable_Flussonic_Upload() == 1)
+                     <input type="radio" class="text-black" value="flussonic_storage_video"  id="flussonic_storage_video" name="videofile"> Flussonic Videos              
+                  @endif
+
                   </div>
                </div>
          </div>
@@ -360,7 +406,9 @@
       <script>
 
          var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
-         if(enable_bunny_cdn == 1){
+         var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
             $('.UploadEnable').hide();
          }
 
@@ -373,11 +421,56 @@
                }
             });
 
+
+            $('#FlussonicUploadlibraryID').change(function(){
+               if($('#FlussonicUploadlibraryID').val() != null && $('#FlussonicUploadlibraryID').val() != ''){
+               // alert($('#FlussonicUploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
+
          $(document).ready(function() {
             $('#bunny_cdn_linked_video').select2();
          });
 
+         $(document).ready(function() {
+            $('#Flussonic_linked_video').select2();
+         });
+
          $(document).ready(function(){
+
+
+            $('#FlussonicUploadlibraryID').on('change', function() {
+                  
+                  var FlussonicUploadlibraryID = this.value;
+                  $("#Flussonic_linked_video").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/FlussonicUploadlibrary')}}",
+                     type: "POST",
+                     data: {
+                     FlussonicUploadlibraryID: FlussonicUploadlibraryID,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        var streamvideos = result.streamvideos.files;
+                        console.log(result.streamvideos.files); 
+                        var StreamURL = result.StreamURL;
+
+                  $('#Flussonic_linked_video').html('<option value="">Choose Videos from Flussonic</option>'); 
+
+                     $.each(streamvideos, function(key, value) {
+                           var videoUrl = StreamURL + value.name + '/index.m3u8';
+                           // console.log(videoUrl); 
+                           $("#Flussonic_linked_video").append('<option value="' + videoUrl + '">' + value.name + '</option>');
+                        });
+                     }
+                  });
+
+               }); 
+
 
             $('#videolibrary').on('change', function() {
                   
@@ -429,6 +522,7 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
          
          
          $('#videoupload').click(function(){
@@ -437,11 +531,14 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+
          
          	$("#video_upload").addClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	$("#embed_video").removeClass('collapse');
          	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -452,11 +549,13 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
          
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").addClass('collapse');
          	$("#embed_video").removeClass('collapse');
          	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -467,11 +566,13 @@
          	$('#embedvideo').show();
          	$('#m3u8_url').hide();
          	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
          
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	//$("#embed_video").addClass('collapse');
          	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
          	$("#m3u8").removeClass('m3u8');
          
          
@@ -482,11 +583,13 @@
          	$('#embedvideo').hide();
          	$('#m3u8_url').show();
          	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
 
          	$("#video_upload").removeClass('collapse');
          	$("#video_mp4").removeClass('collapse');
          	$("#embed_video").removeClass('collapse');
          	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
          	$("#m3u8").addClass('m3u8');
          
          })
@@ -498,11 +601,29 @@
                $('#embedvideo').hide();
                $('#m3u8_url').hide();
                $('#bunnycdnvideo').show();
+               $('#flussonicstoragevideo').hide();
 
                $("#video_upload").removeClass('collapse');
                $("#video_mp4").removeClass('collapse');
                $("#embed_video").removeClass('collapse');
                // $("#bunny_cdn_video").removeClass('collapse');
+               $("#flussonic_storage_video").removeClass('collapse');
+               $("#m3u8").addClass('m3u8');
+            })
+
+            $('#flussonic_storage_video').click(function(){
+
+               $('#video_upload').hide();
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#bunnycdnvideo').hide();
+               $('#flussonicstoragevideo').show();
+
+               $("#video_upload").removeClass('collapse');
+               $("#video_mp4").removeClass('collapse');
+               $("#embed_video").removeClass('collapse');
+               $("#bunny_cdn_video").removeClass('collapse');
                $("#m3u8").addClass('m3u8');
             })
          });
@@ -611,6 +732,25 @@
    data: {
                   _token: '{{ csrf_token() }}',
                   bunny_cdn_linked_video: $('#bunny_cdn_linked_video').val()
+   
+            },        success: function(value){
+   			console.log(value);
+               $('#Next').show();
+              $('#video_id').val(value.video_id);
+   
+           }
+       });
+   })
+
+   
+   $('#submit_Flussonic_storage').click(function(){
+   	// alert($('#embed_code').val());
+   	$.ajax({
+           url: '{{ URL::to('/admin/Flussonic_Storage_UploadURL') }}',
+           type: "post",
+            data: {
+                  _token: '{{ csrf_token() }}',
+                  Flussonic_linked_video: $('#Flussonic_linked_video').val()
    
             },        success: function(value){
    			console.log(value);
@@ -2287,7 +2427,9 @@ $(document).ready(function($){
             previewTemplate: document.getElementById('template').innerHTML,
             init: function() {
                 this.on("sending", function(file, xhr, formData) {
+
                     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
                     formData.append("_token", CSRF_TOKEN);
 
                     // Initialize retry counter and canceled flag if they don't exist
@@ -2435,6 +2577,7 @@ $(document).ready(function($){
    $('#video_mp4').hide();
    $('#embedvideo').hide();
    $('#bunnycdnvideo').hide();
+   $('#flussonicstoragevideo').hide();
    $('#optionradio').hide();
    $('.content_videopage').hide();
    $('#content_videopage').hide();

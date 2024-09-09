@@ -128,6 +128,23 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading"> <div class="panel-title"><label>Flussonic Storage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="panel-body row"> 
+                                    <div class="form-group col-md-6">  
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                            <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                <input name="flussonic_storage" class="flussonic_storage" id="flussonic_storage" type="checkbox" @if( $storage_settings->flussonic_storage == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                                </label>
+                                            <div class="ml-2">ON</div>
+                                        </div>                              
+                                    </div>                               
+                                </div>
+                            </div>
+                        </div>
                     </div>
                       <!-- Site Env Details -->
                       <div class="row" id="site_details">
@@ -297,6 +314,37 @@ border-radius: 0px 4px 4px 0px;
 
                     </div>
 
+             <!-- Flussonic Details -->
+                    <div class="row" id="flussonic_details">
+                        <div class="col-sm-6">
+                            <label class="">Flussonic Storage Server Base URL  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="flussonic_storage_site_base_url" id="flussonic_storage_site_base_url" value="@if(!empty($storage_settings->flussonic_storage_site_base_url)){{ $storage_settings->flussonic_storage_site_base_url }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Flussonic Storage UserName  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="flussonic_storage_username" id="flussonic_storage_username" value="@if(!empty($storage_settings->flussonic_storage_username)){{ $storage_settings->flussonic_storage_username }}  @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Flussonic Storage Password  </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="flussonic_storage_password" id="flussonic_storage_password" value="@if(!empty($storage_settings->flussonic_storage_password)){{ $storage_settings->flussonic_storage_password }} @endif" />
+                           </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="">Flussonic Storage Tag </label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="flussonic_storage_tag" id="flussonic_storage_tag" value="@if(!empty($storage_settings->flussonic_storage_tag)){{ $storage_settings->flussonic_storage_tag }} @endif" />
+                           </div>
+                        </div>
+
+                    </div>
 
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }} " />
@@ -332,12 +380,14 @@ border-radius: 0px 4px 4px 0px;
         
         $('#aws_details').hide(); 
         $('#bunny_cdn_details').hide(); 
+        $('#flussonic_details').hide(); 
 
         var aws_storage = "{{ $storage_settings->aws_storage }}";
         if(aws_storage == 1){
             $('#aws_details').show(); 
             $('#site_details').hide(); 
             $('#bunny_cdn_details').hide(); 
+            $('#flussonic_details').hide(); 
         }
 
         var bunny_cdn_storage = "{{ $storage_settings->bunny_cdn_storage }}";
@@ -345,18 +395,53 @@ border-radius: 0px 4px 4px 0px;
             $('#aws_details').hide(); 
             $('#site_details').hide(); 
             $('#bunny_cdn_details').show(); 
+            $('#flussonic_details').hide(); 
         }
+
+        var flussonic_storage = "{{ $storage_settings->flussonic_storage }}";
+
+        if(flussonic_storage == 1){
+            $('#aws_details').hide(); 
+            $('#site_details').hide(); 
+            $('#bunny_cdn_details').hide(); 
+            $('#flussonic_details').show(); 
+        }
+
+        $('.flussonic_storage').on('change', function(event) {
+            var flussonic_storage = $("#flussonic_storage").prop("checked");
+            // Unchecks it
+                if(flussonic_storage == true){
+                    $('#site_storage').prop('checked', false);
+                    $('#aws_storage').prop('checked', false);
+                    $('#bunny_cdn_storage').prop('checked', false);
+
+                    $('#aws_details').hide(); 
+                    $('#site_details').hide(); 
+                    $('#bunny_cdn_details').hide(); 
+                    $('#flussonic_details').show(); 
+
+                    Swal.fire({
+                        title: 'Flussonic - Storage',
+                        imageWidth: 320,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    })
+                }
+        });
 
         $('.bunny_cdn_storage').on('change', function(event) {
             var bunny_cdn_storage = $("#bunny_cdn_storage").prop("checked");
+                $('#flussonic_storage').prop('checked', false);
             // Unchecks it
                 if(bunny_cdn_storage == true){
                     $('#site_storage').prop('checked', false);
                     $('#aws_storage').prop('checked', false);
+                    $('#flussonic_storage').prop('checked', false);
 
                     $('#aws_details').hide(); 
                     $('#site_details').hide(); 
                     $('#bunny_cdn_details').show(); 
+                    $('#flussonic_details').hide(); 
 
                     Swal.fire({
                         title: 'Bunny CDN - Storage',
@@ -373,9 +458,11 @@ border-radius: 0px 4px 4px 0px;
                 if(aws_storage == true){
                     $('#site_storage').prop('checked', false);
                     $('#bunny_cdn_storage').prop('checked', false);
+                    $('#flussonic_storage').prop('checked', false);
                     $('#aws_details').show(); 
                     $('#site_details').hide(); 
                     $('#bunny_cdn_details').hide(); 
+                    $('#flussonic_details').hide(); 
 
                     Swal.fire({
                         title: 'Aws - Storage',
@@ -392,9 +479,12 @@ border-radius: 0px 4px 4px 0px;
                 if(site_storage == true){
                     $('#aws_storage').prop('checked', false);
                     $('#bunny_cdn_storage').prop('checked', false);
+                    $('#flussonic_storage').prop('checked', false);
                     $('#site_details').show(); 
                     $('#bunny_cdn_details').hide(); 
                     $('#aws_details').hide(); 
+                    $('#flussonic_details').hide(); 
+
                     Swal.fire({
                         title: 'Site - Storage',
                         imageWidth: 320,

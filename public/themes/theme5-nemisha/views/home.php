@@ -127,7 +127,7 @@
             <div class="container-fluid ">
                   <div class="row">
                      <div class="col-sm-12 ">
-                        <?php include 'partials/home/videoCategories.php'; ?>
+                        <?php include 'partials/category-videoloop.php'; ?>
                      </div>
                   </div>
             </div>
