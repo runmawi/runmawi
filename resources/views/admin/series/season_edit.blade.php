@@ -1017,7 +1017,7 @@ document.getElementById('select-all').addEventListener('change', function() {
         var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
          var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
 
-         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload){
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
             $('.UploadEnable').hide();
          }
 
@@ -1062,7 +1062,8 @@ document.getElementById('select-all').addEventListener('change', function() {
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
     <script>
-         	$('#bunnycdnvideo').hide();
+            $('#episode_uploads').show();
+            $('#bunnycdnvideo').hide();
              $('#flussonicvideo').hide();
              $('#episodeupload').click(function(){
                 $('#episode_uploads').show();
@@ -1078,7 +1079,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 $('#episode_uploads').hide();
                 $('#bunnycdnvideo').show();
                 $('#flussonicvideo').hide();
-                $("#episodeupload").removeClass('collapse');         
+                // $("#episode_uploads").removeClass('collapse');         
                 $("#flussonic_storage_video").removeClass('collapse');
 
             })
@@ -1088,7 +1089,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 $('#episode_uploads').hide();
                 $('#bunnycdnvideo').hide();
                 $('#flussonicvideo').show();
-                $("#episodeupload").removeClass('collapse');         
+                $("#episode_uploads").removeClass('collapse');         
                 $("#bunny_cdn_video").removeClass('collapse');
 
             })
