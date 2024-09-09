@@ -2487,6 +2487,7 @@ public function verifyandupdatepassword(Request $request)
         $liveid = $request->liveid;
         $user_id = $request->user_id;
 
+
       // Live Language
 
         $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
@@ -2545,6 +2546,7 @@ public function verifyandupdatepassword(Request $request)
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+                          $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
                           if( $item['livestream_format'] == "mp4"){
                             $item['livestream_url'] =  $item->mp4_url ;
@@ -2609,6 +2611,7 @@ public function verifyandupdatepassword(Request $request)
         'ppv_video_status' => $ppv_video_status,
         'languages' => $languages,
         'categories' => $categories,
+        'current_timezone' => current_timezone(),
         'RentURL' => URL::to('live').'/'.$livestreamSlug,
       );
 
