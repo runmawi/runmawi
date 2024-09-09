@@ -152,6 +152,23 @@
             </div>
             <div class="clear"></div>
             <div id="episode_uploads">
+
+                @if(Enable_Flussonic_Upload() == 1)
+                    
+                <label for="flussonic_upload_video">Flussonic Library:</label>
+                <!-- FlussonicUploadlibraryID -->
+                <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                            <option value="">{{ __('Choose Stream Library from Flussonic') }}</option>
+                            @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                            <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                            @endforeach
+                    </select>  
+
+                    <br>
+                @else
+                <input type="hidden" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" value="">
+                @endif
+
                 @if(@$theme_settings->enable_bunny_cdn == 1)
 
                 <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
@@ -230,7 +247,28 @@
                 <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
                 </div>
             </div>
-            
+                            <!-- Flussonic Video -->        
+            <div id="flussonicvideo" style="">
+                <div class="new-audio-file mt-3">
+                <label for="stream_flussonic_episode">Flussonic URL:</label>
+                <!-- FlussonicepisodelibraryID -->
+                <select class="phselect form-control" name="FlussonicepisodelibraryID" id="FlussonicepisodelibraryID" >
+                        <option>{{ __('Choose Stream Library from Flussonic Path') }}</option>
+                        @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                            <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                        @endforeach
+                </select>  
+                </div>
+                    
+                <div class="new-audio-file mt-3">
+                <select class="form-control" id="stream_flussonic_episode" name="stream_flussonic_episode">
+                    <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                </select>
+                </div>
+                <div class="new-audio-file mt-3">
+                <button class="btn btn-primary"  id="submit_flussonic">Submit</button>
+                </div>
+            </div>
 
 
             <div class="text-center" id="buttonNext" style="margin-top: 30px;">
@@ -244,6 +282,11 @@
                     @if(@$theme_settings->enable_bunny_cdn == 1)
                         <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="episodefile"> Bunny CDN Episodes              
                     @endif
+                    
+                  @if(Enable_Flussonic_Upload() == 1)
+                     <input type="radio" class="text-black" value="flussonic_storage_video"  id="flussonic_storage_video" name="videofile"> Flussonic Videos              
+                  @endif
+                  
                 </div>
             </div>
 
@@ -972,13 +1015,24 @@ document.getElementById('select-all').addEventListener('change', function() {
             });
 
         var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
-         if(enable_bunny_cdn == 1){
+         var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload){
             $('.UploadEnable').hide();
          }
 
             $('#UploadlibraryID').change(function(){
                if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
                // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
+
+            $('#FlussonicUploadlibraryID').change(function(){
+               if($('#FlussonicUploadlibraryID').val() != null && $('#FlussonicUploadlibraryID').val() != ''){
+               // alert($('#FlussonicUploadlibraryID').val());
                   $('.UploadEnable').show();
                }else{
                   $('.UploadEnable').hide();
@@ -1009,19 +1063,33 @@ document.getElementById('select-all').addEventListener('change', function() {
 
     <script>
          	$('#bunnycdnvideo').hide();
+             $('#flussonicvideo').hide();
              $('#episodeupload').click(function(){
                 $('#episode_uploads').show();
                 $('#bunnycdnvideo').hide();
+                $('#flussonicvideo').hide();
                 // $("#episode_uploads").addClass('collapse');
-                // $("#bunny_cdn_video").removeClass('collapse');         
+                $("#bunny_cdn_video").removeClass('collapse');         
+                $("#flussonic_storage_video").removeClass('collapse');         
             })
             
             $('#bunny_cdn_video').click(function(){
 
                 $('#episode_uploads').hide();
                 $('#bunnycdnvideo').show();
-                $("#episode_uploads").removeClass('collapse');
-                // $("#bunny_cdn_video").removeClass('collapse');
+                $('#flussonicvideo').hide();
+                $("#episodeupload").removeClass('collapse');         
+                $("#flussonic_storage_video").removeClass('collapse');
+
+            })
+
+            $('#flussonic_storage_video').click(function(){
+
+                $('#episode_uploads').hide();
+                $('#bunnycdnvideo').hide();
+                $('#flussonicvideo').show();
+                $("#episodeupload").removeClass('collapse');         
+                $("#bunny_cdn_video").removeClass('collapse');
 
             })
 
@@ -1033,7 +1101,43 @@ document.getElementById('select-all').addEventListener('change', function() {
             $('#stream_bunny_cdn_episode').select2();
          });
 
-    
+         $(document).ready(function() {
+            $('#stream_flussonic_episode').select2();
+         });
+
+
+         $('#FlussonicepisodelibraryID').on('change', function() {
+
+            var FlussonicepisodelibraryID = this.value;
+            // alert(FlussonicepisodelibraryID);
+                  $("#stream_flussonic_episode").html('');
+                     $.ajax({
+                     url:"{{url::to('admin/Flussonicepisodelibrary')}}",
+                     type: "POST",
+                     data: {
+                        FlussonicepisodelibraryID: FlussonicepisodelibraryID,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+
+                        var streamvideos = result.streamvideos.files;
+                        console.log(result.streamvideos.files); 
+                        var StreamURL = result.StreamURL;
+
+                        $('#stream_flussonic_episode').html('<option value="">Choose Videos from Flussonic</option>'); 
+
+                        $.each(streamvideos, function(key, value) {
+                                var videoUrl = StreamURL + value.name + '/index.m3u8';
+                                // console.log(videoUrl); 
+                            $("#stream_flussonic_episode").append('<option value="' + videoUrl + '">' + value.name + '</option>');
+                        });
+                     }
+                });
+
+            }); 
+
+
             $('#episodelibrary').on('change', function() {
                   
                   var episodelibrary_id = this.value;
@@ -1091,6 +1195,28 @@ document.getElementById('select-all').addEventListener('change', function() {
                     }
                 });
             })
+
+
+            
+        $('#submit_flussonic').click(function(){
+            $.ajax({
+                url: '{{ URL::to('/admin/stream_Flussonic_episode') }}',
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        stream_flussonic_episode: $('#stream_flussonic_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
+        
+                    },        success: function(value){
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.Episode_id);
+            
+                    }
+                });
+            })
+
+
 
         });
         
@@ -1375,6 +1501,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                     formData.append('series_id', series_id);
                     formData.append('season_id', season_id);
                     formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
                     formData.append("_token", CSRF_TOKEN);
 
                     // Initialize retry counter and canceled flag if they don't exist
@@ -1413,7 +1540,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         location.reload();
                     } else {
                         $("#buttonNext").show();
-                        $("#episode_id").val(value.episode_id);
+                        $("#episode_id").val(value.Episode_id);
                         $("#title").val(value.episode_title);
                         $("#duration").val(value.episode_duration);
                         file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
@@ -1473,6 +1600,7 @@ document.getElementById('select-all').addEventListener('change', function() {
 
     $("#buttonNext").click(function () {
         $('#bunnycdnvideo').hide();
+        $('#flussonicvideo').hide();
         $("#episode_uploads").hide();
         $('#optionradio').hide();
         $("#Next").hide();
