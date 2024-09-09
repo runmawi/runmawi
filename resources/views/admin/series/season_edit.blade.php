@@ -128,7 +128,7 @@
                         
                     <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
                     </li>
-                    <li class="breadcrumb-item">{{ __("Manage Episodes") }}</li>
+                    <li class="breadcrumb-item">{{ __($season_name.' Episodes') }}</li>
                
                 </ol>
             </div>
@@ -1007,6 +1007,14 @@ document.getElementById('select-all').addEventListener('change', function() {
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+    <script>
+         ClassicEditor
+            .create( document.querySelector( '#description_editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
     <script>
          	$('#bunnycdnvideo').hide();
              $('#episodeupload').click(function(){
@@ -1094,9 +1102,6 @@ document.getElementById('select-all').addEventListener('change', function() {
 
         });
         
-        CKEDITOR.replaceAll( 'description_editor', {
-            toolbar : 'simple'
-        });
 
         // Image upload dimention validation
 		$.validator.addMethod('dimention', function(value, element, param) {
