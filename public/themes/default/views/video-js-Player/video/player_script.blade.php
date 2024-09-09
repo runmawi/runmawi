@@ -5,7 +5,6 @@
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
     let PPV_Plan   = "<?php echo $videodetail->PPV_Plan; ?>";
 
-    const titleButton = document.querySelector('.titlebutton');
     var remainingDuration = false;
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -31,29 +30,16 @@
             },
         });
 
-        var skipForwardButton = document.createElement('button');
-        skipForwardButton.className = 'custom-skip-forward-button';
-        skipForwardButton.innerHTML = `
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;">
-                <path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path>
-            </svg>`;
-        skipForwardButton.onclick = function() {
-            player.currentTime(player.currentTime() + 10); // Skip forward 10 seconds
-        };
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const backButton = document.querySelector('.staticback-btn');
+        const titleButton = document.querySelector('.vjs-title-bar');
 
-        var skipBackwardButton = document.createElement('button');
-        skipBackwardButton.className = 'custom-skip-backward-button';
-        skipBackwardButton.innerHTML = `
-            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;">
-                <path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path>
-            </svg>`;
-        skipBackwardButton.onclick = function() {
-            player.currentTime(player.currentTime() - 10); // Skip backward 10 seconds
-        };
-
-        var controlBar = player.getChild('controlBar');
-        controlBar.el().insertBefore(skipBackwardButton, controlBar.getChild('playToggle').el());
-        controlBar.el().insertBefore(skipForwardButton, controlBar.getChild('playToggle').el());
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(titleButton);
+        player.el().appendChild(backButton);        
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
@@ -154,8 +140,6 @@
             });
         }
 
-        const playPauseButton = document.querySelector('.vjs-big-play-button');
-        const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
         console.log("remainingDuration",remainingDuration);
 
@@ -168,7 +152,6 @@
         });
 
         player.on('userinactive', () => {
-
             skipForwardButton.addEventListener('mouseenter',handleHover);
             skipBackwardButton.addEventListener('mouseenter',handleHover);
 
@@ -178,43 +161,43 @@
             function handleHover(event) {
                 const element = event.target;
                 if (event.type === 'mouseenter') {
-                    // console.log("hovered");
+                    console.log("hovered");
                     hovered = true;
                     skipButton = true;
                 } else if (event.type === 'mouseleave') {
-                    // console.log("not hovered");
+                    console.log("not hovered");
                     hovered = false;
                     skipButton = false;
                 }
             }
 
             // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            if (skipForwardButton && skipBackwardButton) {
                 if(hovered == false && remainingDuration == false){
-                    skipForwardButton.style.display = 'none';
-                    skipBackwardButton.style.display = 'none';
-                    playPauseButton.style.display = 'none';
+                    skipForwardButton.style.visibility = 'hidden';
+                    skipBackwardButton.style.visibility = 'hidden';
+                    playPauseButton.style.visibility = 'hidden';
+                    backButton.style.visibility = 'hidden';
+                    titleButton.style.visibility = 'hidden';
                 }
-                backButton.style.display = 'none';
-                titleButton.style.display = 'none';
             }
         });
 
         player.on('useractive', () => {
         // Show the Play pause, skip forward and backward buttons when the user becomes active
-            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            if (skipForwardButton && skipBackwardButton) {
                 if(player.currentTime != player.duration){
-                    skipForwardButton.style.display = 'block';
-                    skipBackwardButton.style.display = 'block';
-                    playPauseButton.style.display = 'block';
-                    backButton.style.display = 'block';
-                    titleButton.style.display = 'block';
+                    skipForwardButton.style.visibility = 'visible';
+                    skipBackwardButton.style.visibility = 'visible';
+                    playPauseButton.style.visibility = 'visible';
+                    backButton.style.visibility = 'visible';
+                    titleButton.style.visibility = 'visible';
                 }
             }
         });
 
         player.ready(() => {
-            playPauseButton.addEventListener('click', e=> {
+            playPauseButton.addEventListener('click', e => {
                 var playing = document.querySelector('.vjs-playing');
                 if(playing){
                     console.log("pause triggered");
