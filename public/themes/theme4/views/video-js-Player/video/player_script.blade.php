@@ -176,12 +176,12 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
         });
 
         // Watermark
-        // let enable_watermark  = '<?= $playerui->watermark ?>';
+        // let enable_watermark  = '<?//= $playerui->watermark ?>';
         // if (enable_watermark == 1 ) {
         //     player.ready(function() {
         //         var watermark = document.createElement('div');
         //         watermark.className = 'vjs-watermark';
-        //         watermark.innerHTML = '<img src="<?= $playerui->watermark_logo ?>" alt="Watermark">';
+        //         watermark.innerHTML = '<img src="<?//= $playerui->watermark_logo ?>" alt="Watermark">';
         //         player.el().appendChild(watermark);
         //     });
         // }
