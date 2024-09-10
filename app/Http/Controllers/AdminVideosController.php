@@ -114,6 +114,13 @@ class AdminVideosController extends Controller
     {
         $this->client = new Client();
         $this->apiKey = '9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE'; 
+
+        $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
+        $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
+        $this->Flussonic_Auth_Key  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
+        $this->Flussonic_Server_Base_URL  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
+        $this->Flussonic_Storage_Tag  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
+
     }
 
     public function index()
@@ -481,6 +488,7 @@ class AdminVideosController extends Controller
     public function uploadFile(Request $request)
     {
         // $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+
         $site_theme = SiteTheme::first();
         
         $today = Carbon::now() ;
@@ -517,8 +525,9 @@ class AdminVideosController extends Controller
         $mp4_url = $data["file"];
         $settings = Setting::first();
         $libraryid = $data['UploadlibraryID'];
+        $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
         $client = new Client();
-
+        // print_r($FlussonicUploadlibraryID);exit;
         $storage_settings = StorageSetting::first();   
 
         if($site_theme->enable_bunny_cdn == 1){
@@ -528,7 +537,16 @@ class AdminVideosController extends Controller
                 $value["error"] = 3;
                 return $value ;
             }
+        }elseif($storage_settings->flussonic_storage == 1){
+            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !empty($FlussonicUploadlibraryID) && !empty($mp4_url)){
+                return $this->UploadVideoFlussonicStorage( $storage_settings,$FlussonicUploadlibraryID,$mp4_url);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
         }               
+
+
         if ($mp4_url != "" && $pack != "Business") {
             // $ffprobe = \FFMpeg\FFProbe::create();
             // $disk = 'public';
@@ -1031,9 +1049,38 @@ class AdminVideosController extends Controller
 
                 $compress_image_settings = CompressImage::first();
 
+                if($this->Enable_Flussonic_Upload == 1){
+           
+                    try {
+                        $client = new \GuzzleHttp\Client();
+
+                        $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}", [
+                        'headers' => [
+                            'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                            'Content-Type' => 'application/json', 
+                        ]
+                    ]);
+                
+                    $responseData = json_decode($response->getBody(), true);
+                    $FlussonicUploadlibrary =  $responseData['storages'];
+                       
+                    } catch (RequestException $e) {
+                        $FlussonicUploadlibrary = [];
+                    }
+                }else{
+                    $FlussonicUploadlibrary = [];
+                }
+                
+                if($theme_settings->enable_video_cipher_upload == 1){
+                    $post_route = URL::to("admin/videos/VideoCipherFileUpload");
+                }else{
+                    $post_route = URL::to('admin/videos/fileupdate');
+                }
+
+                
             $data = [
                 "headline" => '<i class="fa fa-plus-circle"></i> New Video',
-                "post_route" => URL::to("admin/videos/VideoCipherFileUpload"),
+                "post_route" => $post_route,
                 "button_text" => "Add New Video",
                 "admin_user" => Auth::user(),
                 "related_videos" => Video::get(),
@@ -1061,6 +1108,7 @@ class AdminVideosController extends Controller
                 'theme_settings' => $theme_settings ,
                 'advertisements_category' => Adscategory::get(),
                 'compress_image_settings' => $compress_image_settings,
+                'FlussonicUploadlibrary' => $FlussonicUploadlibrary,
             ];
 
             if($theme_settings->enable_video_cipher_upload == 1){
@@ -4179,7 +4227,6 @@ class AdminVideosController extends Controller
         }
 
         $video->update($data);
-
         if ($trailer != '' && $pack == 'Business' && $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1) {
             ConvertVideoTrailer::dispatch($video, $storepath, $convertresolution, $trailer_video_name, $trailer_Video);
         }
@@ -13110,6 +13157,202 @@ class AdminVideosController extends Controller
     
             return Redirect::back()->with('message', 'Your video will be available shortly after we process it');
         }   
+
+
+        public function UploadVideoFlussonicStorage($storage_settings,$FlussonicUploadlibraryID,$mp4_url)
+        {
+
+            $FileName = str_replace(' ', '-', $mp4_url->getClientOriginalName());
+            if($this->Enable_Flussonic_Upload == 1){
+           
+                try {
+                    $client = new \GuzzleHttp\Client();
+
+                    $response = $client->request('PUT', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$FlussonicUploadlibraryID}/files/{$FileName}", [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                        'Content-Type' => 'application/json', 
+                    ],
+                    'body' => fopen($mp4_url, 'r'), 
+                ]);
+            
+                $responseData = json_decode($response->getBody(), true);
+                    
+                $url = "{$this->Flussonic_Server_Base_URL}{$responseData['name']}/index.m3u8";
+                $videoUrl = str_replace('http://', 'https://', $url);
+
+                $video = new Video();
+                $video->disk = "public";
+                $video->original_name = "public";
+                $video->title = $FileName;
+                $video->m3u8_url = $videoUrl;
+                $video->type = "m3u8_url";
+                $video->draft = 1;
+                $video->status = 1;
+                $video->active = 0;
+                $video->image = default_vertical_image();
+                $video->video_tv_image = default_horizontal_image();
+                $video->player_image = default_horizontal_image();
+                $video->user_id = Auth::user()->id;
+                $video->save();
+    
+                $video_id = $video->id;
+
+
+                if(Enable_Extract_Image() == 1){
+                    // extractImageFromVideo
+                
+                    $rand = Str::random(16);
+    
+                    $ffmpeg = \FFMpeg\FFMpeg::create();
+                    $videoFrame = $ffmpeg->open($mp4_url);
+                    
+                    // Define the dimensions for the frame (16:9 aspect ratio)
+                    $frameWidth = 1280;
+                    $frameHeight = 720;
+                    
+                    // Define the dimensions for the frame (9:16 aspect ratio)
+                    $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                    $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                    
+                    $randportrait = 'portrait_' . $rand;
+                    
+                    $interval = 5; // Interval for extracting frames in seconds
+                    $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                    $totalDuration = intval($totalDuration);
+    
+    
+                    if ( 600 < $totalDuration) { 
+                        $timecodes = [5, 120, 240, 360, 480]; 
+                    } else { 
+                        $timecodes = [5, 10, 15, 20, 25]; 
+                    }
+    
+                    
+                    foreach ($timecodes as $index => $time) {
+                        $imagePortraitPath = public_path("uploads/images/{$video_id}_{$randportrait}_{$index}.jpg");
+                        $imagePath = public_path("uploads/images/{$video_id}_{$rand}_{$index}.jpg");
+                
+                        try {
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                
+                            $videoFrame
+                                ->frame(TimeCode::fromSeconds($time))
+                                ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                
+                            $VideoExtractedImage = new VideoExtractedImages();
+                            $VideoExtractedImage->user_id = Auth::user()->id;
+                            $VideoExtractedImage->socure_type = 'Video';
+                            $VideoExtractedImage->video_id = $video_id;
+                            $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video_id . '_' . $rand . '_' . $index . '.jpg');
+                            $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video_id . '_' . $randportrait . '_' . $index . '.jpg');
+                            $VideoExtractedImage->image_original_name = $video_id . '_' . $rand . '_' . $index . '.jpg';
+                            $VideoExtractedImage->save();
+                        } catch (\Exception $e) {
+                            dd($e->getMessage());
+                        }
+                    }
+                    
+                }
+
+                } catch (RequestException $e) {
+                    $value["success"] = 2;
+                    \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                    return $value ;
+                }
+            }else{
+                $value["success"] = 2;
+                \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                return $value ;
+            }
+
+        }
+
+
+        
+        public function FlussonicUploadlibrary(Request $request)
+        {
+
+            if($this->Enable_Flussonic_Upload == 1){
+           
+                try {
+                    $client = new \GuzzleHttp\Client();
+                    // http://localhost:8080/streamer/api/v3/vods/{prefix}/storages/{storage_index}/files
+
+                    
+                    $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$request->FlussonicUploadlibraryID}/files", [
+                        'headers' => [
+                            'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                            'Content-Type' => 'application/json', 
+                        ]
+                    ]);
+                  
+            
+                $response = json_decode($response->getBody(), true);
+                $url = "{$this->Flussonic_Server_Base_URL}";
+                $StreamURL = str_replace('http://', 'https://', $url);
+
+                $responseData = [
+                    'streamvideos' => $response,
+                    'StreamURL' => $StreamURL,
+                ];
+            
+                return $responseData;
+
+            }catch (RequestException $e) {
+                $value["success"] = 2;
+                // echo"<pre>";
+                // print_r($e->getMessage());exit;
+                \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                return $value ;
+            }
+        }
+    }
+
+
+    
+        
+    public function Flussonic_Storage_UploadURL(Request $request)
+    {
+
+
+
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["Flussonic_linked_video"])) {
+
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->title = $data["Flussonic_linked_video"];
+            $video->m3u8_url = $data["Flussonic_linked_video"];
+            $video->type = "m3u8_url";
+            $video->status = 1;
+            $video->draft = 1;
+            $video->active = 0;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+
+            \LogActivity::addVideoLog("Added Flussonic VIDEO URl Video.", $video_id);
+
+            return $value;
+            
+        }
+    }
+
 
 }
     
