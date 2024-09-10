@@ -1575,7 +1575,11 @@ class AdminSeriesController extends Controller
         $series_season->trailer = $data['trailer'];
         $series_season->trailer_type = $data['trailer_type'];
         $series_season->access = $access;
-        $series_season->ppv_price = $ppv_price;
+        if($series_season->access == "ppv"){
+            $series_season->ppv_price = $ppv_price;
+        } else{
+            $series_season->ppv_price = null;
+        }
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
         $series_season->landing_mp4_url = $data['landing_mp4_url'];
@@ -1588,7 +1592,6 @@ class AdminSeriesController extends Controller
         $series_season->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
         $series_season->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
         $series_season->save();
-
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
             ConvertSerieTrailer::dispatch($series_season,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
         }
@@ -1682,6 +1685,8 @@ class AdminSeriesController extends Controller
         $episodes = Episode::where('series_id' ,'=', $series_id)
         ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
         $compress_image_settings = CompressImage::first();
+        $season_name = SeriesSeason::where('id', $season_id)->pluck('series_seasons_name')->first();
+        // dd($season_name);
 
         $StorageSetting = StorageSetting::first();
         // dd($StorageSetting);
@@ -1796,6 +1801,7 @@ class AdminSeriesController extends Controller
                 'theme_settings' => SiteTheme::first(),
                 'compress_image_settings' => $compress_image_settings,
                 'theme_settings' => $theme_settings ,
+                'season_name'        => $season_name,
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){

@@ -525,6 +525,7 @@ class AdminSettingsController extends Controller
         $settings->video_clip_enable = !empty($request->video_clip_enable) ?  "1" : "0" ;
         $settings->enable_ppv_rent = !empty($request->enable_ppv_rent) ?  "1" : "0" ;
         $settings->enable_ppv_rent_live = !empty($request->enable_ppv_rent_live) ?  "1" : "0" ;
+        $settings->enable_ppv_rent_series = !empty($request->enable_ppv_rent_series) ?  "1" : "0" ;
         $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
         $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
