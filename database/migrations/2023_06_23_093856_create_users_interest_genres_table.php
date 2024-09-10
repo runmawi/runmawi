@@ -16,8 +16,8 @@ class CreateUsersInterestGenresTable extends Migration
         Schema::create('users_interest_genres', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
-            $table->json('source_genres_id')->nullable();
-            $table->json('genres_slug')->nullable();
+            $table->text('source_genres_id')->nullable();
+            $table->text('genres_slug')->nullable();
             $table->timestamps();
         });
     }
