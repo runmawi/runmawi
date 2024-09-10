@@ -25122,11 +25122,11 @@ public function TV_login(Request $request)
 
     public function Mobile_exists_verify(Request $request)
     {
-
       try {
           
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
+          'ccode'         => 'required'
         ]);
     
         if ($validator->fails()) {
@@ -25139,7 +25139,7 @@ public function TV_login(Request $request)
           return response()->json($response, 422); 
         }
 
-        $user = User::where('mobile',$request->mobile_number)->first();
+        $user = User::where('mobile',$request->mobile_number)->where('ccode',$request->ccode)->first();
 
         if(!is_null($user)  ){
 
@@ -25157,6 +25157,7 @@ public function TV_login(Request $request)
 
           $user_detail = User::create([
             'mobile' => $request->mobile_number,
+            'ccode'  => $request->ccode,
             'email'  => random_int(100000, 999999) ,
             'role'   => 'registered',
           ]);
@@ -25164,6 +25165,7 @@ public function TV_login(Request $request)
 
         $response = array(
           'status'   => 'true',
+          'status_code' => 200,
           'mobile_number_status' => $mobile_number_status ,
           'redirect_api' => $redirect_api ,
           'message'      => $message,
@@ -25174,6 +25176,7 @@ public function TV_login(Request $request)
 
         $response = array(
           'status'  => 'false',
+          'status_code' => 400,
           'message' => $th->getMessage(),
         );
 
@@ -25217,6 +25220,24 @@ public function TV_login(Request $request)
         $mobile          = $user->mobile;
         $Mobile_number   = $ccode.$mobile ;
 
+        // Only for Play Store Testing 
+        if( $mobile == "0987654321"){
+
+          $user = User::Where('id',$user_id)->where('mobile',$mobile)
+                        ->update([
+                          "otp" => "1234",
+                          "password" => Hash::make("1234"),
+                        ]);         
+
+
+          return response()->json( [
+            "status"     => 'true' ,
+            "message"    => 'SMS Send Successfully' ,
+            "user_details" => User::where('id',$user_id)->get() 
+          ], 200); 
+
+        }
+
         if( $AdminOTPCredentials->otp_vai == "fast2sms" ){
 
           $fast2sms_API_key  = $AdminOTPCredentials->otp_fast2sms_api_key ;
@@ -25234,6 +25255,7 @@ public function TV_login(Request $request)
               
               $response = array(
                 "status"  => 'false' ,
+                "status_code" => 400,
                 "message" => $response['message'] ,
               );
 
@@ -25249,6 +25271,7 @@ public function TV_login(Request $request)
 
               $response = array(
                 "status"     => 'true' ,
+                "status_code" => 200,
                 "request_id" => $response['request_id'] ,
                 "message"    => 'SMS Send Successfully' ,
                 "user_details" => User::where('id',$user_id)->get() ,
@@ -25296,6 +25319,7 @@ public function TV_login(Request $request)
 
                 $response = array(
                   "status"     => 'true' ,
+                  "status_code" => 400,
                   "request_id" => $response['request_id'] ,
                   "message"    => 'SMS Send Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
@@ -25305,6 +25329,7 @@ public function TV_login(Request $request)
 
                 $response = array(
                   "status"  => 'false' ,
+                  "status_code" => 400,
                   "message" => 'OTP Not Sent' ,
                 );
             }      
@@ -25314,11 +25339,12 @@ public function TV_login(Request $request)
 
           $response = array(
             "status"  => 'false' ,
+            "status_code" => 400,
             "message" => $th->getMessage(),
           );
       }
 
-      return response()->json($response, 200);
+      return response()->json($response, $response['status_code']);
     }
 
     public function Verify_OTP(Request $request)
@@ -25327,6 +25353,7 @@ public function TV_login(Request $request)
            
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
+          'ccode' => 'required',
           'user_id' => 'required|numeric',
           'otp' => 'required|numeric',
         ]);
@@ -25342,10 +25369,11 @@ public function TV_login(Request $request)
         // Only for Play Store Testing 
         if( $request->mobile_number == "0987654321"){
 
-          $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->update([
-            "otp" => "1234",
-            "password" => Hash::make("1234"),
-          ]);
+          $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
+                        ->update([
+                          "otp" => "1234",
+                          "password" => Hash::make("1234"),
+                        ]);         
 
           return response()->json( [
             'status'    => 'true',
@@ -25354,7 +25382,8 @@ public function TV_login(Request $request)
 
         }
 
-        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
+        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
+                      ->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
           
@@ -25375,20 +25404,22 @@ public function TV_login(Request $request)
         }
 
         $response = array(
-          "status"  => 'true' ,
-          "message" => $message,
+          'status'  => 'true' ,
+          'message' => $message,
           'otp_status' => $otp_status ,
+          'status_code' => 200,
         );
         
       } catch (\Throwable $th) {
 
         $response = array(
-          "status"  => 'false' ,
-          "message" => $th->getMessage(),
+          'status'  => 'false' ,
+          'status_code' => 400,
+          'message' => $th->getMessage(),
         );
 
       }
-      return response()->json($response, 200);
+      return response()->json($response, $response['status_code']);
     }
 
 
