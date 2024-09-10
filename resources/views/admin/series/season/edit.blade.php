@@ -79,17 +79,19 @@
                     </div>
 
                     <div class="form-group {{ $errors->has('ppv_access') ? 'has-error' : '' }}">
-                        <label class="m-0"> Choose User Access:</label>
+                        <label class="m-0">Choose User Access:</label>
                         <select class="form-control" id="ppv_access" name="ppv_access">
                             <option value="free" @if(!empty($season->access) && $season->access == 'free'){{ 'selected' }}@endif>Free (everyone)</option>
                             <option value="ppv" @if(!empty($season->access) && $season->access == 'ppv'){{ 'selected' }}@endif>PPV (Pay Per Season(Episodes))</option>
                         </select>
-                        <span class="ErrorText"> *User Access Series is set as Subscriber. </span>
+                        <span class="ErrorText">*User Access Series is set as Subscriber.</span>
                     </div>
-                    <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price">
+                    
+                    <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price_group">
                         <label class="m-0">PPV Price:</label>
-                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
+                        <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="ppv_price_input" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
                     </div>
+                    
 
                     <div id="ppv_price_plan">
                         <div class="form-group" >
@@ -178,6 +180,31 @@
 <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
 
 @section('javascript')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ppvAccessSelect = document.getElementById('ppv_access');
+        const ppvPriceGroup = document.getElementById('ppv_price_group');
+        const ppvPriceInput = document.getElementById('ppv_price_input');
+    
+        // Function to toggle PPV price input visibility
+        function togglePPVPrice() {
+            if (ppvAccessSelect.value === 'ppv') {
+                ppvPriceGroup.style.display = 'block'; // Show PPV price input
+            } else {
+                ppvPriceGroup.style.display = 'none'; // Hide PPV price input
+                ppvPriceInput.value = ''; // Clear the PPV price if Free is selected
+            }
+        }
+    
+        // Run the function on page load
+        togglePPVPrice();
+    
+        // Add event listener to toggle based on selection change
+        ppvAccessSelect.addEventListener('change', togglePPVPrice);
+    });
+    </script>
+    
 <script>
           
         var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
@@ -339,6 +366,8 @@
         position:relative;
     }
     .breadcrumb-item+.breadcrumb-item::before{display:none;}
+    #ppv_price_group {display: none;}
+
 </style>
 
 @stop @stop
