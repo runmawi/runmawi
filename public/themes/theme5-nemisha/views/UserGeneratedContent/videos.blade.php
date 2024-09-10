@@ -263,7 +263,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
             @else
             <p style="color: white; font-size:18px;" >
-                <span class="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
+                <span id="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
             </p>
             @endif
         </div>
@@ -271,7 +271,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
        </div>
     </div>
   
-    {{-- @if( auth()->user()->id != $profileUser->id  ) --}}
+    @if( auth()->user()->id != $profileUser->id  )
     <div class="mx-3" >
         <button 
         id="subscribe-toggle" 
@@ -283,7 +283,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         {{ $subscribe_button == true ? 'Unsubscribe' : 'Subscribe' }}
     </button>
     </div>
-    {{-- @endif --}}
+    @endif
 
     @if($videodetail->description)
     <div class="ugc-description m-3"  style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
@@ -508,7 +508,7 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
                         
                         const messageNote = `<div id="message-note" class="alert ${messageClass} col-md-4" style="z-index: 999; position: fixed !important; right: 0;">${message}</div>`;
                         
-                        $('.subscriber-count').text(response.count);
+                        $('#subscriber-count').text(response.count);
                         $('#message-note').html(messageNote).slideDown('fast');
                         
                         setTimeout(function() {
@@ -536,32 +536,10 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
                     }, 2000);
                 }
             });
-        }, 300); // 300 ms debounce delay
+        }, 300); 
     }
 </script>
 
-
-{{-- <script>
-    $(document).ready(function() {
-        // Handle click event on video
-        $('.video-item').on('click', function() {
-            var userId = $(this).data('user-id'); // Get the user ID from the data attribute
-            
-            $.ajax({
-                url: '/user/' + userId + '/subscriptions-count', // Ensure this URL is correct
-                type: 'GET',
-                success: function(response) {
-                    // Update the subscriber count on the page if needed
-                    $('.subscriber-count').text(response.subscriptions_count);
-                },
-                error: function(xhr) {
-                    console.log('Error:', xhr.responseText);
-                    alert('An error occurred while fetching the subscription count.');
-                }
-            });
-        });
-    });
-</script> --}}
 
 @php
  include public_path('themes/theme5-nemisha/views/UserGeneratedContent/videos-details-script-file.blade.php');

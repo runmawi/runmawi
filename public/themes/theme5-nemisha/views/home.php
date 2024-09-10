@@ -31,25 +31,25 @@
       </div>
 </section>
 
-<div>
-   <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
-</div>
-
-
 
 <div class="main-content" id="home_sections">
 
-   <?php if(count($ugc_videos) > 0){ ?>
-            <section id="iq-continue overflow-hidden">
-               <div class="container-fluid ">
-                     <div class="row">
-                        <div class="col-sm-12 ">
-                           <?php include 'partials/home/ugc-videos.blade.php'; ?>
-                        </div>
-                     </div>
+
+   <?php if($home_settings->shorts_minis == '1' ): ?>
+      <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
+   <?php endif; ?>
+
+   <?php if( $home_settings->user_generated_content == '1' ): ?>
+      <section id="iq-continue overflow-hidden">
+         <div class="container-fluid ">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include 'partials/home/ugc-videos.blade.php'; ?>
+                  </div>
                </div>
-            </section>
-   <?php } ?>
+         </div>
+      </section>
+   <?php endif; ?>
 
    <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
       <section id="iq-continue overflow-hidden">

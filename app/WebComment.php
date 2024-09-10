@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\CommentLikeDislike;
 use Illuminate\Database\Eloquent\Model;
 
 class WebComment extends Model
@@ -18,4 +19,15 @@ class WebComment extends Model
     {
         return $this->hasMany(WebComment::class,'child_id','id');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(CommentLikeDislike::class, 'comment_id')->where('type', 1);
+    }
+
+    public function dislikes()
+    {
+        return $this->hasMany(CommentLikeDislike::class, 'comment_id')->where('type', 2);
+    }
+
 }

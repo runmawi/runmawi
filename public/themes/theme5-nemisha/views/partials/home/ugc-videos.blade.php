@@ -1,14 +1,13 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
     <h5 class="main-title">User Generated Content</a></h5>
-    <a class="see">See All</a>
 </div>
 <div class="favorites-contens">
-    <div class="favorites-slider list-inline row p-0 mb-0">
+    <div class="ugc-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($ugc_videos)) :
                     foreach($ugc_videos as $ugc_video): 
                 ?>
 
-        <div class="slide-item">
+        <div class="items">
             <a href="<?php echo URL::to('home') ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <div class="img-box">
@@ -47,3 +46,16 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
+<script>
+var elem = document.querySelector('.ugc-video');
+var flkty = new Flickity(elem, {
+    cellAlign: 'left',
+    contain: true,
+    groupCells: true,
+    pageDots: false,
+    draggable: true,
+    freeScroll: true,
+    imagesLoaded: true,
+    lazyload:true,
+});
+</script>

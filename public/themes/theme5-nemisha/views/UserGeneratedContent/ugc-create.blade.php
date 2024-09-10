@@ -1,5 +1,5 @@
 @php
-    include public_path('themes/theme5-nemisha/views/header.php');
+    include( public_path('themes/theme5-nemisha/views/header.php'));
 @endphp
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -474,8 +474,6 @@
          <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center mx-auto p-0 mb-2">
                <div class="px-0 pb-0 mb-3 col-md-12">
-                  <!-- <h2 id="heading">Sign Up Your User Account</h2>
-                     <p>Fill all form field to go to next step</p> -->
                   <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="msform">
                     
                      <fieldset id="slug_validate">
@@ -529,15 +527,7 @@
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-img w-100" />
                                  @endif
                               </div>
-                              <div class="col-sm-6 form-group">
-                                 {{-- <div id="ajaxImagesContainer" class="gridContainer mt-3"></div> --}}
-                                  <label class="mb-1">Player Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br>
-                                  <input type="file" name="player_image" id="player_image" >
-                                  <span><p id="player_image_error_msg" style="color:red;" >* Please upload an image with 1280 x 720 pixels dimension or ratio 16:9 </p></span>
-                                  @if(!empty($video->player_image))
-                                  <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100" />
-                                  @endif
-                               </div>
+         
                            </div>      
 
                            <div class="row mt-5">
@@ -587,6 +577,12 @@
 </div>
 </div>
 </div>
+
+@php
+include (public_path('themes/theme5-nemisha/views/footer.blade.php'))
+@endphp
+
+
 <style>
 #heading {
     text-transform: uppercase;

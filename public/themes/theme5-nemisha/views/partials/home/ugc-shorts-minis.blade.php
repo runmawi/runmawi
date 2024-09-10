@@ -10,14 +10,44 @@
             height: 170px;
             width: 35px;
             position: absolute;
-            z-index: 9999;
-            top: 50%;
+            z-index: 10000;
+            top: 80%;
             right: 0;
             background: #ED563C;
             transition: width 0.8s, height 0.8s, margin-right 0.8s;
-            overflow-x: hidden;
+            overflow: visible;
             white-space: nowrap;
             cursor: pointer;
+    }   
+
+    .shorts-minis .sample{
+        overflow-y: auto !important;
+    }
+
+
+@media (max-width: 768px) {
+    #close-btn {
+        display: none !important;
+    }
+    #mobile-close-btn {
+        display: block !important;
+    }
+
+    .shorts-minis {
+            color: white;
+            height: 170px;
+            width: 35px;
+            position: absolute;
+            z-index: 9999;
+            top: 60%;
+            right: 0;
+            background: #ED563C;
+            transition: width 0.8s, height 0.8s, margin-right 0.8s;
+            overflow: visible;
+            white-space: nowrap;
+            cursor: pointer;
+    }
+
 }
 </style>
 
@@ -34,26 +64,32 @@
             Shorts & Minis
         </div>
     </div>
-    <div id="shorts-content" style="display: none;" >
-
-         <!-- Close Button -->
-        <button id="close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer;">
-            &times;
-        </button>
-
+    
+    <div id="shorts-content" style="display: none; position: relative;" >
+        <div id="close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 10px; left: -60px; font-size: 15px; cursor: pointer;  background: #ED563C; padding:10px; border-top-left-radius:20px; border-bottom-left-radius:20px; z-index:10000; "> 
+           <h6>Close</h6>
+        </div>
+        <div id="mobile-close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 5px; right: 10px; font-size: 25px; cursor: pointer; display: none;" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+              </svg>
+        </div>
+        <div style="overflow-y: auto; height:100vh;">
+        
         <div style="padding: 10px 0px 10px 10px;" >
-        <h5>Shorts & Minis</h5>
+            <h5>Shorts & Minis</h5>
         </div>
         <p style="text-align: right; cusrsor:pointer; padding:10px;" > 
-            <a href="<?php echo URL::to('ugc') ?><?= '/view_all_profile/' ?>" target="_blank" >View All Profile </a>
+            <a href="<?php echo URL::to('ugc') ?><?= '/view_all_profile/' ?>" >View All Profile </a>
         </p>
-       
+        
         <div class="d-flex flex-row">
             <?php  if(isset($ugc_users)) :
             foreach($ugc_users as $user): 
             ?>
             <div>
-                <a href="{{ route('profile.show', ['username' => $eachuserdata->username]) }}" >
+                <a href="<?php echo route('profile.show', ['username' => $user->username]); ?>" >
                 <div>
                     <img style="height: 80px; width: 80px;" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/avatars/'.$user->avatar;  ?>" class="rounded-circle img-fluid text-center m-2" alt="<?php echo $user->username; ?>">
                 </div>
@@ -81,14 +117,14 @@
                         <div class="text-white pt-3">
                             <h6><?php  echo (strlen($eachshortsminis->title) > 17) ? substr($eachshortsminis->title,0,18).'...' : $eachshortsminis->title; ?></h6>
                             <p style="margin:5px 0px;"><?php  echo (strlen($eachshortsminis->user->username) > 17) ? substr($eachshortsminis->user->username,0,18).'...' : $eachshortsminis->user->username; ?></p>
-                            <p> <?php echo $eachshortsminis->created_at->diffForHumans(); ?> |  <?php echo $eachshortsminis->views ? $eachshortsminis->views : '0'  ?> views
+                            <p class="word-break" > <?php echo $eachshortsminis->created_at->diffForHumans(); ?> |  <?php echo $eachshortsminis->views ? $eachshortsminis->views : '0'  ?> views
                                 | <?php echo $eachshortsminis->like_count ?> Likes</p>
                         </div>
             </a>
         </div>
         <?php endforeach; endif; ?>
-
-    </div>
+        </div>
+        </div>
 
 
     </div>
@@ -96,61 +132,46 @@
 </div>
 
 <script>
-    var mini = true;
+   var mini = true;
+
+function toggleShortsMinis() {
+    var screenWidth = window.innerWidth;
+
+    if (screenWidth > 768) {
+        document.getElementById("ShortsMinis").style.width = "500px";
+        document.getElementById("ShortsMinis").style.height = "100%";
+    } else { 
+        document.getElementById("ShortsMinis").style.width = "100%";
+        document.getElementById("ShortsMinis").style.height = "100%";
+    }
+
+    document.getElementById("shorts-content").style.display = "block";
+    document.querySelector("#ShortsMinis .text-center").style.display = "none";
     
-    function toggleShortsMinis() {
-        var screenWidth = window.innerWidth;
+    // Make the close button visible when the sidebar is expanded
+    document.getElementById("close-btn").style.display = "block"; 
 
-        if (mini) {
-            // Desktop and tablet styling
-            if (screenWidth > 768) {
-                document.getElementById("ShortsMinis").style.width = "500px";
-                document.getElementById("ShortsMinis").style.height = "100%";
-            } else { 
-                // Mobile styling
-                document.getElementById("ShortsMinis").style.width = "100%";
-                document.getElementById("ShortsMinis").style.height = "100%";
-            }
+    this.mini = false;
+}
 
-            document.getElementById("shorts-content").style.display = "block";
-            document.querySelector("#ShortsMinis .text-center").style.display = "none";
-            this.mini = false;
-        } else {
-            // Revert to minimized view for both desktop and mobile
-            if (screenWidth > 768) {
-                document.getElementById("ShortsMinis").style.width = "35px";
-                document.getElementById("ShortsMinis").style.height = "170px";
-            } else {
-                document.getElementById("ShortsMinis").style.width = "35px";
-                document.getElementById("ShortsMinis").style.height = "170px";
-            }
+function closeShortsMinis(event) {
+    event.stopPropagation();
 
-            document.getElementById("shorts-content").style.display = "none";
-            document.querySelector("#ShortsMinis .text-center").style.display = "block";
-            this.mini = true;
-        }
+    document.getElementById("ShortsMinis").style.width = "35px";
+    document.getElementById("ShortsMinis").style.height = "170px";
+    document.getElementById("shorts-content").style.display = "none";
+    document.querySelector("#ShortsMinis .text-center").style.display = "block";
+    
+    // Hide the close button when the sidebar is minimized
+    document.getElementById("close-btn").style.display = "none";
+
+    mini = true;
+}
+
+// Adjust the layout if the window is resized, keeping the sidebar open if it was before resizing
+window.addEventListener('resize', function() {
+    if (!mini) {
+        toggleShortsMinis(); 
     }
-
-    function closeShortsMinis(event) {
-        event.stopPropagation(); // Prevent triggering the toggle function when clicking the close button
-        document.getElementById("ShortsMinis").style.width = "35px";
-        document.getElementById("ShortsMinis").style.height = "170px";
-        document.getElementById("shorts-content").style.display = "none";
-        document.querySelector("#ShortsMinis .text-center").style.display = "block";
-        mini = true;
-    }
-
-    window.addEventListener('resize', function() {
-        if (!mini) {
-            toggleShortsMinis(); 
-        }
-    });
-
-
-
-    window.addEventListener('resize', function() {
-        if (!mini) {
-            toggleShortsMinis(); 
-        }
-    });
+});
 </script>

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use DB;
 use URL;
 use Auth;
@@ -15,8 +13,6 @@ use Session;
 use Exception;
 use ParseM3U8;
 use Validator;
-use App\Artist;
-use App\Episode;
 use App\Playerui;
 use App\Subtitle;
 use App\UGCVideo;
@@ -24,27 +20,17 @@ use App\Wishlist;
 use App\SiteTheme;
 use Carbon\Carbon;
 use GeoIPLocation;
-use App\BlockVideo;
-use App\LiveStream;
-use App\ReelsVideo;
 use App\Tag as Tag;
 use App\Watchlater;
 use FFMpeg\FFProbe;
-use App\Adscategory;
 use App\CountryCode;
 use App\HomeSetting;
 use App\LikeDislike;
-use App\Videoartist;
-use Aws\S3\S3Client;
-use App\RelatedVideo;
 use App\Test as Test;
 use App\User as User;
-use App\AdminVideoAds;
-use App\CategoryVideo;
 use App\CompressImage;
 use App\EmailTemplate;
 use App\InappPurchase;
-use App\LanguageVideo;
 use App\UGCSubscriber;
 use GuzzleHttp\Client;
 use App\CommentSection;
@@ -53,17 +39,13 @@ use App\ModeratorsUser;
 use App\PlayerAnalytic;
 use App\Video as Video;
 use App\VideoSearchTag;
-use App\AdminEPGChannel;
 use \Redirect as Redirect;
 use GifCreator\GifCreator;
 use App\Channel as Channel;
-use App\Jobs\VideoSchedule;
 use App\Setting as Setting;
-use App\SiteVideoScheduler;
 use Illuminate\Support\Str;
 use App\Jobs\TranscodeVideo;
 use Illuminate\Http\Request;
-use App\AdsVideo as AdsVideo;
 use App\DefaultSchedulerData;
 use App\Language as Language;
 use App\TimeZone as TimeZone;
@@ -71,8 +53,6 @@ use App\VideoExtractedImages;
 use Aws\S3\MultipartUploader;
 use FFMpeg\Format\Video\X264;
 use Streaming\Representation;
-use App\PlayerSeekTimeAnalytic;
-use Aws\S3\S3MultiRegionClient;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Coordinate\Dimension;
 use GuzzleHttp\Message\Response;
@@ -81,37 +61,24 @@ use App\ReSchedule as ReSchedule;
 use App\TimeFormat as TimeFormat;
 use FFMpeg\Filters\Video\Resizer;
 use Illuminate\Support\Collection;
-use App\AgeCategory as AgeCategory;
-use App\PpvPurchase as PpvPurchase;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use App\Jobs\ConvertVideoForStreaming;
-use FFMpeg\Filters\Video\VideoFilters;
 use Symfony\Component\Process\Process;
-use App\Advertisement as Advertisement;
-use App\VideoCategory as VideoCategory;
-use App\VideoLanguage as VideoLanguage;
 use App\VideoPlaylist as VideoPlaylist;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\StoreVideoRequest;
 use App\Jobs\Convert4kVideoForStreaming;
-use App\ScheduleVideos as ScheduleVideos;
 use App\StorageSetting as StorageSetting;
-use App\VideoSchedules as VideoSchedules;
 use App\VideosSubtitle as VideosSubtitle;
-use App\CurrencySetting as CurrencySetting;
 use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
 use FFMpeg\Filters\Video\VideoResizeFilter;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\AdminVideoPlaylist as AdminVideoPlaylist;
-use Aws\Common\Exception\MultipartUploadException;
-use App\TestServerUploadVideo as TestServerUploadVideo;
 use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -182,7 +149,7 @@ class UGCController extends Controller
     
                 return View::make('admin.expired_storage', $data);
             } else {
-                // $search_value = Request::get('s');
+               
                 $videos = UGCVideo::orderBy("created_at", "DESC")->paginate(9);
         
                 $user = Auth::user();
@@ -235,23 +202,20 @@ class UGCController extends Controller
             );
 
             return View::make('admin.expired_storage', $data);
+
         } else {
-            $videos = UGCVideo::with('user')->orderBy("created_at", "DESC")->paginate(9);
+            $videos = UGCVideo::with('user')->latest()->paginate(9);
 
             $data = [
                 "videos" => $videos,
             ];
-            // dd($data);
+           
             return View("admin.ugc_videos.ugc_videos_index",$data);
         }
     }
 
     public function UGCVideosApproval($id)
     {
-        //    echo "<pre>";
-        //    print_r($id);
-        //    exit();
-
         $video = UGCVideo::findOrFail($id);
         $video->status = 1;
         $video->active = 1;
@@ -260,29 +224,27 @@ class UGCController extends Controller
 
         $settings = Setting::first();
         $user_id = $video->user_id;
-        // $Channel = Channel::findOrFail($video->user_id);
+        $UGCUser = User::findOrFail($user_id);
         try {
-            // \Mail::send('emails.admin_channel_approved', array(
-            //     'website_name' => $settings->website_name,
-            //     'Channel' => $Channel
-            // ) , function ($message) use ($Channel)
-            // {
-            //     $message->from(AdminMail() , GetWebsiteName());
-            //     $message->to($Channel->email, $Channel->channel_name)
-            //         ->subject('Content has been Submitted for Approved By Admin');
-            // });
+            \Mail::send('emails.admin_channel_approved', array(
+                'website_name' => $settings->website_name,
+                'UGCUser' => $UGCUser
+            ) , function ($message) use ($UGCUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($UGCUser->email, $UGCUser->username)
+                    ->subject('Content has been Submitted for Approved By Admin');
+            });
             
-            // $email_log      = 'Mail Sent Successfully Approved Content';
-            // $email_template = "Approved";
-            // $user_id = $user_id;
+            $email_log      = 'Mail Sent Successfully Approved Content';
+            $email_template = "Approved";
+            $user_id = $user_id;
 
-            // Email_sent_log($user_id,$email_log,$email_template);
+            Email_sent_log($user_id,$email_log,$email_template);
             Log::info("approved");
 
        } catch (\Throwable $th) {
 
-            dd($th->getMessage());
-            dd('deneid');
             $email_log      = $th->getMessage();
             $email_template = "Approved";
             $user_id = $user_id;
@@ -304,23 +266,23 @@ class UGCController extends Controller
 
         $settings = Setting::first();
         $user_id = $video->user_id;
-        // $Channel = Channel::findOrFail($video->user_id);
+        $UGCUser = User::findOrFail($user_id);
         try {
-            // \Mail::send('emails.admin_channel_rejected', array(
-            //     'website_name' => $settings->website_name,
-            //     'Channel' => $Channel
-            // ) , function ($message) use ($Channel)
-            // {
-            //     $message->from(AdminMail() , GetWebsiteName());
-            //     $message->to($Channel->email, $Channel->channel_name)
-            //         ->subject('Content has been Submitted for Rejected By Admin');
-            // });
+            \Mail::send('emails.admin_channel_rejected', array(
+                'website_name' => $settings->website_name,
+                'UGCUser' => $UGCUser
+            ) , function ($message) use ($UGCUser)
+            {
+                $message->from(AdminMail() , GetWebsiteName());
+                $message->to($UGCUser->email, $UGCUser->username)
+                    ->subject('Content has been Submitted for Rejected By Admin');
+            });
             
-            // $email_log      = 'Mail Sent Successfully Rejected Content';
-            // $email_template = "Rejected";
-            // $user_id = $user_id;
+            $email_log      = 'Mail Sent Successfully Rejected Content';
+            $email_template = "Rejected";
+            $user_id = $user_id;
 
-            // Email_sent_log($user_id,$email_log,$email_template);
+            Email_sent_log($user_id,$email_log,$email_template);
             Log::info("rejected");
 
        } catch (\Throwable $th) {
@@ -614,7 +576,6 @@ class UGCController extends Controller
             $video_id = $video->id;
             $profileUser = User::find($video->user_id);
             $subtitle = MoviesSubtitles::where('movie_id', '=', $video_id)->get();
-            // dd($subtitle);
             $videodetail = UGCVideo::where('id',$video_id)->latest()
                                     ->get()->map(function ($item) use ( $video_id , $setting ,  $geoip )  {
 
@@ -768,7 +729,6 @@ class UGCController extends Controller
             return Theme::view("UserGeneratedContent.videos", $data);
 
         } catch (\Throwable $th) {
-            
             dd($th->getMessage());
             return abort(404);
         }
@@ -792,7 +752,12 @@ class UGCController extends Controller
                 ]);
             }
 
-            return response()->json(['success' => true]);
+            $subscriberCount = UGCSubscriber::where('user_id', $user->id)->count();
+
+            return response()->json([
+                'success' => true,
+                'count' => $subscriberCount
+            ]);
 
         } catch (QueryException $e) {
             return response()->json(['error' => 'Database error occurred.'], 500);
@@ -818,8 +783,13 @@ class UGCController extends Controller
                     ->delete();
             }
 
+            $subscriberCount = UGCSubscriber::where('user_id', $user->id)->count();
+
             if ($deleted) {
-                return response()->json(['success' => true]);
+                return response()->json([
+                    'success' => true,
+                    'count' => $subscriberCount
+                ]);
             }
 
             return response()->json(['error' => 'Subscription not found'], 404);
@@ -834,8 +804,11 @@ class UGCController extends Controller
 
     public function viewallprofile(){
 
-        $user_data = User::has('ugcVideos')->withCount('subscribers')->get();
-
+        $user_data = User::whereHas('ugcVideos', function ($query) {
+            $query->where('active', true);
+        })
+        ->withCount('subscribers')
+        ->get();
         $data = [
             'userdata' => $user_data,
         ];
@@ -910,13 +883,6 @@ class UGCController extends Controller
                 }
             }               
             if ($mp4_url != "" && $pack != "Business") {
-                // $ffprobe = \FFMpeg\FFProbe::create();
-                // $disk = 'public';
-                // $data['duration'] = $ffprobe->streams($request->file)
-                // ->videos()
-                // ->first()
-                // ->get('duration');
-    
                 $rand = Str::random(16);
                 $path = $rand . "." . $request->file->getClientOriginalExtension();
     
@@ -1161,9 +1127,6 @@ class UGCController extends Controller
                     $randportrait = 'portrait_' . $rand;
                     
                     for ($i = 1; $i <= 5; $i++) {
-                        // $imagePortraitPath = storage_path("app/public/frames/{$video->id}_{$randportrait}_{$i}.jpg");
-                        // $imagePath = storage_path("app/public/frames/{$video->id}_{$rand}_{$i}.jpg");
-                    
                         
                         $imagePortraitPath = public_path("uploads/images/{$video->id}_{$randportrait}_{$i}.jpg");
                         $imagePath = public_path("uploads/images/{$video->id}_{$rand}_{$i}.jpg");
@@ -1273,6 +1236,262 @@ class UGCController extends Controller
             // return response()->json($value);
     }
     
+    public function AWSUploadFile(Request $request)
+    {
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        
+
+        $StorageSetting = StorageSetting::first();
+
+        $value = [];
+        $data = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        ]);
+        $mp4_url = isset($data["file"]) ? $data["file"] : "";
+
+        $ffprobe =  FFProbe::create();
+        $duration = $ffprobe->format($mp4_url)->get('duration');
+        $Video_duration = explode(".", $duration)[0];
+
+        $path = public_path() . "/uploads/videos/";
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4", $file);
+        $file_folder_name = $newfile[0];
+
+        $package = User::where("id", 1)->first();
+        $pack = $package->package;
+        $mp4_url = $data["file"];
+        $settings = Setting::first();
+        $StorageSetting = StorageSetting::first();
+        if ($mp4_url != "" && $pack != "Business") {
+            
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $video = new UGCVideo();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->mp4_url = $storepath;
+            $video->duration = $Video_duration;
+            $video->type = "mp4_url";
+            $video->draft = 1;
+            $video->status = 1;
+            $video->image = default_vertical_image();
+
+            $PC_image_path = public_path("/uploads/images/default_image.jpg");
+
+            if (file_exists($PC_image_path)) {
+                $Mobile_image = "Mobile-default_image.jpg";
+                $Tablet_image = "Tablet-default_image.jpg";
+
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Mobile_image
+                );
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Tablet_image
+                );
+
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            } else {
+                $video->mobile_image = default_vertical_image();
+                $video->tablet_image = default_vertical_image();
+            }
+
+            // $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = Video::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+
+            return $value;
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 1
+        ) {
+            try {
+                $file = $request->file('file');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
+                $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+                $newfile = explode(".mp4",$name_mp4);
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+                $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+                // print_r($name);exit;
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $storepath = $path.$filePath_mp4;
+                $m3u8_path = $path.$filePath;
+                $transcode_path = $path.$transcode_path;
+  
+                // $getID3 = new getID3();
+                // $Video_storepath = $file;
+                // $VideoInfo = $getID3->analyze($Video_storepath);
+                // $Video_duration = $VideoInfo["playtime_seconds"];
+
+                $video = new UGCVideo();
+                $video->disk = "public";
+                $video->status = 0;
+                $video->original_name = "public";
+                $video->path = $path;
+                $video->duration = $Video_duration;
+                $video->title = $file_folder_name;
+                $video->mp4_url = $storepath;
+                $video->m3u8_url = $transcode_path;
+                $video->type = "aws_m3u8";
+                $video->draft = 1;
+                $video->status = 1;
+                $video->image = default_vertical_image();
+
+                $PC_image_path = public_path(
+                    "/uploads/images/default_image.jpg"
+                );
+
+                if (file_exists($PC_image_path)) {
+                    $Mobile_image = "Mobile-default_image.jpg";
+                    $Tablet_image = "Tablet-default_image.jpg";
+
+                    Image::make($PC_image_path)->save(
+                        base_path() . "/public/uploads/images/" . $Mobile_image
+                    );
+                    Image::make($PC_image_path)->save(
+                        base_path() . "/public/uploads/images/" . $Tablet_image
+                    );
+
+                    $video->mobile_image = $Mobile_image;
+                    $video->tablet_image = $Tablet_image;
+                } else {
+                    $video->mobile_image = default_vertical_image();
+                    $video->tablet_image = default_vertical_image();
+                }
+
+                // $video->duration = $Video_duration;
+                $video->user_id = Auth::user()->id;
+                $video->save();
+
+                $video_id = $video->id;
+                $video_title = UGCVideo::find($video_id);
+                $title = $video_title->title;
+
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["video_id"] = $video_id;
+                $value["video_title"] = $title;
+
+                \LogActivity::addVideoLog(
+                    "Added Uploaded M3U8  Video.",
+                    $video_id
+                );
+
+                return $value;
+            } catch (\Exception $e) {
+                return response()->json(
+                    [
+                        "status" => "false",
+                        "Message" => "fails to upload ",
+                    ],
+                    200
+                );
+            }
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            // $getID3 = new getID3();
+            // $Video_storepath = $file;
+            // $VideoInfo = $getID3->analyze($Video_storepath);
+            // $Video_duration = $VideoInfo["playtime_seconds"];
+
+            $video = new UGCVideo();
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->duration = $Video_duration;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            $video->draft = 1;
+            $video->status = 1;
+            $video->image = default_vertical_image();
+
+            $PC_image_path = public_path("/uploads/images/default_image.jpg");
+
+            if (file_exists($PC_image_path)) {
+                $Mobile_image = "Mobile-default_image.jpg";
+                $Tablet_image = "Tablet-default_image.jpg";
+
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Mobile_image
+                );
+                Image::make($PC_image_path)->save(
+                    base_path() . "/public/uploads/images/" . $Tablet_image
+                );
+
+                $video->mobile_image = $Mobile_image;
+                $video->tablet_image = $Tablet_image;
+            } else {
+                $video->mobile_image = default_vertical_image();
+                $video->tablet_image = default_vertical_image();
+            }
+
+            // $video->duration = $Video_duration;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = UGCVideo::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
+
+            return $value;
+        } else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+        }
+
+        // return response()->json($value);
+    }
         /**
          * Show the form for creating a new video
          *
@@ -1324,7 +1543,6 @@ class UGCController extends Controller
             } else {
     
                     $StorageSetting = StorageSetting::first();
-                    // dd($StorageSetting);
                     if($StorageSetting->site_storage == 1){
                         $dropzone_url =  URL::to('ugc/uploadFile');
                     }elseif($StorageSetting->aws_storage == 1){
@@ -1332,11 +1550,6 @@ class UGCController extends Controller
                     }else{ 
                         $dropzone_url =  URL::to('ugc/uploadFile');
                     }
-    
-                    $video_js_Advertisements = Advertisement::where('status',1)->get() ;
-    
-                    // Bunny Cdn get Videos 
-                    
                     $storage_settings = StorageSetting::first();
     
                     if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
@@ -1346,7 +1559,6 @@ class UGCController extends Controller
                         $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
                         
                         $ch = curl_init();
-                        
                         $options = array(
                             CURLOPT_URL => $url,
                             CURLOPT_RETURNTRANSFER => true,
@@ -1355,7 +1567,6 @@ class UGCController extends Controller
                                 'Content-Type: application/json',
                             ),
                         );
-                        
                         curl_setopt_array($ch, $options);
                         
                         $response = curl_exec($ch);
@@ -1371,9 +1582,7 @@ class UGCController extends Controller
                     
                         }
                         curl_close($ch);
-                        // dd($decodedResponse);
-    
-                        
+                
                         $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
                         
                         $ch = curl_init();
@@ -1392,16 +1601,12 @@ class UGCController extends Controller
                         $response = curl_exec($ch);
                         $videolibrary = json_decode($response, true);
                         curl_close($ch);
-                        // dd($videolibrary); ApiKey
-    
+
                     }else{
                         $decodedResponse = [];
                         $videolibrary = [];
-    
                     }
               
-                    // $response->getBody();
-    
                     if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
                         $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
                     }else{
@@ -1415,35 +1620,18 @@ class UGCController extends Controller
                     "button_text" => "Add New Video",
                     "admin_user" => Auth::user(),
                     "related_videos" => UGCVideo::get(),
-                    "video_categories" => VideoCategory::all(),
-                    "ads" => Advertisement::where("status", "=", 1)->get(),
-                    "video_subtitle" => VideosSubtitle::all(),
-                    "languages" => Language::all(),
                     "subtitles" => Subtitle::all(),
-                    "artists" => Artist::all(),
-                    "age_categories" => AgeCategory::all(),
                     "settings" => $settings,
-                    "countries" => CountryCode::all(),
-                    "video_artist" => [],
                     "page" => "Creates",
-                    "ads_category" => Adscategory::all(),
-                    "InappPurchase" => InappPurchase::all(),
                     "post_dropzone_url" => $dropzone_url,
-                    "ads_tag_urls" => Advertisement::where('status',1)->get(),
-                    "AdminVideoPlaylist" => AdminVideoPlaylist::get(),
-                    'video_js_Advertisements' => $video_js_Advertisements ,
                     'Bunny_Cdn_Videos' => $decodedResponse ,
                     'storage_settings' => $storage_settings ,
                     'videolibrary' => $videolibrary ,
                     'streamUrl' => $streamUrl ,
                     'theme_settings' => $theme_settings ,
-                    'advertisements_category' => Adscategory::get(),
                 ];
     
                 return Theme::view("UserGeneratedContent.ugc-create", $data);
-                // 'post_route' => URL::to('admin/videos/store'),
-    
-                // return View::make('admin.videos.create_edit', $data);
             }
     }
 
@@ -1847,13 +2035,10 @@ class UGCController extends Controller
                 }
     
     
-                        // Video Destroy
+                // Video Destroy
                 \LogActivity::addVideodeleteLog("Deleted Video.", $id);
     
                 UGCVideo::destroy($id);
-    
-                // VideoResolution::where('video_id', '=', $id)->delete();
-                // VideoSubtitle::where('video_id', '=', $id)->delete();
     
                 return Redirect::to("myprofile")->with([
                     "message" => "Successfully Deleted Video",
@@ -1875,8 +2060,6 @@ class UGCController extends Controller
                 
                 $settings = Setting::first();
                 $video = UGCVideo::find($id);
-                $ads_category = Adscategory::get();
-                $related_videos = UGCVideo::get();
                 $compress_image_settings = CompressImage::first();
                 $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
 
@@ -1910,8 +2093,6 @@ class UGCController extends Controller
                 return Theme::view("UserGeneratedContent.ugc-edit", $data);
                 
             } catch (\Throwable $th) {
-    
-                dd($th->getMessage());
                 return abort(404);  
             }
 
@@ -1930,7 +2111,7 @@ class UGCController extends Controller
                 if($StorageSetting->site_storage == 1){
                     $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }elseif($StorageSetting->aws_storage == 1){
-                    $dropzone_url =  URL::to('admin/AWSuploadEditVideo');
+                    $dropzone_url =  URL::to('ugc/AWSuploadEditVideo');
                 }else{ 
                     $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }
@@ -1941,7 +2122,6 @@ class UGCController extends Controller
                 "post_route" => URL::to("ugc/update"),
                 "button_text" => "Update Video",
                 "admin_user" => Auth::user(),
-                "artists" => Artist::all(),
                 "settings" => $settings,
                 "page" => "Edit",
                 "dropzone_url" => $dropzone_url,
@@ -2069,16 +2249,12 @@ class UGCController extends Controller
                     }
                 }          
                 $video_id = $video->id;
-                // $video_title = Video::find($video_id);
-                // $title = $video_title->title;
-    
+             
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["video_id"] = $video_id;
-                // $value["video_title"] = $title;
-    
+      
                 return $value;
-                // return redirect("/admin/videos");
     
             } elseif (
                 $mp4_url != "" &&
@@ -2152,7 +2328,6 @@ class UGCController extends Controller
             $settings = Setting::first();
     
             $video = UGCVideo::findOrFail($id);
-            // Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
             if ($request->slug == "") {
                 $data["slug"] = $this->createSlug($data["title"]);
             } else {
@@ -2395,15 +2570,7 @@ class UGCController extends Controller
             if (empty($data["publish_status"])) {
                 $data["publish_status"] = 0;
             }
-    
-            // if(Auth::user()->role =='admin' && Auth::user()->sub_admin == 0 ){
-            //         $data['status'] = 1;
-            // }
-    
-            // if( Auth::user()->role =='admin' && Auth::user()->sub_admin == 1 ){
-            //         $data['status'] = 0;
-            // }
-    
+
             $image_path = public_path() . "/uploads/images/";
     
             if ($image != "") {
@@ -2487,7 +2654,6 @@ class UGCController extends Controller
            
     
             if (isset($data["duration"])) {
-                //$str_time = $data
                 $str_time = preg_replace(
                     "/^([\d]{1,2})\:([\d]{2})$/",
                     "00:$1:$2",
@@ -2518,9 +2684,7 @@ class UGCController extends Controller
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
                     TranscodeVideo::dispatch($video);
                 }
-                // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
-                //     VideoClip::dispatch($video);
-                // }
+        
                 else{
                     if(Enable_4k_Conversion() == 1){
                         Convert4kVideoForStreaming::dispatch($video);
@@ -2563,19 +2727,6 @@ class UGCController extends Controller
             if (!empty($data["slug"])) {
                 $video->slug = $data["slug"];
             } else {
-            }
-    
-            if ($request->pdf_file != null) {
-                $pdf_files = time() . "." . $request->pdf_file->extension();
-                $request->pdf_file->move( public_path("uploads/videoPdf"), $pdf_files);
-                $video->pdf_files = $pdf_files;
-            }
-    
-            if (!empty($request->reels_thumbnail)) {
-                $Reels_thumbnail ="reels_" .time() . "." .$request->reels_thumbnail->extension();
-                $request->reels_thumbnail->move(public_path("uploads/images"), $Reels_thumbnail);
-    
-                $video->reels_thumbnail = $Reels_thumbnail;
             }
     
             //URL Link
@@ -2636,31 +2787,6 @@ class UGCController extends Controller
                 $video->video_tv_image = $request->selected_tv_image_url;
             } 
     
-                        // Video Title Thumbnail
-            // dd($request->all());
-            if($request->hasFile('video_title_image')){
-    
-                if (File::exists(base_path('public/uploads/images/'.$video_title_image))) {
-                    File::delete(base_path('public/uploads/images/'.$video_title_image));
-                }
-            
-                $video_title_image = $request->video_title_image;
-    
-                if(compress_image_enable() == 1){
-    
-                    $video_title_image_format   = time().'.'.compress_image_format();
-                    $video_title_image_filename =  'video-title-'.$video_title_image_format ;
-                    Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename,compress_image_resolution() );
-                }else{
-    
-                    $video_title_image_format  = time().'.'.$video_title_image->getClientOriginalExtension();
-                    $video_title_image_filename     =  'video-title-'.$video_title_image_format ;
-                    Image::make($video_title_image)->save(base_path().'/public/uploads/images/'.$video_title_image_filename );
-                }
-    
-                $video->video_title_image = $video_title_image_filename;
-            }
-              
             if (isset($request->free_duration)) {
                 $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
                 $video->free_duration = $time_seconds;
@@ -2669,36 +2795,16 @@ class UGCController extends Controller
             $video->mp4_url = $data["mp4_url"];
             $video->uploaded_by = $uploaded_by;
             $video->player_image = $players_image;
-            // $video->details = $details;
             $video->m3u8_url = $m3u8_url;
             $video->mp4_url = $mp4_url;
             $video->embed_code = $embed_code;
-            // $video->featured = $featured;
             $video->active = $active;
             $video->status = $status;
             $video->draft = $draft;
-            // $video->type = $data["type"];
             $video->description = $data["description"];
             $video->search_tags = $searchtags;
-
-    
-            // dd($video);
             $video->save();
     
-            if (
-                $trailer != "" &&
-                $pack == "Business" &&
-                $settings->transcoding_access == 1 && $StorageSetting->site_storage == 1
-            ) {
-                ConvertVideoTrailer::dispatch(
-                    $video,
-                    $storepath,
-                    $convertresolution,
-                    $trailer_video_name,
-                    $trailer_Video
-                );
-            }
-
             $shortcodes = $request["short_code"];
             $languages = $request["sub_language"];
     
@@ -2711,7 +2817,7 @@ class UGCController extends Controller
                         $subtitle_data["sub_language"] =
                             $languages[
                                 $key
-                            ]; /*URL::to('/').$destinationPath.$filename; */
+                            ]; 
                         $subtitle_data["shortcode"] = $shortcodes[$key];
                         $subtitle_data["movie_id"] = $id;
                         $subtitle_data["url"] =
@@ -2768,7 +2874,7 @@ class UGCController extends Controller
     
         protected function getRelatedSlugs($slug, $id = 0)
         {
-            return Video::select("slug")
+            return UGCVideo::select("slug")
                 ->where("slug", "like", $slug . "%")
                 ->where("id", "<>", $id)
                 ->get();
@@ -2839,152 +2945,121 @@ class UGCController extends Controller
         public function SubmitUGCAbout(Request $request)
         {
 
-            $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'ugc_about' => 'nullable|string|max:255', // Validate the ugc_about field
-            ]);
-            
-            $data= $request->all();
+            try {
 
-            $user_id = $data['user_id'];
+                $request->validate([
+                    'user_id' => 'required|exists:users,id',
+                    'ugc_about' => 'nullable|string|max:255', 
+                ]);
+                
+                $user = User::find($request->user_id)->update(['ugc_about' => $request->ugc_about]);
+                $response = [
+                    'status' => true,
+                    'status_code' => 200,
+                    'message' => 'About detail detail Updated Successfully!',
+                ];
 
-            // Find the user by ID
-            $ugcuser = User::find($user_id);
-
-            if ($ugcuser) {
-                $ugcuser->ugc_about = $data["ugc_about"];
-                $ugcuser->save();
+            } catch (\Throwable $th) {
 
                 $response = [
-                    'success' => 1,
-                    'message' => 'About Updated Successfully!',
-                    'user_id' => $ugcuser->id,
+                    'status' => false,
+                    'status_code' => 400,
+                    'message' => $th->getMessage(),
                 ];
             }
-            else {
-            // Prepare the failure response if the user is not found
-            $response = [
-                'success' => 0,
-                'message' => 'User not found!',
-            ];
-            }
 
-            return Redirect::back()->with('message', 'Your Bio Updated');
+            return response()->json($response,$response['status_code']);
         }
 
         public function SubmitUGCFacebook(Request $request)
         {
-            $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'ugc_facebook' => 'nullable|string|max:255', 
-            ]);
+
+            try {
             
-            $data= $request->all();
-            $user_id = $data['user_id'];
-            // Find the user by ID
-            $ugcuser = User::find($user_id);
-          
-            if ($ugcuser) {
-                $ugcuser->ugc_facebook = $data["ugc_facebook"];
-                $ugcuser->save();
+                $request->validate([
+                    'user_id' => 'required|exists:users,id',
+                    'ugc_facebook' => 'nullable|string|max:255', 
+                ]);
+                
+                $user = User::find($request->user_id)->update(['ugc_facebook' => $request->ugc_facebook]);
+
+                $userdata = User::get();
+
                 $response = [
-                    'success' => 1,
+                    'status' => true,
+                    'status_code' => 200,
                     'message' => 'Facebook detail Updated Successfully!',
-                    'user_id' => $ugcuser->id,
                 ];
-            
-            }
-            else {
-            // Prepare the failure response if the user is not found
-            $response = [
-                'success' => 0,
-                'message' => 'User not found!',
-            ];
+
+            } catch (\Throwable $th) {
+
+                $response = [
+                    'status' => false,
+                    'status_code' => 400,
+                    'message' => $th->getMessage(),
+                ];
             }
 
-            return Redirect::back()->with('message', 'Your Facebook Detail Updated');
+            return response()->json($response,$response['status_code']);
         }
 
         public function SubmitUGCInstagram(Request $request)
         {
 
-            $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'ugc_instagram' => 'required|string|max:255', 
-            ]);
+            try {
             
-            $data= $request->all();
-
-            $user_id = $data['user_id'];
-
-            // Find the user by ID
-            $ugcuser = User::find($user_id);
-
-            if ($ugcuser) {
-            if (!empty($data["ugc_instagram"])) {
-            
-                $ugcuser->ugc_instagram = $data["ugc_instagram"];
-                $ugcuser->save();
+                $request->validate([
+                    'user_id' => 'required|exists:users,id',
+                    'ugc_instagram' => 'nullable|string|max:255', 
+                ]);
+                
+                $user = User::find($request->user_id)->update(['ugc_instagram' => $request->ugc_instagram]);
 
                 $response = [
-                    'success' => 1,
-                    'message' => 'Facebook detail Updated Successfully!',
-                    'user_id' => $ugcuser->id,
+                    'status' => true,
+                    'status_code' => 200,
+                    'message' => 'Instagram detail Updated Successfully!',
                 ];
 
-                }
-            
-            }
-            else {
-            // Prepare the failure response if the user is not found
-            $response = [
-                'success' => 0,
-                'message' => 'User not found!',
-            ];
+            } catch (\Throwable $th) {
+
+                $response = [
+                    'status' => false,
+                    'status_code' => 400,
+                    'message' => $th->getMessage(),
+                ];
             }
 
-            return Redirect::back()->with('message', 'Your Instagram Detail Updated');
+            return response()->json($response,$response['status_code']);
         }
 
         public function SubmitUGCTwitter(Request $request)
         {
 
-            $request->validate([
-                'user_id' => 'required|exists:users,id',
-                'ugc_twitter' => 'required|string|max:255', 
-            ]);
+            try {
             
-            $data= $request->all();
-
-            $user_id = $data['user_id'];
-
-            // Find the user by ID
-            $ugcuser = User::find($user_id);
-
-            if ($ugcuser) {
-            if (!empty($data["ugc_twitter"])) {
-            
-                $ugcuser->ugc_twitter = $data["ugc_twitter"];
-                $ugcuser->save();
-
+                $request->validate([
+                    'user_id' => 'required|exists:users,id',
+                    'ugc_twitter' => 'nullable|string|max:255', 
+                ]);
+                
+                $user = User::find($request->user_id)->update(['ugc_twitter' => $request->ugc_twitter]);
                 $response = [
-                    'success' => 1,
-                    'message' => 'Facebook detail Updated Successfully!',
-                    'user_id' => $ugcuser->id,
+                    'status' => true,
+                    'status_code' => 200,
+                    'message' => 'Twitter detail Updated Successfully!',
                 ];
 
-                }
-            
-            }
-            else {
-            // Prepare the failure response if the user is not found
-            $response = [
-                'success' => 0,
-                'message' => 'User not found!',
-            ];
+            } catch (\Throwable $th) {
+
+                $response = [
+                    'status' => false,
+                    'status_code' => 400,
+                    'message' => $th->getMessage(),
+                ];
             }
 
-            return Redirect::back()->with('message', 'Your Instagram Detail Updated');
+            return response()->json($response,$response['status_code']);
         }
 
         public function Embededcode(Request $request)
@@ -3108,7 +3183,6 @@ class UGCController extends Controller
     
                 return $value;
             }else{
-            // echo"<pre>";print_r($data);exit;
             if (!empty($data["mp4_url"])) {
                 $video->disk = "public";
                 $video->original_name = "public";
@@ -3166,8 +3240,6 @@ class UGCController extends Controller
                 $value["success"] = 1;
                 $value["message"] = "URL Updated Successfully!";
                 $value["video_id"] = $video_id;
-    
-                // return $value;
                 return Theme::view("UserGeneratedContent.ugc-create", $data);
     
             }
@@ -3206,7 +3278,7 @@ class UGCController extends Controller
                 $value["success"] = 1;
                 $value["message"] = "URL Updated Successfully!";
                 $value["video_id"] = $video_id;
-                // return $value;
+                
                 return Theme::view("UserGeneratedContent.ugc-create", $data);
                 }
             }
@@ -3216,9 +3288,7 @@ class UGCController extends Controller
         {
             $data = $request->all();
             $value = [];
-    
-               // Bunny Cdn get Videos 
-                    
+
                $storage_settings = StorageSetting::first();
     
                if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
@@ -3239,11 +3309,9 @@ class UGCController extends Controller
                    );
                    
                    curl_setopt_array($ch, $options);
-                   
                    $response = curl_exec($ch);
                    $videolibrary = json_decode($response, true);
                    curl_close($ch);
-                   // dd($videolibrary); ApiKey
     
                }else{
                    $decodedResponse = [];
@@ -3301,7 +3369,6 @@ class UGCController extends Controller
                         }else{
                             $PullZoneURl = null;
                         }
-                        // dd($PullZoneURl);
     
                     $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
                             'headers' => [
@@ -3362,5 +3429,173 @@ class UGCController extends Controller
                 return $value;
             }
         }
+
+        public function AWSuploadEditVideo(Request $request)
+    {
+        $value = [];
+        $data = $request->all();
+        $id = $data["videoid"];
+        $video = UGCVideo::findOrFail($id);
+        $StorageSetting = StorageSetting::first();
+        $validator = Validator::make($request->all(), [
+            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
+        ]);
+        $mp4_url = isset($data["file"]) ? $data["file"] : "";
+
+        $ffprobe =  \FFMpeg\FFProbe::create();
+        $duration = $ffprobe->format($mp4_url)->get('duration');
+        $Video_duration = explode(".", $duration)[0];
+        
+        $path = public_path() . "/uploads/videos/";
+
+        $file = $request->file->getClientOriginalName();
+        $newfile = explode(".mp4", $file);
+        $file_folder_name = $newfile[0];
+
+        $package = User::where("id", 1)->first();
+        $pack = $package->package;
+        $mp4_url = $data["file"];
+        $settings = Setting::first();
+
+        if (
+            $mp4_url != "" &&
+            $pack != "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+
+            
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->duration = $Video_duration;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = UGCVideo::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return redirect("/admin/videos");
+
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 1
+        ) {
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            $name_mp4 = $file->getClientOriginalName();
+            $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+            $newfile = explode(".mp4",$name_mp4);
+            $namem3u8 = $newfile[0].'.m3u8';   
+            $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+
+            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+            $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
+            Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+            // print_r($name);exit;
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath_mp4;
+            $m3u8_path = $path.$filePath;
+            $transcode_path = $path.$transcode_path;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+
+            $video->disk = "public";
+            $video->status = 0;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->duration = $Video_duration;
+            $video->title = $file_folder_name;
+            $video->mp4_url = $storepath;
+            $video->m3u8_url = $transcode_path;
+            $video->type = "aws_m3u8";
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = UGCVideo::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            // return $value;
+            return redirect("/admin/videos");
+
+        } elseif (
+            $mp4_url != "" &&
+            $pack == "Business" &&
+            $settings->transcoding_access == 0
+        ) {
+            $file = $request->file('file');
+            $file_folder_name =  $file->getClientOriginalName();
+            // $name = time() . $file->getClientOriginalName();
+            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+            $storepath = $path.$filePath;
+
+            $file = $request->file->getClientOriginalName();
+            $newfile = explode(".mp4",$file);
+            $file_folder_name = $newfile[0];   
+            $file = $request->file('file');
+
+            $video->disk = "public";
+            $video->title = $file_folder_name;
+            $video->original_name = "public";
+            $video->path = $path;
+            $video->duration = $Video_duration;
+            $video->mp4_url = $storepath;
+            $video->type = "mp4_url";
+            $video->image = default_vertical_image();
+            $video->save();
+
+            $video_id = $video->id;
+            $video_title = UGCVideo::find($video_id);
+            $title = $video_title->title;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+            $value["video_title"] = $title;
+
+            return redirect("/admin/videos");
+
+        } else {
+            $value["success"] = 2;
+            $value["message"] = "File not uploaded.";
+            return response()->json($value);
+        }
+
+    }
+
     
 }

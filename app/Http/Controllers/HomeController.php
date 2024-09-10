@@ -482,6 +482,9 @@ class HomeController extends Controller
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                'ugc_users'         => $FrontEndQueryController->UGCUsers(),
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -662,16 +665,16 @@ class HomeController extends Controller
 
                         $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
 
-                //         if (empty($devices_check))
-                //         {
-                //             $adddevice = new LoggedDevice;
-                //             $adddevice->user_id = Auth::User()->id;
-                //             $adddevice->user_ip = $userIp;
-                //             $adddevice->device_name = $device_name;
-                //             $adddevice->save();
-                //         }
-                //     }
-                // }
+                        if (empty($devices_check))
+                        {
+                            $adddevice = new LoggedDevice;
+                            $adddevice->user_id = Auth::User()->id;
+                            $adddevice->user_ip = $userIp;
+                            $adddevice->device_name = $device_name;
+                            $adddevice->save();
+                        }
+                    }
+                }
 
                 $logged = UserLogs::where('user_id', '=', Auth::User()->id)
                     ->orderBy('created_at', 'DESC')
@@ -1223,9 +1226,9 @@ class HomeController extends Controller
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                        'ugc_videos'        => $FrontEndQueryController->UGCVideos(), 
-                        'ugc_shorts_minis'        => $FrontEndQueryController->UGCShortsMinis(), 
-                        'ugc_users'        => $FrontEndQueryController->UGCUsers(),  
+                        'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                        'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                        'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
                     );
 
                     if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1411,9 +1414,9 @@ class HomeController extends Controller
                 $mail_check = ApprovalMailDevice::where('user_ip', '=', $userIp)->where('device_name', $device_name)->first();
                 $user_check = LoggedDevice::where('user_id', '=', Auth::User()->id)->count();
 
-                // if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
-                // {
-                //     LoggedDevice::where('user_ip','=', $userIp)->where('user_id', Auth::User()->id)->where('device_name', $device_name)->delete();
+                if (count($alldevices_register) > 0  && $user_role == "registered" && Auth::User()->id != 1)
+                {
+                    LoggedDevice::where('user_ip','=', $userIp)->where('user_id', Auth::User()->id)->where('device_name', $device_name)->delete();
 
                     try {
 
@@ -1450,53 +1453,53 @@ class HomeController extends Controller
                         'note_type' => 'success'
                     ));
 
-                // }elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered"){
+                }elseif ($user_check >= $device_limit && Auth::User()->role != "admin" && Auth::User()->role != "registered"){
 
-                //     $url1 = $_SERVER['REQUEST_URI'];
-                //     header("Refresh: 120; URL=$url1");
-                //     $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
-                //     return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
-                //         'message' => $message,
-                //         'note_type' => 'success'
-                //     ));
+                    $url1 = $_SERVER['REQUEST_URI'];
+                    header("Refresh: 120; URL=$url1");
+                    $message = 'Your Plan Device  Limit Is' . ' ' . $device_limit;
+                    return view('device_logged', compact('alldevices', 'system_settings', 'user','userIp'))->with(array(
+                        'message' => $message,
+                        'note_type' => 'success'
+                    ));
 
-                // }else{
+                }else{
 
-                //     $device_name = '';
+                    $device_name = '';
 
-                //     switch (true) {
-                //         case $agent->isDesktop():
-                //             $device_name = 'desktop';
-                //             break;
-                //         case $agent->isTablet():
-                //             $device_name = 'tablet';
-                //             break;
-                //         case $agent->isMobile():
-                //             $device_name = 'mobile';
-                //             break;
-                //         case $agent->isTv():
-                //             $device_name = 'tv';
-                //             break;
-                //         default:
-                //             $device_name = 'unknown';
-                //             break;
-                //     }
+                    switch (true) {
+                        case $agent->isDesktop():
+                            $device_name = 'desktop';
+                            break;
+                        case $agent->isTablet():
+                            $device_name = 'tablet';
+                            break;
+                        case $agent->isMobile():
+                            $device_name = 'mobile';
+                            break;
+                        case $agent->isTv():
+                            $device_name = 'tv';
+                            break;
+                        default:
+                            $device_name = 'unknown';
+                            break;
+                    }
 
                     if (!empty($device_name))
                     {
 
                         $devices_check = LoggedDevice::where('user_id', Auth::User()->id)->where('device_name', '=', $device_name)->first();
 
-                        // if (empty($devices_check))
-                        // {
-                        //     $adddevice = new LoggedDevice;
-                        //     $adddevice->user_id = Auth::User()->id;
-                        //     $adddevice->user_ip = $userIp;
-                        //     $adddevice->device_name = $device_name;
-                        //     $adddevice->save();
-                        // }
-                    // }
-                // }
+                        if (empty($devices_check))
+                        {
+                            $adddevice = new LoggedDevice;
+                            $adddevice->user_id = Auth::User()->id;
+                            $adddevice->user_ip = $userIp;
+                            $adddevice->device_name = $device_name;
+                            $adddevice->save();
+                        }
+                    }
+                }
 
                 $logged = UserLogs::where('user_id', Auth::User()->id)->latest()
                     ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())->first();
@@ -1689,6 +1692,9 @@ class HomeController extends Controller
                     'preference_genres'      => $FrontEndQueryController->preference_genres(),
                     'preference_Language'    => $FrontEndQueryController->preference_language(),
                     'Epg'                 => $FrontEndQueryController->Epg(),
+                    'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                    'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                    'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
                 );
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){

@@ -172,7 +172,7 @@
             <div class="row justify-content-center m-1">
                 <a class="Text-white" href="javascript:;">
                     <img
-                    src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:auto; width:100%; cursor:auto;" alt="banner" >
+                    src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; cursor:auto;" alt="banner" >
                 </a>
             </div>
 

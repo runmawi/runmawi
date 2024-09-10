@@ -47,7 +47,7 @@
 
 <div class="px-2">
         <div class="">
-            <form method="get" action="<?= route('comments.store') ?>">
+            <form id="commentForm"  method="get" action="<?= route('comments.store') ?>">
                 <div class="form-group">
                     <div style=" position: relative;">
                     <textarea id="myTextarea" class="form-control" placeholder="Add a comment" name="message" rows="2" required></textarea>

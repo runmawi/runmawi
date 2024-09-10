@@ -262,22 +262,6 @@
         border-radius: 15px;
     }
 
-#submit_about {
-    color: green;
-}
-
-#submit_facebook {
-    color: green;
-}
-
-#submit_instagram {
-    color: green;
-}
-
-#submit_twitter {
-    color: green;
-}
-
 .video-form-control{
         width:100%;
         background-color: #c9c8c888 ;
@@ -305,10 +289,10 @@
             font-size: 16px;
         }
 
-        .input-container button {
+        .input-container .icon {
             position: absolute;
-            right: 10px; /* Aligns button to the right */
-            bottom: 10px; /* Aligns button to the bottom */
+            right: 10px; 
+            bottom: 10px; 
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -340,7 +324,7 @@
             font-size: 16px;
         }
 
-        .ugc-social-media button {
+        .ugc-social-media .icon {
             position: absolute;
             right: 10px; /* Aligns button to the right */
             bottom: 10px; /* Aligns button to the bottom */
@@ -356,7 +340,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .ugc-social-media button:hover {
+        .ugc-social-media .icon:hover {
             background-color: #45a049;
         }
 
@@ -514,9 +498,9 @@
                     {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
 
                     <div class="row justify-content-center m-1">
-                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
+                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >               
                             <img
-                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : URL::to('/assets/img/placeholder.webp') ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
+                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
                         </a>
                     </div>
                     <div class="row justify-content-start mx-3">
@@ -558,9 +542,7 @@
                                 <div class="input-container" style="position: relative" >
                                     <form>
                                         <textarea id="ugc-about" name="ugc-about" value="" placeholder="Enter About You">{{ $user->ugc_about ? $user->ugc_about : '' }}</textarea>
-                                        <button id="submit_about" class="icon">&#10004;</button> 
-                                        <input type="hidden" id="ugcabout" value="{{ URL::to('ugc/submit-ugcabout') }}">
-                                        <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                        <input type="button" class="icon" style="color: green;" id="submit_about" value="&#10004;">
                                     </form>
                                 </div>
                             </div>
@@ -571,10 +553,9 @@
                                 <p style="color: white">
                                     <div class="ugc-social-media" style="position: relative" >
                                         <form>
-                                            <textarea id="ugc-facebook" name="ugc-instagram" value="" placeholder="Facebook" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
-                                            <button id="submit_facebook" class="icon">&#10004;</button> 
-                                            <input type="hidden" id="ugcfacebook" value="{{ URL::to('ugc/submit-ugcfacebook') }}">
-                                            <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                            <textarea id="ugc-facebook" name="ugc-facebook" value="" placeholder="Facebook" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
+                                            <input type="button" class="icon" style="color: green;" id="submit_facebook" value="&#10004;">
+                                          
                                         </form>
                                     </div>
                                 </p>
@@ -585,9 +566,7 @@
                                     <div class="ugc-social-media" style="position: relative" >
                                         <form>
                                             <textarea id="ugc-instagram" name="ugc-instagram" placeholder="Instagram" rows="1" >{{ $user->ugc_instagram ? $user->ugc_instagram : '' }}</textarea>
-                                            <button id="submit_instagram" class="icon">&#10004;</button> 
-                                            <input type="hidden" id="ugcinstagram" value="{{ URL::to('ugc/submit-ugcinstagram') }}">
-                                            <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                            <input type="button" class="icon" style="color: green;" id="submit_instagram" value="&#10004;">
                                         </form>
                                     </div>
                                 </p>
@@ -598,9 +577,7 @@
                                     <div class="ugc-social-media" style="position: relative" >
                                         <form>
                                             <textarea id="ugc-twitter" name="ugc-twitter" placeholder="Twitter" rows="1" >{{ $user->ugc_twitter ? $user->ugc_twitter : '' }}</textarea>
-                                            <button id="submit_twitter" class="icon">&#10004;</button> 
-                                            <input type="hidden" id="ugctwitter" value="{{ URL::to('ugc/submit-ugctwitter') }}">
-                                            <input type="hidden" id="ugcuser_id" value="{{ $user->id }}">
+                                            <input type="button" class="icon" style="color: green;" id="submit_twitter" value="&#10004;">
                                         </form>
                                     </div>
                                 </p>
@@ -759,9 +736,9 @@
                                                         </svg>
                                                     </a>
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Video"
-                                                    data-original-title="Edit Video" href="{{ URL::to('admin/videos/editvideo') . '/' . $eachugcvideos->id }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                    data-original-title="Edit Video" href="{{ URL::to('ugc-editvideo') . '/' . $eachugcvideos->id }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                        <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2m6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
                                                         </svg>
                                                     </a>
                                                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete Video"
@@ -1422,22 +1399,6 @@ if (isset($page) && $page == 'admin-dashboard') {
     })
 </script>
 
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-
-
-        // Add New Category
-        $('#submit-new-ugc').click(function() {
-            $('#new-ugc-form').submit();
-        });
-    });
-
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
 
 <script>
 $(document).ready(function(){
@@ -1464,161 +1425,133 @@ $(document).ready(function(){
                }
        });
  
-   document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('ugc-about');
-    const submitButton = document.getElementById('submit_about');
+            document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('ugc-about');
+            const submitButton = document.getElementById('submit_about');
 
-    input.addEventListener('input', function() {
+            input.addEventListener('input', function() {
+                const value = this.value;
+                if (value.length > 0) {
+                    submitButton.style.display = 'inline';
+                } else {
+                    submitButton.style.display = 'none';
+                }
+            });
+
+            $('#submit_about').click(function(){
+                const userId = {{ $user->id }}; // Get the user ID
+                $.ajax({
+                    url: '<?php echo route('ugc.about.submit') ?>',
+                    type: "post",
+                    data: {
+                            _token: '{{ csrf_token() }}',
+                            user_id: userId,
+                            ugc_about: $('#ugc-about').val()
+                        },        
+                        success: function(value){
+                        if(value.status){
+                            location.reload();
+                        }else{
+                            alert( value.message);
+                        }
+                    }
+                });
+            })
+        });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('ugc-facebook');
+            const submitButton = document.getElementById('submit_facebook');
+
+            input.addEventListener('input', function() {
+            const value = this.value;
+            if (value.length > 0) {
+            submitButton.style.display = 'inline';
+            } else {
+            submitButton.style.display = 'none';
+            }
+            });
+        
+  
+            $('#submit_facebook').click(function(){
+
+            const userId = {{ $user->id }}; 
+       
+            $.ajax({
+            url: '<?php echo route('ugc.facebook.submit') ?>',
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: userId,
+                    ugc_facebook: $('#ugc-facebook').val()
+                },        
+                success: function(value){
+                if(value.status){
+                    location.reload();
+                }else{
+                    alert( value.message);
+                }
+                }
+            });
+            })
+        });
+ 
+        document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ugc-instagram');
+        const submitButton = document.getElementById('submit_instagram');
+
+        input.addEventListener('input', function() {
         const value = this.value;
         if (value.length > 0) {
             submitButton.style.display = 'inline';
         } else {
             submitButton.style.display = 'none';
         }
-    });
-
-    var ugcurl = $('#ugcabout').val();
-       $('#submit_about').click(function(){
-        const userId = $('#ugcuser_id').val(); // Get the user ID
-        // alert('about');
-        $.ajax({
-               url: ugcurl,
-               type: "post",
-               data: {
-                      _token: '{{ csrf_token() }}',
-                      user_id: userId,
-                      ugc_about: $('#ugc-about').val()
-                },        
-                success: function(value){
-                console.log(value);
-                
-               }
-           });
-       })
-
-
-
-    });
-
-</script>
-
-<script>
-
-    $.ajaxSetup({
-          headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-           }
         });
 
-    document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('ugc-facebook');
-    const submitButton = document.getElementById('submit_facebook');
 
-    input.addEventListener('input', function() {
-    const value = this.value;
-    if (value.length > 0) {
-        submitButton.style.display = 'inline';
-    } else {
-        submitButton.style.display = 'none';
-    }
-    });
+        $('#submit_instagram').click(function(){
+        const userId = {{ $user->id }};
 
-    var ugcurl = $('#ugcfacebook').val();
-    $('#submit_facebook').click(function(){
-    const userId = $('#ugcuser_id').val(); // Get the user ID
-    // alert('about');
-    $.ajax({
-           url: ugcurl,
-           type: "post",
-           data: {
-                  _token: '{{ csrf_token() }}',
-                  user_id: userId,
-                  ugc_facebook: $('#ugc-facebook').val()
-            },        
-            success: function(value){
-            console.log(value);
-            
-           }
-       });
-    })
-
-    });
-
-</script>
-
-
-<script>
-
-$.ajaxSetup({
-      headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
-    });
-
-document.addEventListener('DOMContentLoaded', function() {
-const input = document.getElementById('ugc-instagram');
-const submitButton = document.getElementById('submit_instagram');
-
-input.addEventListener('input', function() {
-const value = this.value;
-if (value.length > 0) {
-    submitButton.style.display = 'inline';
-} else {
-    submitButton.style.display = 'none';
-}
-});
-
-var ugcurl = $('#ugcinstagram').val();
-$('#submit_instagram').click(function(){
-const userId = $('#ugcuser_id').val(); // Get the user ID
-// alert('about');
-$.ajax({
-       url: ugcurl,
-       type: "post",
-       data: {
+        $.ajax({
+            url: '<?php echo route('ugc.instagram.submit') ?>',
+            type: "post",
+            data: {
               _token: '{{ csrf_token() }}',
               user_id: userId,
               ugc_instagram: $('#ugc-instagram').val()
-        },        
-        success: function(value){
-        console.log(value);
-        
-       }
-   });
-})
-
-});
-
-</script>
-
-
-<script>
-
-$.ajaxSetup({
-      headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       }
+            },        
+            success: function(value){
+                   if(value.status){
+                       location.reload();
+                   }else{
+                       alert( value.message);
+                   }
+               }
+            });
+        })
     });
 
-document.addEventListener('DOMContentLoaded', function() {
-const input = document.getElementById('ugc-twitter');
-const submitButton = document.getElementById('submit_twitter');
+        document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ugc-twitter');
+        const submitButton = document.getElementById('submit_twitter');
 
-input.addEventListener('input', function() {
-const value = this.value;
-if (value.length > 0) {
-    submitButton.style.display = 'inline';
-} else {
-    submitButton.style.display = 'none';
-}
-});
+        input.addEventListener('input', function() {
+        const value = this.value;
+        if (value.length > 0) {
+            submitButton.style.display = 'inline';
+        } else {
+        submitButton.style.display = 'none';
+        }
+    });
 
-var ugcurl = $('#ugctwitter').val();
-$('#submit_twitter').click(function(){
-const userId = $('#ugcuser_id').val(); // Get the user ID
-// alert('about');
-$.ajax({
-       url: ugcurl,
+
+    $('#submit_twitter').click(function(){
+    const userId = {{ $user->id }}; 
+
+    $.ajax({
+       url: '<?php echo route('ugc.twitter.submit') ?>',
        type: "post",
        data: {
               _token: '{{ csrf_token() }}',
@@ -1626,20 +1559,19 @@ $.ajax({
               ugc_twitter: $('#ugc-twitter').val()
         },        
         success: function(value){
-        console.log(value);
-        
-       }
-   });
-})
+                   if(value.status){
+                       location.reload();
+                   }else{
+                       alert( value.message);
+                   }
+               }
+         });
+        })
+    });
 
-});
-
-</script>
-
-<script>
     $('.shareprofile').hide()
     jQuery('.ugc-button').on('click',function(){
     jQuery('.shareprofile').toggle();
-})    
+    })    
 </script>
 

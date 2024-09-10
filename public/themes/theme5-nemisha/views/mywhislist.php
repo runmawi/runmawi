@@ -157,6 +157,52 @@
              </ul>
          </div>
                 
+         <div class="favorites-contens">
+                        <ul class="category-page list-inline  row p-0 mb-4">
+            <?php if(count($UserGenratedContent) < 0): ?>
+
+            <?php
+                   foreach($UserGenratedContent as $video): ?>
+                             
+            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                <li class="slide-item position-relative">
+                <!-- block-images -->
+                   <div class="block-images position-relative">
+                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
+                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
+                        </video>
+                    </div>
+
+                        <div class="block-description">
+                            <div class="hover-buttons d-flex">
+                                <a type="button" class="text-white"
+                                href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                </a>
+                                <div >
+                                </div>
+                            </div>
+                        </div>
+                       <div>
+                            
+                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                                <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
+                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
+                                
+                            </div>
+                           <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $video->duration); ?>
+                                </span>
+                       </div>
+                </li>
+                </a>
+            </div>
+                            <?php endforeach; 
+                        endif; ?>
+             </ul>
+         </div>
+         
             <?php else: ?>
            
                 <div class="col-md-12 text-center mt-4" style="margin-left:30%;">

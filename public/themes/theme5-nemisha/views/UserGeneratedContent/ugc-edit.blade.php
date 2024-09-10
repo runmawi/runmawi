@@ -409,32 +409,6 @@
                      @endif
                  </div>
                  
-                 <div class="col-sm-6 form-group">
-                     {{-- <div id="VideoPlayerImagesContainer" class="gridContainer mt-3"></div> --}}
-                     @php 
-                        $player_width = $compress_image_settings->width_validation_player_img;
-                        $player_heigth = $compress_image_settings->height_validation_player_img;
-                     @endphp
-                     @if($player_width !== null && $player_heigth !== null)
-                        <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
-                     @else
-                        <p class="p1" style="color:black !important;">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
-                     @endif
-                     <div class="panel-body">
-                        <input type="file" name="player_image" id="player_image" />
-                        <span>
-                           <p id="player_image_error_msg" style="color:red !important; display:none;">
-                              * Please upload an image with the correct dimensions.
-                           </p>
-                        </span>
-                        @if(!empty($video->player_image))
-                        <div class="col-sm-8 p-0">
-                           <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->player_image }}" class="video-img w-100 mt-1" />
-                        </div>
-                        @endif
-                     </div>
-                 </div>
-
                </div>
 
                <div class="row">    

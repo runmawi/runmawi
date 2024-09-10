@@ -4,7 +4,7 @@
     ->latest()
     ->get(); ?>
 
-<?php $user = Auth::user()->first() ?>
+<?php $user = Auth::user(); ?>
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -30,7 +30,7 @@
 
 
 
-<div class="bg-border col-lg-6 p-2">
+<div id="comments" class="bg-border col-lg-6 p-2">
     <?php foreach( $comment_loop as $key => $comment ): ?>
 
     <div class="media-body">
@@ -44,17 +44,15 @@
         <div>
             <?php if( Auth::user() != null ):?>
             <div class="d-flex py-2">   
-                <div class="like-button" >
-                    <a data-comment-id="<?= $comment->id ?>" data-user-id="<?= auth()->id() ?>" onclick="handleLike(this)">
-                        <i class=" <?= $comment->has_liked ? 'ri-thumb-up-fill p-2 rounded-circle' : 'ri-thumb-up-line p-2 rounded-circle' ?> px-1 text-white" style="background-color: #ED563C;" ></i>  <span class="like-count" style="color: white;" ><?= $comment->comment_like ? $comment->comment_like : 0 ?></span>
-                    </a>
+                <div class="text-white" data-comment-id="<?= $comment->id ?>" onclick="comment_like(this)">
+                    <i class="comment-like <?= $comment->likes()->where('user_id', auth()->id())->exists() ? 'ri-thumb-up-fill' : 'ri-thumb-up-line' ?>"></i>
+                    <span id="like-count-<?= $comment->id ?>"><?= $comment->likes()->count() ?></span>
                 </div>
-                <div class="px-3 dislike-button">
-                    <a data-comment-id="<?= $comment->id ?>" data-user-id="<?= auth()->id() ?>" onclick="handleDislike(this)" >
-                        <i class="<?= $comment->has_disliked ? 'ri-thumb-down-fill p-2 rounded-circle' : 'ri-thumb-down-line p-2 rounded-circle' ?> px-1 text-white" style="background-color: #ED563C;"></i> <span class="dislike-count" style="color: white;" ><?= $comment->comment_dislike ? $comment->comment_dislike : 0 ?></span>
-                    </a>
+                <div class="text-white px-3"  data-comment-id="<?= $comment->id ?>" onclick="comment_dislike(this)" > 
+                    <i class="comment-dislike <?= $comment->dislikes()->where('user_id', auth()->id())->exists() ? 'ri-thumb-down-fill' : 'ri-thumb-down-line' ?>"></i>
+                    <span id="dislike-count-<?= $comment->id ?>"><?= $comment->dislikes()->count() ?></span>
                 </div>
-                
+            
                 <div class="px-3">
                     <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
                     class=" text-uppercase text-white" style="font-size: 14px; font-weight:700;" >Reply</a>
@@ -86,7 +84,8 @@
             
             foreach ($reply_comment as $key => $reply_comments) : ?>
             <div class="reply-button">
-            <span class="text-capitalize text-white" style="font:600; font-size:15px; cursor: pointer;" >2 replies</span>
+            <span class="text-capitalize text-white" style="font:600; font-size:15px; cursor: pointer;" >
+                <?= $reply_comment->count() ?> replies</span>
             <div class="replycomments ">
             <div style="margin-left:10% !important">
 
@@ -99,10 +98,9 @@
                     </h5>
                 </div>
 
-            <div style="white-space: pre-wrap;" class="rep text-white"><?= $reply_comments->comment ?></div>
+                <div style="white-space: pre-wrap;" class="rep text-white"><?= $reply_comments->comment ?></div>
 
             <div>
-
                 <?php if( Auth::user() != null && Auth::user()->id == $reply_comments->user_id && Auth::user()->role != 'register' ):?>
 
                 <a data-toggle="modal" data-target="#reply-edit-comment-modal-<?= $reply_comments->id ?>"
@@ -144,107 +142,142 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    const likeUrlBase = '<?php echo route('comments.like', ['id' => 'placeholder']); ?>';
-    const dislikeUrlBase = '<?php echo route('comments.dislike', ['id' => 'placeholder']); ?>';
-
-    function handleLike(ele) {
-        let commentId = $(ele).data('comment-id');
-        let userId = $(ele).data('user-id');
-        let url = likeUrlBase.replace('placeholder', commentId);
-
-        $.ajax({
-            url: url,
-            method: 'post',
-            data: {
-                "_token": "<?= csrf_token() ?>",
-                "user_id": userId
-            },
-            success: function(response) {
-                if (response.status) {
-                    let icon = $(ele).find('i');
-                    let isLiked = icon.hasClass('ri-thumb-up-fill');
-                    
-                    // Toggle like icon
-                    if (isLiked) {
-                        icon.removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
-                    } else {
-                        icon.removeClass('ri-thumb-up-line').addClass('ri-thumb-up-fill');
-                    }
-
-                    // Update the dislike button if it's active
-                    let dislikeBtn = $(ele).siblings('a').find('i.ri-thumb-down-fill');
-                    if (dislikeBtn.length) {
-                        dislikeBtn.removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
-                    }
-
-                    // Update like count display
-                    $(ele).find('.like-count').text(response.new_like_count);
-
-                    // Update dislike count display
-                    $(ele).siblings('a').find('.dislike-count').text(response.new_dislike_count);
-
-                } else {
-                    alert('An error occurred: ' + response.message);
-                }
-            },
-            error: function(xhr) {
-                console.error('AJAX request failed:', xhr.responseText);
-                alert('AJAX request failed: ' + xhr.responseText);
-            }
-        });
-    }
-
-    function handleDislike(ele) {
-        let commentId = $(ele).data('comment-id');
-        let userId = $(ele).data('user-id');
-        let url = dislikeUrlBase.replace('placeholder', commentId);
-
-        $.ajax({
-            url: url,
-            method: 'post',
-            data: {
-                "_token": "<?= csrf_token() ?>",
-                "user_id": userId
-            },
-            success: function(response) {
-                if (response.status) {
-                    let icon = $(ele).find('i');
-                    let isDisliked = icon.hasClass('ri-thumb-down-fill');
-                    
-                    // Toggle dislike icon
-                    if (isDisliked) {
-                        icon.removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
-                    } else {
-                        icon.removeClass('ri-thumb-down-line').addClass('ri-thumb-down-fill');
-                    }
-
-                    // Update the like button if it's active
-                    let likeBtn = $(ele).siblings('a').find('i.ri-thumb-up-fill');
-                    if (likeBtn.length) {
-                        likeBtn.removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
-                    }
-
-                    // Update like count display
-                    $(ele).siblings('a').find('.like-count').text(response.new_like_count);
-                    
-                    // Update dislike count display
-                    $(ele).find('.dislike-count').text(response.new_dislike_count);
-
-                } else {
-                    alert('An error occurred: ' + response.message);
-                }
-            },
-            error: function(xhr) {
-                console.error('AJAX request failed:', xhr.responseText);
-                alert('AJAX request failed: ' + xhr.responseText);
-            }
-        });
-    }
-</script>
-
-<script>
     $('.replycomments').hide()
     jQuery('.reply-button').on('click',function(){
     jQuery('.replycomments').toggle();
 })    
+
+function comment_like(element) {
+    const commentId = element.getAttribute('data-comment-id');
+
+    $.ajax({
+        url: '<?= route('comment.like') ?>',
+        type: 'POST',
+        data: {
+            comment_id: commentId,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(response) {
+            console.log(response); 
+
+            if (response.success) {
+                
+                document.querySelector(`#like-count-${commentId}`).innerText = response.like_count;
+                document.querySelector(`#dislike-count-${commentId}`).innerText = response.dislike_count;
+
+                const likeIcon = element.querySelector('i.comment-like');
+                const dislikeDiv = element.nextElementSibling;
+                const dislikeIcon = dislikeDiv.querySelector('i.comment-dislike');
+
+                console.log(likeIcon, dislikeIcon); 
+
+                if (response.like_status === "Add") {
+                    likeIcon.classList.remove('ri-thumb-up-line');
+                    likeIcon.classList.add('ri-thumb-up-fill');
+
+                    if (dislikeIcon) {
+                        dislikeIcon.classList.remove('ri-thumb-down-fill');
+                        dislikeIcon.classList.add('ri-thumb-down-line');
+                    }
+                } else {
+                    likeIcon.classList.remove('ri-thumb-up-fill');
+                    likeIcon.classList.add('ri-thumb-up-line');
+                }
+            }
+        }
+    });
+}
+
+function comment_dislike(element) {
+    const commentId = element.getAttribute('data-comment-id');
+
+    $.ajax({
+        url: '<?= route('comment.dislike') ?>',
+        type: 'POST',
+        data: {
+            comment_id: commentId,
+            _token: '<?= csrf_token() ?>'
+        },
+        success: function(response) {
+            if (response.success) {
+               
+                document.querySelector(`#dislike-count-${commentId}`).innerText = response.dislike_count;
+                document.querySelector(`#like-count-${commentId}`).innerText = response.like_count;
+                const dislikeIcon = element.querySelector('i.comment-dislike');
+                const likeDiv = element.previousElementSibling; 
+                const likeIcon = likeDiv.querySelector('i.comment-like');
+
+                console.log(dislikeIcon, likeIcon); 
+
+                if (response.dislike_status === "Add") {
+                    dislikeIcon.classList.remove('ri-thumb-down-line');
+                    dislikeIcon.classList.add('ri-thumb-down-fill');
+
+                    if (likeIcon) {
+                        likeIcon.classList.remove('ri-thumb-up-fill');
+                        likeIcon.classList.add('ri-thumb-up-line');
+                    }
+                } else {
+                    dislikeIcon.classList.remove('ri-thumb-down-fill');
+                    dislikeIcon.classList.add('ri-thumb-down-line');
+                }
+            }
+        }
+    });
+}
 </script>
+
+<script>
+   $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#commentForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                if (response.success) {
+                    // Define the comment's HTML design here
+                    const commentHtml = `
+                        <div class="media-body">
+                            <div class="d-flex align-items-center">
+                                <h6 class="mt-0 mb-1">${response.userName} | ${response.commentTime}</h6>
+                            </div>
+                            <div style="white-space: pre-wrap;" class="mt-2 text-white">${response.commentText}</div>
+                            <div>
+                                <div class="d-flex py-2">
+                                    <div class="text-white" data-comment-id="${response.commentId}" onclick="comment_like(this)">
+                                        <i class="comment-like ri-thumb-up-line"></i>
+                                        <span id="like-count-${response.commentId}">${response.likeCount}</span>
+                                    </div>
+                                    <div class="text-white px-3" data-comment-id="${response.commentId}" onclick="comment_dislike(this)">
+                                        <i class="comment-dislike ri-thumb-down-line"></i>
+                                        <span id="dislike-count-${response.commentId}">${response.dislikeCount}</span>
+                                    </div
+                                </div>
+                            </div>
+                        </div>`;
+
+                    // Prepend the newly created comment to the comments section
+                    $('#comments').prepend(commentHtml);
+
+                    // Clear the textarea
+                    $('#myTextarea').val('');
+                }
+            },
+            error: function(xhr) {
+                alert('Comment submission failed: ' + xhr.statusText);
+            }
+        });
+    });
+});
+</script>
+
+

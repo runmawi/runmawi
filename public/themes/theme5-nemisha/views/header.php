@@ -1128,10 +1128,11 @@
 
         <header id="main-header">
             <div class="main-header">
-                <div class="container-fluid">
+                <div class="container-fluid" style="z-index:10000;" >
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="navbar navbar-expand-lg navbar-light p-0">
+        
                                 <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
@@ -1150,6 +1151,17 @@
                                         src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php } ?>
 
+                                 <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
+                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <g>
+                                            <path fill="none" d="M0 0H24V24H0z"/>
+                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
+                                            </g>
+                                            </svg>
+                                            </a>
+                                </div>
+
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="mobile-menu-header">
                                         <div class="btn-close" data-toggle="collapse">
@@ -1162,6 +1174,7 @@
                                             </a>
                                         </div>
                                     </div>
+                                    
                                     <div class="menu-main-menu-container">
                                         <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
@@ -1459,8 +1472,27 @@
                                                             </div>
                                                         </a>
 
+                                                        <a href="<?php echo URL::to('ugc-create'); ?>"
+                                                            class="iq-sub-card setting-dropdown">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
+                                                                </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Upload Video</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
+
+
                                                     <?php } ?>
-                                            </div>
+                                            
+                                                </div>
+
+                                                
                                             <li>
                                                  <?php                         
                         if(!Auth::guest()){                                                              
@@ -1477,9 +1509,6 @@
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn  "
                                             style="">Visit Content Portal </button>
-                                            <div class="">
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content1</a>
-                                            </div>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1493,9 +1522,6 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn "
                                             style="">Visit Channel Portal </button>
-                                            <div class="">
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content2</a>
-                                        </div>
                                     </form>
                                 </div>
                                 <?php } ?>
@@ -1569,17 +1595,7 @@
                                         <button type="submit" class="btn btn-primary "
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
-                                </div>
-                                <div class="bg-primary rounded-circle p-1">
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
-                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <g>
-                                            <path fill="none" d="M0 0H24V24H0z"/>
-                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
-                                            </g>
-                                            </svg>
-                                            </a>
-                                </div>
+                                </div>                    
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
@@ -1591,11 +1607,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
-                                            <div class="">
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a>
-                                            </div>
                                     </form>
                                 </div>
+                                
                                 <?php } ?>
                                 <div class="navbar-right menu-right">
                                     <ul class="d-flex align-items-center list-inline m-0">
@@ -1807,10 +1821,25 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Manage Profile1</h6>
+                                                                    <h6 class="mb-0 ">Manage Profile</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
+
+                                                        <a href="<?php echo URL::to('ugc-create'); ?>"
+                                                            class="iq-sub-card setting-dropdown">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
+                                                                </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Upload Video</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
                                                         <a href="<?php echo URL::to('watchlater'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1978,10 +2007,25 @@
                                                                     </svg>
                                                                 </div>
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Manage Profile2</h6>
+                                                                    <h6 class="mb-0 ">Manage Profile</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
+
+                                                          <a href="<?php echo URL::to('ugc-create'); ?>"
+                                                            class="iq-sub-card setting-dropdown">
+                                                            <div class="media align-items-center">
+                                                                <div class="right-icon">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
+                                                                </svg>
+                                                                </div>
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0 ">Upload Video</h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
                                                         <a href="<?php echo URL::to('watchlater'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
