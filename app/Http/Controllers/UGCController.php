@@ -839,16 +839,17 @@ class UGCController extends Controller
         
             $today = Carbon::now() ;
             
-            // Video Upload Limit (3 Limits)
+            // Video Upload Limit
     
-            // $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
-            //                             ->whereYear('created_at',  $today->year)
-            //                             ->whereMonth('created_at', $today->month)
-            //                             ->count();
-        
-            // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-            //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
-            // }
+            $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
+                                        ->whereYear('created_at',  $today->year)
+                                        ->whereMonth('created_at', $today->month)
+                                        ->count();
+
+
+            if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+                return response()->json( ["success" => 'video_upload_limit_exist'],200);
+            }
             
             $value = [];
             $data = $request->all();

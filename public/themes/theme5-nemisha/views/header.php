@@ -1151,17 +1151,6 @@
                                         src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php } ?>
 
-                                 <div class="bg-primary text-right p-1" style="border-radius:10px;" >
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
-                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <g>
-                                            <path fill="none" d="M0 0H24V24H0z"/>
-                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
-                                            </g>
-                                            </svg>
-                                            </a>
-                                </div>
-
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="mobile-menu-header">
                                         <div class="btn-close" data-toggle="collapse">
@@ -1186,7 +1175,7 @@
                                  <li class="menu-item">
                                     <a href="href="<?php echo URL::to('home'); ?>"">Movies</a>
                                  </li>
-                              </ul>-->
+                                </ul>-->
                                         <ul id="top-menu" class="nav navbar-nav <?php if (Session::get('locale') == 'arabic') {
                                             echo 'navbar-right';
                                         } else {
@@ -1471,23 +1460,6 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-
-                                                        <a href="<?php echo URL::to('ugc-create'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
-                                                                </svg>
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Upload Video</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-
-
-
                                                     <?php } ?>
                                             
                                                 </div>
@@ -1647,6 +1619,20 @@
                                                
                                             </div>
                                         </li>
+                                        <li>
+                                    
+                                        <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
+                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <g>
+                                            <path fill="none" d="M0 0H24V24H0z"/>
+                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
+                                            </g>
+                                            </svg>
+                                            </a>
+                                        </div>
+                                   
+                                        </li>
                                         <li class="nav-item nav-icon">
                                          
                                             <div class="iq-sub-dropdown">
@@ -1761,7 +1747,7 @@
                                                     <i class="ri-arrow-down-s-line"></i>
 
                                                 </p>
-                                            </a>
+                                            </a>                                            
                                             <?php if(Auth::user()->role == 'registered'): ?>
                                             <div class="iq-sub-dropdown iq-user-dropdown">
                                                 <div class="iq-card shadow-none m-0">
@@ -1822,20 +1808,6 @@
                                                                 </div>
                                                                 <div class="media-body ml-3">
                                                                     <h6 class="mb-0 ">Manage Profile</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-
-                                                        <a href="<?php echo URL::to('ugc-create'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
-                                                                </svg>
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Upload Video</h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -2008,20 +1980,6 @@
                                                                 </div>
                                                                 <div class="media-body ml-3">
                                                                     <h6 class="mb-0 ">Manage Profile</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-
-                                                          <a href="<?php echo URL::to('ugc-create'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
-                                                                <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2zm11.5 5.175 3.5 1.556V4.269l-3.5 1.556zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
-                                                                </svg>
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Upload Video</h6>
                                                                 </div>
                                                             </div>
                                                         </a>

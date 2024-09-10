@@ -1,67 +1,66 @@
 <?php
 namespace App\Http\Controllers;
 
-use DB;
-use App;
+use \App\User as User;
+use \Redirect as Redirect;
+use Illuminate\Http\Request;
+use \App\MobileApp as MobileApp;
+use \App\MobileSlider as MobileSlider;
+use App\RecentView as RecentView;
+use App\Setting as Setting;
 use URL;
 use Auth;
-use File;
 use Hash;
-use Mail;
+use Illuminate\Support\Facades\Cache;
+use Image;
 use View;
 use Flash;
-use Image;
-use Theme;
-use Session;
-use App\City;
-use DateTime;
-use Response;
-use App\State;
-use App\Region;
-use App\Devices;
-use App\Language;
-use App\UGCVideo;
-use App\UserLogs;
-use App\Wishlist;
-use App\SiteTheme;
-use Carbon\Carbon;
-use App\RegionView;
-use App\Watchlater;
-use App\HomeSetting;
-use App\PpvPurchase;
-use App\TVLoginCode;
-use App\LoggedDevice;
-use App\Multiprofile;
-use \App\User as User;
-use App\EmailTemplate;
-use App\WelcomeScreen;
-use GuzzleHttp\Client;
-use App\TVSplashScreen;
-use \App\Video as Video;
-use App\CurrencySetting;
-use App\ContinueWatching;
-use App\SubscriptionPlan;
-use \Redirect as Redirect;
-use App\ApprovalMailDevice;
-use App\Setting as Setting;
-use Illuminate\Support\Str;
-use Jenssegers\Agent\Agent;
-use App\Exports\UsersExport;
-use App\Imports\UsersImport;
-use Illuminate\Http\Request;
-use \App\PpvVideo as PpvVideo;
-use \App\MobileApp as MobileApp;
-use App\RecentView as RecentView;
-use \App\CountryCode as CountryCode;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Subscription as Subscription;
-use Illuminate\Support\Facades\Cache;
-use \App\MobileSlider as MobileSlider;
-use App\SystemSetting as SystemSetting;
+use \App\Video as Video;
 use App\VideoCategory as VideoCategory;
+use \App\PpvVideo as PpvVideo;
+use \App\CountryCode as CountryCode;
+use App;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\SystemSetting as SystemSetting;
+use DateTime;
+use Session;
+use DB;
+use Mail;
+use App\EmailTemplate;
+use App\UserLogs;
+use App\Region;
+use App\RegionView;
+use App\City;
+use App\State;
+use Illuminate\Support\Str;
+use App\LoggedDevice;
+use Jenssegers\Agent\Agent;
+use App\ApprovalMailDevice;
+use App\Language;
+use App\Multiprofile;
+use App\HomeSetting;
+use App\WelcomeScreen;
+use App\SubscriptionPlan;
+use App\Devices;
+use App\CurrencySetting;
+use App\PpvPurchase;
+use Theme;
+use Response;
+use File;
+use GuzzleHttp\Client;
+use App\ContinueWatching;
+use App\Wishlist;
+use App\Watchlater;
+use App\SiteTheme;
+use App\TVLoginCode;
+use App\Imports\UsersImport;
+use App\TVSplashScreen;
 
 class AdminUsersController extends Controller
 {
@@ -948,15 +947,31 @@ class AdminUsersController extends Controller
     {
 
         $user = User::find(Auth::user()->id);
-
-
-        $user->username = $request->get('name');
-        $user->mobile = $request->get('mobile');
-        $user->email = $request->get('email');
-        $user->DOB = $request->get('DOB');
-        $user->ccode = $request->get('ccode');
-        $user->username = $request->get('username');
-        $user->gender = $request->get('gender');
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+    
+        if ($request->has('mobile')) {
+            $user->mobile = $request->get('mobile');
+        }
+    
+        if ($request->has('email')) {
+            $user->email = $request->get('email');
+        }
+    
+        if ($request->has('DOB')) {
+            $user->DOB = $request->get('DOB');
+        }
+        if ($request->has('username')) {
+            $user->username = $request->get('username');
+        }
+        if ($request->has('ccode')) {
+            $user->ccode = $request->get('ccode');
+        }
+    
+        if ($request->has('gender')) {
+            $user->gender = $request->get('gender');
+        }
 
 
         if ($request->get('password') != null)
@@ -1006,12 +1021,10 @@ class AdminUsersController extends Controller
                 }
             }
             $file = $image;                    //upload new file
-            // $user->avatar = $file->getClientOriginalName();
             $user->ugc_banner = str_replace(' ', '_', $file->getClientOriginalName());
 
             $file->move($image_path, $user->ugc_banner);
         }
-
 
 
         $user->save();
@@ -3020,8 +3033,7 @@ class AdminUsersController extends Controller
 
     }
 
-
-        public function handleViewCount_ugc($vid)
+    public function handleViewCount_ugc($vid)
     {
         $ugcview = UGCVideo::find($vid);
     
@@ -3080,8 +3092,9 @@ class AdminUsersController extends Controller
 
             $user_id = Auth::user()->id;
             $user_role = Auth::user()->role;
-            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)
-                ->get();
+            $alldevices = LoggedDevice::where('user_id', '=', Auth::User()->id)->get();
+            $video_quality = SubscriptionPlan::all();
+
             $UserTVLoginCode = TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->first();
             // dd($UserTVLoginCode);
             if ($user_role == 'registered' || $user_role == 'admin')
@@ -3139,7 +3152,7 @@ class AdminUsersController extends Controller
             }
             $user_role = Auth::user()->role;
 
-            $user_details = User::withCount('subscribers')->find($user_id);
+            $user_details = User::find($user_id);
             $recent_videos = RecentView::orderBy('id', 'desc')->take(10)
                 ->get();
             $recent_view = $recent_videos->unique('video_id');
@@ -3183,7 +3196,6 @@ class AdminUsersController extends Controller
                 $video = [];
             }
 
-
             $ugcvideo = UGCVideo::where('user_id', $user_details->id)
             ->withCount([
                 'likesDislikes as like_count' => function($query) {
@@ -3211,16 +3223,17 @@ class AdminUsersController extends Controller
                 'user' => $user_details,
                 'role_plan' => $role_plan,
                 'user_role' => $user_role,
-                'post_route' => URL::to('/profile/update'),
+                'post_route' => URL::to('/profile/update') ,
                 'preference_languages' => $language,
                 'profile_details' => $profile_details,
                 'Multiuser' => $Multiuser,
                 'alldevices' => $alldevices,
                 'UserTVLoginCode' => $UserTVLoginCode,
+                'video_quality'  => $video_quality,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
             );
-            
+
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
                 return Theme::view('myprofile', $data);
             }else{

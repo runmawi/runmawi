@@ -125,7 +125,12 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         border-radius: 20px;
     }
 
-    
+    @media only screen and (max-width: 600px) {
+    .my-video.vjs-fluid {
+        padding-top: 0 !important;
+        height: 45vh !important;
+    }
+    }
 
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
