@@ -2,46 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL; 
-use Illuminate\Support\Facades\File; 
-use Illuminate\Support\Facades\Auth;
-use App\AdminAdvertistmentBanners;
-use App\LiveEventArtist;
-use App\CompressImage;
-use App\HomeSetting;
-use App\VideoCategory;
-use App\AudioAlbums;
-use App\SeriesNetwork;
-use App\ThumbnailSetting;
-use App\AudioCategory;
-use App\LiveCategory;
-use App\VideoSchedules;
-use App\SeriesGenre;
+use DB;
+use Theme;
+use Session;
+use App\User;
+use App\Audio;
+use App\Video;
+use App\Artist;
+use App\Series;
+use App\Slider;
+use App\Channel;
+use App\Episode;
+use App\Setting;
+use App\TimeZone;
+use App\UGCVideo;
+use Carbon\Carbon;
 use App\Geofencing;
 use App\LiveStream;
 use App\RecentView;
+use App\AudioAlbums;
+use App\HomeSetting;
+use App\SeriesGenre;
+use App\LiveCategory;
 use App\Multiprofile;
-use App\TimeZone;
-use App\Setting;
-use App\Episode;
-use App\Video;
-use App\Series;
-use App\Artist;
-use App\Audio;
-use App\Channel;
+use App\AudioCategory;
+use App\CompressImage;
+use App\SeriesNetwork;
+use App\VideoCategory;
+use App\ModeratorsUser;
+use App\VideoSchedules;
 use App\Watchlater;
 use App\Wishlist;
-use App\ModeratorsUser;
-use App\Slider;
-use App\User;
-use Carbon\Carbon;
-use Theme;
-use Session;
-use DB;
 use App\AdminEPGChannel;
+use App\LiveEventArtist;
+use App\ThumbnailSetting;
+use Illuminate\Http\Request;
 use App\ChannelVideoScheduler;
+use App\AdminAdvertistmentBanners;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL; 
+use Illuminate\Support\Facades\File; 
 use App\CategoryVideo;
 use App\Videoartist;
 
@@ -925,6 +926,34 @@ class FrontEndQueryController extends Controller
     {
         $content_Partner = ModeratorsUser::where('status',1)->get();
         return $content_Partner ;
+    }
+
+    public function UGCVideos()
+    {
+        $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
+        return $ugcvideos ;
+    }
+
+    public function UGCShortsMinis()
+    {
+        $ugcshortsminis = UGCVideo::where('active',1)
+        ->withCount([
+            'likesDislikes as like_count' => function($query) {
+                $query->where('liked', 1);
+            }
+        ])->get();
+        return $ugcshortsminis ;
+    }
+
+    public function UGCUsers()
+    {
+        $users = User::has('ugcVideos')
+            ->with(['ugcVideos' => function ($query) {
+                $query->where('active', 1); // Load only active ugcVideos within the query
+            }])
+            ->limit(5)
+            ->get();
+         return $users;
     }
 
     public function watchLater() {

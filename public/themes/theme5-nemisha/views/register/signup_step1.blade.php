@@ -360,6 +360,41 @@ font-weight: 600;
         width:100px;
     }
 }
+
+.ui-datepicker select.ui-datepicker-month, 
+        .ui-datepicker select.ui-datepicker-year {
+            width: 50%;
+            display: inline-block;
+            margin: 0 2%;
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+        }
+        .ui-datepicker {
+            font-size: 14px; /* Adjust the overall size of the datepicker */
+        }
+        .ui-datepicker .ui-datepicker-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ui-datepicker select.ui-datepicker-month option,
+        .ui-datepicker select.ui-datepicker-year option {
+            padding: 10px;
+            background-color: white !important;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .ui-datepicker select.ui-datepicker-month option:hover,
+        .ui-datepicker select.ui-datepicker-year option:hover {
+    
+            color: black !important; 
+        }
+
 </style>
 
 <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
@@ -758,7 +793,10 @@ $jsondata = json_decode($jsonString, true); ?>
     jQuery.noConflict();
     (function($) {
         $(document).ready(function() {
-            $("#datepicker").datepicker();
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+            });
         });
     })(jQuery);
 </script>  
@@ -792,6 +830,8 @@ if(password_confirm == 0){
     }
 }
 }
+function visibility1() {
+
   var x = document.getElementById('password');
   if (x.type === 'password') {
     x.type = "text";

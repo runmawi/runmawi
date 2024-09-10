@@ -268,7 +268,8 @@ class TvshowsController extends Controller
         try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            
+        $ppv_series_description = Setting::pluck('series')->first();
+
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
@@ -622,6 +623,7 @@ class TvshowsController extends Controller
                 else {
                     $free_episode = 0;
                 } 
+                // dd($season_id);
                     // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
                 $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
@@ -843,7 +845,46 @@ class TvshowsController extends Controller
             }else{
                 $episode_PpvPurchase = 0;
             }
-            // dd($free_episode);
+
+            // default episode play
+            $season_ide = Episode::where('slug', $episode_name)->pluck('season_id')->first();
+            $season_access_ppv = SeriesSeason::where('id', $season_ide)->pluck('access')->first();
+            $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
+            $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
+
+            if($season_access_ppv == "free" || Auth::user()->role == "admin"){
+                $episode_play_access = 1;
+            }else{
+                if(Auth::guest()){
+                    $episode_play_access = 0;
+                }elseif(Auth::user()->role == "registered"){
+                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide){
+                        $episode_play_access = 1;
+                    }else{
+                        $episode_play_access = 0;
+                    }
+                }elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1){
+                    $episode_play_access = 1;
+                }
+                elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0){
+                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide ){
+                        $episode_play_access = 1;
+                    }else{
+                        $episode_play_access = 0;
+                    }
+                }
+            }
+
+            $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
+
+            $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
+
+            $Paystack_payment_setting = PaymentSetting::where('payment_type','Paystack')->where('status',1)->first();
+
+            $stripe_payment_setting = PaymentSetting::where('payment_type','Stripe')->where('stripe_status',1)->first();
+
+            $paydunya_payment_setting = PaymentSetting::where('payment_type','Paydunya')->where('status',1)->first();
+            
 
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
@@ -884,8 +925,14 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'           => $episode_details ,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
+                    'episode_play_access'  => $episode_play_access,
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'Paystack_payment_setting' => $Paystack_payment_setting ,
+                    'stripe_payment_setting'   => $stripe_payment_setting ,
+                    'paydunya_payment_setting' => $paydunya_payment_setting ,
+                    'ppv_series_description'   => $ppv_series_description,
                 ];
-                
+
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
                 } else {
@@ -925,6 +972,12 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'  => $episode_details ,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
+                    'episode_play_access'  => $episode_play_access,
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'Paystack_payment_setting' => $Paystack_payment_setting ,
+                    'stripe_payment_setting'   => $stripe_payment_setting ,
+                    'paydunya_payment_setting' => $paydunya_payment_setting ,
+                    'ppv_series_description'   => $ppv_series_description,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -980,6 +1033,8 @@ class TvshowsController extends Controller
             $currency = CurrencySetting::first();
 
             $settings = Setting::first();
+            // dd($settings);
+            $ppv_series_description = Setting::pluck('series')->first();
         
             if (Auth::guest() && $settings->access_free == 0):
                 return Redirect::to('/login');
@@ -1046,6 +1101,16 @@ class TvshowsController extends Controller
                 ->Join('series_categories', 'series_categories.category_id', '=', 'series_genre.id')
                 ->where('series_categories.series_id', $series->id)
                 ->get();
+
+            $payment_setting = PaymentSetting::where('status',1)->where('live_mode',1)->get();
+
+            $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
+
+            $Paystack_payment_setting = PaymentSetting::where('payment_type','Paystack')->where('status',1)->first();
+
+            $stripe_payment_setting = PaymentSetting::where('payment_type','Stripe')->where('stripe_status',1)->first();
+
+            $paydunya_payment_setting = PaymentSetting::where('payment_type','Paydunya')->where('status',1)->first();
                 
 
             //Make sure series is active
@@ -1077,6 +1142,10 @@ class TvshowsController extends Controller
                 $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
                                                 ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
+                 
+               
+
+
                 $data = [
                     'series_data' => $series,
                     'currency' => $currency,
@@ -1095,6 +1164,12 @@ class TvshowsController extends Controller
                     'pages' => Page::where('active', '=', 1)->get(),
                     'season_depends_episode' => $season_depends_episode ,
                     'featured_season_depends_episode' => $featured_season_depends_episode ,
+                    'payment_setting' => $payment_setting,
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'Paystack_payment_setting' => $Paystack_payment_setting ,
+                    'stripe_payment_setting'   => $stripe_payment_setting ,
+                    'paydunya_payment_setting' => $paydunya_payment_setting ,
+                    'ppv_series_description'   => $ppv_series_description,
                 ];
 
                 return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
@@ -1131,12 +1206,18 @@ class TvshowsController extends Controller
                     'series_categories' => SeriesGenre::all(),
                     'category_name'     => $category_name ,
                     'pages' => Page::where('active', '=', 1)->get(),
+                    'payment_setting' => $payment_setting,
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'Paystack_payment_setting' => $Paystack_payment_setting ,
+                    'stripe_payment_setting'   => $stripe_payment_setting ,
+                    'paydunya_payment_setting' => $paydunya_payment_setting ,
+                    'ppv_series_description'   => $ppv_series_description,
                 ];
                 return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
         
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }

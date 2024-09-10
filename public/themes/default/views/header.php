@@ -13,6 +13,7 @@
       $GetLightText = GetLightText();
       $GetLightBg   = GetLightBg();
       $GetWebsiteName  = GetWebsiteName();
+      $GetDarkBg    = GetDarkBg();
 
       if(Auth::guest()){
          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -437,6 +438,10 @@
       border-radius: 50%;
       }
       /* Dark mode and light Mode */
+         
+      body.dark-theme {
+         background: <?php echo $GetDarkBg; ?>!important;
+      }
       body.light-theme {
       background: <?php echo $GetLightBg; ?>!important;
       }
@@ -1953,6 +1958,19 @@
 
 
       </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var themeMode = '<?= $theme_mode; ?>';
+
+        if (themeMode === 'dark') {
+            document.body.classList.add('dark-theme');
+        } else if (themeMode === 'light') {
+            document.body.classList.add('light-theme');
+        }
+    });
+</script>
+
 <style>
    /* Initially hide the dropdown content */
 .dropdown-content {

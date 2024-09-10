@@ -1,18 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Wishlist;
-use App\Video as Video;
-use App\PpvVideo as PpvVideo;
-use App\HomeSetting;
 use Auth;
 use View;
-use Session;
 use Theme;
-use App\LiveStream;
+use Session;
 use App\Episode;
+use App\UGCVideo;
+use App\Wishlist;
+use App\LiveStream;
+use App\HomeSetting;
+use App\Video as Video;
 use App\ThumbnailSetting;
+use Illuminate\Http\Request;
+use App\PpvVideo as PpvVideo;
 
 class WishlistController extends Controller
 {
@@ -114,6 +115,11 @@ class WishlistController extends Controller
         $episode_videos = Wishlist::where('user_id', '=', Auth::user()->id)
             ->where('episode_id', '!=', null)
             ->get();
+
+        $user_genrated_content = Wishlist::where('user_id', '=', Auth::user()->id)
+            ->where('type', '=', 'User Genrated Content')
+            ->get();
+
         $channel_watchlater_array = array();
 
         foreach ($channelwatchlater as $key => $cfave)
@@ -140,10 +146,19 @@ class WishlistController extends Controller
         {
             array_push($episode_array, $ccfave->episode_id);
         }
+
+        $user_genrated_content_array = array();
+
+        foreach ($user_genrated_content as $key => $cfave)
+        {
+            array_push($user_genrated_content_array, $cfave->ugc_video_id);
+        }
+
         $videos = Video::where('active', '=', '1')->whereIn('id', $channel_watchlater_array)->paginate(12);
         $ppvvideos = PpvVideo::where('active', '=', '1')->whereIn('id', $ppv_watchlater_array)->paginate(12);
         $livevideos = LiveStream::where('active', '=', '1')->whereIn('id', $live_watchlater_array)->paginate(12);
         $episode_videos = Episode::where('active', '=', '1')->whereIn('id', $episode_array)->paginate(12);
+        $user_genrated_content_videos = UGCVideo::where('active', '=', '1')->whereIn('id', $user_genrated_content_array)->paginate(12);
         // dd(count($episode_videos));
         $data = array(
             'ppvwatchlater'     =>  $ppvvideos,
@@ -151,6 +166,7 @@ class WishlistController extends Controller
             'livevideos'        =>  $livevideos,
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'episode_videos' => $episode_videos,
+            'UserGenratedContent' => $user_genrated_content_videos,
         );
 
         return Theme::view('mywhislist', $data);
