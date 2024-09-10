@@ -1161,6 +1161,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/bunnycdn_episodelibrary', 'AdminSeriesController@BunnycdnEpisodelibrary');
     Route::post('/stream_bunny_cdn_episode', 'AdminSeriesController@StreamBunnyCdnEpisode');
     Route::Post('/Series_Season_order', 'AdminSeriesController@Series_Season_order');
+    Route::post('/Flussonicepisodelibrary', 'AdminSeriesController@Flussonicepisodelibrary');
+    Route::post('/stream_Flussonic_episode', 'AdminSeriesController@StreamFlussonicEpisode');
     
     Route::post('/episode/create', 'AdminSeriesController@create_episode');
     Route::get('/episode/delete/{id}', 'AdminSeriesController@destroy_episode');
@@ -1355,6 +1357,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/UpdateEmbededcode', 'AdminVideosController@UpdateEmbededcode');
     Route::post('/Updatemp4url', 'AdminVideosController@Updatemp4url');
 
+
+    Route::post('/FlussonicUploadlibrary', 'AdminVideosController@FlussonicUploadlibrary');
+    Route::post('/Flussonic_Storage_UploadURL', 'AdminVideosController@Flussonic_Storage_UploadURL');
+
+    
     /*Audio Uploads */
 
     Route::post('/uploadAudio', 'AdminAudioController@uploadAudio');

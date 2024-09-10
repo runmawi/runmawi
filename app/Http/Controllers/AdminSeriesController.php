@@ -76,6 +76,17 @@ class AdminSeriesController extends Controller
      *
      * @return Response
      */
+
+    public function __construct()
+    {
+        $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
+        $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
+        $this->Flussonic_Auth_Key  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
+        $this->Flussonic_Server_Base_URL  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
+        $this->Flussonic_Storage_Tag  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
+
+    }
+
     public function index(Request $request)
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
@@ -1780,6 +1791,29 @@ class AdminSeriesController extends Controller
             $post_route = URL::to('admin/episode/create');
         }
 
+
+        if($this->Enable_Flussonic_Upload == 1){
+           
+            try {
+                $client = new \GuzzleHttp\Client();
+
+                $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                    'Content-Type' => 'application/json', 
+                ]
+            ]);
+        
+            $responseData = json_decode($response->getBody(), true);
+            $FlussonicUploadlibrary =  $responseData['storages'];
+               
+            } catch (RequestException $e) {
+                $FlussonicUploadlibrary = [];
+            }
+        }else{
+            $FlussonicUploadlibrary = [];
+        }
+        
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season '.$season_id.' : '.$series->title,
                 'episodes' => $episodes,
@@ -1802,6 +1836,7 @@ class AdminSeriesController extends Controller
                 'compress_image_settings' => $compress_image_settings,
                 'theme_settings' => $theme_settings ,
                 'season_name'        => $season_name,
+                'FlussonicUploadlibrary' => $FlussonicUploadlibrary ,
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
@@ -1833,11 +1868,11 @@ class AdminSeriesController extends Controller
 
         if($episodes->type == 'm3u8'){
             $type = 'm3u8';
-        } 
-        
-        elseif($episodes->type == 'aws_m3u8'){
+        }elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
-        } elseif($episodes->type == 'bunny_cdn'){
+        }elseif($episodes->type == 'm3u8_url'){
+            $type = 'm3u8_url';
+        }  elseif($episodes->type == 'bunny_cdn'){
             $type = 'bunny_cdn';
         } else{
             $type = 'file';
@@ -2919,6 +2954,7 @@ class AdminSeriesController extends Controller
         $mp4_url = $data['file'];
 
         $libraryid = $data['UploadlibraryID'];
+        $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
 
         $storage_settings = StorageSetting::first();
         $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
@@ -2929,7 +2965,14 @@ class AdminSeriesController extends Controller
                 $value["error"] = 3;
                 return $value ;
             }
-        }      
+        }elseif($storage_settings->flussonic_storage == 1){
+            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !empty($FlussonicUploadlibraryID) && !empty($mp4_url)){
+                return $this->UploadEpisodeFlussonicStorage(  $storage_settings,$FlussonicUploadlibraryID,$mp4_url,$season_id,$data);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }        
 
         $file = (isset($data['file'])) ? $data['file'] : '';
 
@@ -4326,7 +4369,7 @@ class AdminSeriesController extends Controller
                
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
-                $value["episode_id"] = $request->episode_id;
+                $value["Episode_id"] = $request->episode_id;
                 $value["ExtractedImage"] = $ExtractedImage;
     
     
@@ -4484,7 +4527,7 @@ class AdminSeriesController extends Controller
 
             $value["success"] = 1;
             $value["message"] = "Uploaded Successfully!";
-            $value["episode_id"] = $Episode_id;
+            $value["Episode_id"] = $Episode_id;
 
             return $value;
         }
@@ -4707,7 +4750,7 @@ class AdminSeriesController extends Controller
 
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
-                $value["episode_id"] = $Episode_id;
+                $value["Episode_id"] = $Episode_id;
         
     
                 return $value ;
@@ -4851,6 +4894,8 @@ class AdminSeriesController extends Controller
         
         elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
+        }elseif($episodes->type == 'm3u8_url'){
+            $type = 'm3u8_url';
         } elseif($episodes->type == 'bunny_cdn'){
             $type = 'bunny_cdn';
         } else{
@@ -5324,5 +5369,211 @@ class AdminSeriesController extends Controller
 
         return Redirect::to('admin/season/edit/'.$data['series_id'].'/'.$data['season_id'])->with(array('note' => 'New Episode Successfully Added!', 'note_type' => 'success') );
     }
+
+
+
+    
+    public function UploadEpisodeFlussonicStorage($storage_settings,$FlussonicUploadlibraryID,$mp4_url,$season_id,$data)
+    {
+
+        $FileName = str_replace(' ', '-', $mp4_url->getClientOriginalName());
+        if($this->Enable_Flussonic_Upload == 1){
+       
+            try {
+                $client = new \GuzzleHttp\Client();
+
+                $response = $client->request('PUT', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$FlussonicUploadlibraryID}/files/{$FileName}", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                    'Content-Type' => 'application/json', 
+                ],
+                'body' => fopen($mp4_url, 'r'), 
+            ]);
+        
+            $responseData = json_decode($response->getBody(), true);
+                
+            $url = "{$this->Flussonic_Server_Base_URL}{$responseData['name']}/index.m3u8";
+            $videoUrl = str_replace('http://', 'https://', $url);
+
+            $series_id = $data['series_id'];
+            $season_id = $data['season_id'];
+                
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $FileName;
+            $Episode->series_id = $series_id;
+            $Episode->season_id = $season_id;
+            $Episode->url = $videoUrl;
+            $Episode->type = "m3u8_url";
+            $Episode->active = 1;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = Auth::user()->id;
+            $Episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+
+            if(Enable_Extract_Image() == 1){
+                // extractImageFromVideo
+                
+                $rand = Str::random(16);
+            
+                $ffmpeg = \FFMpeg\FFMpeg::create();
+                $videoFrame = $ffmpeg->open($mp4_url);
+                
+                // Define the dimensions for the frame (16:9 aspect ratio)
+                $frameWidth = 1280;
+                $frameHeight = 720;
+                
+                // Define the dimensions for the frame (9:16 aspect ratio)
+                $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                
+                $randportrait = 'portrait_' . $rand;
+                
+                $interval = 5; // Interval for extracting frames in seconds
+                $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                $totalDuration = intval($totalDuration);
+
+
+                if ( 600 < $totalDuration) { 
+                    $timecodes = [5, 120, 240, 360, 480]; 
+                } else { 
+                    $timecodes = [5, 10, 15, 20, 25]; 
+                }
+
+                
+                foreach ($timecodes as $index => $time) {
+                    $imagePortraitPath = public_path("uploads/images/{$Episode_id}_{$randportrait}_{$index}.jpg");
+                    $imagePath = public_path("uploads/images/{$Episode_id}_{$rand}_{$index}.jpg");
+            
+                    try {
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+            
+                        $videoFrame
+                            ->frame(TimeCode::fromSeconds($time))
+                            ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+            
+                        $VideoExtractedImage = new VideoExtractedImages();
+                        $VideoExtractedImage->user_id = Auth::user()->id;
+                        $VideoExtractedImage->socure_type = 'Episode';
+                        $VideoExtractedImage->video_id = $Episode_id;
+                        $VideoExtractedImage->image_original_name = $Episode_id;
+                        $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $Episode_id . '_' . $rand . '_' . $index . '.jpg');
+                        $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $Episode_id . '_' . $randportrait . '_' . $index . '.jpg');
+                        $VideoExtractedImage->image_original_name = $Episode_id . '_' . $rand . '_' . $index . '.jpg';
+                        $VideoExtractedImage->save();
+
+                    } catch (\Exception $e) {
+                        dd($e->getMessage());
+                    }
+                }
+            
+            }
+
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+    
+
+            return $value ;
+   
+
+            } catch (RequestException $e) {
+                $value["success"] = 2;
+                \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                return $value ;
+            }
+        }else{
+            $value["success"] = 2;
+            \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+            return $value ;
+        }
+
+    }
+
+
+    
+    public function Flussonicepisodelibrary(Request $request)
+    {
+
+        if($this->Enable_Flussonic_Upload == 1){
+       
+            try {
+                $client = new \GuzzleHttp\Client();
+                // http://localhost:8080/streamer/api/v3/vods/{prefix}/storages/{storage_index}/files
+
+                
+                $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$request->FlussonicepisodelibraryID}/files", [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                        'Content-Type' => 'application/json', 
+                    ]
+                ]);
+              
+        
+            $response = json_decode($response->getBody(), true);
+            $url = "{$this->Flussonic_Server_Base_URL}";
+            $StreamURL = str_replace('http://', 'https://', $url);
+
+            $responseData = [
+                'streamvideos' => $response,
+                'StreamURL' => $StreamURL,
+            ];
+        
+            return $responseData;
+
+        }catch (RequestException $e) {
+            $value["success"] = 2;
+            // echo"<pre>";
+            // print_r($e->getMessage());exit;
+            \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+            return $value ;
+        }
+    }
+}
+
+
+
+    
+    public function StreamFlussonicEpisode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+        if (!empty($data["stream_flussonic_episode"])) {
+
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $data["stream_flussonic_episode"];
+            $Episode->url = $data["stream_flussonic_episode"];
+            $Episode->series_id = $data["series_id"];
+            $Episode->season_id = $data["season_id"];
+            $Episode->type = "m3u8_url";
+            $Episode->active = 1;
+            $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = Auth::user()->id;
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+
+            return $value;
+        }
+    }
+
+
 
 }

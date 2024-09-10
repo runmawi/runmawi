@@ -117,7 +117,7 @@
         </div>
         <?php endforeach; endif; ?>
     </div>
-</div>7
+</div>
 
 <!-- Flickity Slider -->
 <script>

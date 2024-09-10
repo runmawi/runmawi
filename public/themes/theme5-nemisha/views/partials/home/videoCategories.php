@@ -31,7 +31,7 @@ if(count($latest_video) > 0) : ?>
                     <div class="img-box">
                         <a href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="videos">
                             <img src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded"
-                            alt="<?php echo $watchlater_video->title; ?>">
+                            alt="<?php echo $Categories->title; ?>">
                         </a>
                     </div>
                 </div>

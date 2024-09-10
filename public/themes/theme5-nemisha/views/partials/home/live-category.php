@@ -198,15 +198,19 @@
 </div>
 
 <script>
-    var elem = document.querySelector('.live-category');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.live-category');
+        elems.forEach(function (elem) {
+            new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: true,
+            });
+        });
     });
 </script>

@@ -1752,24 +1752,23 @@ public function verifyandupdatepassword(Request $request)
 
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
 
-      if($ppv_exists_check_query == 1 || $userrole == "admin"){
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-        ->get()->map(function ($item) use ( $data)  {
+        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query)  {
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
             }elseif($userrole == "registered" &&  $item['access'] == 'ppv'){
 
-                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                   if($item['PPV_Plan'] > 0){
                       if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                   }else{
-                      return Redirect::to('/category/videos'.'/'.$slug);
-                }
+                    $item['PPV_Plan']   = '';
+                  }
             }
             elseif( $item['access'] == 'ppv' && $userrole == "subscriber"){
-                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
+                  $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                   if($item['PPV_Plan'] > 0){
                           if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                       }else{
@@ -1778,6 +1777,8 @@ public function verifyandupdatepassword(Request $request)
             }else{
                 $item['PPV_Plan']   = '';
             }
+
+      if($ppv_exists_check_query == 1 || $userrole == "admin"){
 
               $videoId = $item['videos_url']; 
               $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -1822,13 +1823,13 @@ public function verifyandupdatepassword(Request $request)
                       $item['otp'] = $responseObj['otp'];
                       $item['playbackInfo'] = $responseObj['playbackInfo'];
                   }
+                }
+              }else{
+                $item['otp'] = null;
+                $item['playbackInfo'] = null;
               }
-
           return $item;
-        })->first();
-      } else{
-        $videodetail = null;
-      }
+        });
 
       $videoid = $data['videoid'];
 
@@ -1991,7 +1992,7 @@ public function verifyandupdatepassword(Request $request)
         'userrole' => $userrole,
         'like' => $like,
         'dislike' => $dislike,
-        'shareurl' => URL::to('category/videos').'/'.@$videodetail->slug,
+        'shareurl' => URL::to('category/videos').'/'.@$videodetail[0]->slug,
         'videodetail' => $videodetail,
         'videossubtitles' => $moviesubtitles,
         'main_genre' => $main_genre,
@@ -2001,6 +2002,9 @@ public function verifyandupdatepassword(Request $request)
         'IOS_favorite' => $IOS_favorite ,
         'IOS_like' => $IOS_like ,
         'IOS_dislike' => $IOS_dislike ,
+        'ppv_exist' => $ppv_exists_check_query,
+        'ppv_video_status' => $ppv_exists_check_query,
+
       );
 
     } catch (\Throwable $th) {
@@ -2773,6 +2777,7 @@ public function verifyandupdatepassword(Request $request)
         $liveid = $request->liveid;
         $user_id = $request->user_id;
 
+
       // Live Language
 
         $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
@@ -2831,6 +2836,7 @@ public function verifyandupdatepassword(Request $request)
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+                          $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
                           if( $item['livestream_format'] == "mp4"){
                             $item['livestream_url'] =  $item->mp4_url ;
@@ -2895,6 +2901,7 @@ public function verifyandupdatepassword(Request $request)
         'ppv_video_status' => $ppv_video_status,
         'languages' => $languages,
         'categories' => $categories,
+        'current_timezone' => current_timezone(),
         'RentURL' => URL::to('live').'/'.$livestreamSlug,
       );
 
@@ -6472,8 +6479,12 @@ return response()->json($response, 200);
       if($ppv_exists_check_query > 0 || $userrole == "admin"){
 
         $free_episode = 'guest';
+      }else{
+        $free_episode = 'PPV';
+      }
+
         
-        $episode_details = Episode::where('id',$episode_id)->get()->map( function ($item) use ($season,$userrole,$data)  {
+        $episode_details = Episode::where('id',$episode_id)->get()->map( function ($item) use ($season,$userrole,$data,$ppv_exists_check_query)  {
 
           $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
           $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
@@ -6513,6 +6524,7 @@ return response()->json($response, 200);
              $item['PPV_Plan']   = '';
          }
 
+      if($ppv_exists_check_query > 0 || $userrole == "admin"){
          
          $videoId = $item['Episode_url']; 
          $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -6557,19 +6569,15 @@ return response()->json($response, 200);
                  $item['otp'] = $responseObj['otp'];
                  $item['playbackInfo'] = $responseObj['playbackInfo'];
              }
-
+        }
+         }else{
+          $item['otp'] = null;
+          $item['playbackInfo'] = null;
+        }
             
-         }
           return $item;
 
       });
-
-      }else{
-        $free_episode = 'PPV';
-        $episode_details = [];
-      }
-
-
 
 
     $response = array(

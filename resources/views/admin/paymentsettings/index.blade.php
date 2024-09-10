@@ -96,25 +96,50 @@
                                     <div class="make-switch" data-on="success" data-off="warning"></div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="">Stripe Mode</label>
                                     <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                         <div style="color:red;">OFF</div>
 
                                         <div class="mt-1">
                                             <label class="switch">
-                                            <input type="checkbox"  @if ($payment_settings->live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_mode" id="live_mode">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
+                                                <input type="checkbox"  @if ($payment_settings->live_mode == 1) {{ "checked='checked'" }} @else {{ "" }} @endif name="live_mode" id="live_mode">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
 
-                                    <div style="color:green;">ON</div>
+                                        <div style="color:green;">ON</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
                                 </div>
-                                <div class="make-switch" data-on="success" data-off="warning"></div>
-                            </div>
+                           
+                                <div class="col-md-3">
+                                    <label for=""> p24 Payment Mode</label>
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                        <div style="color:red;">OFF</div>
+
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ $payment_settings->stripe_p24_mode == 1 ? "checked" : null  }} name="stripe_p24_mode" id="stripe_p24_mode">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+
+                                        <div style="color:green;">ON</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="panel-title">Stripe official Docs (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="panel-title">Stripe p24 Docs (<a href="https://docs.stripe.com/payments/p24" target="_blank">https://docs.stripe.com/payments/p24</a>)</div>
+                                </div>
 
                             <div class="col-md-6">
-                                <div class="panel-title">Stripe official Docs (<a href="https://stripe.com/docs/tutorials/dashboard" target="_blank">https://stripe.com/docs/tutorials/dashboard</a>)</div>
+                                
                                     <div class="panel-body" style="display: block;"> 
                                         <label>Name:</label> 
                                         <input type="text" class="form-control" name="plan_name" id="plan_name" placeholder="Test Secret Key" value="@if(!empty($payment_settings->plan_name)){{ $payment_settings->plan_name }}@endif" />

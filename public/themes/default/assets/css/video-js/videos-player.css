@@ -113,10 +113,7 @@
 
 .my-video.video-js .vjs-control-bar {
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
-    background: var(
-        --plyr-video-controls-background,
-        linear-gradient(transparent, rgba(0, 0, 0, 0.75))
-    );
+    background: var(--plyr-video-controls-background, linear-gradient(transparent, rgb(0 0 0 / 0%)));
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     z-index: 3;
 }
@@ -400,17 +397,6 @@ line-height: 2.1em;
     width: 2.8em;
 }
 
-.my-video.vjs-title-bar {
-    background: none;
-    cursor: pointer;
-    display: block !important;
-    padding-top: 0.666em;
-    padding-left: 51px;
-    font-size: 24px;
-    font-family: Roboto;
-    font-weight: 200;
-}
-
 .my-video.vjs-play-progress .vjs-svg-icon {
     position: absolute;
     top: -0.35em;
@@ -492,7 +478,7 @@ line-height: 2.1em;
     align-items: center;
     font-size: 2em;
     position: absolute;
-    top: -240px;
+    top: calc(100% - 51%);
     width: 40px;
     height: 40px;
 }
@@ -518,7 +504,7 @@ line-height: 2.1em;
     font-size: 2.5em;
     padding: 0px 35px;
     position: absolute;
-    top: -335px;
+    top: calc(100% - 52.5%);
 }
 
 .vjs-fullscreen .custom-skip-forward-button svg,
@@ -527,17 +513,21 @@ line-height: 2.1em;
     height: 42px;
 }
 
-.titlebutton {
+.vjs-title-bar {
     display: inline-block;
     position: absolute;
     background: transparent;
     z-index: 1;
-    top: 5.5%;
-    left: 4%;
+    top: 6%;
+    left: 5%;
     color: white;
-    border: none;
     font-size: 20px;
     font-weight: 500;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    border-left: 3px solid red;
+    padding-left: 5px;
 }
 
 .vjs-fg-skip-button{
@@ -955,9 +945,16 @@ display: block !important;
     margin: 1.35em auto;
 }
 
+@supports (-ms-ime-align: auto) {
+    /* Microsoft Edge specific CSS here */
+    .vjs-text-track-cue{
+        inset: 535px 0px 0px !important;
+    }
+}
+
 .vjs-text-track-cue{
     white-space: pre-line !important;
-    inset: 485px 0px 0px !important;
+    inset: 500px 0px 0px !important;
     height: 65px !important;
     font-size: 20px !important;
 }
@@ -965,7 +962,13 @@ display: block !important;
 .vjs-text-track-cue div{font-size: 22px !important;background-color: rgb(0 0 0 / 25%) !important;}
 
 .vjs-fullscreen .vjs-text-track-cue{
-    inset: 640px 0px 0px !important;
+    inset: 645px 0px 0px !important;
+}
+
+@media only screen and (max-width: 400px) {
+    .vjs-fullscreen .custom-skip-backward-button {
+        left: 17% !important;
+    }
 }
 
 /* For screens up to 600px */
@@ -976,25 +979,23 @@ display: block !important;
     .vjs-has-started .vjs-big-play-button {
         pointer-events: auto !important;
     }
-    .titlebutton {
+    .vjs-title-bar {
         font-size: 15px !important;
         left: 10% !important;
     }
-    .custom-skip-forward-button{
-        top: -82px !important;
-        left: 67%;
-    }
+    .custom-skip-forward-button,
     .custom-skip-backward-button {
-        top: -82px !important;
-        left: 22% !important;
+        top: calc(100% - 55%);
+    } 
+    .custom-skip-backward-button {
+        left: 27%;
     }
+    .vjs-fullscreen .custom-skip-forward-button,
     .vjs-fullscreen .custom-skip-backward-button {
-        left: 11% !important;
-        top: -245px !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button {
-        left: 65% !important;
-        top: -245px !important;
+        top: calc(100% - 53%);
+    } 
+    .vjs-fullscreen .custom-skip-backward-button {
+        left: 23%;
     }
     .my-video.vjs-fluid {
         padding-top: 0 !important;
@@ -1099,37 +1100,23 @@ display: block !important;
 
 /* Screens between 600px and 767px */
 @media only screen and (min-width: 600px) and (max-width: 768px) {
-    .custom-skip-backward-button,
-    .custom-skip-forward-button {
-        top: -105px !important;
-    }
+    .custom-skip-forward-button,
     .custom-skip-backward-button {
-        left: 32% !important;
-    }
-    .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
-        top: -285px !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button {
-        left: 60%;
-    }
-
+        top: calc(100% - 55%);
+    } 
     .vjs-text-track-cue{
         inset: 175px 0px 0px !important;
         height: 45px !important;
     }
-
     .vjs-text-track-cue div{font-size: 15px !important;}
-
     .vjs-fullscreen .vjs-text-track-cue{
         inset: 560px 0px 0px !important;
     }
-
-    .titlebutton {
+    .vjs-title-bar {
         font-size: 15px !important;
         left: 6% !important;
         top: 5% !important;
     }
-
     .my-video.vjs-fluid {
         padding-top: 0 !important;
         height: 45vh !important;
@@ -1144,12 +1131,10 @@ display: block !important;
     .my-video.video-js .vjs-live-control {
         line-height: 0.6em;
     }
-
     .staticback-btn {
         top: 3% !important;
         font-size: 15px !important;
     }
-
     .my-video.video-js button {
         font-size: 9px;
     }
@@ -1190,7 +1175,6 @@ display: block !important;
     .vjs-button > .vjs-icon-placeholder {
         line-height: 5em !important;
     }
-
     /* resoltion & settings */
     .vjs-menu-button-popup .vjs-menu {
         position: absolute;
@@ -1200,11 +1184,9 @@ display: block !important;
         height: 0;
         margin-bottom: 2.7em;
     }
-
     .my-video.vjs-theme-city .vjs-play-control .vjs-icon-placeholder:before {
         font-size: 25px !important;
     }
-
     /* .vjs-watermark{
     top: 65% !important;
     left: 80% !important;
@@ -1212,33 +1194,18 @@ display: block !important;
 }
 
 /* Screens between 768px and 991px */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
     .custom-skip-backward-button
     .custom-skip-forward-button {
         right: 30%;
         top: -108px !important;
     }
-}
+} */
 
 /* Screens between 992px and 1199px */
-@media only screen and (min-width: 992px) and (max-width: 1201px) {
+@media only screen and (min-width: 769px) and (max-width: 1201px) {
     .my-video.video-js .vjs-tech {
         object-fit: contain;
-    }
-    .custom-skip-backward-button {
-        top: -200px !important;
-        left: 32% !important;
-    }
-    .custom-skip-forward-button {
-        left: 63% !important;
-        top: -200px !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button,
-    .vjs-fullscreen .custom-skip-backward-button {
-        top: -290px !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button{
-        left: 61% !important;
     }
     .vjs-text-track-cue {
         inset: 395px 0px 0px !important;
@@ -1248,48 +1215,21 @@ display: block !important;
     }
 }
 
-/* @media screen and (aspect-ratio: 4/3) {
-    .vjs-text-track-cue{
-        inset: 540px 0px 0px !important;
-    }
-    .custom-skip-forward-button, .custom-skip-backward-button {
-        top: -280px !important;
-    }
-    .vjs-fullscreen .custom-skip-forward-button, .vjs-fullscreen .custom-skip-backward-button {
-        top: -395px !important;
-    }
-    .vjs-fullscreen .vjs-text-track-cue {
-        inset: 745px 0px 0px !important;
-        font-size: 30px !important;
-    }
-} */
-
 /* Screens 1200px and 1339px */
 @media only screen and  (min-width: 1201px) and (max-width: 1339px) {
-    .custom-skip-backward-button,
-    .custom-skip-forward-button {
-        top: -240px !important;
-    }
-    /* .custom-skip-forward-button{
-        left: 57% !important;
-    } */
-    .vjs-fullscreen .custom-skip-forward-button,
-    .vjs-fullscreen .custom-skip-backward-button {
-        top: -335px !important;
-    }
     .vjs-text-track-cue {
-        inset: 485px 0px 0px !important;
+        inset: 405px 0px 0px !important;
     }
     .vjs-fullscreen .vjs-text-track-cue{
-        inset: 640px 0px 0px !important;
+        inset: 545px 0px 0px !important;
     }
 }
 
 @media only screen and  (min-width: 1400px) {
     .vjs-text-track-cue {
-        inset: 450px 0px 0px !important;
+        inset: 455px 0px 0px !important;
     }
     .vjs-fullscreen .vjs-text-track-cue{
-        inset: 630px 0px 0px !important;
+        inset: 620px 0px 0px !important;
     }
 }

@@ -81,13 +81,13 @@
         text-transform: uppercase;
     }
     .custom-skip-forward-button, .custom-skip-backward-button{
-        top: -250px !important;
+        top: calc(100% - 52.5%);
     }
     .vjs-fullscreen .custom-skip-backward-button, .vjs-fullscreen .custom-skip-forward-button {
-        top: -335px !important;
+        top: calc(100% - 53%) !important;
     }
     .custom-skip-backward-button{
-        left: 31% !important;
+        left: 33% !important;
     }
 
     
@@ -151,7 +151,10 @@
     @media only screen and (max-width: 600px) {
         .custom-skip-forward-button, .custom-skip-backward-button {
             /* right: 20%; */
-            top: 46% !important;
+            top: 44% !important;
+        }
+        .vjs-fullscreen .custom-skip-backward-button {
+            left: 23% !important;
         }
     }
     @media screen and (max-width: 768px) {
@@ -203,20 +206,62 @@
                             <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
 
-                        <div class="titlebutton">{{$episode_details->title}}</div>
+                                <div class="vjs-title-bar">{{$episode_details->title}}</div>
 
-                        <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                            width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
-                            autoplay>
-                                <source src="<?= $episode_details->Episode_url ?>"
-                                type="<?= $episode_details->Episode_player_type ?>">
-                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
-                                    @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
-                                        @foreach ($episodesubtitles as $episodesubtitles_file)
-                                            <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
-                                                srclang="{{ $episodesubtitles_file->sub_language }}"
-                                                label="{{ $episodesubtitles_file->shortcode }}" default>
-                                        @endforeach
+                                <button class="custom-skip-forward-button">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                                </button>
+
+                                <button class="custom-skip-backward-button">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                                </button>
+
+                                <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                                    width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
+                                    autoplay>
+                                        <source src="<?= $episode_details->Episode_url ?>"
+                                        type="<?= $episode_details->Episode_player_type ?>">
+                                        @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                                            @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
+                                                @foreach ($episodesubtitles as $episodesubtitles_file)
+                                                    <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
+                                                        srclang="{{ $episodesubtitles_file->sub_language }}"
+                                                        label="{{ $episodesubtitles_file->shortcode }}" default>
+                                                @endforeach
+                                            @endif
+                                        @endif
+                                    <!-- <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web -->
+                                        <!-- browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
+                                            series</a></p> -->
+                                </video>
+                            </div>
+                        <!-- @endif -->
+                        <!-- <div class="logo_player"> </div> -->
+                        <!-- Intro Skip and Recap Skip -->
+                        <div class="col-sm-12 intro_skips">
+                            <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+                            <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+                        </div>
+
+                        <div class="col-sm-12 Recap_skip">
+                            <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+                        </div>
+                        <!-- Intro Skip and Recap Skip -->
+                    @else
+                        <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                            <div class="container-fluid">
+                                <p class="epi-name text-left m-0 mt-2">
+                                    <?= __($episode->title) ?>
+                                </p>
+
+                                <p class="desc-name text-left m-0 mt-1">
+                                    <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                                </p>
+                                <h4>
+                                    @if ($SeriesSeason->access == 'subscriber')
+                                        {{ __('Subscribe to view more') }}
+                                    @elseif($episode->access == 'registered')
+                                        {{ __('Purchase to view Video') }}
                                     @endif
                                 @endif
                         </video>
