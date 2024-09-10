@@ -2,13 +2,15 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use App\Permissions\HasPermissionsTrait;
+use App\UGCVideo;
 use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
+use App\Permissions\HasPermissionsTrait;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -38,7 +40,7 @@ class User extends Authenticatable
                             'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile','city','country','preference_genres',
                             'avatar','terms','stripe_active','sub_admin','referral_token', 'password', 'role', 'status', 'disabled', 'activation_code','provider',
                             'provider_id','g-recaptcha-response','subscription_ends_at','package','package_ends','provider_avatar','gender','DOB','Password_Pin','ios_avatar',
-                            'otp','otp_request_id','otp_through','stripe_id','payment_status','payment_gateway'
+                            'otp','otp_request_id','otp_through','stripe_id','payment_status','payment_gateway','ugc_about','ugc_facebook','ugc_instagram','ugc_twitter'
                         ];
    
         /**
@@ -98,6 +100,18 @@ class User extends Authenticatable
     }
     
   
+    public function ugcVideos()
+    {
+        return $this->hasMany(UGCVideo::class);
+    }
+    
+    public function subscribers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'ugc_subscribers', 'user_id', 'subscriber_id');
+    }
+
+    
+
     
     /**
      * A user has many referrals.
