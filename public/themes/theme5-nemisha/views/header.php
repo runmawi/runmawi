@@ -1128,10 +1128,11 @@
 
         <header id="main-header">
             <div class="main-header">
-                <div class="container-fluid">
+                <div class="container-fluid" style="z-index:10000;" >
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="navbar navbar-expand-lg navbar-light p-0">
+        
                                 <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
@@ -1162,6 +1163,7 @@
                                             </a>
                                         </div>
                                     </div>
+                                    
                                     <div class="menu-main-menu-container">
                                         <!--                              <ul id="top-menu" class="navbar-nav ml-auto">
                                  <li class="menu-item">
@@ -1173,7 +1175,7 @@
                                  <li class="menu-item">
                                     <a href="href="<?php echo URL::to('home'); ?>"">Movies</a>
                                  </li>
-                              </ul>-->
+                                </ul>-->
                                         <ul id="top-menu" class="nav navbar-nav <?php if (Session::get('locale') == 'arabic') {
                                             echo 'navbar-right';
                                         } else {
@@ -1458,9 +1460,11 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-
                                                     <?php } ?>
-                                            </div>
+                                            
+                                                </div>
+
+                                                
                                             <li>
                                                  <?php                         
                         if(!Auth::guest()){                                                              
@@ -1477,9 +1481,6 @@
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
                                         <button type="submit" class="btn  "
                                             style="">Visit Content Portal </button>
-                                            <div class="">
-                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
-                                            </div>
                                     </form>
                                 </div>
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
@@ -1493,9 +1494,6 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn "
                                             style="">Visit Channel Portal </button>
-                                            <div class="">
-                                        <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
-                                        </div>
                                     </form>
                                 </div>
                                 <?php } ?>
@@ -1569,10 +1567,7 @@
                                         <button type="submit" class="btn btn-primary "
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
-                                </div>
-                                <!-- <div class="bg-primary p-1">
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Youxdxr Own Content</a>
-                                </div> -->
+                                </div>                    
                                 <?php }if(!Auth::guest() && !empty($Channel)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('channel/home'); ?>" class="mt-4">
@@ -1584,11 +1579,9 @@
                                             autocomplete="current-password">
                                         <button type="submit" class="btn btn-primary"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
-                                            <div class="">
-                                            <!-- <a href="<?php echo URL::to('ugc-create'); ?>" >Upload Your Own Content</a> -->
-                                            </div>
                                     </form>
                                 </div>
+                                
                                 <?php } ?>
                                 <div class="navbar-right menu-right">
                                     <ul class="d-flex align-items-center list-inline m-0">
@@ -1625,6 +1618,20 @@
                                                 id="sidebar-scrollbar">
                                                
                                             </div>
+                                        </li>
+                                        <li>
+                                    
+                                        <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
+                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <g>
+                                            <path fill="none" d="M0 0H24V24H0z"/>
+                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
+                                            </g>
+                                            </svg>
+                                            </a>
+                                        </div>
+                                   
                                         </li>
                                         <li class="nav-item nav-icon">
                                          
@@ -1740,7 +1747,7 @@
                                                     <i class="ri-arrow-down-s-line"></i>
 
                                                 </p>
-                                            </a>
+                                            </a>                                            
                                             <?php if(Auth::user()->role == 'registered'): ?>
                                             <div class="iq-sub-dropdown iq-user-dropdown">
                                                 <div class="iq-card shadow-none m-0">
@@ -1804,6 +1811,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
+
                                                         <a href="<?php echo URL::to('watchlater'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -1975,6 +1983,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
+
                                                         <a href="<?php echo URL::to('watchlater'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -2204,33 +2213,23 @@
             </div>
 
             <?php 
-    $playerui_settings = App\Playerui::first();
-    if($playerui_settings->watermark == 1){ ?>
-            <style>
-                /* .plyr__video-wrapper::before  {
-                width: <?php echo $playerui_settings->watermar_width; ?>;
-                float: right;
-                position: absolute;
-                top:<?php echo $playerui_settings->watermark_top; ?>;
-                right: <?php echo $playerui_settings->watermark_right; ?>;
-                left:<?php echo $playerui_settings->watermark_left; ?>;
-                bottom:<?php echo $playerui_settings->watermark_bottom; ?>;
-                transform: translate(-50%, 0%);
-            } */
+                $playerui_settings = App\Playerui::first();
+                if($playerui_settings->watermark == 1){ ?>
+                <style>
                 .plyr__video-wrapper::before {
-                    position: absolute;
-                    top: <?php echo $playerui_settings->watermark_top; ?>;
-                    left: <?php echo $playerui_settings->watermark_left; ?>;
-                    opacity: <?php echo $playerui_settings->watermark_opacity; ?>;
-                    z-index: 10;
-                    content: '';
-                    height: 300px;
-                    width: <?php echo $playerui_settings->watermar_width; ?>;
-                    background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
-                    background-size: 100px auto, auto;
+                position: absolute;
+                top: <?php echo $playerui_settings->watermark_top; ?>;
+                left: <?php echo $playerui_settings->watermark_left; ?>;
+                opacity : <?php echo $playerui_settings->watermark_opacity; ?>;
+                z-index: 2;
+                content: '';
+                height: 150px;
+                width: <?php echo $playerui_settings->watermar_width; ?>;
+                background: url(<?php echo $playerui_settings->watermark_logo; ?>) no-repeat;
+                /* background-size: 100px auto, auto; */
+                background-size: contain;
                 }
-            </style>
-
+                </style>
             <?php } else{ } ?>
             <script>
                 $(document).ready(function() {

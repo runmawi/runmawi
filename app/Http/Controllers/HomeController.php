@@ -482,6 +482,9 @@ class HomeController extends Controller
                 'default_vertical_image_url' => $default_vertical_image_url,
                 'default_horizontal_image_url' => $default_horizontal_image_url,
                 'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                'ugc_users'         => $FrontEndQueryController->UGCUsers(),
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1223,6 +1226,9 @@ class HomeController extends Controller
                         'default_vertical_image_url' => $default_vertical_image_url,
                         'default_horizontal_image_url' => $default_horizontal_image_url,
                         'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                        'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                        'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                        'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
                     );
 
                     if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1686,6 +1692,9 @@ class HomeController extends Controller
                     'preference_genres'      => $FrontEndQueryController->preference_genres(),
                     'preference_Language'    => $FrontEndQueryController->preference_language(),
                     'Epg'                 => $FrontEndQueryController->Epg(),
+                    'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                    'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                    'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
                 );
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
