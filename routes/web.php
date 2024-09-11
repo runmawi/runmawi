@@ -2854,6 +2854,9 @@ Route::get('/testpage', function () {
     return view('testpage');
 })->name('testpage');
 
+// Version Info 
+Route::get('version-info', 'VersionInfoController@version_info')->name('version.info');
+
 // User Generated Content
 Route::get('ugc-create', 'UGCController@create');
 Route::get('ugc-edit/{id}', 'UGCController@edit');
