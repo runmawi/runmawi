@@ -196,6 +196,7 @@
             if (ppvAccess === 'ppv') {
                 $('#ppv_price_group').show();
                 $('#ios_ppv_price_old').show();
+                $('#ios_ppv_price').show();
                 $('#ppv_intravel_group').show();
 
                 if (ppvPrice === '' || iosPpvPrice === '' || ppvInterval === '') {
