@@ -249,34 +249,41 @@
                             <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                         </div>
                         <div class="iq-card-body">
-                            <p></p>
-                             <div class="row align-items-center">
-                                <div class="col-sm-6">
-                                   <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>
-                                      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Setup Website Logo, Name, Social Links, Payment Types, Etc</a>
-                                      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Payment Plans</a>
-                                   </div>
-                                </div>
-                                <div class="col-sm-6">
-                                   <div class="tab-content mt-0" id="v-pills-tabContent">
-                                      <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                         <h6 class="m-0">First things first, you need Video.</h6>
-                                         <p class="">Upload a video to get started.</p>
-                                         <a href="{{ URL::to('/admin/videos/create') }}">Upload Videos Now</a>
-                                      </div>
-                                      <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                         
-                                          <p class="">Setup website logo, Name, Social Links, Payment Types, etc.</p>
-                                          <a href="{{ URL::to('/admin/settings') }}">Go to Storefront Settings</a>
-                                      </div>
-                                      <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                          <p class="">Setup subscription Plans</p>
-                                          <a  href="{{ URL::to('/admin/subscription-plans') }}">Add Subscription Plans</a>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
+                           <p></p>
+                           <div class="row align-items-center">
+                              <div class="col-sm-6">
+                                 <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Upload your Content</a>
+                                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Setup Website Logo, Name, Social Links, Payment Types, Etc</a>
+                                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Payment Plans</a>
+                                 </div>
+                              </div>
+                              <div class="col-sm-6">
+                                 <div class="tab-content mt-0" id="v-pills-tabContent">
+                                    <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                       <h6 class="m-0">First things first, you need Video.</h6>
+                                       <p class="">Upload a video to get started.</p>
+                                       <a href="{{ URL::to('/admin/videos/create') }}">Upload Videos Now</a>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                       
+                                       <p class="">Setup website logo, Name, Social Links, Payment Types, etc.</p>
+                                       <a href="{{ URL::to('/admin/settings') }}">Go to Storefront Settings</a>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                       <p class="">Setup subscription Plans</p>
+                                       <a  href="{{ URL::to('/admin/subscription-plans') }}">Add Subscription Plans</a>
+                                    </div>
+                                 </div>
+                              </div>
+                              @if($settings->google_analytics_link != null)
+                                 <div class="col-sm-6">
+                                    <div class="pt-4">
+                                       <a class="btn btn-primary" href="https://dashthis.com/app/view/dashboard-d_RzR1aMxE28z1MEoDNtcg"><span>Google Analytics</span></a>
+                                    </div>
+                                 </div>
+                              @endif
+                           </div>
                         </div>
                     </div> 
                 </div>

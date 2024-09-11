@@ -916,26 +916,40 @@ border-radius: 0px 4px 4px 0px;
 
                                 </div>
                                 <div class="col-md-6">
-                                <div class="panel-body" style="display: block;">
+                                    <div class="panel-body" style="display: block;">
                                         <p class="p1">Email address to be used to send system emails:</p>
                                         <input type="text" class="form-control" name="system_email" id="system_email"
                                             placeholder="Email Address"
                                             value="@if(!empty($settings->system_email)){{ $settings->system_email }}@endif" />
                                     </div>
-                                <div class="panel panel-primary mt-3" data-collapsed="0">
-                                    <div class="panel-heading">
-                                        <div class="panel-title"><label>Google Analytics Tracking ID</label></div>
-                                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    <div class="panel panel-primary mt-3" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title"><label>Google Analytics Tracking ID</label></div>
+                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+
+                                            <p class="p1">Google Analytics Tracking ID (ex. UA-12345678-9)::</p>
+                                            <input type="text" class="form-control" name="google_tracking_id" id="google_tracking_id"
+                                                placeholder="Google Analytics Tracking ID"
+                                                value="@if(!empty($settings->google_tracking_id)){{ $settings->google_tracking_id }}@endif" />
                                         </div>
                                     </div>
-                                    <div class="panel-body" style="display: block;">
 
-                                        <p class="p1">Google Analytics Tracking ID (ex. UA-12345678-9)::</p>
-                                        <input type="text" class="form-control" name="google_tracking_id" id="google_tracking_id"
-                                            placeholder="Google Analytics Tracking ID"
-                                            value="@if(!empty($settings->google_tracking_id)){{ $settings->google_tracking_id }}@endif" />
+                                    <div class="panel panel-primary mt-3" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title"><label>Google Analytics Link</label></div>
+                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+                                            <input type="text" class="form-control" name="google_analytics_link" id="google_analytics_link"
+                                                placeholder="Google Analytics Link"
+                                                value="@if(!empty($settings->google_analytics_link)){{ $settings->google_analytics_link }}@endif" />
+                                        </div>
                                     </div>
-                                </div></div>
+                                </div>
                                 <div class="col-md-6">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
