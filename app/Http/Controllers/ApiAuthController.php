@@ -4377,20 +4377,14 @@ public function verifyandupdatepassword(Request $request)
 
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
-      // $categoryVideos = Video::where('id',$videoid)->first();
-      //   $category_id = Video::where('id',$videoid)->pluck('video_category_id');
-      //   $recomended = Video::where('video_category_id','=',$category_id)->where('id','!=',$videoid)
-      //   ->orderBy('created_at', 'desc')->where('status','=',1)->where('active','=',1)->get()->map(function ($item) {
-      //   $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-      //   return $item;
-      // });
-    $myData = array();
+      $myData = array();
 
       $category_id = CategoryVideo::where('video_id', $videoid)->get();
+      $recomendeds = collect();
         // Recomendeds
         foreach ($category_id as $key => $value)
         {
-            $recomendeds = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
+            $videos = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
                 ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
                 ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
                 ->where('videos.id', '!=', $videoid)
@@ -4400,10 +4394,12 @@ public function verifyandupdatepassword(Request $request)
                     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                     return $item;
                   });
-                  $myData[] = array(
-                    "recomendeds" => $recomendeds
-                  );
+                  $recomendeds = $recomendeds->concat($videos); 
         }
+
+        $myData[] = array(
+          "recomendeds" => $recomendeds->all() // Convert the collection to an array
+      );
 
         $response = array(
         'status'=>'true',
