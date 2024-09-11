@@ -39,5 +39,27 @@ class PagesController extends Controller
         }
     }
 
+    public function MobalityIndex($slug)
+    {
+        $settings = Setting::first();
+
+        $Theme = HomeSetting::pluck('theme_choosen')->first();
+        Theme::uses($Theme);
+
+        $dynamic_page = Page::where('slug', '=', $slug)->first();
+
+        if (!empty($dynamic_page) && @$dynamic_page->active) {
+            $data = [
+                'pager' => $dynamic_page,
+                'author' => '',
+                'menu' => Menu::orderBy('order', 'ASC')->get(),
+                'pages' => Page::where('active', '=', 1)->get(),
+            ];
+            return Theme::view('mobalityPage', $data);
+        } else {
+            return Redirect::to('pages')->with(['note' => 'Sorry, this page is no longer active.', 'note_type' => 'error']);
+        }
+    }
+
    
 }
