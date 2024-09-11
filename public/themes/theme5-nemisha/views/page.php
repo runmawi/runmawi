@@ -27,6 +27,10 @@
         font-size: 27px;
         font-weight: 400;
     }
+    
+    .fa-search{
+        display: none;
+    }
 </style>
 
     <div class="container">

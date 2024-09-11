@@ -330,6 +330,28 @@ font-weight: 600;
     .bg-light{
         background-color: #fff!important;
     }
+    #avatar {
+        display: none;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        padding: 0px 13px;
+        cursor: pointer;
+        margin-bottom: 17px;
+        color: #cacaca !important;
+        /* background:rgba(11, 11, 11,1); */
+        border-radius: 7px;
+        font-size: 16px;
+        font-family: inherit;
+    }
+    .custom-file-label::after{
+        line-height: 2.2;
+        height: 100%;
+    }
+
     @media (max-width:425px){
     .my-sm-0{
         font-size:14px;
@@ -487,8 +509,10 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                                 <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                <label id="fileLabel">Choose Profile Image</label>
+                                    <label for="avatar" class="custom-file-label form-control">Choose Profile Image</label>
+                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;"/>
+                                    <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                    <label id="fileLabel">Choose Profile Image</label> -->
                                  </div>
                                  @endif
 
@@ -508,7 +532,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                      <div class="row">
                                      <div class="col-md-12">
                                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password" style="margin-bottom: 0!important;">
-                                          <span style="color:#fff;font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 9px;line-height: 32px;">Password must be at least 8 characters long.</span>
+                                          <span style="color:#cacaca;font-style: oblique;font-weight: 400;font-size: 12px;line-height: 25px;">Password must be at least 8 characters long.</span>
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -544,7 +568,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                     </div>
                                 </div>
     
-                                <span style="color:#000;font-size: 10px;font-style: italic;">Password must be at least 8 characters long.</span>
+                                <span style="color:#cacaca;font-style: oblique;font-weight: 400;font-size: 12px;line-height: 25px;">Password must be at least 8 characters long.</span>
                             </div>
                                  
                                       
@@ -593,7 +617,9 @@ $jsondata = json_decode($jsonString, true); ?>
                                 <div class="col-md-12 d-flex align-items-center links" id="mob">
                                     <input id="password-confirm" type="checkbox" name="terms" value="1" required>
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
-                                        <p class="text-left text-white agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                        <p class="text-left text-white agree mb-0 pl-2" style="color: #cacaca !important">By signing up you agree to NEMISA TV   
+                                            <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a>
+                                        </p>
                                         </a>
                                     </label>
                                 </div>

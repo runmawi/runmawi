@@ -355,7 +355,7 @@ line-height: 2.1em;
 .my-video.video-js .vjs-time-control {
     flex: none;
     font-size: 1.4em;
-    line-height: 4.8em;
+    line-height: 4.5em;
     display: block;
 }
 
@@ -514,20 +514,23 @@ line-height: 2.1em;
 }
 
 .vjs-title-bar {
-    display: inline-block;
+    /* display: inline-block; */
     position: absolute;
     background: transparent;
     z-index: 1;
-    top: 6%;
-    left: 5%;
+    top: 5.6%;
+    left: 4%;
     color: white;
     font-size: 20px;
     font-weight: 500;
     border-top: none;
     border-bottom: none;
     border-right: none;
-    border-left: 3px solid red;
-    padding-left: 5px;
+    border-left: 3px solid #fd0000;
+    padding-left: 10px;
+    height: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .vjs-fg-skip-button{
