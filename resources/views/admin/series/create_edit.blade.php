@@ -576,7 +576,8 @@ $settings  = App\Setting::first();?>
                             <div class="form-group" id="ppv_price">
 								<label class="">PPV Price:</label>
 								<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
-		                    </div>  
+								<p class="text-danger" id="season_ppv_error" style="display: none;color:red !important;">*Please enter the PPV amount.</p>
+							</div>  
 
 							<div class="form-group" id="ppv_price_plan">
 								<label class="m-0">PPV Price for 480 Plan:</label>
@@ -601,6 +602,7 @@ $settings  = App\Setting::first();?>
                                  <option value="{{ $Inapp_Purchase->product_id }}"  >{{ $Inapp_Purchase->plan_price }}</option>
                               @endforeach
                            </select>
+								<p class="text-danger" id="season_ios_ppv_error" style="display: none;color:red !important;">*This field is required.</p>
                      </div>
 
 						<div class="form-group ios_ppv_price_plan" id='ios_ppv_price_plan'>
@@ -638,7 +640,8 @@ $settings  = App\Setting::first();?>
 		                        <label>PPV Interval:</label>
 								<p class="p1">Please Mention How Many Episodes are Free:</p>
 		                        <input type="text" id="ppv_interval" name="ppv_interval" value="" class="form-control">
-		                    </div>  
+								<p class="text-danger" id="season_introvel_ppv_error" style="display: none;color:red !important;">*This field is required.</p>
+							</div>  
 							@endif      
 						@endif                   
 				    </form>
@@ -877,7 +880,11 @@ $('#submit-new-cat').click(function(){
 <script>
 	function validateForm() {
 		let title = document.forms["new-cat-form"]["series_seasons_name"].value;
+		let ppv = document.forms["new-cat-form"]["price"].value;
+		let ios_ppv = document.forms["new-cat-form"]["ios_ppv_price"].value;
+		let intravel = document.forms["new-cat-form"]["ppv_interval"].value;
         let seasonImage = document.forms["new-cat-form"]["image"].files.length;
+		var ppvAccess = $('#ppv_access').val();
         let isValid = true;
 
 		if (title == "") {
@@ -894,6 +901,29 @@ $('#submit-new-cat').click(function(){
         }
 		else{
             document.getElementById("season_img_error").style.display = "none";
+		}
+		if(ppvAccess === "ppv"){
+			if (ppv == "") {
+				document.getElementById("season_ppv_error").style.display = "block";
+				isValid = false;
+			}
+			else{
+				document.getElementById("season_ppv_error").style.display = "none";
+			}
+			if (ios_ppv == "") {
+				document.getElementById("season_ios_ppv_error").style.display = "block";
+				isValid = false;
+			}
+			else{
+				document.getElementById("season_ios_ppv_error").style.display = "none";
+			}
+			if (intravel == "") {
+				document.getElementById("season_introvel_ppv_error").style.display = "block";
+				isValid = false;
+			}
+			else{
+				document.getElementById("season_introvel_ppv_error").style.display = "none";
+			}
 		}
 
         return isValid;

@@ -84,12 +84,12 @@
                             <option value="free" @if(!empty($season->access) && $season->access == 'free'){{ 'selected' }}@endif>Free (everyone)</option>
                             <option value="ppv" @if(!empty($season->access) && $season->access == 'ppv'){{ 'selected' }}@endif>PPV (Pay Per Season(Episodes))</option>
                         </select>
-                        <span class="ErrorText">*User Access Series is set as Subscriber.</span>
                     </div>
                     
                     <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price_group">
                         <label class="m-0">PPV Price:</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="ppv_price_input" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
+                        <p id="ppv_error_req" style="color: red !important;">*This field is required</p>
                     </div>
                     
 
@@ -123,6 +123,7 @@
                                 <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_product_id) && $season->ios_product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
                             @endforeach
                         </select>
+                        <p id="ios_error_req" style="color: red !important;">*This field is required</p>
                     </div>
 
                     <div class="form-group ios_ppv_price_plan" id='ios_ppv_price_plan'>
@@ -157,10 +158,11 @@
                             
                     </div>
                     @if (Enable_videoCipher_Upload() == 0 && Enable_PPV_Plans() == 0)
-                        <div class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
+                        <div id="ppv_intravel_group" class="form-group {{ $errors->has('ppv_interval') ? 'has-error' : '' }}">
                             <label class="m-0">PPV Interval:</label>
                             <p class="p1">Please Mention How Many Episodes are Free:</p>
                             <input type="text" id="ppv_interval" name="ppv_interval" value="@if(!empty($season->ppv_interval)){{ $season->ppv_interval }}@endif" class="form-control" />
+                            <p id="intravel_error_req" style="color: red !important;">*This field is required</p>
                         </div>
                     @endif
 
@@ -181,29 +183,56 @@
 
 @section('javascript')
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ppvAccessSelect = document.getElementById('ppv_access');
-        const ppvPriceGroup = document.getElementById('ppv_price_group');
-        const ppvPriceInput = document.getElementById('ppv_price_input');
-    
-        // Function to toggle PPV price input visibility
-        function togglePPVPrice() {
-            if (ppvAccessSelect.value === 'ppv') {
-                ppvPriceGroup.style.display = 'block'; // Show PPV price input
+    $(document).ready(function() {
+        function updateFormState() {
+            var ppvAccess = $('#ppv_access').val();
+            var ppvPrice = $('#ppv_price_input').val();
+            var iosPpvPrice = $('#ios_ppv_price').val();
+            var ppvInterval = $('#ppv_interval').val();
+
+            if (ppvAccess === 'ppv') {
+                $('#ppv_price_group').show();
+                $('#ios_ppv_price_old').show();
+                $('#ppv_intravel_group').show();
+
+                if (ppvPrice === '' || iosPpvPrice === '' || ppvInterval === '') {
+                    $('#submit-update-cat').prop('disabled', true);
+                    if (ppvPrice === '') $('#ppv_error_req').show();
+                    if (iosPpvPrice === '') $('#ios_error_req').show();
+                    if (ppvInterval === '') $('#intravel_error_req').show();
+                } else {
+                    $('#submit-update-cat').prop('disabled', false);
+                    $('#ppv_error_req').hide();
+                    $('#ios_error_req').hide();
+                    $('#intravel_error_req').hide();
+                }
             } else {
-                ppvPriceGroup.style.display = 'none'; // Hide PPV price input
-                ppvPriceInput.value = ''; // Clear the PPV price if Free is selected
+                $('#ppv_price_group').hide();
+                $('#ios_ppv_price_old').hide();
+                $('#ppv_intravel_group').hide();
+                $('#submit-update-cat').prop('disabled', false);
+                $('#ppv_error_req').hide();
+                $('#ios_error_req').hide();
+                $('#intravel_error_req').hide();
             }
         }
-    
-        // Run the function on page load
-        togglePPVPrice();
-    
-        // Add event listener to toggle based on selection change
-        ppvAccessSelect.addEventListener('change', togglePPVPrice);
+
+        updateFormState();
+
+        $('#ppv_access').change(function() {
+            updateFormState();
+        });
+
+        $('#ppv_price_input, #ios_ppv_price, #ppv_interval').on('input change', function() {
+            updateFormState();
+        });
     });
-    </script>
+</script>
+    
+
     
 <script>
           
@@ -366,7 +395,6 @@
         position:relative;
     }
     .breadcrumb-item+.breadcrumb-item::before{display:none;}
-    #ppv_price_group {display: none;}
 
 </style>
 
