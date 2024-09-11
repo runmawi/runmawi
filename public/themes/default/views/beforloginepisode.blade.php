@@ -71,9 +71,9 @@
       <?php
          if (Auth::guest()){
          
-            if ($free_episode > 0 ){
+            if ($episode_play_access > 0 ){
                   // dd($free_episode);
-                  if ($series->access == 'guest' ||  $free_episode > 0): ?>
+                  if ($series->access == 'guest' ||  $episode_play_access > 0): ?>
 
                         <div id="series_container" class="fitvid" style="position: relative;">
                             <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -260,7 +260,7 @@
    <div id="series_title">
       <div class="">
          <div class="row align-items-center">
-            <?php if ($free_episode > 0 || $ppv_exits > 0  || Auth::guest()){
+            <?php if ($episode_play_access > 0 || $ppv_exits > 0  || Auth::guest()){
             }
             else{ ?>
                <div class="col-md-6">

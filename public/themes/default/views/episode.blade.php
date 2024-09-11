@@ -10,6 +10,14 @@
 
 ?>
 
+<?php if(Auth::check() && !Auth::guest()): ?>
+   <?php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    ?>
+<?php endif; ?>
+
 <!-- video-js Style  -->
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
@@ -81,6 +89,62 @@
     .custom-skip-backward-button{
         left: 33% !important;
     }
+
+    
+  /* payment modal */
+  #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+  #purchase-modal-dialog .modal-content{height: 100vh;}
+  #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+  #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+  #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+  #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+  .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+  .modal-open .modal{overflow-y: hidden;}
+  div#video-purchase-now-modal{padding-right: 0 !important;}
+  .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
+  .col-md-12.btn {margin-top: 2rem;}
+  .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+  .btn-primary-dark {
+      background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+  }
+
+  .btn-primary-light {
+      background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+  }
+  .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
+  .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
+  .quality_option {width: 15px;height: 15px;margin-right: 10px;}
+  span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
+  input[type="radio"].payment_btn,input[type="radio"].quality_option {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+      position: relative;
+  }
+
+  input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
+      background-color: black;
+      border-color: white;
+  }
+
+  input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+
     @media (min-width:601px){
         .my-video.vjs-fluid{height: calc(100vh - 85px)!important;}
     }
@@ -136,248 +200,212 @@
     <div id="series_bg">
         <div class="">
             @if(!Auth::guest())
-                @if($free_episode > 0)
-                    @if($free_episode > 0)
+                @if($episode_play_access > 0)
+                    <div id="series_container">
+                        <button class="staticback-btn" onclick="history.back()" title="Back Button">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </button>
 
-                            <div id="series_container">
-                                <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                </button>
+                        <div class="vjs-title-bar">{{$episode_details->title}}</div>
 
-                                <div class="vjs-title-bar">{{$episode_details->title}}</div>
+                        <button class="custom-skip-forward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>
 
-                                <button class="custom-skip-forward-button">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
-                                </button>
+                        <button class="custom-skip-backward-button">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                        </button>
 
-                                <button class="custom-skip-backward-button">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
-                                </button>
-
-                                <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                    width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
-                                    autoplay>
-                                        <source src="<?= $episode_details->Episode_url ?>"
-                                        type="<?= $episode_details->Episode_player_type ?>">
-                                        @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
-                                            @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
-                                                @foreach ($episodesubtitles as $episodesubtitles_file)
-                                                    <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
-                                                        srclang="{{ $episodesubtitles_file->sub_language }}"
-                                                        label="{{ $episodesubtitles_file->shortcode }}" default>
-                                                @endforeach
-                                            @endif
-                                        @endif
-                                    <!-- <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web -->
-                                        <!-- browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                            series</a></p> -->
-                                </video>
-                            </div>
-                        <!-- @endif -->
-                        <!-- <div class="logo_player"> </div> -->
-                        <!-- Intro Skip and Recap Skip -->
-                        <div class="col-sm-12 intro_skips">
-                            <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-                            <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-                        </div>
-
-                        <div class="col-sm-12 Recap_skip">
-                            <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-                        </div>
-                        <!-- Intro Skip and Recap Skip -->
-                    @else
-                        <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-                            <div class="container-fluid">
-                                <p class="epi-name text-left m-0 mt-2">
-                                    <?= __($episode->title) ?>
-                                </p>
-
-                                <p class="desc-name text-left m-0 mt-1">
-                                    <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
-                                </p>
-                                <h4>
-                                    @if ($SeriesSeason->access == 'subscriber')
-                                        {{ __('Subscribe to view more') }}
-                                    @elseif($episode->access == 'registered')
-                                        {{ __('Purchase to view Video') }}
+                        <video id="episode-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                            width="auto" height="auto" poster="<?= $episode_details->Player_thumbnail ?>" playsinline="playsinline"
+                            autoplay>
+                                <source src="<?= $episode_details->Episode_url ?>"
+                                type="<?= $episode_details->Episode_player_type ?>">
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1)
+                                    @if(isset($episodesubtitles) && count($episodesubtitles) > 0 )
+                                        @foreach ($episodesubtitles as $episodesubtitles_file)
+                                            <track kind="subtitles" src="{{ $episodesubtitles_file->url }}"
+                                                srclang="{{ $episodesubtitles_file->sub_language }}"
+                                                label="{{ $episodesubtitles_file->shortcode }}" default>
+                                        @endforeach
                                     @endif
-                                </h4>
-                                <div class="clear"></div>
-                            </div>
-                            @if(!Auth::guest() && $SeriesSeason->access == 'ppv')
-                                <div class="container-fluid mt-3">
-                                    <div class="d-flex">
-
-                                        @if(!Auth::guest() && Auth::user()->role != 'subscriber')
-                                            <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
-                                            </form>
-                                        @endif
-                                        <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                            {{ __('PURCHASE NOW') }}
-                                        </button>
-                                        <!-- <button  data-toggle="modal" data-target="#exampleModalCenter"
-                                            class="view-count rent-video btn btn-primary">
-                                            <?php echo __('Purchase Now'); ?> </button>
-                                        </div> -->
-                                    </div>
-                                </div>
-                            @elseif(!Auth::guest() && $SeriesSeason->access == 'subscriber')
-                                <div class="container-fluid mt-3">
-                                    <form method="get" action="{{ url('/becomesubscriber') }}">
-                                        <button class="btn btn-primary" id="button">{{ __('Subscribe to view more') }}</button>
-                                    </form>
-                                </div>
-                            @else
-                                <div class="container-fluid mt-3">
-                                    <div class="d-flex series">
-
-                                        @if(!Auth::guest() && Auth::user()->role != 'subscriber')
-                                            <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
-                                            </form>
-                                        @endif
-                                    <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                            {{ __('PURCHASE NOW') }}
-                                        </button>
-                                    </form>
-
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    @endif
-                <!-- @elseif(@$checkseasonppv_exits == 0 && $free_episode > 0) -->
-                    <!-- {{--  -->
-                    <!-- <div id="series_container">
-                        <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
-                                poster="{{ url('/public/uploads/images/' . $episode->player_image) }}" data-setup="{}"
-                                width="100%" style="width:100%;" data-authenticated="{{ !Auth::guest() }}">
-                                <source src="{{ $season[0]->trailer }}" type='video/mp4' label='auto'>
-
-                                @if(@$playerui_settings['subtitle'] == 1 && isset($episodesubtitles))
-                                    @foreach($episodesubtitles as $episodesubtitles_file)
-                                        <track kind="captions" src="{{ $episodesubtitles_file->url }}"
-                                            srclang="{{ $episodesubtitles_file->sub_language }}"
-                                            label="{{ $episodesubtitles_file->shortcode }}" default>
-                                    @endforeach
                                 @endif
                         </video>
+                    </div>
+                    <!-- Intro Skip and Recap Skip -->
+                    <div class="col-sm-12 intro_skips">
+                        <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+                        <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+                    </div>
 
-                        <div style="background: url({{ url('/public/uploads/images/' . $episode->player_image) }}); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                            <div id="ppv">
-                                <h2>Purchase to Watch the Episodes
-                                    @if($episode->access == 'subscriber')
-                                        Subscribers
-                                    @elseif($episode->access == 'registered')
-                                        Registered Users
-                                    @endif
-                                </h2>
-                                <div class="clear"></div>
-                                @if(!Auth::guest())
-                                    <form method="get" action="{{ url('/') }}/user/{{ Auth::user()->username }}/upgrade_subscription">
-                                        <button id="button">Purchase to Watch {{ $currency->symbol . ' ' . $episode->ppv_price }}</button>
-                                    </form>
-                                @endif
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- --}} -->
+                    <div class="col-sm-12 Recap_skip">
+                        <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+                    </div>
+                        <!-- Intro Skip and Recap Skip -->
                 @else
                     <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                         <div class="container-fluid">
-                            <div class="col-12 col-md-6 col-sm-6 p-0">
-                                <h4>{{ $episode->title }}</h4>
-                                <p class="text-white col-lg-8">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
-                            </div>
-                            <div class="col-6"></div>
-                            <div class="clear"></div>
-                        </div>
-                        @if(!Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber')
-                            <div class="container-fluid mt-3">
-                                    <div class="d-flex">
+                            <p class="epi-name text-left m-0 mt-2">
+                                <?= __($episode->title) ?>
+                            </p>
 
-                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber')
-                                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
-                                        </form>
-                                    @endif
-                                    <a onclick="pay({{ $SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1 ? PPV_CurrencyConvert($SeriesSeason->ppv_price) : ($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0 ? __($SeriesSeason->ppv_price) : '') }})">
-                                        <button type="button" class="btn2 btn-outline-primary">{{ __('PURCHASE NOW') }}</button>
+                            <p class="desc-name text-left m-0 mt-1">
+                                <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                            </p>
+                            @if (Auth::check() && Auth::user()->role == 'subscriber')
+                                <a class="btn mt-3" data-toggle="modal" data-target="#season-purchase-now-modal">
+                                    <div class="playbtn text-white" style="gap:5px">
+                                        <span class="text pr-2"> <?=  __('Purchase Now') ?> </span>
+                                    </div>
+                                </a>
+                            @elseif(Auth::check() && Auth::user()->role == 'registered')
+                                <div class="d-flex mt-3">
+                                    <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                        <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                    </form>
+                                    <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal">
+                                        <div class="playbtn text-white" style="gap:5px">
+                                            <span class="text pr-2"> <?=  __('Purchase Now') ?> </span>
+                                        </div>
                                     </a>
                                 </div>
-                            </div>
-                        @elseif(!Auth::guest() && $SeriesSeason->access == 'subscriber')
-                            <div class="container-fluid mt-3">
-                                <form method="get" action="{{ url('/becomesubscriber') }}">
-                                    <button class="btn btn-primary" id="button">{{ __('Subscribe to view more') }}</button>
-                                </form>
-                            </div>
-                        @else
-                            <div class="container-fluid mt-3">
-                            <div class="d-flex series">
-
-                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber')
-                                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
-                                        </form>
-                                    @endif
-                                    <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                    <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                        {{ __('PURCHASE NOW') }}
-                                    </button>
-                                    </form>
-                                </div>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                     </div>
+                @endif
             @endif
         </div>
     </div>
+
+{{-- Modal --}}
+
+             <div class="modal fade" 
+            id="season-purchase-now-modal" tabindex="-1" 
+            role="dialog" aria-labelledby="season-purchase-now-modal-Title" 
+            aria-hidden="true">
+            <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content container-fluid bg-dark">
+
+                      <div class="modal-header align-items-center">
+                          <div class="row">
+                              <div class="col-12">
+                                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                              </div>
+                          </div>
+                          <div class="d-flex align-items-center justify-content-end">
+                              <?php if (Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin')): ?>
+                                  <img src="<?php echo $user_avatar; ?>" alt="<?php echo $user_name; ?>">
+                                  <h5 class="pl-4"><?php echo $user_name; ?></h5>
+                              <?php endif; ?>
+                          </div>
+                      </div>
+
+                      <div class="modal-body">
+                          <div class="row justify-content-between m-0">
+                              <h3 class="font-weight-bold"><?php echo $SeriesSeason->series_seasons_name; ?></h3>
+                              <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                              </button>
+                          </div>
+                          <p class="text-white">You are currently on plan.</p>
+                          <div class="row justify-content-between m-0" style="gap: 4rem;">
+                              <div class="col-sm-4 col-12 p-0">
+                                  <img class="img__img w-100" src="<?php echo $SeriesSeason->image; ?>" class="img-fluid" alt="<?php echo $SeriesSeason->series_seasons_name; ?>" style="border-radius: 10px;">
+                              </div>
+
+                              <div class="col-sm-7 col-12 details">
+                                  <div class="movie-rent btn">
+                                      <div class="d-flex justify-content-between title">
+                                          <h3 class="font-weight-bold"><?php echo $SeriesSeason->series_seasons_name; ?></h3>
+                                      </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div class="col-8 d-flex justify-content-start p-0">
+                                                    <span class="descript text-white">{{ __($ppv_series_description) }}</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    <h3 class="pl-2" style="font-weight:700;" id="price-display">
+                                                        <?php echo $currency->enable_multi_currency == 1 ? Currency_Convert($SeriesSeason->ppv_price) : $currency->symbol .$SeriesSeason->ppv_price; ?>
+                                                    </h3>
+                                                </div>
+                                        </div>
+
+                                        <div class="mb-0 mt-3 p-0 text-left">
+                                            <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2">Select payment method:</h5>
+                                        </div>
+
+                                      <!-- Stripe Button -->
+                                      <?php if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="tres_important" name="payment_method" value="<?php echo $stripe_payment_setting->payment_type; ?>" data-value="stripe">
+                                              <?php echo $stripe_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+
+                                      <!-- Razorpay Button -->
+                                      <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $Razorpay_payment_setting->payment_type; ?>" data-value="Razorpay">
+                                              <?php echo $Razorpay_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+
+                                      <!-- Paystack Button -->
+                                      <?php if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" name="payment_method" value="<?php echo $Paystack_payment_setting->payment_type; ?>" data-value="Paystack">
+                                              <?php echo $Paystack_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+                                  </div>
+
+                                  <div class="becomesubs-page">
+                                      <div class="Stripe_button row mt-3 justify-content-around">  
+                                          <div class="Stripe_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.$SeriesSeason->id.'/'.$SeriesSeason->ppv_price) ?>' ;"> <!-- Stripe Button -->
+                                              <?= ("Continue") ?>
+                                          </div>
+                                          <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                          </div>
+                                      </div>
+
+                                      <div class="row mt-3 justify-content-around">  <!-- Razorpay Button -->
+                                        <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
+                                          <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $SeriesSeason->id . '/' . $SeriesSeason->ppv_price) ?>' ;">
+                                             <?= ("Continue") ?>
+                                          </div>
+                                        <?php endif; ?>
+                                          <div class="Razorpay_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                          </div>
+                                      </div>
+
+                                      <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
+                                        <?php if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack'): ?>
+                                          <div class="paystack_button col-md-6 col-6 btn text-white" onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $SeriesSeason->id, 'amount' => $SeriesSeason->ppv_price]) ?>' ;"> 
+                                                <?= ("Continue") ?>
+                                          </div>
+                                        <?php endif; ?>
+                                          <div class="paystack_button col-md-5 col-5 btn">
+                                            <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                            </button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
 
 
     <input type="hidden" class="seriescategoryid" data-seriescategoryid="{{ $episode->genre_id }}" value="{{ $episode->genre_id }}">
     <br>
 
-    <div class="">
-        <div class="container-fluid" id="nav-tab" role="tablist">
-            <div class="bc-icons-2">
-                <ol class="breadcrumb pl-3">
-                    <li class="breadcrumb-item">
-                        <a class="black-text" href="{{ route('series.tv-shows') }}">{{ ucwords(__('Series')) }}</a>
-                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
 
-                    @foreach($category_name as $key => $series_category_name)
-                        @php $category_name_length = count($category_name); @endphp
-                        <li class="breadcrumb-item">
-                            <a class="black-text" href="{{ route('SeriesCategory', [$series_category_name->categories_slug]) }}">
-                                {{ ucwords($series_category_name->categories_name) . ($key != $category_name_length - 1 ? ' - ' : '') }}
-                            </a>
-                            <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                        </li>
-                    @endforeach
-
-                    <li class="breadcrumb-item">
-                        <a class="black-text" href="{{ route('play_series', [$series->slug]) }}">
-                            {{ strlen($series->title) > 50 ? ucwords(substr($series->title, 0, 120) . '...') : ucwords($series->title) }}
-                        </a>
-                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                    </li>
-
-                    <li class="breadcrumb-item">
-                        <a class="black-text">
-                            {{ strlen($episode->title) > 50 ? ucwords(substr($episode->title, 0, 120) . '...') : ucwords($episode->title) }}
-                        </a>
-                    </li>
-                </ol>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="container-fluid series-details">
+    <div class="series-details">
         <div id="series_title">
             <div class="">
                                     <!-- @if ( ($free_episode > 0 && Auth::user()->role != 'admin') || (@$checkseasonppv_exits > 0 && Auth::user()->role != 'admin') || ($ppv_exits > 0 && Auth::user()->role != 'admin') || Auth::guest())

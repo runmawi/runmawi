@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use \Redirect;
-use App\HomeSetting;
-use App\WebComment;
-use Theme;
 use Auth;
+use Theme;
+use \Redirect;
+use App\WebComment;
+use App\HomeSetting;
+use App\CommentLikeDislike;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 class WebCommentController extends Controller
@@ -44,6 +45,13 @@ class WebCommentController extends Controller
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
+        }
+
 
         $inputs = array(
             'user_id'   => Auth::user()->id ,
@@ -58,8 +66,8 @@ class WebCommentController extends Controller
             'approved' => Auth::user()->role == "admin" ? 1 : 0 ,
         );
         
-        WebComment::create($inputs);
-        
+        $comment = WebComment::create($inputs);
+
         try {
             \Mail::send('emails.comment_admin_approval', 
                 array(
@@ -84,7 +92,21 @@ class WebCommentController extends Controller
             Email_notsent_log($user_id,$email_log,$email_template);
         }
 
-        return Redirect::back()->with(['message' => 'Comment Submitted Successfully and Waiting for Admin Approval !', 'note_type' => 'success']);
+        $response = [
+            'success' => true,
+            'commentId' => $comment->id,
+            'userName' => Auth::user()->username,
+            'commentText' => $comment->comment,
+            'commentTime' => $comment->created_at->diffForHumans(),
+            'likeCount' => $comment->likes()->count(),
+            'dislikeCount' => $comment->dislikes()->count(),
+        ];
+
+        if ($request->ajax()) {
+            return response()->json($response);
+        }
+
+        return Redirect::back()->with(['message' => 'Comment Submitted Successfully and Waiting for Admin Approval!', 'note_type' => 'success']);
     }
 
 
@@ -102,6 +124,12 @@ class WebCommentController extends Controller
         }
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
+        }
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
         }
 
         $inputs = array(
@@ -142,7 +170,14 @@ class WebCommentController extends Controller
         }
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
+        } 
+        elseif( $request->source == 'play_ugc_videos' ){
+            $source = "App\UGCVideo";
+        } 
+        else {
+            $source = null;
         }
+
 
         $inputs = array(
             'user_id'   => Auth::user()->id ,
@@ -161,4 +196,89 @@ class WebCommentController extends Controller
 
         return Redirect::back();
     }
+
+    public function like(Request $request)
+    {
+        $comment = Webcomment::find($request->comment_id);
+        $user = auth()->user();
+
+        $existing = CommentLikeDislike::where('comment_id', $request->comment_id)
+                                      ->where('user_id', $user->id)
+                                      ->first();
+
+        if ($existing) {
+            if ($existing->type == 1) {
+                $existing->delete();
+            } else {
+                $existing->delete();
+                CommentLikeDislike::create([
+                    'comment_id' => $request->comment_id,
+                    'user_id' => $user->id,
+                    'type' => 1
+                ]);
+            }
+        } else {
+            CommentLikeDislike::create([
+                'comment_id' => $request->comment_id,
+                'user_id' => $user->id,
+                'type' => 1
+            ]);
+        }
+
+        CommentLikeDislike::where('comment_id', $request->comment_id)
+                          ->where('user_id', $user->id)
+                          ->where('type', 2)
+                          ->delete();
+
+        return response()->json([
+            'success' => true,
+            'like_count' => $comment->likes()->count(),
+            'dislike_count' => $comment->dislikes()->count(),
+            'like_status' => is_null($existing) ? "Add" : "Remove "  ,
+            'liked' => true,
+        ]);
+    }
+
+    public function dislike(Request $request)
+    {
+        $comment = Webcomment::find($request->comment_id);
+        $user = auth()->user();
+
+        $existing = CommentLikeDislike::where('comment_id', $request->comment_id)
+                                      ->where('user_id', $user->id)
+                                      ->first();
+
+        if ($existing) {
+            if ($existing->type == 2) {
+                $existing->delete();
+            } else {
+                $existing->delete();
+                CommentLikeDislike::create([
+                    'comment_id' => $request->comment_id,
+                    'user_id' => $user->id,
+                    'type' => 2
+                ]);
+            }
+        } else {
+            CommentLikeDislike::create([
+                'comment_id' => $request->comment_id,
+                'user_id' => $user->id,
+                'type' => 2
+            ]);
+        }
+
+        CommentLikeDislike::where('comment_id', $request->comment_id)
+                          ->where('user_id', $user->id)
+                          ->where('type', 1)
+                          ->delete();
+
+        return response()->json([
+            'success' => true,
+            'like_count' => $comment->likes()->count(),
+            'dislike_count' => $comment->dislikes()->count(),
+            'dislike_status' => is_null($existing) ? "Add" : "Remove "  ,
+            'disliked' => true,
+        ]);
+    }
+    
 }

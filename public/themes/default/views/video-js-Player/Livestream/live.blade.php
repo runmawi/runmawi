@@ -545,7 +545,7 @@
                                         </div>
 
                                         <div class="row mt-3 justify-content-around"> 
-                                            <div class="paystack_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
+                                            <div class="paystack_button col-md-6 col-6 btn"> <!-- Paystack Button -->
                                                 @if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack')
                                                     <button class="btn text-white "
                                                         onclick="location.href ='{{ route('RazorpayLiveRent', [$Livestream_details->id, $Livestream_details->ppv_price]) }}' ;">

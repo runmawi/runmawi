@@ -511,6 +511,22 @@ border-radius: 0px 4px 4px 0px;
                                             <div>ON</div>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div>
+                                            <label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - Series)</small> </label>
+                                        </div>
+
+                                        <div class="d-flex ">
+                                            <div>OFF</div>
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent_series) && $settings->enable_ppv_rent_series ? 'checked' : '' }} value="1" name="enable_ppv_rent_series" id="enable_ppv_rent_series" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <div>ON</div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row mt-3">

@@ -244,7 +244,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <label class="m-0"> Episode Description </label>
                         <p class="p1"> Add a description of the Episode below: </p> 
                         <div class="panel-body">
-					        <textarea class="form-control" name="episode_description" id="summary-ckeditor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+					        <textarea class="form-control" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
                         </div>
                     </div>
                 </div>
@@ -643,13 +643,13 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
         <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
         <script>
-                 ClassicEditor
-                    .create( document.querySelector( '#summary-ckeditor' ) )
-                    .catch( error => {
-                        console.error( error );
-                    } );
-                    </script>
-        
+            ClassicEditor
+                .create( document.querySelector( '#description_editor' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
+
         <script> 
 
         <script>
