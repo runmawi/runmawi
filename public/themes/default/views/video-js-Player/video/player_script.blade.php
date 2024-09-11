@@ -35,6 +35,7 @@
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const backButton = document.querySelector('.staticback-btn');
         const titleButton = document.querySelector('.vjs-title-bar');
+        var controlBar = player.getChild('controlBar');
 
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
@@ -213,13 +214,17 @@
         player.on('enterpictureinpicture', function() {
             console.log('Entered Picture-in-Picture mode');
             player.controlBar.hide();
-            playPauseButton.style.display = "none";
+            playPauseButton.style.visibility = "hidden";
+            skipForwardButton.style.visibility = 'hidden';
+            skipBackwardButton.style.visibility = 'hidden';
         });
 
         player.on('leavepictureinpicture', function() {
             console.log('Exited Picture-in-Picture mode');
             player.controlBar.show();
-            playPauseButton.style.display = "block";
+            playPauseButton.style.visibility = "visible";
+            skipForwardButton.style.visibility = 'visible';
+            skipBackwardButton.style.visibility = 'visible';
         });
 
         //Function to Play & Pause when we press "Space Bar Button"

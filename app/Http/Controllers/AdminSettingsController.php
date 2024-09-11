@@ -221,6 +221,7 @@ class AdminSettingsController extends Controller
         $settings->skype_page_id = $skype_page_id;
         $settings->youtube_page_id = $request['youtube_page_id'];
         $settings->google_tracking_id = $request['google_tracking_id'];
+        $settings->google_analytics_link = $request['google_analytics_link'];
         $settings->signature = $request['signature'];
         $settings->login_text = $request['login_text'];
         $settings->login_text = $request['login_text'];
@@ -267,6 +268,8 @@ class AdminSettingsController extends Controller
         $settings->video = $request->input('video');
         $settings->live = $request->input('live');
         $settings->series = $request->input('series');
+
+
 
         $path = storage_path('app/public/');
 
@@ -531,6 +534,7 @@ class AdminSettingsController extends Controller
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
 
         $settings->save();
+        
 
         $storepath  = URL::to('storage/app/public/');
 
