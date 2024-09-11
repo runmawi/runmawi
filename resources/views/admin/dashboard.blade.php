@@ -279,7 +279,7 @@
                               @if($settings->google_analytics_link != null)
                                  <div class="col-sm-6">
                                     <div class="pt-4">
-                                       <a class="btn btn-primary" href="https://dashthis.com/app/view/dashboard-d_RzR1aMxE28z1MEoDNtcg"><span>Google Analytics</span></a>
+                                       <a class="btn btn-primary" href="{{$settings->google_analytics_link}}"><span>Google Analytics</span></a>
                                     </div>
                                  </div>
                               @endif
