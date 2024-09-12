@@ -152,6 +152,7 @@ class ConvertVideoForStreaming implements ShouldQueue
         $vid_name = $video_name[0];
         $this->video->update([
             'path' =>  $vid_name,
+            'old_path_mp4' =>  $video,
             'status' => 1
         ]);
 

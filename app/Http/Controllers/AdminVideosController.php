@@ -102,6 +102,7 @@ use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
 use App\CompressImage;
 use App\EPGSchedulerData;
+use App\Jobs\VideoCompression;
 
 class AdminVideosController extends Controller
 {
@@ -716,6 +717,8 @@ class AdminVideosController extends Controller
                 else{
                     if(Enable_4k_Conversion() == 1){
                         Convert4kVideoForStreaming::dispatch($video);
+                    }elseif(Enable_Video_Compression() == 1){
+                        VideoCompression::dispatch($video);
                     }else{
                         ConvertVideoForStreaming::dispatch($video);
                     }
@@ -781,6 +784,10 @@ class AdminVideosController extends Controller
             $video->user_id = Auth::user()->id;
             $video->duration = $Video_duration;
             $video->save();
+
+            if(Enable_Video_Compression() == 1){
+                VideoCompression::dispatch($video);
+            }
 
             // if(Enable_Extract_Image() == 1){
             //     // extractImageFromVideo
