@@ -10,6 +10,7 @@
     $data = Session::all();
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+    $home_settings = App\HomeSetting::first();
     
     $uri_path = $_SERVER['REQUEST_URI'];
     $uri_parts = explode('/', $uri_path);
@@ -1621,6 +1622,7 @@
                                         </li>
                                         <li>
                                     
+                                        <?php if( $home_settings->user_generated_content == '1' ): ?>
                                         <div class="bg-primary text-right p-1" style="border-radius:10px;" >
                                             <a href="<?php echo URL::to('ugc-create'); ?>" >
                                             <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1631,6 +1633,7 @@
                                             </svg>
                                             </a>
                                         </div>
+                                        <?php endif ; ?>
                                    
                                         </li>
                                         <li class="nav-item nav-icon">
