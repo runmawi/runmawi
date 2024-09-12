@@ -286,6 +286,8 @@ class AdminThemeSettingsController extends Controller
         
         $theme_settings->enable_video_cipher_upload       = !empty($data['enable_video_cipher_upload']) ? '1' : '0';
 
+        $theme_settings->enable_video_compression       = !empty($data['enable_video_compression']) ? '1' : '0';
+        
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);
