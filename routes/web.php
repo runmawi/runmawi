@@ -257,6 +257,7 @@ Route::get('pages/{landing_page_slug}', 'LandingpageController@landing_page')->n
 
 //  CMS Page
 Route::get('/page/{slug}', 'PagesController@index');
+Route::get('/mobility/page/{slug}', 'PagesController@MobalityIndex');
 
 
 // CheckAuthTheme5 & restrictIp Middleware
