@@ -317,7 +317,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   <div class="episodes_div season_<?= $seasons->id;?>">
                                       <?php
                                       // Calculate episode play access inside the loop
-                                      $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)->select('user_id', 'season_id')->first();
+                                        if (Auth::check()) {
+                                            $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)
+                                                                ->select('user_id', 'season_id')
+                                                                ->first();
+                                        } else {
+                                            // Handle the case when the user is not authenticated
+                                            $ppv_purchase_user = null; // or whatever logic you want here
+                                        }
                                       $setting_subscirbe_series_access = App\Setting::pluck('enable_ppv_rent_series')->first();
                                       $season_access_ppv = App\SeriesSeason::where('id', $seasons->id)->pluck('access')->first();
                                       
