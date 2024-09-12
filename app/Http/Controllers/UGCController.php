@@ -841,15 +841,15 @@ class UGCController extends Controller
             
             // Video Upload Limit
     
-            $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
-                                        ->whereYear('created_at',  $today->year)
-                                        ->whereMonth('created_at', $today->month)
-                                        ->count();
+            // $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
+            //                             ->whereYear('created_at',  $today->year)
+            //                             ->whereMonth('created_at', $today->month)
+            //                             ->count();
 
 
-            if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-                return response()->json( ["success" => 'video_upload_limit_exist'],200);
-            }
+            // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+            //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
+            // }
             
             $value = [];
             $data = $request->all();
@@ -2174,7 +2174,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 // $video->title = $file_folder_name;
                 $video->original_name = "public";
@@ -2219,7 +2219,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                //  $video = new Video();
+                //  $video = new UGCVideo();
                 $video->disk = "public";
                 $video->status = 0;
                 $video->original_name = "public";
@@ -2280,7 +2280,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 // $video->title = $file_folder_name;
                 $video->original_name = "public";
@@ -3263,7 +3263,7 @@ class UGCController extends Controller
                 return $value;
             }else{
             if (!empty($data["embed"])) {
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
                 // $video->title = $data['embed'];
