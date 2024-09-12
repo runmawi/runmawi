@@ -293,7 +293,7 @@
             position: relative;
 
             &:after {
-                // this is the sliding white part
+                /*  this is the sliding white part */
                 content: '';
                 height: 100%;
                 width: 100%;
@@ -302,9 +302,9 @@
                 left: 0;
                 animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
 
-                // opaque white slide
+                /*  opaque white slide */
                 background: #222831;
-                // gradient shine scroll
+                /* gradient shine scroll */
                 background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
                 /* FF3.6-15 */
                 background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
@@ -415,7 +415,7 @@
         height: 15px;
         width: 15px;
         left: 5px;
-        bottom: 2px;
+        bottom: 2.8px;
         background-color: white;
         -webkit-transition: .4s;
         transition: .4s;
@@ -1592,7 +1592,7 @@
                                                     class="searchbox">
                                                     <input name="_token" type="hidden"
                                                         value="<?php echo csrf_token(); ?>" />
-                                                    <div class="form-group position-relative">
+                                                    <div class="form-group position-relative" style="background-color: #8080807d;">
                                                         <input type="text" name="search"
                                                             class="text search-input font-size-12 searches"
                                                             placeholder="Type Here" />
