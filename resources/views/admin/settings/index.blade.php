@@ -62,7 +62,7 @@ border-radius: 0px 4px 4px 0px;
         margin: 0;
     }
     .ppv_switvh span, .ppv_switvh label{display:none;}
-    /* body.light #video, #live, .form-control{background-color: #e8f5e9 !important}; */
+     .form-control.ppv_expiry_input{background-color:#f0f0f0!important};
 
 </style>
 @section('css')
@@ -471,21 +471,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="started_video_expiry_days" id="started_video_expiry_days" value="@if(!empty($settings->started_video_expiry_days)){{ $settings->started_video_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_days" id="started_video_expiry_days" value="@if(!empty($settings->started_video_expiry_days)){{ $settings->started_video_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="started_video_expiry_hours" id="started_video_expiry_hours" value="@if(!empty($settings->started_video_expiry_hours)){{ $settings->started_video_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_hours" id="started_video_expiry_hours" value="@if(!empty($settings->started_video_expiry_hours)){{ $settings->started_video_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="started_video_expiry_mints" id="started_video_expiry_mints" value="@if(!empty($settings->started_video_expiry_mints)){{ $settings->started_video_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_mints" id="started_video_expiry_mints" value="@if(!empty($settings->started_video_expiry_mints)){{ $settings->started_video_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -498,21 +498,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="before_video_expiry_days" id="before_video_expiry_days" value="@if(!empty($settings->before_video_expiry_days)){{ $settings->before_video_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_days" id="before_video_expiry_days" value="@if(!empty($settings->before_video_expiry_days)){{ $settings->before_video_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="before_video_expiry_hours" id="before_video_expiry_hours" value="@if(!empty($settings->before_video_expiry_hours)){{ $settings->before_video_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_hours" id="before_video_expiry_hours" value="@if(!empty($settings->before_video_expiry_hours)){{ $settings->before_video_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="before_video_expiry_mints" id="before_video_expiry_mints" value="@if(!empty($settings->before_video_expiry_mints)){{ $settings->before_video_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_mints" id="before_video_expiry_mints" value="@if(!empty($settings->before_video_expiry_mints)){{ $settings->before_video_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -530,21 +530,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="started_live_expiry_days" id="started_live_expiry_days" value="@if(!empty($settings->started_live_expiry_days)){{ $settings->started_live_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_days" id="started_live_expiry_days" value="@if(!empty($settings->started_live_expiry_days)){{ $settings->started_live_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="started_live_expiry_hours" id="started_live_expiry_hours" value="@if(!empty($settings->started_live_expiry_hours)){{ $settings->started_live_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_hours" id="started_live_expiry_hours" value="@if(!empty($settings->started_live_expiry_hours)){{ $settings->started_live_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="started_live_expiry_mints" id="started_live_expiry_mints" value="@if(!empty($settings->started_live_expiry_mints)){{ $settings->started_live_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_mints" id="started_live_expiry_mints" value="@if(!empty($settings->started_live_expiry_mints)){{ $settings->started_live_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -557,21 +557,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="before_live_expiry_days" id="before_live_expiry_days" value="@if(!empty($settings->before_live_expiry_days)){{ $settings->before_live_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_days" id="before_live_expiry_days" value="@if(!empty($settings->before_live_expiry_days)){{ $settings->before_live_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="before_live_expiry_hours" id="before_live_expiry_hours" value="@if(!empty($settings->before_live_expiry_hours)){{ $settings->before_live_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_hours" id="before_live_expiry_hours" value="@if(!empty($settings->before_live_expiry_hours)){{ $settings->before_live_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="before_live_expiry_mints" id="before_live_expiry_mints" value="@if(!empty($settings->before_live_expiry_mints)){{ $settings->before_live_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_mints" id="before_live_expiry_mints" value="@if(!empty($settings->before_live_expiry_mints)){{ $settings->before_live_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -589,21 +589,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="started_season_expiry_days" id="started_season_expiry_days" value="@if(!empty($settings->started_season_expiry_days)){{ $settings->started_season_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_days" id="started_season_expiry_days" value="@if(!empty($settings->started_season_expiry_days)){{ $settings->started_season_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="started_season_expiry_hours" id="started_season_expiry_hours" value="@if(!empty($settings->started_season_expiry_hours)){{ $settings->started_season_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_hours" id="started_season_expiry_hours" value="@if(!empty($settings->started_season_expiry_hours)){{ $settings->started_season_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="started_season_expiry_mints" id="started_season_expiry_mints" value="@if(!empty($settings->started_season_expiry_mints)){{ $settings->started_season_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_mints" id="started_season_expiry_mints" value="@if(!empty($settings->started_season_expiry_mints)){{ $settings->started_season_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
@@ -616,21 +616,21 @@ border-radius: 0px 4px 4px 0px;
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Days </p>
-                                                    <input class="form-control" type="number" name="before_season_expiry_days" id="before_season_expiry_days" value="@if(!empty($settings->before_season_expiry_days)){{ $settings->before_season_expiry_days }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_days" id="before_season_expiry_days" value="@if(!empty($settings->before_season_expiry_days)){{ $settings->before_season_expiry_days }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Hours  </p>
-                                                    <input class="form-control" type="number" name="before_season_expiry_hours" id="before_season_expiry_hours" value="@if(!empty($settings->before_season_expiry_hours)){{ $settings->before_season_expiry_hours }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_hours" id="before_season_expiry_hours" value="@if(!empty($settings->before_season_expiry_hours)){{ $settings->before_season_expiry_hours }}@endif">
                                                 </div>
                                             </div>
 
                                             <div class="panel-body col-md-4">
                                                 <div class="form-group">
                                                     <p class="p1"> Minutes  </p>
-                                                    <input class="form-control" type="number" name="before_season_expiry_mints" id="before_season_expiry_mints" value="@if(!empty($settings->before_season_expiry_mints)){{ $settings->before_season_expiry_mints }}@endif">
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_mints" id="before_season_expiry_mints" value="@if(!empty($settings->before_season_expiry_mints)){{ $settings->before_season_expiry_mints }}@endif">
                                                 </div>
                                             </div>
                                         </div>
