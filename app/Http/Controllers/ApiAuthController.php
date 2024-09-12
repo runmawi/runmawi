@@ -1259,6 +1259,123 @@ class ApiAuthController extends Controller
             return response()->json($response, 200);
     }
 
+    // 12th Sep 2024 - Reset Password (verify_reset_password & upadate_reset_password)
+
+    public function verify_reset_password(Request $request)
+    {
+      try {
+
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'verify_code' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'verify_code.required' => 'Please enter your password.',
+        ]);
+
+        if ($validator->fails()) {
+
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Unauthorized User'], 400);
+        }
+
+            // Checking Verify code
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)->where('verification_code',$request->verify_code)->first();
+
+        if( is_null( $password_resets_check) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Invalid Token, Pls check Once'], 400);
+        }
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)
+                                                            ->where('verification_code',$request->verify_code)
+                                                            ->update(['verification_code' => null ]);
+
+        return response()->json([ 'status'=>'false',
+                                  'status_code'=> 200 ,
+                                  'message'=>'verification done successfully'
+                                ],200);
+
+      } catch (\Throwable $th) {
+
+        return response()->json([
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        ],400);
+      }
+    }
+
+    public function update_reset_password(Request $request)
+    {
+      try {
+        
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'password' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'password.required' => 'Please enter your password.',
+        ]);
+    
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'false',
+                'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+            return response()->json(['status'=>'false', 
+                                      'message'=> 'Unauthorized User'
+                                    ], 400);
+        }
+
+              // Update Password
+
+        User::where('email',$request->email)->where('active',1)->first()->update(['password' => Hash::make($request->password) ]);
+
+        send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_check_exits->id);
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 200 ,
+          'message'=>'Password Updated successfully'
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, $response['status_code']);
+    }
+
   public function updatepassword(Request $request)
   {
     $user_email = $request->email;
@@ -5406,39 +5523,6 @@ public function checkEmailExists(Request $request)
         return response()->json($response, 200);
         }
 
-    public function VerifyOtp(Request $request){
-            /*$otp = $request->get('otp');
-            $verify_id = $request->get('verify_id');
-
-                $basic  = new \Nexmo\Client\Credentials\Basic('8c2c8892', '05D2vuG2VbYw2tQZ');
-                $client = new \Nexmo\Client($basic);
-                $request_id = $verify_id;
-
-               try{
-                $verification = new \Nexmo\Verify\Verification($request_id);
-                $result = $client->verify()->check($verification, $otp);
-
-
-                    $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-                } catch(\Vonage\Client\Exception\Request $e){
-                    $response = array(
-                                    'status' => false,
-                                    'message' => 'Invalid Code'
-                                );
-                    return response()->json($response, 200);
-                }  */
-                 $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-    }
 
   public function CheckBlockList(Request $request){
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();

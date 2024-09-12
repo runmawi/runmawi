@@ -55,6 +55,10 @@ Route::group(
         Route::post('updatepassword', 'ApiAuthController@updatepassword');
         Route::post('changepassword', 'ApiAuthController@changepassword');
         Route::post('verifyandupdatepassword', 'ApiAuthController@verifyandupdatepassword');
+
+        Route::post('verify-token-reset-password', 'ApiAuthController@verify_reset_password');
+        Route::post('update-reset-password', 'ApiAuthController@update_reset_password');
+
         Route::get('latestvideos', 'ApiAuthController@latestvideos');
         Route::get('categorylist', 'ApiAuthController@categorylist');
         Route::post('channelvideos', 'ApiAuthController@channelvideos');
