@@ -118,9 +118,9 @@ class AdminVideosController extends Controller
 
         $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
         $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
-        $this->Flussonic_Auth_Key  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
-        $this->Flussonic_Server_Base_URL  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
-        $this->Flussonic_Storage_Tag  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
+        $this->Flussonic_Auth_Key  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
+        $this->Flussonic_Server_Base_URL  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
+        $this->Flussonic_Storage_Tag  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
 
     }
 
@@ -4896,6 +4896,12 @@ class AdminVideosController extends Controller
     {
         return Video::where("id", "=", $id)->first();
     }
+
+    function get_compression_processed_percentage($id)
+    {
+        return Video::where("id", "=", $id)->first();
+    }
+    
     public function purchaseVideocount(Request $request)
     {
         $data = $request->all();

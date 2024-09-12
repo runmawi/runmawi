@@ -78,6 +78,10 @@ class VideoCompression implements ShouldQueue
             ->open($video)
             ->export()
             ->toDisk($disk)
+            ->onProgress(function ($percentage) {
+                $this->video->stream_path = $percentage; 
+                $this->video->save();
+            })
             ->inFormat(
                 (new \FFMpeg\Format\Video\X264('aac', 'libx264'))
                     ->setKiloBitrate($target_bitrate) 
