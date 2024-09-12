@@ -1164,45 +1164,53 @@ class ApiAuthController extends Controller
   public function resetpassword(Request $request)
   {
     try {
+      
+      $this->validate($request, [
+        'email'  => 'required' ,
+      ]);
 
       $user_email = $request->email;
-      $user = User::where('email', $user_email)->count();
+      $user = User::where('email', $user_email)->where('active',1)->first();
 
-      if($user > 0){
+      if(is_null($user)){
 
-        $verification_code = mt_rand(1000, 9999);
+        return response()->json(['status'=>'false', 
+                                  'message'=> 'Unauthorized User'
+                                ], 400);
+      }
 
-        try {
+      $verification_code = mt_rand(1000, 9999);
 
-          Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
-            $message->to($user_email)->subject('Verify your email address');
-          });
+      try {
 
-        } catch (\Throwable $th) {
+        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
+          $message->to($user_email)->subject('Verify your email address');
+        });
 
-          $response = array(
-            'status_code' => 400 ,
-            'status'    =>'false',
-            'message'   => $th->getMessage(),
-            'email'     => $user_email,
-          );
+      } catch (\Throwable $th) {
 
-          return response()->json($response, $response['status_code']);
-        }
-
-        $data = DB::table('password_resets')->where('email', $user_email)->first();
-
-        $input_array = array(
-          'email' =>  $user_email, 
-          'verification_code' => $verification_code,
+        $response = array(
+          'status_code' => 400 ,
+          'status'    =>'false',
+          'message'   => $th->getMessage(),
+          'email'     => $user_email,
         );
 
-        if(empty($data)){
-            DB::table('password_resets')->insert( $input_array );
+        return response()->json($response, $response['status_code']);
+      }
 
-        }else{
-            DB::table('password_resets')->where('email', $user_email)->update($input_array);
-        }
+      $data = DB::table('password_resets')->where('email', $user_email)->first();
+
+      $input_array = array(
+        'email' =>  $user_email, 
+        'verification_code' => $verification_code,
+      );
+
+      if(empty($data)){
+          DB::table('password_resets')->insert( $input_array );
+
+      }else{
+          DB::table('password_resets')->where('email', $user_email)->update($input_array);
       }
 
       $response = array(
@@ -1212,6 +1220,7 @@ class ApiAuthController extends Controller
         'email'     => $user_email,
         'verification_code'=> !empty($verification_code) ?? $verification_code,
       );
+
 
     } catch (\Throwable $th) {
 
@@ -1223,7 +1232,6 @@ class ApiAuthController extends Controller
     }
 
     return response()->json($response, $response['status_code']);
-
   }
 
      public function ViewStripe(Request $request){
