@@ -533,6 +533,29 @@ class AdminSettingsController extends Controller
         $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
 
+        
+        // expiry for video
+        $settings->started_video_expiry_days  =  $request['started_video_expiry_days'];
+        $settings->started_video_expiry_hours =  $request['started_video_expiry_hours'];
+        $settings->started_video_expiry_mints =  $request['started_video_expiry_mints'];
+        $settings->before_video_expiry_days =    $request['before_video_expiry_days'];
+        $settings->before_video_expiry_hours =   $request['before_video_expiry_hours'];
+        $settings->before_video_expiry_mints =   $request['before_video_expiry_mints'];
+        // expiry for live
+        $settings->started_live_expiry_days  =  $request['started_live_expiry_days'];
+        $settings->started_live_expiry_hours =  $request['started_live_expiry_hours'];
+        $settings->started_live_expiry_mints =  $request['started_live_expiry_mints'];
+        $settings->before_live_expiry_days =    $request['before_live_expiry_days'];
+        $settings->before_live_expiry_hours =   $request['before_live_expiry_hours'];
+        $settings->before_live_expiry_mints =   $request['before_live_expiry_mints'];
+        // expiry for season
+        $settings->started_season_expiry_days  =  $request['started_season_expiry_days'];
+        $settings->started_season_expiry_hours =  $request['started_season_expiry_hours'];
+        $settings->started_season_expiry_mints =  $request['started_season_expiry_mints'];
+        $settings->before_season_expiry_days =    $request['before_season_expiry_days'];
+        $settings->before_season_expiry_hours =   $request['before_season_expiry_hours'];
+        $settings->before_season_expiry_mints =   $request['before_season_expiry_mints'];
+
         $settings->save();
         
 
