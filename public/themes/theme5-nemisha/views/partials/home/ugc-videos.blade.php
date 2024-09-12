@@ -2,7 +2,7 @@
     <h5 class="main-title">User Generated Content</a></h5>
 </div>
 <div class="favorites-contens">
-    <div class="ugc-video home-sec list-inline row p-0 mb-0" style="height: auto" >
+    <div class="ugc-video home-sec list-inline row p-0 mb-0">
         <?php  if(isset($ugc_videos)) :
                     foreach($ugc_videos as $ugc_video): 
         ?>
@@ -22,7 +22,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
                     <h6><?php  echo (strlen($ugc_video->title) > 17) ? substr($ugc_video->title,0,18).'...' : $ugc_video->title; ?></h6>
@@ -45,17 +44,20 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
-<script>
-var elem = document.querySelector('.ugc-video');
-var flkty = new Flickity(elem, {
-    cellAlign: 'left',
-    contain: true,
-    groupCells: true,
-    pageDots: false,
-    draggable: true,
-    freeScroll: true,
-    imagesLoaded: true,
-    lazyload:true,
 
+<!-- Flickity Slider -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var elem = document.querySelector('.ugc-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload: true,
+    });
 });
-</script>
+ </script>
