@@ -10,6 +10,7 @@
     $data = Session::all();
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
+    $home_settings = App\HomeSetting::first();
     
     $uri_path = $_SERVER['REQUEST_URI'];
     $uri_parts = explode('/', $uri_path);
@@ -293,7 +294,7 @@
             position: relative;
 
             &:after {
-                // this is the sliding white part
+                /*  this is the sliding white part */
                 content: '';
                 height: 100%;
                 width: 100%;
@@ -302,9 +303,9 @@
                 left: 0;
                 animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
 
-                // opaque white slide
+                /*  opaque white slide */
                 background: #222831;
-                // gradient shine scroll
+                /* gradient shine scroll */
                 background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
                 /* FF3.6-15 */
                 background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
@@ -415,7 +416,7 @@
         height: 15px;
         width: 15px;
         left: 5px;
-        bottom: 2px;
+        bottom: 2.8px;
         background-color: white;
         -webkit-transition: .4s;
         transition: .4s;
@@ -1592,7 +1593,7 @@
                                                     class="searchbox">
                                                     <input name="_token" type="hidden"
                                                         value="<?php echo csrf_token(); ?>" />
-                                                    <div class="form-group position-relative">
+                                                    <div class="form-group position-relative" style="background-color: #8080807d;">
                                                         <input type="text" name="search"
                                                             class="text search-input font-size-12 searches"
                                                             placeholder="Type Here" />
@@ -1621,6 +1622,7 @@
                                         </li>
                                         <li>
                                     
+                                        <?php if( $home_settings->user_generated_content == '1' ): ?>
                                         <div class="bg-primary text-right p-1" style="border-radius:10px;" >
                                             <a href="<?php echo URL::to('ugc-create'); ?>" >
                                             <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1631,6 +1633,7 @@
                                             </svg>
                                             </a>
                                         </div>
+                                        <?php endif ; ?>
                                    
                                         </li>
                                         <li class="nav-item nav-icon">

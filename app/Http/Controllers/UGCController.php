@@ -410,7 +410,7 @@ class UGCController extends Controller
             $inputs += [ 'liked'  => is_null($check_Like_exist) ? 1 : 0 , ];
 
             
-            $Like_exist = LikeDislike::where('video_id', $request->video_id)
+            $Like_exist = LikeDislike::where('ugc_video_id', $request->video_id)
                                         ->where(function ($query) use ($geoip) {
                                             if (!Auth::guest()) {
                                                 $query->where('user_id', Auth::user()->id);
@@ -841,15 +841,15 @@ class UGCController extends Controller
             
             // Video Upload Limit
     
-            $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
-                                        ->whereYear('created_at',  $today->year)
-                                        ->whereMonth('created_at', $today->month)
-                                        ->count();
+            // $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
+            //                             ->whereYear('created_at',  $today->year)
+            //                             ->whereMonth('created_at', $today->month)
+            //                             ->count();
 
 
-            if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-                return response()->json( ["success" => 'video_upload_limit_exist'],200);
-            }
+            // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+            //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
+            // }
             
             $value = [];
             $data = $request->all();
@@ -1022,7 +1022,7 @@ class UGCController extends Controller
                 
                             $VideoExtractedImage = new VideoExtractedImages();
                             $VideoExtractedImage->user_id = Auth::user()->id;
-                            $VideoExtractedImage->socure_type = 'Video';
+                            $VideoExtractedImage->socure_type = 'UGC Video';
                             $VideoExtractedImage->video_id = $video->id;
                             $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $index . '.jpg');
                             $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $index . '.jpg');
@@ -1144,7 +1144,7 @@ class UGCController extends Controller
                     
                             $VideoExtractedImage = new VideoExtractedImages();
                             $VideoExtractedImage->user_id = Auth::user()->id;
-                            $VideoExtractedImage->socure_type = 'Video';
+                            $VideoExtractedImage->socure_type = 'UGC Video';
                             $VideoExtractedImage->video_id = $video->id;
                             $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $i . '.jpg');
                             $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $i . '.jpg');
@@ -1201,7 +1201,7 @@ class UGCController extends Controller
                 
                             $VideoExtractedImage = new VideoExtractedImages();
                             $VideoExtractedImage->user_id = Auth::user()->id;
-                            $VideoExtractedImage->socure_type = 'Video';
+                            $VideoExtractedImage->socure_type = 'UGC Video';
                             $VideoExtractedImage->video_id = $video->id;
                             $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video->id . '_' . $rand . '_' . $index . '.jpg');
                             $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video->id . '_' . $randportrait . '_' . $index . '.jpg');
@@ -1313,7 +1313,7 @@ class UGCController extends Controller
             $video->save();
 
             $video_id = $video->id;
-            $video_title = Video::find($video_id);
+            $video_title = UGCVideo::find($video_id);
             $title = $video_title->title;
 
             $value["success"] = 1;
@@ -2174,7 +2174,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 // $video->title = $file_folder_name;
                 $video->original_name = "public";
@@ -2219,7 +2219,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                //  $video = new Video();
+                //  $video = new UGCVideo();
                 $video->disk = "public";
                 $video->status = 0;
                 $video->original_name = "public";
@@ -2280,7 +2280,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 // $video->title = $file_folder_name;
                 $video->original_name = "public";
@@ -3263,7 +3263,7 @@ class UGCController extends Controller
                 return $value;
             }else{
             if (!empty($data["embed"])) {
-                // $video = new Video();
+                // $video = new UGCVideo();
                 $video->disk = "public";
                 $video->original_name = "public";
                 // $video->title = $data['embed'];
@@ -3395,6 +3395,50 @@ class UGCController extends Controller
                 return $responseData;
             
         }
+
+        public function video_slug_validate(Request $request)
+        {
+            $video_slug_validate = UGCVideo::where("slug", $request->slug)->count();
+
+            if ($request->type == "create") {
+                $validate_status = $video_slug_validate > 0 ? "true" : "false";
+            } elseif ($request->type == "edit") {
+                $video_slug_count = UGCVideo::where("id", $request->video_id)
+                    ->where("slug", $request->slug)
+                    ->count();
+
+                if ($video_slug_count == 1) {
+                    $validate_status = $video_slug_validate > 1 ? "true" : "false";
+                } else {
+                    $validate_status = $video_slug_validate > 0 ? "true" : "false";
+                }
+            }
+            return response()->json(["message" => $validate_status]);
+        }
+
+         
+    
+        public function ExtractedImage(Request $request)
+        {
+            try {
+
+                $value = [];
+
+                $ExtractedImage =  VideoExtractedImages::where('ugc_video_id',$request->video_id)->where('socure_type','UGC Video')->get();
+           
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["video_id"] = $request->video_id;
+                $value["ExtractedImage"] = $ExtractedImage;
+
+                return $value;
+
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+
+        }
+
     
         
         public function StreamBunnyCdnVideo(Request $request)
@@ -3430,6 +3474,224 @@ class UGCController extends Controller
                 return $value;
             }
         }
+
+        private  function UploadVideoBunnyCDNStream(  $storage_settings,$libraryid,$mp4_url){
+            // Bunny Cdn get Videos 
+        
+            $storage_settings = StorageSetting::first();
+        
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+            && !empty($storage_settings->bunny_cdn_access_key) ){
+                
+                $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+                
+                $ch = curl_init();
+                
+                $options = array(
+                    CURLOPT_URL => $libraryurl,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HTTPHEADER => array(
+                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                        'Content-Type: application/json',
+                    ),
+                );
+                
+                curl_setopt_array($ch, $options);
+                
+                $response = curl_exec($ch);
+                $librarys = json_decode($response, true);
+                curl_close($ch);
+        
+            }else{
+                $librarys = [];
+        
+            }
+            if(count($librarys) > 0){
+                foreach($librarys as $key => $value){
+                    if( $value['Id'] == $libraryid){
+                        $library_id = $value['Id'];
+                        $library_ApiKey = $value['ApiKey']; 
+                        $library_PullZoneId = $value['PullZoneId']; 
+                        break;
+                    }else{
+                        $library_id = null;
+                        $library_ApiKey = null; 
+                        $library_PullZoneId = null; 
+                    }
+                }
+            }else{
+                $library_id = null;
+                $library_ApiKey = null; 
+                $library_PullZoneId = null; 
+            }
+            
+            if($library_id != null && $library_ApiKey != null){
+        
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+        
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+        
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }    
+                }
+                
+                $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename =  str_replace(' ', '_',$file_name);
+        
+                // Step 1: Create the video entry in the library
+                try {
+                    $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                        'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                        'headers' => [
+                            'AccessKey' => $library_ApiKey,
+                            'Accept' => 'application/json',
+                        ]
+                    ]);
+                
+                    $responseData = json_decode($response->getBody(), true);
+                    $guid = $responseData['guid'];
+                } catch (RequestException $e) {
+                    echo "Error creating video entry: " . $e->getMessage();
+                    exit;
+                }
+                
+                // Step 2: Upload the video file
+        
+                try {
+        
+                    $context = stream_context_create([
+                        'ssl' => [
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                        ],
+                    ]);
+                    // Fetch video file content using file_get_contents with SSL context
+                    $videoData = file_get_contents($mp4_url, false, $context);
+                    
+                    $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                        'headers' => [
+                            'AccessKey' => $library_ApiKey,
+                            'Content-Type' => 'video/mp4' 
+                        ],
+                        'body' => $videoData 
+                    ]);
+        
+                    $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
+                    // echo "<pre>";
+                    // echo "Video uploaded successfully: " . $videoUrl;
+                    // echo "<pre>";
+                    // echo "Video uploaded successfully: " . $guid;
+                    // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
+        
+                    $responseuploaded = json_decode($response->getBody(), true);
+                    $statusCode = $responseuploaded['statusCode'];
+        
+                } catch (RequestException $e) {
+                    echo "Error uploading video: " . $e->getMessage();
+                    exit;
+                }
+                $value = [];
+                if($statusCode == 200){
+        
+                    $video = new UGCVideo();
+                    $video->disk = "public";
+                    $video->original_name = "public";
+                    $video->title = $file_name;
+                    $video->m3u8_url = $videoUrl;
+                    $video->type = "m3u8_url";
+                    $video->draft = 1;
+                    $video->active = 0;
+                    $video->image = default_vertical_image();
+                    $video->video_tv_image = default_horizontal_image();
+                    $video->player_image = default_horizontal_image();
+                    $video->user_id = Auth::user()->id;
+                    $video->save();
+        
+                    $video_id = $video->id;
+        
+                    if(Enable_Extract_Image() == 1){
+                        // extractImageFromVideo
+                    
+                        $rand = Str::random(16);
+        
+                        $ffmpeg = \FFMpeg\FFMpeg::create();
+                        $videoFrame = $ffmpeg->open($mp4_url);
+                        
+                        // Define the dimensions for the frame (16:9 aspect ratio)
+                        $frameWidth = 1280;
+                        $frameHeight = 720;
+                        
+                        // Define the dimensions for the frame (9:16 aspect ratio)
+                        $frameWidthPortrait = 1080;  // Set the desired width of the frame
+                        $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
+                        
+                        $randportrait = 'portrait_' . $rand;
+                        
+                        $interval = 5; // Interval for extracting frames in seconds
+                        $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
+                        $totalDuration = intval($totalDuration);
+        
+        
+                        if ( 600 < $totalDuration) { 
+                            $timecodes = [5, 120, 240, 360, 480]; 
+                        } else { 
+                            $timecodes = [5, 10, 15, 20, 25]; 
+                        }
+        
+                        
+                        foreach ($timecodes as $index => $time) {
+                            $imagePortraitPath = public_path("uploads/images/{$video_id}_{$randportrait}_{$index}.jpg");
+                            $imagePath = public_path("uploads/images/{$video_id}_{$rand}_{$index}.jpg");
+                    
+                            try {
+                                $videoFrame
+                                    ->frame(TimeCode::fromSeconds($time))
+                                    ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
+                    
+                                $videoFrame
+                                    ->frame(TimeCode::fromSeconds($time))
+                                    ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
+                    
+                                $VideoExtractedImage = new VideoExtractedImages();
+                                $VideoExtractedImage->user_id = Auth::user()->id;
+                                $VideoExtractedImage->socure_type = 'UGC Video';
+                                $VideoExtractedImage->video_id = $video_id;
+                                $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video_id . '_' . $rand . '_' . $index . '.jpg');
+                                $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video_id . '_' . $randportrait . '_' . $index . '.jpg');
+                                $VideoExtractedImage->image_original_name = $video_id . '_' . $rand . '_' . $index . '.jpg';
+                                $VideoExtractedImage->save();
+                            } catch (\Exception $e) {
+                                dd($e->getMessage());
+                            }
+                        }
+                    
+                    }
+        
+        
+                    $value["success"] = 1;
+                    $value["message"] = "Uploaded Successfully!";
+                    $value["video_id"] = $video_id;
+                    $value["video_title"] = $file_name;
+        
+                    \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
+                    return $value ;
+                }else{
+                    $value["success"] = 2;
+                    \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
+                    return $value ;
+                }
+            }
+
 
         public function AWSuploadEditVideo(Request $request)
     {

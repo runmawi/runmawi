@@ -317,7 +317,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   <div class="episodes_div season_<?= $seasons->id;?>">
                                       <?php
                                       // Calculate episode play access inside the loop
-                                      $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)->select('user_id', 'season_id')->first();
+                                        if (Auth::check()) {
+                                            $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)
+                                                                ->select('user_id', 'season_id')
+                                                                ->first();
+                                        } else {
+                                            // Handle the case when the user is not authenticated
+                                            $ppv_purchase_user = null; // or whatever logic you want here
+                                        }
                                       $setting_subscirbe_series_access = App\Setting::pluck('enable_ppv_rent_series')->first();
                                       $season_access_ppv = App\SeriesSeason::where('id', $seasons->id)->pluck('access')->first();
                                       
@@ -351,7 +358,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                       <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                           <button id="button" class="view-count rent-video btn btn-primary mr-4 text-white"><?php echo __('Subscribe now'); ?></button>
                                                       </form>
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>
@@ -360,13 +367,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                       <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                           <button id="button" class="view-count rent-video btn text-white btn-primary mr-4"><?php echo __('Subscribe now'); ?></button>
                                                       </form>
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>
                                               <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
                                                   <div class="d-flex">
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>

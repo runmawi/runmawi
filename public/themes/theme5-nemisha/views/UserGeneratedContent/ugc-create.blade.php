@@ -762,7 +762,7 @@ $(document).ready(function(){
          $.ajax({
          type: "POST", 
          dataType: "json", 
-         url: "{{ url('admin/video_slug_validate') }}",
+         url: "{{ url('ugc/video_slug_validate') }}",
                data: {
                   _token  : "{{csrf_token()}}" ,
                   slug : slug,
@@ -983,7 +983,7 @@ $(document).ready(function(){
    $('#video_details').show();
 
    $.ajax({
-        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        url: '{{ URL::to('ugc/extractedimage') }}',
         type: "post",
         data: {
             _token: '{{ csrf_token() }}',
