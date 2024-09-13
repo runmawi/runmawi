@@ -215,8 +215,25 @@ class ApiAuthController extends Controller
   }
 
   public function signup(Request $request)
-  {
+  {    
+    try { 
+          // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'email' => 'required|email|unique:users,email',  
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+        
         $input = $request->all();
         
         $user_data = array( 'username' => $request->get('username'),
@@ -234,6 +251,8 @@ class ApiAuthController extends Controller
         $user_data['mobile'] = isset($input['mobile']) && !empty($input['mobile']) ? $input['mobile'] : " " ;
         $skip = isset($input['skip']) ? $input['skip'] : 0 ;
         
+            // Reference code
+
         if (!empty($input['referrer_code'])){
           $referrer_code = $input['referrer_code'];
         }
@@ -245,44 +264,49 @@ class ApiAuthController extends Controller
               $referred_user_id =null;
         }
 
+            // Token Generate
+
         $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
 
-        if (!empty($request->token)){
-            $user_data['token'] =  $request->token;
-        } else {
-          $user_data['token'] =  '';
-        }
+        $user_data['token'] =  !empty($request->token) ? $request->token : null ;
 
-        $path = URL::to('/').'/public/uploads/avatars/';
+            // Avatar Upload
+
+        $path = URL::to('public/uploads/avatars');
         $logo = $request->file('avatar');
-        if($logo != '') {
-            if($logo != ''  && $logo != null){
-                $file_old = $path.$logo;
-                if (file_exists($file_old)){
-                      unlink($file_old);
-                }
-            }
-            $file = $logo;
-            $avatar  = $file->getClientOriginalName();
-            $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
-        } else {
-            $avatar  = 'default.png';
+        $avatar = 'default.png';
+
+        if(!is_null($logo)){
+
+          $file_old = $path.$logo;
+
+          if (file_exists($file_old)){
+            unlink($file_old);
+          }
+          
+          $avatar  = $logo->getClientOriginalName();
+          $file->move(public_path()."/uploads/avatars/", $logo->getClientOriginalName());
         }
 
-        if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'registered';
-            $user_data['active'] = '1';
-        } else {
-                if($settings->activation_email):
-                  $user_data['activation_code'] = Str::random(60);
-                  $user_data['active'] = 0;
-                endif;
-          $user_data['role'] = 'registered';
-        }
+        // Activation code
 
+        $user_data['role'] = 'registered';
+        $user_data['active'] = 1;
+        $user_data['activation_code'] = null;
+        
+        if (!$settings->free_registration && $skip == 0) {
+          // 
+        } 
+
+        if ($settings->activation_email) {
+            $user_data['activation_code'] = Str::padLeft(mt_rand(0, 999999), 6, '0');
+            $user_data['active'] = 0;
+        }
+        
+        // Stripe plan
         if (isset($input['subscrip_plan'])) {
             $plan = $input['subscrip_plan'];
         }
@@ -290,26 +314,26 @@ class ApiAuthController extends Controller
         $user = User::where('email', $request->get('email'))->first();
         $username = User::where('username', $request->get('username'))->where('username', '!=', null)->first();
 
-        if ($user === null ) {
-          // && $username === null
-              $user = new User($user_data);
-              $user->ccode = $user_data['ccode'];
-              $user->mobile = $user_data['mobile'];
-              $user->avatar = $avatar;
-              $user->password = Hash::make($request->get('password'));
-              $user->referrer_id = $referred_user_id;
-              $user->token = $user_data['token'];
-              $user->activation_code = Str::random(60);
-              $user->referral_token = $ref_token;
-              $user->country = $request->country;
-              $user->state = $request->state;
-              $user->city = $request->city;
-              $user->DOB = $request->dob;
-              $user->support_username = $request->support_username;
-              $user->active = 1;
-              $user->save();
-              $userdata = User::where('email', '=', $request->get('email'))->first();
-              $userid = $userdata->id;
+        $user = new User($user_data);
+        $user->ccode = $user_data['ccode'];
+        $user->mobile = $user_data['mobile'];
+        $user->avatar = $avatar;
+        $user->password = Hash::make($request->get('password'));
+        $user->referrer_id = $referred_user_id;
+        $user->token = $user_data['token'];
+        $user->activation_code = $user_data['activation_code'];
+        $user->referral_token = $ref_token;
+        $user->country = $request->country;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->DOB = $request->dob;
+        $user->support_username = $request->support_username;
+        $user->active = $user_data['active'];
+        $user->save();
+
+        $userdata = User::where('email', $request->get('email'))->first();
+        $userid = $userdata->id;
+
         // welcome Email
                                   
                try {
@@ -346,18 +370,8 @@ class ApiAuthController extends Controller
 
             }
             
-              send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+            send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
 
-        }
-        else {
-              if($user != null){
-                $response = array('status'=>'false','message' => 'Email id Already Exists');
-                return response()->json($response, 200);
-              }else{
-                // $response = array('status'=>'false','message' => 'Username Already Exists');
-                // return response()->json($response, 200);
-              }
-        }
 
         $userid = !empty($userdata) ?  $user->id : " ";
 
@@ -365,84 +379,40 @@ class ApiAuthController extends Controller
       
       if($settings->free_registration == 0 && $settings->activation_email == 1){
 
-        
                 // verify email
-                try {
-                  \Mail::send('emails.verify', array(
-                      'activation_code' => $userdata->activation_code,
-                      'website_name' => $settings->website_name
-                  ) , function ($message) use ($userdata)
-                  {
-                      $message->to($userdata->email, $userdata->name)
-                          ->subject('Verify your email address');
-                  });
-                  
-                  $email_log      = 'Mail Sent Successfully from Verify';
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_sent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request');
-  
-              } catch (\Throwable $th) {
-  
-                  $email_log      = $th->getMessage();
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_notsent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request-sent');
-  
-              }
-                // // welcome Email
+          
+        try {
+            \Mail::send('emails.verify', array(
+                'activation_code' => $userdata->activation_code,
+                'website_name' => $settings->website_name
+            ) , function ($message) use ($userdata)
+            {
+                $message->to($userdata->email, $userdata->name)
+                    ->subject('Verify your email address');
+            });
+            
+            $email_log      = 'Mail Sent Successfully from Verify';
+            $email_template = "verify";
+            $user_id = $userdata->id;
 
-                // try {
+            Email_sent_log($user_id,$email_log,$email_template);
 
-                //     $data = array(
-                //         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
-                //     );
+        } catch (\Throwable $th) {
 
-                //     Mail::send('emails.welcome', array(
-                //         'username' => $name,
-                //         'website_name' => GetWebsiteName(),
-                //         'url' => URL::to('/'),
-                //         'useremail' => $email,
-                //         'password' => $get_password,
-                //     ), 
-                //     function($message) use ($data,$user) {
-                //         $message->from(AdminMail(),GetWebsiteName());
-                //         $message->to($user->email, $user->name)->subject($data['email_subject']);
-                //     });
+            $email_log      = $th->getMessage();
+            $email_template = "verify";
+            $user_id = $userdata->id;
 
-                //     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_sent_log($user_id,$email_log,$email_template);
-
-                // }catch (\Exception $e) {
-
-                //     $email_log      = $e->getMessage();
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_notsent_log($user_id,$email_log,$email_template);
-
-                // }
-        // try {
-        //   $email = $input['email'];
-        //   $uname = $input['username'];
-        //   Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-        //   $message->to($email,$uname)->subject('Verify your email address');
-        // });
-
-        // } catch (\Throwable $th) {
-        //   //throw $th;
-        // }
-
-        $response = array('status'=>'true','message' => 'Registered Successfully.');
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+               
+        $response = array(
+          'status'=>'true',
+          'status_code'=> 200,
+          'message' => 'Registered Successfully.',
+          'user_data' => $user ,
+        );
+        
       }
       else {
         if(!$settings->free_registration  && $skip == 0){
@@ -981,21 +951,80 @@ class ApiAuthController extends Controller
         }
       }
       else{
-             $response = array('status'=>'true',
-                                'message' => 'Registered Successfully.');
+          $response = array(
+            'status'=>'true',
+            'status_code'=> 200,
+            'message' => 'Registered Successfully.',
+            'user_data' => $user ,
+          );
         }
       }
 
-
-
     } catch(Exception $e){
+
       $user->delete();
-      $response = array('status'=>'false');
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
     }
-        return response()->json($response, 200);
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
+    }   
+
+    return response()->json($response, $response['status_code']);
 }
 
+  public function verify_activation_code(Request $request)
+  {
+    try {
+      
+        // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'activation_code' => 'required',
+          'user_id' => 'required',
+        ], [
+            'activation_code.required'    => 'Please enter your activation code.',
+            'user_id.required'    => 'Please enter your user id.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+    
+        $user = User::findOrFail($request->user_id);
+
+        $status = $user->activation_code == $request->activation_code;
+        $message = $status ? "Verification has been done" : "Invalid verification code";
+
+        return response()->json([
+            'status' => $status ? 'true' : 'false',
+            'status_code' => $status ? 200 : 400,
+            'message' => $message,
+        ], $status ? 200 : 400);
+
+    } catch (\Throwable $th) {
+
+      return response()->json([
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+      ], 400);
+    }
+  }
 
   /**
   * Login user and create token
@@ -1261,7 +1290,7 @@ class ApiAuthController extends Controller
 
     // 12th Sep 2024 - Reset Password (verify_reset_password & upadate_reset_password)
 
-    public function verify_reset_password(Request $request)
+    public function verify_token_reset_password(Request $request)
     {
       try {
 
