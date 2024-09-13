@@ -1281,6 +1281,8 @@ class UGCController extends Controller
                     $StorageSetting = StorageSetting::first();
                     if($StorageSetting->site_storage == 1){
                         $dropzone_url =  URL::to('ugc/uploadFile');
+                    }else{
+                        $dropzone_url =  URL::to('ugc/uploadFile');
                     }
                     $storage_settings = StorageSetting::first();
     
@@ -1778,6 +1780,8 @@ class UGCController extends Controller
             $video = UGCVideo::find($id);
                 $StorageSetting = StorageSetting::first();
                 if($StorageSetting->site_storage == 1){
+                    $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
+                }else{
                     $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }
                 
