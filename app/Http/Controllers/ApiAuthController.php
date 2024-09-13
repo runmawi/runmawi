@@ -26441,7 +26441,7 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'true',
           'status_code'  => 200,
-          'message' => "Subscription has been Cancelled Successfully" ,
+          'Message' => "Subscription has been Cancelled Successfully" ,
         );
 
       } catch (\Throwable $th) {
@@ -26449,7 +26449,7 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'false',
           'status_code'  => 400,
-          'message' => $th->getMessage() ,
+          'Message' => $th->getMessage() ,
         );
       }
 
