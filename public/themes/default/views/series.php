@@ -358,7 +358,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                       <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                           <button id="button" class="view-count rent-video btn btn-primary mr-4 text-white"><?php echo __('Subscribe now'); ?></button>
                                                       </form>
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>
@@ -367,13 +367,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                       <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                           <button id="button" class="view-count rent-video btn text-white btn-primary mr-4"><?php echo __('Subscribe now'); ?></button>
                                                       </form>
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>
                                               <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
                                                   <div class="d-flex">
-                                                      <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
                                                           <?=  __('Purchase Now') ?>
                                                       </button>
                                                   </div>
