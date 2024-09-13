@@ -16435,6 +16435,10 @@ public function QRCodeMobileLogout(Request $request)
               case 'live_category':
                     $data = $this->Specific_Category_Livestreams_Pagelist($request->category_id);
                     $Page_List_Name = 'Specific_Category_Livestreams';
+                    $category = LiveCategory::find($request->category_id);
+                    if ($category) {
+                        $category_name = $category->name;
+                    }
                     break;  
 
 
