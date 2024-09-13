@@ -314,6 +314,9 @@ Route::group(
         Route::post('Paystack-SerieSeasonRent-Paymentverify', 'ApiAuthController@Paystack_SerieSeasonRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
         Route::post('Paystack-AudioRent-Paymentverify', 'ApiAuthController@Paystack_AudioRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
 
+        //Common Cancel Subscriptions
+        Route::post('cancel-subscription', 'ApiAuthController@Cancel_Subscriptions');
+
         // Ads
         Route::post('AdsView', 'ApiAuthController@AdsView');
         Route::post('Adstatus_upate', 'ApiAuthController@Adstatus_upate');
