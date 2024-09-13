@@ -4769,8 +4769,21 @@ public function verifyandupdatepassword(Request $request)
 
     public function search_andriod(Request $request)
     {
-
       try {
+              
+          $validator = Validator::make($request->all(), [
+            'search_value' => 'required',
+          ]);
+      
+          if ($validator->fails()) {
+
+            $response = [
+                'status'    => 'false',
+                'message'    => $validator->errors()->first(),
+            ];
+    
+            return response()->json($response, 422); 
+          }
 
           $settings = Setting::first();
 
@@ -4881,6 +4894,7 @@ public function verifyandupdatepassword(Request $request)
                           ->where('audio.active', '1')->where('audio.status', '1')
                           
                       ->limit('10')
+                      ->groupBy('audio.id')
                       ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
@@ -4911,8 +4925,8 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('episodes.active', '=', '1')
-                          ->where('episodes.status', '=', '1')
+                          ->where('episodes.active', '1')
+                          ->where('episodes.status', '1')
                           ->groupBy('episodes.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -4949,10 +4963,7 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->orwhere('.search_tag', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.title', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.name', 'LIKE', '%' . $request->search_value . '%')   
-                          ->where('series.active', '=', '1')
+                          ->where('series.active', '1')
                           ->groupBy('series.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -26299,5 +26310,120 @@ public function SendVideoPushNotification(Request $request)
         return response()->json($data, 200);
     }
 
+    public function Cancel_Subscriptions(Request $request)
+    {
 
+      $validator = Validator::make($request->all(), [
+        'user_id' => 'required',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      try {
+        
+          // Check subscription user exists
+
+        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','Cancel')->first();
+
+        if(is_null($subscription_user)){
+
+              return response()->json([
+                'status' => 'false',
+                'message'=> 'Unauthorized User',
+                'subscription_user' => $subscription_user,
+              ], 400);
+        }
+
+          // Check payment gateway 
+
+        switch ($subscription_user->payment_gateway) {
+
+          case 'Razorpay':
+
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $api->subscription->fetch($subscription_user->stripe_id)->cancel(array('cancel_at_cycle_end'  => 0));
+            break;
+            
+          case 'Stripe':
+
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+            $stripe->subscriptions->cancel( $subscription_user->stripe_id,[] );
+            break;
+
+          case 'Recurly':
+                
+            $recurly_PaymentSetting = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+
+            if($recurly_PaymentSetting != null){
+
+                if($recurly_PaymentSetting->live_mode == 0){
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_test_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_test_private_key;
+                }else{
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_live_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_live_private_key;
+                }
+            }else{
+               
+              return response()->json([
+                'status' => 'false',
+                'message'=> 'Invalid Recurly payment gateway,pls contact admin',
+              ], 400);
+
+            }
+
+            $client = new RecurlyClient($recurly_private_key);
+            $subscription = $client->cancelSubscription($subscription_id->stripe_id);
+            break;
+          
+          default:
+              
+              return response()->json([
+                'status' => 'false',
+                'message'=> 'Invalid payment gateway',
+                'subscription_user' => $subscription_user,
+              ], 400);
+
+            break;
+        }
+        
+        Subscription::where('stripe_id',$subscriptionId)->update([
+          'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',$subscription_user->id )->update([
+          'role'                  =>  'registered',
+          'stripe_id'             =>  null,
+          'subscription_start'    =>  null,
+          'subscription_ends_at'  =>  null,
+          'payment_type'          =>  null,
+          'payment_status'        => 'Cancel',
+          'payment_gateway'       =>  null,
+          'coupon_used'           =>  null ,
+        ]);
+
+        $response = array(
+          'status'  => 'true',
+          'status_code'  => 200,
+          'message' => "Subscription has been Cancelled Successfully" ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $response = array(
+          'status'  => 'false',
+          'status_code'  => 400,
+          'message' => $th->getMessage() ,
+        );
+      }
+
+      return response()->json($response, $response['status_code']);
+    }
 }
