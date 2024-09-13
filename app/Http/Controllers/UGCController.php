@@ -50,7 +50,6 @@ use App\DefaultSchedulerData;
 use App\Language as Language;
 use App\TimeZone as TimeZone;
 use App\VideoExtractedImages;
-use Aws\S3\MultipartUploader;
 use FFMpeg\Format\Video\X264;
 use Streaming\Representation;
 use FFMpeg\Coordinate\TimeCode;
@@ -836,33 +835,32 @@ class UGCController extends Controller
     {
             // $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
             $site_theme = SiteTheme::first();
-        
+           
             $today = Carbon::now() ;
             
             // Video Upload Limit
     
-            // $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
-            //                             ->whereYear('created_at',  $today->year)
-            //                             ->whereMonth('created_at', $today->month)
-            //                             ->count();
+            $videos_uplaod_limit = UGCVideo::where('user_id', Auth::user()->id )
+                                        ->whereYear('created_at',  $today->year)
+                                        ->whereMonth('created_at', $today->month)
+                                        ->count();
 
 
-            // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-            //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
-            // }
+            if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+                return response()->json( ["success" => 'video_upload_limit_exist'],200);
+            }
             
             $value = [];
             $data = $request->all();
-    
             $validator = Validator::make($request->all(), [
                 "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
             ]);
-               
-    
+            
+            
             $mp4_url = isset($data["file"]) ? $data["file"] : "";
-    
+            
             $path = public_path() . "/uploads/videos/";
-    
+            
             $file = $request->file->getClientOriginalName();
             $newfile = explode(".mp4", $file);
             $file_folder_name = $newfile[0];
@@ -875,14 +873,6 @@ class UGCController extends Controller
             $client = new Client();
     
             $storage_settings = StorageSetting::first();
-            if($site_theme->enable_bunny_cdn == 1){
-                if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
-                    return $this->UploadVideoBunnyCDNStream( $storage_settings,$libraryid,$mp4_url);
-                }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
-                    $value["error"] = 3;
-                    return $value ;
-                }
-            }               
             if ($mp4_url != "" && $pack != "Business") {
                 $rand = Str::random(16);
                 $path = $rand . "." . $request->file->getClientOriginalExtension();
@@ -1069,6 +1059,7 @@ class UGCController extends Controller
                         [
                             "status" => "false",
                             "Message" => "fails to upload ",
+                            'error' => $e->getMessage(),
                         ],
                         200
                     );
@@ -1237,262 +1228,6 @@ class UGCController extends Controller
             // return response()->json($value);
     }
     
-    public function AWSUploadFile(Request $request)
-    {
-        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
-        
-
-        $StorageSetting = StorageSetting::first();
-
-        $value = [];
-        $data = $request->all();
-
-        $validator = Validator::make($request->all(), [
-            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-        ]);
-        $mp4_url = isset($data["file"]) ? $data["file"] : "";
-
-        $ffprobe =  FFProbe::create();
-        $duration = $ffprobe->format($mp4_url)->get('duration');
-        $Video_duration = explode(".", $duration)[0];
-
-        $path = public_path() . "/uploads/videos/";
-
-        $file = $request->file->getClientOriginalName();
-        $newfile = explode(".mp4", $file);
-        $file_folder_name = $newfile[0];
-
-        $package = User::where("id", 1)->first();
-        $pack = $package->package;
-        $mp4_url = $data["file"];
-        $settings = Setting::first();
-        $StorageSetting = StorageSetting::first();
-        if ($mp4_url != "" && $pack != "Business") {
-            
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
-
-            $video = new UGCVideo();
-            $video->disk = "public";
-            $video->title = $file_folder_name;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->mp4_url = $storepath;
-            $video->duration = $Video_duration;
-            $video->type = "mp4_url";
-            $video->draft = 1;
-            $video->status = 1;
-            $video->image = default_vertical_image();
-
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
-
-            // $video->duration = $Video_duration;
-            $video->save();
-
-            $video_id = $video->id;
-            $video_title = UGCVideo::find($video_id);
-            $title = $video_title->title;
-
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-
-            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
-
-            return $value;
-        } elseif (
-            $mp4_url != "" &&
-            $pack == "Business" &&
-            $settings->transcoding_access == 1
-        ) {
-            try {
-                $file = $request->file('file');
-                $file_folder_name =  $file->getClientOriginalName();
-                $name_mp4 = $file->getClientOriginalName();
-                $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
-                $newfile = explode(".mp4",$name_mp4);
-                $namem3u8 = $newfile[0].'.m3u8';   
-                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
-
-                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
-                $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-                $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
-                // print_r($name);exit;
-                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-                $storepath = $path.$filePath_mp4;
-                $m3u8_path = $path.$filePath;
-                $transcode_path = $path.$transcode_path;
-  
-                // $getID3 = new getID3();
-                // $Video_storepath = $file;
-                // $VideoInfo = $getID3->analyze($Video_storepath);
-                // $Video_duration = $VideoInfo["playtime_seconds"];
-
-                $video = new UGCVideo();
-                $video->disk = "public";
-                $video->status = 0;
-                $video->original_name = "public";
-                $video->path = $path;
-                $video->duration = $Video_duration;
-                $video->title = $file_folder_name;
-                $video->mp4_url = $storepath;
-                $video->m3u8_url = $transcode_path;
-                $video->type = "aws_m3u8";
-                $video->draft = 1;
-                $video->status = 1;
-                $video->image = default_vertical_image();
-
-                $PC_image_path = public_path(
-                    "/uploads/images/default_image.jpg"
-                );
-
-                if (file_exists($PC_image_path)) {
-                    $Mobile_image = "Mobile-default_image.jpg";
-                    $Tablet_image = "Tablet-default_image.jpg";
-
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Mobile_image
-                    );
-                    Image::make($PC_image_path)->save(
-                        base_path() . "/public/uploads/images/" . $Tablet_image
-                    );
-
-                    $video->mobile_image = $Mobile_image;
-                    $video->tablet_image = $Tablet_image;
-                } else {
-                    $video->mobile_image = default_vertical_image();
-                    $video->tablet_image = default_vertical_image();
-                }
-
-                // $video->duration = $Video_duration;
-                $video->user_id = Auth::user()->id;
-                $video->save();
-
-                $video_id = $video->id;
-                $video_title = UGCVideo::find($video_id);
-                $title = $video_title->title;
-
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-                $value["video_title"] = $title;
-
-                \LogActivity::addVideoLog(
-                    "Added Uploaded M3U8  Video.",
-                    $video_id
-                );
-
-                return $value;
-            } catch (\Exception $e) {
-                return response()->json(
-                    [
-                        "status" => "false",
-                        "Message" => "fails to upload ",
-                    ],
-                    200
-                );
-            }
-        } elseif (
-            $mp4_url != "" &&
-            $pack == "Business" &&
-            $settings->transcoding_access == 0
-        ) {
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            // $name = time() . $file->getClientOriginalName();
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
-
-            // $getID3 = new getID3();
-            // $Video_storepath = $file;
-            // $VideoInfo = $getID3->analyze($Video_storepath);
-            // $Video_duration = $VideoInfo["playtime_seconds"];
-
-            $video = new UGCVideo();
-            $video->disk = "public";
-            $video->title = $file_folder_name;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->duration = $Video_duration;
-            $video->mp4_url = $storepath;
-            $video->type = "mp4_url";
-            $video->draft = 1;
-            $video->status = 1;
-            $video->image = default_vertical_image();
-
-            $PC_image_path = public_path("/uploads/images/default_image.jpg");
-
-            if (file_exists($PC_image_path)) {
-                $Mobile_image = "Mobile-default_image.jpg";
-                $Tablet_image = "Tablet-default_image.jpg";
-
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Mobile_image
-                );
-                Image::make($PC_image_path)->save(
-                    base_path() . "/public/uploads/images/" . $Tablet_image
-                );
-
-                $video->mobile_image = $Mobile_image;
-                $video->tablet_image = $Tablet_image;
-            } else {
-                $video->mobile_image = default_vertical_image();
-                $video->tablet_image = default_vertical_image();
-            }
-
-            // $video->duration = $Video_duration;
-            $video->save();
-
-            $video_id = $video->id;
-            $video_title = UGCVideo::find($video_id);
-            $title = $video_title->title;
-
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-
-            \LogActivity::addVideoLog("Added Uploaded MP4  Video.", $video_id);
-
-            return $value;
-        } else {
-            $value["success"] = 2;
-            $value["message"] = "File not uploaded.";
-            return response()->json($value);
-        }
-
-        // return response()->json($value);
-    }
         /**
          * Show the form for creating a new video
          *
@@ -1546,73 +1281,9 @@ class UGCController extends Controller
                     $StorageSetting = StorageSetting::first();
                     if($StorageSetting->site_storage == 1){
                         $dropzone_url =  URL::to('ugc/uploadFile');
-                    }elseif($StorageSetting->aws_storage == 1){
-                        $dropzone_url =  URL::to('ugc/AWSUploadFile');
-                    }else{ 
-                        $dropzone_url =  URL::to('ugc/uploadFile');
                     }
                     $storage_settings = StorageSetting::first();
     
-                    if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-                    && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
-                    && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
-    
-                        $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
-                        
-                        $ch = curl_init();
-                        $options = array(
-                            CURLOPT_URL => $url,
-                            CURLOPT_RETURNTRANSFER => true,
-                            CURLOPT_HTTPHEADER => array(
-                                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                                'Content-Type: application/json',
-                            ),
-                        );
-                        curl_setopt_array($ch, $options);
-                        
-                        $response = curl_exec($ch);
-                        
-                        if (!$response) {
-                            die("Error: " . curl_error($ch));
-                        } else {
-                            $decodedResponse = json_decode($response, true);
-                        
-                            if ($decodedResponse === null) {
-                                die("Error decoding JSON response: " . json_last_error_msg());
-                            }
-                    
-                        }
-                        curl_close($ch);
-                
-                        $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
-                        
-                        $ch = curl_init();
-                        
-                        $options = array(
-                            CURLOPT_URL => $videolibraryurl,
-                            CURLOPT_RETURNTRANSFER => true,
-                            CURLOPT_HTTPHEADER => array(
-                                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                                'Content-Type: application/json',
-                            ),
-                        );
-                        
-                        curl_setopt_array($ch, $options);
-                        
-                        $response = curl_exec($ch);
-                        $videolibrary = json_decode($response, true);
-                        curl_close($ch);
-
-                    }else{
-                        $decodedResponse = [];
-                        $videolibrary = [];
-                    }
-              
-                    if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
-                        $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
-                    }else{
-                        $streamUrl = '';
-                    }
                     $theme_settings = SiteTheme::first();
     
                 $data = [
@@ -1625,10 +1296,7 @@ class UGCController extends Controller
                     "settings" => $settings,
                     "page" => "Creates",
                     "post_dropzone_url" => $dropzone_url,
-                    'Bunny_Cdn_Videos' => $decodedResponse ,
                     'storage_settings' => $storage_settings ,
-                    'videolibrary' => $videolibrary ,
-                    'streamUrl' => $streamUrl ,
                     'theme_settings' => $theme_settings ,
                 ];
     
@@ -2110,10 +1778,6 @@ class UGCController extends Controller
             $video = UGCVideo::find($id);
                 $StorageSetting = StorageSetting::first();
                 if($StorageSetting->site_storage == 1){
-                    $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
-                }elseif($StorageSetting->aws_storage == 1){
-                    $dropzone_url =  URL::to('ugc/AWSuploadEditVideo');
-                }else{ 
                     $dropzone_url =  URL::to('ugc/uploadEditUGCVideo');
                 }
                 
@@ -3097,79 +2761,6 @@ class UGCController extends Controller
         }
     
     
-        public function UploadBunnyCDNVideo(Request $request)
-        {
-            $data = $request->all();
-            $value = [];
-    
-            if (!empty($data["bunny_cdn_linked_video"])) {
-    
-                $filenameWithExtension = basename($data["bunny_cdn_linked_video"]);
-                $pathInfo = pathinfo($filenameWithExtension);
-                $extension = $pathInfo['extension'];
-    
-                if($extension == 'mp4'){
-    
-                $video = new UGCVideo();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->title = $data["bunny_cdn_linked_video"];
-                $video->mp4_url = $data["bunny_cdn_linked_video"];
-                $video->type = "mp4_url";
-                $video->draft = 0;
-                $video->active = 1;
-                $video->image = default_vertical_image();
-                $video->video_tv_image = default_horizontal_image();
-                $video->player_image = default_horizontal_image();
-                $video->user_id = Auth::user()->id;
-                $video->save();
-    
-                $video_id = $video->id;
-    
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-    
-                \LogActivity::addVideoLog("Added Bunny CDN VIDEO URl Video.", $video_id);
-    
-    
-            }elseif($extension == 'm3u8'){
-    
-    
-                $video = new UGCVideo();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->title = $data["bunny_cdn_linked_video"];
-                $video->m3u8_url = $data["bunny_cdn_linked_video"];
-                $video->type = "m3u8_url";
-                $video->draft = 0;
-                $video->active = 1;
-                $video->image = default_vertical_image();
-                $video->video_tv_image = default_horizontal_image();
-                $video->player_image = default_horizontal_image();
-                $video->user_id = Auth::user()->id;
-                $video->save();
-    
-                $video_id = $video->id;
-    
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-    
-                \LogActivity::addVideoLog("Added Bunny CDN VIDEO URl Video.", $video_id);
-    
-    
-            }else{
-    
-                \LogActivity::addVideoLog("Not Added Bunny CDN VIDEO URl Video.", 0);
-    
-            }
-    
-    
-                return $value;
-            }
-        }
-    
         public function Updatemp4url(Request $request)
         {
             $value = [];
@@ -3284,117 +2875,6 @@ class UGCController extends Controller
                 }
             }
         }
-            
-        public function BunnycdnVideolibrary(Request $request)
-        {
-            $data = $request->all();
-            $value = [];
-
-               $storage_settings = StorageSetting::first();
-    
-               if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-               && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
-               && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
-                   
-                   $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
-                   
-                   $ch = curl_init();
-                   
-                   $options = array(
-                       CURLOPT_URL => $videolibraryurl,
-                       CURLOPT_RETURNTRANSFER => true,
-                       CURLOPT_HTTPHEADER => array(
-                           "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                           'Content-Type: application/json',
-                       ),
-                   );
-                   
-                   curl_setopt_array($ch, $options);
-                   $response = curl_exec($ch);
-                   $videolibrary = json_decode($response, true);
-                   curl_close($ch);
-    
-               }else{
-                   $decodedResponse = [];
-                   $videolibrary = [];
-    
-               }
-    
-               if(count($videolibrary) > 0){
-    
-                    foreach($videolibrary as $key => $value){
-    
-    
-    
-                        if( $value['Id'] == $request->videolibrary_id){
-    
-    
-    
-                            $videolibrary_id = $value['Id'];
-                            $videolibrary_ApiKey = $value['ApiKey']; 
-                            $videolibrary_PullZoneId = $value['PullZoneId']; 
-                            break;
-                        }else{
-                            $videolibrary_id = null;
-                            $videolibrary_ApiKey = null; 
-                            $videolibrary_PullZoneId = null; 
-                        }
-                    }
-             
-    
-               }else{
-                    $videolibrary_id = null;
-                    $videolibrary_ApiKey = null; 
-                    $videolibrary_PullZoneId = null; 
-                }
-    
-            
-                if($videolibrary_id != null && $videolibrary_ApiKey != null){
-    
-                    $client = new \GuzzleHttp\Client();
-                    // $videolibrary_PullZoneId
-                    $client = new \GuzzleHttp\Client();
-                    
-                    $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
-                        'headers' => [
-                            'AccessKey' => $storage_settings->bunny_cdn_access_key,
-                            'accept' => 'application/json',
-                        ],
-                    ]);
-    
-                    $PullZoneData = json_decode($PullZone->getBody()->getContents());
-    
-                        if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
-                            // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
-                            $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
-                        }else{
-                            $PullZoneURl = null;
-                        }
-    
-                    $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
-                            'headers' => [
-                            'AccessKey' => $videolibrary_ApiKey,
-                            'accept' => 'application/json',
-                        ],
-                    ]);
-                    $streamvideos = $response->getBody()->getContents();
-                    // echo $response->getBody();
-                    // exit;
-               
-                }else{
-                    $streamvideos = [];
-                }
-    
-            // print_r($response);exit;
-                // return $streamvideos;
-                $responseData = [
-                    'streamvideos' => $streamvideos,
-                    'PullZoneURl' => $PullZoneURl,
-                ];
-            
-                return $responseData;
-            
-        }
 
         public function video_slug_validate(Request $request)
         {
@@ -3438,427 +2918,6 @@ class UGCController extends Controller
             }
 
         }
-
-    
-        
-        public function StreamBunnyCdnVideo(Request $request)
-        {
-            $data = $request->all();
-            $value = [];
-    
-            if (!empty($data["bunny_cdn_linked_video"])) {
-    
-    
-                $video = new UGCVideo();
-                $video->disk = "public";
-                $video->original_name = "public";
-                $video->title = $data["bunny_cdn_linked_video"];
-                $video->m3u8_url = $data["bunny_cdn_linked_video"];
-                $video->type = "m3u8_url";
-                $video->draft = 0;
-                $video->active = 1;
-                $video->image = default_vertical_image();
-                $video->video_tv_image = default_horizontal_image();
-                $video->player_image = default_horizontal_image();
-                $video->user_id = Auth::user()->id;
-                $video->save();
-    
-                $video_id = $video->id;
-    
-                $value["success"] = 1;
-                $value["message"] = "Uploaded Successfully!";
-                $value["video_id"] = $video_id;
-    
-                \LogActivity::addVideoLog("Added Bunny CDN VIDEO URl Video.", $video_id);
-    
-                return $value;
-            }
-        }
-
-        private  function UploadVideoBunnyCDNStream(  $storage_settings,$libraryid,$mp4_url){
-            // Bunny Cdn get Videos 
-        
-            $storage_settings = StorageSetting::first();
-        
-            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-            && !empty($storage_settings->bunny_cdn_access_key) ){
-                
-                $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
-                
-                $ch = curl_init();
-                
-                $options = array(
-                    CURLOPT_URL => $libraryurl,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_HTTPHEADER => array(
-                        "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                        'Content-Type: application/json',
-                    ),
-                );
-                
-                curl_setopt_array($ch, $options);
-                
-                $response = curl_exec($ch);
-                $librarys = json_decode($response, true);
-                curl_close($ch);
-        
-            }else{
-                $librarys = [];
-        
-            }
-            if(count($librarys) > 0){
-                foreach($librarys as $key => $value){
-                    if( $value['Id'] == $libraryid){
-                        $library_id = $value['Id'];
-                        $library_ApiKey = $value['ApiKey']; 
-                        $library_PullZoneId = $value['PullZoneId']; 
-                        break;
-                    }else{
-                        $library_id = null;
-                        $library_ApiKey = null; 
-                        $library_PullZoneId = null; 
-                    }
-                }
-            }else{
-                $library_id = null;
-                $library_ApiKey = null; 
-                $library_PullZoneId = null; 
-            }
-            
-            if($library_id != null && $library_ApiKey != null){
-        
-                $client = new \GuzzleHttp\Client();
-                
-                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
-                    'headers' => [
-                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
-                        'accept' => 'application/json',
-                    ],
-                ]);
-        
-                $PullZoneData = json_decode($PullZone->getBody()->getContents());
-        
-                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
-                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
-                    }else{
-                        $PullZoneURl = null;
-                    }    
-                }
-                
-                $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
-                $filename =  str_replace(' ', '_',$file_name);
-        
-                // Step 1: Create the video entry in the library
-                try {
-                    $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
-                        'json' => ['title' => $filename], // Use 'json' directly to set headers and body
-                        'headers' => [
-                            'AccessKey' => $library_ApiKey,
-                            'Accept' => 'application/json',
-                        ]
-                    ]);
-                
-                    $responseData = json_decode($response->getBody(), true);
-                    $guid = $responseData['guid'];
-                } catch (RequestException $e) {
-                    echo "Error creating video entry: " . $e->getMessage();
-                    exit;
-                }
-                
-                // Step 2: Upload the video file
-        
-                try {
-        
-                    $context = stream_context_create([
-                        'ssl' => [
-                            'verify_peer' => false,
-                            'verify_peer_name' => false,
-                        ],
-                    ]);
-                    // Fetch video file content using file_get_contents with SSL context
-                    $videoData = file_get_contents($mp4_url, false, $context);
-                    
-                    $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
-                        'headers' => [
-                            'AccessKey' => $library_ApiKey,
-                            'Content-Type' => 'video/mp4' 
-                        ],
-                        'body' => $videoData 
-                    ]);
-        
-                    $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
-                    // echo "<pre>";
-                    // echo "Video uploaded successfully: " . $videoUrl;
-                    // echo "<pre>";
-                    // echo "Video uploaded successfully: " . $guid;
-                    // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
-        
-                    $responseuploaded = json_decode($response->getBody(), true);
-                    $statusCode = $responseuploaded['statusCode'];
-        
-                } catch (RequestException $e) {
-                    echo "Error uploading video: " . $e->getMessage();
-                    exit;
-                }
-                $value = [];
-                if($statusCode == 200){
-        
-                    $video = new UGCVideo();
-                    $video->disk = "public";
-                    $video->original_name = "public";
-                    $video->title = $file_name;
-                    $video->m3u8_url = $videoUrl;
-                    $video->type = "m3u8_url";
-                    $video->draft = 1;
-                    $video->active = 0;
-                    $video->image = default_vertical_image();
-                    $video->video_tv_image = default_horizontal_image();
-                    $video->player_image = default_horizontal_image();
-                    $video->user_id = Auth::user()->id;
-                    $video->save();
-        
-                    $video_id = $video->id;
-        
-                    if(Enable_Extract_Image() == 1){
-                        // extractImageFromVideo
-                    
-                        $rand = Str::random(16);
-        
-                        $ffmpeg = \FFMpeg\FFMpeg::create();
-                        $videoFrame = $ffmpeg->open($mp4_url);
-                        
-                        // Define the dimensions for the frame (16:9 aspect ratio)
-                        $frameWidth = 1280;
-                        $frameHeight = 720;
-                        
-                        // Define the dimensions for the frame (9:16 aspect ratio)
-                        $frameWidthPortrait = 1080;  // Set the desired width of the frame
-                        $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
-                        
-                        $randportrait = 'portrait_' . $rand;
-                        
-                        $interval = 5; // Interval for extracting frames in seconds
-                        $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
-                        $totalDuration = intval($totalDuration);
-        
-        
-                        if ( 600 < $totalDuration) { 
-                            $timecodes = [5, 120, 240, 360, 480]; 
-                        } else { 
-                            $timecodes = [5, 10, 15, 20, 25]; 
-                        }
-        
-                        
-                        foreach ($timecodes as $index => $time) {
-                            $imagePortraitPath = public_path("uploads/images/{$video_id}_{$randportrait}_{$index}.jpg");
-                            $imagePath = public_path("uploads/images/{$video_id}_{$rand}_{$index}.jpg");
-                    
-                            try {
-                                $videoFrame
-                                    ->frame(TimeCode::fromSeconds($time))
-                                    ->save($imagePath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidth, $frameHeight));
-                    
-                                $videoFrame
-                                    ->frame(TimeCode::fromSeconds($time))
-                                    ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
-                    
-                                $VideoExtractedImage = new VideoExtractedImages();
-                                $VideoExtractedImage->user_id = Auth::user()->id;
-                                $VideoExtractedImage->socure_type = 'UGC Video';
-                                $VideoExtractedImage->video_id = $video_id;
-                                $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $video_id . '_' . $rand . '_' . $index . '.jpg');
-                                $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $video_id . '_' . $randportrait . '_' . $index . '.jpg');
-                                $VideoExtractedImage->image_original_name = $video_id . '_' . $rand . '_' . $index . '.jpg';
-                                $VideoExtractedImage->save();
-                            } catch (\Exception $e) {
-                                dd($e->getMessage());
-                            }
-                        }
-                    
-                    }
-        
-        
-                    $value["success"] = 1;
-                    $value["message"] = "Uploaded Successfully!";
-                    $value["video_id"] = $video_id;
-                    $value["video_title"] = $file_name;
-        
-                    \LogActivity::addVideoLog("Added Bunny CDN VIDEO Upload.", $video_id);
-                    return $value ;
-                }else{
-                    $value["success"] = 2;
-                    \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
-                    return $value ;
-                }
-            }
-
-
-        public function AWSuploadEditVideo(Request $request)
-    {
-        $value = [];
-        $data = $request->all();
-        $id = $data["videoid"];
-        $video = UGCVideo::findOrFail($id);
-        $StorageSetting = StorageSetting::first();
-        $validator = Validator::make($request->all(), [
-            "file" => "required|mimes:video/mp4,video/x-m4v,video/*",
-        ]);
-        $mp4_url = isset($data["file"]) ? $data["file"] : "";
-
-        $ffprobe =  \FFMpeg\FFProbe::create();
-        $duration = $ffprobe->format($mp4_url)->get('duration');
-        $Video_duration = explode(".", $duration)[0];
-        
-        $path = public_path() . "/uploads/videos/";
-
-        $file = $request->file->getClientOriginalName();
-        $newfile = explode(".mp4", $file);
-        $file_folder_name = $newfile[0];
-
-        $package = User::where("id", 1)->first();
-        $pack = $package->package;
-        $mp4_url = $data["file"];
-        $settings = Setting::first();
-
-        if (
-            $mp4_url != "" &&
-            $pack != "Business" &&
-            $settings->transcoding_access == 0
-        ) {
-
-            
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
-
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4",$file);
-            $file_folder_name = $newfile[0];   
-            $file = $request->file('file');
-            $video->disk = "public";
-            $video->title = $file_folder_name;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->duration = $Video_duration;
-            $video->mp4_url = $storepath;
-            $video->type = "mp4_url";
-            $video->save();
-
-            $video_id = $video->id;
-            $video_title = UGCVideo::find($video_id);
-            $title = $video_title->title;
-
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-
-            return redirect("/admin/videos");
-
-        } elseif (
-            $mp4_url != "" &&
-            $pack == "Business" &&
-            $settings->transcoding_access == 1
-        ) {
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            $name_mp4 = $file->getClientOriginalName();
-            $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
-            $newfile = explode(".mp4",$name_mp4);
-            $namem3u8 = $newfile[0].'.m3u8';   
-            $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
-
-            $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
-            $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            $filePath_mp4 = $StorageSetting->aws_storage_path.'/'. $name_mp4;
-            Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
-            // print_r($name);exit;
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath_mp4;
-            $m3u8_path = $path.$filePath;
-            $transcode_path = $path.$transcode_path;
-
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4",$file);
-            $file_folder_name = $newfile[0];   
-            $file = $request->file('file');
-
-            $video->disk = "public";
-            $video->status = 0;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->duration = $Video_duration;
-            $video->title = $file_folder_name;
-            $video->mp4_url = $storepath;
-            $video->m3u8_url = $transcode_path;
-            $video->type = "aws_m3u8";
-            $video->user_id = Auth::user()->id;
-            $video->save();
-
-            $video_id = $video->id;
-            $video_title = UGCVideo::find($video_id);
-            $title = $video_title->title;
-
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-
-            // return $value;
-            return redirect("/admin/videos");
-
-        } elseif (
-            $mp4_url != "" &&
-            $pack == "Business" &&
-            $settings->transcoding_access == 0
-        ) {
-            $file = $request->file('file');
-            $file_folder_name =  $file->getClientOriginalName();
-            // $name = time() . $file->getClientOriginalName();
-            $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
-            $filePath = $StorageSetting->aws_storage_path.'/'. $name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
-            $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
-            $storepath = $path.$filePath;
-
-            $file = $request->file->getClientOriginalName();
-            $newfile = explode(".mp4",$file);
-            $file_folder_name = $newfile[0];   
-            $file = $request->file('file');
-
-            $video->disk = "public";
-            $video->title = $file_folder_name;
-            $video->original_name = "public";
-            $video->path = $path;
-            $video->duration = $Video_duration;
-            $video->mp4_url = $storepath;
-            $video->type = "mp4_url";
-            $video->image = default_vertical_image();
-            $video->save();
-
-            $video_id = $video->id;
-            $video_title = UGCVideo::find($video_id);
-            $title = $video_title->title;
-
-            $value["success"] = 1;
-            $value["message"] = "Uploaded Successfully!";
-            $value["video_id"] = $video_id;
-            $value["video_title"] = $title;
-
-            return redirect("/admin/videos");
-
-        } else {
-            $value["success"] = 2;
-            $value["message"] = "File not uploaded.";
-            return response()->json($value);
-        }
-
-    }
 
     
 }
