@@ -26350,7 +26350,7 @@ public function SendVideoPushNotification(Request $request)
 
         return response()->json([
             'status' => 'false',
-            'message'=> $validator->errors()->first(),
+            'Message'=> $validator->errors()->first(),
           ], 400);
       }
 
@@ -26403,7 +26403,7 @@ public function SendVideoPushNotification(Request $request)
                
               return response()->json([
                 'status' => 'false',
-                'message'=> 'Invalid Recurly payment gateway,pls contact admin',
+                'Message'=> 'Invalid Recurly payment gateway,pls contact admin',
               ], 400);
 
             }
@@ -26416,7 +26416,7 @@ public function SendVideoPushNotification(Request $request)
               
               return response()->json([
                 'status' => 'false',
-                'message'=> 'Invalid payment gateway',
+                'Message'=> 'Invalid payment gateway',
                 'subscription_user' => $subscription_user,
               ], 400);
 
