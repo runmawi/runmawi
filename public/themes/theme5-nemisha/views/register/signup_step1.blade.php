@@ -70,10 +70,10 @@ $uppercase =  ucfirst($request_url);
      a:link{
         margin-right: 5px;
     }
-    h1,h2,h3,h4{
+    /* h1,h2,h3,h4{
      
 
-    }
+    } */
     .sec-2 h2{
         font-size: 40px;
     }
@@ -151,9 +151,9 @@ $uppercase =  ucfirst($request_url);
     }*/.verify-buttons{
         margin-left: 36%;
     }
-    .container{
+    /* .container{
       
-    }
+    } */
     .panel-heading {
     margin-bottom: 1rem;
 }
@@ -290,11 +290,7 @@ font-weight: 600;
         font-weight: 600;
 
     }
-    p{
-  
 
-
-}
     .poli{
        color:#fff;
         font-size: 11px;
@@ -303,7 +299,7 @@ font-weight: 600;
     font-size: 35px;
     line-height: 40px;
     font-weight: 600;
-    color: ;
+    /* color: ; */
     text-align: left;
    
 }
@@ -330,6 +326,28 @@ font-weight: 600;
     .bg-light{
         background-color: #fff!important;
     }
+    #avatar {
+        display: none;
+    }
+
+    .custom-file-label {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        padding: 0px 13px;
+        cursor: pointer;
+        margin-bottom: 17px;
+        color: #cacaca !important;
+        /* background:rgba(11, 11, 11,1); */
+        border-radius: 7px;
+        font-size: 16px;
+        font-family: inherit;
+    }
+    .custom-file-label::after{
+        line-height: 2.2;
+        height: 100%;
+    }
+
     @media (max-width:425px){
     .my-sm-0{
         font-size:14px;
@@ -379,7 +397,7 @@ font-weight: 600;
 
 $jsondata = json_decode($jsonString, true); ?>
 
-<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;height:100vh;">
+<section class="mb-0" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
     
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
@@ -390,10 +408,10 @@ $jsondata = json_decode($jsonString, true); ?>
 
     <div class="justify-content-end" id="navbarSupportedContent">
         <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
-        <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}" style="" >Sign up</a>
+        <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}">Sign up</a>
     </div>
 </div></nav>
-<div class="position-relative" style="padding:40px 0 40px 0!important;">
+<div class="position-relative">
 <div class="fixe" >
       <h1 class="in mt-3 text-center">SIGN UP TO <span class="nemi"> NEMISA TV</span></h1>
     <div class="row m-0 p-0 justify-content-center" >
@@ -418,7 +436,7 @@ $jsondata = json_decode($jsonString, true); ?>
                <div class="sign-in-page-data">
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
-                         <!-- <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->     
+                         <!-- <img src="<?//php// echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->     
                                  <!-- <p class="get">Get 5 free days of Nemisa Tv</p>-->
                       </div>
                        
@@ -486,18 +504,20 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                <label id="fileLabel">Choose Profile Image</label>
+                                <div class="col-md-12" style="position:relative;">
+                                    <label for="avatar" class="custom-file-label form-control">Choose Profile Image</label>
+                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;"/>
+                                    <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                    <label id="fileLabel">Choose Profile Image</label> -->
                                  </div>
                                  @endif
 
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
-                                <div class="col-md-12" style="postion:relative;">
-                                <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
+                                <div class="col-md-12" style="position:relative;">
+                                    <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
 
-                                <!-- <input type="date" name="dob"  id ='dob' class="form-control">
-                                <label id="fileLabel">Choose Profile DOB</label> -->
+                                    <!-- <input type="date" name="dob"  id ='dob' class="form-control">
+                                    <label id="fileLabel">Choose Profile DOB</label> -->
                                  </div>
                                  @endif
 
@@ -508,7 +528,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                      <div class="row">
                                      <div class="col-md-12">
                                 <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password" style="margin-bottom: 0!important;">
-                                          <span style="color:#fff;font-family: 'Roboto';font-style: normal;font-weight: 400;font-size: 9px;line-height: 32px;">Password must be at least 8 characters long.</span>
+                                          <span style="color:#cacaca;font-style: oblique;font-weight: 400;font-size: 12px;line-height: 25px;">Password must be at least 8 characters long.</span>
                                          </div>
                                          <div >
                                 <span class="input-group-btn" id="eyeSlash">
@@ -544,7 +564,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                     </div>
                                 </div>
     
-                                <span style="color:#000;font-size: 10px;font-style: italic;">Password must be at least 8 characters long.</span>
+                                <span style="color:#cacaca;font-style: oblique;font-weight: 400;font-size: 12px;line-height: 25px;">Password must be at least 8 characters long.</span>
                             </div>
                                  
                                       
@@ -593,7 +613,9 @@ $jsondata = json_decode($jsonString, true); ?>
                                 <div class="col-md-12 d-flex align-items-center links" id="mob">
                                     <input id="password-confirm" type="checkbox" name="terms" value="1" required>
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
-                                        <p class="text-left text-white agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                        <p class="text-left text-white agree mb-0 pl-2" style="color: #cacaca !important">By signing up you agree to NEMISA TV   
+                                            <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a>
+                                        </p>
                                         </a>
                                     </label>
                                 </div>
@@ -619,7 +641,7 @@ $jsondata = json_decode($jsonString, true); ?>
                     </form>
                        <!--<div class="mt-3">
                   <div class="d-flex justify-content-center links text-black">
-                     Already have an account? <a href="<?= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
+                     Already have an account? <a href="<?//= URL::to('/login')?>" class="text-primary ml-2">Sign In</a>
                   </div>                        
                </div>-->
                   </div>
@@ -642,7 +664,7 @@ $jsondata = json_decode($jsonString, true); ?>
         <div class="container">
             <div class="row align-items-center">
                  <div class="col-lg-6">
-                 <img class="w-100 " src="<?php echo  URL::to('/assets/img/m1.png')?>" style="">
+                 <img class="w-100 " src="<?//php echo  URL::to('/assets/img/m1.png')?>" style="">
             </div>
             <div class="col-lg-6">
                 <h2 class="mb-4">Free edutainment for the digital warrior</h2>
@@ -654,11 +676,11 @@ $jsondata = json_decode($jsonString, true); ?>
         </div></div>
     </section>
 
-   <!--<div class="container">
+   <div class="container">
       <div class="row  align-items-center justify-content-center height-self-center">
          <div class="col-lg-6 col-12 col-md-12 align-self-center">
              <div class="text-center">
-                 <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
+                 <img src="<?// php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:1rem;">
              </div>
             
          </div>
@@ -729,7 +751,7 @@ $jsondata = json_decode($jsonString, true); ?>
 						 	<p> OTP will Expire in <span id="countdowntimer"></span>
 					 	</div>
 						<div class="text-center"> 
-							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="Please Enter OTP" class="btn btn-primary btn-login" style="">
+							<input type="button" value="{{ __('Verify') }}" id="checkotp"  placeholder="Please Enter OTP" class="btn btn-primary btn-login" >
 						</div>
 					 </div> 
 				</div>
@@ -750,7 +772,9 @@ $jsondata = json_decode($jsonString, true); ?>
     </div>
   </div>
 </div>
-    </section>
+@endsection
+</section>
+
        
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
@@ -770,6 +794,8 @@ $jsondata = json_decode($jsonString, true); ?>
             $("#datepicker").datepicker({
                 changeMonth: true,
                 changeYear: true,
+                yearRange: "1900:c",
+                maxDate: 0  
             });
         });
     })(jQuery);
@@ -1136,7 +1162,7 @@ $(document).ready(function() {
                 mobile: {
                     // required: true,
                     remote: {
-                        url: '{{ URL::to('SignupMobile_val') }}',
+                        url: "{{ URL::to('SignupMobile_val') }}" ,
                         type: "post",
                         data: {
                             _token: "{{csrf_token()}}" ,
@@ -1260,4 +1286,4 @@ $(document).ready(function() {
     include(public_path('themes/theme5-nemisha/views/footer.blade.php'));
 @endphp
 
-@endsection 
+ 

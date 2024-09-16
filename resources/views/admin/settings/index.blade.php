@@ -62,6 +62,8 @@ border-radius: 0px 4px 4px 0px;
         margin: 0;
     }
     .ppv_switvh span, .ppv_switvh label{display:none;}
+     .form-control.ppv_expiry_input{background-color:#f0f0f0!important};
+
 </style>
 @section('css')
 	<style type="text/css">
@@ -304,41 +306,21 @@ border-radius: 0px 4px 4px 0px;
 
                         <!-- PPV Setting -->
                         <!-- <div class="container-fluid" id="ppv" > -->
-                        <div class="container-fluid row align-items-center mt-3 p-3" id="ppv">
-                            <div class="col-sm-6">
-                                <div class="panel panel-primary" data-collapsed="0">
-                                    <div class="panel-heading">
-                                        <div class="panel-title"><label>Pay per View</label></div>
-                                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="panel-body row">
-                                        <p class="col-md-8 p1">Enable Pay per View:</p>
-                                        <div class="form-group col-md-4">
-                                            <input type="checkbox" name="ppv_status" id="ppv_status" @if(!isset($settings->ppv_status)
-                                            || (isset($settings->ppv_status) && $settings->ppv_status))checked="checked" value="1"@else
-                                            value="0"@endif />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3 p-2">
-                                <div class="col-sm-6" id="Pay_Per_view_Hours">
+                        <div class="container-fluid row align-items-center p-3" id="ppv">
+                            <div class="row p-2">
+                                <div class="col-sm-6">
                                     <div class="panel panel-primary" data-collapsed="0">
                                         <div class="panel-heading">
-                                            <div class="panel-title"><label>Pay Per view Hours</label></div>
+                                            <div class="panel-title"><label>Pay per View</label></div>
                                             <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                             </div>
                                         </div>
-                                        <div class="panel-body">
-                                            <p class="p1">Hours :</p>
-                                            <div class="form-group">
-                                                <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
-
-                                                    <input type="number" class="form-control" name="ppv_hours" id="ppv_hours"
-                                                        placeholder="# of pay Per view hours"
-                                                        value="@if(!empty($settings->ppv_hours)){{ $settings->ppv_hours }}@endif" />
-                                                </div>
+                                        <div class="panel-body row">
+                                            <p class="col-md-8 p1">Enable Pay per View:</p>
+                                            <div class="form-group col-md-4">
+                                                <input type="checkbox" name="ppv_status" id="ppv_status" @if(!isset($settings->ppv_status)
+                                                || (isset($settings->ppv_status) && $settings->ppv_status))checked="checked" value="1"@else
+                                                value="0"@endif />
                                             </div>
                                         </div>
                                     </div>
@@ -365,7 +347,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
 
-                            <div class="row mt-3 p-2">
+                            <div class="row p-2">
                                 <div class="col-sm-6" id="Pay_Per_view_Hours">
                                     <div class="panel panel-primary" data-collapsed="0">
                                         <div class="panel-heading">
@@ -406,147 +388,256 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
 
-                                                        {{-- Set Expiry time --}}
-
+                            
                             <div class="row mt-3">
-                                <div class="col-sm-6" >
-                                    <div class="panel panel-primary" data-collapsed="0">
-                                        <div class="panel-heading">
-                                            <div class="panel-title"><label> Set Expiry time  </label> <span> (If Live Video Started) </span></div>
-                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
-                                                    <input type="text" class="form-control" name="expiry_time_started" id="expiry_time_started" placeholder="Set Expiry time (HH)"
-                                                        value="@if(!empty($settings->expiry_time_started)){{ $settings->expiry_time_started }}@endif" />
+                                <div class="ppv-for-free mt-3">
+                                    <label class="mt-1">Enable free for subscribers</label>
+                                    <div class="d-flex">
+                                        <div class="col-sm-4">
+                                            <div><label class="mt-1">Videos</label> </div>
+
+                                            <div class="d-flex ">
+                                                <div>OFF</div>
+                                                <div class="mt-1">
+                                                    <label class="switch" style="margin: 0 5px">
+                                                        <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
+                                                        <span class="slider round"></span>
+                                                    </label>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" >
-                                    <div class="panel panel-primary" data-collapsed="0">
-                                        <div class="panel-heading">
-                                            <div class="panel-title"><label> Set Expiry time </label> <span> (If Live Video Not Started) </span> </div>
-                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                <div>ON</div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="panel-body col-md-4">
-                                                <div class="form-group">
-                                                    <p class="p1"> Days </p>
-                                                    <div class="make-switch" data-on="success" data-off="warning">
-                                                        <select  id="expiry_day_notstarted"  class="form-control" name="expiry_day_notstarted">
-                                                            @for ( $i= 0 ; $i<=30 ; $i++)
-                                                                <option value="{{ $i }}"  @if(!empty($settings->expiry_day_notstarted) && $settings->expiry_day_notstarted == $i){{ 'selected' }}@endif  > {{ $i }} </option>
-                                                            @endfor
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label class="mt-1">Live</label>
                                             </div>
 
-                                            <div class="panel-body col-md-4">
-                                                <div class="form-group">
-                                                    <p class="p1"> Hours  </p>
-                                                    <div class="make-switch" data-on="success" data-off="warning">
-
-                                                        <select  id="expiry_hours_notstarted"  class="form-control" name="expiry_hours_notstarted">
-                                                            @for ( $i= 0 ; $i<=24 ; $i++)
-                                                                <option value="{{ $i }}" @if(!empty($settings->expiry_hours_notstarted) && $settings->expiry_hours_notstarted == $i){{ 'selected' }}@endif > {{ $i }} </option>
-                                                            @endfor
-                                                        </select>
-                                                    </div>
+                                            <div class="d-flex ">
+                                                <div>OFF</div>
+                                                <div class="mt-1">
+                                                    <label class="switch" style="margin: 0 5px">
+                                                        <input type="checkbox" {{ !empty($settings->enable_ppv_rent_live) && $settings->enable_ppv_rent_live ? 'checked' : '' }} value="1" name="enable_ppv_rent_live" id="enable_ppv_rent_live" />
+                                                        <span class="slider round"></span>
+                                                    </label>
                                                 </div>
+                                                <div>ON</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div>
+                                                <label class="mt-1"> Series</label>
                                             </div>
 
-                                            <div class="panel-body col-md-4">
-                                                <div class="form-group">
-                                                    <p class="p1"> Minutes  </p>
-                                                    <div class="make-switch" data-on="success" data-off="warning">
-                                                        <select  id="expiry_min_notstarted"  class="form-control" name="expiry_min_notstarted">
-                                                            @for ( $i= 0 ; $i<=60 ; $i++)
-                                                                <option value="{{ $i }}" @if(!empty($settings->expiry_min_notstarted) && $settings->expiry_min_notstarted == $i){{ 'selected' }}@endif > {{ $i }} </option>
-                                                            @endfor
-                                                        </select>
-                                                    </div>
+                                            <div class="d-flex ">
+                                                <div>OFF</div>
+                                                <div class="mt-1">
+                                                    <label class="switch" style="margin: 0 5px">
+                                                        <input type="checkbox" {{ !empty($settings->enable_ppv_rent_series) && $settings->enable_ppv_rent_series ? 'checked' : '' }} value="1" name="enable_ppv_rent_series" id="enable_ppv_rent_series" />
+                                                        <span class="slider round"></span>
+                                                    </label>
                                                 </div>
+                                                <div>ON</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row mt-3">
-
-                                    <div class="col-sm-6">
-                                        <div><label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - videos)</small> </label> </div>
-
-                                        <div class="d-flex ">
-                                            <div>OFF</div>
-                                            <div class="mt-1">
-                                                <label class="switch">
-                                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent) && $settings->enable_ppv_rent ? 'checked' : '' }} value="1" name="enable_ppv_rent" id="enable_ppv_rent" />
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                            <div>ON</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div>
-                                            <label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - Live)</small> </label>
-                                        </div>
-
-                                        <div class="d-flex ">
-                                            <div>OFF</div>
-                                            <div class="mt-1">
-                                                <label class="switch">
-                                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent_live) && $settings->enable_ppv_rent_live ? 'checked' : '' }} value="1" name="enable_ppv_rent_live" id="enable_ppv_rent_live" />
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                            <div>ON</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div>
-                                            <label class="mt-1"> Enable Rent as PPV <small>(Free for subscriber - Series)</small> </label>
-                                        </div>
-
-                                        <div class="d-flex ">
-                                            <div>OFF</div>
-                                            <div class="mt-1">
-                                                <label class="switch">
-                                                    <input type="checkbox" {{ !empty($settings->enable_ppv_rent_series) && $settings->enable_ppv_rent_series ? 'checked' : '' }} value="1" name="enable_ppv_rent_series" id="enable_ppv_rent_series" />
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </div>
-                                            <div>ON</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-6">
+                                <div class="row mt-5">
+                                    <div class="col-12">
                                         <label>{{ "Ppv description for Video" }}</label>
                                         <input type="text" class="form-control" name="video" id="video" placeholder="Ppv description for video"
-                                                        value="@if(!empty($settings->video)){{ $settings->video }}@endif" />
+                                                        value="@if(!empty($settings->video)){{ $settings->video }}@endif" style="background-color: #e8f5e9 !important;"/>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label>{{ "Ppv description for Live" }}</label>
                                         <input type="text" class="form-control" name="live" id="live" placeholder="Ppv description for live"
                                                         value="@if(!empty($settings->live)){{ $settings->live }}@endif" />
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label>{{ "Ppv description for Series" }}</label>
                                         <input type="text" class="form-control" name="series" id="series" placeholder="Ppv description for series"
                                                         value="@if(!empty($settings->series)){{ $settings->series }}@endif" />
                                     </div>
                                 </div>
                             </div>
+                            {{-- Set Expiry time --}}
+                            <div class="row mt-5 justify-content-between">
+                                <label class="mt-1">PPV expiry duration for videos</label>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Video started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_days" id="started_video_expiry_days" value="@if(!empty($settings->started_video_expiry_days)){{ $settings->started_video_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_hours" id="started_video_expiry_hours" value="@if(!empty($settings->started_video_expiry_hours)){{ $settings->started_video_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_video_expiry_mints" id="started_video_expiry_mints" value="@if(!empty($settings->started_video_expiry_mints)){{ $settings->started_video_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Video not started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_days" id="before_video_expiry_days" value="@if(!empty($settings->before_video_expiry_days)){{ $settings->before_video_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_hours" id="before_video_expiry_hours" value="@if(!empty($settings->before_video_expiry_hours)){{ $settings->before_video_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_video_expiry_mints" id="before_video_expiry_mints" value="@if(!empty($settings->before_video_expiry_mints)){{ $settings->before_video_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- expiry duration for live --}}
+                            <div class="row mt-5 justify-content-between">
+                                <label class="mt-1">PPV expiry duration for Live</label>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Live started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_days" id="started_live_expiry_days" value="@if(!empty($settings->started_live_expiry_days)){{ $settings->started_live_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_hours" id="started_live_expiry_hours" value="@if(!empty($settings->started_live_expiry_hours)){{ $settings->started_live_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_live_expiry_mints" id="started_live_expiry_mints" value="@if(!empty($settings->started_live_expiry_mints)){{ $settings->started_live_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Live not started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_days" id="before_live_expiry_days" value="@if(!empty($settings->before_live_expiry_days)){{ $settings->before_live_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_hours" id="before_live_expiry_hours" value="@if(!empty($settings->before_live_expiry_hours)){{ $settings->before_live_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_live_expiry_mints" id="before_live_expiry_mints" value="@if(!empty($settings->before_live_expiry_mints)){{ $settings->before_live_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- expiry duration for Season --}}
+                            <div class="row mt-5 justify-content-between">
+                                <label class="mt-1">PPV expiry duration for season</label>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Season started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_days" id="started_season_expiry_days" value="@if(!empty($settings->started_season_expiry_days)){{ $settings->started_season_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_hours" id="started_season_expiry_hours" value="@if(!empty($settings->started_season_expiry_hours)){{ $settings->started_season_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="started_season_expiry_mints" id="started_season_expiry_mints" value="@if(!empty($settings->started_season_expiry_mints)){{ $settings->started_season_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <span class="text-primary font-size-14">Season not started after purchase</span>
+                                        <div class="row">
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Days </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_days" id="before_season_expiry_days" value="@if(!empty($settings->before_season_expiry_days)){{ $settings->before_season_expiry_days }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Hours  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_hours" id="before_season_expiry_hours" value="@if(!empty($settings->before_season_expiry_hours)){{ $settings->before_season_expiry_hours }}@endif">
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body col-md-4">
+                                                <div class="form-group">
+                                                    <p class="p1"> Minutes  </p>
+                                                    <input class="form-control ppv_expiry_input" type="number" name="before_season_expiry_mints" id="before_season_expiry_mints" value="@if(!empty($settings->before_season_expiry_mints)){{ $settings->before_season_expiry_mints }}@endif">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {{-- End Set Expiry time --}}
                         </div>
 
@@ -916,26 +1007,40 @@ border-radius: 0px 4px 4px 0px;
 
                                 </div>
                                 <div class="col-md-6">
-                                <div class="panel-body" style="display: block;">
+                                    <div class="panel-body" style="display: block;">
                                         <p class="p1">Email address to be used to send system emails:</p>
                                         <input type="text" class="form-control" name="system_email" id="system_email"
                                             placeholder="Email Address"
                                             value="@if(!empty($settings->system_email)){{ $settings->system_email }}@endif" />
                                     </div>
-                                <div class="panel panel-primary mt-3" data-collapsed="0">
-                                    <div class="panel-heading">
-                                        <div class="panel-title"><label>Google Analytics Tracking ID</label></div>
-                                        <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                    <div class="panel panel-primary mt-3" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title"><label>Google Analytics Tracking ID</label></div>
+                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+
+                                            <p class="p1">Google Analytics Tracking ID (ex. UA-12345678-9)::</p>
+                                            <input type="text" class="form-control" name="google_tracking_id" id="google_tracking_id"
+                                                placeholder="Google Analytics Tracking ID"
+                                                value="@if(!empty($settings->google_tracking_id)){{ $settings->google_tracking_id }}@endif" />
                                         </div>
                                     </div>
-                                    <div class="panel-body" style="display: block;">
 
-                                        <p class="p1">Google Analytics Tracking ID (ex. UA-12345678-9)::</p>
-                                        <input type="text" class="form-control" name="google_tracking_id" id="google_tracking_id"
-                                            placeholder="Google Analytics Tracking ID"
-                                            value="@if(!empty($settings->google_tracking_id)){{ $settings->google_tracking_id }}@endif" />
+                                    <div class="panel panel-primary mt-3" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title"><label>Google Analytics Link</label></div>
+                                            <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+                                            <input type="text" class="form-control" name="google_analytics_link" id="google_analytics_link"
+                                                placeholder="Google Analytics Link"
+                                                value="@if(!empty($settings->google_analytics_link)){{ $settings->google_analytics_link }}@endif" />
+                                        </div>
                                     </div>
-                                </div></div>
+                                </div>
                                 <div class="col-md-6">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">

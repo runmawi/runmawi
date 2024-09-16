@@ -215,8 +215,25 @@ class ApiAuthController extends Controller
   }
 
   public function signup(Request $request)
-  {
+  {    
+    try { 
+          // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'email' => 'required|email|unique:users,email',  
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+        
         $input = $request->all();
         
         $user_data = array( 'username' => $request->get('username'),
@@ -234,6 +251,8 @@ class ApiAuthController extends Controller
         $user_data['mobile'] = isset($input['mobile']) && !empty($input['mobile']) ? $input['mobile'] : " " ;
         $skip = isset($input['skip']) ? $input['skip'] : 0 ;
         
+            // Reference code
+
         if (!empty($input['referrer_code'])){
           $referrer_code = $input['referrer_code'];
         }
@@ -245,44 +264,49 @@ class ApiAuthController extends Controller
               $referred_user_id =null;
         }
 
+            // Token Generate
+
         $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
 
-        if (!empty($request->token)){
-            $user_data['token'] =  $request->token;
-        } else {
-          $user_data['token'] =  '';
-        }
+        $user_data['token'] =  !empty($request->token) ? $request->token : null ;
 
-        $path = URL::to('/').'/public/uploads/avatars/';
+            // Avatar Upload
+
+        $path = URL::to('public/uploads/avatars');
         $logo = $request->file('avatar');
-        if($logo != '') {
-            if($logo != ''  && $logo != null){
-                $file_old = $path.$logo;
-                if (file_exists($file_old)){
-                      unlink($file_old);
-                }
-            }
-            $file = $logo;
-            $avatar  = $file->getClientOriginalName();
-            $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
-        } else {
-            $avatar  = 'default.png';
+        $avatar = 'default.png';
+
+        if(!is_null($logo)){
+
+          $file_old = $path.$logo;
+
+          if (file_exists($file_old)){
+            unlink($file_old);
+          }
+          
+          $avatar  = $logo->getClientOriginalName();
+          $file->move(public_path()."/uploads/avatars/", $logo->getClientOriginalName());
         }
 
-        if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'registered';
-            $user_data['active'] = '1';
-        } else {
-                if($settings->activation_email):
-                  $user_data['activation_code'] = Str::random(60);
-                  $user_data['active'] = 0;
-                endif;
-          $user_data['role'] = 'registered';
-        }
+        // Activation code
 
+        $user_data['role'] = 'registered';
+        $user_data['active'] = 1;
+        $user_data['activation_code'] = null;
+        
+        if (!$settings->free_registration && $skip == 0) {
+          // 
+        } 
+
+        if ($settings->activation_email) {
+            $user_data['activation_code'] = Str::padLeft(mt_rand(0, 999999), 6, '0');
+            $user_data['active'] = 0;
+        }
+        
+        // Stripe plan
         if (isset($input['subscrip_plan'])) {
             $plan = $input['subscrip_plan'];
         }
@@ -290,26 +314,26 @@ class ApiAuthController extends Controller
         $user = User::where('email', $request->get('email'))->first();
         $username = User::where('username', $request->get('username'))->where('username', '!=', null)->first();
 
-        if ($user === null ) {
-          // && $username === null
-              $user = new User($user_data);
-              $user->ccode = $user_data['ccode'];
-              $user->mobile = $user_data['mobile'];
-              $user->avatar = $avatar;
-              $user->password = Hash::make($request->get('password'));
-              $user->referrer_id = $referred_user_id;
-              $user->token = $user_data['token'];
-              $user->activation_code = Str::random(60);
-              $user->referral_token = $ref_token;
-              $user->country = $request->country;
-              $user->state = $request->state;
-              $user->city = $request->city;
-              $user->DOB = $request->dob;
-              $user->support_username = $request->support_username;
-              $user->active = 1;
-              $user->save();
-              $userdata = User::where('email', '=', $request->get('email'))->first();
-              $userid = $userdata->id;
+        $user = new User($user_data);
+        $user->ccode = $user_data['ccode'];
+        $user->mobile = $user_data['mobile'];
+        $user->avatar = $avatar;
+        $user->password = Hash::make($request->get('password'));
+        $user->referrer_id = $referred_user_id;
+        $user->token = $user_data['token'];
+        $user->activation_code = $user_data['activation_code'];
+        $user->referral_token = $ref_token;
+        $user->country = $request->country;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->DOB = $request->dob;
+        $user->support_username = $request->support_username;
+        $user->active = $user_data['active'];
+        $user->save();
+
+        $userdata = User::where('email', $request->get('email'))->first();
+        $userid = $userdata->id;
+
         // welcome Email
                                   
                try {
@@ -346,18 +370,8 @@ class ApiAuthController extends Controller
 
             }
             
-              send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+            send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
 
-        }
-        else {
-              if($user != null){
-                $response = array('status'=>'false','message' => 'Email id Already Exists');
-                return response()->json($response, 200);
-              }else{
-                // $response = array('status'=>'false','message' => 'Username Already Exists');
-                // return response()->json($response, 200);
-              }
-        }
 
         $userid = !empty($userdata) ?  $user->id : " ";
 
@@ -365,84 +379,40 @@ class ApiAuthController extends Controller
       
       if($settings->free_registration == 0 && $settings->activation_email == 1){
 
-        
                 // verify email
-                try {
-                  \Mail::send('emails.verify', array(
-                      'activation_code' => $userdata->activation_code,
-                      'website_name' => $settings->website_name
-                  ) , function ($message) use ($userdata)
-                  {
-                      $message->to($userdata->email, $userdata->name)
-                          ->subject('Verify your email address');
-                  });
-                  
-                  $email_log      = 'Mail Sent Successfully from Verify';
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_sent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request');
-  
-              } catch (\Throwable $th) {
-  
-                  $email_log      = $th->getMessage();
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_notsent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request-sent');
-  
-              }
-                // // welcome Email
+          
+        try {
+            \Mail::send('emails.verify', array(
+                'activation_code' => $userdata->activation_code,
+                'website_name' => $settings->website_name
+            ) , function ($message) use ($userdata)
+            {
+                $message->to($userdata->email, $userdata->name)
+                    ->subject('Verify your email address');
+            });
+            
+            $email_log      = 'Mail Sent Successfully from Verify';
+            $email_template = "verify";
+            $user_id = $userdata->id;
 
-                // try {
+            Email_sent_log($user_id,$email_log,$email_template);
 
-                //     $data = array(
-                //         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
-                //     );
+        } catch (\Throwable $th) {
 
-                //     Mail::send('emails.welcome', array(
-                //         'username' => $name,
-                //         'website_name' => GetWebsiteName(),
-                //         'url' => URL::to('/'),
-                //         'useremail' => $email,
-                //         'password' => $get_password,
-                //     ), 
-                //     function($message) use ($data,$user) {
-                //         $message->from(AdminMail(),GetWebsiteName());
-                //         $message->to($user->email, $user->name)->subject($data['email_subject']);
-                //     });
+            $email_log      = $th->getMessage();
+            $email_template = "verify";
+            $user_id = $userdata->id;
 
-                //     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_sent_log($user_id,$email_log,$email_template);
-
-                // }catch (\Exception $e) {
-
-                //     $email_log      = $e->getMessage();
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_notsent_log($user_id,$email_log,$email_template);
-
-                // }
-        // try {
-        //   $email = $input['email'];
-        //   $uname = $input['username'];
-        //   Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-        //   $message->to($email,$uname)->subject('Verify your email address');
-        // });
-
-        // } catch (\Throwable $th) {
-        //   //throw $th;
-        // }
-
-        $response = array('status'=>'true','message' => 'Registered Successfully.');
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+               
+        $response = array(
+          'status'=>'true',
+          'status_code'=> 200,
+          'message' => 'Registered Successfully.',
+          'user_data' => $user ,
+        );
+        
       }
       else {
         if(!$settings->free_registration  && $skip == 0){
@@ -981,21 +951,80 @@ class ApiAuthController extends Controller
         }
       }
       else{
-             $response = array('status'=>'true',
-                                'message' => 'Registered Successfully.');
+          $response = array(
+            'status'=>'true',
+            'status_code'=> 200,
+            'message' => 'Registered Successfully.',
+            'user_data' => $user ,
+          );
         }
       }
 
-
-
     } catch(Exception $e){
+
       $user->delete();
-      $response = array('status'=>'false');
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
     }
-        return response()->json($response, 200);
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
+    }   
+
+    return response()->json($response, $response['status_code']);
 }
 
+  public function verify_activation_code(Request $request)
+  {
+    try {
+      
+        // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'activation_code' => 'required',
+          'user_id' => 'required',
+        ], [
+            'activation_code.required'    => 'Please enter your activation code.',
+            'user_id.required'    => 'Please enter your user id.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+    
+        $user = User::findOrFail($request->user_id);
+
+        $status = $user->activation_code == $request->activation_code;
+        $message = $status ? "Verification has been done" : "Invalid verification code";
+
+        return response()->json([
+            'status' => $status ? 'true' : 'false',
+            'status_code' => $status ? 200 : 400,
+            'message' => $message,
+        ], $status ? 200 : 400);
+
+    } catch (\Throwable $th) {
+
+      return response()->json([
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+      ], 400);
+    }
+  }
 
   /**
   * Login user and create token
@@ -1164,45 +1193,53 @@ class ApiAuthController extends Controller
   public function resetpassword(Request $request)
   {
     try {
+      
+      $this->validate($request, [
+        'email'  => 'required' ,
+      ]);
 
       $user_email = $request->email;
-      $user = User::where('email', $user_email)->count();
+      $user = User::where('email', $user_email)->where('active',1)->first();
 
-      if($user > 0){
+      if(is_null($user)){
 
-        $verification_code = mt_rand(1000, 9999);
+        return response()->json(['status'=>'false', 
+                                  'message'=> 'Unauthorized User'
+                                ], 400);
+      }
 
-        try {
+      $verification_code = mt_rand(1000, 9999);
 
-          Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
-            $message->to($user_email)->subject('Verify your email address');
-          });
+      try {
 
-        } catch (\Throwable $th) {
+        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
+          $message->to($user_email)->subject('Verify your email address');
+        });
 
-          $response = array(
-            'status_code' => 400 ,
-            'status'    =>'false',
-            'message'   => $th->getMessage(),
-            'email'     => $user_email,
-          );
+      } catch (\Throwable $th) {
 
-          return response()->json($response, $response['status_code']);
-        }
-
-        $data = DB::table('password_resets')->where('email', $user_email)->first();
-
-        $input_array = array(
-          'email' =>  $user_email, 
-          'verification_code' => $verification_code,
+        $response = array(
+          'status_code' => 400 ,
+          'status'    =>'false',
+          'message'   => $th->getMessage(),
+          'email'     => $user_email,
         );
 
-        if(empty($data)){
-            DB::table('password_resets')->insert( $input_array );
+        return response()->json($response, $response['status_code']);
+      }
 
-        }else{
-            DB::table('password_resets')->where('email', $user_email)->update($input_array);
-        }
+      $data = DB::table('password_resets')->where('email', $user_email)->first();
+
+      $input_array = array(
+        'email' =>  $user_email, 
+        'verification_code' => $verification_code,
+      );
+
+      if(empty($data)){
+          DB::table('password_resets')->insert( $input_array );
+
+      }else{
+          DB::table('password_resets')->where('email', $user_email)->update($input_array);
       }
 
       $response = array(
@@ -1212,6 +1249,7 @@ class ApiAuthController extends Controller
         'email'     => $user_email,
         'verification_code'=> !empty($verification_code) ?? $verification_code,
       );
+
 
     } catch (\Throwable $th) {
 
@@ -1223,7 +1261,6 @@ class ApiAuthController extends Controller
     }
 
     return response()->json($response, $response['status_code']);
-
   }
 
      public function ViewStripe(Request $request){
@@ -1249,6 +1286,123 @@ class ApiAuthController extends Controller
                 );
 
             return response()->json($response, 200);
+    }
+
+    // 12th Sep 2024 - Reset Password (verify_reset_password & upadate_reset_password)
+
+    public function verify_token_reset_password(Request $request)
+    {
+      try {
+
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'verify_code' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'verify_code.required' => 'Please enter your password.',
+        ]);
+
+        if ($validator->fails()) {
+
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Unauthorized User'], 400);
+        }
+
+            // Checking Verify code
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)->where('verification_code',$request->verify_code)->first();
+
+        if( is_null( $password_resets_check) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Invalid Token, Pls check Once'], 400);
+        }
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)
+                                                            ->where('verification_code',$request->verify_code)
+                                                            ->update(['verification_code' => null ]);
+
+        return response()->json([ 'status'=>'false',
+                                  'status_code'=> 200 ,
+                                  'message'=>'verification done successfully'
+                                ],200);
+
+      } catch (\Throwable $th) {
+
+        return response()->json([
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        ],400);
+      }
+    }
+
+    public function update_reset_password(Request $request)
+    {
+      try {
+        
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'password' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'password.required' => 'Please enter your password.',
+        ]);
+    
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'false',
+                'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+            return response()->json(['status'=>'false', 
+                                      'message'=> 'Unauthorized User'
+                                    ], 400);
+        }
+
+              // Update Password
+
+        User::where('email',$request->email)->where('active',1)->first()->update(['password' => Hash::make($request->password) ]);
+
+        send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_check_exits->id);
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 200 ,
+          'message'=>'Password Updated successfully'
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, $response['status_code']);
     }
 
   public function updatepassword(Request $request)
@@ -4644,8 +4798,21 @@ public function verifyandupdatepassword(Request $request)
 
     public function search_andriod(Request $request)
     {
-
       try {
+              
+          $validator = Validator::make($request->all(), [
+            'search_value' => 'required',
+          ]);
+      
+          if ($validator->fails()) {
+
+            $response = [
+                'status'    => 'false',
+                'message'    => $validator->errors()->first(),
+            ];
+    
+            return response()->json($response, 422); 
+          }
 
           $settings = Setting::first();
 
@@ -4756,6 +4923,7 @@ public function verifyandupdatepassword(Request $request)
                           ->where('audio.active', '1')->where('audio.status', '1')
                           
                       ->limit('10')
+                      ->groupBy('audio.id')
                       ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
@@ -4786,8 +4954,8 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('episodes.active', '=', '1')
-                          ->where('episodes.status', '=', '1')
+                          ->where('episodes.active', '1')
+                          ->where('episodes.status', '1')
                           ->groupBy('episodes.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -4824,10 +4992,7 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->orwhere('.search_tag', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.title', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.name', 'LIKE', '%' . $request->search_value . '%')   
-                          ->where('series.active', '=', '1')
+                          ->where('series.active', '1')
                           ->groupBy('series.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5398,39 +5563,6 @@ public function checkEmailExists(Request $request)
         return response()->json($response, 200);
         }
 
-    public function VerifyOtp(Request $request){
-            /*$otp = $request->get('otp');
-            $verify_id = $request->get('verify_id');
-
-                $basic  = new \Nexmo\Client\Credentials\Basic('8c2c8892', '05D2vuG2VbYw2tQZ');
-                $client = new \Nexmo\Client($basic);
-                $request_id = $verify_id;
-
-               try{
-                $verification = new \Nexmo\Verify\Verification($request_id);
-                $result = $client->verify()->check($verification, $otp);
-
-
-                    $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-                } catch(\Vonage\Client\Exception\Request $e){
-                    $response = array(
-                                    'status' => false,
-                                    'message' => 'Invalid Code'
-                                );
-                    return response()->json($response, 200);
-                }  */
-                 $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-    }
 
   public function CheckBlockList(Request $request){
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -5714,6 +5846,10 @@ public function checkEmailExists(Request $request)
           case $item['type'] == 'm3u8' :
               $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
               break;
+
+          case $item['type'] == 'bunny_cdn' :
+            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            break;
 
           default:
             $item['episode_url']    = null ;
@@ -16435,6 +16571,10 @@ public function QRCodeMobileLogout(Request $request)
               case 'live_category':
                     $data = $this->Specific_Category_Livestreams_Pagelist($request->category_id);
                     $Page_List_Name = 'Specific_Category_Livestreams';
+                    $category = LiveCategory::find($request->category_id);
+                    if ($category) {
+                        $category_name = $category->name;
+                    }
                     break;  
 
 
@@ -25793,7 +25933,7 @@ public function TV_login(Request $request)
 
                 $response = array(
                   "status"     => 'true' ,
-                  "status_code" => 400,
+                  "status_code" => 200,
                   "request_id" => $response['request_id'] ,
                   "message"    => 'SMS Send Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
@@ -26203,5 +26343,120 @@ public function SendVideoPushNotification(Request $request)
         return response()->json($data, 200);
     }
 
+    public function Cancel_Subscriptions(Request $request)
+    {
 
+      $validator = Validator::make($request->all(), [
+        'user_id' => 'required',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'Message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      try {
+        
+          // Check subscription user exists
+
+        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','Cancel')->first();
+
+        if(is_null($subscription_user)){
+
+              return response()->json([
+                'status' => 'false',
+                'message'=> 'Unauthorized User',
+                'subscription_user' => $subscription_user,
+              ], 400);
+        }
+
+          // Check payment gateway 
+
+        switch ($subscription_user->payment_gateway) {
+
+          case 'Razorpay':
+
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $api->subscription->fetch($subscription_user->stripe_id)->cancel(array('cancel_at_cycle_end'  => 0));
+            break;
+            
+          case 'Stripe':
+
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+            $stripe->subscriptions->cancel( $subscription_user->stripe_id,[] );
+            break;
+
+          case 'Recurly':
+                
+            $recurly_PaymentSetting = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+
+            if($recurly_PaymentSetting != null){
+
+                if($recurly_PaymentSetting->live_mode == 0){
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_test_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_test_private_key;
+                }else{
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_live_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_live_private_key;
+                }
+            }else{
+               
+              return response()->json([
+                'status' => 'false',
+                'Message'=> 'Invalid Recurly payment gateway,pls contact admin',
+              ], 400);
+
+            }
+
+            $client = new RecurlyClient($recurly_private_key);
+            $subscription = $client->cancelSubscription($subscription_id->stripe_id);
+            break;
+          
+          default:
+              
+              return response()->json([
+                'status' => 'false',
+                'Message'=> 'Invalid payment gateway',
+                'subscription_user' => $subscription_user,
+              ], 400);
+
+            break;
+        }
+        
+        Subscription::where('stripe_id',$subscriptionId)->update([
+          'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',$subscription_user->id )->update([
+          'role'                  =>  'registered',
+          'stripe_id'             =>  null,
+          'subscription_start'    =>  null,
+          'subscription_ends_at'  =>  null,
+          'payment_type'          =>  null,
+          'payment_status'        => 'Cancel',
+          'payment_gateway'       =>  null,
+          'coupon_used'           =>  null ,
+        ]);
+
+        $response = array(
+          'status'  => 'true',
+          'status_code'  => 200,
+          'Message' => "Subscription has been Cancelled Successfully" ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $response = array(
+          'status'  => 'false',
+          'status_code'  => 400,
+          'Message' => $th->getMessage() ,
+        );
+      }
+
+      return response()->json($response, $response['status_code']);
+    }
 }
