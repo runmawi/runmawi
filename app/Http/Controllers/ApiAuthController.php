@@ -3059,7 +3059,7 @@ public function verifyandupdatepassword(Request $request)
 
       $livestreams = LiveStream::query()->where('active', 1)->where('status', 1)
                                       ->where('id', $request->liveid)
-                                      ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
+                                      ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url,$user_id) {
                                         
                                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
