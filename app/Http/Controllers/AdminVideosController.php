@@ -494,16 +494,16 @@ class AdminVideosController extends Controller
         
         $today = Carbon::now() ;
 
-        // Video Upload Limit (3 Limits)
+        // // Video Upload Limit (3 Limits)
 
-        $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
-                                    ->whereYear('created_at',  $today->year)
-                                    ->whereMonth('created_at', $today->month)
-                                    ->count();
+        // $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
+        //                             ->whereYear('created_at',  $today->year)
+        //                             ->whereMonth('created_at', $today->month)
+        //                             ->count();
     
-        if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-            return response()->json( ["success" => 'video_upload_limit_exist'],200);
-        }
+        // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+        //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
+        // }
         
         $value = [];
         $data = $request->all();
