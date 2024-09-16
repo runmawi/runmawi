@@ -1075,11 +1075,15 @@ class ApiAuthController extends Controller
       $adddevice->device_name = $device_name;
       $adddevice->save();
 
-      user::find(Auth::user()->id)->update([
-        'otp' => null ,
-        'otp_request_id' => null ,
-        'otp_through' => null ,
-      ]);
+      // Only for Play Store Testing 
+      if( $request->mobile != "0987654321"){
+
+        user::find(Auth::user()->id)->update([
+          'otp' => null ,
+          'otp_request_id' => null ,
+          'otp_through' => null ,
+        ]);
+      }
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
