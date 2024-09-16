@@ -70,6 +70,7 @@ class AdminAccessPermissionController extends Controller
                     'enable_radiostation'                       => !empty($request->enable_radiostation) ? 1 : 0 ,
                     'enable_videoupload_limit_count'            => !empty($request->enable_videoupload_limit_count) ? 1 : 0 ,
                     'enable_videoupload_limit_status'           => !empty($request->enable_videoupload_limit_status) ? 1 : 0 ,
+                    'enable_ugc_management'           => !empty($request->enable_ugc_management) ? 1 : 0 ,
                  ]);
             }else{
                 
@@ -95,6 +96,7 @@ class AdminAccessPermissionController extends Controller
                     'enable_radiostation'                       => !empty($request->enable_radiostation) ? 1 : 0 ,
                     'enable_videoupload_limit_count'            => !empty($request->enable_videoupload_limit_count) ? 1 : 0 ,
                     'enable_videoupload_limit_status'           => !empty($request->enable_videoupload_limit_status) ? 1 : 0 ,
+                    'enable_ugc_management'           => !empty($request->enable_ugc_management) ? 1 : 0 ,
                 ]);
             }
 
