@@ -1010,6 +1010,11 @@ class ApiAuthController extends Controller
         $user = User::findOrFail($request->user_id);
 
         $status = $user->activation_code == $request->activation_code;
+
+        if($status){
+          $user->update(['activation_code' => null ]);
+        }
+
         $message = $status ? "Verification has been done" : "Invalid verification code";
 
         return response()->json([
