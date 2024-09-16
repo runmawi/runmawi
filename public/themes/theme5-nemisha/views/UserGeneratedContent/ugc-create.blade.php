@@ -843,9 +843,6 @@ $(document).ready(function(){
                     } else if (response.error == 3) {
                         console.log(response.error);
                         alert("File not uploaded. Choose Library!");   
-                    } else if (response.success = 'video_duration' ) {
-                        alert('The Duration Should be less than 3 minutes');
-                        location.reload();
                     }
                     else if (response.success == 'video_upload_limit_exist') { 
                         myDropzone.removeFile(file);  
