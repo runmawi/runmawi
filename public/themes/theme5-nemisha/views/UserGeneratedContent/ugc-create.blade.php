@@ -846,9 +846,13 @@ $(document).ready(function(){
                     }
                     else if (response.success == 'video_upload_limit_exist') { 
                         myDropzone.removeFile(file);  
-                        Swal.fire("You have reached your video upload limit for this month.");
-                        $('#Next').hide();
-                     }
+                        // Swal.fire("You have reached your video upload limit for this month.");
+                        alert("You have reached your video upload limit for this month.");  
+                       
+                     } else if (response.success == 'ugc_video_duration') {
+                        alert("The video duration must be less than 3 minutes");   
+                        location.reload();
+                      }
                      else {
                         $('#Next').show();
                         $('#video_id').val(response.video_id);
