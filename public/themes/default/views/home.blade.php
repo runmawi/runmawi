@@ -186,6 +186,23 @@ $(".home-search").hide();
       }
    }
 
+   // live slider read more option
+   function liveReadMore(key) {
+      const description = document.getElementById('live-details-' + key);
+      const readMoreBtn = document.getElementById('read-more-live-' + key);
+      const readLessBtn = document.getElementById('read-less-live-' + key);
+
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
+
     var isFetching = false;
     var scrollFetch;
 
