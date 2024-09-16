@@ -3065,12 +3065,71 @@ public function verifyandupdatepassword(Request $request)
                                       ->where('status', 1)
                                       ->where('id', $request->liveid)
                                       ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
+                                        
                                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                         $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
                                         $item['description'] = $item->description ;
                                         $item['source']    = "Livestream";
-                                        return $item;
+
+                                        $item['live_description'] = $item->description ? $item->description : "" ;
+                                        $item['trailer'] = null ;
+                                        $item['livestream_format'] =  $item->url_type ;
+                                        $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
+              
+                                        switch ($item['livestream_format']) {
+                                          case "mp4":
+                                              $item['livestream_url'] = $item->mp4_url;
+                                              break;
+                                      
+                                          case "embed":
+                                              $item['livestream_url'] = $item->embed_url;
+                                              break;
+                                      
+                                          case "live_stream_video":
+                                              $item['livestream_url'] = $item->live_stream_video;
+                                              break;
+                                      
+                                          case "acc_audio_url":
+                                              $item['livestream_url'] = $item->acc_audio_url;
+                                              break;
+                                      
+                                          case "acc_audio_file":
+                                              $item['livestream_url'] = $item->acc_audio_file;
+                                              break;
+                                      
+                                          case "Encode_video":
+                                              $item['livestream_url'] = $item->hls_url;
+                                              break;
+                                      
+                                          default:
+                                              $item['livestream_url'] = null;
+                                              break;
+                                        }
+              
+                                        // M3U Channels
+
+                                        $parser  = new M3UFileParser( $item->m3u_url);
+                                        $item['M3U_channel'] =   $parser->getGroup()  ;
+                
+                                        // Live Ads
+                                        $item['live_ads_url'] = null;
+
+                                        $plans_ads_enable = $this->plans_ads_enable($user_id);
+
+                                        if( $plans_ads_enable == 1){
+                              
+                                          $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                                                    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                                                    // ->whereTime('start', '<=', $current_time)
+                                                                    // ->whereTime('end', '>=', $current_time)
+                                                                    ->where('ads_events.status',1)
+                                                                    ->where('advertisements.status',1)
+                                                                    ->where('advertisements.id',$item->live_ads)
+                                                                    ->pluck('ads_path')->first();
+                                        }
+
+                                      return $item;
                                     });
   
       $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
