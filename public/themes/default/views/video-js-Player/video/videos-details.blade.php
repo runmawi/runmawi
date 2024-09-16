@@ -227,12 +227,14 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                         <i class="fas fa-circle"></i> 
 
                         {{ optional($videodetail)->age_restrict }}
-                        <i class="fas fa-circle"></i> 
-                        
-                        @if(isset($view_increment) && $view_increment == true )
-                            {{ ( $movie->views + 1) . " views" }}
-                        @else
-                            {{ $videodetail->views . " views" }} 
+                         
+                        @if ($setting->show_views == 1)
+                            <i class="fas fa-circle"></i>
+                            @if(isset($view_increment) && $view_increment == true )
+                                {{ ( $movie->views + 1) . " views" }}
+                            @else
+                                {{ $videodetail->views . " views" }} 
+                            @endif
                         @endif
                     </div>
                    
