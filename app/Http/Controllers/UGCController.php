@@ -879,7 +879,7 @@ class UGCController extends Controller
                 $Video_storepath = storage_path("app/public/" . $path);
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
-                if($Video_duration <= 180 ){      
+               
                 $video = new UGCVideo();
                 $video->disk = "public";
                 $video->title = $file_folder_name;
@@ -894,10 +894,7 @@ class UGCController extends Controller
                 $video->player_image = default_horizontal_image();
                 $video->duration = $Video_duration;
                 $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
+            
                 $video_id = $video->id;
                 $video_title = UGCVideo::find($video_id);
                 $title = $video_title->title;
@@ -932,8 +929,7 @@ class UGCController extends Controller
                     $Video_storepath = storage_path("app/public/" . $path);
                     $VideoInfo = $getID3->analyze($Video_storepath);
                     $Video_duration = $VideoInfo["playtime_seconds"];
-                   
-                   if($Video_duration <= 180 ){      
+                        
                     $video = new UGCVideo();
                     $video->disk = "public";
                     $video->status = 0;
@@ -949,10 +945,7 @@ class UGCController extends Controller
                     $video->duration = $Video_duration;
                     $video->user_id = Auth::user()->id;
                     $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
+             
 
                 ConvertUGCVideoForStreaming::dispatch($video);
                     
@@ -1058,7 +1051,7 @@ class UGCController extends Controller
                 $Video_storepath = storage_path("app/public/" . $path);
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
-                if($Video_duration <= 180 ){      
+               
                 $video = new UGCVideo();
                 $video->disk = "public";
                 $video->title = $file_folder_name;
@@ -1073,11 +1066,7 @@ class UGCController extends Controller
                 $video->user_id = Auth::user()->id;
                 $video->duration = $Video_duration;
                 $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
-
+                
                 if(Enable_Extract_Image() == 1){
                     // extractImageFromVideo
     
@@ -1818,7 +1807,7 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
 
-                if($Video_duration <= 180 ){      
+               
                 $video->disk = "public";
                 $video->original_name = "public";
                 $video->path = $path;
@@ -1826,11 +1815,7 @@ class UGCController extends Controller
                 $video->type = "mp4_url";
                 $video->duration = $Video_duration;
                 $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
-
+              
                 $video_id = $video->id;
     
                 $value["success"] = 1;
@@ -1862,7 +1847,6 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                if($Video_duration <= 180 ){     
                 $video->disk = "public";
                 $video->status = 0;
                 $video->original_name = "public";
@@ -1872,11 +1856,6 @@ class UGCController extends Controller
                 $video->duration = $Video_duration;
                 $video->user_id = Auth::user()->id;
                 $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
-    
                 ConvertUGCVideoForStreaming::dispatch($video);
                 $video_id = $video->id;
              
@@ -1909,7 +1888,6 @@ class UGCController extends Controller
                 $VideoInfo = $getID3->analyze($Video_storepath);
                 $Video_duration = $VideoInfo["playtime_seconds"];
     
-                if($Video_duration <= 180 ){     
                 // $video = new UGCVideo();
                 $video->disk = "public";
                 // $video->title = $file_folder_name;
@@ -1919,10 +1897,6 @@ class UGCController extends Controller
                 $video->type = "mp4_url";
                 $video->duration = $Video_duration;
                 $video->save();
-                }
-                else{
-                    return response()->json( ["success" => 'video_duration'],200);
-                }
 
                 $video_id = $video->id;
                 $value["success"] = 1;
