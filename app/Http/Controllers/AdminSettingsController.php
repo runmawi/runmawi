@@ -31,6 +31,7 @@ use App\WebComment;
 use Illuminate\Support\Facades\File;
 use App\Jobs\ConvertVideoClip;
 use App\Css;
+use App\ButtonText;
 
 //use Illuminate\Http\Request;
 
@@ -88,6 +89,7 @@ class AdminSettingsController extends Controller
             }
             $script = Script::first();
             $css = Css::pluck('custom_css')->first();
+            $button_text = ButtonText::first();
             $TimeZone = TimeZone::get();
             // dd($script);
             $data = [
@@ -101,6 +103,7 @@ class AdminSettingsController extends Controller
                 'captchas' => Captcha::first(),
                 'sitemap' => $sitemap,
                 'css'     => $css,
+                'button_text'  => $button_text,
             ];
 
             return \View::make('admin.settings.index', $data);
@@ -557,6 +560,24 @@ class AdminSettingsController extends Controller
         $settings->before_season_expiry_mints =   $request['before_season_expiry_mints'];
 
         $settings->save();
+
+        $button_text = ButtonText::first();
+
+        if (!$button_text) {
+            // If no record exists, create a new instance
+            $button_text = new ButtonText();
+        }
+
+        $button_text->play_text  =  $request['play_text'];
+        $button_text->subscribe_text  =  $request['subscribe_text'];
+        $button_text->purchase_text  =  $request['purchase_text'];
+        $button_text->registered_text  =  $request['registered_text'];
+        $button_text->country_avail_text  =  $request['country_avail_text'];
+        $button_text->video_visible_text  =  $request['video_visible_text'];
+        $button_text->live_visible_text  =  $request['live_visible_text'];
+        $button_text->series_visible_text  =  $request['series_visible_text'];
+
+        $button_text->save();
         
 
         $storepath  = URL::to('storage/app/public/');
