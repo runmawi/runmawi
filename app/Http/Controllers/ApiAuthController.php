@@ -305,7 +305,7 @@ class ApiAuthController extends Controller
             $user_data['activation_code'] = Str::padLeft(mt_rand(0, 999999), 6, '0');
             $user_data['active'] = 0;
         }
-        
+
         // Stripe plan
         if (isset($input['subscrip_plan'])) {
             $plan = $input['subscrip_plan'];
@@ -377,14 +377,16 @@ class ApiAuthController extends Controller
 
     try {
       
-      if($settings->free_registration == 0 && $settings->activation_email == 1){
+      // if($settings->free_registration == 0 && $settings->activation_email == 1){
+
+      if($settings->activation_email == 1){
 
                 // verify email
           
         try {
-            \Mail::send('emails.verify', array(
+            \Mail::send('emails.Mobile-signup-verify', array(
                 'activation_code' => $userdata->activation_code,
-                'website_name' => $settings->website_name
+                'website_name' => GetWebsiteName()
             ) , function ($message) use ($userdata)
             {
                 $message->to($userdata->email, $userdata->name)
