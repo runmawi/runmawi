@@ -217,7 +217,7 @@
 .vpageBanner .content .right .playbtn .text {
     font-size: 20px;
     transition: all .7s ease-in-out;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .vpageBanner .content .right .overview {

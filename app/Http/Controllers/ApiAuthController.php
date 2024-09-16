@@ -305,7 +305,7 @@ class ApiAuthController extends Controller
             $user_data['activation_code'] = Str::padLeft(mt_rand(0, 999999), 6, '0');
             $user_data['active'] = 0;
         }
-        
+
         // Stripe plan
         if (isset($input['subscrip_plan'])) {
             $plan = $input['subscrip_plan'];
@@ -377,14 +377,16 @@ class ApiAuthController extends Controller
 
     try {
       
-      if($settings->free_registration == 0 && $settings->activation_email == 1){
+      // if($settings->free_registration == 0 && $settings->activation_email == 1){
+
+      if($settings->activation_email == 1){
 
                 // verify email
           
         try {
-            \Mail::send('emails.verify', array(
+            \Mail::send('emails.Mobile-signup-verify', array(
                 'activation_code' => $userdata->activation_code,
-                'website_name' => $settings->website_name
+                'website_name' => GetWebsiteName()
             ) , function ($message) use ($userdata)
             {
                 $message->to($userdata->email, $userdata->name)
@@ -3050,6 +3052,166 @@ public function verifyandupdatepassword(Request $request)
 
       $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
 
+      // Reccuring Program 
+
+      $current_timezone = current_timezone();
+
+      $default_vertical_image_url = default_vertical_image_url();
+      $default_horizontal_image_url = default_horizontal_image_url();
+
+      $livestreams = LiveStream::query()->where('active', 1)->where('status', 1)
+                                      ->where('id', $request->liveid)
+                                      ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url,$user_id) {
+                                        
+                                        $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                        $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
+                                        $item['description'] = $item->description ;
+                                        $item['source']    = "Livestream";
+
+                                        $item['live_description'] = $item->description ? $item->description : "" ;
+                                        $item['trailer'] = null ;
+                                        $item['livestream_format'] =  $item->url_type ;
+                                        $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
+              
+                                          //  Livestream URL
+
+                                        switch (true) {
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                                              $item['livestream_URL'] =  $item->mp4_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                                            $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "embed":
+                                              $item['livestream_URL'] =  $item->embed_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "live_stream_video":
+                                              $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "m3u_url":
+                                              $item['livestream_URL'] =  $item->m3u_url ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "Encode_video":
+                                              $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_url":
+                                            $item['livestream_URL'] =  $item->acc_audio_url ;
+                                            $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_file":
+                                              $item['livestream_URL'] =  $item->acc_audio_file ;
+                                              $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "aws_m3u8":
+                                            $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          default:
+                                              $item['livestream_URL'] =  null ;
+                                              $item['livestream_player_type'] =  null ;
+                                          break;
+                                      }
+              
+                                        // M3U Channels
+
+                                        $parser  = new M3UFileParser( $item->m3u_url);
+                                        $item['M3U_channel'] =   $parser->getGroup()  ;
+                
+                                        // Live Ads
+                                        $item['live_ads_url'] = null;
+
+                                        $plans_ads_enable = $this->plans_ads_enable($user_id);
+
+                                        if( $plans_ads_enable == 1){
+                              
+                                          $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                                                    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                                                    // ->whereTime('start', '<=', $current_time)
+                                                                    // ->whereTime('end', '>=', $current_time)
+                                                                    ->where('ads_events.status',1)
+                                                                    ->where('advertisements.status',1)
+                                                                    ->where('advertisements.id',$item->live_ads)
+                                                                    ->pluck('ads_path')->first();
+                                        }
+
+                                      return $item;
+                                    });
+  
+      $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+          $livestream->live_animation = 'true' ;
+
+          if ($livestream->publish_type === 'recurring_program') {
+      
+              $Current_time = Carbon::now($current_timezone);
+              $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+              $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+              $midnight = $convert_time->copy()->startOfDay();
+      
+              switch ($livestream->recurring_program) {
+                  case 'custom':
+                      $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                      $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                      break;
+                  case 'daily':
+                      $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'weekly':
+                      $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                      $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'monthly':
+                      $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  default:
+                      $recurring_program_Status = false;
+                      $recurring_program_live_animation = false;
+                      break;
+              }
+
+              $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+
+              $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+      
+              return $recurring_program_Status;
+          }
+      
+          if ($livestream->publish_type === 'publish_later') {
+
+              $Current_time = Carbon::now($current_timezone);
+              
+              $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+              $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+              $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+              $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+              return $publish_later_Status;
+          }
+      
+          return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
+      });
+
       $response = array(
         'status' => 'true',
         'shareurl' => URL::to('live').'/'.$liveid,
@@ -3061,6 +3223,7 @@ public function verifyandupdatepassword(Request $request)
         'categories' => $categories,
         'current_timezone' => current_timezone(),
         'RentURL' => URL::to('live').'/'.$livestreamSlug,
+        'livestreams' => $livestreams,
       );
 
       
@@ -26004,13 +26167,6 @@ public function TV_login(Request $request)
                       ->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
-          
-          User::find($user->id)->update([
-            'otp' => null ,
-            'otp_request_id' => null ,
-            'otp_through' => null ,
-            'request_id'  => null
-          ]);
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');

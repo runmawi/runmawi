@@ -62,7 +62,48 @@ border-radius: 0px 4px 4px 0px;
         margin: 0;
     }
     .ppv_switvh span, .ppv_switvh label{display:none;}
-     .form-control.ppv_expiry_input{background-color:#f0f0f0!important};
+    .form-control.ppv_expiry_input, .form-control.ply_btn_input{background-color:#f0f0f0!important};
+    /* input */
+
+
+    .input-effect {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px; 
+    }
+
+    input.effect-22 {
+        width: 100%;
+        padding: 10px 10px 10px 10px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+        border-radius: 4px;
+        background: none;
+        transition: border-color 0.3s ease;
+    }
+
+    input.effect-22:focus {
+        background: #ededed;
+    }
+    .effect-label {
+        position: absolute;
+        left: 10px;
+        top: 50%;  
+        transform: translateY(-50%);
+        transition: 0.3s ease all;
+        color: #999;
+        font-size: 16px;
+        pointer-events: none;
+        padding: 0 5px;
+    }
+    input:focus + .effect-label,
+    input:not(:placeholder-shown) + .effect-label {
+        top: -10px;
+        left: 10px;
+        font-size: 12px;
+        color: #007bff; 
+    }
 
 </style>
 @section('css')
@@ -152,6 +193,7 @@ border-radius: 0px 4px 4px 0px;
                             <a class="list-group-item list-group-item-action list-group-item-light " id="timezone_setting" href="#!">TimeZone Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="search_setting" href="#!">Search Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="custom_css_setting" href="#!">Custom CSS Settings</a>
+                            <a class="list-group-item list-group-item-action list-group-item-light " id="button_text_setting" href="#!">Button Text Settings</a>
                             <!-- Content Partner -->
                         </div>
                     </div>
@@ -256,6 +298,51 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
+                        <!-- Page content wrapper-->
+                        <div class="container-fluid" id="button_text" style="">
+                            <div class="row button-text mt-3">
+                                <div class="col-6 input-effect">
+                                    <input class="effect-22" type="text"  name="play_text" id="play_text" value="@if(!empty($button_text->play_text)){{ $button_text->play_text }}@endif">
+                                    <label class="effect-label">Play Now button</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect">
+                                    <input class="effect-22" type="text"  name="subscribe_text" id="subscribe_text" value="@if(!empty($button_text->subscribe_text)){{ $button_text->subscribe_text }}@endif">
+                                    <label class="effect-label">Subscribe button</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="purchase_text" id="purchase_text" value="@if(!empty($button_text->purchase_text)){{ $button_text->purchase_text }}@endif">
+                                    <label class="effect-label">Purchase button</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="registered_text" id="registered_text" value="@if(!empty($button_text->registered_text)){{ $button_text->registered_text }}@endif">
+                                    <label class="effect-label">Register button</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="country_avail_text" id="country_avail_text" value="@if(!empty($button_text->country_avail_text)){{ $button_text->country_avail_text }}@endif">
+                                    <label class="effect-label">Not available country button</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="video_visible_text" id="video_visible_text" value="@if(!empty($button_text->video_visible_text)){{ $button_text->video_visible_text }}@endif">
+                                    <label class="effect-label">Video visiblity message</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="live_visible_text" id="live_visible_text" value="@if(!empty($button_text->live_visible_text)){{ $button_text->live_visible_text }}@endif">
+                                    <label class="effect-label">Live visiblity message</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
+                                    <input class="effect-22" type="text"  name="series_visible_text" id="series_visible_text" value="@if(!empty($button_text->series_visible_text)){{ $button_text->series_visible_text }}@endif">
+                                    <label class="effect-label">Series visiblity message</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Default Image Setting-->
                         <div class="container-fluid" id="Defaut_image_setting" style="">
@@ -2118,10 +2205,38 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 
 
 	$('#site_setting').click(function(){
 		$('#site').show();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+        $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
+        $('#button_text').hide();
+	});
+
+    $('#button_text_setting').click(function(){
+        $('#button_text').show();
+		$('#site').hide();
 		$('#videos_settings').hide();
 		$('#ppv').hide();
 		// $('#videos_settings').hide();
@@ -2169,6 +2284,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
 	$('#ppv_setting').click(function(){
@@ -2195,6 +2311,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#video_setting').click(function(){
@@ -2219,6 +2336,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#registration_setting').click(function(){
@@ -2243,6 +2361,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#email_setting').click(function(){
@@ -2267,6 +2386,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#social_setting').click(function(){
@@ -2292,6 +2412,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#subscription_setting').click(function(){
@@ -2317,6 +2438,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#login_setting').click(function(){
@@ -2343,6 +2465,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 	$('#advertisement_setting').click(function(){
@@ -2369,6 +2492,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
 
@@ -2397,6 +2521,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
     $('#custom_css_setting').click(function(){
 		$('#site').hide();
@@ -2423,6 +2548,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').show();
+        $('#button_text').hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -2450,6 +2576,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -2480,6 +2607,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
     $("#transcoding_setting").click(function () {
@@ -2507,6 +2635,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
     $("#series_setting").click(function () {
@@ -2535,6 +2664,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -2564,6 +2694,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -2593,6 +2724,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
 
@@ -2620,6 +2752,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting,#settingupdate').show();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
     });
 
     $("#search_setting").click(function () {
@@ -2647,6 +2780,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#search_setting_form').show();
         $('#settingupdate').show();
         $('#css_custom_setting').hide();
+        $('#button_text').hide();
 
 
     });
