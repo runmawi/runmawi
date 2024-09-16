@@ -5847,6 +5847,10 @@ public function checkEmailExists(Request $request)
               $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
               break;
 
+          case $item['type'] == 'bunny_cdn' :
+            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            break;
+
           default:
             $item['episode_url']    = null ;
             break;
@@ -25929,7 +25933,7 @@ public function TV_login(Request $request)
 
                 $response = array(
                   "status"     => 'true' ,
-                  "status_code" => 400,
+                  "status_code" => 200,
                   "request_id" => $response['request_id'] ,
                   "message"    => 'SMS Send Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
