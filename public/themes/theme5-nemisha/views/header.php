@@ -1622,6 +1622,7 @@
                                         </li>
                                         <li>
                                     
+                                        <?php if(!Auth::guest()): ?>
                                         <?php if( $home_settings->user_generated_content == '1' ): ?>
                                         <div class="bg-primary text-right p-1" style="border-radius:10px;" >
                                             <a href="<?php echo URL::to('ugc-create'); ?>" >
@@ -1633,6 +1634,7 @@
                                             </svg>
                                             </a>
                                         </div>
+                                        <?php endif ; ?>
                                         <?php endif ; ?>
                                    
                                         </li>
