@@ -3074,35 +3074,60 @@ public function verifyandupdatepassword(Request $request)
                                         $item['livestream_format'] =  $item->url_type ;
                                         $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
               
-                                        switch ($item['livestream_format']) {
-                                          case "mp4":
-                                              $item['livestream_url'] = $item->mp4_url;
-                                              break;
-                                      
-                                          case "embed":
-                                              $item['livestream_url'] = $item->embed_url;
-                                              break;
-                                      
-                                          case "live_stream_video":
-                                              $item['livestream_url'] = $item->live_stream_video;
-                                              break;
-                                      
-                                          case "acc_audio_url":
-                                              $item['livestream_url'] = $item->acc_audio_url;
-                                              break;
-                                      
-                                          case "acc_audio_file":
-                                              $item['livestream_url'] = $item->acc_audio_file;
-                                              break;
-                                      
-                                          case "Encode_video":
-                                              $item['livestream_url'] = $item->hls_url;
-                                              break;
-                                      
+                                          //  Livestream URL
+
+                                        switch (true) {
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                                              $item['livestream_URL'] =  $item->mp4_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                                            $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "embed":
+                                              $item['livestream_URL'] =  $item->embed_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "live_stream_video":
+                                              $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "m3u_url":
+                                              $item['livestream_URL'] =  $item->m3u_url ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "Encode_video":
+                                              $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_url":
+                                            $item['livestream_URL'] =  $item->acc_audio_url ;
+                                            $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_file":
+                                              $item['livestream_URL'] =  $item->acc_audio_file ;
+                                              $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "aws_m3u8":
+                                            $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
                                           default:
-                                              $item['livestream_url'] = null;
-                                              break;
-                                        }
+                                              $item['livestream_URL'] =  null ;
+                                              $item['livestream_player_type'] =  null ;
+                                          break;
+                                      }
               
                                         // M3U Channels
 
