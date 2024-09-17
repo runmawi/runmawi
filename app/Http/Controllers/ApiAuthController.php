@@ -382,38 +382,14 @@ class ApiAuthController extends Controller
       if($settings->activation_email == 1){
 
                 // verify email
-          
-        try {
-            \Mail::send('emails.Mobile-signup-verify', array(
-                'activation_code' => $userdata->activation_code,
-                'website_name' => GetWebsiteName()
-            ) , function ($message) use ($userdata)
-            {
-                $message->to($userdata->email, $userdata->name)
-                    ->subject('Verify your email address');
-            });
-            
-            $email_log      = 'Mail Sent Successfully from Verify';
-            $email_template = "verify";
-            $user_id = $userdata->id;
+                
+        $Mail_activation_code = $this->Mail_activation_code($userdata,$user_data['activation_code']);
 
-            Email_sent_log($user_id,$email_log,$email_template);
-
-        } catch (\Throwable $th) {
-
-            $email_log      = $th->getMessage();
-            $email_template = "verify";
-            $user_id = $userdata->id;
-
-            Email_notsent_log($user_id,$email_log,$email_template);
-        }
-               
-        $response = array(
-          'status'=>'true',
-          'status_code'=> 200,
-          'message' => 'Registered Successfully.',
+        return response()->json([
+          'status' => $Mail_activation_code['status'],
+          'message' => $Mail_activation_code['status_code'] == 200 ? "User Register & Activation Mail sent Successfully" : $Mail_activation_code['message'],
           'user_data' => $user ,
-        );
+        ], $Mail_activation_code['status_code']);
         
       }
       else {
@@ -1010,6 +986,11 @@ class ApiAuthController extends Controller
         $user = User::findOrFail($request->user_id);
 
         $status = $user->activation_code == $request->activation_code;
+
+        if($status){
+          $user->update(['activation_code' => null ]);
+        }
+
         $message = $status ? "Verification has been done" : "Invalid verification code";
 
         return response()->json([
@@ -1025,6 +1006,110 @@ class ApiAuthController extends Controller
           'status_code' => 400,
           'message' => $th->getMessage(),
       ], 400);
+    }
+  }
+
+  public function resend_activation_code(Request $request)
+  {
+    try {
+        // Validation 
+        
+      $validator = Validator::make($request->all(), [
+        'user_id' => 'required',
+      ], [
+          'user_id.required'    => 'Please enter your user id.',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      // User data 
+
+      $userdata = User::findOrFail($request->user_id);
+
+      if( $userdata->active == 1){
+
+        return response()->json([
+          'status' => 'false',
+          'message'=> 'This user already in active status'
+        ], 400);
+
+      }
+
+      $activation_code = Str::padLeft(mt_rand(0, 999999), 6, '0');
+
+      $Mail_activation_code = $this->Mail_activation_code($userdata,$activation_code);
+
+      return response()->json([
+        'status' => $Mail_activation_code['status'],
+        'message' => $Mail_activation_code['message'],
+      ], $Mail_activation_code['status_code']);
+
+    } catch (\Throwable $th) {
+      
+      return response()->json([
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => $th->getMessage(),
+      ], 400);
+
+    }
+  }
+
+  private function Mail_activation_code($userdata,$activation_code)
+  {
+    // Note: This Function common for resend_activation_code & Signup
+
+    try {
+
+      \Mail::send('emails.Mobile-signup-verify', array(
+          'activation_code' => $activation_code,
+          'website_name' => GetWebsiteName()
+      ) , function ($message) use ($userdata)
+      {
+          $message->to($userdata->email, $userdata->name)
+              ->subject('Verify your email address');
+      });
+      
+      $email_log      = 'Mail Sent Successfully from Verify';
+      $email_template = "verify";
+      $user_id = $userdata->id;
+
+      Email_sent_log($user_id,$email_log,$email_template);
+
+      // user update
+
+      $userdata->update(['activation_code' => $activation_code ]);
+
+      $respond = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Activation Mail sent Successfully!!',
+      );
+       
+      return $respond;
+
+
+    } catch (\Throwable $th) {
+
+        $email_log      = $th->getMessage();
+        $email_template = "verify";
+        $user_id = $userdata->id;
+
+        Email_notsent_log($user_id,$email_log,$email_template);
+
+        $respond = array(
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+        );
+
+        return $respond;
     }
   }
 
@@ -2934,9 +3019,25 @@ public function verifyandupdatepassword(Request $request)
   public function livestreamdetail(Request $request)
   {
     try {
-        $liveid = $request->liveid;
-        $user_id = $request->user_id;
 
+      $validator = Validator::make($request->all(), [
+                    'liveid' => 'required', 
+                    'user_id' => 'required'],
+                    [
+                      'liveid.required'  => 'Please enter your liveid',
+                      'user_id.required' => 'Please enter your user_id',
+                    ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      $liveid = $request->liveid;
+      $user_id = $request->user_id;
 
       // Live Language
 
@@ -3084,7 +3185,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
-                                            $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->mp4_url; ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3094,7 +3195,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "live_stream_video":
-                                              $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                                              $item['livestream_URL'] = $item->live_stream_video; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3104,7 +3205,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "Encode_video":
-                                              $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                              $item['livestream_URL'] =  $item->hls_url; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL'  ;
                                           break;
 
@@ -3119,7 +3220,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "aws_m3u8":
-                                            $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->hls_url ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
