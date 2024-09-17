@@ -1015,9 +1015,9 @@ class ApiAuthController extends Controller
         // Validation 
         
       $validator = Validator::make($request->all(), [
-        'user_id' => 'required',
+        'email_id' => 'required',
       ], [
-          'user_id.required'    => 'Please enter your user id.',
+          'email_id.required'    => 'Please enter your email_id.',
       ]);
 
       if ($validator->fails()) {
@@ -1030,7 +1030,7 @@ class ApiAuthController extends Controller
 
       // User data 
 
-      $userdata = User::findOrFail($request->user_id);
+      $userdata = User::where('email',$request->email_id)->first();
 
       if( $userdata->active == 1){
 
