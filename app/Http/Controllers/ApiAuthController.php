@@ -964,15 +964,14 @@ class ApiAuthController extends Controller
   public function verify_activation_code(Request $request)
   {
     try {
-      
         // Validation 
           
         $validator = Validator::make($request->all(), [
           'activation_code' => 'required',
-          'user_id' => 'required',
+          'email_id' => 'required',
         ], [
             'activation_code.required'    => 'Please enter your activation code.',
-            'user_id.required'    => 'Please enter your user id.',
+            'email_id.required'    => 'Please enter your email_id.',
         ]);
         
         if ($validator->fails()) {
@@ -983,7 +982,7 @@ class ApiAuthController extends Controller
             ], 400);
         }
     
-        $user = User::findOrFail($request->user_id);
+        $user = User::where('email',$request->email_id)->first();
 
         $status = $user->activation_code == $request->activation_code;
 
