@@ -51,6 +51,7 @@ Route::group(
         Route::post('login', 'ApiAuthController@login');
         Route::post('signup', 'ApiAuthController@signup');
         Route::post('verify-activation-code', 'ApiAuthController@verify_activation_code');
+        Route::post('resend-activation-code', 'ApiAuthController@resend_activation_code');
         Route::post('directVerify', 'ApiAuthController@directVerify');
         Route::post('resetpassword', 'ApiAuthController@resetpassword');
         Route::post('updatepassword', 'ApiAuthController@updatepassword');
