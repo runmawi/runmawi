@@ -4699,35 +4699,36 @@ public function verifyandupdatepassword(Request $request)
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
       $myData = array();
-
-      $category_id = CategoryVideo::where('video_id', $videoid)->get();
-      $recomendeds = collect();
-        // Recomendeds
-        foreach ($category_id as $key => $value)
-        {
-            $videos = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
-                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                ->where('videos.id', '!=', $videoid)
-                ->where('categoryvideos.category_id', '=', $value->category_id)
-                ->limit(10)
-                ->get()->map(function ($item) {
-                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                    return $item;
-                  });
-                  $recomendeds = $recomendeds->concat($videos); 
-        }
-
-        $myData[] = array(
+  
+      $category_id = CategoryVideo::where('video_id', $videoid)->pluck('category_id');
+  
+      $recomendeds = CategoryVideo::select('categoryvideos.video_id', 'categoryvideos.category_id', 'videos.*', 'video_categories.name as categories_name')
+          ->join('videos', 'videos.id', '=', 'categoryvideos.video_id')
+          ->join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+          ->whereIn('categoryvideos.category_id', $category_id)
+          ->where('videos.id', '!=', $videoid) 
+          ->groupBy('videos.id')  
+          ->latest()
+          ->limit(30)
+          ->get()
+          ->map(function($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))
+                  ? "Published"
+                  : ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);  // Calculate the publish status
+              return $item;
+          });
+  
+      $myData[] = array(
           "recomendeds" => $recomendeds->all() // Convert the collection to an array
       );
-
-        $response = array(
-        'status'=>'true',
-        'channelrecomended' => $myData
+  
+      $response = array(
+          'status'=>'true',
+          'channelrecomended' => $myData
       );
       return response()->json($response, 200);
-    }
+  }
 
     public function relatedppvvideos(Request $request) {
       $ppvvideoid = $request->ppvvideoid;
