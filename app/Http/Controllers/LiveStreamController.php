@@ -400,14 +400,14 @@ class LiveStreamController extends Controller
                 $button_text = ButtonText::first();
 
                   $item['users_video_visibility_status'] = false ;
-                  $item['users_video_visibility_status_message'] = !is_null($button_text->live_visible_text) ? $button_text->live_visible_text : (($item->access == "ppv") ? 'This Livestream is only for PPV users' : 'This Livestream is only for Subscribed users');
+                  $item['users_video_visibility_status_message'] = !empty($button_text->live_visible_text) ? $button_text->live_visible_text : (($item->access == "ppv") ? 'This Livestream is only for PPV users' : 'This Livestream is only for Subscribed users');
                   $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                   $item['users_video_visibility_Rent_button']      = false ;
                   $item['users_video_visibility_becomesubscriber'] = false ;
                   $item['users_video_visibility_register_button']  = true ;
 
                   $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                  $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? (!is_null($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : (!is_null($button_text->subscribe_text) ? $button_text->subscribe_text : $item->access.' Now');
+                  $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : $item->access.' Now');
 
                       // Free duration
                   if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
