@@ -3019,9 +3019,25 @@ public function verifyandupdatepassword(Request $request)
   public function livestreamdetail(Request $request)
   {
     try {
-        $liveid = $request->liveid;
-        $user_id = $request->user_id;
 
+      $validator = Validator::make($request->all(), [
+                    'liveid' => 'required', 
+                    'user_id' => 'required'],
+                    [
+                      'liveid.required'  => 'Please enter your liveid',
+                      'user_id.required' => 'Please enter your user_id',
+                    ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      $liveid = $request->liveid;
+      $user_id = $request->user_id;
 
       // Live Language
 
@@ -3169,7 +3185,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
-                                            $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->mp4_url; ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3179,7 +3195,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "live_stream_video":
-                                              $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                                              $item['livestream_URL'] = $item->live_stream_video; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3189,7 +3205,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "Encode_video":
-                                              $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                              $item['livestream_URL'] =  $item->hls_url; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL'  ;
                                           break;
 
@@ -3204,7 +3220,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "aws_m3u8":
-                                            $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->hls_url ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
