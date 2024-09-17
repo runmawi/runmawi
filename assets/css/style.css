@@ -69,7 +69,7 @@ header .navbar ul li.menu-item a{font-size:14px;position:relative;position:relat
 .more-menu{position:absolute;top:50px;left:auto;right:0;min-width:18rem;padding:.35rem .5rem;margin:0;opacity:0;transform:translate(0,70px);-webkit-transform:translate(0,70px);-webkit-transition:all .3s ease-out 0;-moz-transition:all .3s ease-out 0;-ms-transition:all .3s ease-out 0;-o-transition:all .3s ease-out 0;transition:all .3s ease-out 0;background:var(--iq-bg1);box-shadow:0 3px 10px rgba(0,0,0,0.75);visibility:hidden;z-index:999}
 .more-menu.show{opacity:1;transform:translate(0,0);visibility:visible}
 header .navbar ul li:last-child{margin-right:0}
-#home-slider{max-width:100%;transition:transform .5s;z-index: 99;}
+#home-slider{max-width:100%;transition:transform .5s;z-index: 9;}
 #home-slider .slick-slide{-webkit-transition:all .3s ease-out;transition:all .3s ease-out}
 #home-slider .slick-center{-webkit-transform:scale(1.8);transform:scale(1.8)}
 h1{font-weight:500}
