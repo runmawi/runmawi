@@ -988,7 +988,7 @@ class ApiAuthController extends Controller
         $status = $user->activation_code == $request->activation_code;
 
         if($status){
-          $user->update(['activation_code' => null ]);
+          $user->update(['activation_code' => null , 'active' => 1 ]);
         }
 
         $message = $status ? "Verification has been done" : "Invalid verification code";
