@@ -4541,7 +4541,7 @@ class ChannelController extends Controller
                                                 ->join('videos','videos.id','=','categoryvideos.video_id')
                                                 ->whereIn('categoryvideos.category_id', $item['category_id'])
                                                 ->where('videos.id', '!=' ,$video_id)
-                                                ->groupBy('videos.id')->limit(30)->get()->map(function( $item ){
+                                                ->groupBy('videos.id')->latest()->limit(30)->get()->map(function( $item ){
                                                     $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
                                                     return $item;
                                                 });
