@@ -18,6 +18,9 @@ include public_path('themes/theme5-nemisha/views/header.php');
     .nav-div.container-fluid {
         padding: 0;
     }
+    .flickity-prev-next-button{
+        top: 55%;
+    }
 </style>
 
 <section id="iq-favorites">
