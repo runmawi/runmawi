@@ -14,7 +14,7 @@
         font-weight: 500;
     }
     select:invalid { color:grey!important; }
-    select:valid { color:#808080!important; }
+    select:valid { color:#dadada !important; }
     .plyr__video-wrapper::before{
         display: none;
     }
@@ -105,12 +105,12 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <p  style="color:#fff!important;"><?php echo $series->details;?></p>
 						<b><p  style="color:#fff;"><?php echo $series->description;?></p></b>
                             <div class="row p-0 mt-3 align-items-center">
-                                <div class="col-md-2">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
-                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a></div>
+                                <div class="col-md-2 text-center">  <a data-video="<?php echo $series->trailer;  ?>" data-toggle="modal" data-target="#videoModal">	
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>" /> </a>Play</div>
                               <!--  <div class="col-md-4 text-center pls">  <a herf="">  <i class="fa fa-plus" aria-hidden="true"></i> <br>Add Wishlist</a></div>-->
                                 <div class="col-md-1 pls  d-flex text-center mt-2">
                                     <div></div><ul>
-                                    <li class="share">
+                                    <li class="share" style="font-size:39px;">
 <span><i class="ri-share-fill"></i></span>
     <div class="share-box">
        <div class="d-flex align-items-center"> 
@@ -227,15 +227,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				</nav>
             </div>
 <!-- $series->title -->
-						<div class="container-fluid">
+			<div class="container-fluid">
 				<div class="favorites-contens">
-                    <div class="col-md-3 p-0">
-                    <select class="form-control" id="season_id" name="season_id">
+          <div class="col-md-3 p-0 custom-select" style="border: none !important; height:100% !important;">
+            <select class="form-control" id="season_id" name="season_id">
 							<?php foreach($season as $key => $seasons): ?>
 								<option value="season_<?= $seasons->id;?>">Season <?= $key+1; ?></option>
 							<?php endforeach; ?>
-						</select></div>
-          <ul class="category-page list-inline row p-3 mb-0">
+						</select>
+          </div>
+            <ul class="category-page list-inline row p-3 mb-0">
               <?php 
                     foreach($season as $key => $seasons):  
                       foreach($seasons->episodes as $key => $episodes):

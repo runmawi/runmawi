@@ -148,9 +148,12 @@
                                         <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
                                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                                         </span>
-                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:45px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                    <!-- {{ __('Add To Watchlist') }} -->
+                                                    {{ !is_null($videodetail->watchlater_exist) ? "Remove from Watchlist" : "Add To Watchlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -160,9 +163,12 @@
                                         <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
                                             <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                                         </span>
-                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:45px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                    <!-- {{ __('Add To Wishlist') }} -->
+                                                    {{ !is_null($videodetail->wishlist_exist) ? "Remove from Wishlist" : "Add To Wishlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -375,7 +381,7 @@
 
             @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
-                <div class=" container-fluid video-list  overflow-hidden p-0">
+                <div class=" container-fluid video-list  overflow-hidden">
 
                     <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
 
