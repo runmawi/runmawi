@@ -568,14 +568,15 @@ class AdminSettingsController extends Controller
             $button_text = new ButtonText();
         }
 
-        $button_text->play_text  =  $request['play_text'];
-        $button_text->subscribe_text  =  $request['subscribe_text'];
-        $button_text->purchase_text  =  $request['purchase_text'];
-        $button_text->registered_text  =  $request['registered_text'];
+        $button_text->play_text           =  $request['play_text'];
+        $button_text->subscribe_text      =  $request['subscribe_text'];
+        $button_text->purchase_text       =  $request['purchase_text'];
+        $button_text->registered_text     =  $request['registered_text'];
         $button_text->country_avail_text  =  $request['country_avail_text'];
         $button_text->video_visible_text  =  $request['video_visible_text'];
-        $button_text->live_visible_text  =  $request['live_visible_text'];
-        $button_text->series_visible_text  =  $request['series_visible_text'];
+        $button_text->live_visible_text   =  $request['live_visible_text'];
+        $button_text->series_visible_text =  $request['series_visible_text'];
+        $button_text->play_btn_live       =  $request['play_btn_live'];
 
         $button_text->save();
         

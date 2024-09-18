@@ -4356,7 +4356,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_block_button']     = false ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? (!is_null($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : ($item->access == "subscriber" ? (!is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!is_null($button_text->registered_text) ? $button_text->registered_text : 'Register Now'));
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : ($item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'));
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4408,7 +4408,7 @@ class ChannelController extends Controller
                             $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? (!is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!is_null($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now '.$Rent_ppv_price) )  ;
+                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now '.$Rent_ppv_price) )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4442,13 +4442,13 @@ class ChannelController extends Controller
 
                             if (Auth::user()->role == "subscriber") {
                                 $item['users_video_visibility_status']         = true ;
-                                $item['users_video_visibility_status_button']  = (!is_null($button_text->play_text) ? $button_text->play_text :'Watch now') ;
+                                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                             }
                             elseif( $PPV_exists == true ){
                                 
                                 $item['users_video_visibility_status']         = true ;
-                                $item['users_video_visibility_status_button']  = (!is_null($button_text->play_text) ? $button_text->play_text :'Watch now') ;
+                                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                                 $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                             }
@@ -4459,7 +4459,7 @@ class ChannelController extends Controller
                             }
                             else{
                                 $item['users_video_visibility_status'] = false ;
-                                $item['users_video_visibility_status_button']    =  (!is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') ;
+                                $item['users_video_visibility_status_button']    =  (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') ;
                                 $item['users_video_visibility_Rent_button']      =   true  ;
                                 $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                                 $item['users_video_visibility_register_button']  = false ;
@@ -4474,7 +4474,7 @@ class ChannelController extends Controller
                         $button_text = ButtonText::first();
                         if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                             $item['users_video_visibility_status'] = true ;
-                            $item['users_video_visibility_status_button']  = (!is_null($button_text->play_text) ? $button_text->play_text :'Watch now');
+                            $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now');
                             $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                         }
                     }
@@ -4488,7 +4488,7 @@ class ChannelController extends Controller
                             $button_text = ButtonText::first();
 
                             $item['users_video_visibility_status'] = false;
-                            $item['users_video_visibility_status_button'] = (!is_null($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
+                            $item['users_video_visibility_status_button'] = (!empty($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
                             $item['users_video_visibility_Rent_button']    = false ;
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4502,7 +4502,7 @@ class ChannelController extends Controller
                         $button_text = ButtonText::first();
 
                         $item['users_video_visibility_status'] = false;
-                        $item['users_video_visibility_status_button'] = (!is_null($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
+                        $item['users_video_visibility_status_button'] = (!empty($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
@@ -4541,7 +4541,7 @@ class ChannelController extends Controller
                                                 ->join('videos','videos.id','=','categoryvideos.video_id')
                                                 ->whereIn('categoryvideos.category_id', $item['category_id'])
                                                 ->where('videos.id', '!=' ,$video_id)
-                                                ->groupBy('videos.id')->limit(30)->get()->map(function( $item ){
+                                                ->groupBy('videos.id')->latest()->limit(30)->get()->map(function( $item ){
                                                     $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
                                                     return $item;
                                                 });
