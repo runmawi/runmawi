@@ -131,21 +131,7 @@
                   </div>
                   <!-- Video upload -->   
                   <div id="video_upload" >
-                     @if(@$theme_settings->enable_bunny_cdn == 1)
-                        
-                        <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
-                        <!-- UploadlibraryID -->
-                        <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
-                                 <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
-                                    @foreach($videolibrary as $library)
-                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
-                                    @endforeach
-                           </select>  
-
-                           <br>
-                     @else
                         <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
-                     @endif
                      <div class="content file UploadEnable">
                            <h3 class="card-title upload-ui text-black pt-5 font-weight-bold">Upload Your Own Content</h3>
                            <!-- Dropzone --> 
@@ -208,9 +194,7 @@
                      <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile"> m3u8 Url &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
                      <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code   
-                  {{-- @if(@$theme_settings->enable_bunny_cdn == 1)
-                     <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
-                  @endif --}}
+                
                   </div>
                </div>
          </div>
@@ -224,76 +208,13 @@
       {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
       <script>
 
-         var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
-         if(enable_bunny_cdn == 1){
-            $('.UploadEnable').hide();
-         }
-
-            $('#UploadlibraryID').change(function(){
-               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
-               // alert($('#UploadlibraryID').val());
-                  $('.UploadEnable').show();
-               }else{
-                  $('.UploadEnable').hide();
-               }
-            });
-
-         // $(document).ready(function() {
-         //    $('#bunny_cdn_linked_video').select2();
-         // });
-
          $(document).ready(function(){
 
-            $('#videolibrary').on('change', function() {
-                  
-                  var videolibrary_id = this.value;
-                  $("#bunny_cdn_linked_video").html('');
-                     $.ajax({
-                     url:"{{url::to('admin/bunnycdn_videolibrary')}}",
-                     type: "POST",
-                     data: {
-                     videolibrary_id: videolibrary_id,
-                     _token: '{{csrf_token()}}' 
-                     },
-                     dataType : 'json',
-                     success: function(result){
-                        // alert();
-                  // var streamUrl = '{{$streamUrl}}' ;
-                  var streamvideos = result.streamvideos;
-                  var PullZoneURl = result.PullZoneURl;
-                  var decodedStreamVideos = JSON.parse(streamvideos);
-
-                  // console.log(decodedStreamVideos);
-
-
-                  $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
-
-                     $.each(decodedStreamVideos.items, function(key, value) {
-                        console.log(value.title);
-                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
-                        $("#bunny_cdn_linked_video").append('<option value="' + videoUrl + '">' + value.title + '</option>');
-                        // $("#bunny_cdn_linked_video").append('<option value="'+videoUrl+'">'+value.title+'</option>');
-                     });
-
-                  // old code 
-                     // $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
-                     // $.each(result.items,function(key,value){
-                     //    console.log(value.title);
-                     //    $("#bunny_cdn_linked_video").append('<option value="'+streamUrl+'/'+value.guid+'/'+'playlist.m3u8'+'">'+value.title+'</option>');
-
-                     // // $("#bunny_cdn_linked_video").append('<option value="'+value.title+'">'+value.title+'</option>');
-                     // });
-                     }
-                  });
-
-               }); 
-
-
-         	$('#video_upload').show();
-         	$('#video_mp4').hide();
-         	$('#embedvideo').hide();
-         	$('#m3u8_url').hide();
-         	$('#bunnycdnvideo').hide();
+         $('#video_upload').show();
+         $('#video_mp4').hide();
+         $('#embedvideo').hide();
+         $('#m3u8_url').hide();
+         
          
          
          $('#videoupload').click(function(){
@@ -301,29 +222,29 @@
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
-         	$('#bunnycdnvideo').hide();      
          })
+
          $('#videomp4').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').show();
          	$('#embedvideo').hide();
          	$('#m3u8_url').hide();
-         	$('#bunnycdnvideo').hide();
          })
+
          $('#embed_video').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').hide();
          	$('#embedvideo').show();
          	$('#m3u8_url').hide();
-         	$('#bunnycdnvideo').hide();
          })
+
          $('#m3u8').click(function(){
          	$('#video_upload').hide();
          	$('#video_mp4').hide();
          	$('#embedvideo').hide();
          	$('#m3u8_url').show();
-         	$('#bunnycdnvideo').hide();
-         })
+
+         });
 
          $('#bunny_cdn_video').click(function(){
 
@@ -409,23 +330,7 @@
          }
          });
       })
-      $('#submit_bunny_cdn').click(function(){
-      $.ajax({
-         url: '{{ URL::to('/admin/stream_bunny_cdn_video') }}',
-         type: "post",
-         data: {
-                  _token: '{{ csrf_token() }}',
-                  bunny_cdn_linked_video: $('#bunny_cdn_linked_video').val()
-
-            },        success: function(value){
-            console.log(value);
-               $('#Next').show();
-            $('#video_id').val(value.video_id);
-
-         }
-      });
-      })
-
+    
    });
    	
 </script>
@@ -762,7 +667,7 @@ $(document).ready(function(){
          $.ajax({
          type: "POST", 
          dataType: "json", 
-         url: "{{ url('admin/video_slug_validate') }}",
+         url: "{{ url('ugc/video_slug_validate') }}",
                data: {
                   _token  : "{{csrf_token()}}" ,
                   slug : slug,
@@ -941,9 +846,13 @@ $(document).ready(function(){
                     }
                     else if (response.success == 'video_upload_limit_exist') { 
                         myDropzone.removeFile(file);  
-                        Swal.fire("You have reached your video upload limit for this month.");
-                        $('#Next').hide();
-                     }
+                        // Swal.fire("You have reached your video upload limit for this month.");
+                        alert("You have reached your video upload limit for this month.");  
+                       
+                     } else if (response.success == 'ugc_video_duration') {
+                        alert("The video duration must be less than 3 minutes");   
+                        location.reload();
+                      }
                      else {
                         $('#Next').show();
                         $('#video_id').val(response.video_id);
@@ -983,7 +892,7 @@ $(document).ready(function(){
    $('#video_details').show();
 
    $.ajax({
-        url: '{{ URL::to('admin/videos/extractedimage') }}',
+        url: '{{ URL::to('ugc/extractedimage') }}',
         type: "post",
         data: {
             _token: '{{ csrf_token() }}',

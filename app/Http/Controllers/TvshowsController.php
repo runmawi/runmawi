@@ -57,6 +57,7 @@ use App\ThumbnailSetting;
 use App\OrderHomeSetting;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use App\ButtonText;
 
 
 class TvshowsController extends Controller
@@ -1029,6 +1030,7 @@ class TvshowsController extends Controller
             
             $Theme = HomeSetting::pluck('theme_choosen')->first();
             $theme = Theme::uses($Theme);
+            $button_text = ButtonText::first();
 
             $currency = CurrencySetting::first();
 
@@ -1170,6 +1172,7 @@ class TvshowsController extends Controller
                     'stripe_payment_setting'   => $stripe_payment_setting ,
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
+                    'button_text'              => $button_text,
                 ];
 
                 return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
@@ -1212,6 +1215,7 @@ class TvshowsController extends Controller
                     'stripe_payment_setting'   => $stripe_payment_setting ,
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
+                    'button_text'              => $button_text,
                 ];
                 return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }

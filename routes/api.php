@@ -50,11 +50,17 @@ Route::group(
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::post('login', 'ApiAuthController@login');
         Route::post('signup', 'ApiAuthController@signup');
+        Route::post('verify-activation-code', 'ApiAuthController@verify_activation_code');
+        Route::post('resend-activation-code', 'ApiAuthController@resend_activation_code');
         Route::post('directVerify', 'ApiAuthController@directVerify');
         Route::post('resetpassword', 'ApiAuthController@resetpassword');
         Route::post('updatepassword', 'ApiAuthController@updatepassword');
         Route::post('changepassword', 'ApiAuthController@changepassword');
         Route::post('verifyandupdatepassword', 'ApiAuthController@verifyandupdatepassword');
+
+        Route::post('verify-token-reset-password', 'ApiAuthController@verify_token_reset_password');
+        Route::post('update-reset-password', 'ApiAuthController@update_reset_password');
+
         Route::get('latestvideos', 'ApiAuthController@latestvideos');
         Route::get('categorylist', 'ApiAuthController@categorylist');
         Route::post('channelvideos', 'ApiAuthController@channelvideos');
@@ -309,6 +315,9 @@ Route::group(
         Route::post('Paystack-SeriesRent-Paymentverify', 'ApiAuthController@Paystack_SeriesRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
         Route::post('Paystack-SerieSeasonRent-Paymentverify', 'ApiAuthController@Paystack_SerieSeasonRentRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
         Route::post('Paystack-AudioRent-Paymentverify', 'ApiAuthController@Paystack_AudioRent_Paymentverify')->name('Paystack_VideoRent_Paymentverify');
+
+        //Common Cancel Subscriptions
+        Route::post('cancel-subscription', 'ApiAuthController@Cancel_Subscriptions');
 
         // Ads
         Route::post('AdsView', 'ApiAuthController@AdsView');

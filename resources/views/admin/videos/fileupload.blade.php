@@ -255,8 +255,8 @@
                   <div id="flussonicstoragevideo" style="">
                      <div class="new-audio-file mt-3">
                         <label for="Flussonic_linked_video">Flussonic Upload Path:</label>
-                        <!-- FlussonicUploadlibraryID -->
-                        <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                        <!-- FlussonicUploadlibrary -->
+                        <select class="phselect form-control" name="FlussonicUploadlibrary" id="FlussonicUploadlibrary" >
                                  <option>{{ __('Choose Stream Library from Flussonic Path') }}</option>
                                     @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
                                         <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
@@ -442,7 +442,7 @@
          $(document).ready(function(){
 
 
-            $('#FlussonicUploadlibraryID').on('change', function() {
+            $('#FlussonicUploadlibrary').on('change', function() {
                   
                   var FlussonicUploadlibraryID = this.value;
                   $("#Flussonic_linked_video").html('');

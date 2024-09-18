@@ -74,6 +74,7 @@ use DateTime;
 use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
 use App\EPGSchedulerData;
+use App\ButtonText;
 
 class ChannelController extends Controller
 {
@@ -4329,6 +4330,7 @@ class ChannelController extends Controller
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
+            $button_text = ButtonText::first();
 
 
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
@@ -4344,6 +4346,7 @@ class ChannelController extends Controller
                     // Check for guest user
 
                 if( Auth::guest() && $item->access != "guest" ){
+                    $button_text = ButtonText::first();
 
                     $item['users_video_visibility_status'] = false ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
@@ -4353,7 +4356,7 @@ class ChannelController extends Controller
                     $item['users_video_visibility_block_button']     = false ;
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? 'Purchase Now for '.$Rent_ppv_price : ($item->access == "subscriber" ? 'Subscribe Now' : $item->access.' Now');
+                    $item['users_video_visibility_status_button'] = $item->access == "ppv" ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : ($item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'));
 
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -4401,9 +4404,11 @@ class ChannelController extends Controller
                         }
 
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+                            $button_text = ButtonText::first();
+                            $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
 
                             $item['users_video_visibility_status'] = false ;
-                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? "subscribe" : "Purchase" )  .' Now'   ;
+                            $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now '.$Rent_ppv_price) )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
                             $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4433,16 +4438,17 @@ class ChannelController extends Controller
                         // Subscriber / PPV
 
                         if( $item->access == "subscriber" && !is_null($item->ppv_price)   ){
+                            $button_text = ButtonText::first();
 
                             if (Auth::user()->role == "subscriber") {
                                 $item['users_video_visibility_status']         = true ;
-                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                             }
                             elseif( $PPV_exists == true ){
                                 
                                 $item['users_video_visibility_status']         = true ;
-                                $item['users_video_visibility_status_button']  = 'Watch now' ;
+                                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                                 $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                             }
@@ -4453,7 +4459,7 @@ class ChannelController extends Controller
                             }
                             else{
                                 $item['users_video_visibility_status'] = false ;
-                                $item['users_video_visibility_status_button']    =  "Subscribe Now"   ;
+                                $item['users_video_visibility_status_button']    =  (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') ;
                                 $item['users_video_visibility_Rent_button']      =   true  ;
                                 $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
                                 $item['users_video_visibility_register_button']  = false ;
@@ -4465,9 +4471,10 @@ class ChannelController extends Controller
 
                         // Free duration
                     if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
+                        $button_text = ButtonText::first();
                         if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                             $item['users_video_visibility_status'] = true ;
-                            $item['users_video_visibility_status_button']  = 'Watch Now' ;
+                            $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now');
                             $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                         }
                     }
@@ -4478,9 +4485,10 @@ class ChannelController extends Controller
                         $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
 
                         if ($block_videos_exists) {
+                            $button_text = ButtonText::first();
 
                             $item['users_video_visibility_status'] = false;
-                            $item['users_video_visibility_status_button'] = 'Not available in your country';
+                            $item['users_video_visibility_status_button'] = (!empty($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
                             $item['users_video_visibility_Rent_button']    = false ;
                             $item['users_video_visibility_becomesubscriber_button'] = false ;
                             $item['users_video_visibility_register_button']  = false ;
@@ -4491,9 +4499,10 @@ class ChannelController extends Controller
 
                         // Available Country
                     if ( !is_null( $item->country) && $item->country != '["All"]' && in_array(Country_name(), json_decode($item->country, true) ) == false  ) { // Check if the user's country is blocked
+                        $button_text = ButtonText::first();
 
                         $item['users_video_visibility_status'] = false;
-                        $item['users_video_visibility_status_button'] = 'Not available in your country';
+                        $item['users_video_visibility_status_button'] = (!empty($button_text->country_avail_text) ? $button_text->country_avail_text : 'Not available in your country') ;
                         $item['users_video_visibility_Rent_button']    = false ;
                         $item['users_video_visibility_becomesubscriber_button'] = false ;
                         $item['users_video_visibility_register_button']  = false ;
@@ -4532,7 +4541,7 @@ class ChannelController extends Controller
                                                 ->join('videos','videos.id','=','categoryvideos.video_id')
                                                 ->whereIn('categoryvideos.category_id', $item['category_id'])
                                                 ->where('videos.id', '!=' ,$video_id)
-                                                ->groupBy('videos.id')->limit(30)->get()->map(function( $item ){
+                                                ->groupBy('videos.id')->latest()->limit(30)->get()->map(function( $item ){
                                                     $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))? "Published": ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);
                                                     return $item;
                                                 });
@@ -4703,6 +4712,7 @@ class ChannelController extends Controller
                 'currency'         => $currency,
                 'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
                 'publishable_key'    => $publishable_key ,
+                'button_text'      => $button_text,
                 'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>

@@ -102,6 +102,7 @@ use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
 use App\CompressImage;
 use App\EPGSchedulerData;
+use App\Jobs\VideoCompression;
 
 class AdminVideosController extends Controller
 {
@@ -117,9 +118,9 @@ class AdminVideosController extends Controller
 
         $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
         $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
-        $this->Flussonic_Auth_Key  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
-        $this->Flussonic_Server_Base_URL  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
-        $this->Flussonic_Storage_Tag  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
+        $this->Flussonic_Auth_Key  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
+        $this->Flussonic_Server_Base_URL  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
+        $this->Flussonic_Storage_Tag  = @$this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
 
     }
 
@@ -493,16 +494,16 @@ class AdminVideosController extends Controller
         
         $today = Carbon::now() ;
 
-        // Video Upload Limit (3 Limits)
+        // // Video Upload Limit (3 Limits)
 
-        $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
-                                    ->whereYear('created_at',  $today->year)
-                                    ->whereMonth('created_at', $today->month)
-                                    ->count();
+        // $videos_uplaod_limit = Video::where('user_id', Auth::user()->id )
+        //                             ->whereYear('created_at',  $today->year)
+        //                             ->whereMonth('created_at', $today->month)
+        //                             ->count();
     
-        if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
-            return response()->json( ["success" => 'video_upload_limit_exist'],200);
-        }
+        // if ( $site_theme->admin_videoupload_limit_status == 1 && $videos_uplaod_limit >= $site_theme->admin_videoupload_limit_count) {
+        //     return response()->json( ["success" => 'video_upload_limit_exist'],200);
+        // }
         
         $value = [];
         $data = $request->all();
@@ -716,6 +717,8 @@ class AdminVideosController extends Controller
                 else{
                     if(Enable_4k_Conversion() == 1){
                         Convert4kVideoForStreaming::dispatch($video);
+                    }elseif(Enable_Video_Compression() == 1){
+                        VideoCompression::dispatch($video);
                     }else{
                         ConvertVideoForStreaming::dispatch($video);
                     }
@@ -781,6 +784,10 @@ class AdminVideosController extends Controller
             $video->user_id = Auth::user()->id;
             $video->duration = $Video_duration;
             $video->save();
+
+            if(Enable_Video_Compression() == 1){
+                VideoCompression::dispatch($video);
+            }
 
             // if(Enable_Extract_Image() == 1){
             //     // extractImageFromVideo
@@ -4889,6 +4896,12 @@ class AdminVideosController extends Controller
     {
         return Video::where("id", "=", $id)->first();
     }
+
+    function get_compression_processed_percentage($id)
+    {
+        return Video::where("id", "=", $id)->first();
+    }
+    
     public function purchaseVideocount(Request $request)
     {
         $data = $request->all();

@@ -1134,7 +1134,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                         console.log(result.streamvideos.files); 
                         var StreamURL = result.StreamURL;
 
-                        $('#stream_flussonic_episode').html('<option value="">Choose Videos from Flussonic</option>'); 
+                        $('#stream_flussonic_episode').html('<option value="">Choose Episodes from Flussonic</option>'); 
 
                         $.each(streamvideos, function(key, value) {
                                 var videoUrl = StreamURL + value.name + '/index.m3u8';

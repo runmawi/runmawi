@@ -700,6 +700,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/player', 'Adminplayer@Index');
 
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
+    Route::get('/get_compression_processed_percentage/{id}', 'AdminVideosController@get_compression_processed_percentage');
 
     // Admin Series and Episode
 
@@ -2890,6 +2891,8 @@ Route::get('/profile/{username}', 'UGCController@showugcprofile')->name('profile
 Route::post('/subscribe', 'UGCController@subscribe')->name('subscribe');
 Route::post('/unsubscribe', 'UGCController@unsubscribe')->name('unsubscribe');
 Route::get('ugc/view_all_profile', 'UGCController@viewallprofile')->name('viewallprofile');
+Route::post('ugc/video_slug_validate', 'UGCController@video_slug_validate');
+Route::post('ugc/extractedimage', 'UGCController@ExtractedImage');
 
 // UGC management admin
 Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');

@@ -14,6 +14,7 @@ $homepage_array_data = [
                       'getfeching' => $getfeching,
                       'currency'   => $currency,
                       'settings'   => $settings,
+                      'button_text'   => $button_text,
                    ];
 
   $Slider_array_data = array(
@@ -174,6 +175,23 @@ $(".home-search").hide();
       const description = document.getElementById('details-' + key);
       const readMoreBtn = document.getElementById('read-more-details-' + key);
       const readLessBtn = document.getElementById('read-less-details-' + key);
+
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
+
+   // live slider read more option
+   function liveReadMore(key) {
+      const description = document.getElementById('live-details-' + key);
+      const readMoreBtn = document.getElementById('read-more-live-' + key);
+      const readLessBtn = document.getElementById('read-less-live-' + key);
 
       if (readMoreBtn.style.display === 'none') {
          readMoreBtn.style.display = 'inline';

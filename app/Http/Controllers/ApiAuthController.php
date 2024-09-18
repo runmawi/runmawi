@@ -215,8 +215,25 @@ class ApiAuthController extends Controller
   }
 
   public function signup(Request $request)
-  {
+  {    
+    try { 
+          // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'email' => 'required|email|unique:users,email',  
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+        
         $input = $request->all();
         
         $user_data = array( 'username' => $request->get('username'),
@@ -234,6 +251,8 @@ class ApiAuthController extends Controller
         $user_data['mobile'] = isset($input['mobile']) && !empty($input['mobile']) ? $input['mobile'] : " " ;
         $skip = isset($input['skip']) ? $input['skip'] : 0 ;
         
+            // Reference code
+
         if (!empty($input['referrer_code'])){
           $referrer_code = $input['referrer_code'];
         }
@@ -245,44 +264,49 @@ class ApiAuthController extends Controller
               $referred_user_id =null;
         }
 
+            // Token Generate
+
         $length = 10;
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $ref_token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
         $token = substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
 
-        if (!empty($request->token)){
-            $user_data['token'] =  $request->token;
-        } else {
-          $user_data['token'] =  '';
-        }
+        $user_data['token'] =  !empty($request->token) ? $request->token : null ;
 
-        $path = URL::to('/').'/public/uploads/avatars/';
+            // Avatar Upload
+
+        $path = URL::to('public/uploads/avatars');
         $logo = $request->file('avatar');
-        if($logo != '') {
-            if($logo != ''  && $logo != null){
-                $file_old = $path.$logo;
-                if (file_exists($file_old)){
-                      unlink($file_old);
-                }
-            }
-            $file = $logo;
-            $avatar  = $file->getClientOriginalName();
-            $file->move(public_path()."/uploads/avatars/", $file->getClientOriginalName());
-        } else {
-            $avatar  = 'default.png';
+        $avatar = 'default.png';
+
+        if(!is_null($logo)){
+
+          $file_old = $path.$logo;
+
+          if (file_exists($file_old)){
+            unlink($file_old);
+          }
+          
+          $avatar  = $logo->getClientOriginalName();
+          $file->move(public_path()."/uploads/avatars/", $logo->getClientOriginalName());
         }
 
-        if(!$settings->free_registration && $skip == 0) {
-            $user_data['role'] = 'registered';
-            $user_data['active'] = '1';
-        } else {
-                if($settings->activation_email):
-                  $user_data['activation_code'] = Str::random(60);
-                  $user_data['active'] = 0;
-                endif;
-          $user_data['role'] = 'registered';
+        // Activation code
+
+        $user_data['role'] = 'registered';
+        $user_data['active'] = 1;
+        $user_data['activation_code'] = null;
+        
+        if (!$settings->free_registration && $skip == 0) {
+          // 
+        } 
+
+        if ($settings->activation_email) {
+            $user_data['activation_code'] = Str::padLeft(mt_rand(0, 999999), 6, '0');
+            $user_data['active'] = 0;
         }
 
+        // Stripe plan
         if (isset($input['subscrip_plan'])) {
             $plan = $input['subscrip_plan'];
         }
@@ -290,26 +314,26 @@ class ApiAuthController extends Controller
         $user = User::where('email', $request->get('email'))->first();
         $username = User::where('username', $request->get('username'))->where('username', '!=', null)->first();
 
-        if ($user === null ) {
-          // && $username === null
-              $user = new User($user_data);
-              $user->ccode = $user_data['ccode'];
-              $user->mobile = $user_data['mobile'];
-              $user->avatar = $avatar;
-              $user->password = Hash::make($request->get('password'));
-              $user->referrer_id = $referred_user_id;
-              $user->token = $user_data['token'];
-              $user->activation_code = Str::random(60);
-              $user->referral_token = $ref_token;
-              $user->country = $request->country;
-              $user->state = $request->state;
-              $user->city = $request->city;
-              $user->DOB = $request->dob;
-              $user->support_username = $request->support_username;
-              $user->active = 1;
-              $user->save();
-              $userdata = User::where('email', '=', $request->get('email'))->first();
-              $userid = $userdata->id;
+        $user = new User($user_data);
+        $user->ccode = $user_data['ccode'];
+        $user->mobile = $user_data['mobile'];
+        $user->avatar = $avatar;
+        $user->password = Hash::make($request->get('password'));
+        $user->referrer_id = $referred_user_id;
+        $user->token = $user_data['token'];
+        $user->activation_code = $user_data['activation_code'];
+        $user->referral_token = $ref_token;
+        $user->country = $request->country;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->DOB = $request->dob;
+        $user->support_username = $request->support_username;
+        $user->active = $user_data['active'];
+        $user->save();
+
+        $userdata = User::where('email', $request->get('email'))->first();
+        $userid = $userdata->id;
+
         // welcome Email
                                   
                try {
@@ -346,103 +370,27 @@ class ApiAuthController extends Controller
 
             }
             
-              send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
+            send_password_notification('Notification From '.GetWebsiteName() ,'Your Account  has been Created Successfully','Your Account  has been Created Successfully','',$userid);
 
-        }
-        else {
-              if($user != null){
-                $response = array('status'=>'false','message' => 'Email id Already Exists');
-                return response()->json($response, 200);
-              }else{
-                // $response = array('status'=>'false','message' => 'Username Already Exists');
-                // return response()->json($response, 200);
-              }
-        }
 
         $userid = !empty($userdata) ?  $user->id : " ";
 
     try {
       
-      if($settings->free_registration == 0 && $settings->activation_email == 1){
+      // if($settings->free_registration == 0 && $settings->activation_email == 1){
 
-        
+      if($settings->activation_email == 1){
+
                 // verify email
-                try {
-                  \Mail::send('emails.verify', array(
-                      'activation_code' => $userdata->activation_code,
-                      'website_name' => $settings->website_name
-                  ) , function ($message) use ($userdata)
-                  {
-                      $message->to($userdata->email, $userdata->name)
-                          ->subject('Verify your email address');
-                  });
-                  
-                  $email_log      = 'Mail Sent Successfully from Verify';
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_sent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request');
-  
-              } catch (\Throwable $th) {
-  
-                  $email_log      = $th->getMessage();
-                  $email_template = "verify";
-                  $user_id = $userdata->id;
-  
-                  Email_notsent_log($user_id,$email_log,$email_template);
-  
-                  // return redirect('/verify-request-sent');
-  
-              }
-                // // welcome Email
+                
+        $Mail_activation_code = $this->Mail_activation_code($userdata,$user_data['activation_code']);
 
-                // try {
-
-                //     $data = array(
-                //         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
-                //     );
-
-                //     Mail::send('emails.welcome', array(
-                //         'username' => $name,
-                //         'website_name' => GetWebsiteName(),
-                //         'url' => URL::to('/'),
-                //         'useremail' => $email,
-                //         'password' => $get_password,
-                //     ), 
-                //     function($message) use ($data,$user) {
-                //         $message->from(AdminMail(),GetWebsiteName());
-                //         $message->to($user->email, $user->name)->subject($data['email_subject']);
-                //     });
-
-                //     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_sent_log($user_id,$email_log,$email_template);
-
-                // }catch (\Exception $e) {
-
-                //     $email_log      = $e->getMessage();
-                //     $email_template = "1";
-                //     $user_id = $user->id;
-
-                //     Email_notsent_log($user_id,$email_log,$email_template);
-
-                // }
-        // try {
-        //   $email = $input['email'];
-        //   $uname = $input['username'];
-        //   Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-        //   $message->to($email,$uname)->subject('Verify your email address');
-        // });
-
-        // } catch (\Throwable $th) {
-        //   //throw $th;
-        // }
-
-        $response = array('status'=>'true','message' => 'Registered Successfully.');
+        return response()->json([
+          'status' => $Mail_activation_code['status'],
+          'message' => $Mail_activation_code['status_code'] == 200 ? "User Register & Activation Mail sent Successfully" : $Mail_activation_code['message'],
+          'user_data' => $user ,
+        ], $Mail_activation_code['status_code']);
+        
       }
       else {
         if(!$settings->free_registration  && $skip == 0){
@@ -981,21 +929,188 @@ class ApiAuthController extends Controller
         }
       }
       else{
-             $response = array('status'=>'true',
-                                'message' => 'Registered Successfully.');
+          $response = array(
+            'status'=>'true',
+            'status_code'=> 200,
+            'message' => 'Registered Successfully.',
+            'user_data' => $user ,
+          );
         }
       }
 
-
-
     } catch(Exception $e){
+
       $user->delete();
-      $response = array('status'=>'false');
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
     }
-        return response()->json($response, 200);
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status'=>'false',
+        'status_code'=> 400,
+        'message' => $e->getMessage(),
+      );
+    }   
+
+    return response()->json($response, $response['status_code']);
 }
 
+  public function verify_activation_code(Request $request)
+  {
+    try {
+        // Validation 
+          
+        $validator = Validator::make($request->all(), [
+          'activation_code' => 'required',
+          'email_id' => 'required',
+        ], [
+            'activation_code.required'    => 'Please enter your activation code.',
+            'email_id.required'    => 'Please enter your email_id.',
+        ]);
+        
+        if ($validator->fails()) {
 
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+    
+        $user = User::where('email',$request->email_id)->first();
+
+        $status = $user->activation_code == $request->activation_code;
+
+        if($status){
+          $user->update(['activation_code' => null , 'active' => 1 ]);
+        }
+
+        $message = $status ? "Verification has been done" : "Invalid verification code";
+
+        return response()->json([
+            'status' => $status ? 'true' : 'false',
+            'status_code' => $status ? 200 : 400,
+            'message' => $message,
+        ], $status ? 200 : 400);
+
+    } catch (\Throwable $th) {
+
+      return response()->json([
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+      ], 400);
+    }
+  }
+
+  public function resend_activation_code(Request $request)
+  {
+    try {
+        // Validation 
+        
+      $validator = Validator::make($request->all(), [
+        'email_id' => 'required',
+      ], [
+          'email_id.required'    => 'Please enter your email_id.',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      // User data 
+
+      $userdata = User::where('email',$request->email_id)->first();
+
+      if( $userdata->active == 1){
+
+        return response()->json([
+          'status' => 'false',
+          'message'=> 'This user already in active status'
+        ], 400);
+
+      }
+
+      $activation_code = Str::padLeft(mt_rand(0, 999999), 6, '0');
+
+      $Mail_activation_code = $this->Mail_activation_code($userdata,$activation_code);
+
+      return response()->json([
+        'status' => $Mail_activation_code['status'],
+        'message' => $Mail_activation_code['message'],
+      ], $Mail_activation_code['status_code']);
+
+    } catch (\Throwable $th) {
+      
+      return response()->json([
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => $th->getMessage(),
+      ], 400);
+
+    }
+  }
+
+  private function Mail_activation_code($userdata,$activation_code)
+  {
+    // Note: This Function common for resend_activation_code & Signup
+
+    try {
+
+      \Mail::send('emails.Mobile-signup-verify', array(
+          'activation_code' => $activation_code,
+          'website_name' => GetWebsiteName()
+      ) , function ($message) use ($userdata)
+      {
+          $message->to($userdata->email, $userdata->name)
+              ->subject('Verify your email address');
+      });
+      
+      $email_log      = 'Mail Sent Successfully from Verify';
+      $email_template = "verify";
+      $user_id = $userdata->id;
+
+      Email_sent_log($user_id,$email_log,$email_template);
+
+      // user update
+
+      $userdata->update(['activation_code' => $activation_code ]);
+
+      $respond = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Activation Mail sent Successfully!!',
+      );
+       
+      return $respond;
+
+
+    } catch (\Throwable $th) {
+
+        $email_log      = $th->getMessage();
+        $email_template = "verify";
+        $user_id = $userdata->id;
+
+        Email_notsent_log($user_id,$email_log,$email_template);
+
+        $respond = array(
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+        );
+
+        return $respond;
+    }
+  }
 
   /**
   * Login user and create token
@@ -1046,11 +1161,15 @@ class ApiAuthController extends Controller
       $adddevice->device_name = $device_name;
       $adddevice->save();
 
-      user::find(Auth::user()->id)->update([
-        'otp' => null ,
-        'otp_request_id' => null ,
-        'otp_through' => null ,
-      ]);
+      // Only for Play Store Testing 
+      if( $request->mobile != "0987654321"){
+
+        user::find(Auth::user()->id)->update([
+          'otp' => null ,
+          'otp_request_id' => null ,
+          'otp_through' => null ,
+        ]);
+      }
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -1164,45 +1283,53 @@ class ApiAuthController extends Controller
   public function resetpassword(Request $request)
   {
     try {
+      
+      $this->validate($request, [
+        'email'  => 'required' ,
+      ]);
 
       $user_email = $request->email;
-      $user = User::where('email', $user_email)->count();
+      $user = User::where('email', $user_email)->where('active',1)->first();
 
-      if($user > 0){
+      if(is_null($user)){
 
-        $verification_code = mt_rand(1000, 9999);
+        return response()->json(['status'=>'false', 
+                                  'message'=> 'Unauthorized User'
+                                ], 400);
+      }
 
-        try {
+      $verification_code = mt_rand(1000, 9999);
 
-          Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
-            $message->to($user_email)->subject('Verify your email address');
-          });
+      try {
 
-        } catch (\Throwable $th) {
+        Mail::send('emails.resetpassword', array('verification_code' => $verification_code), function($message) use ($user_email) {
+          $message->to($user_email)->subject('Verify your email address');
+        });
 
-          $response = array(
-            'status_code' => 400 ,
-            'status'    =>'false',
-            'message'   => $th->getMessage(),
-            'email'     => $user_email,
-          );
+      } catch (\Throwable $th) {
 
-          return response()->json($response, $response['status_code']);
-        }
-
-        $data = DB::table('password_resets')->where('email', $user_email)->first();
-
-        $input_array = array(
-          'email' =>  $user_email, 
-          'verification_code' => $verification_code,
+        $response = array(
+          'status_code' => 400 ,
+          'status'    =>'false',
+          'message'   => $th->getMessage(),
+          'email'     => $user_email,
         );
 
-        if(empty($data)){
-            DB::table('password_resets')->insert( $input_array );
+        return response()->json($response, $response['status_code']);
+      }
 
-        }else{
-            DB::table('password_resets')->where('email', $user_email)->update($input_array);
-        }
+      $data = DB::table('password_resets')->where('email', $user_email)->first();
+
+      $input_array = array(
+        'email' =>  $user_email, 
+        'verification_code' => $verification_code,
+      );
+
+      if(empty($data)){
+          DB::table('password_resets')->insert( $input_array );
+
+      }else{
+          DB::table('password_resets')->where('email', $user_email)->update($input_array);
       }
 
       $response = array(
@@ -1212,6 +1339,7 @@ class ApiAuthController extends Controller
         'email'     => $user_email,
         'verification_code'=> !empty($verification_code) ?? $verification_code,
       );
+
 
     } catch (\Throwable $th) {
 
@@ -1223,7 +1351,6 @@ class ApiAuthController extends Controller
     }
 
     return response()->json($response, $response['status_code']);
-
   }
 
      public function ViewStripe(Request $request){
@@ -1249,6 +1376,123 @@ class ApiAuthController extends Controller
                 );
 
             return response()->json($response, 200);
+    }
+
+    // 12th Sep 2024 - Reset Password (verify_reset_password & upadate_reset_password)
+
+    public function verify_token_reset_password(Request $request)
+    {
+      try {
+
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'verify_code' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'verify_code.required' => 'Please enter your password.',
+        ]);
+
+        if ($validator->fails()) {
+
+          return response()->json([
+              'status' => 'false',
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Unauthorized User'], 400);
+        }
+
+            // Checking Verify code
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)->where('verification_code',$request->verify_code)->first();
+
+        if( is_null( $password_resets_check) ){
+
+          return response()->json(['status'=>'false', 'message'=> 'Invalid Token, Pls check Once'], 400);
+        }
+
+        $password_resets_check = DB::table('password_resets')->where('email', $request->email)
+                                                            ->where('verification_code',$request->verify_code)
+                                                            ->update(['verification_code' => null ]);
+
+        return response()->json([ 'status'=>'false',
+                                  'status_code'=> 200 ,
+                                  'message'=>'verification done successfully'
+                                ],200);
+
+      } catch (\Throwable $th) {
+
+        return response()->json([
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        ],400);
+      }
+    }
+
+    public function update_reset_password(Request $request)
+    {
+      try {
+        
+        $validator = Validator::make($request->all(), [
+          'email'    => 'required|email',
+          'password' => 'required',
+        ], [
+            'email.required'    => 'Please enter your email address.',
+            'email.email'       => 'The email must be a valid email address.',
+            'password.required' => 'Please enter your password.',
+        ]);
+    
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'false',
+                'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+
+              // Checking Users Exits
+
+        $user_check_exits = User::where('email',$request->email)->where('active',1)->first();
+
+        if( is_null( $user_check_exits) ){
+
+            return response()->json(['status'=>'false', 
+                                      'message'=> 'Unauthorized User'
+                                    ], 400);
+        }
+
+              // Update Password
+
+        User::where('email',$request->email)->where('active',1)->first()->update(['password' => Hash::make($request->password) ]);
+
+        send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_check_exits->id);
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 200 ,
+          'message'=>'Password Updated successfully'
+        );
+
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'false',
+          'status_code'=> 400 ,
+          'message'=>$th->getMessage(),
+        );
+
+      }
+
+      return response()->json($response, $response['status_code']);
     }
 
   public function updatepassword(Request $request)
@@ -2774,9 +3018,25 @@ public function verifyandupdatepassword(Request $request)
   public function livestreamdetail(Request $request)
   {
     try {
-        $liveid = $request->liveid;
-        $user_id = $request->user_id;
 
+      $validator = Validator::make($request->all(), [
+                    'liveid' => 'required', 
+                    'user_id' => 'required'],
+                    [
+                      'liveid.required'  => 'Please enter your liveid',
+                      'user_id.required' => 'Please enter your user_id',
+                    ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      $liveid = $request->liveid;
+      $user_id = $request->user_id;
 
       // Live Language
 
@@ -2892,6 +3152,166 @@ public function verifyandupdatepassword(Request $request)
 
       $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
 
+      // Reccuring Program 
+
+      $current_timezone = current_timezone();
+
+      $default_vertical_image_url = default_vertical_image_url();
+      $default_horizontal_image_url = default_horizontal_image_url();
+
+      $livestreams = LiveStream::query()->where('active', 1)->where('status', 1)
+                                      ->where('id', $request->liveid)
+                                      ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url,$user_id) {
+                                        
+                                        $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                        $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                        $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
+                                        $item['description'] = $item->description ;
+                                        $item['source']    = "Livestream";
+
+                                        $item['live_description'] = $item->description ? $item->description : "" ;
+                                        $item['trailer'] = null ;
+                                        $item['livestream_format'] =  $item->url_type ;
+                                        $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
+              
+                                          //  Livestream URL
+
+                                        switch (true) {
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                                              $item['livestream_URL'] =  $item->mp4_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                                            $item['livestream_URL'] =  $item->mp4_url; ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "embed":
+                                              $item['livestream_URL'] =  $item->embed_url ;
+                                              $item['livestream_player_type'] =  'video/mp4' ;
+                                          break;
+
+                                          case $item['url_type'] == "live_stream_video":
+                                              $item['livestream_URL'] = $item->live_stream_video; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "m3u_url":
+                                              $item['livestream_URL'] =  $item->m3u_url ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          case $item['url_type'] == "Encode_video":
+                                              $item['livestream_URL'] =  $item->hls_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_url":
+                                            $item['livestream_URL'] =  $item->acc_audio_url ;
+                                            $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "acc_audio_file":
+                                              $item['livestream_URL'] =  $item->acc_audio_file ;
+                                              $item['livestream_player_type'] =  'audio/aac' ;
+                                          break;
+
+                                          case $item['url_type'] == "aws_m3u8":
+                                            $item['livestream_URL'] =  $item->hls_url ;
+                                            $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                          break;
+
+                                          default:
+                                              $item['livestream_URL'] =  null ;
+                                              $item['livestream_player_type'] =  null ;
+                                          break;
+                                      }
+              
+                                        // M3U Channels
+
+                                        $parser  = new M3UFileParser( $item->m3u_url);
+                                        $item['M3U_channel'] =   $parser->getGroup()  ;
+                
+                                        // Live Ads
+                                        $item['live_ads_url'] = null;
+
+                                        $plans_ads_enable = $this->plans_ads_enable($user_id);
+
+                                        if( $plans_ads_enable == 1){
+                              
+                                          $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                                                    // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                                                    // ->whereTime('start', '<=', $current_time)
+                                                                    // ->whereTime('end', '>=', $current_time)
+                                                                    ->where('ads_events.status',1)
+                                                                    ->where('advertisements.status',1)
+                                                                    ->where('advertisements.id',$item->live_ads)
+                                                                    ->pluck('ads_path')->first();
+                                        }
+
+                                      return $item;
+                                    });
+  
+      $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+          $livestream->live_animation = 'true' ;
+
+          if ($livestream->publish_type === 'recurring_program') {
+      
+              $Current_time = Carbon::now($current_timezone);
+              $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+              $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+              $midnight = $convert_time->copy()->startOfDay();
+      
+              switch ($livestream->recurring_program) {
+                  case 'custom':
+                      $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                      $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                      break;
+                  case 'daily':
+                      $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'weekly':
+                      $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                      $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'monthly':
+                      $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  default:
+                      $recurring_program_Status = false;
+                      $recurring_program_live_animation = false;
+                      break;
+              }
+
+              $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+
+              $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+      
+              return $recurring_program_Status;
+          }
+      
+          if ($livestream->publish_type === 'publish_later') {
+
+              $Current_time = Carbon::now($current_timezone);
+              
+              $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+              $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+              $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+              $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+              return $publish_later_Status;
+          }
+      
+          return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
+      });
+
       $response = array(
         'status' => 'true',
         'shareurl' => URL::to('live').'/'.$liveid,
@@ -2903,6 +3323,7 @@ public function verifyandupdatepassword(Request $request)
         'categories' => $categories,
         'current_timezone' => current_timezone(),
         'RentURL' => URL::to('live').'/'.$livestreamSlug,
+        'livestreams' => $livestreams,
       );
 
       
@@ -4378,35 +4799,36 @@ public function verifyandupdatepassword(Request $request)
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
       $myData = array();
-
-      $category_id = CategoryVideo::where('video_id', $videoid)->get();
-      $recomendeds = collect();
-        // Recomendeds
-        foreach ($category_id as $key => $value)
-        {
-            $videos = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
-                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                ->where('videos.id', '!=', $videoid)
-                ->where('categoryvideos.category_id', '=', $value->category_id)
-                ->limit(10)
-                ->get()->map(function ($item) {
-                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                    return $item;
-                  });
-                  $recomendeds = $recomendeds->concat($videos); 
-        }
-
-        $myData[] = array(
+  
+      $category_id = CategoryVideo::where('video_id', $videoid)->pluck('category_id');
+  
+      $recomendeds = CategoryVideo::select('categoryvideos.video_id', 'categoryvideos.category_id', 'videos.*', 'video_categories.name as categories_name')
+          ->join('videos', 'videos.id', '=', 'categoryvideos.video_id')
+          ->join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+          ->whereIn('categoryvideos.category_id', $category_id)
+          ->where('videos.id', '!=', $videoid) 
+          ->groupBy('videos.id')  
+          ->latest()
+          ->limit(30)
+          ->get()
+          ->map(function($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))
+                  ? "Published"
+                  : ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);  // Calculate the publish status
+              return $item;
+          });
+  
+      $myData[] = array(
           "recomendeds" => $recomendeds->all() // Convert the collection to an array
       );
-
-        $response = array(
-        'status'=>'true',
-        'channelrecomended' => $myData
+  
+      $response = array(
+          'status'=>'true',
+          'channelrecomended' => $myData
       );
       return response()->json($response, 200);
-    }
+  }
 
     public function relatedppvvideos(Request $request) {
       $ppvvideoid = $request->ppvvideoid;
@@ -4644,8 +5066,21 @@ public function verifyandupdatepassword(Request $request)
 
     public function search_andriod(Request $request)
     {
-
       try {
+              
+          $validator = Validator::make($request->all(), [
+            'search_value' => 'required',
+          ]);
+      
+          if ($validator->fails()) {
+
+            $response = [
+                'status'    => 'false',
+                'message'    => $validator->errors()->first(),
+            ];
+    
+            return response()->json($response, 422); 
+          }
 
           $settings = Setting::first();
 
@@ -4756,6 +5191,7 @@ public function verifyandupdatepassword(Request $request)
                           ->where('audio.active', '1')->where('audio.status', '1')
                           
                       ->limit('10')
+                      ->groupBy('audio.id')
                       ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
@@ -4786,8 +5222,8 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('episodes.active', '=', '1')
-                          ->where('episodes.status', '=', '1')
+                          ->where('episodes.active', '1')
+                          ->where('episodes.status', '1')
                           ->groupBy('episodes.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -4824,10 +5260,7 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->orwhere('.search_tag', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.title', 'LIKE', '%' . $request->search_value . '%')
-                          ->orwhere('.name', 'LIKE', '%' . $request->search_value . '%')   
-                          ->where('series.active', '=', '1')
+                          ->where('series.active', '1')
                           ->groupBy('series.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5398,39 +5831,6 @@ public function checkEmailExists(Request $request)
         return response()->json($response, 200);
         }
 
-    public function VerifyOtp(Request $request){
-            /*$otp = $request->get('otp');
-            $verify_id = $request->get('verify_id');
-
-                $basic  = new \Nexmo\Client\Credentials\Basic('8c2c8892', '05D2vuG2VbYw2tQZ');
-                $client = new \Nexmo\Client($basic);
-                $request_id = $verify_id;
-
-               try{
-                $verification = new \Nexmo\Verify\Verification($request_id);
-                $result = $client->verify()->check($verification, $otp);
-
-
-                    $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-                } catch(\Vonage\Client\Exception\Request $e){
-                    $response = array(
-                                    'status' => false,
-                                    'message' => 'Invalid Code'
-                                );
-                    return response()->json($response, 200);
-                }  */
-                 $response = array(
-                                    'status' => true,
-                                    'message' => 'OTP has been verified'
-                    );
-
-                    return response()->json($response, 200);
-    }
 
   public function CheckBlockList(Request $request){
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -5714,6 +6114,10 @@ public function checkEmailExists(Request $request)
           case $item['type'] == 'm3u8' :
               $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
               break;
+
+          case $item['type'] == 'bunny_cdn' :
+            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            break;
 
           default:
             $item['episode_url']    = null ;
@@ -15221,7 +15625,6 @@ public function QRCodeMobileLogout(Request $request)
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                         ->where('active', '1')
                                         ->where('status', 1)
-                                        ->limit($homepage_input_array['limit'])
                                         ->get()->map(function ($item) use ($homepage_default_image_url) {
                                           $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
                                           $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
@@ -15309,7 +15712,7 @@ public function QRCodeMobileLogout(Request $request)
             return -$timestamp; 
         })->values();
         
-        return $livestreams;
+        return $livestreams->take($homepage_input_array['limit']);
 
       endif;
 
@@ -16435,6 +16838,10 @@ public function QRCodeMobileLogout(Request $request)
               case 'live_category':
                     $data = $this->Specific_Category_Livestreams_Pagelist($request->category_id);
                     $Page_List_Name = 'Specific_Category_Livestreams';
+                    $category = LiveCategory::find($request->category_id);
+                    if ($category) {
+                        $category_name = $category->name;
+                    }
                     break;  
 
 
@@ -25793,7 +26200,7 @@ public function TV_login(Request $request)
 
                 $response = array(
                   "status"     => 'true' ,
-                  "status_code" => 400,
+                  "status_code" => 200,
                   "request_id" => $response['request_id'] ,
                   "message"    => 'SMS Send Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
@@ -25860,13 +26267,6 @@ public function TV_login(Request $request)
                       ->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
-          
-          User::find($user->id)->update([
-            'otp' => null ,
-            'otp_request_id' => null ,
-            'otp_through' => null ,
-            'request_id'  => null
-          ]);
 
           $otp_status = "true";
           $message = Str::title('Otp verify successfully !!');
@@ -26203,5 +26603,120 @@ public function SendVideoPushNotification(Request $request)
         return response()->json($data, 200);
     }
 
+    public function Cancel_Subscriptions(Request $request)
+    {
 
+      $validator = Validator::make($request->all(), [
+        'user_id' => 'required',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'Message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      try {
+        
+          // Check subscription user exists
+
+        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','Cancel')->first();
+
+        if(is_null($subscription_user)){
+
+              return response()->json([
+                'status' => 'false',
+                'message'=> 'Unauthorized User',
+                'subscription_user' => $subscription_user,
+              ], 400);
+        }
+
+          // Check payment gateway 
+
+        switch ($subscription_user->payment_gateway) {
+
+          case 'Razorpay':
+
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $api->subscription->fetch($subscription_user->stripe_id)->cancel(array('cancel_at_cycle_end'  => 0));
+            break;
+            
+          case 'Stripe':
+
+            $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+            $stripe->subscriptions->cancel( $subscription_user->stripe_id,[] );
+            break;
+
+          case 'Recurly':
+                
+            $recurly_PaymentSetting = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+
+            if($recurly_PaymentSetting != null){
+
+                if($recurly_PaymentSetting->live_mode == 0){
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_test_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_test_private_key;
+                }else{
+                    $recurly_public_key = $recurly_PaymentSetting->recurly_live_public_key;
+                    $recurly_private_key = $recurly_PaymentSetting->recurly_live_private_key;
+                }
+            }else{
+               
+              return response()->json([
+                'status' => 'false',
+                'Message'=> 'Invalid Recurly payment gateway,pls contact admin',
+              ], 400);
+
+            }
+
+            $client = new RecurlyClient($recurly_private_key);
+            $subscription = $client->cancelSubscription($subscription_id->stripe_id);
+            break;
+          
+          default:
+              
+              return response()->json([
+                'status' => 'false',
+                'Message'=> 'Invalid payment gateway',
+                'subscription_user' => $subscription_user,
+              ], 400);
+
+            break;
+        }
+        
+        Subscription::where('stripe_id',$subscriptionId)->update([
+          'stripe_status' =>  'Cancelled',
+        ]);
+
+        User::where('id',$subscription_user->id )->update([
+          'role'                  =>  'registered',
+          'stripe_id'             =>  null,
+          'subscription_start'    =>  null,
+          'subscription_ends_at'  =>  null,
+          'payment_type'          =>  null,
+          'payment_status'        => 'Cancel',
+          'payment_gateway'       =>  null,
+          'coupon_used'           =>  null ,
+        ]);
+
+        $response = array(
+          'status'  => 'true',
+          'status_code'  => 200,
+          'Message' => "Subscription has been Cancelled Successfully" ,
+        );
+
+      } catch (\Throwable $th) {
+        
+        $response = array(
+          'status'  => 'false',
+          'status_code'  => 400,
+          'Message' => $th->getMessage() ,
+        );
+      }
+
+      return response()->json($response, $response['status_code']);
+    }
 }

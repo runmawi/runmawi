@@ -227,12 +227,14 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                         <i class="fas fa-circle"></i> 
 
                         {{ optional($videodetail)->age_restrict }}
-                        <i class="fas fa-circle"></i> 
-                        
-                        @if(isset($view_increment) && $view_increment == true )
-                            {{ ( $movie->views + 1) . " views" }}
-                        @else
-                            {{ $videodetail->views . " views" }} 
+                         
+                        @if ($setting->show_views == 1)
+                            <i class="fas fa-circle"></i>
+                            @if(isset($view_increment) && $view_increment == true )
+                                {{ ( $movie->views + 1) . " views" }}
+                            @else
+                                {{ $videodetail->views . " views" }} 
+                            @endif
                         @endif
                     </div>
                    
@@ -313,7 +315,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                        <span class="text pr-2"> {{ __( !is_null($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
                             @else
@@ -330,7 +332,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                            <span class="text pr-2"> {{ __( !is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                         </div>
                                     </a>
                                 @endif

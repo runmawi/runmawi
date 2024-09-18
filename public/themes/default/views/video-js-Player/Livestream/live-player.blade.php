@@ -110,7 +110,7 @@
                             <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}">
                                 <div class="playbtn" style="gap:5px">
                                     {!! $play_btn_svg !!}
-                                    <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                    <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                 </div>
                             </a>
                         @endif
@@ -138,7 +138,7 @@
                         <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                             <div class="playbtn text-white" style="gap:5px">
                                 {!! $play_btn_svg !!}
-                                <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                <span class="text pr-2">  {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                             </div>
                         </a>
                     @endif
@@ -149,7 +149,7 @@
                         <a class="btn" href="{{ $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id,PPV_CurrencyConvert($Livestream_details->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $Livestream_details->id, $Livestream_details->ppv_price ]) }}">
                             <div class="playbtn" style="gap:5px">
                                 {!! $play_btn_svg !!}
-                                <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                             </div>
                         </a>
                     @endif
@@ -246,7 +246,7 @@
                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                         <div class="playbtn text-white" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                            <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }}  </span>
                                         </div>
                                     </a>
                                 @endif
@@ -259,7 +259,7 @@
                                 <a class="btn 3" data-toggle="modal" data-target="#live-purchase-now-modal">
                                     <div class="playbtn mr-3" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                        <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
                             @endif
@@ -323,7 +323,7 @@
                                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                                         <div class="playbtn text-white" style="gap:5px">
                                                             {!! $play_btn_svg !!}
-                                                            <span class="text pr-2"> {{ __( 'Subscribe Now' ) }} </span>
+                                                            <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                                         </div>
                                                     </a>
                                                 @endif
@@ -336,7 +336,7 @@
                                                 <a class="btn" data-toggle="modal" data-target="#live-purchase-now-modal">
                                                     <div class="playbtn mr-3" style="gap:5px">
                                                         {!! $play_btn_svg !!}
-                                                        <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                                        <span class="text pr-2">  {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                                     </div>
                                                 </a>
                                             @endif
@@ -397,7 +397,7 @@
 
 <style>
     .text{
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         font-size: 20px !important;
         font-weight: 500;
     }

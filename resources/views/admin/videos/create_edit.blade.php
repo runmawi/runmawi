@@ -279,6 +279,17 @@ border-radius: 0px 4px 4px 0px;
          <div class="low_percent">0%</div >
       </div>
       @endif
+
+   @if($page == 'Edit' && $video->status == 0  && Enable_Video_Compression() == 1)
+      <div class="col-sm-12 CompressionVideo">
+         Video Compression is under Progress
+         <div class="Compression_progress">
+            <div class="Compression_low_bar"></div >
+         </div>
+         <div class="Compression_low_percent">0%</div >
+      </div>
+   @endif
+
 @if (Session::has('message'))
    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
@@ -1883,6 +1894,25 @@ $('#error_video_Category').hide();
    		});
    	}, 3000);
    }
+
+
+   if (($("#page").val() == 'Edit') && ($("#status").val() == 0)) {
+   	setInterval(function(){ 
+   		$.getJSON('<?php echo URL::to("/admin/get_compression_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
+   			$('.Compression_low_bar').width(data.stream_path+'%');
+            if(data.stream_path == null){
+   			$('.Compression_low_percent').html('Video Compression is Queued. Waiting for Server to Respond');
+            }else{
+   			$('.Compression_low_percent').html(data.stream_path+'%');
+            }
+            if (data.stream_path == 100) {
+                $('.CompressionVideo').hide();
+                clearInterval(interval); 
+            }
+   		});
+   	}, 3000);
+   }
+
 </script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>

@@ -40,6 +40,7 @@ use App\Geofencing;
 use App\Adsvariables;
 use App\LikeDislike;
 use Theme;
+use App\ButtonText;
 
 class LiveStreamController extends Controller
 {
@@ -182,6 +183,7 @@ class LiveStreamController extends Controller
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
       $ThumbnailSetting = ThumbnailSetting::first();
+      $button_text = ButtonText::first();
 
       $enable_ppv_rent_live = Setting::pluck('enable_ppv_rent_live')->first();
       $ppv_live_description = Setting::pluck('live')->first();
@@ -395,16 +397,17 @@ class LiveStreamController extends Controller
                   // Check for guest user
 
               if( Auth::guest()  && $item->access != "guest"  ){
+                $button_text = ButtonText::first();
 
                   $item['users_video_visibility_status'] = false ;
-                  $item['users_video_visibility_status_message'] = ($item->access == "ppv") ? 'This Livestream only for PPV users' : 'This Livestream only for Subscribed users';
+                  $item['users_video_visibility_status_message'] = !empty($button_text->live_visible_text) ? $button_text->live_visible_text : (($item->access == "ppv") ? 'This Livestream is only for PPV users' : 'This Livestream is only for Subscribed users');
                   $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                   $item['users_video_visibility_Rent_button']      = false ;
                   $item['users_video_visibility_becomesubscriber'] = false ;
                   $item['users_video_visibility_register_button']  = true ;
 
                   $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                  $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                  $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : $item->access.' Now');
 
                       // Free duration
                   if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
@@ -609,6 +612,7 @@ class LiveStreamController extends Controller
                  'enable_ppv_rent_live'  => $enable_ppv_rent_live,
                  'ppv_live_description'   => $ppv_live_description,
                  'ThumbnailSetting'      => $ThumbnailSetting,
+                 'button_text'          => $button_text,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>

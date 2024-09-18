@@ -260,7 +260,7 @@
 
 {{-- Live Stream --}}
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
-    @foreach ($live_banner as $slider_video)
+    @foreach ($live_banner as $key => $slider_video)
         <div class="s-bg-1 lazyload" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
@@ -270,11 +270,21 @@
                             <h1 class="text-white mb-2">
                                 {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
                             </h1>
-                            <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color: #fff; display: -webkit-box;
-                                -webkit-line-clamp: 3;
-                                -webkit-box-orient: vertical;
-                                overflow: hidden;">
-                                {{ __($slider_video->description) }}
+                            <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
+                                @php
+                                    $details = __(strip_tags(html_entity_decode($slider_video->description)));
+                                @endphp
+
+                                <div class="video-banner">
+                                    <p class="desc" id="live-details-{{ $key }}" style="max-height: 100px; overflow: hidden;">
+                                        {{ $details }}
+                                    </p>
+
+                                    @if(strlen($details) > 300)
+                                        <button class="des-more-less-btns text-primary p-0" id="read-more-live-{{ $key }}" onclick="liveReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                        <button class="des-more-less-btns text-primary p-0" id="read-less-live-{{ $key }}" onclick="liveReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                    @endif
+                                </div>
                             </div>
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ url('live/' . $slider_video->slug) }}" class="btn bd">
