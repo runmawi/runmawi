@@ -65,7 +65,7 @@ https://flickity.metafizzy.co
   }
   
   .flickity-button:disabled {
-    opacity: 0.3;
+    opacity: 0;
     cursor: auto;
     /* prevent disabled button from capturing pointer up event. #716 */
     pointer-events: none;
@@ -78,7 +78,7 @@ https://flickity.metafizzy.co
   /* ---- previous/next buttons ---- */
   
   .flickity-prev-next-button {
-    top: 50%;
+    top: 45%;
     width: 44px;
     height: 44px;
     border-radius: 50%;

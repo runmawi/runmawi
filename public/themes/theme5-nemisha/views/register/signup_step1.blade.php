@@ -460,7 +460,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                 
                                 @if(!empty($SignupMenu) && $SignupMenu->email == 1)
                                     <div class="col-md-12">
-                                    <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
+                                    <input id="email" type="email" placeholder="Email Address"  class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off" >
                                     <span class="invalid-feedback" id="email_error" role="alert">Email Already Exits
                                     </span>
 
@@ -505,8 +505,9 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                                 <div class="col-md-12" style="position:relative;">
-                                    <label for="avatar" class="custom-file-label form-control">Choose Profile Image</label>
-                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;"/>
+                                    
+                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;" />
+                                    <label for="avatar" class="custom-file-label form-control" >Choose Profile Image</label>
                                     <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                     <label id="fileLabel">Choose Profile Image</label> -->
                                  </div>
@@ -514,10 +515,7 @@ $jsondata = json_decode($jsonString, true); ?>
 
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
                                 <div class="col-md-12" style="position:relative;">
-                                    <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  >
-
-                                    <!-- <input type="date" name="dob"  id ='dob' class="form-control">
-                                    <label id="fileLabel">Choose Profile DOB</label> -->
+                                    <input type="text" id="datepicker" name="dob"  class="datepicker form-control"  placeholder="Choose DOB"  required>
                                  </div>
                                  @endif
 
@@ -555,7 +553,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                 <input id="password-confirm" type="password" class="form-control mb-0" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" style="margin-bottom: 0!important;">
                                     </div>
                                     <div >
-                              <span class="input-group-btn" id="eyeSlash1">
+                                 <span class="input-group-btn" id="eyeSlash1">
                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow1" style="display: none;">
@@ -606,10 +604,10 @@ $jsondata = json_decode($jsonString, true); ?>
 
                                  <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to NEMISA TV Terms of Service and Privacy Policy. </p> -->
                                  <!-- <div class=" pt-4 mb-2">
-                          <hr style="border-color:#fff;">
-                          <p class="bg-white" style="position: relative;top: -23px;right:50%;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
-                      </div>-->
-                                </div>
+                                    <hr style="border-color:#fff;">
+                                    <p class="bg-white" style="position: relative;top: -23px;right:50%;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
+                                </div>-->
+                            </div>
                                 <div class="col-md-12 d-flex align-items-center links" id="mob">
                                     <input id="password-confirm" type="checkbox" name="terms" value="1" required>
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
@@ -635,7 +633,7 @@ $jsondata = json_decode($jsonString, true); ?>
                          
 					
 						</div>
-                            </div>
+                        </div>
                        
                      
                     </form>
@@ -808,27 +806,44 @@ $jsondata = json_decode($jsonString, true); ?>
     });
     function ValidationEvent(form) {
 
-var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
-if(password_confirm == 0){
-    var password_confirmation = 0;
-    $('.error_password').hide();
-    return true;
-}else{
-        var password_confirmation = '<?= $SignupMenu->password_confirmation ?>';
-    // alert(password_confirmation);
-    // 👇 get passwords from the field using their name attribute
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('password-confirm').value;
+        const email = $('#email').val();  
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    // 👇 check if both match using if-else condition
-    if (password != confirmPassword) {
-        $('.error_password').show();
-    return false;
-    } else {
-        $('.error_password').hide();
-    return true;
-    }
-}
+        const isValid = regex.test(email);
+        if(!isValid){
+            alert("Enter Valid Email Address");
+        }
+
+        var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
+        
+        if(password_confirm == 0){
+            var password_confirmation = 0;
+            $('.error_password').hide();
+            return true;
+        }else{
+                var password_confirmation = '<?= $SignupMenu->password_confirmation ?>';
+            // alert(password_confirmation);
+            // 👇 get passwords from the field using their name attribute
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('password-confirm').value;   
+
+            // 👇 check if both match using if-else condition
+            if (password != confirmPassword) {
+                $('.error_password').show();
+            return false;
+            } else {
+                $('.error_password').hide();
+            return true;
+            }
+        }
+
+        // var fileInput = document.getElementById('avatar');
+        // console.log("avatar",avatar);
+        
+        // if (fileInput.files.length === 0) {
+        //     alert("Please select a profile image.");
+        //     return false;
+        // }
 }
 function visibility1() {
 
@@ -843,6 +858,18 @@ function visibility1() {
     $('#eyeSlash').show();
   }
 }
+
+// function passwordValidation(){
+//     const password = $('#password').val();
+//     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.,])[A-Za-z\d@$!%*?&#]{8,}$/;
+//     const isValidPassword = regex.test(password);
+//     if(!isValidPassword){
+//         console.log("password",password);
+        
+//         alert("Entered Password is weak, so enter strong password");
+//     }
+//     return isValidPassword;
+// }
 </script>
 <script>
     function visibility2() {

@@ -366,6 +366,14 @@
     body.light-theme .sigk{background: linear-gradient(180deg, rgba(220, 220, 220, 0.85) 0%, rgba(220, 220, 220, 0) 100%);}
     body.light-theme .account{background: linear-gradient(180deg, #c0c6ca -35.59%, rgba(200, 204, 207, 0.36) 173.05%);}
     body.light-theme a.edit-button.Text-white{color:#000 !important;}
+    .reveal{
+        margin-left: -65px;
+        /* position: absolute; */
+        height: 45px !important;
+        background: #ED553B !important;
+        color: #fff !important;
+        top: 0px;
+    }
 </style>
 
 <body>
@@ -648,15 +656,13 @@
                                         <p style="font-weight: 600; font-size: 18px;">Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                            <p class="row">
-                                                <span class="col-lg-2 text-left" style="font-weight: 600; font-size: 18px;">Gender:</span>
-                                                <span class="col-lg-5 text-left"> 
-                                                    <select class="form-control" id="gender" name="gender">
-                                                        <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
-                                                        <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
-                                                        <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                                        <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
-                                                    </select>
+                                            <p style="font-weight: 600; font-size: 18px;">Gender:
+                                                <span style="font-weight: 100; font-size:17px;"> 
+                                                    @if(!empty($user->gender) && $user->gender == "null")
+                                                        {{_("Male")}}
+                                                    @else
+                                                        {{$user->gender}}
+                                                    @endif
                                                 </span>
                                             </p>
                                         </div>
@@ -874,11 +880,15 @@
 
 
                         <div class="form-group">
-                            <label>Password:</label><br>
-                            <input type="password" name="password"
-                                value=""
-                                placeholder="Password" class="form-control">
-                            <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
+                        <label>Password:</label><br>
+                            <div class="input-group">
+                                <input type="password" id="profile_password" name="password" placeholder="Password" class="form-control">
+                                <div class="input-group-append" style="margin-left: 70px;">
+                                    <button class="btn btn-default reveal" onclick="visibility1(event)" type="button" id="togglePassword">
+                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -895,7 +905,7 @@
                                 <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
                                 <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                 <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                                <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1070,6 +1080,24 @@
                 $("#" + idval).hide();
             });
         });
+    </script>
+    <script>
+        function visibility1(event) {
+            event.preventDefault(); // Prevent button default behavior
+            var passwordInput = document.getElementById('profile_password');
+            var toggleButton = document.getElementById('togglePassword');
+            var icon = toggleButton.querySelector('i'); // Find the icon inside the button
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
     </script>
     <script>
         function about(evt, id) {
