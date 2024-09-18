@@ -31,6 +31,9 @@ border-radius: 0px 4px 4px 0px;
 
     }
 	
+.vod-info{padding:0;list-style:none;margin:15px 0;color:var(--text-color-opacity)}
+.vod-info li span{background-color:red;display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+	
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -100,6 +103,8 @@ border-radius: 0px 4px 4px 0px;
 						<th>Video Access</th>
 						<th>Status</th>
 						<th>Stream Type</th>
+						<th>Publish Type</th>
+						<th>Publish Time</th>
 						<th>Slider</th>
 						<th>Action</th>
 					</tr>
@@ -147,6 +152,79 @@ border-radius: 0px 4px 4px 0px;
 
  						</td>
 
+						<td>{{ ucwords(str_replace('_', ' ', $video->publish_type))}}</td>
+
+						{{-- Publish Time --}}
+						<td>
+							@if ($video->publish_type == "publish_now" || ($video->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($video->publish_time))) 
+                                                                    
+								<ul class="vod-info m-0 pt-1">
+									<li><span></span> <small>LIVE NOW</small> </li>
+								</ul>
+
+							@elseif ($video->publish_type == "publish_later")
+								<small> {{ 'Live Start On '.  Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$video->publish_time)->format('j F Y g:ia') }} </small>
+							
+							@elseif ( $video->publish_type == "recurring_program" && $video->recurring_program != "custom" )
+									
+								@php
+									switch ($video->recurring_program_week_day) {
+
+										case 0:
+											$recurring_program_week_day = 'Sunday' ;
+										break;
+
+										case 1 :
+											$recurring_program_week_day =  'Monday' ;
+										break;
+
+										case 2:
+											$recurring_program_week_day =  'Tuesday' ;
+										break;
+
+										case 3 :
+											$recurring_program_week_day = 'Wednesday' ;
+										break;
+
+										case 4:
+											$recurring_program_week_day =  'Thrusday' ;
+										break;
+
+										case 5:
+											$recurring_program_week_day =  'Friday' ;
+										break;
+
+										case 6:
+											$recurring_program_week_days =  'Saturday' ;
+										break;
+
+										default:
+											$recurring_program_week_day =  null ;
+										break;
+									}
+								@endphp
+
+								@if ( $video->recurring_program == "daily")
+
+									<small> {{ 'Live Starts daily from '. Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+									
+								@elseif( $video->recurring_program == "weekly" )
+									
+									<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+
+								@elseif( $video->recurring_program == "monthly" )
+									
+									<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+
+								@endif
+
+
+							@elseif ( $video->publish_type == "recurring_program" && $video->recurring_program == "custom" )
+								<small> {{ 'Live Starts On '. Carbon\Carbon::parse($video->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+							@endif
+								
+						</td>
+						
 						 <td> 
 							<div class="mt-1">
 							   <label class="switch">
