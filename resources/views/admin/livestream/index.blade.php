@@ -165,64 +165,97 @@ border-radius: 0px 4px 4px 0px;
 							@elseif ($video->publish_type == "publish_later")
 								<small> {{ 'Live Start On '.  Carbon\Carbon::createFromFormat('Y-m-d\TH:i',$video->publish_time)->format('j F Y g:ia') }} </small>
 							
-							@elseif ( $video->publish_type == "recurring_program" && $video->recurring_program != "custom" )
-									
-								@php
-									switch ($video->recurring_program_week_day) {
-
-										case 0:
-											$recurring_program_week_day = 'Sunday' ;
-										break;
-
-										case 1 :
-											$recurring_program_week_day =  'Monday' ;
-										break;
-
-										case 2:
-											$recurring_program_week_day =  'Tuesday' ;
-										break;
-
-										case 3 :
-											$recurring_program_week_day = 'Wednesday' ;
-										break;
-
-										case 4:
-											$recurring_program_week_day =  'Thrusday' ;
-										break;
-
-										case 5:
-											$recurring_program_week_day =  'Friday' ;
-										break;
-
-										case 6:
-											$recurring_program_week_days =  'Saturday' ;
-										break;
-
-										default:
-											$recurring_program_week_day =  null ;
-										break;
-									}
-								@endphp
-
-								@if ( $video->recurring_program == "daily")
-
-									<small> {{ 'Live Starts daily from '. Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
-									
-								@elseif( $video->recurring_program == "weekly" )
-									
-									<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
-
-								@elseif( $video->recurring_program == "monthly" )
-									
-									<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
-
-								@endif
-
-
-							@elseif ( $video->publish_type == "recurring_program" && $video->recurring_program == "custom" )
-								<small> {{ 'Live Starts On '. Carbon\Carbon::parse($video->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
-							@endif
+							@elseif ( $video->publish_type == "recurring_program" )
 								
+								@if ( $video->recurring_program != "custom")
+									
+									@php
+										$recurring_timezone = App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first();
+										$Current_time = Carbon\Carbon::now(current_timezone());
+										$convert_time = $Current_time->copy()->timezone($recurring_timezone);
+
+										switch ($video->recurring_program_week_day) {
+
+											case 0:
+												$recurring_program_week_day = 'Sunday' ;
+											break;
+
+											case 1 :
+												$recurring_program_week_day =  'Monday' ;
+											break;
+
+											case 2:
+												$recurring_program_week_day =  'Tuesday' ;
+											break;
+
+											case 3 :
+												$recurring_program_week_day = 'Wednesday' ;
+											break;
+
+											case 4:
+												$recurring_program_week_day =  'Thrusday' ;
+											break;
+
+											case 5:
+												$recurring_program_week_day =  'Friday' ;
+											break;
+
+											case 6:
+												$recurring_program_week_days =  'Saturday' ;
+											break;
+
+											default:
+												$recurring_program_week_day =  null ;
+											break;
+										}
+									@endphp
+
+									@if ( $video->recurring_program == "daily")
+
+										@if ( $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) {
+											<ul class="vod-info m-0 pt-1">
+												<li><span></span> <small>LIVE NOW</small> </li>
+											</ul>
+										@else
+											<small> {{ 'Live Starts daily from '. Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+										@endif
+
+										
+									@elseif( $video->recurring_program == "weekly" )
+										
+										@if ( $video->recurring_program_week_day == $convert_time->format('N') && $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) {
+											<ul class="vod-info m-0 pt-1">
+												<li><span></span> <small>LIVE NOW</small> </li>
+											</ul>
+										@else
+											<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+										@endif
+
+
+									@elseif( $video->recurring_program == "monthly" )
+
+										@if ( $video->recurring_program_month_day == $convert_time->format('d') && $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')   )
+											<ul class="vod-info m-0 pt-1">
+												<li><span></span> <small>LIVE NOW</small> </li>
+											</ul>
+										@else
+											<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+										@endif
+
+									@endif
+								
+
+								@elseif (  $video->recurring_program == "custom" )
+
+									@if ( $video->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i:s') &&  $video->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i:s') ) {
+										<ul class="vod-info m-0 pt-1">
+											<li><span></span> <small>LIVE NOW</small> </li>
+										</ul>
+									@else
+										<small> {{ 'Live Starts On '. Carbon\Carbon::parse($video->custom_start_program_time)->format('j F Y g:ia') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+									@endif
+								@endif
+							@endif
 						</td>
 						
 						 <td> 
