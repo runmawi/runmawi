@@ -232,7 +232,7 @@
                                         
                                     
                     @elseif ( $Livestream_details->users_video_visibility_status == false )
-                        <h5 class="title mt-5"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
+                        <h5 class="title mt-5"> {{ ( !empty($button_text->live_visible_text) ? $button_text->live_visible_text : $Livestream_details->users_video_visibility_status_message ) }}</h5><br>
                         <div class="d-flex">
                             @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
                                 <a class="btn mr-3" data-toggle="modal" data-target="#live-purchase-now-modal">
