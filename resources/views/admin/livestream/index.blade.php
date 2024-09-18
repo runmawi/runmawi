@@ -212,7 +212,7 @@ border-radius: 0px 4px 4px 0px;
 
 									@if ( $video->recurring_program == "daily")
 
-										@if ( $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) {
+										@if ( $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) 
 											<ul class="vod-info m-0 pt-1">
 												<li><span></span> <small>LIVE NOW</small> </li>
 											</ul>
@@ -223,7 +223,7 @@ border-radius: 0px 4px 4px 0px;
 										
 									@elseif( $video->recurring_program == "weekly" )
 										
-										@if ( $video->recurring_program_week_day == $convert_time->format('N') && $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) {
+										@if ( $video->recurring_program_week_day == $convert_time->format('N') && $video->program_start_time <= $convert_time->format('H:i') &&  $video->program_end_time >= $convert_time->format('H:i')  ) 
 											<ul class="vod-info m-0 pt-1">
 												<li><span></span> <small>LIVE NOW</small> </li>
 											</ul>
@@ -247,7 +247,7 @@ border-radius: 0px 4px 4px 0px;
 
 								@elseif (  $video->recurring_program == "custom" )
 
-									@if ( $video->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i:s') &&  $video->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i:s') ) {
+									@if ( $video->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i:s') &&  $video->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i:s') ) 
 										<ul class="vod-info m-0 pt-1">
 											<li><span></span> <small>LIVE NOW</small> </li>
 										</ul>
