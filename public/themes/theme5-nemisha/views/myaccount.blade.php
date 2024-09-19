@@ -142,6 +142,155 @@
     a {
         cursor: pointer;
     }
+
+    .ugc-button{
+        margin: 5px;
+        padding: 3px 30px;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    ul.ugc-tabs{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+
+	ul.ugc-tabs li{
+		background: #848880;
+		color: #fff;
+		display: inline-block;
+        margin: 5px;
+        padding: 3px 30px;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+		cursor: pointer;
+	}
+
+    ul.ugc-tabs li.ugc-current{
+		background: #ED563C;
+		color: #fff;
+	}
+
+    .ugc-tab-content{
+		display: none;
+	}
+
+	.ugc-tab-content.ugc-current{
+		display: inherit;
+	}
+
+    .ugc-videos img{
+        width: 100%;
+        height: 180px;
+        border-radius: 15px;
+    }
+
+.video-form-control{
+        width:100%;
+        background-color: #c9c8c888 ;
+        border:none;
+        padding: 3px 10px;
+        border-radius: 7px;
+    }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .input-container textarea {
+            background-color: #848880;
+            color: white;
+            border-radius: 10px;
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: none;
+            resize: none;
+            font-size: 16px;
+        }
+
+        .input-container .icon {
+            position: absolute;
+            right: 10px; 
+            bottom: 10px; 
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+         .input-container button:hover {
+            background-color: #45a049;
+        }
+
+        .ugc-social-media {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ugc-social-media textarea {
+            background-color:transparent;
+            color: white;
+            width: 100%;
+            border: none;
+            resize: none;
+            font-size: 16px;
+        }
+
+        .ugc-social-media .icon {
+            position: absolute;
+            right: 10px; /* Aligns button to the right */
+            bottom: 10px; /* Aligns button to the bottom */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .ugc-social-media .icon:hover {
+            background-color: #45a049;
+        }
+
+        .ugc-actions {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+        }
+
+        .ugc-videos:hover .ugc-actions {
+            display: block;
+        }
+
+        .shareprofile{
+            padding: 10px 0px;
+        }
+
+
 </style>
 
 <body>
@@ -691,222 +840,462 @@
             <!-- MainContent -->
             <section class="m-profile  setting-wrapper pt-0 p-3">
                 <div class="container">
-                    <!--   <div class="sign-user_card">-->
-                    <div class="row justify-content-center">
+        
+                    {{-- <img src="https://img.freepik.com/free-photo/gradient-dark-blue-futuristic-digital-grid-background_53876-129728.jpg?t=st=1720699527~exp=1720703127~hmac=009af48450d1394e58f536f81a4a956cf075db589e1d9b6cc33c6d3026708d54&w=826" style="border-radius: 30px; width:100%; height:200px; " alt="banner" > --}}
 
-
-                        <div class="col-md-4">
-                            {{-- message --}}
-
-                            @if (Session::has('message'))
-                                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                    <div class="row justify-content-center m-1">
+                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >               
+                            <img
+                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
+                        </a>
+                    </div>
+                    <div class="row justify-content-start mx-3">
+                        <div >
+                        <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
+                        <img class="rounded-circle img-fluid text-center mb-3 mt-4"
+                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+                        </a>
+                        </div>
+                       <div class="col" style="padding-top: 40px;" >
+                        <div>
+                        <h6>{{$user->username}}</h6>
+                        </div>
+                        <div class="py-2" >
+                            @if($user->subscribers_count == 0 )
+                            <p style="color: white; font-size:18px;" >No Subscribers</p>
+                            @elseif($user->subscribers_count == 1 )
+                            <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
+                            @else
+                            <p style="color: white; font-size:18px;" >
+                             <span class="subscriber-count"> {{ $user->subscribers_count }} </span> Members Subscribed
+                            </p>
                             @endif
-                            <h2 class="text-center">My Account</h2>
-
-                            <div class="row mt-5 align-items-center justify-content-between">
-                                <div class="col-md-8">
-                                    <span class="text-light font-size-13">Email</span>
-                                    <div class="p-0">
-                                        <span class="text-light font-size-13">
-                                            {{ $user->email ? $user->email : ' ' }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse"
-                                        data-target="#update_userEmails">Change</a>
-                                </div>
-                            </div>
-
-                            <form id="update_userEmail" accept-charset="UTF-8"
-                                action="{{ URL::to('/profile/update_userEmail') }}" method="post">
-                                @csrf
-
-                                <input type="hidden" name="users_id" value="{{ $user->id }}" />
-                                <span id="update_userEmails" class="collapse">
-                                    <div class="row mt-3">
-                                        <div class="col-md-8">
-                                            <input type="text" name="user_email" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a type="button" class="btn round update_userEmail">Update</a>
-                                        </div>
-                                    </div>
-                                </span>
-                            </form>
-
-
-                            <hr style="border:0.5px solid #fff;">
-                            <div class="row align-items-center">
-                                <div class="col-md-5 mt-3">
-                                    <span class="text-light font-size-13">Password</span>
-                                    <div class="p-0 mt-2">
-                                        <span class="text-light font-size-13">*********</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
-                                    <a href="{{ URL::to('/password/reset') }}"
-                                        class="f-link text-white font-size-13">Send Reset Password Email</a>
+                        </div>
+                       </div>
+                    </div>
+                   
+                    <ul class="ugc-tabs mx-3">
+                        <li class="tab-link ugc-current" data-tab="ugc-tab-1">Bio</li>
+                        <li class="tab-link" data-tab="ugc-tab-2">Videos</li>
+                        <li class="tab-link" data-tab="ugc-tab-3">Playlist</li>
+                    </ul>
+        
+                    <div id="ugc-tab-1" class="ugc-tab-content ugc-current">
+                        <div class="col-12 pt-3">
+                            <div>
+                                <h2>About</h2>
+        
+                                <div class="input-container" style="position: relative" >
+                                    <form>
+                                        <textarea id="ugc-about" name="ugc-about" value="" placeholder="Enter About You">{{ $user->ugc_about ? $user->ugc_about : '' }}</textarea>
+                                        <input type="button" class="icon" style="color: green;" id="submit_about" value="&#10004;">
+                                    </form>
                                 </div>
                             </div>
-                            <hr style="border:0.5px solid #fff;">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <span class="text-light font-size-13">Display Name</span>
-                                    <div class="p-0">
-                                        <span
-                                            class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                            <div class="pt-4" >
+                                <h2>Links</h2>
+                                <div class="py-2">
+                                <h5>Facebook</h5>
+                                <p style="color: white">
+                                    <div class="ugc-social-media" style="position: relative" >
+                                        <form>
+                                            <textarea id="ugc-facebook" name="ugc-facebook" value="" placeholder="Facebook" rows="1" >{{ $user->ugc_facebook ? $user->ugc_facebook : '' }}</textarea>
+                                            <input type="button" class="icon" style="color: green;" id="submit_facebook" value="&#10004;">
+                                          
+                                        </form>
                                     </div>
+                                </p>
                                 </div>
-                                <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse"
-                                        data-target="#demo">Change</a>
-
+                                <div class="py-2">
+                                <h5>Instagram</h5>
+                                <p style="color: white">
+                                    <div class="ugc-social-media" style="position: relative" >
+                                        <form>
+                                            <textarea id="ugc-instagram" name="ugc-instagram" placeholder="Instagram" rows="1" >{{ $user->ugc_instagram ? $user->ugc_instagram : '' }}</textarea>
+                                            <input type="button" class="icon" style="color: green;" id="submit_instagram" value="&#10004;">
+                                        </form>
+                                    </div>
+                                </p>
+                                </div>
+                                <div class="py-2">
+                                <h5>Twitter</h5>
+                                <p style="color: white">
+                                    <div class="ugc-social-media" style="position: relative" >
+                                        <form>
+                                            <textarea id="ugc-twitter" name="ugc-twitter" placeholder="Twitter" rows="1" >{{ $user->ugc_twitter ? $user->ugc_twitter : '' }}</textarea>
+                                            <input type="button" class="icon" style="color: green;" id="submit_twitter" value="&#10004;">
+                                        </form>
+                                    </div>
+                                </p>
                                 </div>
                             </div>
-                            <form id="update_username" accept-charset="UTF-8"
-                                action="{{ URL::to('/profile/update_username') }}" method="post">
-                                @csrf
-
-                                <input type="hidden" name="users_id" value="{{ $user->id }}" />
-                                <span id="demo" class="collapse">
-                                    <div class="row mt-3">
-                                        <div class="col-md-8">
-                                            <input type="text" name="user_name" class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a type="button" class="btn round update_username">Update</a>
-                                        </div>
+                            <div class="row pt-4" >
+                                <div class="col-lg-6 col-md-12 mb-4"> 
+                                    <h2>Profile Details</h2>
+                                    <div class="text-white pt-4">
+                                    <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >
+                                    <a href="{{ route('profile.show', ['username' => $user->username]) }}"> {{ route('profile.show', ['username' => $user->username]) }} </a>
+                                    </span></p> 
                                     </div>
-                                </span>
-                            </form>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >{{ $totalVideos ? $totalVideos : 0 }}</span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >{{ $totalViews ? $totalViews : 0 }} views</span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;" >Joined: <span style="font-weight: 100; font-size:15px;" >{{ $user->created_at ? $user->created_at->format('d F Y') : '' }}</span></p> 
+                                    </div>
+                                    <div class=" text-white">
+                                    <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
+                                    </div>
+                                    <div>
+                                    <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
+                                    </div>
+                                    <div class="shareprofile">
+                                        <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
+                                            <div class="d-flex">
 
-                            {{-- Display Image --}}
-                            <hr style="border:0.5px solid #fff;">
-
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <span class="text-light font-size-13">Display Image</span>
-                                    <div class="p-0">
-                                        <span class="text-light font-size-13">
-                                            @if ($user->avatar != null)
-                                                <img src="{{ URL::to('public/uploads/avatars/' . $user->avatar) }}"
-                                                    height="50px" width="50px" />
-                                            @endif
-                                        </span>
+                                            <div class="px-1">
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
+                                                <i class="ri-facebook-fill"></i>
+                                            </a>
+                                            </div>
+                                            <div class="px-1">
+                                            <a href="https://twitter.com/intent/tweet?text={{ route('profile.show', ['username' => $user->username]) }}" target="_blank">
+                                                <i class="ri-twitter-fill"></i>
+                                            </a>
+                                            </div>
+                                            <div class="px-1">
+                                               <a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill" ></i></a>
+                                               <input type="hidden" id="profile_url" value="{{ route('profile.show', ['username' => $user->username]) }}">
+                                            </div>
+                                            </div>
+                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse"
-                                        data-target="#user_img">Change</a>
-                                </div>
-                            </div>
 
-                            <form id="update_userimg" accept-charset="UTF-8"
-                                action="{{ URL::to('profile/update_userImage') }}" enctype="multipart/form-data"
-                                method="post">
-                                @csrf
-                                <input type="hidden" name="users_id" value="{{ $user->id }}" />
-                                <span id="user_img" class="collapse">
-                                    <div class="row mt-3">
-                                        <div class="col-md-8">
-                                            <input type="file" multiple="true" class="form-control"
-                                                name="avatar" id="avatar" required />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <a type="button" class="btn round update_userimg">Update</a>
-                                        </div>
-                                    </div>
-                                </span>
-                            </form>
-                            {{-- TV Code --}}
-                            <hr style="border:0.5px solid #fff;">
-
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <span class="text-light font-size-13">Tv Activation Code</span>
-                                </div>
-                                <div class="col-md-4 text-right">
-                                    <a type="button" class="text-white font-size-13" data-toggle="collapse"
-                                        data-target="#user_tvcode">Add</a>
-                                </div>
-                            </div>
-
-
-                            <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"
-                                enctype="multipart/form-data" method="post">
-                                @csrf
-                                <input type="hidden" name="users_id" value="{{ $user->id }}" />
-                                <input type="hidden" name="email" value="{{ $user->email }}" />
-                                <span id="user_tvcode" class="collapse">
-                                    <div class="row mt-3">
-                                        <div class="col-md-8">
-                                            <input type="text" name="tv_code" id="tv_code"
-                                                value="@if (!empty($UserTVLoginCode->tv_code)) {{ $UserTVLoginCode->tv_code }} @endif" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            @if (!empty($UserTVLoginCode->tv_code))
-                                                <a type="button"
-                                                    href="{{ URL::to('user/tv-code/remove/') }}/{{ $UserTVLoginCode->id }}"
-                                                    style="background-color:#df1a10!important;"
-                                                    class="btn round tv-code-remove text-red">Remove</a>
-                                            @else
-                                                <a type="button" class="btn round tv-code text-white">Add</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </span>
-                            </form>
-
-                            <hr style="border:0.5px solid #fff;">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <span class="text-light font-size-13">Membership Settings</span>
-
-                                    <div class="p-0">
-                                        <span class="text-light font-size-13">
-                                            {{ ucwords('Current Membership -' . ' ' . $user->role) }}
-                                        </span><br>
-
-                                        @if (Auth::user()->role == 'subscriber')
-                                            <span class="text-light font-size-13">
-                                                @if ($user->subscription_ends_at != null && !empty($user->subscription_ends_at))
-                                                    {{ 'your subscription renew on ' . $user->subscription_ends_at->format('d-m-Y') }}
+                        
+                        
+                                <div class="col-lg-6 col-md-12 mb-4">
+                                                {{-- message --}}
+                        
+                                                @if (Session::has('message'))
+                                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                                                 @endif
-                                            </span>
-                                        @endif
-
+                                                <h2 class="text-center">My Account</h2>
+                        
+                                                <div class="row mt-5 align-items-center justify-content-between">
+                                                    <div class="col-md-8">
+                                                        <span class="text-light font-size-13">Email</span>
+                                                        <div class="p-0">
+                                                            <span class="text-light font-size-13">
+                                                                {{ $user->email ? $user->email : ' ' }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 text-right">
+                                                        <a type="button" class="text-white font-size-13" data-toggle="collapse"
+                                                            data-target="#update_userEmails">Change</a>
+                                                    </div>
+                                                </div>
+                        
+                                                <form id="update_userEmail" accept-charset="UTF-8"
+                                                    action="{{ URL::to('/profile/update_userEmail') }}" method="post">
+                                                    @csrf
+                        
+                                                    <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                                                    <span id="update_userEmails" class="collapse">
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-8">
+                                                                <input type="text" name="user_email" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <a type="button" class="btn round update_userEmail">Update</a>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </form>
+                        
+                        
+                                                <hr style="border:0.5px solid #fff;">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-5 mt-3">
+                                                        <span class="text-light font-size-13">Password</span>
+                                                        <div class="p-0 mt-2">
+                                                            <span class="text-light font-size-13">*********</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-7 mt-2 text-right" style="font-size:14px;">
+                                                        <a href="{{ URL::to('/password/reset') }}"
+                                                            class="f-link text-white font-size-13">Send Reset Password Email</a>
+                                                    </div>
+                                                </div>
+                                                <hr style="border:0.5px solid #fff;">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <span class="text-light font-size-13">Display Name</span>
+                                                        <div class="p-0">
+                                                            <span
+                                                                class="text-light font-size-13"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 text-right">
+                                                        <a type="button" class="text-white font-size-13" data-toggle="collapse"
+                                                            data-target="#demo">Change</a>
+                        
+                                                    </div>
+                                                </div>
+                                                <form id="update_username" accept-charset="UTF-8"
+                                                    action="{{ URL::to('/profile/update_username') }}" method="post">
+                                                    @csrf
+                        
+                                                    <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                                                    <span id="demo" class="collapse">
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-8">
+                                                                <input type="text" name="user_name" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <a type="button" class="btn round update_username">Update</a>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </form>
+                        
+                                                {{-- Display Image --}}
+                                                <hr style="border:0.5px solid #fff;">
+                        
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <span class="text-light font-size-13">Display Image</span>
+                                                        <div class="p-0">
+                                                            <span class="text-light font-size-13">
+                                                                @if ($user->avatar != null)
+                                                                    <img src="{{ URL::to('public/uploads/avatars/' . $user->avatar) }}"
+                                                                        height="50px" width="50px" />
+                                                                @endif
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 text-right">
+                                                        <a type="button" class="text-white font-size-13" data-toggle="collapse"
+                                                            data-target="#user_img">Change</a>
+                                                    </div>
+                                                </div>
+                        
+                                                <form id="update_userimg" accept-charset="UTF-8"
+                                                    action="{{ URL::to('profile/update_userImage') }}" enctype="multipart/form-data"
+                                                    method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                                                    <span id="user_img" class="collapse">
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-8">
+                                                                <input type="file" multiple="true" class="form-control"
+                                                                    name="avatar" id="avatar" required />
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <a type="button" class="btn round update_userimg">Update</a>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </form>
+                                                {{-- TV Code --}}
+                                                <hr style="border:0.5px solid #fff;">
+                        
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <span class="text-light font-size-13">Tv Activation Code</span>
+                                                    </div>
+                                                    <div class="col-md-4 text-right">
+                                                        <a type="button" class="text-white font-size-13" data-toggle="collapse"
+                                                            data-target="#user_tvcode">Add</a>
+                                                    </div>
+                                                </div>
+                        
+                        
+                                                <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"
+                                                    enctype="multipart/form-data" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="users_id" value="{{ $user->id }}" />
+                                                    <input type="hidden" name="email" value="{{ $user->email }}" />
+                                                    <span id="user_tvcode" class="collapse">
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-8">
+                                                                <input type="text" name="tv_code" id="tv_code"
+                                                                    value="@if (!empty($UserTVLoginCode->tv_code)) {{ $UserTVLoginCode->tv_code }} @endif" />
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                @if (!empty($UserTVLoginCode->tv_code))
+                                                                    <a type="button"
+                                                                        href="{{ URL::to('user/tv-code/remove/') }}/{{ $UserTVLoginCode->id }}"
+                                                                        style="background-color:#df1a10!important;"
+                                                                        class="btn round tv-code-remove text-red">Remove</a>
+                                                                @else
+                                                                    <a type="button" class="btn round tv-code text-white">Add</a>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </form>
+                        
+                                                <hr style="border:0.5px solid #fff;">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <span class="text-light font-size-13">Membership Settings</span>
+                        
+                                                        <div class="p-0">
+                                                            <span class="text-light font-size-13">
+                                                                {{ ucwords('Current Membership -' . ' ' . $user->role) }}
+                                                            </span><br>
+                        
+                                                            @if (Auth::user()->role == 'subscriber')
+                                                                <span class="text-light font-size-13">
+                                                                    @if ($user->subscription_ends_at != null && !empty($user->subscription_ends_at))
+                                                                        {{ 'your subscription renew on ' . $user->subscription_ends_at->format('d-m-Y') }}
+                                                                    @endif
+                                                                </span>
+                                                            @endif
+                        
+                                                        </div>
+                        
+                                                    </div>
+                        
+                                                    <div class="col-md-4 text-right">
+                                                        @if (Auth::user()->role == 'subscriber')
+                                                            {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
+                                                        @elseif(Auth::user()->role == 'admin')
+                                                        @else
+                                                            <a href="<?= URL::to('/becomesubscriber') ?>" class="text-white font-size-13">
+                                                                Subscriber Payment</a>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <hr style="border:0.5px solid #fff;">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-6">
+                                                        <a href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
+                                                    </div>
+                        
+                                                    @if (Auth::user()->role == 'subscriber' && Auth::user()->payment_status != 'Cancel')
+                                                        <div class="col-md-6 text-right">
+                                                            <a href="{{ URL::to('/cancelSubscription') }}"
+                                                                class="text-white font-size-13">Cancel Membership</a>
+                                                        </div>
+                                                    @endif
+                        
+                                                </div>
                                     </div>
-
                                 </div>
-
-                                <div class="col-md-4 text-right">
-                                    @if (Auth::user()->role == 'subscriber')
-                                        {{-- <a href=" {{ URL::to('/upgrade-subscription_plan') }} class="text-white font-size-13"> Update Payment</a> --}}
-                                    @elseif(Auth::user()->role == 'admin')
-                                    @else
-                                        <a href="<?= URL::to('/becomesubscriber') ?>" class="text-white font-size-13">
-                                            Subscriber Payment</a>
-                                    @endif
-                                </div>
+                                    
+                                
                             </div>
-                            <hr style="border:0.5px solid #fff;">
-                            <div class="row align-items-center">
-                                <div class="col-md-6">
-                                    <a href="{{ URL::to('logout') }}" type="button" class="btn round">Logout</a>
-                                </div>
-
-                                @if (Auth::user()->role == 'subscriber' && Auth::user()->payment_status != 'Cancel')
-                                    <div class="col-md-6 text-right">
-                                        <a href="{{ URL::to('/cancelSubscription') }}"
-                                            class="text-white font-size-13">Cancel Membership</a>
-                                    </div>
-                                @endif
-
-                            </div>
+        
+                            
                         </div>
                     </div>
+        
+                <div id="ugc-tab-2" class="ugc-tab-content">
+        
+                 <div class="row mx-3">
+                    @foreach ($ugcvideos as $eachugcvideos)
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        
+                         <a href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
+                                    <div class="ugc-videos" style="position: relative;" >
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
+                                        <div class="ugc-actions">
+                                            <div style="border-radius: 7px; background-color:#ED563C; padding:2px 5px;">
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Meta"
+                                                data-original-title="Edit Meta" href="{{ URL::to('ugc-edit') . '/' . $eachugcvideos->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                    </svg>
+                                                </a>
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Video"
+                                                data-original-title="Edit Video" href="{{ URL::to('ugc-editvideo') . '/' . $eachugcvideos->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                    <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2m6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
+                                                    </svg>
+                                                </a>
+                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete Video"
+                                                data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('ugc-delete') . '/' . $eachugcvideos->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+        
+                                    <div class="text-white pt-3">
+                                        <h6>{{$eachugcvideos->title}}</h6>
+                                        <p style="margin:5px 0px;">{{$user->username}}</p>
+                                        <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
+                                            | {{$eachugcvideos->like_count}} Likes</p>
+                                    </div>
+                        </a>
+                    </div>
+                    @endforeach
                 </div>
-
+                <div class="mt-3 pull-right" >
+                    {{ $ugcvideos->links() }}
+                </div>
+                </div>
+        
+                <div id="ugc-tab-3" class="ugc-tab-content">
+                    <div class="row mx-3">
+                        @foreach ($ugcvideos as $eachugcvideos)
+                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                            
+                             <a href="{{ url('ugc/video-player/' . $eachugcvideos->slug) }}" class="m-1">
+                                        <div class="ugc-videos" style="position: relative;" >
+                                            <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
+                                            <div class="ugc-actions" >
+                                                <div style="border-radius: 7px; background-color:#ED563C; padding:2px 10px; " >
+                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Meta"
+                                                    data-original-title="Edit Meta" href="{{ URL::to('ugc-edit') . '/' . $eachugcvideos->id }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                        </svg>
+                                                    </a>
+                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Video"
+                                                    data-original-title="Edit Video" href="{{ URL::to('ugc-editvideo') . '/' . $eachugcvideos->id }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-btn-fill" viewBox="0 0 16 16">
+                                                        <path d="M0 12V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2m6.79-6.907A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z"/>
+                                                        </svg>
+                                                    </a>
+                                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete Video"
+                                                    data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/videos/delete') . '/' . $eachugcvideos->id }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+            
+                                        <div class="text-white pt-3">
+                                            <h6>{{$eachugcvideos->title}}</h6>
+                                            <p style="margin:5px 0px;">{{$user->username}}</p>
+                                            <p> {{$eachugcvideos->created_at->diffForHumans()}} | {{ $eachugcvideos->views ?  $eachugcvideos->views : '0' }} views
+                                                | {{ $eachugcvideos->like_count}} Likes</p>
+                                        </div>
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
+            
+                    <div class="mt-3 pull-right" >
+                        {{ $ugcvideos->links() }}
+                    </div>
+                </div>
+        
+        
+                </div>
+            </section>
                           
                         <!-- Add New Modal -->
                 <div class="modal fade" id="add-new">
@@ -1740,3 +2129,177 @@ if (isset($page) && $page == 'admin-dashboard') {
         }, 3000);
     })
 </script>
+<script>
+$(document).ready(function(){
+	
+	$('ul.ugc-tabs li').click(function(){
+		var tab_id = $(this).attr('data-tab');
+
+		$('ul.ugc-tabs li').removeClass('ugc-current');
+		$('.ugc-tab-content').removeClass('ugc-current');
+
+		$(this).addClass('ugc-current');
+		$("#"+tab_id).addClass('ugc-current');
+	})
+
+})
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    $.ajaxSetup({
+              headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+       });
+ 
+            document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('ugc-about');
+            const submitButton = document.getElementById('submit_about');
+
+            input.addEventListener('input', function() {
+                const value = this.value;
+                if (value.length > 0) {
+                    submitButton.style.display = 'inline';
+                } else {
+                    submitButton.style.display = 'none';
+                }
+            });
+
+            $('#submit_about').click(function(){
+                const userId = {{ $user->id }}; // Get the user ID
+                $.ajax({
+                    url: '<?php echo route('ugc.about.submit') ?>',
+                    type: "post",
+                    data: {
+                            _token: '{{ csrf_token() }}',
+                            user_id: userId,
+                            ugc_about: $('#ugc-about').val()
+                        },        
+                        success: function(value){
+                        if(value.status){
+                            location.reload();
+                        }else{
+                            alert( value.message);
+                        }
+                    }
+                });
+            })
+        });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('ugc-facebook');
+            const submitButton = document.getElementById('submit_facebook');
+
+            input.addEventListener('input', function() {
+            const value = this.value;
+            if (value.length > 0) {
+            submitButton.style.display = 'inline';
+            } else {
+            submitButton.style.display = 'none';
+            }
+            });
+        
+  
+            $('#submit_facebook').click(function(){
+
+            const userId = {{ $user->id }}; 
+       
+            $.ajax({
+            url: '<?php echo route('ugc.facebook.submit') ?>',
+            type: "post",
+            data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: userId,
+                    ugc_facebook: $('#ugc-facebook').val()
+                },        
+                success: function(value){
+                if(value.status){
+                    location.reload();
+                }else{
+                    alert( value.message);
+                }
+                }
+            });
+            })
+        });
+ 
+        document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ugc-instagram');
+        const submitButton = document.getElementById('submit_instagram');
+
+        input.addEventListener('input', function() {
+        const value = this.value;
+        if (value.length > 0) {
+            submitButton.style.display = 'inline';
+        } else {
+            submitButton.style.display = 'none';
+        }
+        });
+
+
+        $('#submit_instagram').click(function(){
+        const userId = {{ $user->id }};
+
+        $.ajax({
+            url: '<?php echo route('ugc.instagram.submit') ?>',
+            type: "post",
+            data: {
+              _token: '{{ csrf_token() }}',
+              user_id: userId,
+              ugc_instagram: $('#ugc-instagram').val()
+            },        
+            success: function(value){
+                   if(value.status){
+                       location.reload();
+                   }else{
+                       alert( value.message);
+                   }
+               }
+            });
+        })
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ugc-twitter');
+        const submitButton = document.getElementById('submit_twitter');
+
+        input.addEventListener('input', function() {
+        const value = this.value;
+        if (value.length > 0) {
+            submitButton.style.display = 'inline';
+        } else {
+        submitButton.style.display = 'none';
+        }
+    });
+
+
+    $('#submit_twitter').click(function(){
+    const userId = {{ $user->id }}; 
+
+    $.ajax({
+       url: '<?php echo route('ugc.twitter.submit') ?>',
+       type: "post",
+       data: {
+              _token: '{{ csrf_token() }}',
+              user_id: userId,
+              ugc_twitter: $('#ugc-twitter').val()
+        },        
+        success: function(value){
+                   if(value.status){
+                       location.reload();
+                   }else{
+                       alert( value.message);
+                   }
+               }
+         });
+        })
+    });
+
+    $('.shareprofile').hide()
+    jQuery('.ugc-button').on('click',function(){
+    jQuery('.shareprofile').toggle();
+    })    
+</script>
+

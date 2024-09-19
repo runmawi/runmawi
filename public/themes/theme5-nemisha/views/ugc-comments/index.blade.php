@@ -30,7 +30,7 @@
 
 
 
-<div id="comments" class="bg-border col-lg-6 p-2">
+<div class="bg-border col-lg-6 p-2">
     <?php foreach( $comment_loop as $key => $comment ): ?>
 
     <div class="media-body">
@@ -225,59 +225,6 @@ function comment_dislike(element) {
         }
     });
 }
-</script>
-
-<script>
-   $(document).ready(function() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $('#commentForm').on('submit', function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: $(this).attr('action'),
-            method: 'POST',
-            data: $(this).serialize(),
-            success: function(response) {
-                if (response.success) {
-                    // Define the comment's HTML design here
-                    const commentHtml = `
-                        <div class="media-body">
-                            <div class="d-flex align-items-center">
-                                <h6 class="mt-0 mb-1">${response.userName} | ${response.commentTime}</h6>
-                            </div>
-                            <div style="white-space: pre-wrap;" class="mt-2 text-white">${response.commentText}</div>
-                            <div>
-                                <div class="d-flex py-2">
-                                    <div class="text-white" data-comment-id="${response.commentId}" onclick="comment_like(this)">
-                                        <i class="comment-like ri-thumb-up-line"></i>
-                                        <span id="like-count-${response.commentId}">${response.likeCount}</span>
-                                    </div>
-                                    <div class="text-white px-3" data-comment-id="${response.commentId}" onclick="comment_dislike(this)">
-                                        <i class="comment-dislike ri-thumb-down-line"></i>
-                                        <span id="dislike-count-${response.commentId}">${response.dislikeCount}</span>
-                                    </div
-                                </div>
-                            </div>
-                        </div>`;
-
-                    // Prepend the newly created comment to the comments section
-                    $('#comments').prepend(commentHtml);
-
-                    // Clear the textarea
-                    $('#myTextarea').val('');
-                }
-            },
-            error: function(xhr) {
-                alert('Comment submission failed: ' + xhr.statusText);
-            }
-        });
-    });
-});
 </script>
 
 
