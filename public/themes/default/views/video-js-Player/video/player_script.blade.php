@@ -142,7 +142,6 @@
         }
 
         var hovered = false;
-        console.log("remainingDuration",remainingDuration);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);

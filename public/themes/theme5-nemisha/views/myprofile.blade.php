@@ -366,6 +366,21 @@
     body.light-theme .sigk{background: linear-gradient(180deg, rgba(220, 220, 220, 0.85) 0%, rgba(220, 220, 220, 0) 100%);}
     body.light-theme .account{background: linear-gradient(180deg, #c0c6ca -35.59%, rgba(200, 204, 207, 0.36) 173.05%);}
     body.light-theme a.edit-button.Text-white{color:#000 !important;}
+    .reveal{
+        margin-left: -65px;
+        /* position: absolute; */
+        height: 45px !important;
+        background: #ED553B !important;
+        color: #fff !important;
+        top: 0px;
+    }
+    
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 </style>
 
 <body>
@@ -500,14 +515,14 @@
                     <div class="row justify-content-center m-1">
                         <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >               
                             <img
-                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
+                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="Add Banner Image" >
                         </a>
                     </div>
                     <div class="row justify-content-start mx-3">
                         <div >
                         <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="Add Profile Image" style="height: 80px; width: 80px;">
                         </a>
                         </div>
                        <div class="col" style="padding-top: 40px;" >
@@ -648,15 +663,13 @@
                                         <p style="font-weight: 600; font-size: 18px;">Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                            <p class="row">
-                                                <span class="col-lg-2 text-left" style="font-weight: 600; font-size: 18px;">Gender:</span>
-                                                <span class="col-lg-5 text-left"> 
-                                                    <select class="form-control" id="gender" name="gender">
-                                                        <!-- <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>   Gender </option> -->
-                                                        <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
-                                                        <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                                        <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
-                                                    </select>
+                                            <p style="font-weight: 600; font-size: 18px;">Gender:
+                                                <span style="font-weight: 100; font-size:17px;"> 
+                                                    @if(!empty($user->gender) && $user->gender == "null")
+                                                        {{_("Male")}}
+                                                    @else
+                                                        {{$user->gender}}
+                                                    @endif
                                                 </span>
                                             </p>
                                         </div>
@@ -874,11 +887,15 @@
 
 
                         <div class="form-group">
-                            <label>Password:</label><br>
-                            <input type="password" name="password"
-                                value=""
-                                placeholder="Password" class="form-control">
-                            <!-- <input type="password"  name="password"  value="" placeholder="Password"  class="form-control"  > -->
+                        <label>Password:</label><br>
+                            <div class="input-group">
+                                <input type="password" id="profile_password" name="password" placeholder="Password" class="form-control">
+                                <div class="input-group-append" style="margin-left: 70px;">
+                                    <button class="btn btn-default reveal" onclick="visibility1(event)" type="button" id="togglePassword">
+                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -886,7 +903,7 @@
                             <label> Cell Phone:</label>
                             <input type="number" id="mobile" name="mobile"
                                 value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>"
-                                class="form-control" placeholder="Mobile Number">
+                                class="form-control" placeholder="Mobile Number" maxlength="10" oninput="limitInput(this)">
                         </div>
 
                         <div class="form-group">
@@ -895,7 +912,7 @@
                                 <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
                                 <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                 <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
-                                <!-- <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option> -->
+                                <option value="Others" @if(!empty($user->gender) && $user->gender == 'Others'){{ 'selected' }}@endif > Others </option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1070,6 +1087,30 @@
                 $("#" + idval).hide();
             });
         });
+    </script>
+    <script>
+        function visibility1(event) {
+            event.preventDefault(); // Prevent button default behavior
+            var passwordInput = document.getElementById('profile_password');
+            var toggleButton = document.getElementById('togglePassword');
+            var icon = toggleButton.querySelector('i'); // Find the icon inside the button
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = "text";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+
+        function limitInput(input) {
+            if (input.value.length > 10) {
+                input.value = input.value.slice(0, 10);  // Ensure only 10 digits
+            }
+        }
     </script>
     <script>
         function about(evt, id) {

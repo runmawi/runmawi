@@ -138,7 +138,7 @@
 
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/') . '/live/' . $video->slug }}">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        {{ __('Live Now') }}
+                                                        {{ __(!empty($button_text->play_btn_live)? $button_text->play_btn_live : 'Live Now') }}
                                                     </a>
                                                 </div>
                                             </div>

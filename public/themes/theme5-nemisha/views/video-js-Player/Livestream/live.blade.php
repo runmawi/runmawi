@@ -1,7 +1,7 @@
 @php
-     include(public_path('themes/default/views/header.php'));
-     include( public_path('themes/default/views/video-js-Player/Livestream/live-ads.blade.php'));
-     include( public_path('themes/default/views/video-js-Player/Livestream/live-player-script.blade.php'));    
+     include(public_path('themes/theme5-nemisha/views/header.php'));
+     include( public_path('themes/theme5-nemisha/views/video-js-Player/Livestream/live-ads.blade.php'));
+     include( public_path('themes/theme5-nemisha/views/video-js-Player/Livestream/live-player-script.blade.php'));    
 @endphp
 
 <style type="text/css">
@@ -227,14 +227,14 @@
 <!-- video-js Style  -->
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-<link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet">
+<link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videojs.min.css') }}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
 <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet">
-<link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet">
-<link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet">
+<link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') }}" rel="stylesheet">
+<link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') }}" rel="stylesheet">
 
 <!-- Style -->
-<link rel="preload" href="{{ URL::to('public/themes/default/assets/css/style.css') }}" as="style">
+<link rel="preload" href="{{ URL::to('public/themes/theme5-nemisha/assets/css/style.css') }}" as="style">
 
 <!-- video-js Script  -->
 
@@ -349,17 +349,17 @@
         <div class="row">
             <div class=" container-fluid video-list you-may-like overflow-hidden">
                 <h4 style="color:#fffff;">{{ __('Comments') }} </h4>
-                <?php include public_path('themes/default/views/comments/index.blade.php'); ?>
+                <?php include public_path('themes/theme5-nemisha/views/comments/index.blade.php'); ?>
             </div>
         </div>
     @endif
 
             {{-- Related Videos --}}
-    <div class="row">
-        <div class="container-fluid video-list you-may-like overflow-hidden">
+    <div class="container-fluid  row">
+        <div class="video-list you-may-like overflow-hidden">
             <h4 style="color:#fffff;">{{ __('Related Videos') }}</h4>
             <div class="slider">
-                <?php include public_path('themes/default/views/partials/live_related_video.blade.php'); ?>
+                <?php include public_path('themes/theme5-nemisha/views/partials/live_related_video.blade.php'); ?>
             </div>
         </div>
     </div>
@@ -695,5 +695,5 @@
 
 <?php
     // include('m3u_file_live.blade.php');
-    include public_path('themes/default/views/footer.blade.php');
+    include public_path('themes/theme5-nemisha/views/footer.blade.php');
 ?>

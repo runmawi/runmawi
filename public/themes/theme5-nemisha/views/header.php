@@ -1593,13 +1593,13 @@
                                                     class="searchbox">
                                                     <input name="_token" type="hidden"
                                                         value="<?php echo csrf_token(); ?>" />
-                                                    <div class="form-group position-relative" style="background-color: #8080807d;">
+                                                    <div class="form-group position-relative" style="background-color: #8080807d;padding-bottom: 2px;">
                                                         <input type="text" name="search"
                                                             class="text search-input font-size-12 searches"
                                                             placeholder="Type Here" />
-                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                            <!-- <i class="fa fa-search" aria-hidden="true"></i> -->
 
-                                                        <?php include 'public/themes/default/partials/Search_content.php'; ?>
+                                                        <?php include 'public/themes/theme5-nemisha/partials/Search_content.php'; ?>
 
                                                     </div>
                                                 </form>

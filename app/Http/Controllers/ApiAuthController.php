@@ -382,38 +382,14 @@ class ApiAuthController extends Controller
       if($settings->activation_email == 1){
 
                 // verify email
-          
-        try {
-            \Mail::send('emails.Mobile-signup-verify', array(
-                'activation_code' => $userdata->activation_code,
-                'website_name' => GetWebsiteName()
-            ) , function ($message) use ($userdata)
-            {
-                $message->to($userdata->email, $userdata->name)
-                    ->subject('Verify your email address');
-            });
-            
-            $email_log      = 'Mail Sent Successfully from Verify';
-            $email_template = "verify";
-            $user_id = $userdata->id;
+                
+        $Mail_activation_code = $this->Mail_activation_code($userdata,$user_data['activation_code']);
 
-            Email_sent_log($user_id,$email_log,$email_template);
-
-        } catch (\Throwable $th) {
-
-            $email_log      = $th->getMessage();
-            $email_template = "verify";
-            $user_id = $userdata->id;
-
-            Email_notsent_log($user_id,$email_log,$email_template);
-        }
-               
-        $response = array(
-          'status'=>'true',
-          'status_code'=> 200,
-          'message' => 'Registered Successfully.',
+        return response()->json([
+          'status' => $Mail_activation_code['status'],
+          'message' => $Mail_activation_code['status_code'] == 200 ? "User Register & Activation Mail sent Successfully" : $Mail_activation_code['message'],
           'user_data' => $user ,
-        );
+        ], $Mail_activation_code['status_code']);
         
       }
       else {
@@ -988,15 +964,14 @@ class ApiAuthController extends Controller
   public function verify_activation_code(Request $request)
   {
     try {
-      
         // Validation 
           
         $validator = Validator::make($request->all(), [
           'activation_code' => 'required',
-          'user_id' => 'required',
+          'email_id' => 'required',
         ], [
             'activation_code.required'    => 'Please enter your activation code.',
-            'user_id.required'    => 'Please enter your user id.',
+            'email_id.required'    => 'Please enter your email_id.',
         ]);
         
         if ($validator->fails()) {
@@ -1007,9 +982,14 @@ class ApiAuthController extends Controller
             ], 400);
         }
     
-        $user = User::findOrFail($request->user_id);
+        $user = User::where('email',$request->email_id)->first();
 
         $status = $user->activation_code == $request->activation_code;
+
+        if($status){
+          $user->update(['activation_code' => null , 'active' => 1 ]);
+        }
+
         $message = $status ? "Verification has been done" : "Invalid verification code";
 
         return response()->json([
@@ -1025,6 +1005,110 @@ class ApiAuthController extends Controller
           'status_code' => 400,
           'message' => $th->getMessage(),
       ], 400);
+    }
+  }
+
+  public function resend_activation_code(Request $request)
+  {
+    try {
+        // Validation 
+        
+      $validator = Validator::make($request->all(), [
+        'email_id' => 'required',
+      ], [
+          'email_id.required'    => 'Please enter your email_id.',
+      ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      // User data 
+
+      $userdata = User::where('email',$request->email_id)->first();
+
+      if( $userdata->active == 1){
+
+        return response()->json([
+          'status' => 'false',
+          'message'=> 'This user already in active status'
+        ], 400);
+
+      }
+
+      $activation_code = Str::padLeft(mt_rand(0, 999999), 6, '0');
+
+      $Mail_activation_code = $this->Mail_activation_code($userdata,$activation_code);
+
+      return response()->json([
+        'status' => $Mail_activation_code['status'],
+        'message' => $Mail_activation_code['message'],
+      ], $Mail_activation_code['status_code']);
+
+    } catch (\Throwable $th) {
+      
+      return response()->json([
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => $th->getMessage(),
+      ], 400);
+
+    }
+  }
+
+  private function Mail_activation_code($userdata,$activation_code)
+  {
+    // Note: This Function common for resend_activation_code & Signup
+
+    try {
+
+      \Mail::send('emails.Mobile-signup-verify', array(
+          'activation_code' => $activation_code,
+          'website_name' => GetWebsiteName()
+      ) , function ($message) use ($userdata)
+      {
+          $message->to($userdata->email, $userdata->name)
+              ->subject('Verify your email address');
+      });
+      
+      $email_log      = 'Mail Sent Successfully from Verify';
+      $email_template = "verify";
+      $user_id = $userdata->id;
+
+      Email_sent_log($user_id,$email_log,$email_template);
+
+      // user update
+
+      $userdata->update(['activation_code' => $activation_code ]);
+
+      $respond = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Activation Mail sent Successfully!!',
+      );
+       
+      return $respond;
+
+
+    } catch (\Throwable $th) {
+
+        $email_log      = $th->getMessage();
+        $email_template = "verify";
+        $user_id = $userdata->id;
+
+        Email_notsent_log($user_id,$email_log,$email_template);
+
+        $respond = array(
+          'status' => 'false',
+          'status_code' => 400,
+          'message' => $th->getMessage(),
+        );
+
+        return $respond;
     }
   }
 
@@ -2934,9 +3018,25 @@ public function verifyandupdatepassword(Request $request)
   public function livestreamdetail(Request $request)
   {
     try {
-        $liveid = $request->liveid;
-        $user_id = $request->user_id;
 
+      $validator = Validator::make($request->all(), [
+                    'liveid' => 'required', 
+                    'user_id' => 'required'],
+                    [
+                      'liveid.required'  => 'Please enter your liveid',
+                      'user_id.required' => 'Please enter your user_id',
+                    ]);
+
+      if ($validator->fails()) {
+
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      $liveid = $request->liveid;
+      $user_id = $request->user_id;
 
       // Live Language
 
@@ -3084,7 +3184,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
-                                            $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->mp4_url; ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3094,7 +3194,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "live_stream_video":
-                                              $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                                              $item['livestream_URL'] = $item->live_stream_video; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -3104,7 +3204,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "Encode_video":
-                                              $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                              $item['livestream_URL'] =  $item->hls_url; ;
                                               $item['livestream_player_type'] =  'application/x-mpegURL'  ;
                                           break;
 
@@ -3119,7 +3219,7 @@ public function verifyandupdatepassword(Request $request)
                                           break;
 
                                           case $item['url_type'] == "aws_m3u8":
-                                            $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                                            $item['livestream_URL'] =  $item->hls_url ;
                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
                                           break;
 
@@ -4699,35 +4799,36 @@ public function verifyandupdatepassword(Request $request)
     public function relatedchannelvideos(Request $request) {
       $videoid = $request->videoid;
       $myData = array();
-
-      $category_id = CategoryVideo::where('video_id', $videoid)->get();
-      $recomendeds = collect();
-        // Recomendeds
-        foreach ($category_id as $key => $value)
-        {
-            $videos = Video::select('videos.*', 'video_categories.name as categories_name', 'categoryvideos.category_id as categories_id')
-                ->Join('categoryvideos', 'videos.id', '=', 'categoryvideos.video_id')
-                ->Join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
-                ->where('videos.id', '!=', $videoid)
-                ->where('categoryvideos.category_id', '=', $value->category_id)
-                ->limit(10)
-                ->get()->map(function ($item) {
-                    $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                    return $item;
-                  });
-                  $recomendeds = $recomendeds->concat($videos); 
-        }
-
-        $myData[] = array(
+  
+      $category_id = CategoryVideo::where('video_id', $videoid)->pluck('category_id');
+  
+      $recomendeds = CategoryVideo::select('categoryvideos.video_id', 'categoryvideos.category_id', 'videos.*', 'video_categories.name as categories_name')
+          ->join('videos', 'videos.id', '=', 'categoryvideos.video_id')
+          ->join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
+          ->whereIn('categoryvideos.category_id', $category_id)
+          ->where('videos.id', '!=', $videoid) 
+          ->groupBy('videos.id')  
+          ->latest()
+          ->limit(30)
+          ->get()
+          ->map(function($item) {
+              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+              $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))
+                  ? "Published"
+                  : ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);  // Calculate the publish status
+              return $item;
+          });
+  
+      $myData[] = array(
           "recomendeds" => $recomendeds->all() // Convert the collection to an array
       );
-
-        $response = array(
-        'status'=>'true',
-        'channelrecomended' => $myData
+  
+      $response = array(
+          'status'=>'true',
+          'channelrecomended' => $myData
       );
       return response()->json($response, 200);
-    }
+  }
 
     public function relatedppvvideos(Request $request) {
       $ppvvideoid = $request->ppvvideoid;
@@ -15524,7 +15625,6 @@ public function QRCodeMobileLogout(Request $request)
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                         ->where('active', '1')
                                         ->where('status', 1)
-                                        ->limit($homepage_input_array['limit'])
                                         ->get()->map(function ($item) use ($homepage_default_image_url) {
                                           $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
                                           $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
@@ -15612,7 +15712,7 @@ public function QRCodeMobileLogout(Request $request)
             return -$timestamp; 
         })->values();
         
-        return $livestreams;
+        return $livestreams->take($homepage_input_array['limit']);
 
       endif;
 

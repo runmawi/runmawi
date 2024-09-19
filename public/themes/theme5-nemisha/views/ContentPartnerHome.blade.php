@@ -49,7 +49,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     </div>
 </div>
 
-<section class="mt-5 mb-5">
+<section class="mb-5" style="margin-top: 6em">
     <div class="container-fluid">
         <div class="row ">
             <div class="col-2 col-lg-2">

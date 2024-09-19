@@ -14,6 +14,7 @@ $homepage_array_data = [
                       'getfeching' => $getfeching,
                       'currency'   => $currency,
                       'settings'   => $settings,
+                      'button_text'   => $button_text,
                    ];
 
   $Slider_array_data = array(
