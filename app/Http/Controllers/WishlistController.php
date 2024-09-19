@@ -94,30 +94,33 @@ class WishlistController extends Controller
 
     public function show_mywishlists()
     {
+
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
+
+        $user_id = Auth::user()->id;
         
         if (Auth::guest())
         {
             return redirect('/login');
         }
-        $channelwatchlater = Wishlist::where('user_id', '=', Auth::user()->id)
+        $channelwatchlater = Wishlist::where('user_id', '=',  $user_id)
             ->where('type', '=', 'channel')
             ->get();
-        $ppvwatchlater = Wishlist::where('user_id', '=', Auth::user()->id)
+        $ppvwatchlater = Wishlist::where('user_id', '=',  $user_id)
             ->where('type', '=', 'ppv')
             ->get();
 
-        $live_videos = Wishlist::where('user_id', '=', Auth::user()->id)
+        $live_videos = Wishlist::where('user_id', '=',  $user_id)
             ->where('type', '=', 'live')
             ->get();
 
-        $episode_videos = Wishlist::where('user_id', '=', Auth::user()->id)
+        $episode_videos = Wishlist::where('user_id', '=',  $user_id)
             ->where('episode_id', '!=', null)
             ->get();
 
-        $user_genrated_content = Wishlist::where('user_id', '=', Auth::user()->id)
-            ->where('type', '=', 'User Genrated Content')
+        $user_genrated_content = Wishlist::where('user_id', '=',  $user_id)
+            ->where('ugc_video_id', '!=', null)
             ->get();
 
         $channel_watchlater_array = array();
@@ -159,14 +162,13 @@ class WishlistController extends Controller
         $livevideos = LiveStream::where('active', '=', '1')->whereIn('id', $live_watchlater_array)->paginate(12);
         $episode_videos = Episode::where('active', '=', '1')->whereIn('id', $episode_array)->paginate(12);
         $user_genrated_content_videos = UGCVideo::where('active', '=', '1')->whereIn('id', $user_genrated_content_array)->paginate(12);
-        // dd(count($episode_videos));
         $data = array(
             'ppvwatchlater'     =>  $ppvvideos,
             'channelwatchlater' =>  $videos,
             'livevideos'        =>  $livevideos,
             'ThumbnailSetting' => ThumbnailSetting::first(),
             'episode_videos' => $episode_videos,
-            'UserGenratedContent' => $user_genrated_content_videos,
+            'user_generated_content' => $user_genrated_content_videos,
         );
 
         return Theme::view('mywhislist', $data);
