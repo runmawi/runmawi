@@ -58,8 +58,14 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         margin: 0 5px;
         background-color: #ED563C;
         color: #fff;
+        font-weight: bold;
         border-radius: 8px;
         white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .ugc-playlist.ring {
+        border: 2px solid #848880;
     }
 
     .read-button{
@@ -123,6 +129,22 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
 
     .vjs-control-bar{
         border-radius: 20px;
+    }
+
+    .related-video-item{
+        background: #848880;
+		color: #fff;
+        border-radius: 7px;
+        padding: 7px;
+        margin: 7px;
+    }
+
+    .trending-video-item{
+        background: #848880;
+		color: #fff;
+        border-radius: 7px;
+        padding: 7px;
+        margin: 7px;
     }
 
     @media only screen and (max-width: 600px) {
@@ -205,7 +227,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                         </span>
                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
-                            <div class=""  data-toggle="modal">  
+                            <div   data-toggle="modal">  
                                 <span class="text" style="background-color: transparent; font-size: 12px; width:100%;">{{ __('Add To Watchlist') }}</span>
                             </div>
                         </div>
@@ -216,7 +238,7 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                             <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                         </span>
                         <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
-                            <div class=""  data-toggle="modal">  
+                            <div   data-toggle="modal">  
                                 <span class="text" style="background-color: transparent; font-size: 12px; width:100%;">{{ __('Add To Wishlist') }}</span>
                             </div>
                         </div>
@@ -319,13 +341,55 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
     </div>
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
              <div class="ugc-tabs">
-                 <div class="ugc-playlist">New</div>
-                 <div class="ugc-playlist">Related</div>
-                 <div class="ugc-playlist">Your Playlist</div>  
-                 <div class="ugc-playlist">Watch Now</div>
-                 <div class="ugc-playlist">Trending</div>
-                 <div class="ugc-playlist">Watch Now</div>
+                @if($newvideo)
+                 <div class="ugc-playlist"><a href="{{ url('ugc/video-player/' . $newvideo->slug) }}" >New</a></div>
+                @endif
+                @if($relatedVideos->isNotEmpty())
+                 <div  id="related-btn" class="ugc-playlist">Related</div>
+                @endif
+                <div id="trending-btn" class="ugc-playlist">Trending</div>
+                 <div class="ugc-playlist"> <a href=" {{url('mywishlists')}} " >Your Wishlist </a></div>  
+
              </div>     
+             <div id="related-videos" style="display: none;">
+                @foreach($relatedVideos as $video)
+                <a href="{{ url('ugc/video-player/' . $video->slug) }}">
+                    <div class="related-video-item" >
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                  </svg>
+                                <h6 class="px-1" > {{ $video->title }}</h6>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                {{ $video->views ?  $video->views : '0' }}  Views
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                @endforeach
+            </div>
+          
+            <div id="trending-videos" style="display: none;">
+                @foreach($trendingVideos as $video)
+                <a href="{{ url('ugc/video-player/' . $video->slug) }}">
+                    <div class="trending-video-item" >
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"/>
+                                </svg>
+                                <h6 class="px-2" > {{ $video->title }}</h6>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                {{ $video->views ?  $video->views : '0' }}  Views
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                @endforeach
+            </div>
 
            
       <div class="mx-3">
@@ -545,6 +609,43 @@ include public_path('themes/theme5-nemisha/views/footer.blade.php');
     }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+       
+        var relatedBtn = document.getElementById('related-btn');
+        var trendingBtn = document.getElementById('trending-btn');
+        var relatedVideos = document.getElementById('related-videos');
+        var trendingVideos = document.getElementById('trending-videos');
+
+        if (relatedBtn) {
+            relatedBtn.addEventListener('click', function() {
+                if (relatedVideos.style.display === 'block') {
+                    relatedVideos.style.display = 'none';
+                    relatedBtn.classList.remove('ring');
+                } else {
+                    relatedVideos.style.display = 'block';
+                    trendingVideos.style.display = 'none';
+                    relatedBtn.classList.add('ring');
+                    trendingBtn.classList.remove('ring');
+                }
+            });
+        }
+
+        if (trendingBtn) {
+            trendingBtn.addEventListener('click', function() {
+                if (trendingVideos.style.display === 'block') {
+                    trendingVideos.style.display = 'none';
+                    trendingBtn.classList.remove('ring');
+                } else {
+                    trendingVideos.style.display = 'block';
+                    relatedVideos.style.display = 'none';
+                    trendingBtn.classList.add('ring');
+                    relatedBtn.classList.remove('ring');
+                }
+            });
+        }
+    });
+</script>
 
 @php
  include public_path('themes/theme5-nemisha/views/UserGeneratedContent/videos-details-script-file.blade.php');

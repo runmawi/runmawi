@@ -60,6 +60,49 @@
             </ul>
          </div>
 
+         <div class="favorites-contens">
+              <h4 class="main-title">My UGC Videos</h4>    
+                        <ul class="category-page list-inline  row p-0 mb-4">
+                      
+                        <?php if(count($user_generated_content) > 0):
+                        
+                   foreach($user_generated_content as $user_generated_video): ?>
+            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
+                <a href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $user_generated_video->slug ?>">
+                <li class="slide-item position-relative">
+                <!-- block-images -->
+                   <div class="block-images position-relative">
+                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$user_generated_video->image; ?>"  data-play="hover" >
+                        </video>
+                    </div>
+
+                        <div class="block-description">
+                            <div class="hover-buttons d-flex">
+                                <a type="button" class="text-white"
+                                href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $user_generated_video->slug ?>">
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                </a>
+                                <div >
+                                </div>
+                            </div>
+                        </div>
+                       <div>
+                           
+                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
+                                 <h6><?php  echo (strlen($user_generated_video->title) > 15) ? substr($user_generated_video->title,0,16).'...' : $user_generated_video->title; ?></h6>                               
+                            </div>
+                            <span class="text-white"><i class="fa fa-clock-o"></i>
+                                    <?= gmdate('H:i:s', $user_generated_video->duration); ?>
+                            </span>
+                       </div>
+                </li>
+                </a>
+            </div>
+                              <?php endforeach; 
+            endif; ?>
+            </ul>
+         </div>
+
          <?php if((count($episode_videos) > 0) ): ?>
             <h4 class="main-title">My Episodes</h4>       
         <div class="favorites-contens">
@@ -157,51 +200,7 @@
              </ul>
          </div>
                 
-         <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
-            <?php if(count($UserGenratedContent) < 0): ?>
-
-            <?php
-                   foreach($UserGenratedContent as $video): ?>
-                             
-            <div class="col-1-5 col-md-6 iq-mb-30 wishlist-block">
-                <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                <li class="slide-item position-relative">
-                <!-- block-images -->
-                   <div class="block-images position-relative">
-                        <video  width="100%" height="auto" class="play-video" poster="<?php echo URL::to('/').'/public/uploads/images/'.$video->image; ?>"  data-play="hover" >
-                            <source src="<?php echo $video->trailer;  ?>" type="video/mp4">
-                        </video>
-                    </div>
-
-                        <div class="block-description">
-                            <div class="hover-buttons d-flex">
-                                <a type="button" class="text-white"
-                                href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
-                                </a>
-                                <div >
-                                </div>
-                            </div>
-                        </div>
-                       <div>
-                            
-                            <div class="movie-time d-flex align-items-center justify-content-between my-2">
-                                <h6><?php  echo (strlen($video->title) > 15) ? substr($video->title,0,16).'...' : $video->title; ?></h6>
-                                <div class="badge badge-secondary p-1 mr-2"><?php echo $video->age_restrict ?></div>
-                                
-                            </div>
-                           <span class="text-white"><i class="fa fa-clock-o"></i>
-                                    <?= gmdate('H:i:s', $video->duration); ?>
-                                </span>
-                       </div>
-                </li>
-                </a>
-            </div>
-                            <?php endforeach; 
-                        endif; ?>
-             </ul>
-         </div>
+         
          
             <?php else: ?>
            

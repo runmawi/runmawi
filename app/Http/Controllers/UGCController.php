@@ -203,7 +203,7 @@ class UGCController extends Controller
             return View::make('admin.expired_storage', $data);
 
         } else {
-            $videos = UGCVideo::with('user')->latest()->paginate(9);
+            $videos = UGCVideo::with('user')->orderBy('created_at', 'desc')->paginate(9);
 
             $data = [
                 "videos" => $videos,
@@ -224,33 +224,34 @@ class UGCController extends Controller
         $settings = Setting::first();
         $user_id = $video->user_id;
         $UGCUser = User::findOrFail($user_id);
-        try {
-            \Mail::send('emails.admin_channel_approved', array(
-                'website_name' => $settings->website_name,
-                'UGCUser' => $UGCUser
-            ) , function ($message) use ($UGCUser)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($UGCUser->email, $UGCUser->username)
-                    ->subject('Content has been Submitted for Approved By Admin');
-            });
+    //     try {
+         
+    //         \Mail::send('emails.ugc_video_approved', array(
+    //             'website_name' => $settings->website_name,
+    //             'UGCUser' => $UGCUser
+    //         ) , function ($message) use ($UGCUser)
+    //         {
+    //             $message->from(AdminMail() , GetWebsiteName());
+    //             $message->to($UGCUser->email, $UGCUser->username)
+    //                 ->subject('Content has been Submitted for Approved By Admin');
+    //         });
             
-            $email_log      = 'Mail Sent Successfully Approved Content';
-            $email_template = "Approved";
-            $user_id = $user_id;
+    //         $email_log      = 'Mail Sent Successfully Approved Content';
+    //         $email_template = "Approved";
+    //         $user_id = $user_id;
 
-            Email_sent_log($user_id,$email_log,$email_template);
-            Log::info("approved");
+    //         Email_sent_log($user_id,$email_log,$email_template);
+    //         Log::info("approved");
 
-       } catch (\Throwable $th) {
+    //    } catch (\Throwable $th) {
 
-            $email_log      = $th->getMessage();
-            $email_template = "Approved";
-            $user_id = $user_id;
+    //         $email_log      = $th->getMessage();
+    //         $email_template = "Approved";
+    //         $user_id = $user_id;
 
-            Email_notsent_log($user_id,$email_log,$email_template);
-       }
-
+    //         Email_notsent_log($user_id,$email_log,$email_template);
+    //    }
+       
         return Redirect::back()->with(
             "message",
             "Your video will be available shortly after we process it"
@@ -266,32 +267,32 @@ class UGCController extends Controller
         $settings = Setting::first();
         $user_id = $video->user_id;
         $UGCUser = User::findOrFail($user_id);
-        try {
-            \Mail::send('emails.admin_channel_rejected', array(
-                'website_name' => $settings->website_name,
-                'UGCUser' => $UGCUser
-            ) , function ($message) use ($UGCUser)
-            {
-                $message->from(AdminMail() , GetWebsiteName());
-                $message->to($UGCUser->email, $UGCUser->username)
-                    ->subject('Content has been Submitted for Rejected By Admin');
-            });
+    //     try {
+    //         \Mail::send('emails.ugc_video_approved', array(
+    //             'website_name' => $settings->website_name,
+    //             'UGCUser' => $UGCUser
+    //         ) , function ($message) use ($UGCUser)
+    //         {
+    //             $message->from(AdminMail() , GetWebsiteName());
+    //             $message->to($UGCUser->email, $UGCUser->username)
+    //                 ->subject('Content has been Submitted for Rejected By Admin');
+    //         });
             
-            $email_log      = 'Mail Sent Successfully Rejected Content';
-            $email_template = "Rejected";
-            $user_id = $user_id;
+    //         $email_log      = 'Mail Sent Successfully Rejected Content';
+    //         $email_template = "Rejected";
+    //         $user_id = $user_id;
 
-            Email_sent_log($user_id,$email_log,$email_template);
-            Log::info("rejected");
+    //         Email_sent_log($user_id,$email_log,$email_template);
+    //         Log::info("rejected");
 
-       } catch (\Throwable $th) {
+    //    } catch (\Throwable $th) {
 
-            $email_log      = $th->getMessage();
-            $email_template = "Rejected";
-            $user_id = $user_id;
+    //         $email_log      = $th->getMessage();
+    //         $email_template = "Rejected";
+    //         $user_id = $user_id;
 
-            Email_notsent_log($user_id,$email_log,$email_template);
-       }
+    //         Email_notsent_log($user_id,$email_log,$email_template);
+    //    }
 
 
         return Redirect::back()->with(
@@ -700,16 +701,35 @@ class UGCController extends Controller
                     'likesDislikes as like_count' => function($query) {
                         $query->where('liked', 1);
                     }
-                    ])
-                ->orderBy('created_at', 'DESC')->get(); 
+                    ])->inRandomOrder()->get(); 
     
             $subscribe_button = UGCSubscriber::where('user_id', $profileUser->id)
                             ->where('subscriber_id', auth()->user()->id)
                             ->exists();
 
+            $newvideo = UGCVideo::where('active', 1)->orderBy('created_at', 'DESC')->first(); 
+            $currentVideo = UGCVideo::where('slug', $slug)->first();
+            $keywords = explode(' ', $currentVideo->description);
+            $relatedVideos = UGCVideo::where('id', '!=', $currentVideo->id) 
+                             ->where(function($query) use ($keywords) {
+                                foreach ($keywords as $word) {
+                                    $query->orWhere('description', 'LIKE', '%' . $word . '%');
+                                }
+                             })
+                             ->inRandomOrder()
+                             ->limit(5)
+                             ->get();
+
+            $trendingVideos = UGCVideo::where('id', '!=', $currentVideo->id)->orderBy('views', 'DESC')->limit(5)->get();
+
+
             $data = array(
                 'user' => $user_details,
                 'ugcvideos' => $ugcvideo,
+                'newvideo' => $newvideo,
+                'currentVideo' => $currentVideo,
+                'relatedVideos' => $relatedVideos,
+                'trendingVideos' => $trendingVideos,
                 'subtitles' => $subtitle ,
                 'videodetail' => $videodetail ,
                 'profileUser' =>  $profileUser,
@@ -2550,6 +2570,7 @@ class UGCController extends Controller
                 ]);
                 
                 $user = User::find($request->user_id)->update(['ugc_about' => $request->ugc_about]);
+                dd($user);
                 $response = [
                     'status' => true,
                     'status_code' => 200,
