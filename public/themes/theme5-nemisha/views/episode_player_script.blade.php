@@ -28,10 +28,16 @@
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        // var controlBar = player.getChild('controlBar');
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(backButton);  
+
         var hovered = false;
 
         skipForwardButton.addEventListener('click', function() {
@@ -60,30 +66,34 @@
             }
 
             // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-                if(hovered == false){
-                    skipForwardButton.style.display = 'none';
-                    skipBackwardButton.style.display = 'none';
-                    playPauseButton.style.display = 'none';
-                    backButton.style.display = 'none';
+            if (skipForwardButton && skipBackwardButton) {
+                if(hovered == false && remainingDuration == false){
+                    skipForwardButton.style.visibility = 'hidden';
+                    skipBackwardButton.style.visibility = 'hidden';
+                    playPauseButton.style.visibility = 'hidden';
+                    backButton.style.visibility = 'hidden';
+                    titleButton.style.visibility = 'hidden';
                 }
             }
         });
 
         player.on('useractive', () => {
-        // Show the Play pause, skip forward and backward buttons when the user becomes active
-        if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
-            skipForwardButton.style.display = 'block';
-            skipBackwardButton.style.display = 'block';
-            playPauseButton.style.display = 'block';
-            backButton.style.display = 'block';
-        }
+            // Show the Play pause, skip forward and backward buttons when the user becomes active
+            if (skipForwardButton && skipBackwardButton) {
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.visibility = 'visible';
+                    skipBackwardButton.style.visibility = 'visible';
+                    playPauseButton.style.visibility = 'visible';
+                    backButton.style.visibility = 'visible';
+                    titleButton.style.visibility = 'visible';
+                }
+            }
         });
 
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
-            console.log("p",player);
+            // console.log("p",player);
 
             const player_duration_Seconds        =  player.duration();
             const video_skip_intro_seconds       = '<?= $episode_details->video_skip_intro_seconds ?>' ;

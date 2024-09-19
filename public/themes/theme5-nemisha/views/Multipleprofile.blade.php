@@ -10,10 +10,15 @@
     <style>
         li{list-style:none;}
         body{background: #000;padding: 20px;vertical-align: middle;height: 100%;}
-
+        .login-success {border: 2px solid black;width: 30%;height: 50px;font-size: 18px;background: #279619;align-items: center;margin-left: auto;display: flex;justify-content: center;}
     </style>
 </head>
-      
+<div class="message">
+    <div class="login-success d-flex text-white">
+        <span>Logged in successfully</span>
+    </div>
+</div>
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
