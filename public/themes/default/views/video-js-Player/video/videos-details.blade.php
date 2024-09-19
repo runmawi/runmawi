@@ -542,7 +542,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $recommended_video->image ? URL::to('/public/uploads/images/'.$recommended_video->image) : $default_vertical_image_url }}" alt="{{ $recommended_video->title }}">
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $recommended_video->image == "default_image.jpg" ? $default_vertical_image_url : URL::to('/public/uploads/images/'.$recommended_video->image) }}" alt="{{ $recommended_video->title }}">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
