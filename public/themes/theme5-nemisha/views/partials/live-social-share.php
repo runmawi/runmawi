@@ -79,14 +79,14 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
 
 
 <script>
-	$('#like').click(function(){
-        var  videoid = $("#videoid").val();
+	$('#like').click(function(){        
+        var  videoid = $("#videoid").val();        
         var user_id = $("#user_id").val();
         if($(this).data('authenticated')){
             $(this).toggleClass('active');
             if($(this).hasClass('active')){
                 var like = 1;
-                //$(this).css('color','#34c1d8');
+                $(this).css('color','#34c1d8');
                 $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
                 type: "POST",
@@ -106,7 +106,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
 
             }else{
                 var like = 0;
-                //$(this).css('color','#4895d1');
+                $(this).css('color','#fff');
                 $.ajax({
                 url: "<?php echo URL::to('/').'/like-video';?>",
                 type: "POST",
@@ -138,22 +138,21 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
             $(this).toggleClass('active');
             if($(this).hasClass('active')){
                 var dislike = 1;
-                //$(this).css('color','#34c1d8');
-                
-                    $.ajax({
-                        url: "<?php echo URL::to('/').'/dislike-video';?>",
-                        type: "POST",
-                        data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
-                        dataType: "html",
-                        success: function(data) {
-                            $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have disliked this media</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-                //     $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Removed From Dislike </div>');
-                // setTimeout(function() {
-                //     $('.remove_watch').slideUp('fast');
-                //      }, 300);
+                $(this).css('color','#34c1d8'); 
+                $.ajax({
+                    url: "<?php echo URL::to('/').'/dislike-video';?>",
+                    type: "POST",
+                    data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+                    dataType: "html",
+                    success: function(data) {
+                        $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">you have disliked this media</div>');
+                        setTimeout(function() {
+                            $('.add_watch').slideUp('fast');
+                        }, 3000);
+                        //     $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Removed From Dislike </div>');
+                        // setTimeout(function() {
+                        //     $('.remove_watch').slideUp('fast');
+                        //      }, 300);
                 
                     }
                 });
@@ -164,20 +163,20 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
 
             }else{
                 var dislike = 0;
-                //$(this).css('color','#4895d1');
+                $(this).css('color','#fff');
                 $.ajax({
-            url: "<?php echo URL::to('/').'/dislike-video';?>",
-            type: "POST",
-            data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
-            dataType: "html",
-            success: function(data) {
-                    $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from disliked this media</div>');
-                setTimeout(function() {
-                    $('.remove_watch').slideUp('fast');
-                     }, 3000);
-                
-          }
-      });
+                    url: "<?php echo URL::to('/').'/dislike-video';?>",
+                    type: "POST",
+                    data: {dislike: dislike,videoid:videoid,user_id:user_id, _token: '<?= csrf_token(); ?>'},
+                    dataType: "html",
+                    success: function(data) {
+                            $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">you have removed from disliked this media</div>');
+                        setTimeout(function() {
+                            $('.remove_watch').slideUp('fast');
+                            }, 3000);
+                            
+                    }
+                });
             }
             // alert('test');
         

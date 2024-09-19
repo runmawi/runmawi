@@ -7,10 +7,7 @@
 
 @section('content')
 
-    <script
-        src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription"
-        data-sdk-integration-source="button-factory">
-    </script>
+<script src="https://www.paypal.com/sdk/js?client-id=AcG3EJ9YtZXPBRDwe_PkmI3ZYMXmUtvjyYC7OLHmV9Q1x0rfFiFtDCQQA5ICspAHfLXt3P7WwG_pOZs-&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
     <style>
         .round {
@@ -615,7 +612,7 @@
                                 @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paystack_radio_button" class="payment_gateway"  name="payment_gateway" value="paystack">
-                                        <label class="mt-2 ml-2"><p>{{ $paystack_label }} </p></label> <br />
+                                        <label class="ml-2"><p>{{ $paystack_label }} </p></label> <br />
                                     </div>
                                 @endif
 
@@ -624,7 +621,7 @@
                                 @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                     <div class="align-items-center  ml-2">
                                         <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                        <label class="mt-2 ml-2"><p>{{ $paypal_label }} </p> </label> <br />
+                                        <label class="ml-2"><p>{{ $paypal_label }} </p> </label> <br />
                                     </div>
                                 @endif
                                             <!-- CinetPay -->
@@ -632,7 +629,7 @@
                                 @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
-                                        <label class=" ml-2"><p>{{ $CinetPay_lable }} </p></label><br />
+                                        <label class="ml-2"><p>{{ $CinetPay_lable }} </p></label><br />
                                     </div>
                                 @endif
                                 
@@ -640,7 +637,7 @@
                                 @if(!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
-                                        <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
+                                        <label class="ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
                                     </div>
                                 @endif
 
@@ -648,7 +645,7 @@
                                 @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
-                                        <label class=" ml-2"> <p>{{ __($recurly_label) }} </p></label> 
+                                        <label class="ml-2"> <p>{{ __($recurly_label) }} </p></label> 
                                     </div>
                                 @endif
                             </div>
@@ -664,7 +661,7 @@
                                         @endphp
 
                                         <div style="" class="col-md-4 plan_details p-0" data-plan-id="{{ 'active' . $plan->id }}" data-plan-price="{{ $CurrencySetting == 1 ? (Currency_Convert($plan->price)) : currency_symbol(). round($plan->price,2) }}"
-                                            data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                            data-plan_id={{ $plan->plan_id }} data-pay-type={{ $plan->type }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
 
                                             <a href="#payment_card_scroll">
@@ -779,6 +776,30 @@
                             <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                             <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
                         </div>
+
+                            {{-- PaypalPayment --}}
+
+                        <div class="col-md-12 mt-5 PaypalPayment" id="Paypal_Payment">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3>Payment</h3>
+                                </div>
+
+                                <div>
+                                    <label for="fname">Accepted Cards</label>
+                                    <div class="icon-container">
+                                        <i class="fa fa-cc-visa" style="color: navy;"></i>
+                                        <i class="fa fa-cc-amex" style="color: blue;"></i>
+                                        <i class="fa fa-cc-mastercard" style="color: red;"></i>
+                                        <i class="fa fa-cc-discover" style="color: orange;"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3"></div>
+                            <div id="paypal-button-container"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -828,21 +849,100 @@
 
             var plans_id = $(ele).attr('data-plan_id');
             var plan_payment_type = $(ele).attr('data-payment-type');
+            var plan_pay_type = $(ele).attr('data-pay-type');
             var plan_price = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols = document.getElementById("currency_symbol").value;
 
-            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
-            $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-            $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
-            $('.plan_price').empty(plan_price);
-            $('.plan_price').append( plan_price);
+            $('#paypal-button-container').empty();
+            $('#paypal-button-container').hide();
 
-            $('#coupon_amt_deduction').empty(plan_price);
-            $('#coupon_amt_deduction').append( plan_price);
+            if(plan_pay_type == 'PayPal'){
+                $('#paypal-button-container').show();
+                $('.Stripe_Payment').hide();
+                var plans_id = $(ele).attr('data-plan_id');
+                var plan_payment_type = $(ele).attr('data-payment-type');
+                var plan_price = $(ele).attr('data-plan-price');
+                var plan_id_class = $(ele).attr('data-plan-id');
+                let currency_symbols = document.getElementById("currency_symbol").value;
 
-            $('.dg').removeClass('actives');
-            $('#' + plan_id_class).addClass('actives');
+                var classname = 'paypal-button-container-' + plans_id
+                $('#paypal-button-container').addClass(classname)
+                // $("#paypal-button-container").append('<div class:' + classname + ';></div>');
+                $("#paypal-button-container").append('<div id="' + classname + '";></div>');
+
+                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
+                    plan_payment_type + '">');
+                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
+                $('.plan_price').empty(plan_price);
+                $('.plan_price').append(plan_price);
+
+                $('.dg').removeClass('actives');
+                $('#' + plan_id_class).addClass('actives');
+
+
+                var plan_data = $("#plan_name").val();
+                var coupon_code = $("#coupon_code").val();
+                var payment_type = $("#payment_type").val();
+                var final_payment = $(".final_payment").val();
+                var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
+
+                paypal.Buttons({
+                    style: {
+                        shape: 'pill',
+                        color: 'white',
+                        layout: 'vertical',
+                        label: 'subscribe'
+                    },
+                    createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                            plan_id: plans_id
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        // alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                        if (!empty(data.subscriptionID)) {
+                            $.post(base_url + '/paypal-subscription', {
+                                    payment_type: payment_type,
+                                    amount: final_payment,
+                                    plan: plan_data,
+                                    plans_id: plans_id,
+                                    subscriptionID: data.subscriptionID,
+                                    coupon_code: final_coupon_code_stripe,
+                                    _token: '<?= csrf_token() ?>'
+                                },
+
+                                function(data) {
+                                    $('#loader').css('display', 'block');
+                                    swal({
+                                        title: "Subscription Purchased Successfully!",
+                                        text: "Your Payment done Successfully!",
+                                        icon: payment_images + '/Successful_Payment.gif',
+                                        buttons: false,
+                                        closeOnClickOutside: false,
+                                    });
+                                    setTimeout(function() {
+                                        window.location.replace(base_url + '/login');
+                                    }, 2000);
+                                });
+                        }
+                    }
+                }).render('#paypal-button-container-'+plans_id);
+                
+            }
+            else{
+                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
+                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
+                $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
+                $('.plan_price').empty(plan_price);
+                $('.plan_price').append( plan_price);
+
+                $('#coupon_amt_deduction').empty(plan_price);
+                $('#coupon_amt_deduction').append( plan_price);
+
+                $('.dg').removeClass('actives');
+                $('#' + plan_id_class).addClass('actives');
+            }
 
         }
 
@@ -918,7 +1018,7 @@
                                 '<div class="col-md-6 plan_details p-0"  data-plan-id="active' +
                                 plan_data.id + '" data-plan-price="' + plan_data.price +
                                 '"  data-plan_id="' + plan_data.plan_id +
-                                '"  data-payment-type="' + plan_data.payment_type +
+                                '"  data-payment-type="' + plan_data.payment_type + '"  data-pay-type="' +  plan_data.type  +
                                 '" onclick="plan_details(this)">';
                             html +=
                                 '<a href="#payment_card_scroll"> <div class="row dg align-items-center mb-4" id="active' +
@@ -972,7 +1072,7 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
             $('.Summary').empty();
 
             // $("#stripe_radio_button").attr('checked', true);
@@ -1000,13 +1100,17 @@
             if ($('input[name="payment_gateway"]:checked').val() == "Recurly") {
                 $('.Recurly_payment').show();
             }
+
+            if ($('input[name="payment_gateway"]:checked').val() == "paypal") {
+                $('.PaypalPayment').show();
+            }
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
                 
                 $('.Summary').empty();
 
@@ -1036,6 +1140,10 @@
                 else if (payment_gateway == "Recurly") {
 
                     $('.Recurly_payment').show();
+                }
+                else if (payment_gateway == "paypal") {
+
+                    $('.PaypalPayment').show();
                 }
                 
             });

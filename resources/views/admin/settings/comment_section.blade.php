@@ -24,7 +24,7 @@
                     <div class="col-md-12 row">
 
                         <div class="col-md-4 d-flex">
-                            <label class="col-md-4"> Videos </label>
+                            <label class="mr-1"> Videos </label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="videos" id="videos" class="" type="checkbox" {{ !empty($comment_section->videos) == "1" ? 'checked' : ''  }}  >
@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="col-md-4 d-flex">
-                            <label class="col-md-4" > LiveStream </label>
+                            <label class="mr-1" > LiveStream </label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="livestream" id="livestream" class="" type="checkbox" {{ !empty($comment_section->livestream) == "1" ? 'checked' : ''  }}  >
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="col-md-4 d-flex">
-                            <label class="col-md-4">  Episode  </label>
+                            <label class="mr-1">  Episode  </label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="episode" id="episode" class="" type="checkbox" {{ !empty($comment_section->episode) == "1" ? 'checked' : ''  }}  >
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="col-md-4 d-flex">
-                            <label class="col-md-4" >  Audios  </label>
+                            <label class="mr-1" >  Audios  </label>
                             <div class="mt-1">
                                 <label class="switch">
                                     <input name="audios" id="audios" class="" type="checkbox" {{ !empty($comment_section->audios) == "1" ? 'checked' : ''  }}  >

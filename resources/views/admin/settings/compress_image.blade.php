@@ -94,19 +94,19 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Video Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_videos" maxlength="4" pattern="\d{1,4}" name="width_validation_videos" type="text" value="{{ $Compress_image->width_validation_videos }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="width_validation_videos" maxlength="4" pattern="\d{1,4}" name="width_validation_videos" type="text" value=" @if(!empty($Compress_image->width_validation_videos)){{ $Compress_image->width_validation_videos }}@endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_videos" maxlength="4" pattern="\d{1,4}" name="height_validation_videos" type="text" value="{{ $Compress_image->height_validation_videos }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_videos" maxlength="4" pattern="\d{1,4}" name="height_validation_videos" type="text" value="@if(!empty($Compress_image->height_validation_videos)) {{$Compress_image->height_validation_videos}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                             <div class="row align-items-center">
                                                 <span>{{ 'Player Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width:<input class="form-control m-1" id="width_validation_player_img" name="width_validation_player_img" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_player_img }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
+                                                    Width:<input class="form-control m-1" id="width_validation_player_img" name="width_validation_player_img" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_player_img)) {{$Compress_image->width_validation_player_img}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_player_img" maxlength="4" pattern="\d{1,4}" name="height_validation_player_img" type="text" value="{{ $Compress_image->height_validation_player_img }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_player_img" maxlength="4" pattern="\d{1,4}" name="height_validation_player_img" type="text" value="@if(!empty($Compress_image->height_validation_player_img)) {{$Compress_image->height_validation_player_img}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                         </div>
@@ -129,19 +129,19 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Video Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_live" name="width_validation_live" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_live }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
+                                                    Width: <input class="form-control m-1" id="width_validation_live" name="width_validation_live" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_live)) {{$Compress_image->width_validation_live}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_live" name="height_validation_live" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->height_validation_live }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
+                                                    Height: <input class="form-control m-1" id="height_validation_live" name="height_validation_live" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->height_validation_live)) {{$Compress_image->height_validation_live}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
                                                 </div>
                                             </div>
                                             <div class="row align-items-center">
                                                 <span>{{ 'Player Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="live_player_img_width" name="live_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->live_player_img_width }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
+                                                    Width: <input class="form-control m-1" id="live_player_img_width" name="live_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->live_player_img_width)) {{$Compress_image->live_player_img_width}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="live_player_img_height" name="live_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->live_player_img_height }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
+                                                    Height: <input class="form-control m-1" id="live_player_img_height" name="live_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->live_player_img_height)) {{$Compress_image->live_player_img_height}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);" />px
                                                 </div>
                                             </div>
                                         </div>
@@ -164,19 +164,19 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Video Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_series" name="width_validation_series" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_series }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="width_validation_series" name="width_validation_series" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_series)) {{$Compress_image->width_validation_series}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_series" name="height_validation_series" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->height_validation_series }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_series" name="height_validation_series" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->height_validation_series)) {{$Compress_image->height_validation_series}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                             <div class="row align-items-center">
                                                 <span>{{ 'Player Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="series_player_img_width" name="series_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->series_player_img_width }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="series_player_img_width" name="series_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->series_player_img_width)) {{$Compress_image->series_player_img_width}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="series_player_img_height" name="series_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->series_player_img_height }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="series_player_img_height" name="series_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->series_player_img_height)) {{$Compress_image->series_player_img_height}} @endif" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                         </div>
@@ -199,10 +199,10 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Season Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_season" name="width_validation_season" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_season }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="width_validation_season" name="width_validation_season" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_season)) {{$Compress_image->width_validation_season}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_season" name="height_validation_season" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->height_validation_season }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_season" name="height_validation_season" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->height_validation_season)) {{$Compress_image->height_validation_season}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                         </div>
@@ -225,19 +225,19 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Video Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_episode" name="width_validation_episode" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_episode }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="width_validation_episode" name="width_validation_episode" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_episode)) {{$Compress_image->width_validation_episode}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_episode" name="height_validation_episode" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->height_validation_episode }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_episode" name="height_validation_episode" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->height_validation_episode)) {{$Compress_image->height_validation_episode}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                             <div class="row align-items-center">
                                                 <span>{{ 'Player Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="episode_player_img_width" name="episode_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->episode_player_img_width }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="episode_player_img_width" name="episode_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->episode_player_img_width)) {{$Compress_image->episode_player_img_width}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="episode_player_img_height" name="episode_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->episode_player_img_height }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="episode_player_img_height" name="episode_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->episode_player_img_height)) {{$Compress_image->episode_player_img_height}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                         </div>
@@ -260,19 +260,19 @@
                                             <div class="row align-items-center">
                                                 <span>{{ 'Video Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="width_validation_audio" name="width_validation_audio" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->width_validation_audio }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="width_validation_audio" name="width_validation_audio" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->width_validation_audio)) {{$Compress_image->width_validation_audio}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="height_validation_audio" name="height_validation_audio" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->height_validation_audio }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="height_validation_audio" name="height_validation_audio" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->height_validation_audio)) {{$Compress_image->height_validation_audio}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                             <div class="row align-items-center">
                                                 <span>{{ 'Player Thumbnail:' }}</span>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Width: <input class="form-control m-1" id="audio_player_img_width" name="audio_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->audio_player_img_width }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Width: <input class="form-control m-1" id="audio_player_img_width" name="audio_player_img_width" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->audio_player_img_width)) {{$Compress_image->audio_player_img_width}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                                 <div class="col-4 d-flex align-items-center">
-                                                    Height: <input class="form-control m-1" id="audio_player_img_height" name="audio_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="{{ $Compress_image->audio_player_img_height }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
+                                                    Height: <input class="form-control m-1" id="audio_player_img_height" name="audio_player_img_height" type="text" maxlength="4" pattern="\d{1,4}" value="@if(!empty($Compress_image->audio_player_img_height)) {{$Compress_image->audio_player_img_height}} @endif" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);"/>px
                                                 </div>
                                             </div>
                                         </div>

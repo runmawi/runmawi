@@ -15,6 +15,9 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .slick-track{
         display: flex;
     }
+    .slick-prev, .slick-next{
+        top: 43%;
+    }
     .container-fluid.overflow-hidden{padding-left: 0;}
 </style>
 <!-- Favicon -->
@@ -49,7 +52,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     </div>
 </div>
 
-<section class="mt-5 mb-5">
+<section class="mb-5" style="margin-top:6em !important;">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-2 col-lg-2">

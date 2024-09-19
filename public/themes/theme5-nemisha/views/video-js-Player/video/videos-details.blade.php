@@ -41,7 +41,7 @@
 
 
 {{-- Style Link--}}
-    <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-details.css') }}">
 
 
 
@@ -50,14 +50,14 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
 
 
-    <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
 {{-- Section content --}}
@@ -148,9 +148,12 @@
                                         <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
                                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                                         </span>
-                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
+                                        <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:45px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                    <!-- {{ __('Add To Watchlist') }} -->
+                                                    {{ !is_null($videodetail->watchlater_exist) ? "Remove from Watchlist" : "Add To Watchlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -160,9 +163,12 @@
                                         <span data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
                                             <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                                         </span>
-                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
+                                        <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:45px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                    <!-- {{ __('Add To Wishlist') }} -->
+                                                    {{ !is_null($videodetail->wishlist_exist) ? "Remove from Wishlist" : "Add To Wishlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -366,7 +372,7 @@
                 <div class="sectionArtists">   
                     <div class="artistHeading"> {{ __('Comments') }} </div>
                         <div class="overflow-hidden">
-                            @php include public_path('themes/default/views/comments/index.blade.php') @endphp
+                            @php include public_path('themes/theme5-nemisha/views/comments/index.blade.php') @endphp
                         </div>
                 </div>
             @endif
@@ -375,7 +381,7 @@
 
             @if ( ( $videodetail->recommended_videos)->isNotEmpty() ) 
 
-                <div class=" container-fluid video-list  overflow-hidden p-0">
+                <div class=" container-fluid video-list  overflow-hidden">
 
                     <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
 

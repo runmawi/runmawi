@@ -307,6 +307,11 @@ border-radius: 0px 4px 4px 0px;
                                     <span class="focus-bg"></span>
                                 </div>
                                 <div class="col-6 input-effect">
+                                    <input class="effect-22" type="text"  name="play_btn_live" id="play_btn_live" value="@if(!empty($button_text->play_btn_live)){{ $button_text->play_btn_live }}@endif">
+                                    <label class="effect-label">Play button for Live</label>
+                                    <span class="focus-bg"></span>
+                                </div>
+                                <div class="col-6 input-effect mt-5">
                                     <input class="effect-22" type="text"  name="subscribe_text" id="subscribe_text" value="@if(!empty($button_text->subscribe_text)){{ $button_text->subscribe_text }}@endif">
                                     <label class="effect-label">Subscribe button</label>
                                     <span class="focus-bg"></span>

@@ -87,6 +87,7 @@ use App\SeriesNetwork;
 use App\SeriesGenre;
 use App\LiveEventArtist;
 use Theme;
+use App\ButtonText;
 
 class HomeController extends Controller
 {
@@ -418,6 +419,7 @@ class HomeController extends Controller
             });
 
             $FrontEndQueryController = new FrontEndQueryController();
+            $button_text = ButtonText::first();
 
             $data = array(
 
@@ -485,6 +487,7 @@ class HomeController extends Controller
                 'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
                 'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                 'ugc_users'         => $FrontEndQueryController->UGCUsers(),
+                'button_text'         => $button_text,
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1162,6 +1165,9 @@ class HomeController extends Controller
                         $category->source = 'Series_Genre';
                         return $category;
                     });
+
+                    $button_text = ButtonText::first();
+
                     $data = array(
                         'currency' => $currency,
                         'videos' => $latest_videos ,
@@ -1229,6 +1235,7 @@ class HomeController extends Controller
                         'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
                         'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                         'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
+                        'button_text'         => $button_text,
                     );
 
                     if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1625,6 +1632,7 @@ class HomeController extends Controller
                 }
 
                 $FrontEndQueryController = new FrontEndQueryController();
+                $button_text = ButtonText::first();
 
                 $data = array(
 
@@ -1695,6 +1703,7 @@ class HomeController extends Controller
                     'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
                     'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                     'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
+                    'button_text'         => $button_text,  
                 );
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){

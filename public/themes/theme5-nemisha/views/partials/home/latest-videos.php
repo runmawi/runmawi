@@ -163,6 +163,9 @@
         outline-width: medium;
         outline: medium none;
     }
+    .flickity-prev-next-button{
+        top: 35%;
+    }
 </style>
 <script>
     $('.mywishlist').click(function(){

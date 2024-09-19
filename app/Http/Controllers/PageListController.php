@@ -15,6 +15,7 @@ use Theme;
 use App\OrderHomeSetting;
 use App\VideoCategory;
 use App\Channel;
+use App\ButtonText;
 
 class PageListController extends Controller
 {
@@ -139,6 +140,7 @@ class PageListController extends Controller
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
+            $button_text = ButtonText::first();
             
             $live_list_pagelist = $FrontEndQueryController->livestreams();
             $live_list_paginate = $this->paginateCollection($live_list_pagelist, $this->videos_per_page);
@@ -150,6 +152,7 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'button_text'                => $button_text,
             );
         
             return Theme::view('Page-List.live-stream', $data);
