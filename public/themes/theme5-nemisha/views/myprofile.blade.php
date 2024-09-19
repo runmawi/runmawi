@@ -508,14 +508,14 @@
                     <div class="row justify-content-center m-1">
                         <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >               
                             <img
-                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="banner" >
+                            src="<?= $user->ugc_banner ? URL::to('/') . '/public/uploads/ugc-banner/' . $user->ugc_banner : '' ?>"  style="border-radius: 30px; height:auto; width:100%; " alt="Add Banner Image" >
                         </a>
                     </div>
                     <div class="row justify-content-start mx-3">
                         <div >
                         <a class="edit-button Text-white"href="javascript:;" onclick="jQuery('#add-new').modal('show');" >
                         <img class="rounded-circle img-fluid text-center mb-3 mt-4"
-                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="profile-bg" style="height: 80px; width: 80px;">
+                        src="<?= $user->avatar ? URL::to('/') . '/public/uploads/avatars/' . $user->avatar : URL::to('/assets/img/placeholder.webp') ?>"  alt="Add Profile Image" style="height: 80px; width: 80px;">
                         </a>
                         </div>
                        <div class="col" style="padding-top: 40px;" >

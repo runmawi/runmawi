@@ -41,7 +41,7 @@
 
 
 {{-- Style Link--}}
-    <link rel="stylesheet" href="{{ asset('public/themes/default/assets/css/video-js/video-details.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/video-details.css') }}">
 
 
 
@@ -50,14 +50,14 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
-    {{-- <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
+    {{-- <link href="{{ asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
 
 
-    <script src="{{ asset('public/themes/default/assets/js/video-js/video.min.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
-    <script src="{{ asset('public/themes/default/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('public/themes/theme5-nemisha/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 
 {{-- Section content --}}
@@ -372,7 +372,7 @@
                 <div class="sectionArtists">   
                     <div class="artistHeading"> {{ __('Comments') }} </div>
                         <div class="overflow-hidden">
-                            @php include public_path('themes/default/views/comments/index.blade.php') @endphp
+                            @php include public_path('themes/theme5-nemisha/views/comments/index.blade.php') @endphp
                         </div>
                 </div>
             @endif
