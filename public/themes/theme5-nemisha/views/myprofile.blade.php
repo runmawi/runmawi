@@ -374,6 +374,13 @@
         color: #fff !important;
         top: 0px;
     }
+    
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
 </style>
 
 <body>
@@ -896,7 +903,7 @@
                             <label> Cell Phone:</label>
                             <input type="number" id="mobile" name="mobile"
                                 value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>"
-                                class="form-control" placeholder="Mobile Number">
+                                class="form-control" placeholder="Mobile Number" maxlength="10" oninput="limitInput(this)">
                         </div>
 
                         <div class="form-group">
@@ -1096,6 +1103,12 @@
                 passwordInput.type = "password";
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
+            }
+        }
+
+        function limitInput(input) {
+            if (input.value.length > 10) {
+                input.value = input.value.slice(0, 10);  // Ensure only 10 digits
             }
         }
     </script>

@@ -247,6 +247,12 @@
       });
 </script>
 
+<style>
+  .flickity-prev-next-button{
+    top: 28%;
+  }
+</style>
+
 <!-- Flickity Slider -->
 <script>
     var elem = document.querySelector('.live-video');

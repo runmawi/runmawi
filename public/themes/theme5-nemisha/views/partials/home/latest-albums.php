@@ -40,6 +40,12 @@
 </div>
 <?php endif; ?>
 
+<style>
+   .flickity-prev-next-button{
+      top: 32%;
+   }
+</style>
+
 <script>
     var elem = document.querySelector('.latest-albums');
     var flkty = new Flickity(elem, {

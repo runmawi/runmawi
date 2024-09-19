@@ -413,7 +413,7 @@ $jsondata = json_decode($jsonString, true); ?>
 </div></nav>
 <div class="position-relative">
 <div class="fixe" >
-      <h1 class="in mt-3 text-center">SIGN UP TO <span class="nemi"> NEMISA TV</span></h1>
+      <h1 class="in mt-3 text-center" style="color:#cacaca;">SIGN UP TO <span class="nemi"> NEMISA TV</span></h1>
     <div class="row m-0 p-0 justify-content-center" >
       
         <div class="col-md-5 col-lg-5 ">
