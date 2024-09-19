@@ -31,10 +31,18 @@
             },
         }); 
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        const backButton = document.querySelector('.staticback-btn');
+        var controlBar = player.getChild('controlBar');
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(backButton);        
+
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
-            // var controlBar = player.controlBar;
-            // console.log("controlbar",controlBar);
             if(!isMobile){
                 controlBar.addChild('subtitlesButton');
                 controlBar.addChild('playbackRateMenuButton');
@@ -54,12 +62,7 @@
             displayCurrentQuality: true,
         });
 
-        // const skipForwardButton = document.querySelector('.custom-skip-forward-button');
-        // const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        const playPauseButton = document.querySelector('.vjs-big-play-button');
-        const backButton = document.querySelector('.staticback-btn');
         var hovered = false;
-        console.log("remainingDuration",remainingDuration);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -91,24 +94,26 @@
             }
 
             // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
-            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            if (skipForwardButton && skipBackwardButton) {
                 if(hovered == false && remainingDuration == false){
-                    skipForwardButton.style.display = 'none';
-                    skipBackwardButton.style.display = 'none';
-                    playPauseButton.style.display = 'none';
+                    skipForwardButton.style.visibility = 'hidden';
+                    skipBackwardButton.style.visibility = 'hidden';
+                    playPauseButton.style.visibility = 'hidden';
+                    backButton.style.visibility = 'hidden';
+                    titleButton.style.visibility = 'hidden';
                 }
-                backButton.style.display = 'none';
             }
         });
 
         player.on('useractive', () => {
-        // Show the Play pause, skip forward and backward buttons when the user becomes active
-            if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
+            // Show the Play pause, skip forward and backward buttons when the user becomes active
+            if (skipForwardButton && skipBackwardButton) {
                 if(player.currentTime != player.duration){
-                    skipForwardButton.style.display = 'block';
-                    skipBackwardButton.style.display = 'block';
-                    playPauseButton.style.display = 'block';
-                    backButton.style.display = 'block';
+                    skipForwardButton.style.visibility = 'visible';
+                    skipBackwardButton.style.visibility = 'visible';
+                    playPauseButton.style.visibility = 'visible';
+                    backButton.style.visibility = 'visible';
+                    titleButton.style.visibility = 'visible';
                 }
             }
         });
