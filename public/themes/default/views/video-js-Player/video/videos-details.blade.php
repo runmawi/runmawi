@@ -171,6 +171,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-http-source-selector.js") }}"></script>
     <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-hls-quality-selector.min.js") }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AcG3EJ9YtZXPBRDwe_PkmI3ZYMXmUtvjyYC7OLHmV9Q1x0rfFiFtDCQQA5ICspAHfLXt3P7WwG_pOZs-&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
 
 {{-- Section content --}}
 
@@ -774,6 +776,38 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                             </div>
                                         </div>
                                     @endif
+
+                                    <!-- paypal payment -->
+
+                                    @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'Paypal' && Enable_PPV_Plans() == 0)
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-video-id="{{$videodetail->id}}" data-video-ppv="{{$videodetail->ppv_price}}" data-value="PayPal">
+                                            {{ $paypal_payment_setting->payment_type }}
+                                        </label>
+                                    @elseif( $paypal_payment_setting && $paypal_payment_setting->payment_type == 'Paypal' && Enable_PPV_Plans() == 1 )
+                                        <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                            <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-value="PayPal">
+                                            {{ $paypal_payment_setting->payment_type }}
+                                        </label>
+
+                                        <div id="paypal-quality-options" style="display:none;">
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
+                                            <div class="quality-options-group">
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                    <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                    Low Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                    <input type="radio" class="quality_option" name="quality" value="720p">
+                                                    Medium Quality
+                                                </label>
+                                                <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                    <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                    High Quality
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class=" becomesubs-page">
                                     @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
@@ -803,7 +837,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <div class="row mt-3 justify-content-around"> 
                                             <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
                                                 @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                                    <button class="btn btn-primary  btn-outline-primary  "
+                                                    <button class="btn btn-primary"
                                                         onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
                                                         {{ __('Pay now') }}
                                                     </button>
@@ -817,12 +851,30 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         </div>
                                     @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
 
-                                    <div class="row mt-3 justify-content-around"></div>
-                                        <div class="Razorpay_button"> <!-- Razorpay Button -->
+                                        <div class="row mt-3 justify-content-around"></div>
+                                            <div class="Razorpay_button"> <!-- Razorpay Button -->
 
                                         </div>
 
                                     @endif
+
+                                    @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
+                                        <div class="row mt-3 justify-content-around"> 
+                                            <div class="paypal_button w-100"> <!-- paypal Button -->
+                                                @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
+                                                    <div id="paypal-button-container-{{$videodetail->id}}-{{$videodetail->ppv_price}}"></div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+
+                                        <div class="row mt-3 justify-content-around"></div>
+                                            <div class="paypal_button"> <!-- paypal Button -->
+
+                                        </div>
+
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -871,23 +923,30 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             
             var Enable_PPV_Plans = '{{ Enable_PPV_Plans() }}';
 
-            $('.Razorpay_button,.Stripe_button').hide();
+            $('.Razorpay_button,.Stripe_button,.paypal_button').hide();
 
             if (Enable_PPV_Plans == 1) {
                     // Only execute this block if PPV plans are enabled
                     var ppv_price_480p = '{{ $videodetail->ppv_price_480p }}';
 
                     $(".payment_btn").click(function() {
-                        $('.Razorpay_button, .Stripe_button, #quality-options, #razorpay-quality-options').hide();
+                        $('.Razorpay_button, .Stripe_button, .paypal_button, #quality-options, #razorpay-quality-options, #paypal-quality-options').hide();
 
                         let payment_gateway = $('input[name="payment_method"]:checked').val();
                         if (payment_gateway == "Stripe") {
                             $('#quality-options').show();
                             $('#razorpay-quality-options').hide();
+                            $('#paypal-quality-options').hide();
                             updateContinueButton();
                         } else if (payment_gateway == "Razorpay") {
                             $('#razorpay-quality-options').show();
                             $('#quality-options').hide();
+                            $('#paypal-quality-options').hide();
+                            updateContinueButton();
+                        } else if (payment_gateway == "PayPal") {
+                            $('#razorpay-quality-options').hide();
+                            $('#quality-options').hide();
+                            $('#paypal-quality-options').show();
                             updateContinueButton();
                         }
                     });
@@ -951,19 +1010,52 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                 else{
                 $(".payment_btn").click(function() {
 
+                    var Video_id = $(this).attr('data-video-id');
+                    var Video_ppv_price = $(this).attr('data-video-ppv');
+                    
+                    // You can now use Video_id and Video_ppv_price
+                    console.log("Video ID: " + Video_id);
+                    console.log("Video PPV Price: " + Video_ppv_price);
                     $('.Razorpay_button,.Stripe_button').hide();
+                    
 
                     let payment_gateway = $('input[name="payment_method"]:checked').val();
 
                     if (payment_gateway == "Stripe") {
 
                         $('.Stripe_button').show();
+                        $('.paypal_button').hide();
 
                     } else if (payment_gateway == "Razorpay") {
 
                         $('.Razorpay_button').show();
+                        $('.paypal_button').hide();
+
+                    } else if (payment_gateway == "PayPal") {
+
+                        $('.paypal_button').show();
+                        paypal.Buttons({
+                            style: {
+                                shape: 'rect',
+                                color: 'gold',
+                                layout: 'vertical',
+                                label: 'subscribe'
+                            },
+                            createSubscription: function(data, actions) {
+                                return actions.subscription.create({
+                                /* Creates the subscription */
+                                plan_id: 'P-5H799559D92641634M3UTMXQ'
+                                });
+                            },
+                            onApprove: function(data, actions) {
+                                alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                            }
+                        }).render('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
+                        console.log('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
 
                     } 
+                    
+                    
                 });
             }
 
