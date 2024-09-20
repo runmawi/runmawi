@@ -50,7 +50,7 @@ class OTPController extends Controller
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
-            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin']);
+            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin', 'error_note' => "Some Error in OTP Config, Pls connect admin" ]);
         }
 
         if ($request->mobile == "0987654321") {
@@ -139,10 +139,10 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
-                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!', 'error_note' => " "]);
 
                 }else {
-                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!']);
+                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!' , 'error_note' => " " ]);
                 }         
             }
            
