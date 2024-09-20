@@ -163,7 +163,8 @@ class HomeController extends Controller
 
             $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
 
-            return redirect()->route('landing_page', $landing_page_slug );
+            // return redirect()->route('landing_page', $landing_page_slug );
+            return redirect('https://runmawi.in/');
         }
 
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
