@@ -5298,7 +5298,7 @@ public function verifyandupdatepassword(Request $request)
                               return $item;
                           });   
 
-          $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
+          $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
 
           return response()->json([
             'status'  => 'true',
