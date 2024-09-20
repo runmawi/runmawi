@@ -22,6 +22,7 @@ use App\Jobs\Convert4kVideoForStreaming;
 use App\Playerui as Playerui;
 use FFMpeg\Coordinate\AspectRatio;
 use Illuminate\Support\Facades\File;
+use URL;
 
 class VideoCompression implements ShouldQueue
 {
@@ -89,15 +90,12 @@ class VideoCompression implements ShouldQueue
             )
             ->save($converted_name);
 
-        $this->video->update([
-            'path' => $converted_name,
-        ]);
-
         Storage::disk($disk)->delete($video);
 
 
         $this->video->update([
             'path' =>  $converted_name,
+            'mp4_url' =>  URL::to("/storage/app/public/" . $converted_name),
         ]);
 
         $video = $this->video;   

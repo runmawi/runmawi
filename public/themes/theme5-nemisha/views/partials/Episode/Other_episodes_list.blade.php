@@ -30,6 +30,7 @@
                         <h6><?php echo strlen($episodes->title) > 15 ? substr($episodes->title, 0, 15) . '...' : $episodes->title; ?>
                             <span><br><?= gmdate('H:i:s', $episodes->duration) ?></span>
                         </h6>
+                        <div class="badge badge-secondary p-1 mr-2"><?php echo 'Episode'. ' ' .$episodes->episode_order ?></div>
                     </div>
                 </a>
 

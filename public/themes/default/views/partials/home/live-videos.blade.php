@@ -12,9 +12,9 @@
                             </a>
                         </h4>
                         @if($settings->homepage_views_all_button_status == 1)
-                            <h4 class="main-title view-all">
+                            <h5 class="main-title view-all" style="font-size: 18px;">
                                 <a href="{{ $order_settings_list[3]->header_name ? URL::to('/') . '/' . $order_settings_list[3]->url : '' }}">{{ __('View all') }}</a>
-                            </h4>
+                            </h5>
                         @endif
                     </div>
 
@@ -73,7 +73,7 @@
                                             </div>
 
                                             <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}">
+                                                <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}" aria-label="playTrailer">
                                                     {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $video->player_image ? URL::to('/public/uploads/images/' . $video->player_image) : $default_vertical_image_url }}" src="{{ $video->player_image ? URL::to('/public/uploads/images/' . $video->player_image) : $default_vertical_image_url }}" alt="{{ $video->title }}" /> --}}
                                                 </a>
 
