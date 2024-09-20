@@ -14,16 +14,14 @@
 
     
 
-<div id="content-page" class="content-page">
-         <div class="container-fluid">
-	<div class="">
-          <div class="">
+<div id="content-page" class="content-page" style="height: 100%" >
+    <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 text-center" >
 				<h4 class="font-weight-bold"><i class="entypo-archive"></i> {{ ('CONTACT US') }} </h4>
 			</div>
 		</div>
-<div class="row justify-content-between mt-4 mb-5">
+    <div class="row justify-content-between mt-4 mb-5">
     <div class="col-xl-8 col-lg-8">
         <div class="login-form">
             <form  id="contact_us_form" method="POST" action="{{ URL::to('/contact-us/store/') }}" enctype="multipart/form-data">
@@ -135,10 +133,9 @@
 
 
     </div>
-</div>
-        </div>
-             </div>
+    </div>      
     </div>
+</div>
 @php
     include(public_path('themes/default/views/footer.blade.php'));
 @endphp

@@ -105,9 +105,11 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-5 col-md-12">
-                            <h1 class="slider-text title text-uppercase">
-                                {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
-                            </h1>
+                            <div style="width: 100%;" >
+                            <h2 class="slider-text title text-uppercase">
+                                {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
+                            </h2>
+                            </div>
                             <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
                                 @php
                                     $details = __(strip_tags(html_entity_decode($slider_video->details)));

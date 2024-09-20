@@ -3211,6 +3211,20 @@ class AdminUsersController extends Controller
             $ugc_total = $user_details->ugcVideos();
             $totalViews = $ugc_total->sum('views');
             $totalVideos = $ugc_total->where('active',1)->count();
+
+            $user_genrated_content = Wishlist::where('user_id', '=',  $user_id)
+            ->where('ugc_video_id', '!=', null)
+            ->get();
+
+            $user_genrated_content_array = array();
+
+            foreach ($user_genrated_content as $key => $cfave)
+            {
+                array_push($user_genrated_content_array, $cfave->ugc_video_id);
+            }
+
+            $user_genrated_content_videos = UGCVideo::where('active', '=', '1')->whereIn('id', $user_genrated_content_array)->paginate(9);            
+
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
@@ -3218,6 +3232,7 @@ class AdminUsersController extends Controller
                 'viewcount' =>  $updated_ugcvideos,
                 'totalViews' => $totalViews,
                 'totalVideos' => $totalVideos,
+                'user_generated_content' => $user_genrated_content_videos,
                 'subscriber_count' => $user_data->subscribers_count,
                 'plans' => $plans,
                 'devices_name' => $devices_name,
