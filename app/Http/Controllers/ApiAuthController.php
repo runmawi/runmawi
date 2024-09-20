@@ -3965,7 +3965,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
@@ -3973,7 +3973,7 @@ public function verifyandupdatepassword(Request $request)
       foreach ($video_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['source'] = 'videos';
