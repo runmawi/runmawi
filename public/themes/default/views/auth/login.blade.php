@@ -226,7 +226,7 @@
                                                  </select> 
                                             </div>
 
-                                            <div class="col-md-8 col-8 form-group m-0">  {{-- Mobile No --}}
+                                            <div class="col-md-7 col-7 form-group m-0">  {{-- Mobile No --}}
                                                 <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
                                             </div>
                                             <div class="col-md-1 p-2">  {{-- Refresh--}}
