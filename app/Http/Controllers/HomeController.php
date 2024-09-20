@@ -3223,8 +3223,6 @@ class HomeController extends Controller
 
         $settings = Setting::first();
 
-
-
         if(Auth::user() == null){
             return redirect::to('/login');
         }
@@ -3278,6 +3276,8 @@ class HomeController extends Controller
         }
         $users = Multiprofile::where('parent_id', $parent_id)->get();
 
+        $redirection_url = session()->get('url.intended', URL::to('/home') );
+
         $data = array(
             'users' => $users,
             'Website_name' => $Website_name,
@@ -3285,6 +3285,7 @@ class HomeController extends Controller
             'subcriber_user' => $subcriber_user,
             'multiuser_limit' => Setting::pluck('multiuser_limit')->first(),
             'sub_user_count'  => Multiprofile::where('parent_id', Auth::user()->id )->count(),
+            'redirection_url' => $redirection_url ,
         );
 
 
