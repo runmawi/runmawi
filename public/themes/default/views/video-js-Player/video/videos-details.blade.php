@@ -322,22 +322,22 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </a>
                             @else
                             
-                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
-                                <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
-                                    <div class="playbtn" style="gap:5px">
-                                        {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
-                                    </div>
-                                </a>
-
-                                @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
-                                    <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
+                                    <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( !is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                            <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                         </div>
                                     </a>
-                                @endif
+
+                                    @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2"> {{ __( !is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
 
                                 @endif
                             @endif

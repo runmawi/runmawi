@@ -271,7 +271,7 @@
                                         <input type="hidden" name="previous" value="{{ url()->previous() }}">
                             
                                         <div class="form-group">  {{-- E-Mail --}}
-                                            <input id="email" type="email" class="form-control login-inputs-data @error('email') is-invalid @enderror" name="email" placeholder="{{ __('E-Mail or Phone number') }}" value="{{ old('email') }}" autocomplete="email" autofocus>
+                                            <input id="email" type="email" class="form-control login-inputs-data @error('email') is-invalid @enderror" name="email" placeholder="{{ __('Enter Your E-Mail') }}" value="{{ old('email') }}" autocomplete="email" autofocus>
                                         </div>
                                 
                                         <div class="form-group mt-4">  {{-- Password --}}                            
