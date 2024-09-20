@@ -5137,7 +5137,6 @@ public function verifyandupdatepassword(Request $request)
                                   return $query->orWhere('videos.details', 'LIKE', '%' . $request->search_value . '%');
                               })
 
-                          ->where('active', 1)->where('status', 1)->where('draft', 1)
                           ->orderBy('created_at', 'desc')->groupBy('videos.id')
                           ->limit(10)
 
@@ -5150,7 +5149,9 @@ public function verifyandupdatepassword(Request $request)
                             $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                             $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $default_horizontal_image_url;  
                             $item['source'] = "Videos";
-                            return $item;
+                            if( $item['draft'] == 1 &&  $item['status'] == 1  &&  $item['active'] == 1 ){
+                              return $item;
+                            }
                           });
 
 
@@ -5177,7 +5178,6 @@ public function verifyandupdatepassword(Request $request)
                           ->when($settings->search_category_status, function ($query) use ($request) {
                               return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->search_value . '%');
                           })
-                          ->where('live_streams.active', '=', '1')
                           ->limit('10')
                           ->groupBy('live_streams.id')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5186,7 +5186,9 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url;    
                               $item['id'] = $item->livestream_id;               
                               $item['source'] = "Livestream";
-                              return $item;
+                              if( $item['active'] == 1 ){
+                                return $item;
+                              }
                           }); 
 
           $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
@@ -5214,7 +5216,6 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('audio.active', '1')->where('audio.status', '1')
                           
                       ->limit('10')
                       ->groupBy('audio.id')
@@ -5223,7 +5224,9 @@ public function verifyandupdatepassword(Request $request)
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                         $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;               
                         $item['source']    = "Audios";
-                        return $item;
+                        if( $item['active'] == 1  && $item['status'] == 1 ){
+                          return $item;
+                        }
                       }); 
 
 
@@ -5248,8 +5251,6 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('episodes.active', '1')
-                          ->where('episodes.status', '1')
                           ->groupBy('episodes.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5258,7 +5259,9 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Episode";
-                              return $item;
+                              if( $item['active'] == 1  && $item['status'] == 1 ){
+                                return $item;
+                              }
                           }); 
                           
           $series = Series::Select('series.*','series_categories.category_id')
@@ -5295,10 +5298,12 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Series";
-                              return $item;
+                               if( $item['active'] == 1  && $item['status'] == 1 ){
+                                return $item;
+                              }
                           });   
 
-          $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
+            $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
 
           return response()->json([
             'status'  => 'true',
