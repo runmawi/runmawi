@@ -2343,35 +2343,81 @@ public function verifyandupdatepassword(Request $request)
           switch (true) {
 
             case $item['type'] == "mp4_url":
+
               $item['videos_url'] =  $item->mp4_url ;
+              $item['video_player_type'] =  'video/mp4' ;
+              $item['qualities']  = [] ;
               break;
 
             case $item['type'] == "m3u8_url":
+
               $item['videos_url'] =  $item->m3u8_url ;
+              $item['video_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+
               break;
 
             case $item['type'] == "embed":
+
               $item['videos_url'] =  $item->embed_code ;
+              $item['video_player_type'] =  'embed' ;
+              $item['qualities']  = [] ;
               break;
             
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+
               $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
+              $item['video_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
               break;
               
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
+
               $item['videos_url']   = $item->mp4_url ;
+              $item['video_player_type'] =  'video/mp4' ;
+              $item['qualities']  = [] ;
               break;
 
             case $item['type'] == null :
-                $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-                break;
 
-            case $item['type'] == " " && !is_null($item->transcoded_url) :
-              $item['videos_url']   = $item->transcoded_url ;
+              $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              $item['video_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
               break;
 
+            case $item['type'] == " " && !is_null($item->transcoded_url) :
+
+              $item['videos_url']   = $item->transcoded_url ;
+              $item['video_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+              break;
+                
+            case $item['type'] == "bunny_cdn"  :
+
+              $item['videos_url']   = $item->m3u8_url ;
+
+              $response = Http::withoutVerifying()->get( $item->m3u8_url);
+              $qualities = [];
+
+              if ($response->successful()) {
+                  $contents = $response->body();
+                  preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                  foreach ($matches[2] as $quality) {
+                      $qualities[] = str_replace('p', '', $quality);
+                  }
+                  $qualities = $qualities ;
+              } 
+
+              $item['qualities']   = $qualities ;
+              
+              break;
+              
             default:
+            
               $item['videos_url']    = null ;
+              $item['video_player_type'] =  null;
+              $item['qualities']  = [] ;
               break;
           }
          
@@ -6124,39 +6170,79 @@ public function checkEmailExists(Request $request)
 
     public function episodedetails(Request $request){
 
+      $validator = Validator::make($request->all(), [
+        'episodeid'        => 'required'
+      ]);
+  
+      if ($validator->fails()) {
+
+        $response = [
+            'status'    => 'false',
+            'message'   => $validator->errors()->first(),
+        ];
+
+        return response()->json($response, 422); 
+      }
+      
       $episodeid = $request->episodeid;
 
       $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
-
          
-         switch (true) {
-
-          case $item['type'] == "file":
-            $item['episode_url'] =  $item->mp4_url ;
-            break;
-
+         //  Episode URL
             
-          case $item['type'] == "upload":
-            $item['episode_url'] =  $item->mp4_url ;
+        switch (true) {
+
+            case $item['type'] == "file"  :
+                $item['episode_url'] =  $item->mp4_url ;
+                $item['Episode_player_type'] =  'video/mp4' ;
             break;
 
-          case $item['type'] == 'm3u8' :
+            case $item['type'] == "upload"  :
+              $item['episode_url'] =  $item->mp4_url ;
+              $item['Episode_player_type'] =   'video/mp4' ;
+            break;
+
+            case $item['type'] == "m3u8":
+                $item['episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+
+            case $item['type'] == "bunny_cdn":
+                $item['episode_url'] =  $item->url    ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+
+            case $item['type'] == "m3u8_url":
+                $item['episode_url'] =  $item->url    ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+            
+            case $item['type'] == "aws_m3u8":
+              $item['episode_url'] =  $item->path ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+
+            case $item['type'] == "embed":
+                $item['episode_url'] =  $item->path ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+
+            case $item['type'] == 'bunny_cdn' :
               $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
               break;
 
-          case $item['type'] == 'bunny_cdn' :
-            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-            break;
-
-          default:
-            $item['episode_url']    = null ;
+            default:
+                $item['episode_url'] =  null ;
+                $item['Episode_player_type'] =  null ;
             break;
         }
 
          return $item;
        });
+
        if(count($episode) > 0){
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
