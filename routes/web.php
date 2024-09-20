@@ -2823,6 +2823,8 @@ Route::get('PPV-Free-Duration-Logs', 'AdminLiveStreamController@PPV_Free_Duratio
 
 Route::get('video-player/{slug}', 'ChannelController@video_js_fullplayer')->name('video-js-fullplayer');
 
+Route::get('video-player/{slug}/{plan}', 'ChannelController@video_js_fullplayer');
+
 Route::post('video_js_watchlater', 'ChannelController@video_js_watchlater')->name('video-js.watchlater');
 
 Route::post('video_js_wishlist', 'ChannelController@video_js_wishlist')->name('video-js.wishlist');
