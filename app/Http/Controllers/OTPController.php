@@ -64,6 +64,12 @@ class OTPController extends Controller
             }
         }
 
+        $user = User::where('mobile', $request->mobile)->first();
+
+        if(is_null($user)){
+            return response()->json(['exists' => false, 'message_note' => 'Invalid User, Please check this Mobile Number','error_note' => "Invalid User"]);
+        }
+
         try {
             
             $random_otp_number = random_int(1000, 9999);
@@ -223,7 +229,7 @@ class OTPController extends Controller
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
-            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin']);
+            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Please connect admin']);
         }
 
         try {

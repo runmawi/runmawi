@@ -4702,6 +4702,9 @@ class ChannelController extends Controller
             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
             $paypal_payment_setting = PaymentSetting::where('payment_type','PayPal')->where('status',1)->first();
             // dd($paypal_payment_setting);
+
+            $default_vertical_image_url = default_vertical_image_url();
+
             $data = array(
                 'videodetail'    => $videodetail ,
                 'video'          => $videodetail ,   // Videos - Working Social Login
@@ -4722,6 +4725,7 @@ class ChannelController extends Controller
                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
                 'paypal_payment_setting' => $paypal_payment_setting,
                 'stripe_payment_setting'   => $Stripepayment,
+                'default_vertical_image_url'   => $default_vertical_image_url,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
                 'playerui' => Playerui::first(),
             );
