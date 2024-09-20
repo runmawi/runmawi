@@ -229,6 +229,11 @@
                                             <div class="col-md-8 col-8 form-group m-0">  {{-- Mobile No --}}
                                                 <input id="mobile" type="text" class="form-control mobile_validation" name="mobile" placeholder="{{ __('Mobile Number') }}" autofocus required pattern="\d*" maxlength="15" inputmode="numeric">
                                             </div>
+                                            <div class="col-md-1 p-2">  {{-- Refresh--}}
+                                                <a href="{{ route('login') }}">
+                                                    <img src="{{ URL::to('public/img/refresh.svg') }}" alt="">
+                                                </a>
+                                            </div>
                                         </div>
 
 
@@ -264,7 +269,8 @@
                                         </div>
                                     @endif
 
-                                    <button type="submit" class="btn btn-hover send_otp_button mt-3" id="send_otp_button" style="width:100%;color:#fff!important;" disabled>{{ __('Send OTP') }}</button>
+
+                                    <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" style="width:100%;color:#fff!important;" >{{ __('SEND OTP') }}</button>
                                 @else
                                     <form method="POST" id="email-login-form" action="{{ route('login') }}" class="mt-4">
                                         @csrf
@@ -399,40 +405,40 @@
 
             $(document).ready(function() {
 
-                $(".mobile_validation").on("input", function() {
+                // $(".mobile_validation").on("input", function() {
 
-                    let mobileNumber = $('#mobile').val();
-                    let ccode = $('#ccode').val();
+                //     let mobileNumber = $('#mobile').val();
+                //     let ccode = $('#ccode').val();
                     
-                    $('.mob_exist_status').text("");
+                //     $('.mob_exist_status').text("");
 
-                    if( mobileNumber !== "" ){
+                //     if( mobileNumber !== "" ){
 
-                        $.ajax({
-                            url: "{{ route('auth.otp.check-mobile-exist') }}",
-                            type: "get",
-                            data: {
-                                mobile: mobileNumber,
-                                ccode: ccode
-                            },
-                            dataType: "json",
+                //         $.ajax({
+                //             url: "{{ route('auth.otp.check-mobile-exist') }}",
+                //             type: "get",
+                //             data: {
+                //                 mobile: mobileNumber,
+                //                 ccode: ccode
+                //             },
+                //             dataType: "json",
 
-                            success: function(response) {
-                                if (response.exists) {
-                                    document.getElementById("send_otp_button").removeAttribute("disabled");
-                                    $('.mob_exist_status').text("Mobile Number exists!").css('color', 'green');;
+                //             success: function(response) {
+                //                 if (response.exists) {
+                //                     document.getElementById("send_otp_button").removeAttribute("disabled");
+                //                     $('.mob_exist_status').text("Mobile Number exists!").css('color', 'green');;
 
-                                } else {
-                                    document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
-                                    $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
-                                }
-                            },
-                            error: function(error) {
-                                console.error('AJAX error:', error);
-                            }
-                        });
-                    }
-                });
+                //                 } else {
+                //                     document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
+                //                     $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
+                //                 }
+                //             },
+                //             error: function(error) {
+                //                 console.error('AJAX error:', error);
+                //             }
+                //         });
+                //     }
+                // });
 
                 $('.otp-div').hide();
 

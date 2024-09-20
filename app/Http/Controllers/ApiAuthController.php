@@ -979,10 +979,19 @@ class ApiAuthController extends Controller
           return response()->json([
               'status' => 'false',
               'message'=> $validator->errors()->first(),
-            ], 400);
+            ], 422);
         }
     
-        $user = User::where('email',$request->email_id)->first();
+        $user = User::where('email',$request->email_id)->where('active',0)->first();
+
+        if( is_null($user)){
+
+          return response()->json([
+            'status' => 'false',
+            'message'=> 'Invalid E-Mail ,Please Check',
+          ], 400);
+
+        }
 
         $status = $user->activation_code == $request->activation_code;
 
