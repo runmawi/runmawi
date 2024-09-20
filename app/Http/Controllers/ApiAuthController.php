@@ -2394,7 +2394,8 @@ public function verifyandupdatepassword(Request $request)
                 
             case $item['type'] == "bunny_cdn"  :
 
-              $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              $item['videos_url']   = $item->mp4_url ;
+              $item['video_player_type'] =  'application/x-mpegURL' ;
 
               $response = Http::withoutVerifying()->get( $item->m3u8_url);
               $qualities = [];
@@ -6231,7 +6232,7 @@ public function checkEmailExists(Request $request)
             break;
 
             case $item['type'] == 'bunny_cdn' :
-              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+              $item['episode_url']   = $item->url ;
               $item['Episode_player_type'] =  'application/x-mpegURL' ;
 
               $response = Http::withoutVerifying()->get( $item['episode_url'] );
