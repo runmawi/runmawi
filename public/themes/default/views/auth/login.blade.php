@@ -466,6 +466,10 @@
                                 $('#send_otp_button').hide();
                                 $('.mob_exist_status').text( response.message_note ).css('color', 'green');
                             } else {
+                                if(response.error_note == "Invalid User" ){
+                                    $('#mobile').attr('readonly', false);
+                                    $('#ccode').attr('disabled', false);
+                                }
                                 $('.mob_exist_status').text( response.message_note ).css('color', 'red');
                             }
                         },
