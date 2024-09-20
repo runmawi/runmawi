@@ -238,7 +238,7 @@
 
 
                                             {{-- Mobile Exist Status --}}
-                                        {{-- <span class="mob_exist_status"></span>  --}}
+                                        <span class="mob_exist_status"></span> 
                                         
                                         <div class="mt-3" align="left"  >
                                             <input type="checkbox" checked style="pointer-events: none;">
