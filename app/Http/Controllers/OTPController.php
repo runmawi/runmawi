@@ -167,7 +167,9 @@ class OTPController extends Controller
 
                     Auth::loginUsingId($user->id);
 
-                    return response()->json( [ 'status' => true , 'redirection_url' => URL::to('/choose-profile') , 'message_note' => 'OTP verify successfully!' ] );
+                    $redirection_url = session()->get('url.intended', URL::to('/choose-profile') );
+
+                    return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
                 }
 
                 return response()->json( [ 'status' => false , 'message_note' => 'Please, Enter the Valid OTP !' ] );
@@ -179,14 +181,20 @@ class OTPController extends Controller
                         
                 Auth::loginUsingId($user_verify->id);
 
-                if( (Auth::user()->role == 'subscriber') || ( Auth::user()->role == 'admin') ){
-
-                    $redirection_url = URL::to('/choose-profile') ;
-
-                }else{
-                    $redirection_url = URL::to('/home') ;
+                switch (Auth::user()->role) {
+                    case 'subscriber':
+                        $redirection_url = URL::to('/choose-profile');
+                        break;
+                
+                    case 'admin':
+                        $redirection_url = session()->get('url.intended', URL::to('/choose-profile'));
+                        break;
+                
+                    default:
+                        $redirection_url = session()->get('url.intended', URL::to('/home'));
+                        break;
                 }
-
+                
                 User::find($user_verify->id)->update([
                     'otp' => null ,
                     'otp_request_id' => null ,
