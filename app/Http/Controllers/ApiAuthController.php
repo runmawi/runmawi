@@ -4453,7 +4453,7 @@ public function verifyandupdatepassword(Request $request)
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
-        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
             DB::table('ppv_purchases')->insert(
               ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
             );
