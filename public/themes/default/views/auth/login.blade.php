@@ -259,7 +259,7 @@
                                                 </div>
 
                                                 <div class="justify-content-end links text-right mt-2">
-                                                    <a href="#" onclick=sendOtp() id="resend_otp_button">{{ __('Resend OTP') }}</a>
+                                                    <a href="#"  id="resend_otp_button">{{ __('Resend OTP') }}</a>
                                                 </div>
                                             </div>
                                     </form>
@@ -476,6 +476,10 @@
                         }
                     });
                 }
+
+                $('#resend_otp_button').click(function() {
+                    sendOtp();
+                });
 
                 $('#mobile, #ccode').keypress(function(e) {
                     if (e.which == 13) { 
