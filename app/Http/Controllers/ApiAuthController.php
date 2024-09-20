@@ -2011,6 +2011,14 @@ public function verifyandupdatepassword(Request $request)
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+
+              if($data['play_videoid'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+
+              if($data['play_videoid'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
             }elseif($userrole == "registered" &&  $item['access'] == 'ppv'){
 
                   $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
@@ -2031,7 +2039,7 @@ public function verifyandupdatepassword(Request $request)
                 $item['PPV_Plan']   = '';
             }
 
-      if($ppv_exists_check_query == 1 || $userrole == "admin"){
+      if($ppv_exists_check_query == 1 || $userrole == "admin" || !empty($item['videos_url'])){
 
               $videoId = $item['videos_url']; 
               $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -2053,6 +2061,9 @@ public function verifyandupdatepassword(Request $request)
                       "Authorization: Apisecret $apiKey",
                       "Content-Type: application/json"
                   ),
+
+                  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+                  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
               ));
 
               $response = curl_exec($curl);
@@ -2064,11 +2075,11 @@ public function verifyandupdatepassword(Request $request)
                   // echo "cURL Error #:" . $err;
                   $item['otp'] = null;
                   $item['playbackInfo'] = null;
+                  print_r($err);exit;
                 
               } else {
 
                   $responseObj = json_decode($response, true);
-
                   if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
                       $item['otp'] = null;
                       $item['playbackInfo'] = null;
@@ -6913,7 +6924,15 @@ return response()->json($response, 200);
 
           if( $userrole == "admin"){
               $item['Episode_url'] =  $item->episode_id_1080p ;
-         }elseif($userrole == "registered" && $season->access == 'ppv'){
+         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+
+                  if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+
+                  if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+            }elseif($userrole == "registered" && $season->access == 'ppv'){
 
 
               $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
@@ -6957,6 +6976,8 @@ return response()->json($response, 200);
                  "Authorization: Apisecret $apiKey",
                  "Content-Type: application/json"
              ),
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
          ));
 
          $response = curl_exec($curl);
