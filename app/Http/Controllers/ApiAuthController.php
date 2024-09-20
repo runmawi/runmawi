@@ -979,10 +979,19 @@ class ApiAuthController extends Controller
           return response()->json([
               'status' => 'false',
               'message'=> $validator->errors()->first(),
-            ], 400);
+            ], 422);
         }
     
-        $user = User::where('email',$request->email_id)->first();
+        $user = User::where('email',$request->email_id)->where('active',0)->first();
+
+        if( is_null($user)){
+
+          return response()->json([
+            'status' => 'false',
+            'message'=> 'Invalid E-Mail ,Please Check',
+          ], 400);
+
+        }
 
         $status = $user->activation_code == $request->activation_code;
 
@@ -3965,7 +3974,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
@@ -3973,7 +3982,7 @@ public function verifyandupdatepassword(Request $request)
       foreach ($video_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['source'] = 'videos';
@@ -4393,6 +4402,7 @@ public function verifyandupdatepassword(Request $request)
     $date = Carbon::parse($daten)->addHour($ppv_hours);
     $user = User::find($user_id);
     $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
+
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -4406,7 +4416,6 @@ public function verifyandupdatepassword(Request $request)
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
-      // print_r($live_ppv_count);exit;
       if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0 || $season_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
@@ -4426,13 +4435,15 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
   
-        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
+
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
           );
         }
 
       } else {
+        
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
 
@@ -4442,7 +4453,7 @@ public function verifyandupdatepassword(Request $request)
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
-        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
             DB::table('ppv_purchases')->insert(
               ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
             );
