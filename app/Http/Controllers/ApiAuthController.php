@@ -10690,23 +10690,69 @@ public function Adstatus_upate(Request $request)
 
   public function ContinueWatchingExits(Request $request)
   {
-    $video_id = $request->video_id;
-    $user_id = $request->user_id;
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
-    if($ContinueWatching > 0 ){
-      $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
-      $response = array(
-        'status' => 'true',
-        'ContinueWatching' => $ContinueWatching,
-      );
-    }else{
-      $response = array(
-        'status' => 'false',
-        // 'ContinueWatching' => "video has been added"
-      );
-    }
-    return response()->json($response, 200);
+    try {
+          // Validation 
+      
+      $validator = Validator::make($request->all(), [
+        'user_id' => 'required',  
+        'video_id'   => 'required_without:episode_id',  
+        'episode_id' => 'required_without:video_id',
+      ], [
+          'user_id.required'    => 'Please enter your user_id.',
+          'video_id.required'   => 'Please enter your video_id.',
+          'episode_id.required'   => 'Please enter your episode_id.',
+      ]);
+      
+      if ($validator->fails()) {
 
+        return response()->json([
+            'status' => 'false',
+            'message'=> $validator->errors()->first(),
+          ], 400);
+      }
+
+      $user_id = $request->user_id;
+      $video_id = $request->video_id;
+      $episode_id = $request->episode_id;
+  
+      $ContinueWatching = array();
+  
+      if( $episode_id ){
+        $ContinueWatching = ContinueWatching::where('episodeid', $episode_id)->where('user_id', $user_id)->get();
+      }
+  
+      if( $video_id ){
+        $ContinueWatching = ContinueWatching::where('videoid', $video_id)->where('user_id', $user_id)->get();
+      }
+  
+      if(!empty($ContinueWatching)) {
+
+          $response = [
+            'status' => 'true',
+            'status_code' => 200,
+            'ContinueWatching' => $ContinueWatching,
+          ];
+
+      } else {
+        
+          $response = [
+            'status' => 'false',
+            'status_code' => 400,
+            'ContinueWatching' => $ContinueWatching,
+          ];
+      }
+  
+    } catch (\Throwable $th) {
+
+      $response = [
+        'status'      => 'false',
+        'status_code' => 400,
+        'message'     => $th->getMessage(),
+      ];
+
+    }
+    
+    return response()->json($response, $response['status_code']);
   }
 
   public function audio_like(Request $request)
