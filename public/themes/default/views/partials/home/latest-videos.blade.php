@@ -7,12 +7,12 @@
                         @if (!preg_match('/^channel\/.+$/', request()->path()))
                                 <h4 class="main-title fira-sans-condensed-regular"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4>
                                 @if($settings->homepage_views_all_button_status == 1)
-                                    <h4 class="main-title view-all fira-sans-condensed-regular"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ 'View all' }}</a></h4>
+                                    <h5 class="main-title view-all fira-sans-condensed-regular" style="font-size: 18px"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ 'View all' }}</a></h4>
                                 @endif
                         @else
                             <h4 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[1])->header_name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h4 class="main-title view-all fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h4>
+                                <h5 class="main-title view-all fira-sans-condensed-regular" style="font-size: 18px"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h5>
                             @endif
                         @endif
                         
@@ -55,7 +55,8 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                        <!-- <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}"> -->
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}" id="latestVideoImg">
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -80,7 +81,7 @@
                                                 </div>
                                             </div>
                                             <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
+                                                <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}" aria-label="playTrailer">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)

@@ -23,7 +23,7 @@
             </h5>
         </div>
 
-        <div style="white-space: pre-wrap;" class="mt-2 mb-2 text-white"><?= $comment->comment ?></div>
+        <h6 style="white-space: pre-wrap;font-size: 14px;" class="mt-2 mb-2"><?= $comment->comment ?></h6>
 
         <div>
             <?php if( Auth::user() != null && Auth::user()->id != $comment->user_id  && Auth::user()->role != 'register' ):?>
