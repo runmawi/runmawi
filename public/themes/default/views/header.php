@@ -2015,3 +2015,16 @@
    <!-- Header End -->
    <!-- MainContent End-->
 
+<script>
+      // width and height set dynamically
+      document.addEventListener('DOMContentLoaded', function() {
+      var images = document.querySelectorAll('.c-logo');
+      images.forEach(function(image) {
+         var renderedWidth = image.clientWidth;
+         var renderedHeight = image.clientHeight;
+
+         image.setAttribute('width', renderedWidth);
+         image.setAttribute('height', renderedHeight);
+      });
+   });
+</script>
