@@ -291,4 +291,16 @@ var flkty = new Flickity(elem, {
  lazyload:true,
 });
 
+   // width and height set dynamically
+   document.addEventListener('DOMContentLoaded', function() {
+      var images = document.querySelectorAll('.flickity-lazyloaded');
+      images.forEach(function(image) {
+         var renderedWidth = image.clientWidth;
+         var renderedHeight = image.clientHeight;
+
+         image.setAttribute('width', renderedWidth);
+         image.setAttribute('height', renderedHeight);
+      });
+   });
+   
 </script>
