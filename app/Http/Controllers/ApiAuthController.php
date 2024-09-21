@@ -5160,7 +5160,7 @@ public function verifyandupdatepassword(Request $request)
           $default_vertical_image_url = default_vertical_image_url();
           $default_horizontal_image_url = default_horizontal_image_url();
           
-          $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
+          $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name','videos.id as id')
                           ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                           ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
 
@@ -5238,7 +5238,7 @@ public function verifyandupdatepassword(Request $request)
                               }
                           }); 
 
-          $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
+          $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id','audio.id as id')
                           ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
                           ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
                           
@@ -5277,7 +5277,7 @@ public function verifyandupdatepassword(Request $request)
                       }); 
 
 
-          $episodes = Episode::Select('episodes.*','series.id','series_categories.category_id')
+          $episodes = Episode::Select('episodes.*','series.id','series_categories.category_id','episodes.id as id')
                           ->leftJoin('series','series.id','=','episodes.series_id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
@@ -5311,7 +5311,7 @@ public function verifyandupdatepassword(Request $request)
                               }
                           }); 
                           
-          $series = Series::Select('series.*','series_categories.category_id')
+          $series = Series::Select('series.*','series_categories.category_id','series.id as id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
 
@@ -5336,7 +5336,6 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
-                          ->where('series.active', '1')
                           ->groupBy('series.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5345,7 +5344,7 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Series";
-                               if( $item['active'] == 1  && $item['status'] == 1 ){
+                               if( $item['active'] == 1 ){
                                 return $item;
                               }
                           });   
@@ -6171,97 +6170,39 @@ public function checkEmailExists(Request $request)
 
     public function episodedetails(Request $request){
 
-      $validator = Validator::make($request->all(), [
-        'episodeid'        => 'required'
-      ]);
-  
-      if ($validator->fails()) {
-
-        $response = [
-            'status'    => 'false',
-            'message'   => $validator->errors()->first(),
-        ];
-
-        return response()->json($response, 422); 
-      }
-      
       $episodeid = $request->episodeid;
 
       $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+
          
-         //  Episode URL
+         switch (true) {
+
+          case $item['type'] == "file":
+            $item['episode_url'] =  $item->mp4_url ;
+            break;
+
             
-        switch (true) {
-
-            case $item['type'] == "file"  :
-                $item['episode_url'] =  $item->mp4_url ;
-                $item['Episode_player_type'] =  'video/mp4' ;
-                $item['qualities']  = [] ;
+          case $item['type'] == "upload":
+            $item['episode_url'] =  $item->mp4_url ;
             break;
 
-            case $item['type'] == "upload"  :
-              $item['episode_url'] =  $item->mp4_url ;
-              $item['Episode_player_type'] =   'video/mp4' ;
-              $item['qualities']  = [] ;
-            break;
-
-            case $item['type'] == "m3u8":
-                $item['episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
-                $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                $item['qualities']  = [] ;
-            break;
-
-            case $item['type'] == "m3u8_url":
-                $item['episode_url'] =  $item->url    ;
-                $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                $item['qualities']  = [] ;
-            break;
-            
-            case $item['type'] == "aws_m3u8":
-              $item['episode_url'] =  $item->path ;
-              $item['Episode_player_type'] =  'application/x-mpegURL' ;
-              $item['qualities']  = [] ;
-            break;
-
-            case $item['type'] == "embed":
-                $item['episode_url'] =  $item->path ;
-                $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                $item['qualities']  = [] ;
-            break;
-
-            case $item['type'] == 'bunny_cdn' :
-              $item['episode_url']   = $item->url ;
-              $item['Episode_player_type'] =  'application/x-mpegURL' ;
-
-              $response = Http::withoutVerifying()->get( $item['episode_url'] );
-              $qualities = [];
-
-              if ($response->successful()) {
-                  $contents = $response->body();
-                  preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
-
-                  foreach ($matches[2] as $quality) {
-                      $qualities[] = str_replace('p', '', $quality);
-                  }
-                  $qualities = $qualities ;
-              } 
-
-              $item['qualities']   = $qualities ;
-              
+          case $item['type'] == 'm3u8' :
+              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
               break;
 
-            default:
-                $item['episode_url'] =  null ;
-                $item['Episode_player_type'] =  null ;
-                $item['qualities']  = [] ;
+          case $item['type'] == 'bunny_cdn' :
+            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            break;
+
+          default:
+            $item['episode_url']    = null ;
             break;
         }
 
          return $item;
        });
-
        if(count($episode) > 0){
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
