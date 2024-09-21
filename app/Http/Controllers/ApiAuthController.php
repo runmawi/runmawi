@@ -212,10 +212,6 @@ class ApiAuthController extends Controller
       // Gobal PPV Price   
         $PPV_settings = Setting::where('ppv_status', '=', 1)->first();
         $this->ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null;
-        
-        $this->getfeching = Geofencing::first();
-        $this->videos_expiry_date_status = videos_expiry_date_status();
-
   }
 
   public function signup(Request $request)
@@ -2343,82 +2339,35 @@ public function verifyandupdatepassword(Request $request)
           switch (true) {
 
             case $item['type'] == "mp4_url":
-
               $item['videos_url'] =  $item->mp4_url ;
-              $item['video_player_type'] =  'video/mp4' ;
-              $item['qualities']  = [] ;
               break;
 
             case $item['type'] == "m3u8_url":
-
               $item['videos_url'] =  $item->m3u8_url ;
-              $item['video_player_type'] =  'application/x-mpegURL' ;
-              $item['qualities']  = [] ;
-
               break;
 
             case $item['type'] == "embed":
-
               $item['videos_url'] =  $item->embed_code ;
-              $item['video_player_type'] =  'embed' ;
-              $item['qualities']  = [] ;
               break;
             
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-
               $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8');
-              $item['video_player_type'] =  'application/x-mpegURL' ;
-              $item['qualities']  = [] ;
               break;
               
             case $item['type'] == null &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov" :
-
               $item['videos_url']   = $item->mp4_url ;
-              $item['video_player_type'] =  'video/mp4' ;
-              $item['qualities']  = [] ;
               break;
 
             case $item['type'] == null :
-
-              $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-              $item['video_player_type'] =  'application/x-mpegURL' ;
-              $item['qualities']  = [] ;
-              break;
+                $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+                break;
 
             case $item['type'] == " " && !is_null($item->transcoded_url) :
-
               $item['videos_url']   = $item->transcoded_url ;
-              $item['video_player_type'] =  'application/x-mpegURL' ;
-              $item['qualities']  = [] ;
               break;
-                
-            case $item['type'] == "bunny_cdn"  :
 
-              $item['videos_url']   = $item->mp4_url ;
-              $item['video_player_type'] =  'application/x-mpegURL' ;
-
-              $response = Http::withoutVerifying()->get( $item->m3u8_url);
-              $qualities = [];
-
-              if ($response->successful()) {
-                  $contents = $response->body();
-                  preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
-
-                  foreach ($matches[2] as $quality) {
-                      $qualities[] = str_replace('p', '', $quality);
-                  }
-                  $qualities = $qualities ;
-              } 
-
-              $item['qualities']   = $qualities ;
-              
-              break;
-              
             default:
-
               $item['videos_url']    = null ;
-              $item['video_player_type'] =  null;
-              $item['qualities']  = [] ;
               break;
           }
          
@@ -4462,6 +4411,10 @@ public function verifyandupdatepassword(Request $request)
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
+
+    $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+    $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+
     $user = User::find($user_id);
     $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
 
@@ -5160,7 +5113,7 @@ public function verifyandupdatepassword(Request $request)
           $default_vertical_image_url = default_vertical_image_url();
           $default_horizontal_image_url = default_horizontal_image_url();
           
-          $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name','videos.id as id')
+          $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
                           ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                           ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
 
@@ -5184,6 +5137,7 @@ public function verifyandupdatepassword(Request $request)
                                   return $query->orWhere('videos.details', 'LIKE', '%' . $request->search_value . '%');
                               })
 
+                          ->where('active', 1)->where('status', 1)->where('draft', 1)
                           ->orderBy('created_at', 'desc')->groupBy('videos.id')
                           ->limit(10)
 
@@ -5196,9 +5150,7 @@ public function verifyandupdatepassword(Request $request)
                             $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                             $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $default_horizontal_image_url;  
                             $item['source'] = "Videos";
-                            if( $item['draft'] == 1 &&  $item['status'] == 1  &&  $item['active'] == 1 ){
-                              return $item;
-                            }
+                            return $item;
                           });
 
 
@@ -5225,6 +5177,7 @@ public function verifyandupdatepassword(Request $request)
                           ->when($settings->search_category_status, function ($query) use ($request) {
                               return $query->orwhere('live_categories.name', 'LIKE', '%' . $request->search_value . '%');
                           })
+                          ->where('live_streams.active', '=', '1')
                           ->limit('10')
                           ->groupBy('live_streams.id')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5233,12 +5186,10 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url;    
                               $item['id'] = $item->livestream_id;               
                               $item['source'] = "Livestream";
-                              if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
 
-          $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id','audio.id as id')
+          $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id')
                           ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
                           ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
                           
@@ -5263,6 +5214,7 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('audio_categories.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
+                          ->where('audio.active', '1')->where('audio.status', '1')
                           
                       ->limit('10')
                       ->groupBy('audio.id')
@@ -5271,13 +5223,11 @@ public function verifyandupdatepassword(Request $request)
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                         $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;               
                         $item['source']    = "Audios";
-                        if( $item['active'] == 1  && $item['status'] == 1 ){
-                          return $item;
-                        }
+                        return $item;
                       }); 
 
 
-          $episodes = Episode::Select('episodes.*','series.id','series_categories.category_id','episodes.id as id')
+          $episodes = Episode::Select('episodes.*','series.id','series_categories.category_id')
                           ->leftJoin('series','series.id','=','episodes.series_id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
@@ -5298,6 +5248,8 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
+                          ->where('episodes.active', '1')
+                          ->where('episodes.status', '1')
                           ->groupBy('episodes.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5306,12 +5258,10 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Episode";
-                              if( $item['active'] == 1  && $item['status'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
                           
-          $series = Series::Select('series.*','series_categories.category_id','series.id as id')
+          $series = Series::Select('series.*','series_categories.category_id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
 
@@ -5336,6 +5286,7 @@ public function verifyandupdatepassword(Request $request)
                               return $query->orwhere('series_genre.name', 'LIKE', '%' . $request->search_value . '%');
                           })
 
+                          ->where('series.active', '1')
                           ->groupBy('series.id')
                           ->limit('10')
                           ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
@@ -5344,12 +5295,10 @@ public function verifyandupdatepassword(Request $request)
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Series";
-                               if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           });   
 
-            $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
+          $mergedData = $videos->concat($livestreams)->concat($audio)->concat($episodes)->concat($series);
 
           return response()->json([
             'status'  => 'true',
@@ -7479,103 +7428,10 @@ return response()->json($response, 200);
       return response()->json($response, 200);
   }
 
-  public function episode_continuewatching_update(Request $request)
-  {
-    try {
-  
-      $validator = Validator::make($request->all(), [
-        'current_duration' => 'required',
-        'watch_percentage' => 'required',
-        'episodeid'        => 'required'
-      ]);
-  
-      if ($validator->fails()) {
-
-        $response = [
-            'status'    => 'false',
-            'message'   => $validator->errors()->first(),
-        ];
-
-        return response()->json($response, 422); 
-      }
-      
-      $current_duration = $request->current_duration;
-      $watch_percentage = $request->watch_percentage;
-      $skip_time = !empty($request->skip_time) ? $request->skip_time : 0;
-      
-      $user_id = $request->user_id;
-      $episodeid = $request->episodeid;
-      $multiuser_id = $request->multiuser_id;
-      
-      $query = ContinueWatching::where('episodeid', $episodeid);
-                    if ($multiuser_id != null) {
-                        $query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
-                    } else {
-                        $query->where('user_id', $user_id)->whereNull('multiuser');
-                    }
-      $count = $query->count();
-      
-      if ($count > 0) {
-        
-          $query->update([
-              'currentTime'      => $current_duration,
-              'watch_percentage' => $watch_percentage,
-              'skip_time'        => $skip_time,
-          ]);
-      
-          $response = ['message' => 'Current Time updated'];
-      }
-      else {
-
-          $data = array('user_id'     => $user_id, 
-                          'multiuser' => $multiuser_id,
-                          'episodeid' => $episodeid,
-                          'currentTime'      => $current_duration,
-                          'watch_percentage' => $watch_percentage,
-                          'skip_time'        => $skip_time
-                        );
-
-          ContinueWatching::create($data);
-
-          $response = array('message'=>'Added to Continue Watching List');
-      }
-
-      $response += array(
-        'status'=>'true',
-        'status_code' => 200 ,
-      );
-
-    } catch (\Throwable $th) {
-      
-      $response = array(
-        'status'=>'false',
-        'status_code' => 400 ,
-        'message'=>$th->getMessage(),
-      );
-
-    }
-    return response()->json($response, $response['status_code']);
-  }
 
   public function addtocontinuewatching(Request $request)
   {
     try {
-      
-      $validator = Validator::make($request->all(), [
-        'current_duration' => 'required',
-        'watch_percentage' => 'required',
-        'video_id'         => 'required'
-      ]);
-  
-      if ($validator->fails()) {
-
-        $response = [
-            'status'    => 'false',
-            'message'   => $validator->errors()->first(),
-        ];
-
-        return response()->json($response, 422); 
-      }
       
       $current_duration = $request->current_duration;
       $watch_percentage = $request->watch_percentage;
@@ -7642,10 +7498,7 @@ return response()->json($response, 200);
       $user_id = $request->user_id;
       $multiuser_id = $request->multiuser_id;
       $video_id = $request->video_id;
-      $check_Kidmode = 0 ;
-
-      // Videos 
-
+      
       $video_id_query = ContinueWatching::query();
                     if ($multiuser_id != null) {
                         $video_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
@@ -7655,68 +7508,21 @@ return response()->json($response, 200);
       $video_id_query = $video_id_query->pluck('videoid');
 
       $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
-                      ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
-                              'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 
-                              'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
-                              'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
-                              'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime')
-                      ->whereIn('videos.id', $video_id_query)
-                      ->groupBy('continue_watchings.videoid')
-                      ->latest('continue_watchings.created_at');
-
-                  if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-                      $videos = $videos->whereNotIn('videos.id', $this->blockVideos);
-                  }
-
-                  if ($this->videos_expiry_date_status == 1) {
-                      $videos = $videos->where(function($query) {
-                          $query->whereNull('videos.expiry_date')
-                                ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
-                      });
-                  }
-
-                  if ($check_Kidmode == 1) {
-                      $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
-                  }
-
-                  $videos = $videos->get()->map(function ($item) {
-                      $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
-                      $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
-                      return $item;
-                  });
-
-
-      // Episode 
-
-        $episode_id_query = ContinueWatching::query();
-                    if ($multiuser_id != null) {
-                        $episode_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
-                    } else {
-                        $episode_id_query->where('user_id', $user_id)->whereNull('multiuser');
-                    }
-        $episode_id_query = $episode_id_query->pluck('episodeid');
-
-        $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
-                              ->select('episodes.id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
-                                    'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
-                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
-                                ->whereIn('episodes.id', $episode_id_query)
-                                ->where('episodes.active', '1')->where('episodes.status', '1')
-                                ->latest('episodes.created_at')
-                                ->get()->map(function($item){
-                                    $item['series'] = Series::where('id',$item->series_id)->first();
-                                    $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
-                                    $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
-                                    return $item ;
-                                });
+          ->whereIn('videos.id', $video_id_query)
+          ->latest('continue_watchings.created_at')
+          ->select('videos.*', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time')
+          ->groupBy('continue_watchings.videoid')
+          ->get()
+          ->map(function ($item) {
+              $item['image_url'] = URL::to('public/uploads/images/' . $item->image );
+              return $item;
+          });
 
       $response = array(
           'status' => "true",
           'status_code' => 200,
           'message' => 'Retrieved Continue Watching Successfully',
           'videos' => $videos,
-          'episodes' => $episodes,
       );
       
     } catch (\Throwable $th) {
@@ -10764,69 +10570,23 @@ public function Adstatus_upate(Request $request)
 
   public function ContinueWatchingExits(Request $request)
   {
-    try {
-          // Validation 
-      
-      $validator = Validator::make($request->all(), [
-        'user_id' => 'required',  
-        'video_id'   => 'required_without:episode_id',  
-        'episode_id' => 'required_without:video_id',
-      ], [
-          'user_id.required'    => 'Please enter your user_id.',
-          'video_id.required'   => 'Please enter your video_id.',
-          'episode_id.required'   => 'Please enter your episode_id.',
-      ]);
-      
-      if ($validator->fails()) {
-
-        return response()->json([
-            'status' => 'false',
-            'message'=> $validator->errors()->first(),
-          ], 400);
-      }
-
-      $user_id = $request->user_id;
-      $video_id = $request->video_id;
-      $episode_id = $request->episode_id;
-  
-      $ContinueWatching = array();
-  
-      if( $episode_id ){
-        $ContinueWatching = ContinueWatching::where('episodeid', $episode_id)->where('user_id', $user_id)->get();
-      }
-  
-      if( $video_id ){
-        $ContinueWatching = ContinueWatching::where('videoid', $video_id)->where('user_id', $user_id)->get();
-      }
-  
-      if(!empty($ContinueWatching)) {
-
-          $response = [
-            'status' => 'true',
-            'status_code' => 200,
-            'ContinueWatching' => $ContinueWatching,
-          ];
-
-      } else {
-        
-          $response = [
-            'status' => 'false',
-            'status_code' => 400,
-            'ContinueWatching' => $ContinueWatching,
-          ];
-      }
-  
-    } catch (\Throwable $th) {
-
-      $response = [
-        'status'      => 'false',
-        'status_code' => 400,
-        'message'     => $th->getMessage(),
-      ];
-
+    $video_id = $request->video_id;
+    $user_id = $request->user_id;
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
+    if($ContinueWatching > 0 ){
+      $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+      $response = array(
+        'status' => 'true',
+        'ContinueWatching' => $ContinueWatching,
+      );
+    }else{
+      $response = array(
+        'status' => 'false',
+        // 'ContinueWatching' => "video has been added"
+      );
     }
-    
-    return response()->json($response, $response['status_code']);
+    return response()->json($response, 200);
+
   }
 
   public function audio_like(Request $request)
