@@ -10,6 +10,7 @@
     @endphp
 @endif
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
 
@@ -130,6 +131,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     margin-right: 0; 
 }
 
+#guest-qualitys{display:none;}
+.btn-primary:hover{color:#fff;}
 
 
         .btn-primary {
@@ -317,7 +320,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( !is_null($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
+                                        <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
                             @else
@@ -354,13 +357,32 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             @endif  --}}
 
                         @else
-                            <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
-                                <div class="playbtn" style="gap:5px">
+                            @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' )
+                                
+                            <div class="dropdown btn" id="guest-qualitys-selct">
+                                <div class="playbtn" style="gap:5px;">
                                     {!! $play_btn_svg !!}
-                                    <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                    <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __( $videodetail->users_video_visibility_status_button ) }}
+                                    </span>
                                 </div>
-                            </a>
-
+                            </div>
+                            <div id="guest-qualitys">
+                                <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
+                                    @if(!empty($videodetail->video_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
+                                    @if(!empty($videodetail->video_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
+                                    @if(!empty($videodetail->video_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                </div>
+                            </div>
+                            
+                            @else
+                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                    </div>
+                                </a>
+                            @endif
                             
                             @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
                                 @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
@@ -1062,6 +1084,15 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         });
 
 
+        // guest qualtiy selection
+        $(document).ready(function(){
+
+            $('#guest-qualitys-selct').on('click', function(){
+                console.log('yes true');
+                $('#guest-qualitys').show();
+                $('#guest-qualitys-selct').hide();
+            })
+        })
 
     </script>
 @php 

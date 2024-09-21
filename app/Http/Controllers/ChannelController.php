@@ -4332,7 +4332,7 @@ class ChannelController extends Controller
             $getfeching = Geofencing::first();
             $button_text = ButtonText::first();
 
-
+            
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
@@ -4733,16 +4733,16 @@ class ChannelController extends Controller
             return Theme::view('video-js-Player.video.videos-details', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
 
-    public function video_js_fullplayer( Request $request, $slug )
+    public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
 
         if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
-            return $this->VideoCipher_fullplayer($slug);
+            return $this->VideoCipher_fullplayer($slug,$plan);
         }
 
         try {
@@ -4983,10 +4983,6 @@ class ChannelController extends Controller
                         $item['video_player_type'] =  'video/mp4' ;
                         break;
 
-                        // case $item['type'] == null :
-                        // $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
-                        // $item['video_player_type'] =  'application/x-mpegURL' ;
-                        // break;
 
                         default:
                         $item['videos_url']    = null ;
@@ -5000,6 +4996,7 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
+
             $videoURl = [];
 
             if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
@@ -5343,7 +5340,7 @@ class ChannelController extends Controller
 
 
      
-   public function VideoCipher_fullplayer( $slug )
+   public function VideoCipher_fullplayer( $slug ,$plan)
    {
 
        try {
@@ -5381,7 +5378,7 @@ class ChannelController extends Controller
            $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-                                   ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url, $slug)  {
+                                   ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url, $slug,$plan)  {
 
                $item['users_video_visibility_status']         = true ;
                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
@@ -5411,7 +5408,7 @@ class ChannelController extends Controller
                    // Check for Login user - Register , Subscriber ,PPV
 
                if ( Auth::guest() || Auth::user()->role != 'admin') {
-
+                
                    if( !Auth::guest() ){
 
                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
@@ -5537,7 +5534,15 @@ class ChannelController extends Controller
                
                if( !Auth::guest() && Auth::user()->role == "admin"){
                     $item['videos_url'] =  $item->video_id_1080p ;
-               }elseif(!Auth::guest() && Auth::user()->role == "registered" &&  $item['access'] == 'ppv'){
+               }elseif(!empty(@$plan) && @$plan != '' && $item['access'] == 'guest'){
+
+                    if(@$plan == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif(@$plan == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif(@$plan == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
+                }elseif(!empty(@$plan) && @$plan != '' && $item['access'] == 'registered' && Auth::user()->role == 'registered'){
+
+                    if(@$plan == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif(@$plan == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif(@$plan == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
+                }elseif(!Auth::guest() && Auth::user()->role == "registered" &&  $item['access'] == 'ppv'){
 
                     $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
                     if($item['PPV_Plan'] > 0){
@@ -5556,7 +5561,7 @@ class ChannelController extends Controller
                }else{
                    $item['PPV_Plan']   = '';
                }
-
+               
                 $videoId = $item['videos_url']; 
                 $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
                 $curl = curl_init();
@@ -5577,6 +5582,8 @@ class ChannelController extends Controller
                         "Authorization: Apisecret $apiKey",
                         "Content-Type: application/json"
                     ),
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
                 ));
 
                 $response = curl_exec($curl);
@@ -5607,7 +5614,7 @@ class ChannelController extends Controller
                return $item;
            })->first();
 
-           if(!empty($videodetail) && $videodetail->otp == null && $videodetail->playbackInfo  == null || !Auth::guest() && Auth::User()->role != 'admin' && $videodetail->PPV_Plan == 0 ){
+           if(!empty($videodetail) && $videodetail->otp == null && $videodetail->playbackInfo  == null || !Auth::guest() && Auth::User()->role != 'admin' && $videodetail->PPV_Plan == 0 && $videodetail->otp == null && $videodetail->playbackInfo  == null ){
                 return Redirect::to('/category/videos'.'/'.$slug);
             }
 
@@ -5757,7 +5764,7 @@ class ChannelController extends Controller
 
        } catch (\Throwable $th) {
 
-        //    return $th->getMessage();
+           return $th->getMessage();
            return abort(404);
        }
    }
