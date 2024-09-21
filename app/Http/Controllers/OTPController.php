@@ -50,7 +50,7 @@ class OTPController extends Controller
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
         if(is_null($AdminOTPCredentials)){
-            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin']);
+            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin', 'error_note' => "Some Error in OTP Config, Pls connect admin" ]);
         }
 
         if ($request->mobile == "0987654321") {
@@ -139,10 +139,10 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
-                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!', 'error_note' => " "]);
 
                 }else {
-                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!']);
+                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!' , 'error_note' => " " ]);
                 }         
             }
            
@@ -167,7 +167,9 @@ class OTPController extends Controller
 
                     Auth::loginUsingId($user->id);
 
-                    return response()->json( [ 'status' => true , 'redirection_url' => URL::to('/choose-profile') , 'message_note' => 'OTP verify successfully!' ] );
+                    $redirection_url = session()->get('url.intended', URL::to('/choose-profile') );
+
+                    return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
                 }
 
                 return response()->json( [ 'status' => false , 'message_note' => 'Please, Enter the Valid OTP !' ] );
@@ -179,14 +181,20 @@ class OTPController extends Controller
                         
                 Auth::loginUsingId($user_verify->id);
 
-                if( (Auth::user()->role == 'subscriber') || ( Auth::user()->role == 'admin') ){
-
-                    $redirection_url = URL::to('/choose-profile') ;
-
-                }else{
-                    $redirection_url = URL::to('/home') ;
+                switch (Auth::user()->role) {
+                    case 'subscriber':
+                        $redirection_url = URL::to('/choose-profile');
+                        break;
+                
+                    case 'admin':
+                        $redirection_url = session()->get('url.intended', URL::to('/choose-profile'));
+                        break;
+                
+                    default:
+                        $redirection_url = session()->get('url.intended', URL::to('/home'));
+                        break;
                 }
-
+                
                 User::find($user_verify->id)->update([
                     'otp' => null ,
                     'otp_request_id' => null ,

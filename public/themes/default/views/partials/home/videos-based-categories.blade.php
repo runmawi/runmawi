@@ -67,7 +67,7 @@
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h4 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View all' }}</a></h4>
+                                <h5 class="main-title view-all" style="font-size: 18px"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View all' }}</a></h5>
                             @endif 
                            
                         </div>
@@ -149,7 +149,7 @@
                                                 </div>
 
                                                 <div class="block-description">
-                                                    <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
+                                                    <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="playTrailer">
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
                                                             @switch(true)

@@ -4983,10 +4983,6 @@ class ChannelController extends Controller
                         $item['video_player_type'] =  'video/mp4' ;
                         break;
 
-                        // case $item['type'] == null :
-                        // $item['videos_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ).$adsvariable_url ;
-                        // $item['video_player_type'] =  'application/x-mpegURL' ;
-                        // break;
 
                         default:
                         $item['videos_url']    = null ;
@@ -5000,6 +4996,7 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
+
             $videoURl = [];
 
             if(isset($setting) && $setting->video_clip_enable == 1 && !empty($setting->video_clip) ){
