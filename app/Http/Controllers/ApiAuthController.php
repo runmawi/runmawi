@@ -6116,42 +6116,121 @@ public function checkEmailExists(Request $request)
 
     }
 
-
     public function episodedetails(Request $request){
 
-      $episodeid = $request->episodeid;
+      $validator = Validator::make($request->all(), [
+        'episodeid'   => 'required',
+      ]);
+  
+      if ($validator->fails()) {
 
-      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
-         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $response = [
+            'status'    => 'false',
+            'message'   => $validator->errors()->first(),
+        ];
+
+        return response()->json($response, 422); 
+      }
+
+      $episodeid = $request->episodeid;
+      $user_id   = $request->user_id;
+
+      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+         $item['image'] = URL::to('public/uploads/images/'.$item->image);
+
+         $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+         $item['player_image_url'] = URL::to('public/uploads/images/'.$item->image);
+         $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->image);
+
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
 
+          //Continue Watchings
+
+        $item['current_time'] =  '00:00' ;
+        $item['watch_percentage'] =   null ;
+        $item['skip_time'] =   null ;
+
+        if( isset($user_id) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('user_id',$user_id)->where('episodeid',$item->id)->latest()->first();
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+        
+         //  Episode URL
          
          switch (true) {
 
-          case $item['type'] == "file":
-            $item['episode_url'] =  $item->mp4_url ;
-            break;
+          case $item['type'] == "file"  :
+              $item['episode_url'] =  $item->mp4_url ;
+              $item['Episode_player_type'] =  'video/mp4' ;
+              $item['qualities']  = [] ;
+          break;
 
-            
-          case $item['type'] == "upload":
+          case $item['type'] == "upload"  :
             $item['episode_url'] =  $item->mp4_url ;
-            break;
+            $item['Episode_player_type'] =   'video/mp4' ;
+            $item['qualities']  = [] ;
+          break;
 
-          case $item['type'] == 'm3u8' :
-              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-              break;
+          case $item['type'] == "m3u8":
+              $item['episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
+
+          case $item['type'] == "m3u8_url":
+              $item['episode_url'] =  $item->url    ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
+          
+          case $item['type'] == "aws_m3u8":
+            $item['episode_url'] =  $item->path ;
+            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            $item['qualities']  = [] ;
+          break;
+
+          case $item['type'] == "embed":
+              $item['episode_url'] =  $item->path ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
 
           case $item['type'] == 'bunny_cdn' :
-            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            $item['episode_url']   = $item->url ;
+            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+
+            $response = Http::withoutVerifying()->get( $item['episode_url'] );
+            $qualities = [];
+
+            if ($response->successful()) {
+                $contents = $response->body();
+                preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                foreach ($matches[2] as $quality) {
+                    $qualities[] = str_replace('p', '', $quality);
+                }
+                $qualities = $qualities ;
+            } 
+
+            $item['qualities']   = $qualities ;
+            
             break;
 
           default:
-            $item['episode_url']    = null ;
-            break;
+              $item['episode_url'] =  null ;
+              $item['Episode_player_type'] =  null ;
+             $item['qualities']  = [] ;
+          break;
         }
 
          return $item;
        });
+
        if(count($episode) > 0){
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
