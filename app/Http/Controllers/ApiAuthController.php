@@ -6149,12 +6149,15 @@ public function checkEmailExists(Request $request)
         $item['current_time'] =  '00:00' ;
         $item['watch_percentage'] =   null ;
         $item['skip_time'] =   null ;
+        $item['ContinueWatching'] =   null ;
 
         if( isset($user_id) ){
 
           $ContinueWatching = ContinueWatching::query()->where('user_id',$user_id)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
 
-          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching :  '00:00' ;
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
           $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
           $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
 
