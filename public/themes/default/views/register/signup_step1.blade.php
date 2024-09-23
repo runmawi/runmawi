@@ -1381,7 +1381,7 @@ function format(item, state) {
                         success: function(response) {
                             if (response.exists) {
                                 document.getElementById("send_otp_button").removeAttribute("disabled");
-                                $('.mob_exist_status').text("Mobile Number Not Exist, Pls verify Number via OTP!").css('color', 'green');;
+                                $('.mob_exist_status').text("Valid Mobile number, verify Number via OTP to register!").css('color', 'green');;
 
                             } else {
                                 document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
