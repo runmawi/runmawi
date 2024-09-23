@@ -186,7 +186,10 @@ class HomeSettingsController extends Controller
         $settings->epg = !empty($request->epg) ?  "1" : "0" ;
         $settings->live_artist = !empty($request->live_artist) ?  "1" : "0" ;
         $settings->user_generated_content = !empty($request->user_generated_content) ?  "1" : "0" ;
-        $settings->shorts_minis = !empty($request->shorts_minis) ?  "1" : "0" ;
+
+        $settings->web_pagination_count = !empty($request['web_pagination_count']) ? $request['web_pagination_count'] : '3';
+
+
         $settings->save();
         
         return redirect::to('/admin/home-settings');
@@ -401,6 +404,8 @@ class HomeSettingsController extends Controller
         $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->live_artist = !empty($request->live_artist) ?  "1" : "0" ;
         $settings->epg = !empty($request->epg) ?  "1" : "0" ;
+
+        $settings->mobile_pagination = !empty($request['mobile_pagination']) ? $request['mobile_pagination'] : '3';
         $settings->save();
 
         return redirect::to('/admin/home-settings');
