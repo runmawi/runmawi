@@ -442,7 +442,19 @@
 
                 $('.otp-div').hide();
 
-                function sendOtp() {
+                $('#resend_otp_button').click(function() {
+                    sendOtp();
+                });
+
+                $('#mobile, #ccode').keypress(function(e) {
+                    if (e.which == 13) { 
+                        e.preventDefault();
+                        sendOtp();
+                    }
+                });
+            });
+
+            function sendOtp() {
                     $('#mobile').attr('readonly', true);
                     $('#ccode').attr('disabled', true);
 
@@ -476,18 +488,6 @@
                         }
                     });
                 }
-
-                $('#resend_otp_button').click(function() {
-                    sendOtp();
-                });
-
-                $('#mobile, #ccode').keypress(function(e) {
-                    if (e.which == 13) { 
-                        e.preventDefault();
-                        sendOtp();
-                    }
-                });
-            });
 
                 
         var otp_inputs = document.querySelectorAll(".otp__digit")
