@@ -594,7 +594,7 @@ $settings  = App\Setting::first();?>
 								<span id="error_quality_ppv_price" style="color:red;">*Enter the 1080 PPV Price </span>
 		                    </div>  
 
-							<div class="form-group ios_ppv_price_old" >
+							<div class="form-group ios_ppv_price_old" id='ios_ppv_price_old' >
                         <label class="m-0">IOS PPV Price:</label>
                            <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                               <option value= "" >Select IOS PPV Price: </option>
@@ -732,13 +732,15 @@ $settings  = App\Setting::first();?>
 							$('#ppv_price').hide();
 							$('#ppv_price_plan').show();
 							$('.ErrorText').hide();
-							// $('#submit-new-cat').prop('disabled', true);
+							$('#submit-new-cat').prop('disabled', false);
+							$('#ios_ppv_price_old').hide();
 							$('#ios_ppv_price_plan').show();
 						} else {
 							$('#submit-new-cat').prop('disabled', false);
 							$('#ppv_price_plan').hide();
 							$('.ErrorText').hide();
 							$('#ios_ppv_price_plan').hide();
+							$('#ios_ppv_price_old').hide();
 						}
 					}else{
 						if (series_access == 'subscriber' && $('#ppv_access').val() == "ppv") {
@@ -879,10 +881,14 @@ $('#submit-new-cat').click(function(){
 {{-- field validation --}}
 <script>
 	function validateForm() {
+
+		var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
+		var enable_video_cipher_upload = '<?= @$theme_settings->enable_video_cipher_upload ?>';
+
 		let title = document.forms["new-cat-form"]["series_seasons_name"].value;
-		let ppv = document.forms["new-cat-form"]["price"].value;
-		let ios_ppv = document.forms["new-cat-form"]["ios_ppv_price"].value;
-		let intravel = document.forms["new-cat-form"]["ppv_interval"].value;
+		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let ppv = document.forms["new-cat-form"]["price"].value; }
+		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let ios_ppv = document.forms["new-cat-form"]["ios_ppv_price"].value; }
+		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let intravel = document.forms["new-cat-form"]["ppv_interval"].value; }
         let seasonImage = document.forms["new-cat-form"]["image"].files.length;
 		var ppvAccess = $('#ppv_access').val();
         let isValid = true;
@@ -902,29 +908,32 @@ $('#submit-new-cat').click(function(){
 		else{
             document.getElementById("season_img_error").style.display = "none";
 		}
-		if(ppvAccess === "ppv"){
-			if (ppv == "") {
-				document.getElementById("season_ppv_error").style.display = "block";
-				isValid = false;
+		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){
+
+			if(ppvAccess === "ppv"){
+				if (ppv == "") {
+					document.getElementById("season_ppv_error").style.display = "block";
+					isValid = false;
+				}
+				else{
+					document.getElementById("season_ppv_error").style.display = "none";
+				}
+					if (ios_ppv == "") {
+						document.getElementById("season_ios_ppv_error").style.display = "block";
+						isValid = false;
+					}
+					else{
+						document.getElementById("season_ios_ppv_error").style.display = "none";
+					}
+					if (intravel == "") {
+						document.getElementById("season_introvel_ppv_error").style.display = "block";
+						isValid = false;
+					}
+					else{
+						document.getElementById("season_introvel_ppv_error").style.display = "none";
+					}
+				}
 			}
-			else{
-				document.getElementById("season_ppv_error").style.display = "none";
-			}
-			if (ios_ppv == "") {
-				document.getElementById("season_ios_ppv_error").style.display = "block";
-				isValid = false;
-			}
-			else{
-				document.getElementById("season_ios_ppv_error").style.display = "none";
-			}
-			if (intravel == "") {
-				document.getElementById("season_introvel_ppv_error").style.display = "block";
-				isValid = false;
-			}
-			else{
-				document.getElementById("season_introvel_ppv_error").style.display = "none";
-			}
-		}
 
         return isValid;
 	}
