@@ -1584,7 +1584,16 @@
                                 </div>
                                 
                                 <?php } ?>
-                                <div class="navbar-right menu-right">
+                                <div class="navbar-right menu-right d-flex">
+
+                                    <?php if(Auth::guest()): ?>
+                                        <div class="iq-search-bar ml-auto" id="hid">
+                                            <a href="<?php echo URL::to('channel/login') ?>">
+                                                <button class="btn btn-primary " ><?= __('Visit Channel Portal') ?></button>
+                                            </a>
+                                        </div> 
+                                    <?php endif; ?>
+                                
                                     <ul class="d-flex align-items-center list-inline m-0">
                                         <li class="nav-item nav-icon">
 
