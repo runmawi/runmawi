@@ -91,13 +91,21 @@
                     </div>
 
                     <div class="admin-section-title mt-3">
+                        <div class="col-4 mb-3">
+                            <label>{{ "Pagination value" }}</label>
+                            <input type="text" class="form-control" name="web_pagination_count" id="web_pagination_count" 
+                                   placeholder="Pagination value"
+                                   value="@if(!empty($settings->web_pagination_count)){{ $settings->web_pagination_count }}@endif" 
+                                   style="background-color: #e8f5e9 !important;" form="settingsForm"/>
+                        </div>
+
                         <h4><i class="entypo-monitor"></i> Home Page Menu Settings</h4>
                     </div>
 
                     <div class="clear"></div>
 
 
-                    <form action="{{ URL::to('/admin/home-settings/save') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ URL::to('/admin/home-settings/save') }}" method="post" enctype="multipart/form-data" id="settingsForm">
                         @csrf
                         <div class="panel panel-primary mt-3" data-collapsed="0">
 
@@ -1164,7 +1172,11 @@
                 <button class="tablinks2 btn btn-light">Mobile Home Page</button>
             </div>
             <div class="admin-section-title mt-3">
-
+                <div class="col-4 mb-3">
+                    <label>{{ "Pagination value" }}</label>
+                    <input type="t4t" class="form-control" name="mobile_pagination" id="mobile_pagination" placeholder="Ppv description for video"
+                                    value="@if(!empty($mobilesettings->mobile_pagination)){{ $mobilesettings->mobile_pagination }}@endif" style="background-color: #e8f5e9 !important;" form="MobilesettingsForm"/>
+                </div>
 
                 <h4><i class="entypo-monitor"></i> Mobile Home Page Settings</h4>
             </div>
@@ -1172,7 +1184,7 @@
 
 
             <form action="{{ URL::to('/admin/mobile-home-settings/save') }}" method="post"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" id="MobilesettingsForm">
                 @csrf
                 <div class="panel panel-primary mt-3" data-collapsed="0">
                     <div class="panel-heading">
