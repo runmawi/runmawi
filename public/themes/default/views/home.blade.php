@@ -212,7 +212,7 @@ $(".home-search").hide();
 
         scrollFetch = setTimeout(function () {
             var page_url = $("#home_sections").attr('next-page-url');
-            console.log("scrolled");
+            // console.log("scrolled");
 
             if (page_url != null && !isFetching) {
                 isFetching = true;
