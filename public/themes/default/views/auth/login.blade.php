@@ -259,7 +259,7 @@
                                                 </div>
 
                                                 <div class="justify-content-end links text-right mt-2">
-                                                    <a href="#" id="resend_otp_button">{{ __('Resend OTP') }}</a>
+                                                    <a href="#"  id="resend_otp_button">{{ __('Resend OTP') }}</a>
                                                 </div>
                                             </div>
                                     </form>
@@ -270,7 +270,7 @@
                                     @endif
 
 
-                                    <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" style="width:100%;color:#fff!important;" >{{ __('SEND OTP') }}</button>
+                                    <button type="submit" class="btn btn-hover ab send_otp_button" id="send_otp_button" onclick=sendOtp() style="width:100%;color:#fff!important;" >{{ __('SEND OTP') }}</button>
                                 @else
                                     <form method="POST" id="email-login-form" action="{{ route('login') }}" class="mt-4">
                                         @csrf
@@ -442,8 +442,19 @@
 
                 $('.otp-div').hide();
 
-                $('#send_otp_button,#resend_otp_button').click(function(){ 
+                $('#resend_otp_button').click(function() {
+                    sendOtp();
+                });
 
+                $('#mobile, #ccode').keypress(function(e) {
+                    if (e.which == 13) { 
+                        e.preventDefault();
+                        sendOtp();
+                    }
+                });
+            });
+
+            function sendOtp() {
                     $('#mobile').attr('readonly', true);
                     $('#ccode').attr('disabled', true);
 
@@ -455,31 +466,28 @@
                         url: "{{ route('auth.otp.sending-otp') }}",
                         type: "get",
                         data: {
-                                mobile: mobileNumber,
-                                ccode: ccode
-                            },
+                            mobile: mobileNumber,
+                            ccode: ccode
+                        },
                         dataType: "json",
-
                         success: function(response) {
                             if (response.exists) {
                                 $('.otp-div').show();
                                 $('#send_otp_button').hide();
-                                $('.mob_exist_status').text( response.message_note ).css('color', 'green');
+                                $('.mob_exist_status').text(response.message_note).css('color', 'green');
                             } else {
-                                if(response.error_note == "Invalid User" ){
+                                if (response.error_note == "Invalid User") {
                                     $('#mobile').attr('readonly', false);
                                     $('#ccode').attr('disabled', false);
                                 }
-                                $('.mob_exist_status').text( response.message_note ).css('color', 'red');
+                                $('.mob_exist_status').text(response.message_note).css('color', 'red');
                             }
                         },
                         error: function(error) {
                             console.error('AJAX error:', error);
                         }
                     });
-                });
-
-            });
+                }
 
                 
         var otp_inputs = document.querySelectorAll(".otp__digit")

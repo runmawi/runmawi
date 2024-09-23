@@ -391,7 +391,7 @@
         line-height: 22px;
     }
 
-    .vpageBanner .content .right .playbtn svg {
+    .vpageBanner .content .right .playbtn svg,.vpageBanner .content .right svg {
         width: 40px;
     }
 
