@@ -726,7 +726,7 @@
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  foreach ($menus as $menu) {
-                                 if ( $menu->in_menu == "video" ) {
+                                 if ( $menu->in_menu == "video" && $menu->in_menu == 1) {
                                     if(!Auth::guest()){
                                           $Authusers = App\User::where('email',Auth::User()->email)->pluck('role')->first();
                                     }else{
@@ -755,7 +755,7 @@
                                     <?php } ?>
                                  </ul>
                               </li>
-                              <?php } elseif ( $menu->in_menu == "movies") {
+                              <?php } elseif ( $menu->in_menu == "movies" && $menu->in_home == 1) {
                                  $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
@@ -772,7 +772,7 @@
                                     <?php } ?>
                                  </ul>
                               </li>
-                              <?php }elseif ( $menu->in_menu == "live") {
+                              <?php }elseif ( $menu->in_menu == "live" && $menu->in_home == 1) {
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
@@ -792,7 +792,7 @@
 
 
                               <!-- Audios dropdown -->
-                              <?php }elseif ( $menu->in_menu == "audios") {
+                              <?php }elseif ( $menu->in_menu == "audios" && $menu->in_home == 1) {
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
                               <li class="dropdown menu-item dskdflex">
@@ -813,7 +813,7 @@
 
                               <!-- Tv show dropdown -->
 
-                              <?php }elseif ( $menu->in_menu == "tv_show") {
+                              <?php }elseif ( $menu->in_menu == "tv_show" && $menu->in_home == 1) {
                                  $tv_shows_series = App\SeriesGenre::get();
                                  ?>
                               <li class="dropdown menu-item ">
@@ -840,7 +840,7 @@
                                     </ul>
                                  <?php } ?>
                               </li>
-                              <?php } else { ?>
+                              <?php } elseif($menu->in_home == 1) { ?>
                                  <li class="menu-item">
                                        <a  href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to('/').$menu->url; }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
                                           <?php echo __($menu->name);?>
