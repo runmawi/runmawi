@@ -150,9 +150,10 @@ class HomeController extends Controller
             })->values()->toArray();
 
         $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+        $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
 
         if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-            $order_settings = $order_settings->paginate(3);    // Pagination
+            $order_settings = $order_settings->paginate($pagination_value);    // Pagination
         }else{
             $order_settings = $order_settings->get();
         }
@@ -1624,9 +1625,10 @@ class HomeController extends Controller
                 })->values()->toArray();
 
                 $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-                    $order_settings = $order_settings->paginate(3);    // Pagination
+                    $order_settings = $order_settings->paginate($pagination_value);    // Pagination
                 }else{
                     $order_settings = $order_settings->get();
                 }
