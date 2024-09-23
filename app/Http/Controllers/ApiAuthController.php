@@ -979,10 +979,19 @@ class ApiAuthController extends Controller
           return response()->json([
               'status' => 'false',
               'message'=> $validator->errors()->first(),
-            ], 400);
+            ], 422);
         }
     
-        $user = User::where('email',$request->email_id)->first();
+        $user = User::where('email',$request->email_id)->where('active',0)->first();
+
+        if( is_null($user)){
+
+          return response()->json([
+            'status' => 'false',
+            'message'=> 'Invalid E-Mail ,Please Check',
+          ], 400);
+
+        }
 
         $status = $user->activation_code == $request->activation_code;
 
@@ -2002,6 +2011,14 @@ public function verifyandupdatepassword(Request $request)
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+
+              if($data['play_videoid'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+
+              if($data['play_videoid'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
+
             }elseif($userrole == "registered" &&  $item['access'] == 'ppv'){
 
                   $item['PPV_Plan']   = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first(); 
@@ -2022,7 +2039,7 @@ public function verifyandupdatepassword(Request $request)
                 $item['PPV_Plan']   = '';
             }
 
-      if($ppv_exists_check_query == 1 || $userrole == "admin"){
+      if($ppv_exists_check_query == 1 || $userrole == "admin" || !empty($item['videos_url'])){
 
               $videoId = $item['videos_url']; 
               $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -2044,6 +2061,9 @@ public function verifyandupdatepassword(Request $request)
                       "Authorization: Apisecret $apiKey",
                       "Content-Type: application/json"
                   ),
+
+                  curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+                  curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
               ));
 
               $response = curl_exec($curl);
@@ -2055,11 +2075,11 @@ public function verifyandupdatepassword(Request $request)
                   // echo "cURL Error #:" . $err;
                   $item['otp'] = null;
                   $item['playbackInfo'] = null;
+                  print_r($err);exit;
                 
               } else {
 
                   $responseObj = json_decode($response, true);
-
                   if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
                       $item['otp'] = null;
                       $item['playbackInfo'] = null;
@@ -3965,7 +3985,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
@@ -3973,7 +3993,7 @@ public function verifyandupdatepassword(Request $request)
       foreach ($video_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['source'] = 'videos';
@@ -4391,8 +4411,13 @@ public function verifyandupdatepassword(Request $request)
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
+
+    $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+    $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+
     $user = User::find($user_id);
     $amount_ppv = Video::where('id',$video_id)->pluck('ppv_price')->first();
+
     if($payment_type == 'stripe'){
 
     $paymentMethod = $request->get('py_id');
@@ -4406,7 +4431,6 @@ public function verifyandupdatepassword(Request $request)
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
-      // print_r($live_ppv_count);exit;
       if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0 || $season_ppv_count == 0) {
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
@@ -4426,13 +4450,15 @@ public function verifyandupdatepassword(Request $request)
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a Audio','You have rented a Audio','',$user_id);
   
-        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
+
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
           );
         }
 
       } else {
+        
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
 
@@ -4442,7 +4468,7 @@ public function verifyandupdatepassword(Request $request)
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
 
-        }else if(!empty($series_id) && $series_id != '' && empty($season_id) && $season_id != ''){
+        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
             DB::table('ppv_purchases')->insert(
               ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
             );
@@ -6090,42 +6116,124 @@ public function checkEmailExists(Request $request)
 
     }
 
-
     public function episodedetails(Request $request){
 
-      $episodeid = $request->episodeid;
+      $validator = Validator::make($request->all(), [
+        'episodeid'   => 'required',
+      ]);
+  
+      if ($validator->fails()) {
 
-      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) {
-         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $response = [
+            'status'    => 'false',
+            'message'   => $validator->errors()->first(),
+        ];
+
+        return response()->json($response, 422); 
+      }
+
+      $episodeid = $request->episodeid;
+      $user_id   = $request->user_id;
+
+      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+         $item['image'] = URL::to('public/uploads/images/'.$item->image);
+
+         $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
+         $item['player_image_url'] = URL::to('public/uploads/images/'.$item->image);
+         $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->image);
+
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
 
+          //Continue Watchings
+
+        $item['current_time'] =  '00:00' ;
+        $item['watch_percentage'] =   null ;
+        $item['skip_time'] =   null ;
+        $item['ContinueWatching'] =   null ;
+
+        if( isset($user_id) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('user_id',$user_id)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+        
+         //  Episode URL
          
          switch (true) {
 
-          case $item['type'] == "file":
-            $item['episode_url'] =  $item->mp4_url ;
-            break;
+          case $item['type'] == "file"  :
+              $item['episode_url'] =  $item->mp4_url ;
+              $item['Episode_player_type'] =  'video/mp4' ;
+              $item['qualities']  = [] ;
+          break;
 
-            
-          case $item['type'] == "upload":
+          case $item['type'] == "upload"  :
             $item['episode_url'] =  $item->mp4_url ;
-            break;
+            $item['Episode_player_type'] =   'video/mp4' ;
+            $item['qualities']  = [] ;
+          break;
 
-          case $item['type'] == 'm3u8' :
-              $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
-              break;
+          case $item['type'] == "m3u8":
+              $item['episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
+
+          case $item['type'] == "m3u8_url":
+              $item['episode_url'] =  $item->url    ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
+          
+          case $item['type'] == "aws_m3u8":
+            $item['episode_url'] =  $item->path ;
+            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            $item['qualities']  = [] ;
+          break;
+
+          case $item['type'] == "embed":
+              $item['episode_url'] =  $item->path ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+          break;
 
           case $item['type'] == 'bunny_cdn' :
-            $item['episode_url']   = URL::to('/storage/app/public/'.$item->path.'.m3u8' ) ;
+            $item['episode_url']   = $item->url ;
+            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+
+            $response = Http::withoutVerifying()->get( $item['episode_url'] );
+            $qualities = [];
+
+            if ($response->successful()) {
+                $contents = $response->body();
+                preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                foreach ($matches[2] as $quality) {
+                    $qualities[] = str_replace('p', '', $quality);
+                }
+                $qualities = $qualities ;
+            } 
+
+            $item['qualities']   = $qualities ;
+            
             break;
 
           default:
-            $item['episode_url']    = null ;
-            break;
+              $item['episode_url'] =  null ;
+              $item['Episode_player_type'] =  null ;
+             $item['qualities']  = [] ;
+          break;
         }
 
          return $item;
        });
+
        if(count($episode) > 0){
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
@@ -6902,7 +7010,15 @@ return response()->json($response, 200);
 
           if( $userrole == "admin"){
               $item['Episode_url'] =  $item->episode_id_1080p ;
-         }elseif($userrole == "registered" && $season->access == 'ppv'){
+         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+
+                  if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+
+                  if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+            }elseif($userrole == "registered" && $season->access == 'ppv'){
 
 
               $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
@@ -6946,6 +7062,8 @@ return response()->json($response, 200);
                  "Authorization: Apisecret $apiKey",
                  "Content-Type: application/json"
              ),
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
          ));
 
          $response = curl_exec($curl);

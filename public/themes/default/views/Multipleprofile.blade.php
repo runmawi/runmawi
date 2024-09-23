@@ -82,7 +82,7 @@
                         <div class="row-data" style="display:flex; ">
 
                             <div class="member ">
-                                <a href="{{ route('home') }}">
+                                <a href="{{ $redirection_url }}">
                                     <img src="{{ URL::asset('public/multiprofile/chooseimage.jpg') }}" alt="user"
                                         class="multiuser_img" style="width:120px">
                                 </a>

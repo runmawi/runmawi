@@ -215,6 +215,8 @@ Route::group(
 
         Route::post('listcontinuewatchings', 'ApiAuthController@listcontinuewatchings');
 
+        Route::post('episode-continuewatching-update', 'ApiAuthController@episode_continuewatching_update');
+
         Route::post('remove_continue_watchingvideo', 'ApiAuthController@remove_continue_watchingvideo');
 
         Route::post('remove_continue_watchingepisode', 'ApiAuthController@remove_continue_watchingepisode');
