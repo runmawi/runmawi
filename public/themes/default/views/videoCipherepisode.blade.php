@@ -10,6 +10,14 @@
 
 ?>
 
+<?php if(Auth::check() && !Auth::guest()): ?>
+   <?php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    ?>
+<?php endif; ?>
+
 <!-- video-js Style  -->
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
@@ -94,6 +102,75 @@
         .description{
             margin-top: 5%;
         }
+    }
+
+      
+  /* payment modal */
+    #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+    #purchase-modal-dialog .modal-content{height: 100vh;}
+    #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+    #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+    .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+    .modal-open .modal{overflow-y: hidden;}
+    div#video-purchase-now-modal{padding-right: 0 !important;}
+    .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
+    .col-md-12.btn {margin-top: 2rem;}
+    .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+    .btn-primary-dark {
+        background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+    }
+
+    .btn-primary-light {
+        background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+    }
+    .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
+    .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
+    .quality_option {width: 15px;height: 15px;margin-right: 10px;}
+    span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
+    input[type="radio"].payment_btn,input[type="radio"].quality_option {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        background-color: transparent;
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
+        background-color: black;
+        border-color: white;
+    }
+
+    input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .quality-options-group {
+        display: flex;
+        gap: 20px; 
+        align-items: center;
+    }
+
+    .quality-options-group .radio-inline {
+        margin-right: 0; 
+    }
+    .main-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: block;
     }
     </style>
 
@@ -195,11 +272,11 @@
 
                                         @if(!Auth::guest() && Auth::user()->role != 'subscriber')
                                             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                             </form>
                                         @endif
-                                        <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
-                                            {{ __('PURCHASE NOW') }}
+                                        <button data-toggle="modal" data-target="#season-purchase-now-modal" class="view-count rent-video btn btn-primary">
+                                            {{ __(!empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now') }}
                                         </button>
                                         <!-- <button  data-toggle="modal" data-target="#exampleModalCenter"
                                             class="view-count rent-video btn btn-primary">
@@ -219,12 +296,12 @@
 
                                         @if(!Auth::guest() && Auth::user()->role != 'subscriber')
                                             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                                <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                             </form>
                                         @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
-                                        <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                            {{ __('PURCHASE NOW') }}
+                                        <button data-toggle="modal" data-target="#season-purchase-now-modal" class="view-count rent-video btn btn-primary">
+                                            {{ __(!empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now') }}
                                         </button>
                                     </form>
 
@@ -682,68 +759,74 @@
 ?>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+<div class="modal fade" id="season-purchase-now-modal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content container-fluid bg-dark">
 
-    <div class="modal-header">
-        <h4 class="modal-title text-center" id="exampleModalLongTitle"
-            style="">Rent Now</h4>
-
-        <button type="button" class="close" data-dismiss="modal"
-            aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-
-    </div>
+        <div class="modal-header align-items-center">
+            <div class="row">
+                <div class="col-12">
+                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end">
+                <?php if (Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin')): ?>
+                    <img src="<?php echo $user_avatar; ?>" alt="<?php echo $user_name; ?>">
+                    <h5 class="pl-4"><?php echo $user_name; ?></h5>
+                <?php endif; ?>
+            </div>
+        </div>
 
     <div class="modal-body">
-        <div class="row justify-content-between">
-            <div class="col-sm-4 p-0" style="">
-                <img class="img__img w-100" src="<?php echo URL::to('/') . '/public/uploads/images/' . $episode->image; ?>"
-                    class="img-fluid" alt="">
+        <div class="row justify-content-between m-0">
+            <h3 class="font-weight-bold"><?php echo $SeriesSeason->series_seasons_name; ?></h3>
+            <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+        <p class="text-white">You are currently on plan.</p>
+
+        <div class="row justify-content-between m-0" style="gap: 4rem;">
+            <div class="col-sm-4 col-12 p-0">
+                <img class="img__img w-100" src="{{ URL::to('public/uploads/images'.$episode->image) }}" class="img-fluid" alt="{{ $episode->series_seasons_name }}" style="border-radius: 10px;">
             </div>
 
-            <div class="col-sm-8">
-                <h4 class=" text-black movie mb-3"><?php echo __($episode->title); ?> ,
-                    <span
-                        class="trending-year mt-2"><?php if ($episode->year == 0) {
-                            echo '';
-                        } else {
-                            echo $episode->year;
-                        } ?></span>
-                </h4>
-                <span
-                    class="badge badge-secondary   mb-2"><?php echo __($episode->age_restrict) . ' ' . '+'; ?></span>
-                <span
-                    class="badge badge-secondary  mb-2"><?php echo __(isset($episode->categories->name)); ?></span>
-                <span
-                    class="badge badge-secondary  mb-2"><?php echo __(isset($episode->languages->name)); ?></span>
-                <span
-                    class="badge badge-secondary  mb-2 ml-1"><?php echo __($episode->duration); ?></span><br>
+            <div class="col-sm-7 col-12 details">
+                <div class="movie-rent btn">
+                    <div class="d-flex justify-content-between title">
+                        <h3 class="font-weight-bold">{{ $episode->title }}</h3>
+                    </div>
 
-                <a type="button" class="mb-3 mt-3" data-dismiss="modal"
-                    style="font-weight:400;">Amount: <span class="pl-2"
-                        style="font-size:20px;font-weight:700;" id="price-display">
-                        <?php if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price_480p != null && $CurrencySetting == 1){ echo __(Currency_Convert(@$SeriesSeason->ppv_price_480p)); }else if(@$SeriesSeason->access == 'ppv' && @$SeriesSeason->ppv_price_480p != null && $CurrencySetting == 0){ echo __(  currency_symbol() . @$SeriesSeason->ppv_price_480p) ; } ?></span></a><br>
-                <label class="mb-0 mt-3 p-0" for="method">
-                    <h5 style="font-size:20px;line-height: 23px;"
-                        class="font-weight-bold text-black mb-2">Payment Method
-                        : </h5>
-                </label>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="col-8 d-flex justify-content-start p-0">
+                                <span class="descript text-white">{{ __($ppv_series_description) }}</span>
+                            </div>
+                            <div class="col-4">
+                                <h3 class="pl-2" style="font-weight:700;" id="price-display">
+                                    <?php echo $currency->enable_multi_currency == 1 ? Currency_Convert($episode->ppv_price) : $currency->symbol .$episode->ppv_price; ?>
+                                </h3>
+                            </div>
+                    </div>
 
-                <?php $payment_type = App\PaymentSetting::get(); ?>
+                    <div class="mb-0 mt-3 p-0 text-left">
+                        <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2">Select payment method:</h5>
+                    </div>
+                
 
-                <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+                
 
-                <?php  //foreach($payment_type as $payment){
-                     $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
-                     $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
-                     $Paydunyapayment =  App\PaymentSetting::where('payment_type','=','Paydunya')->where('paydunya_status',1)->first();
-                     $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
-                     $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
-                     $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
+                    <?php $payment_type = App\PaymentSetting::get(); ?>
+
+                    <!-- RENT PAYMENT Stripe,Paypal,Paystack,Razorpay,CinetPay -->
+
+                    <?php  //foreach($payment_type as $payment){
+                        $Stripepayment = App\PaymentSetting::where('payment_type', 'Stripe')->first();
+                        $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->first();
+                        $Paydunyapayment =  App\PaymentSetting::where('payment_type','=','Paydunya')->where('paydunya_status',1)->first();
+                        $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+                        $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
+                        $Paystack_payment_settings = App\PaymentSetting::where('payment_type', 'Paystack')->first();
 
 
 
@@ -767,7 +850,7 @@
                                                         </label>
                                                         
                                         <div id="quality-options" style="display:none;">
-                                            <label class="main-label">Choose Plan</label>
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
                                             <div class="quality-options-group">
                                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                                     <input type="radio" class="quality_option" name="quality" value="480p" checked>
@@ -803,8 +886,8 @@
                                                         </label>
 
                   
-                                                        <div id="quality-options" style="display:none;">
-                                            <label class="main-label">Choose Plan</label>
+                                        <div id="quality-options" style="display:none;">
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
                                             <div class="quality-options-group">
                                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                                     <input type="radio" class="quality_option" name="quality" value="480p" checked>
@@ -867,7 +950,7 @@
                                     </label>
 
                                     <div id="razorpay-quality-options" style="display:none;">
-                                            <label class="main-label">Choose Plan</label>
+                                            <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
                                             <div class="quality-options-group">
                                                 <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                                     <input type="radio" class="quality_option" name="quality" value="480p" checked>
@@ -925,43 +1008,43 @@
                           // }
                       }?>
                         </div>
+                        <div class="becomesubs-page mt-3">
+                            <div class="Stripe_button"> </div>
+                            <div class="Razorpay_button"></div>
+    
+                            <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                                <div class="paystack_button col-md-6 col-6 btn text-white">
+                                    <!-- Paystack Button -->
+                                    <button
+                                        onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$SeriesSeason->id, 'amount' => @$SeriesSeason->ppv_price]) ?>' ;"
+                                        id="" class="btn2  btn-outline-primary"> Continue</button>
+                                        <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                            <?= ("Cancel") ?>
+                                        </div>
+                                </div>
+                            <?php }?>
+    
+                            <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " " || @$SeriesSeason->ppv_price !=null  || @$SeriesSeason->global_ppv == 1){ ?>
+                                <div class="cinetpay_button col-md-6 col-6 btn text-white">
+                                    <!-- CinetPay Button -->
+                                    <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
+                                </div>
+                            <?php }?>
+    
+                            <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
+                                <div class="Paydunya_button col-md-6 col-6 btn text-white">   <!-- Paydunya Button -->
+                                    <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Paydunya_SeriesSeason_checkout_Rent_payment/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
+                                </div>
+                            <?php }?>
+                        </div>
                     </div>
+
+                    
+
                 </div>
+            </div>
 
-                <div class="modal-footer">
-
-
-                        <div class="Stripe_button">
-                        </div>
-
-
-                        <div class="Razorpay_button">
-
-                    </div>
-
-
-                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
-                        <div class="paystack_button">
-                            <!-- Paystack Button -->
-                            <button
-                                onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => @$SeriesSeason->id, 'amount' => @$SeriesSeason->ppv_price]) ?>' ;"
-                                id="" class="btn2  btn-outline-primary"> Continue</button>
-                        </div>
-                    <?php }?>
-
-                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " " || @$SeriesSeason->ppv_price !=null  || @$SeriesSeason->global_ppv == 1){ ?>
-                        <div class="cinetpay_button">
-                            <!-- CinetPay Button -->
-                            <button onclick="cinetpay_checkout()" id="" class="btn2  btn-outline-primary">Continue</button>
-                        </div>
-                    <?php }?>
-
-                    <?php if( @$SeriesSeason->ppv_price !=null &&  @$SeriesSeason->ppv_price != " "  ){ ?>
-                        <div class="Paydunya_button">   <!-- Paydunya Button -->
-                            <button class="btn2  btn-outline-primary " onclick="location.href ='<?= URL::to('Paydunya_SeriesSeason_checkout_Rent_payment/'.@$SeriesSeason->id.'/'.@$SeriesSeason->ppv_price) ?>' ;" > Continue </button>
-                        </div>
-                    <?php }?>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -1028,10 +1111,14 @@
                                             .replace('__AMOUNT__', amount);
 
                                             const continueButtonHtml = `
-                                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                                <button class="col-md-5 col-5 btn text-white btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
                                                     onclick="location.href ='${routeUrl}';">
                                                     {{ __('Continue') }}
                                                 </button>
+
+                                                <div class=" col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                                    <?= ("Cancel") ?>
+                                                </div>
                                             `;
 
                                             $('.Stripe_button').html(continueButtonHtml).show();
@@ -1044,10 +1131,13 @@
                                             .replace('__AMOUNT__', amount);
 
                                             const continueButtonHtml = `
-                                                <button class="btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
+                                                <button class="col-md-5 col-5 btn text-white btn btn-primary btn-outline-primary ppv_price_${selectedQuality}"
                                                     onclick="location.href ='${routeUrl}';">
                                                     {{ __('Continue') }}
                                                 </button>
+                                                <div class="Razorpay_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                                    <?= ("Cancel") ?>
+                                                </div>
                                             `;
 
                                             $('.Razorpay_button').html(continueButtonHtml).show();
