@@ -172,6 +172,9 @@
         margin-bottom: 10px;
         display: block;
     }
+
+#guest-qualitys{display:none;}
+
     </style>
 
     @if (Session::has('message'))
@@ -210,8 +213,8 @@
     <div id="series_bg">
         <div class="">
             @if(!Auth::guest())
-                @if($free_episode > 0 && $SeasonSeriesPpvPurchaseCount > 0)
-                    @if($free_episode > 0  && $SeasonSeriesPpvPurchaseCount > 0)
+                @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo)|| $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
+                    @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
                             <div id="series_container">
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -286,8 +289,29 @@
                                     </form>
                                 </div>
                             @else
-                                <div class="container-fluid mt-3">
-                                    <div class="d-flex series">
+                                
+                                    @if ($SeriesSeason->access == 'free' ||  $SeriesSeason->access == 'registered' )
+                                    
+                                        <div class="container-fluid mt-3">
+                                            
+                                            <div class="dropdown btn" id="guest-qualitys-selct">
+                                                <div class="playbtn" style="gap:5px;">
+                                                    <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ __( 'Watch Now' ) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div id="guest-qualitys">
+                                                <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
+                                                    @if(!empty($episode_details->episode_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $episode_details->users_episode_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
+                                                    @if(!empty($episode_details->episode_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $episode_details->users_episode_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
+                                                    @if(!empty($episode_details->episode_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $episode_details->users_episode_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                    <div class="container-fluid mt-3">
+                                        <div class="d-flex series">
 
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
                                         <button data-toggle="modal" data-target="#season-purchase-now-modal" class="view-count rent-video btn btn-primary">
@@ -295,8 +319,9 @@
                                         </button>
                                     </form>
 
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
                         </div>
                     @endif
@@ -1386,6 +1411,18 @@
     // dd($SkipIntroPermission);
 
 ?>
+
+<script>
+            // guest qualtiy selection
+            $(document).ready(function(){
+
+$('#guest-qualitys-selct').on('click', function(){
+    console.log('yes true');
+    $('#guest-qualitys').show();
+    $('#guest-qualitys-selct').hide();
+})
+})
+</script>
     <script>
         var SkipIntroPermissions = <?php echo json_encode($SkipIntroPermission); ?>;
         var video = document.getElementById("videoPlayer");

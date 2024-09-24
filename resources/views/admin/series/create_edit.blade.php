@@ -884,13 +884,12 @@ $('#submit-new-cat').click(function(){
 
 		var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
 		var enable_video_cipher_upload = '<?= @$theme_settings->enable_video_cipher_upload ?>';
-
+		
 		let title = document.forms["new-cat-form"]["series_seasons_name"].value;
-		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let ppv = document.forms["new-cat-form"]["price"].value; }
-		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let ios_ppv = document.forms["new-cat-form"]["ios_ppv_price"].value; }
-		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){ let intravel = document.forms["new-cat-form"]["ppv_interval"].value; }
+		
         let seasonImage = document.forms["new-cat-form"]["image"].files.length;
 		var ppvAccess = $('#ppv_access').val();
+		
         let isValid = true;
 
 		if (title == "") {
@@ -909,6 +908,10 @@ $('#submit-new-cat').click(function(){
             document.getElementById("season_img_error").style.display = "none";
 		}
 		if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){
+
+			let ppv = document.forms["new-cat-form"]["price"].value; 
+			let ios_ppv = document.forms["new-cat-form"]["ios_ppv_price"].value; 
+			let intravel = document.forms["new-cat-form"]["ppv_interval"].value; 
 
 			if(ppvAccess === "ppv"){
 				if (ppv == "") {
