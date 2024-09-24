@@ -4578,6 +4578,7 @@ class AdminVideosController extends Controller
             AdminVideoAds::create( $Admin_Video_Ads_inputs )  ;
             
         }
+        if($storage_settings->flussonic_storage == 1){ Video::where('id',$id)->update(['status'=>1]); }
 
         \LogActivity::addVideoUpdateLog('Update Meta Data for Video.', $video->id);
 
