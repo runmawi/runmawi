@@ -216,6 +216,7 @@
             playPauseButton.style.visibility = "hidden";
             skipForwardButton.style.visibility = 'hidden';
             skipBackwardButton.style.visibility = 'hidden';
+            titleButton.style.visibility = 'hidden';
         });
 
         player.on('leavepictureinpicture', function() {
@@ -224,6 +225,7 @@
             playPauseButton.style.visibility = "visible";
             skipForwardButton.style.visibility = 'visible';
             skipBackwardButton.style.visibility = 'visible';
+            titleButton.style.visibility = 'visible';
         });
 
         //Function to Play & Pause when we press "Space Bar Button"

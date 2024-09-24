@@ -7157,7 +7157,7 @@ return response()->json($response, 200);
       'status' => 'true',
       'access' => $free_episode,
       'episode' => $episode_details,
-      'season' => $season,
+      'season' => array($season),
     );
 
 
