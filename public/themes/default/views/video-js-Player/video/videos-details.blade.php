@@ -337,7 +337,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( !is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                            <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                         </div>
                                     </a>
                                 @endif
@@ -798,15 +798,14 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                             </div>
                                         </div>
                                     @endif
-
+                                  
                                     <!-- paypal payment -->
-
-                                    @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'Paypal' && Enable_PPV_Plans() == 0)
+                                    @if (!empty($paypal_payment_setting) && $paypal_payment_setting->payment_type == 'PayPal' && Enable_PPV_Plans() == 0)
                                         <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                             <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-video-id="{{$videodetail->id}}" data-video-ppv="{{$videodetail->ppv_price}}" data-value="PayPal">
                                             {{ $paypal_payment_setting->payment_type }}
                                         </label>
-                                    @elseif( $paypal_payment_setting && $paypal_payment_setting->payment_type == 'Paypal' && Enable_PPV_Plans() == 1 )
+                                    @elseif( $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal' && Enable_PPV_Plans() == 1 )
                                         <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
                                             <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-value="PayPal">
                                             {{ $paypal_payment_setting->payment_type }}
@@ -884,7 +883,17 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <div class="row mt-3 justify-content-around"> 
                                             <div class="paypal_button w-100"> <!-- paypal Button -->
                                                 @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
-                                                    <div id="paypal-button-container-{{$videodetail->id}}-{{$videodetail->ppv_price}}"></div>
+                                                        <button class="btn btn-primary"
+                                                            onclick="paypal_checkout()" id="paypal_pay_now">
+                                                            {{ __('Pay now') }}
+                                                        </button>
+
+                                                        <div class="payment_card_payment">
+                                                            <div id="paypal-button-container"></div>
+                                                        </div>
+                                                        
+                                                     <!-- <button onclick="paypal_checkout()" class="btn2 btn-outline-primary"><?php echo __('Continue'); ?></button> -->
+                                                    <!-- <div id="paypal-button-container-{{$videodetail->id}}-{{$videodetail->ppv_price}}"></div> -->
                                                 @endif
                                             </div>
                                         </div>
@@ -915,8 +924,58 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             </div>
         </div>
     </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_signature; ?>"></script>
 
     <script>
+
+            function paypal_checkout() {
+                $('#paypal_pay_now').hide();
+
+                const amount = '{{ $videodetail->ppv_price }}';
+
+                paypal.Buttons({
+                    createOrder: function (data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: amount,
+                                    // currency_code: 'USD'
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function (data, actions) {
+                        return actions.order.capture().then(function (details) {
+                            // console.log(details);
+                            $.ajax({
+                                url: '{{ URL::to('paypal-ppv-video') }}',
+                                method: 'post',
+                                data: {
+                                    _token: '<?= csrf_token() ?>',
+                                    amount: amount,
+                                    video_id: '<?= @$videodetail->id ?>',
+                                },
+                                success: (response) => {
+                                    console.log("Server response:", response);
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
+
+
+                                },
+                                error: (error) => {
+                                    swal('error');
+                                }
+                            });
+
+                        });
+                        
+                    },
+                    onError: function (err) {
+                        console.error(err);
+                    }
+                }).render('#paypal-button-container');
+            }
 
         $(document).ready(function() {
             $('.open-modal-btn').click(function() {
@@ -1056,24 +1115,24 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     } else if (payment_gateway == "PayPal") {
 
                         $('.paypal_button').show();
-                        paypal.Buttons({
-                            style: {
-                                shape: 'rect',
-                                color: 'gold',
-                                layout: 'vertical',
-                                label: 'subscribe'
-                            },
-                            createSubscription: function(data, actions) {
-                                return actions.subscription.create({
-                                /* Creates the subscription */
-                                plan_id: 'P-5H799559D92641634M3UTMXQ'
-                                });
-                            },
-                            onApprove: function(data, actions) {
-                                alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                            }
-                        }).render('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
-                        console.log('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
+                        // paypal.Buttons({
+                        //     style: {
+                        //         shape: 'rect',
+                        //         color: 'gold',
+                        //         layout: 'vertical',
+                        //         label: 'subscribe'
+                        //     },
+                        //     createSubscription: function(data, actions) {
+                        //         return actions.subscription.create({
+                        //         /* Creates the subscription */
+                        //         plan_id: 'P-5H799559D92641634M3UTMXQ'
+                        //         });
+                        //     },
+                        //     onApprove: function(data, actions) {
+                        //         alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                        //     }
+                        // }).render('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
+                        // console.log('#paypal-button-container-' + Video_id + '-' + Video_ppv_price);
 
                     } 
                     
