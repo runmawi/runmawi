@@ -1565,7 +1565,7 @@ class AdminSeriesController extends Controller
         }else{
             $ppv_price = $series_season->ppv_price;
         }
-        if(!empty($data['ppv_interval']) || $data['ppv_interval'] == 0){
+        if(!empty($data['ppv_interval']) || !empty($data['ppv_interval'])  && $data['ppv_interval'] == 0){
             $ppv_interval = $data['ppv_interval'];
         }else{
             $ppv_interval = $series_season->ppv_interval;
@@ -3083,7 +3083,7 @@ class AdminSeriesController extends Controller
             
                 $value['success'] = 1;
                 $value['message'] = 'Uploaded Successfully!';
-                $value['episode_id'] = $episode_id;
+                $value['Episode_id'] = $episode_id;
                 $value['episode_title'] = $title;
                 $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
                 return $value;
@@ -3216,7 +3216,7 @@ class AdminSeriesController extends Controller
                 $title =$episode_title->title; 
                 $value['success'] = 1;
                 $value['message'] = 'Uploaded Successfully!';
-                $value['episode_id'] = $episode_id;
+                $value['Episode_id'] = $episode_id;
                 $value['episode_title'] = $title;
                 $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
                 return $value;
@@ -3886,7 +3886,7 @@ class AdminSeriesController extends Controller
         $title =$episode_title->title; 
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
+        $value['Episode_id'] = $episode_id;
         $value['episode_title'] = $title;
         $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
         return $value;
@@ -3943,7 +3943,7 @@ class AdminSeriesController extends Controller
         $title =$episode_title->title; 
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
+        $value['Episode_id'] = $episode_id;
         $value['episode_title'] = $title;
         $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
 
@@ -4114,7 +4114,7 @@ class AdminSeriesController extends Controller
             
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
-            $value['episode_id'] = $episode_id;
+            $value['Episode_id'] = $episode_id;
             $value['episode_title'] = $title;
             $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
             return $value;
@@ -4177,7 +4177,7 @@ class AdminSeriesController extends Controller
             $title =$episode_title->title; 
             $value['success'] = 1;
             $value['message'] = 'Uploaded Successfully!';
-            $value['episode_id'] = $episode_id;
+            $value['Episode_id'] = $episode_id;
             $value['episode_title'] = $title;
             $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
     
@@ -4253,7 +4253,7 @@ class AdminSeriesController extends Controller
         $title =$episode_title->title; 
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
+        $value['Episode_id'] = $episode_id;
         $value['episode_title'] = $title;
         $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
         return $value;
@@ -4313,7 +4313,7 @@ class AdminSeriesController extends Controller
         $title =$episode_title->title; 
         $value['success'] = 1;
         $value['message'] = 'Uploaded Successfully!';
-        $value['episode_id'] = $episode_id;
+        $value['Episode_id'] = $episode_id;
         $value['episode_title'] = $title;
         $value['episode_duration'] = gmdate('H:i:s', $episode_title->duration);
 
