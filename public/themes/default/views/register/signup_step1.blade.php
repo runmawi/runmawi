@@ -544,9 +544,9 @@ i.fa.fa-google-plus {
                             </div>
 
 							<div class="col-md-12 d-flex" id="mob">
-                                <input id="password-confirm" type="checkbox" name="terms" value="1" required>
+                                <input id="" type="checkbox" checked name="terms" value="1" required>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;text-decoration: underline;
-    cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
+                                cursor: pointer;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                             </div>
 
                             <div class="sign-up-buttons col-md-12 ">
@@ -864,16 +864,16 @@ $('#country').on('change', function() {
 
     function ValidationEvent(form) {
 
-            var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-            var email = $(".email").val();
-            if(!filter.test(email)){
-                $('#email_error_Valid').show(500);
-                setTimeout(function() {
-                    $('#email_error_Valid').hide(500); // Hide the element with a slide-up animation
-                }, 2000);
-                return false;
-            }
-            $('#email_error_Valid').hide();
+            // var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            // var email = $(".email").val();
+            // if(!filter.test(email)){
+            //     $('#email_error_Valid').show(500);
+            //     setTimeout(function() {
+            //         $('#email_error_Valid').hide(500); // Hide the element with a slide-up animation
+            //     }, 2000);
+            //     return false;
+            // }
+            // $('#email_error_Valid').hide();
 
     var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
     if(password_confirm == 0){
@@ -1381,16 +1381,16 @@ function format(item, state) {
                         success: function(response) {
                             if (response.exists) {
                                 document.getElementById("send_otp_button").removeAttribute("disabled");
-                                $('.mob_exist_status').text("Mobile Number Not Exist, Pls verify Number vai OTP!").css('color', 'green');;
+                                $('.mob_exist_status').text("Valid Mobile number, verify Number via OTP to register!").css('color', 'green');;
 
                             } else {
                                 document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
-                                $('.mob_exist_status').text("Mobile Number Already exists !").css('color', 'red');
+                                $('.mob_exist_status').text("Mobile Number Already exists!").css('color', 'red');
                             }
                         },
                         error: function(error) {
                             console.error('AJAX error:', error);
-                            $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
+                            $('.mob_exist_status').text("Mobile Number not exists!").css('color', 'red');
                         }
                     });
                 }

@@ -12,6 +12,7 @@ use Auth;
 use DB;
 use Mail;
 use Crypt;
+use URL;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -408,10 +409,34 @@ public function createStep2(Request $request)
         $free_registration = Setting::pluck('free_registration')->first();  // Note - Free Registration 
         
         $website_name = Setting::pluck('website_name')->first();  // Note - Free Registration 
+
         if(@$free_registration == 1) {
-            // session()->put('message',"You have successfully registered your account. Please login below.");
+
             session()->put('message',"You have successfully registered for $website_name. Welcome to a world of endless entertainment.");
-            return Theme::view('auth.login');
+
+            $user_mail = session()->get('register.email');
+
+            $user = User::where("email",$user_mail)->pluck('id')->first();
+
+            Auth::loginUsingId($user);
+
+            switch (Auth::user()->role) {
+                case 'subscriber':
+                    $redirection_url = URL::to('/choose-profile');
+                    break;
+            
+                case 'admin':
+                    $redirection_url = session()->get('url.intended', URL::to('/choose-profile'));
+                    break;
+            
+                default:
+                    $redirection_url = session()->get('url.intended', URL::to('/home'));
+                    break;
+            }
+
+            return redirect( $redirection_url );
+          
+            // return Theme::view('auth.login');
         }
 
             if ($request->has('ref')) {
@@ -438,11 +463,25 @@ public function createStep2(Request $request)
 
                 if($profile_checkout == 1 ){                    // Note - for Nemisha
 
-                    $user_id = User::where("email","=",$user_mail)->pluck('id')->first();
+                    $user = User::where("email","=",$user_mail)->pluck('id')->first();
 
-                    Auth::loginUsingId($user_id);
+                    Auth::loginUsingId($user);
 
-                    return redirect()->route('myprofile');
+                    switch (Auth::user()->role) {
+                        case 'subscriber':
+                            $redirection_url = URL::to('/choose-profile');
+                            break;
+                    
+                        case 'admin':
+                            $redirection_url = session()->get('url.intended', URL::to('/choose-profile'));
+                            break;
+                    
+                        default:
+                            $redirection_url = session()->get('url.intended', URL::to('/home'));
+                            break;
+                    }
+
+                    return redirect( $redirection_url );
                 }
                 elseif($signup_checkout == 1){
 

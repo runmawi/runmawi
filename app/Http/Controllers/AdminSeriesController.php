@@ -4958,7 +4958,7 @@ class AdminSeriesController extends Controller
 
         }else{
 
-            $data["responsive_player_image"] = $video->responsive_player_image; 
+            $data["responsive_player_image"] = $episodes->responsive_player_image; 
         }
 
 

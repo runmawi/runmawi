@@ -16,7 +16,7 @@
 </style>
 
 <div>
-    <div class="row m-4">
+    <div class="row m-4" >
         @foreach ($userdata as $eachuserdata)
         <div class="col-4 profilcard"> 
             <a href="{{ route('profile.show', ['username' => $eachuserdata->username]) }}" >
@@ -47,3 +47,8 @@
        @endforeach
     </div>
 </div>
+
+
+@php
+include (public_path('themes/theme5-nemisha/views/footer.blade.php'))
+@endphp

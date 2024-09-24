@@ -282,18 +282,18 @@
                         <div class="col-sm-6">
                             <label class="m-0">Choose Episode ID for 480p </label>
                             <p class="p1">Episode ID for 480p Plan</p>
-                            <input class="form-control" name="episode_id_480p" id="episode_id_480p" />
+                            <input class="form-control episode_id_group" name="episode_id_480p" id="episode_id_480p" />
                         </div>
                         <div class="col-sm-6">
                             <label class="m-0">Choose Episode ID for 720p </label>
                             <p class="p1">Episode ID for 720p Plan</p>
-                            <input class="form-control" name="episode_id_720p" id="episode_id_720p" />
+                            <input class="form-control episode_id_group" name="episode_id_720p" id="episode_id_720p" />
                         </div>
                     </div>
                         <div class="col-sm-6">
                             <label class="m-0">Choose Episode ID for 1080p </label>
                             <p class="p1">Episode ID for 1080p Plan</p>
-                            <input class="form-control" name="episode_id_1080p" id="episode_id_1080p" />
+                            <input class="form-control episode_id_group" name="episode_id_1080p" id="episode_id_1080p" />
                         </div>
                         
                              {{-- for validate --}} 
@@ -790,6 +790,7 @@
 
      {{-- image validation --}}
     <script>
+        
         document.getElementById('episode_image').addEventListener('change', function() {
             var file = this.files[0];
             if (file) {
@@ -1146,33 +1147,66 @@ document.getElementById('select-all').addEventListener('change', function() {
             }
         });
 
-
         $('form[id="Episode_new"]').validate({
             rules: {
                 title: "required",
-
-                // image: {
-                //     required: true,
-                //     dimention:[1080,1920]
-                // },
-
-                // player_image: {
-                //     required: true,
-                //     player_dimention:[1280,720]
-                // },
-
-                // tv_image: {
-                //     required: true,
-                //     tv_image_dimention:[1920,1080]
-                // },
+                episode_id_480p: {
+                    required: function (element) {
+                        return $('#episode_id_720p').val() === "" && $('#episode_id_1080p').val() === "";
+                    }
+                },
+                episode_id_720p: {
+                    required: function (element) {
+                        return $('#episode_id_480p').val() === "" && $('#episode_id_1080p').val() === "";
+                    }
+                },
+                episode_id_1080p: {
+                    required: function (element) {
+                        return $('#episode_id_480p').val() === "" && $('#episode_id_720p').val() === "";
+                    }
+                }
             },
             messages: {
                 title: "This field is required",
+                episode_id_480p: "Please fill in at least one Episode ID (480p, 720p, or 1080p).",
+                episode_id_720p: "Please fill in at least one Episode ID (480p, 720p, or 1080p).",
+                episode_id_1080p: "Please fill in at least one Episode ID (480p, 720p, or 1080p)."
+                
+ 
             },
             submitHandler: function (form) {
                 form.submit();
-            },
+            }
         });
+
+
+        // $('form[id="Episode_new"]').validate({
+        //     rules: {
+        //         title: "required",
+                
+
+        //         // image: {
+        //         //     required: true,
+        //         //     dimention:[1080,1920]
+        //         // },
+
+        //         // player_image: {
+        //         //     required: true,
+        //         //     player_dimention:[1280,720]
+        //         // },
+
+        //         // tv_image: {
+        //         //     required: true,
+        //         //     tv_image_dimention:[1920,1080]
+        //         // },
+        //     },
+        //     messages: {
+        //         title: "This field is required",
+        //     },
+        //     submitHandler: function (form) {
+        //         form.submit();
+        //     },
+        // });
     </script>
 
     <script type="text/javascript">
@@ -1396,6 +1430,7 @@ document.getElementById('select-all').addEventListener('change', function() {
     //     $("#title").val(value.episode_title);
     //     $("#duration").val(value.episode_duration);
     // });
+    $("#Next").hide();
 
     $("#buttonNext").click(function () {
         $('#bunnycdnvideo').hide();
