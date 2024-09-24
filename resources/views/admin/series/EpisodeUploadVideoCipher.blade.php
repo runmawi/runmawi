@@ -1396,6 +1396,7 @@ document.getElementById('select-all').addEventListener('change', function() {
     //     $("#title").val(value.episode_title);
     //     $("#duration").val(value.episode_duration);
     // });
+    $("#Next").hide();
 
     $("#buttonNext").click(function () {
         $('#bunnycdnvideo').hide();
