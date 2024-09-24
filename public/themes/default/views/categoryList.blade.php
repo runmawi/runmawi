@@ -2,11 +2,11 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
     
-<section id="iq-favorites">
-    <div class="container-fluid">
+<section id="iq-favorites" style="display: grid; grid-template-rows: 1fr auto; min-height: 100vh;" >
+    <div class="container-fluid" style=" overflow-y: auto; !important"  >
         <div class="row">
             <div class="col-sm-12 page-height">
-                <div class="iq-main-header align-items-center justify-content-between">
+                <div class="iq-main-header align-items-center justify-content-between py-3">
                     <h4 class="vid-title">{{ __("Category List") }}</h4>                     
                 </div>
                 @if (($category_list)->isNotEmpty())

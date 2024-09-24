@@ -4324,7 +4324,7 @@ class ChannelController extends Controller
 
     public function videos_details_jsplayer( $slug )
     {
-        try {
+        // try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4698,10 +4698,38 @@ class ChannelController extends Controller
                 }
             }
 
+            // Payment Gateway Paypal
+
+            $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
+
+            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+
+            $paypal_password = null;
+            $paypal_signature = null;
+
+            if (!is_null($PayPalpayment)) {
+
+                switch ($PayPalpayment->live_mode) {
+                    case 0:
+                        $paypal_password = $PayPalpayment->test_paypal_password;
+                        $paypal_signature = $PayPalpayment->test_paypal_signature;
+                        break;
+
+                    case 1:
+                        $paypal_password = $PayPalpayment->live_paypal_password;
+                        $paypal_signature = $PayPalpayment->live_paypal_signature;
+                        break;
+
+                    default:
+                        $paypal_password = null;
+                        $paypal_signature = null;
+                        break;
+                }
+            }
+
 
             $Razorpay_payment_setting = PaymentSetting::where('payment_type','Razorpay')->where('status',1)->first();
-            $paypal_payment_setting = PaymentSetting::where('payment_type','PayPal')->where('status',1)->first();
-            // dd($paypal_payment_setting);
+            
 
             $default_vertical_image_url = default_vertical_image_url();
 
@@ -4723,19 +4751,20 @@ class ChannelController extends Controller
                                     </svg>',
 
                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                'paypal_payment_setting' => $paypal_payment_setting,
+                'paypal_payment_setting' => $PayPalpayment,
                 'stripe_payment_setting'   => $Stripepayment,
                 'default_vertical_image_url'   => $default_vertical_image_url,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
                 'playerui' => Playerui::first(),
+                'paypal_signature' => $paypal_signature,
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        } catch (\Throwable $th) {
-            return $th->getMessage();
-            return abort(404);
-        }
+        // } catch (\Throwable $th) {
+        //     return $th->getMessage();
+        //     return abort(404);
+        // }
     }
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)

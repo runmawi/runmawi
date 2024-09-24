@@ -4,7 +4,7 @@
 </head>
 <body>
 
-    <h1>{{ 'Mail Send Successfully' }}</h1>
+    <h1>{{ 'Mail Sent Successfully' }}</h1>
     <p>{{ $Testing_Email }}</p>
    
     <p>Thank you</p>
