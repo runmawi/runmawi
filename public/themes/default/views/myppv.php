@@ -163,7 +163,7 @@
     endif; 
    else:
    ?>
-   <p><h2><?= __('No Rented in Video') ?></h2></p>
+   <p><h2><?= __('No Videos Rented') ?></h2></p>
                  <div class="col-md-12 text-center mt-4">
              <img class="w-50" src="<?php echo  URL::to('/assets/img/sub.png')?>">
          </div>

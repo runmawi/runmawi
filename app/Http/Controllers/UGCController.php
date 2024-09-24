@@ -2510,7 +2510,7 @@ class UGCController extends Controller
                 $video->mp4_url = $data["mp4_url"];
                 $video->type = "mp4_url";
                 $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->image = default_vertical_image();
                 $video->video_tv_image = default_horizontal_image();
                 $video->player_image = default_horizontal_image();
@@ -2540,7 +2540,7 @@ class UGCController extends Controller
                 $video->m3u8_url = $data["m3u8_url"];
                 $video->type = "m3u8_url";
                 $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->image = default_vertical_image();
                 $video->video_tv_image = default_horizontal_image();
                 $video->player_image = default_horizontal_image();
@@ -2570,7 +2570,6 @@ class UGCController extends Controller
                 ]);
                 
                 $user = User::find($request->user_id)->update(['ugc_about' => $request->ugc_about]);
-                dd($user);
                 $response = [
                     'status' => true,
                     'status_code' => 200,
@@ -2694,7 +2693,7 @@ class UGCController extends Controller
                 $video->embed_code = $data["embed"];
                 $video->type = "embed";
                 $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->image = default_vertical_image();
                 $video->video_tv_image = default_horizontal_image();
                 $video->player_image = default_horizontal_image();
@@ -2776,7 +2775,7 @@ class UGCController extends Controller
                 $video->m3u8_url = $data["m3u8_url"];
                 $video->type = "m3u8_url";
                 // $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->user_id = Auth::user()->id;
                 $video->save();
     
@@ -2814,7 +2813,7 @@ class UGCController extends Controller
                 $video->embed_code = $data["embed"];
                 $video->type = "embed";
                 $video->draft = 0;
-                $video->active = 1;
+                $video->active = 0;
                 $video->user_id = Auth::user()->id;
                 $video->save();
     

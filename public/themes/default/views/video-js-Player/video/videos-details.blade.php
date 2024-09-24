@@ -31,6 +31,10 @@ div#video-purchase-now-modal{padding-right: 0 !important;}
 .btn-primary-dark {
     background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
 }
+.title-popup {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 .btn-primary-light {
     background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
@@ -325,22 +329,22 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </a>
                             @else
                             
-                            @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
-                                <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
-                                    <div class="playbtn" style="gap:5px">
-                                        {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
-                                    </div>
-                                </a>
-
-                                @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
-                                    <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
+                                    <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
                                             <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                         </div>
                                     </a>
-                                @endif
+
+                                    @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2"> {{ __( !is_null($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
 
                                 @endif
                             @endif
@@ -715,8 +719,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                                 <div class="movie-rent btn">
 
-                                    <div class="d-flex justify-content-between title">
-                                        <h3 class="font-weight-bold">{{ ( $videodetail->title) }}</h3>
+                                    <div class="">
+                                        <h3 class="font-weight-bold title-popup">{{ $videodetail->title }}</h3>
                                     </div>
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
@@ -834,13 +838,13 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
                                         <div class="Stripe_button row mt-3 justify-content-around">  
                                             <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
-                                                <button class="btn btn-primary"
+                                                <button class="btn btn-primary w-100"
                                                     onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
                                                     {{ __('Pay now') }}
                                                 </button>
                                             </div>
                                             <div class="Stripe_button col-md-5 col-5 btn">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
                                                     {{'Cancel'}}
                                                 </button>
                                             </div>
@@ -858,14 +862,14 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <div class="row mt-3 justify-content-around"> 
                                             <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
                                                 @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
-                                                    <button class="btn btn-primary"
+                                                    <button class="btn btn-primary w-100"
                                                         onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
                                                         {{ __('Pay now') }}
                                                     </button>
                                                 @endif
                                             </div>
                                             <div class="Razorpay_button col-md-5 col-5 btn">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
                                                     {{'Cancel'}}
                                                 </button>
                                             </div>

@@ -745,10 +745,10 @@
                                  <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
                                  </a>
-                                 <ul class="dropdown-menu categ-head">
+                                 <ul class="dropdown-menu categ-head" style="overflow-x: hidden; border: none; outline: none;" >
                                     <?php foreach ( $cat as $category) { ?>
                                     <li>
-                                       <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/category/'.$category->slug;?>">
+                                       <a class="dropdown-item cont-item"  href="<?php echo URL::to('/').'/category/'.$category->slug;?>">
                                        <?php echo (__($category->name)); ?>
                                        </a>
                                     </li>
@@ -762,7 +762,7 @@
                                  <a class="dropdown-toggle justify-content-between " id="movie-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
-                                 <ul class="dropdown-menu categ-head">
+                                 <ul class="dropdown-menu categ-head" style="overflow-x: hidden; border: none; outline: none;" >
                                     <?php foreach ( $languages as $language){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/').'/language/'.$language->id.'/'.$language->name;?>">
@@ -779,7 +779,7 @@
                                  <a class="dropdown-toggle  justify-content-between " id="live-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
-                                 <ul class="dropdown-menu categ-head">
+                                 <ul class="dropdown-menu categ-head" style="overflow-x: hidden; border: none; outline: none;" >
                                     <?php foreach ( $LiveCategory as $category){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category').'/'.$category->name;?>">
@@ -799,7 +799,7 @@
                                  <a class="dropdown-toggle  justify-content-between " id="audio-down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                  <?php echo (__($menu->name));?> <i class="fa fa-angle-down"></i>
                                  </a>
-                                 <ul class="dropdown-menu categ-head">
+                                 <ul class="dropdown-menu categ-head" style="overflow-x: hidden; border: none; outline: none;" >
                                     <?php foreach ( $AudioCategory as $category){ ?>
                                     <li>
                                        <a class="dropdown-item cont-item" href="<?php echo URL::to('audios/category/').'/'.$category->name;?>">
@@ -822,7 +822,7 @@
                                  </a>
 
                                  <?php if(count($tv_shows_series) > 0 ){ ?>
-                                    <ul class="dropdown-menu categ-head">
+                                    <ul class="dropdown-menu categ-head" style="overflow-x: hidden; border: none; outline: none;" >
                                        <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
                                           <li>
                                              <?php if($key < 5): ?>
@@ -1113,7 +1113,7 @@
                               <div class="search-box iq-search-bar d-search">
                                  <div class="searchbox">
                                     <div class="form-group position-relative">
-                                       <input type="text" name="search" class="text search-input font-size-12 searches" placeholder="Type here to Search Videos" />
+                                       <input type="text" name="search" class="text search-input font-size-12 searches" autocomplete="off" placeholder="Type here to Search Videos" />
                                        <i class="search-link ri-search-line"></i>
                                        <?php  include 'public/themes/default/partials/Search_content.php'; ?>
                                     </div>

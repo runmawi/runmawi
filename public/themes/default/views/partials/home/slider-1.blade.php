@@ -19,9 +19,9 @@
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white">
-                                    {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
-                                </h1>
+                                <h2 class="text-white">
+                                    {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
+                                </h2>
                                 <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                     <a href="{{ $slider_video->link }}" class="btn bd">
                                         <i class="fa fa-play mr-2" aria-hidden="true"></i> {{ __('Play') }}
@@ -57,9 +57,9 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h1 class="text-white">
-                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
-                                </h1>
+                                <h2 class="text-white">
+                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
+                                </h2>
                             @endif
 
                             <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
@@ -176,9 +176,9 @@
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-6 col-md-12">
 
-                        <h1 class="text-white">
-                            {{ strlen($Episode_slider->title) > 15 ? substr($Episode_slider->title, 0, 80) . '...' : $Episode_slider->title }}
-                        </h1>
+                        <h2 class="text-white">
+                            {{ strlen($Episode_slider->title) > 15 ? substr($Episode_slider->title, 0, 50) . '...' : $Episode_slider->title }}
+                        </h2>
 
                         <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color:#fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                             {{ __(strip_tags(html_entity_decode($Episode_slider->episode_description)))}}
@@ -269,9 +269,9 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
 
-                            <h1 class="text-white mb-2">
-                                {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 80) . '...' : $slider_video->title }}
-                            </h1>
+                            <h2 class="text-white mb-2">
+                                {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
+                            </h2>
                             <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
                                 @php
                                     $details = __(strip_tags(html_entity_decode($slider_video->description)));
@@ -312,9 +312,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <h1 class="text-white">
-                                {{ strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 80) . '...' : $live_event_banner->title }}
-                            </h1>
+                            <h2 class="text-white">
+                                {{ strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 50) . '...' : $live_event_banner->title }}
+                            </h2>
 
                             <div class="d-flex align-items-center">
                                 <span class="badge badge-secondary p-2">
@@ -365,9 +365,9 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h1 class="text-white">
-                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 80) . '...' : $decode_title }}
-                                </h1>
+                                <h2 class="text-white">
+                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
+                                </h2>
                             @endif
 
                             <div class="descp" style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">

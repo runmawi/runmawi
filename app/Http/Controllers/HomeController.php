@@ -2686,10 +2686,11 @@ class HomeController extends Controller
                                         ->where('banner', '1')->latest()
                                         ->get() ;
 
-
+            $language_name = Language::where('id', $lanid)->pluck('name')->first();
 
             $data = array(
                 'lang_videos' => $language_videos,
+                'language_name' => $language_name,
                 'Most_watched_country' => $Most_watched_country ,
                 'top_most_watched'     => $top_most_watched ,
                 'video_banners'        => $FrontEndQueryController->video_banners(),
