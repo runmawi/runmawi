@@ -6193,9 +6193,9 @@ public function checkEmailExists(Request $request)
       $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
-         $item['image_url'] = URL::to('public/uploads/images/'.$item->image);
-         $item['player_image_url'] = URL::to('public/uploads/images/'.$item->image);
-         $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->image);
+         $item['image_url'] = $item->image;
+         $item['player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
+         $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image);
 
          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
 
@@ -7157,7 +7157,7 @@ return response()->json($response, 200);
       'status' => 'true',
       'access' => $free_episode,
       'episode' => $episode_details,
-      'season' => $season,
+      'season' => array($season),
     );
 
 

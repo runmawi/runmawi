@@ -387,11 +387,11 @@
 
                                     @if(!Auth::guest() && Auth::user()->role != 'subscriber')
                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                         </form>
                                     @endif
                                     <a onclick="pay({{ $SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 1 ? PPV_CurrencyConvert($SeriesSeason->ppv_price) : ($SeriesSeason->access == 'ppv' && $SeriesSeason->ppv_price != null && $CurrencySetting == 0 ? __($SeriesSeason->ppv_price) : '') }})">
-                                        <button type="button" class="btn2 btn-outline-primary">{{ __('PURCHASE NOW') }}</button>
+                                        <button type="button" class="btn2 btn-outline-primary">{{ __(!empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now') }}</button>
                                     </a>
                                 </div>
                             </div>
@@ -407,12 +407,12 @@
 
                                     @if(!Auth::guest() && Auth::user()->role != 'subscriber')
                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __('Become a subscriber to watch this video'); ?></button>
+                                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                         </form>
                                     @endif
                                     <form method="get" action="{{ url('/play_series/'.@$series->slug) }}">
                                     <button data-toggle="modal" data-target="#exampleModalCenter1" class="view-count rent-video btn btn-primary">
-                                        {{ __('PURCHASE NOW') }}
+                                        {{ __(!empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now') }}
                                     </button>
                                     </form>
                                 </div>
