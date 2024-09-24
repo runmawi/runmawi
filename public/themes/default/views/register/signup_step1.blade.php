@@ -864,16 +864,16 @@ $('#country').on('change', function() {
 
     function ValidationEvent(form) {
 
-            var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-            var email = $(".email").val();
-            if(!filter.test(email)){
-                $('#email_error_Valid').show(500);
-                setTimeout(function() {
-                    $('#email_error_Valid').hide(500); // Hide the element with a slide-up animation
-                }, 2000);
-                return false;
-            }
-            $('#email_error_Valid').hide();
+            // var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            // var email = $(".email").val();
+            // if(!filter.test(email)){
+            //     $('#email_error_Valid').show(500);
+            //     setTimeout(function() {
+            //         $('#email_error_Valid').hide(500); // Hide the element with a slide-up animation
+            //     }, 2000);
+            //     return false;
+            // }
+            // $('#email_error_Valid').hide();
 
     var password_confirm = '<?= $SignupMenu->password_confirm ?>'; 
     if(password_confirm == 0){

@@ -1458,7 +1458,7 @@ $(document).ready(function(){
             });
 
             $('#submit_about').click(function(){
-                const userId = {{ $user->id }}; // Get the user ID
+                const userId = {{ Auth::user()->id }}; // Get the user ID
                 $.ajax({
                     url: '<?php echo route('ugc.about.submit') ?>',
                     type: "post",
@@ -1495,7 +1495,7 @@ $(document).ready(function(){
   
             $('#submit_facebook').click(function(){
 
-            const userId = {{ $user->id }}; 
+            const userId = {{ Auth::user()->id }}; 
        
             $.ajax({
             url: '<?php echo route('ugc.facebook.submit') ?>',
@@ -1531,7 +1531,7 @@ $(document).ready(function(){
 
 
         $('#submit_instagram').click(function(){
-        const userId = {{ $user->id }};
+        const userId = {{ Auth::user()->id }};
 
         $.ajax({
             url: '<?php echo route('ugc.instagram.submit') ?>',
@@ -1567,7 +1567,7 @@ $(document).ready(function(){
 
 
     $('#submit_twitter').click(function(){
-    const userId = {{ $user->id }}; 
+    const userId = {{ Auth::user()->id }}; 
 
     $.ajax({
        url: '<?php echo route('ugc.twitter.submit') ?>',
