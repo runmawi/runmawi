@@ -2441,6 +2441,7 @@ public function RemoveDisLikeEpisode(Request $request)
                     'category_name'             => $category_name ,
                     'episode_details'  => $episode_details ,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
+                    'ppv_series_description'        => $ppv_series_description,
                     'button_text'                    => $button_text,
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {
