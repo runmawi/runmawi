@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Middleware\cpp;
 use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
+use Illuminate\Support\Facades\Schema;
 
 // @$translate_language = App\Setting::pluck('translate_language')->first();
 // \App::setLocale(@$translate_language); translate_language
@@ -37,6 +38,7 @@ Route::post('/profilePreference', 'AdminUsersController@profilePreference')->nam
 Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
 Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
+Route::post('paypal-ppv-series-season', 'PaymentController@PayPal_payment_series_season_PPV_Purchase');
 
 Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 
@@ -337,6 +339,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     Route::get('episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('play_episode');
     Route::get('networks/episode/{series_name}/{episode_name}', 'TvshowsController@play_episode')->name('network_play_episode');
+    Route::get('episode/{series_name}/{episode_name}/{plan}', 'TvshowsController@play_episode');
 
     Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
     Route::get('networks/play_series/{name}/', 'TvshowsController@play_series')->name('network.play_series');
@@ -2448,6 +2451,7 @@ Route::post('/forget-password-update', 'PasswordForgetController@forget_password
 Route::get('/current-time', 'CurrentTimeController@current_time')->name('CurrentTimeController.current_time');
 
 // Datafree URL 
+if (Schema::hasTable('home_settings')) {
 
 $datafree = App\HomeSetting::pluck('theme_choosen')->first();
 
@@ -2793,7 +2797,7 @@ $datafree = App\HomeSetting::pluck('theme_choosen')->first();
                 Route::post('datafree/remove_dislike-episode', 'TvshowsController@RemoveDisLikeEpisode');
         });
     }
-    
+}
 Route::get('/download-xml', function () {
     $file = public_path('uploads/sitemap/sitemap.xml');
     $headers = [

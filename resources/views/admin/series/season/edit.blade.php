@@ -192,12 +192,17 @@
             var ppvPrice = $('#ppv_price_input').val();
             var iosPpvPrice = $('#ios_ppv_price').val();
             var ppvInterval = $('#ppv_interval').val();
+            var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
+            var enable_video_cipher_upload = '<?= @$theme_settings->enable_video_cipher_upload ?>';
+            var transcoding_access = '<?= @$settings->transcoding_access ?>';
+
 
             if (ppvAccess === 'ppv') {
                 $('#ppv_price_group').show();
                 $('#ios_ppv_price_old').show();
                 $('#ios_ppv_price').show();
                 $('#ppv_intravel_group').show();
+                $('#ppv_price_plan').show();
 
                 if (ppvPrice === '' || iosPpvPrice === '' || ppvInterval === '') {
                     $('#submit-update-cat').prop('disabled', true);
@@ -212,13 +217,22 @@
                 }
             } else {
                 $('#ppv_price_group').hide();
+                $('#ppv_price_plan').hide();
                 $('#ios_ppv_price_old').hide();
+                $('#ios_ppv_price_plan').hide();
                 $('#ppv_intravel_group').hide();
                 $('#submit-update-cat').prop('disabled', false);
                 $('#ppv_error_req').hide();
                 $('#ios_error_req').hide();
                 $('#intravel_error_req').hide();
             }
+
+            
+            if(enable_ppv_plans == 0 && enable_video_cipher_upload == 0){
+                $('#ppv_price_plan').hide();
+                
+            }
+
         }
 
         updateFormState();
@@ -248,7 +262,7 @@
         $('#ios_ppv_price_plan').hide();
 
         if(enable_ppv_plans == 1 && enable_video_cipher_upload == 1){
-
+            // alert();
             if($('#ppv_access').val() == "ppv"){
                 $('#ppv_price_plan').show();
                 $('#ios_ppv_price_plan').show();

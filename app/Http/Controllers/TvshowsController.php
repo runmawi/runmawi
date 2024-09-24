@@ -259,11 +259,11 @@ class TvshowsController extends Controller
         }
     }
 
-    public function play_episode($series_name, $episode_name)
+    public function play_episode($series_name, $episode_name,$plan = null)
     {
 
         if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
-            return $this->VideoCipher_Episode($series_name, $episode_name);
+            return $this->VideoCipher_Episode($series_name, $episode_name,$plan);
         }
 
         try {
@@ -853,13 +853,28 @@ class TvshowsController extends Controller
             $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
+
+            $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
+            ->where('user_id', Auth::user()->id)
+            ->first();
+    
+            if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                $currentdate = date("M d , y H:i:s");
+                $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+            }
+            else{
+                $ppv_exists_check_query = 0;
+            }    
+
+                // dd($ppv_purchase);
             if($season_access_ppv == "free" || Auth::user()->role == "admin"){
                 $episode_play_access = 1;
             }else{
                 if(Auth::guest()){
                     $episode_play_access = 0;
                 }elseif(Auth::user()->role == "registered"){
-                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide){
+                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0){
                         $episode_play_access = 1;
                     }else{
                         $episode_play_access = 0;
@@ -868,7 +883,7 @@ class TvshowsController extends Controller
                     $episode_play_access = 1;
                 }
                 elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0){
-                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide ){
+                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0 ){
                         $episode_play_access = 1;
                     }else{
                         $episode_play_access = 0;
@@ -886,6 +901,34 @@ class TvshowsController extends Controller
 
             $paydunya_payment_setting = PaymentSetting::where('payment_type','Paydunya')->where('status',1)->first();
             
+            // Payment Gateway Paypal
+
+            $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
+
+            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+
+            $paypal_password = null;
+            $paypal_signature = null;
+
+            if (!is_null($PayPalpayment)) {
+
+                switch ($PayPalpayment->live_mode) {
+                    case 0:
+                        $paypal_password = $PayPalpayment->test_paypal_password;
+                        $paypal_signature = $PayPalpayment->test_paypal_signature;
+                        break;
+
+                    case 1:
+                        $paypal_password = $PayPalpayment->live_paypal_password;
+                        $paypal_signature = $PayPalpayment->live_paypal_signature;
+                        break;
+
+                    default:
+                        $paypal_password = null;
+                        $paypal_signature = null;
+                        break;
+                }
+            }
 
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
@@ -919,7 +962,7 @@ class TvshowsController extends Controller
                     'playerui_settings' =>   $playerui ,
                     'episodesubtitles' =>   $subtitle ,
                     'Stripepayment' => PaymentSetting::where('payment_type', 'Stripe')->first(),
-                    'PayPalpayment' => PaymentSetting::where('payment_type', 'PayPal')->first(),
+                    'paypal_payment_setting' => $PayPalpayment,
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
                     'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
                     'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
@@ -932,6 +975,7 @@ class TvshowsController extends Controller
                     'stripe_payment_setting'   => $stripe_payment_setting ,
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
+                    'paypal_signature' => $paypal_signature,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -979,6 +1023,8 @@ class TvshowsController extends Controller
                     'stripe_payment_setting'   => $stripe_payment_setting ,
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
+                    'paypal_signature' => $paypal_signature,
+                    'paypal_payment_setting' => $PayPalpayment,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1033,6 +1079,35 @@ class TvshowsController extends Controller
             $button_text = ButtonText::first();
 
             $currency = CurrencySetting::first();
+
+              // Payment Gateway Paypal
+
+              $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
+
+              $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+  
+              $paypal_password = null;
+              $paypal_signature = null;
+  
+              if (!is_null($PayPalpayment)) {
+  
+                  switch ($PayPalpayment->live_mode) {
+                      case 0:
+                          $paypal_password = $PayPalpayment->test_paypal_password;
+                          $paypal_signature = $PayPalpayment->test_paypal_signature;
+                          break;
+  
+                      case 1:
+                          $paypal_password = $PayPalpayment->live_paypal_password;
+                          $paypal_signature = $PayPalpayment->live_paypal_signature;
+                          break;
+  
+                      default:
+                          $paypal_password = null;
+                          $paypal_signature = null;
+                          break;
+                  }
+              }
 
             $settings = Setting::first();
             // dd($settings);
@@ -1173,6 +1248,8 @@ class TvshowsController extends Controller
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
                     'button_text'              => $button_text,
+                    'paypal_signature' => $paypal_signature,
+                    'paypal_payment_setting' => $PayPalpayment,
                 ];
 
                 return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
@@ -1216,6 +1293,8 @@ class TvshowsController extends Controller
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
                     'button_text'              => $button_text,
+                    'paypal_signature' => $paypal_signature,
+                    'paypal_payment_setting' => $PayPalpayment,
                 ];
                 return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
@@ -1738,9 +1817,9 @@ public function RemoveDisLikeEpisode(Request $request)
     }
 
 
-    public function VideoCipher_Episode($series_name, $episode_name)
+    public function VideoCipher_Episode($series_name, $episode_name,$plan)
     {
-        try {
+        // try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             
@@ -2247,8 +2326,9 @@ public function RemoveDisLikeEpisode(Request $request)
 
                 // video Js
 
+                $seasons = SeriesSeason::where('series_id', '=', $episode->series_id)->first();
 
-            $episode_details = Episode::where('id',$source_id)->get()->map( function ($item) use ($seasons)  {
+                $episode_details = Episode::where('id',$source_id)->get()->map( function ($item) use ($seasons,$series,$plan)  {
 
                 $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
                 $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
@@ -2262,11 +2342,22 @@ public function RemoveDisLikeEpisode(Request $request)
                 $item['video_skip_recap_seconds']        = $item->skip_recap ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
                 $item['video_recap_start_time_seconds']  = $item->recap_start_time ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
                 $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
+                $item['users_episode_visibility_redirect_url'] =  URL::to('/episode'.'/'.$series->title.'/'.$item['title']) ;
                 
-
-                if( !Auth::guest() && Auth::user()->role == "admin"){
+                // !empty(@$plan) && @$plan != '' && $seasons->access == 'guest' || 
+                if( !empty(@$plan) && @$plan != '' && !Auth::guest() && Auth::user()->role == "admin"){
+                    
                     $item['Episode_url'] =  $item->episode_id_1080p ;
-               }elseif(!Auth::guest() && Auth::user()->role == "registered" && $seasons->access == 'ppv'){
+
+               }elseif(!empty(@$plan) && @$plan != '' && $series->access == 'guest'  && $seasons->access == 'free' ||  !empty(@$plan) && @$plan != '' && $series->access == 'registered'  && $seasons->access == 'free'){
+
+                if($plan == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($plan == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($plan == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+                }elseif(!empty(@$plan) && @$plan != '' && $series->access == 'registered' && Auth::user()->role == 'registered' ){
+
+                    if($plan == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($plan == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($plan == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+
+                }elseif(!Auth::guest() && Auth::user()->role == "registered" && $seasons->access == 'ppv'){
 
 
                     $item['PPV_Plan']   = PpvPurchase::where('user_id',Auth::user()->id)->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
@@ -2290,9 +2381,10 @@ public function RemoveDisLikeEpisode(Request $request)
 
                
                $videoId = $item['Episode_url']; 
+            //    dd($videoId);
                $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
                $curl = curl_init();
-
+               
                curl_setopt_array($curl, array(
                    CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
                    CURLOPT_RETURNTRANSFER => true,
@@ -2309,6 +2401,8 @@ public function RemoveDisLikeEpisode(Request $request)
                        "Authorization: Apisecret $apiKey",
                        "Content-Type: application/json"
                    ),
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0),
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0),
                ));
 
                $response = curl_exec($curl);
@@ -2339,6 +2433,7 @@ public function RemoveDisLikeEpisode(Request $request)
                 return $item;
   
             })->first();
+            // dd($episode_details);
             if(!Auth::guest()){
                 $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
                                         ->where('series_id', '=', $episode->series_id)
@@ -2355,7 +2450,7 @@ public function RemoveDisLikeEpisode(Request $request)
             ->where('season_id', '=', $episode->season_id)->orderBy('created_at', 'desc')
             ->count();
             
-            // dd($SeasonSeriesPpvPurchaseCount);
+            // dd($free_episode);
 
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
@@ -2456,11 +2551,11 @@ public function RemoveDisLikeEpisode(Request $request)
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
     
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
     
-            return $th->getMessage();
-            return abort(404);
-        }
+        //     return $th->getMessage();
+        //     return abort(404);
+        // }
     }
  
 }

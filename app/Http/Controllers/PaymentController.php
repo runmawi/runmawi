@@ -2189,6 +2189,77 @@ public function UpgadeSubscription(Request $request){
   }
 
 
-  
+  public function PayPal_payment_series_season_PPV_Purchase( Request $request)
+    {
+        try{
+            $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
+            $series_id = $SeriesSeason->series_id;
+            $series = Series::find($series_id);
+        
+                $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+                $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+                
+                if(!empty($request->SeriesSeason_id)){
+                    $moderators_id = $SeriesSeason->user_id;
+                }
+
+                if(!empty($moderators_id)){
+                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $total_amount        =  $SeriesSeason->ppv_price;
+                    $title               =  $SeriesSeason->series_seasons_name;
+                    $commssion           =  VideoCommission::first();
+                    $percentage          =  $commssion->percentage; 
+                    $ppv_price           =  $SeriesSeason->ppv_price;
+                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
+                    $moderator_commssion =  $ppv_price - $percentage;
+                    $moderator_id        =  $moderators_id;
+                }else{
+                    $total_amount       =   $SeriesSeason->ppv_price;
+                    $title              =   $SeriesSeason->series_seasons_name;
+                    $commssion          =   VideoCommission::first();
+                    $ppv_price          =   $SeriesSeason->ppv_price;
+                    $percentage         =   null; 
+                    $admin_commssion    =   null;
+                    $moderator_commssion =  null;
+                    $moderator_id        =  null;
+                }
+
+                PpvPurchase::create([
+                    'user_id'         =>  Auth::user()->id ,
+                    'season_id'       => $request->SeriesSeason_id ,
+                    'series_id'       => $series_id ,
+                    'total_amount'        =>   (integer) $request->amount / 100,
+                    'admin_commssion'     => $admin_commssion,
+                    'moderator_commssion' => $moderator_commssion,
+                    'status'     => 'active',
+                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
+                    'to_time'    => $to_time,
+                    'moderator_id' => $moderator_id,
+                    'payment_gateway'  => 'Stripe',
+                    'payment_in'       => 'website',
+                    'platform'       => 'website',
+                ]);
+
+                $respond = array(
+                    'status'  => 'true',
+                    'redirect_url' => URL::to('play_series/'. $series->slug) ,
+                    'message'   => 'Season Payment Purchase Successfully !!' ,
+                );
+
+            return 1;
+
+        } catch (\Exception $e) {
+
+            $respond = array(
+                'status'  => 'false',
+                'redirect_url' => URL::to('play_series/'. $series->slug) ,
+                'message'   => $e->getMessage() ,
+            );
+            return $respond;
+
+        }
+
+    }
+
 }
 
