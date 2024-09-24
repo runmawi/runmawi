@@ -455,39 +455,39 @@
             });
 
             function sendOtp() {
-                    $('#mobile').attr('readonly', true);
-                    $('#ccode').attr('disabled', true);
+                $('#mobile').attr('readonly', true);
+                $('#ccode').attr('disabled', true);
 
-                    let mobileNumber = $('#mobile').val();
-                    let ccode = $('#ccode').val();
-                    $('.mob_exist_status').text("");
+                let mobileNumber = $('#mobile').val();
+                let ccode = $('#ccode').val();
+                $('.mob_exist_status').text("");
 
-                    $.ajax({
-                        url: "{{ route('auth.otp.sending-otp') }}",
-                        type: "get",
-                        data: {
-                            mobile: mobileNumber,
-                            ccode: ccode
-                        },
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.exists) {
-                                $('.otp-div').show();
-                                $('#send_otp_button').hide();
-                                $('.mob_exist_status').text(response.message_note).css('color', 'green');
-                            } else {
-                                if (response.error_note == "Invalid User") {
-                                    $('#mobile').attr('readonly', false);
-                                    $('#ccode').attr('disabled', false);
-                                }
-                                $('.mob_exist_status').text(response.message_note).css('color', 'red');
+                $.ajax({
+                    url: "{{ route('auth.otp.sending-otp') }}",
+                    type: "get",
+                    data: {
+                        mobile: mobileNumber,
+                        ccode: ccode
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.exists) {
+                            $('.otp-div').show();
+                            $('#send_otp_button').hide();
+                            $('.mob_exist_status').text(response.message_note).css('color', 'green');
+                        } else {
+                            if (response.error_note == "Invalid User") {
+                                $('#mobile').attr('readonly', false);
+                                $('#ccode').attr('disabled', false);
                             }
-                        },
-                        error: function(error) {
-                            console.error('AJAX error:', error);
+                            $('.mob_exist_status').text(response.message_note).css('color', 'red');
                         }
-                    });
-                }
+                    },
+                    error: function(error) {
+                        console.error('AJAX error:', error);
+                    }
+                });
+            }
 
                 
         var otp_inputs = document.querySelectorAll(".otp__digit")
