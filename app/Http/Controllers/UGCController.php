@@ -2570,7 +2570,6 @@ class UGCController extends Controller
                 ]);
                 
                 $user = User::find($request->user_id)->update(['ugc_about' => $request->ugc_about]);
-                dd($user);
                 $response = [
                     'status' => true,
                     'status_code' => 200,
