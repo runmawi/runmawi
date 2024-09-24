@@ -1381,16 +1381,16 @@ function format(item, state) {
                         success: function(response) {
                             if (response.exists) {
                                 document.getElementById("send_otp_button").removeAttribute("disabled");
-                                $('.mob_exist_status').text("Mobile Number Not Exist, Pls verify Number vai OTP!").css('color', 'green');;
+                                $('.mob_exist_status').text("Valid Mobile number, verify Number via OTP to register!").css('color', 'green');;
 
                             } else {
                                 document.getElementById("send_otp_button").setAttribute("disabled", "disabled");
-                                $('.mob_exist_status').text("Mobile Number Already exists !").css('color', 'red');
+                                $('.mob_exist_status').text("Mobile Number Already exists!").css('color', 'red');
                             }
                         },
                         error: function(error) {
                             console.error('AJAX error:', error);
-                            $('.mob_exist_status').text("Mobile Number not exists !").css('color', 'red');
+                            $('.mob_exist_status').text("Mobile Number not exists!").css('color', 'red');
                         }
                     });
                 }

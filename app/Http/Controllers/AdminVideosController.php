@@ -4162,9 +4162,14 @@ class AdminVideosController extends Controller
             $responsive_tv_image = null;
         }
         
+        $storage_settings = StorageSetting::first();   
+
+
         if ($video->type == "embed") {
             $status = 1;
-        } else {
+        }elseif($storage_settings->flussonic_storage == 1){
+            $status = 1;
+         } else {
             $status = 0;
         }
 

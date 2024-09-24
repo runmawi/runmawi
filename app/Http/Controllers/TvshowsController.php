@@ -1747,6 +1747,8 @@ public function RemoveDisLikeEpisode(Request $request)
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
+
+        $ppv_series_description = Setting::pluck('series')->first();
     
         $auth_user = Auth::user();
     
@@ -2393,6 +2395,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'episode_details'           => $episode_details ,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
+                    'ppv_series_description'        => $ppv_series_description,
+
                 ];
                 
                 if (Auth::guest() && $settings->access_free == 1) {

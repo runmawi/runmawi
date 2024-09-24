@@ -167,48 +167,48 @@ border-radius: 0px 4px 4px 0px;
 							
 							@elseif ( $video->publish_type == "recurring_program" )
 								
+								@php
+									$recurring_timezone = App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first();
+									$Current_time = Carbon\Carbon::now(current_timezone());
+									$convert_time = $Current_time->copy()->timezone($recurring_timezone);
+
+									switch ($video->recurring_program_week_day) {
+
+										case 0:
+											$recurring_program_week_day = 'Sunday' ;
+										break;
+
+										case 1 :
+											$recurring_program_week_day =  'Monday' ;
+										break;
+
+										case 2:
+											$recurring_program_week_day =  'Tuesday' ;
+										break;
+
+										case 3 :
+											$recurring_program_week_day = 'Wednesday' ;
+										break;
+
+										case 4:
+											$recurring_program_week_day =  'Thrusday' ;
+										break;
+
+										case 5:
+											$recurring_program_week_day =  'Friday' ;
+										break;
+
+										case 6:
+											$recurring_program_week_days =  'Saturday' ;
+										break;
+
+										default:
+											$recurring_program_week_day =  null ;
+										break;
+									}
+								@endphp
+								
 								@if ( $video->recurring_program != "custom")
-									
-									@php
-										$recurring_timezone = App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first();
-										$Current_time = Carbon\Carbon::now(current_timezone());
-										$convert_time = $Current_time->copy()->timezone($recurring_timezone);
-
-										switch ($video->recurring_program_week_day) {
-
-											case 0:
-												$recurring_program_week_day = 'Sunday' ;
-											break;
-
-											case 1 :
-												$recurring_program_week_day =  'Monday' ;
-											break;
-
-											case 2:
-												$recurring_program_week_day =  'Tuesday' ;
-											break;
-
-											case 3 :
-												$recurring_program_week_day = 'Wednesday' ;
-											break;
-
-											case 4:
-												$recurring_program_week_day =  'Thrusday' ;
-											break;
-
-											case 5:
-												$recurring_program_week_day =  'Friday' ;
-											break;
-
-											case 6:
-												$recurring_program_week_days =  'Saturday' ;
-											break;
-
-											default:
-												$recurring_program_week_day =  null ;
-											break;
-										}
-									@endphp
 
 									@if ( $video->recurring_program == "daily")
 
