@@ -6,12 +6,12 @@
          <div class="col-sm-12 page-height">
             <div class="iq-main-header align-items-center justify-content-between">
                <h4 class="vid-title">
-                  <?php echo __('Movies'); ?>
+               <?php echo $language_name; ?> <?php echo __('Movies'); ?>
                </h4>
             </div>
             <div class="favorites-contens">
                <ul class="category-page list-inline row p-0 mb-0">
-                  <?php if (isset($lang_videos)):
+                  <?php if (isset($lang_videos) && count($lang_videos) > 0):
                      foreach ($lang_videos as $video): ?>
                         <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
@@ -115,8 +115,19 @@
                               </div>
                            </a>
                         </li>
-                     <?php endforeach;
-                  endif; ?>
+
+                        
+                        
+               <?php endforeach; ?>
+               <?php else: ?>
+                  <!-- <div class="mx-auto">
+                  <p><h2>No Videos Available</h2></p>
+                  </div> -->
+                  <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                    <p ><h3 class="text-center">No video Available</h3>
+                </div>
+               <?php endif; ?>
+                  
                </ul>
             </div>
          </div>

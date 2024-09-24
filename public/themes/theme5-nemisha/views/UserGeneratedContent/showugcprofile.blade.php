@@ -366,6 +366,12 @@
     </section>
 </div>
 
+@php
+include (public_path('themes/theme5-nemisha/views/footer.blade.php'))
+@endphp
+
+
+
 <script>
     function Copy() {
     var profile_url = $('#profile_url').val();
