@@ -5195,7 +5195,10 @@ public function verifyandupdatepassword(Request $request)
                               return $query->whereNotIn('videos.id', Block_videos());
                           })
 
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()->filter(function ($item) {
+                            return $item['draft'] == 1 && $item['status'] == 1 && $item['active'] == 1;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                             $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                             $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                             $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $default_horizontal_image_url;  
@@ -5231,21 +5234,22 @@ public function verifyandupdatepassword(Request $request)
                           })
                           ->limit('10')
                           ->groupBy('live_streams.id')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()
+                          ->filter(function ($item) {
+                            return $item['active'] == 1;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url;    
                               $item['id'] = $item->livestream_id;               
                               $item['source'] = "Livestream";
-                              if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
 
           $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id','audio.id as id')
                           ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
                           ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
-                          
 
                           ->when($settings->search_tags_status, function ($query) use ($request) {
                               return $query->orwhere('search_tags', 'LIKE', '%' . $request->search_value . '%');
@@ -5270,14 +5274,16 @@ public function verifyandupdatepassword(Request $request)
                           
                       ->limit('10')
                       ->groupBy('audio.id')
-                      ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                      ->get()
+                      ->filter(function ($item) {
+                        return $item['active'] == 1  && $item['status'] == 1  ;
+                      })
+                      ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                         $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;               
                         $item['source']    = "Audios";
-                        if( $item['active'] == 1  && $item['status'] == 1 ){
-                          return $item;
-                        }
+                        return $item;
                       }); 
 
 
@@ -5304,21 +5310,22 @@ public function verifyandupdatepassword(Request $request)
 
                           ->groupBy('episodes.id')
                           ->limit('10')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get() 
+                          ->filter(function ($item) {
+                            return $item['active'] == 1  && $item['status'] == 1  ;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Episode";
-                              if( $item['active'] == 1  && $item['status'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
                           
           $series = Series::Select('series.*','series_categories.category_id','series.id as id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
-
                           
                           ->when($settings->search_tags_status, function ($query) use ($request) {
                               return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->search_value . '%');
@@ -5342,15 +5349,17 @@ public function verifyandupdatepassword(Request $request)
 
                           ->groupBy('series.id')
                           ->limit('10')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()
+                          ->filter(function ($item) {
+                            return $item['active'] == 1  ;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Series";
-                               if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           });   
 
             $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
@@ -26842,31 +26851,31 @@ public function SendVideoPushNotification(Request $request)
                       $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
                                                           
                       $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
-                                                                                  ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+                                                                                  ->get()->map(function ($scheduler_item) use ($carbon_now , $current_timezone) {
   
-                                                                                      $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+                                                                                      $TimeZone   = TimeZone::where('id',$scheduler_item->time_zone)->first();
   
-                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $scheduler_item->choosed_date . $scheduler_item->start_time, $TimeZone->time_zone )
                                                                                                                                       ->copy()->tz( $current_timezone );
   
-                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $scheduler_item->choosed_date . $scheduler_item->end_time, $TimeZone->time_zone )
                                                                                                                                       ->copy()->tz( $current_timezone );
   
-                                                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
-                                                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+                                                                                      $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                                                      $scheduler_item['converted_end_time'] = $converted_end_time->format('h:i');
                                 
                                                                                       if ($carbon_now->between($converted_start_time, $converted_end_time)) {
-                                                                                          $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
-                                                                                          $item['converted_start_time'] = $converted_start_time->format('h:i A');
-                                                                                          $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                          $scheduler_item['video_image_url'] = URL::to('public/uploads/images/'.$scheduler_item->image ) ;
+                                                                                          $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                          $scheduler_item['converted_end_time']   =   $converted_end_time->format('h:i A');
                                                                                               
-                                                                                          $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
-                                                                                          $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
-                                                                                          return $item ;
+                                                                                          $scheduler_item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                                                          $scheduler_item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+                                                                                          return $scheduler_item ;
                                                                                       }
   
-                                                                                  });
-  
+                                                                                  })->filter() 
+                                                                                  ->values(); 
   
                       return $item;
           });

@@ -12,4 +12,9 @@ class LivePurchase extends Model
 	public static $rules = array();
 
 	protected $fillable = array();
+
+	public function livestream() {
+        return $this->belongsTo(Livestream::class, 'video_id');
+    }
+
 }
