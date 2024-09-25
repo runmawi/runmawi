@@ -25,7 +25,7 @@
                                        <div class="border-bg">
                                              <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
-                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="{{ $cont_video->title}}">
+                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="{{ $cont_video->title}}" loading="lazy">
                                                 </a>
                                                 <!-- PPV price -->
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
