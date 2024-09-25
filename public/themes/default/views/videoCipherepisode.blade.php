@@ -273,7 +273,7 @@
                                 <div class="container-fluid mt-3">
                                     <div class="d-flex">
 
-                                        @if(!Auth::guest() && Auth::user()->role != 'subscriber')
+                                        @if(!Auth::guest() && Auth::user()->role != 'subscriber' && $subscribe_btn == 1)
                                             <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                 <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                             </form>
@@ -318,7 +318,7 @@
                                     <div class="container-fluid mt-3">
                                         <div class="d-flex series">
 
-                                            @if(!Auth::guest() && Auth::user()->role != 'subscriber')
+                                            @if(!Auth::guest() && Auth::user()->role != 'subscriber' && $subscribe_btn == 1)
                                                 <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                                     <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                                 </form>
@@ -385,7 +385,7 @@
                             <div class="container-fluid mt-3">
                                     <div class="d-flex">
 
-                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber')
+                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber' && $subscribe_btn == 1)
                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                             <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                         </form>
@@ -405,7 +405,7 @@
                             <div class="container-fluid mt-3">
                             <div class="d-flex series">
 
-                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber')
+                                    @if(!Auth::guest() && Auth::user()->role != 'subscriber' && $subscribe_btn == 1)
                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
                                             <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                         </form>
