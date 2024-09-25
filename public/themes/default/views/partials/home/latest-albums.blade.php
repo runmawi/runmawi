@@ -28,7 +28,7 @@
                                        <div class="border-bg">
                                           <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}" aria-label="AlbumPlayTrailer">
-                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}">
+                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}" loading="lazy">
                                                 </a>   
                                           </div>
                                        </div>
