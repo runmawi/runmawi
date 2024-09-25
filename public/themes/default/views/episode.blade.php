@@ -42,6 +42,7 @@
 <script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
 <script src="<?= asset('public/themes/default/assets/js/video-js/end-card.js') ?>"></script>
 <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_signature; ?>"></script>
 
     <style>
 
@@ -357,6 +358,14 @@
                                               <?php echo $Paystack_payment_setting->payment_type; ?>
                                           </label>
                                       <?php endif; ?>
+
+                                                                                      <!-- PayPal Button -->
+                                    <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $paypal_payment_setting->payment_type; ?>" data-value="PayPal">
+                                              <?php echo $paypal_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
                                   </div>
 
                                   <div class="becomesubs-page">
@@ -392,6 +401,24 @@
                                             </button>
                                           </div>
                                       </div>
+
+                                      <div class="row mt-3 justify-content-around"> <!-- PayPal Button -->
+                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                                <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $SeriesSeason->id; ?>, <?php echo $SeriesSeason->ppv_price; ?>)">
+                                                    <?= ("Continue") ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                          <div class="paypal_button col-md-5 col-5 btn">
+                                            <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                            </button>
+                                          </div>
+                                      </div>
+
+                                        <!-- PayPal Button Container -->
+                                        <div id="paypal-button-container"></div>
+
                                   </div>
                               </div>
                           </div>
@@ -1024,52 +1051,107 @@
     <script src="https://checkout.stripe.com/checkout.js"></script>
 
     <script>
+
+
+                    
+                    function paypal_checkout(seasons_id, amount) {
+
+                        $('.paypal-button-container').empty();
+                        
+                        $('.paypal_pay_now').hide();
+
+                        paypal.Buttons({
+                            createOrder: function (data, actions) {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: amount,
+                                        }
+                                    }]
+                                });
+                            },
+                            onApprove: function (data, actions) {
+                                return actions.order.capture().then(function (details) {
+                                    console.log(details);
+                                    $.ajax({
+                                        url: '<?= URL::to('paypal-ppv-series-season') ?>',
+                                        method: 'post',
+                                        data: {
+                                            _token: '<?= csrf_token() ?>',
+                                            amount: amount,
+                                            SeriesSeason_id: seasons_id,
+                                        },
+                                        success: function(response) {
+                                            console.log("Server response:", response);
+                                            setTimeout(function() {
+                                                location.reload();
+                                            }, 2000);
+                                        },
+                                        error: function(error) {
+                                            swal('error');
+                                        }
+                                    });
+                                });
+                            },
+                            onError: function (err) {
+                                console.error(err);
+                            }
+                        }).render('#paypal-button-container'); 
+                    }
+
+
                     window.onload = function() {
-                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                        $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
                     }
 
                     $(document).ready(function() {
 
                         $(".payment_btn").click(function() {
 
-                            $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                            $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                             let payment_gateway = $('input[name="payment_method"]:checked').val();
                             // alert(payment_gateway);
                             if (payment_gateway == "Stripe") {
 
-                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                                 $('.Stripe_button').show();
 
 
                             } else if (payment_gateway == "Razorpay") {
 
-                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                                 $('.Razorpay_button').show();
 
                             } else if (payment_gateway == "Paystack") {
 
-                                $('.Stripe_button,.Razorpay_button,.cinetpay_button').hide();
+                                $('.Stripe_button,.Razorpay_button,.cinetpay_button,.paypal_button').hide();
                                 $('.paystack_button').show();
                             } else if (payment_gateway == "CinetPay") {
 
-                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                                 $('.cinetpay_button').show();
 
                             } else if (payment_gateway == "CinetPay") {
 
-                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                                 $('.cinetpay_button').show();
 
                             } else if (payment_gateway == "Paydunya") {
 
-                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button').hide();
+                                $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.paypal_button').hide();
 
                                 $('.Paydunya_button').show();
+
+                            }else if (payment_gateway == "PayPal") {
+
+                            $('.Razorpay_button,.paystack_button,.Stripe_button,.cinetpay_button,.Paydunya_button,.Paydunya_button').hide();
+
+                            $('.paypal_button').show();
 
                             }
                         });
