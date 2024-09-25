@@ -26827,31 +26827,31 @@ public function SendVideoPushNotification(Request $request)
                       $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
                                                           
                       $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
-                                                                                  ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+                                                                                  ->get()->map(function ($scheduler_item) use ($carbon_now , $current_timezone) {
   
-                                                                                      $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+                                                                                      $TimeZone   = TimeZone::where('id',$scheduler_item->time_zone)->first();
   
-                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                      $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $scheduler_item->choosed_date . $scheduler_item->start_time, $TimeZone->time_zone )
                                                                                                                                       ->copy()->tz( $current_timezone );
   
-                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                      $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $scheduler_item->choosed_date . $scheduler_item->end_time, $TimeZone->time_zone )
                                                                                                                                       ->copy()->tz( $current_timezone );
   
-                                                                                      $item['converted_start_time'] = $converted_start_time->format('h:i');
-                                                                                      $item['converted_end_time'] = $converted_end_time->format('h:i');
+                                                                                      $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i');
+                                                                                      $scheduler_item['converted_end_time'] = $converted_end_time->format('h:i');
                                 
                                                                                       if ($carbon_now->between($converted_start_time, $converted_end_time)) {
-                                                                                          $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
-                                                                                          $item['converted_start_time'] = $converted_start_time->format('h:i A');
-                                                                                          $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                          $scheduler_item['video_image_url'] = URL::to('public/uploads/images/'.$scheduler_item->image ) ;
+                                                                                          $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                          $scheduler_item['converted_end_time']   =   $converted_end_time->format('h:i A');
                                                                                               
-                                                                                          $item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
-                                                                                          $item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
-                                                                                          return $item ;
+                                                                                          $scheduler_item['converted_start_time_AM_PM'] = $converted_start_time->format('A');
+                                                                                          $scheduler_item['converted_end_time_AM_PM'] = $converted_end_time->format('A');
+                                                                                          return $scheduler_item ;
                                                                                       }
   
-                                                                                  });
-  
+                                                                                  })->filter() 
+                                                                                  ->values(); 
   
                       return $item;
           });
