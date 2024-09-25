@@ -55,7 +55,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}"  aria-label="LiveStream-PlayTrailer">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" />
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" loading="lazy"/>
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
