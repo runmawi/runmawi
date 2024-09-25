@@ -16,6 +16,7 @@ use Theme;
 use App\Episode;
 use App\ThumbnailSetting;
 use App\Series;
+use App\LiveStream;
 
 class WatchLaterController extends Controller
 {
@@ -150,7 +151,7 @@ class WatchLaterController extends Controller
           }
       
           $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
-          $ppvlivevideos = Video::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
+          $ppvlivevideos = LiveStream::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
           $ppvseries = Series::where('active', '=', '1')->whereIn('id', $ppvseries_array)->paginate(12);
           $data = array(
             'ppv' => $ppvvideos,
