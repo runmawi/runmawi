@@ -579,6 +579,35 @@ class LiveStreamController extends Controller
 
             })->first();
 
+            // Payment Gateway Paypal
+
+            $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
+
+            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+
+            $paypal_password = null;
+            $paypal_signature = null;
+
+            if (!is_null($PayPalpayment)) {
+
+                switch ($PayPalpayment->live_mode) {
+                    case 0:
+                        $paypal_password = $PayPalpayment->test_paypal_password;
+                        $paypal_signature = $PayPalpayment->test_paypal_signature;
+                        break;
+
+                    case 1:
+                        $paypal_password = $PayPalpayment->live_paypal_password;
+                        $paypal_signature = $PayPalpayment->live_paypal_signature;
+                        break;
+
+                    default:
+                        $paypal_password = null;
+                        $paypal_signature = null;
+                        break;
+                }
+            }
+            
            $data = array(
                  'currency'     => $currency,
                  'video_access' => $video_access,
@@ -617,6 +646,9 @@ class LiveStreamController extends Controller
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                     </svg>',
+                'paypal_payment_setting' => $PayPalpayment,
+                'paypal_signature' => $paypal_signature,
+
            );           
 
            if(  $Theme == "default" ){

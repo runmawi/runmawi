@@ -2261,5 +2261,87 @@ public function UpgadeSubscription(Request $request){
 
     }
 
+    public function LiveRent_Payment(Request $request)
+    {
+
+       $setting = Setting::first();  
+       $ppv_hours = $setting->ppv_hours;
+
+       $d = new \DateTime('now');
+       $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+       $now = $d->format('Y-m-d h:i:s a');
+       $time = date('h:i:s', strtotime($now));
+       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+
+        try {
+            $video = LiveStream::where('id','=',$request->live_id)->first();
+
+            if(!empty($video)){
+            $moderators_id = $video->user_id;
+            }
+
+            if(!empty($moderators_id)){
+                $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
+                $total_amount     = $video->ppv_price;
+                $title            =  $video->title;
+                $commssion        = VideoCommission::first();
+                $percentage       = $commssion->percentage; 
+                $ppv_price        = $video->ppv_price;
+                $admin_commssion  = ($percentage/100) * $ppv_price ;
+                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_id = $moderators_id;
+            }
+            else
+            {
+                $total_amount   = $video->ppv_price;
+                $title          =  $video->title;
+                $commssion      = VideoCommission::first();
+                $percentage     = null; 
+                $ppv_price       = $video->ppv_price;
+                $admin_commssion =  null;
+                $moderator_commssion = null;
+                $moderator_id = null;
+            }
+
+            $purchase = new PpvPurchase;
+            $purchase->user_id      = Auth::user()->id ;
+            $purchase->live_id     = $request->live_id ;
+            $purchase->total_amount = $request->get('amount')/100 ;
+            $purchase->admin_commssion = $admin_commssion;
+            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->status = 'active';
+            $purchase->to_time = $to_time;
+            $purchase->moderator_id = $moderator_id;
+            $purchase->platform = 'website';
+            $purchase->save();
+
+
+            $livepurchase = new LivePurchase;
+            $livepurchase->user_id = Auth::user()->id;
+            $livepurchase->video_id = $request->live_id;
+            $livepurchase->to_time = $to_time;
+            $livepurchase->expired_date = $to_time;
+            $livepurchase->amount = $request->get('amount')/100 ;
+            $livepurchase->status = 1;
+            $livepurchase->platform = 'website';
+            $livepurchase->save();
+
+            $respond=array(
+                'status'  => 'true',
+            );
+        
+            return 1;
+
+        } catch (\Exception $e) {
+
+            $respond=array(
+                'status'  => 'false',
+            );
+
+            return 1; 
+        }
+    }
+
+
 }
 
