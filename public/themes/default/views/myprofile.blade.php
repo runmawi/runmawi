@@ -213,7 +213,6 @@ $settings = App\Setting::first();
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
-                          <!-- <li><a class="showSingle" target="2">Transaction details</a></li>-->
                          <!--  <li><a class="showSingle" target="3">Plan details</a></li>-->
                         <li><a class="showSingle" target="1">{{ (__('Manage Profile')) }}</a></li>
                         <li><a class="showSingle" target="2">{{ (__('Plan details')) }}</a></li>
@@ -230,6 +229,7 @@ $settings = App\Setting::first();
                         @if(Logged_Monetization()== 1)
                            <li><a href="{{ URL::to('my-logged-devices') }}" >{{ (__('Logged User Monetization')) }}</a></li>
                         @endif
+                        <li><a class="showSingle" target="10">Transaction details</a></li>
 
                     </ul>
                 </div>
@@ -699,7 +699,16 @@ $settings = App\Setting::first();
 
                                   </div>
                                </div>
-          </div>
+
+                  <div class="targetDiv" id="div10">
+                  <p class="text-white">{{ __('Transaction Details') }}</p>
+
+                     <div class="col-lg-6 col-md-6 col-12">
+                           <a href="<?=URL::to('/transactiondetails');?>" class="btn btn-primary btn-login nomargin noborder-radius text-white" >{{ __('View Transaction Details') }}</a>
+                        </div>
+                  </div>
+
+         </div>
             </div></div>
             
 <style>
