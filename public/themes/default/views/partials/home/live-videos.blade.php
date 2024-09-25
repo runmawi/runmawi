@@ -54,7 +54,7 @@
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
-                                                    <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}">
+                                                    <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}"  aria-label="LiveStream-PlayTrailer">
                                                         <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" />
                                                     </a>
 
@@ -73,7 +73,7 @@
                                             </div>
 
                                             <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}" aria-label="playTrailer">
+                                                <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}" aria-label="LiveStream-PlayTrailer">
                                                     {{-- <img class="img-fluid w-100" loading="lazy" data-src="{{ $video->player_image ? URL::to('/public/uploads/images/' . $video->player_image) : $default_vertical_image_url }}" src="{{ $video->player_image ? URL::to('/public/uploads/images/' . $video->player_image) : $default_vertical_image_url }}" alt="{{ $video->title }}" /> --}}
                                                 </a>
 
