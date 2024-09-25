@@ -3627,7 +3627,7 @@ class HomeController extends Controller
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                                'duration','rating','image','featured','video_tv_image','player_image','details','description')
+                                'duration','rating','image','featured','player_image','details','description')
                                 ->get();
 
             $latest_Episode =  Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
@@ -3779,7 +3779,7 @@ class HomeController extends Controller
                                 ->where('status', '=', '1')
                                 ->limit('10')
                                 ->select('id','title','slug','ppv_status','year','rating','access','ppv_price',
-                                'duration','rating','image','featured','video_tv_image','player_image','details','description')
+                                'duration','rating','image','featured','player_image','details','description')
                                 ->get();
 
             $Episode = Episode::Select('episodes.*','series.id','series_categories.category_id','video_categories.name as Category_name')
