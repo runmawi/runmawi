@@ -21,6 +21,7 @@
                         <thead>
                             <tr>
                                 <th>{{ __('Status') }}</th>
+                                <th>{{ __('Content Name') }}</th>
                                 <th>{{ __('Date') }}</th>
                                 <th>{{ __('Amount') }}</th>
                                 <th>{{ __('Payment type') }}</th>
@@ -37,6 +38,7 @@
                                     @else
                                         <td class="bg-warning"> {{ 'Pending' }}></td>
                                     @endif
+                                    <td>{{  'No Title' }}</td>
                                     <td>{{  Carbon\Carbon::parse( $subscription->created_at)->format('F jS, Y')  }}</td>
                                     <td>{{ $subscription->price }}</td>
                                     <td>Card</td>
@@ -53,7 +55,7 @@
                                     @else
                                         <td class = "bg-warning"> {{ 'Pending' }}</td>
                                     @endif
-
+                                    <td>{{ $ppv->video->title ?? $ppv->series->title ?? 'No Title' }}</td>
                                     <td>{{ Carbon\Carbon::parse( $ppv->created_at)->format('F jS, Y') }}</td>
                                     <td>{{ $ppv->total_amount }}</td>
                                     <td>Card</td>
@@ -70,6 +72,7 @@
                                     @else
                                         <td class = "bg-warning"> {{ 'Pending' }}</td>
                                     @endif
+                                    <td>{{ $live->livestream->title ?? 'No Title' }}</td>
                                     <td>{{  Carbon\Carbon::parse( $live->created_at)->format('F jS, Y') }}</td>
                                     <td>{{ $live->amount }}</td>
                                     <td>{{ __('Card') }}</td>

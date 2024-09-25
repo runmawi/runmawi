@@ -975,9 +975,14 @@ public function RentPaypal(Request $request)
             $user_id = Auth::user()->id;
             $subscriptions = Subscription::where('user_id',$user_id)->get(); 
             // $subscriptions = Subscription::where('user_id',$user_id)->get(); 
-            $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
-            $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
-
+            // $ppvcharse = PpvPurchase::where('user_id',$user_id)->get(); 
+            // $livepurchase = LivePurchase::where('user_id',$user_id)->get(); 
+            $ppvcharse = PpvPurchase::where('user_id', $user_id)
+              ->with(['video', 'series'])  
+              ->get();
+            $livepurchase = LivePurchase::where('user_id', $user_id)
+              ->with('livestream') 
+              ->get();
               if(!empty($subscriptions)){ 
                 $subscriptionspurchase = $subscriptions; 
               }
