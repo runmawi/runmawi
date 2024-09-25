@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Video;
+use App\Series;
+use App\Audio;
 
 class PpvPurchase extends Model
 {
