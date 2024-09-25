@@ -121,26 +121,29 @@
         </div>
     @else
     
-    <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
+        <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
             <div class="container-fluid video-details">
                 <div class="col-8">
                     <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                     <p class="trending-dec w-100 mb-0 text-white mb-4"> {{ strip_tags($Livestream_details->description) }}</p>
                     <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
-                    <a class="btn" id="{{ $Livestream_details->users_video_visibility_redirect_url }}" href="{{ $Livestream_details->users_video_visibility_redirect_url != 'live-purchase-now-button' ? $Livestream_details->users_video_visibility_redirect_url : '#' }}">
-                        <div class="playbtn text-white" style="gap:5px">
-                            {!! $play_btn_svg !!}
-                            <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
-                        </div>
-                    </a>
-
-                    @if( ($Livestream_details->access == "ppv" && Auth::guest()) || ($Livestream_details->access == "ppv" && Auth::user()->role !== "subscriber"))
-                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                    @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
+                        <a class="btn mr-3" {{ $Livestream_details->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#live-purchase-now-modal' : 'href=' . $Livestream_details->users_video_visibility_redirect_url }} >
                             <div class="playbtn text-white" style="gap:5px">
                                 {!! $play_btn_svg !!}
-                                <span class="text pr-2">  {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
                             </div>
                         </a>
+
+                        @if( ($Livestream_details->access == "ppv" && Auth::guest() && $subscribe_btn == 1) || ($Livestream_details->access == "ppv" && Auth::check() && Auth::user()->role !== "subscriber" && $subscribe_btn == 1))
+                            <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                <div class="playbtn text-white" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }}  </span>
+                                </div>
+                            </a>
+                        @endif
+
                     @endif
 
                     {{-- subscriber & PPV  --}}
@@ -235,14 +238,14 @@
                         <h5 class="title mt-5"> {{ ( !empty($button_text->live_visible_text) ? $button_text->live_visible_text : $Livestream_details->users_video_visibility_status_message ) }}</h5><br>
                         <div class="d-flex">
                             @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
-                                <a class="btn mr-3" data-toggle="modal" data-target="#live-purchase-now-modal">
+                                <a class="btn mr-3" {{ $Livestream_details->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#live-purchase-now-modal' : 'href=' . $Livestream_details->users_video_visibility_redirect_url }} >
                                     <div class="playbtn text-white" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
                                     </div>
                                 </a>
 
-                                @if( ($Livestream_details->access == "ppv" && Auth::guest()) || ($Livestream_details->access == "ppv" && Auth::user()->role !== "subscriber"))
+                                @if( ($Livestream_details->access == "ppv" && Auth::guest() && $subscribe_btn == 1) || ($Livestream_details->access == "ppv" && Auth::check() && Auth::user()->role !== "subscriber" && $subscribe_btn == 1))
                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                         <div class="playbtn text-white" style="gap:5px">
                                             {!! $play_btn_svg !!}
@@ -312,14 +315,14 @@
                                         <h5 class="title"> {{ $Livestream_details->users_video_visibility_status_message }}</h5><br>
                                         <div class="d-flex">
                                             @if ( $Livestream_details->users_video_visibility_Rent_button || $Livestream_details->users_video_visibility_becomesubscriber_button || $Livestream_details->users_video_visibility_register_button )
-                                                <a class="btn mr-3" data-toggle="modal" data-target="#live-purchase-now-modal">
+                                                <a class="btn mr-3" {{ $Livestream_details->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#live-purchase-now-modal' : 'href=' . $Livestream_details->users_video_visibility_redirect_url }} >
                                                     <div class="playbtn text-white" style="gap:5px">
                                                         {!! $play_btn_svg !!}
                                                         <span class="text pr-2"> {{ __( $Livestream_details->users_video_visibility_status_button ) }} </span>
                                                     </div>
                                                 </a>
 
-                                                @if( ($Livestream_details->access == "ppv" && Auth::guest()) || ($Livestream_details->access == "ppv" && Auth::user()->role !== "subscriber"))
+                                                @if( ($Livestream_details->access == "ppv" && Auth::guest() && $subscribe_btn == 1) || ($Livestream_details->access == "ppv" && Auth::check() && Auth::user()->role !== "subscriber" && $subscribe_btn == 1))
                                                     <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                                         <div class="playbtn text-white" style="gap:5px">
                                                             {!! $play_btn_svg !!}

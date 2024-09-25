@@ -15,8 +15,14 @@
                         <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
                         <?php  echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                     </h1>
-                            <div class="mb-3">
-                             <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image" /></div>
+                    <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                        <?php 
+                            $count = $slider_video->rating;
+                            for ($i = 0; $i < $count; $i++) { 
+                                echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                            }
+                        ?>
+                    </div>
                             <div class="p-0">
 
                     <a href="<?php echo $slider_video->link; ?>" class="btn bd "><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now</a>
@@ -65,8 +71,15 @@ data-delay-in="0.6">
 //  echo __($slider_video->title);
   ?>
 </h1>
-                            <div class="mb-3">
-                             <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/></div>
+                            <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                            <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>  -->
+                            <?php 
+                                $count = $slider_video->rating; // Example count
+                                for ($i = 0; $i < $count; $i++) { // Loop to repeat image
+                                    echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                }
+                            ?>
+                            </div>
 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
     <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
@@ -130,8 +143,14 @@ endif; ?>
                                     <?php echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
                                 </h1>
 
-                                <div class="mb-3">
-                                    <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>
+                                <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                                    <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
+                                    <?php 
+                                        $count = $live_event_banner->rating; 
+                                        for ($i = 0; $i < $count; $i++) { // Loop to repeat image
+                                            echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                        }
+                                    ?>
                                 </div>
 
                                 <div class="d-flex align-items-center" >
@@ -181,13 +200,19 @@ endif; ?>
                                     </a>
                                                         <!-- Video Title  -->
                             <?php }else{ ?>
-                                    <h1 class="text-white slider-text title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
-                                        <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
-                                    </h1>
+                                    <h2 class="text-white slider-text title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
+                                        <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,50).'...' : $videos->title; ?>
+                                    </h2>
                             <?php } ?>
 
-                            <div class="mb-3">
-                            <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>
+                            <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                            <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
+                            <?php 
+                                $count = $videos->rating; // Example count
+                                for ($i = 0; $i < $count; $i++) { // Loop to repeat image
+                                    echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                }
+                            ?>
                             </div>
 
                             
@@ -314,8 +339,14 @@ if(Route::current()->getName() == "home"){
                                 </h1>
                             <?php } ?>
 
-                                <div class="mb-3">
-                                   <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>
+                                <div class="mb-3" style="display: flex; gap: 5px; width:30px; height:15px;" >
+                                   <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
+                                   <?php 
+                                        $count = $videos->rating; // Example count
+                                        for ($i = 0; $i < $count; $i++) { // Loop to repeat image
+                                            echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                        }
+                                    ?>
                                 </div>
 
                                 <div 
@@ -530,8 +561,14 @@ endif; ?>
                                 <?php echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title; ?>
                             </h1>
 
-                            <div class="mb-3">
-                                <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>
+                            <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                                <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
+                                <?php 
+                                    $count = $series_slider->rating; // Example count
+                                    for ($i = 0; $i < $count; $i++) { // Loop to repeat image
+                                        echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                    }
+                                ?>
                             </div>
 
                             <?php if( $series_slider->year != null ):?>
