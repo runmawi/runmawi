@@ -2,7 +2,7 @@
 
 <section id="iq-favorites">
         <div class="fluid">
-           <div class="row">
+         <div class="row">
 <?php if (count($ppv) > 0 ||  count($ppvlive) > 0 ||  count($ppvseries) > 0): ?>
   <div class="col-sm-12 overflow-hidden">
 
@@ -84,6 +84,7 @@
                  </div>
            
 
+      <?php if (count($ppvseries) > 0): ?>
 
 
         <div class="col-sm-12 overflow-hidden">
@@ -137,7 +138,9 @@
                  <?php
  ?>
                  </div>
+   <?php endif; ?>
         
+   <?php if (count($ppvlive) > 0): ?>
       
   <div class="col-sm-12 overflow-hidden">
 
@@ -210,6 +213,7 @@
                        </li>
                        <?php
         endforeach;
+  endif; 
     endif; 
    else:
    ?>
