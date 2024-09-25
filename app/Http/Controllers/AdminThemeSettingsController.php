@@ -287,6 +287,10 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->enable_video_cipher_upload       = !empty($data['enable_video_cipher_upload']) ? '1' : '0';
 
         $theme_settings->enable_video_compression       = !empty($data['enable_video_compression']) ? '1' : '0';
+
+        $theme_settings->purchase_btn                   = !empty($data['purchase_btn']) ? '1' : '0';
+
+        $theme_settings->subscribe_btn                   = !empty($data['subscribe_btn']) ? '1' : '0';
         
         $theme_settings->save();
 

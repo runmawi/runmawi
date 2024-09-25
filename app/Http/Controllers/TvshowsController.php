@@ -58,6 +58,7 @@ use App\OrderHomeSetting;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use App\ButtonText;
+use App\SiteTheme as SiteTheme;
 
 
 class TvshowsController extends Controller
@@ -274,6 +275,10 @@ class TvshowsController extends Controller
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
+
+        $buttons_pay = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
+        $purchase_btn = $buttons_pay->purchase_btn;
+        $subscribe_btn = $buttons_pay->subscribe_btn;
     
         $auth_user = Auth::user();
     
@@ -976,6 +981,8 @@ class TvshowsController extends Controller
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
                     'ppv_series_description'   => $ppv_series_description,
                     'paypal_signature' => $paypal_signature,
+                    'purchase_btn'             => $purchase_btn,
+                    'subscribe_btn'            => $subscribe_btn,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1025,6 +1032,8 @@ class TvshowsController extends Controller
                     'ppv_series_description'   => $ppv_series_description,
                     'paypal_signature' => $paypal_signature,
                     'paypal_payment_setting' => $PayPalpayment,
+                    'purchase_btn'             => $purchase_btn,
+                    'subscribe_btn'            => $subscribe_btn,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1077,6 +1086,9 @@ class TvshowsController extends Controller
             $Theme = HomeSetting::pluck('theme_choosen')->first();
             $theme = Theme::uses($Theme);
             $button_text = ButtonText::first();
+            $buttons_pay = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
+            $purchase_btn = $buttons_pay->purchase_btn;
+            $subscribe_btn = $buttons_pay->subscribe_btn;
 
             $currency = CurrencySetting::first();
 
@@ -1250,6 +1262,8 @@ class TvshowsController extends Controller
                     'button_text'              => $button_text,
                     'paypal_signature' => $paypal_signature,
                     'paypal_payment_setting' => $PayPalpayment,
+                    'purchase_btn'           => $purchase_btn,
+                    'subscribe_btn'          => $subscribe_btn,
                 ];
 
                 return $theme->load('public/themes/'.$Theme.'/views/series',  $data )->render();
@@ -1295,6 +1309,8 @@ class TvshowsController extends Controller
                     'button_text'              => $button_text,
                     'paypal_signature' => $paypal_signature,
                     'paypal_payment_setting' => $PayPalpayment,
+                    'purchase_btn'             => $purchase_btn,
+                    'subscribe_btn'            => $subscribe_btn,
                 ];
                 return Redirect::to('series')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
             }
@@ -1826,6 +1842,10 @@ public function RemoveDisLikeEpisode(Request $request)
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
         $settings = Setting::first();
+
+        $buttons_pay = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
+        $purchase_btn = $buttons_pay->purchase_btn;
+        $subscribe_btn = $buttons_pay->subscribe_btn;
 
         $ppv_series_description = Setting::pluck('series')->first();
 
@@ -2494,6 +2514,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
                     'ppv_series_description'        => $ppv_series_description,
                     'button_text'                    => $button_text,
+                    'purchase_btn'                    => $purchase_btn,
+                    'subscribe_btn'                    => $subscribe_btn,
 
                 ];
                 
@@ -2538,6 +2560,9 @@ public function RemoveDisLikeEpisode(Request $request)
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'ppv_series_description'        => $ppv_series_description,
                     'button_text'                    => $button_text,
+                    'purchase_btn'                    => $purchase_btn,
+                    'subscribe_btn'                    => $subscribe_btn,
+                    'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
