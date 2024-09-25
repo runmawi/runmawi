@@ -5195,7 +5195,10 @@ public function verifyandupdatepassword(Request $request)
                               return $query->whereNotIn('videos.id', Block_videos());
                           })
 
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()->filter(function ($item) {
+                            return $item['draft'] == 1 && $item['status'] == 1 && $item['active'] == 1;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                             $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                             $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                             $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->video_tv_image) : $default_horizontal_image_url;  
@@ -5231,21 +5234,22 @@ public function verifyandupdatepassword(Request $request)
                           })
                           ->limit('10')
                           ->groupBy('live_streams.id')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()
+                          ->filter(function ($item) {
+                            return $item['active'] == 1;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->video_tv_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url;    
                               $item['id'] = $item->livestream_id;               
                               $item['source'] = "Livestream";
-                              if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
 
           $audio = Audio::Select('audio.*','category_audios.audio_id','audio_categories.name','category_audios.category_id','audio_categories.id','audio.id as id')
                           ->leftJoin('category_audios','category_audios.audio_id','=','audio.id')
                           ->leftJoin('audio_categories','audio_categories.id','=','category_audios.category_id')
-                          
 
                           ->when($settings->search_tags_status, function ($query) use ($request) {
                               return $query->orwhere('search_tags', 'LIKE', '%' . $request->search_value . '%');
@@ -5270,14 +5274,16 @@ public function verifyandupdatepassword(Request $request)
                           
                       ->limit('10')
                       ->groupBy('audio.id')
-                      ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                      ->get()
+                      ->filter(function ($item) {
+                        return $item['active'] == 1  && $item['status'] == 1  ;
+                      })
+                      ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                         $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;               
                         $item['source']    = "Audios";
-                        if( $item['active'] == 1  && $item['status'] == 1 ){
-                          return $item;
-                        }
+                        return $item;
                       }); 
 
 
@@ -5304,21 +5310,22 @@ public function verifyandupdatepassword(Request $request)
 
                           ->groupBy('episodes.id')
                           ->limit('10')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get() 
+                          ->filter(function ($item) {
+                            return $item['active'] == 1  && $item['status'] == 1  ;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->tv_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Episode";
-                              if( $item['active'] == 1  && $item['status'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           }); 
                           
           $series = Series::Select('series.*','series_categories.category_id','series.id as id')
                           ->leftJoin('series_categories','series_categories.series_id','=','series.id')
                           ->leftJoin('series_genre','series_genre.id','=','series_categories.category_id')
-
                           
                           ->when($settings->search_tags_status, function ($query) use ($request) {
                               return $query->orwhere('series.search_tag', 'LIKE', '%' . $request->search_value . '%');
@@ -5342,15 +5349,17 @@ public function verifyandupdatepassword(Request $request)
 
                           ->groupBy('series.id')
                           ->limit('10')
-                          ->get()->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
+                          ->get()
+                          ->filter(function ($item) {
+                            return $item['active'] == 1  ;
+                          })
+                          ->map(function ($item) use ( $default_vertical_image_url , $default_horizontal_image_url) {
                               $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url;
                               $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                               $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url;                             $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                               $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                               $item['source']    = "Series";
-                               if( $item['active'] == 1 ){
-                                return $item;
-                              }
+                              return $item;
                           });   
 
             $mergedData = $videos->merge($livestreams)->merge($audio)->merge($episodes)->merge($series);
