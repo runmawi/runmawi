@@ -41,6 +41,7 @@ use App\Adsvariables;
 use App\LikeDislike;
 use Theme;
 use App\ButtonText;
+use App\SiteTheme;
 
 class LiveStreamController extends Controller
 {
@@ -184,6 +185,10 @@ class LiveStreamController extends Controller
       Theme::uses( $Theme );
       $ThumbnailSetting = ThumbnailSetting::first();
       $button_text = ButtonText::first();
+
+      $button_sub_pur_status = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
+      $purchase_btn = $button_sub_pur_status->purchase_btn;
+      $subscribe_btn = $button_sub_pur_status->subscribe_btn;
 
       $enable_ppv_rent_live = Setting::pluck('enable_ppv_rent_live')->first();
       $ppv_live_description = Setting::pluck('live')->first();
@@ -613,6 +618,8 @@ class LiveStreamController extends Controller
                  'ppv_live_description'   => $ppv_live_description,
                  'ThumbnailSetting'      => $ThumbnailSetting,
                  'button_text'          => $button_text,
+                 'purchase_btn'                    => $purchase_btn,
+                'subscribe_btn'                    => $subscribe_btn,
                  'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                         <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                         <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
