@@ -301,6 +301,7 @@
 <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
 <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
 <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_signature; ?>"></script>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -512,6 +513,15 @@
                                                 {{ $Paystack_payment_setting->payment_type }}
                                             </label>
                                         @endif
+
+                                            <!-- PayPal Button -->
+                                        @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
+                                                <input type="radio" class="payment_btn" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-value="PayPal">
+                                                {{ $paypal_payment_setting->payment_type }}
+                                            </label>
+                                        @endif
+
                                     </div>
                                     <div class=" becomesubs-page">
                                         <div class="Stripe_button row mt-3 justify-content-around">  
@@ -559,6 +569,22 @@
                                                 </button>
                                             </div>
                                         </div>
+
+                                        <div class="row mt-3 justify-content-around"> <!-- PayPal Button -->
+                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                                <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $Livestream_details->id; ?>, <?php echo $Livestream_details->ppv_price; ?>)">
+                                                    <?= ("Continue") ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                          <div class="paypal_button col-md-5 col-5 btn">
+                                            <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                            </button>
+                                          </div>
+                                      </div>
+                                             <!-- PayPal Button Container -->
+                                            <div id="paypal-button-container"></div>
                                     </div>
                                 </div>
                             </div>
@@ -602,6 +628,54 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 
 <script>
+
+
+
+function paypal_checkout(live_id, amount) {
+
+    $('.paypal-button-container').empty();
+
+    $('.paypal_pay_now').hide();
+
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount,
+                    }
+                }]
+            });
+        },
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+                console.log(details);
+                $.ajax({
+                    url: '<?= URL::to('paypal-ppv-live') ?>',
+                    method: 'post',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        amount: amount,
+                        live_id: live_id,
+                    },
+                    success: function(response) {
+                        console.log("Server response:", response);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function(error) {
+                        swal('error');
+                    }
+                });
+            });
+        },
+        onError: function (err) {
+            console.error(err);
+        }
+    }).render('#paypal-button-container'); 
+}
+
     $(".slider").slick({
 
         infinite: false,
@@ -678,11 +752,11 @@
 
     $(document).ready(function() {
 
-        $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+        $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
         $(".payment_btn").click(function() {
 
-            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
 
             let payment_gateway = $('input[name="payment_method"]:checked').val();
 
@@ -701,6 +775,10 @@
             } else if (payment_gateway == "CinetPay") {
 
                 $('.cinetpay_button').show();
+            }else if (payment_gateway == "PayPal") {
+
+                $('.paypal_button').show();
+
             }
         });
 
