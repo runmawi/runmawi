@@ -212,18 +212,19 @@ $(".home-search").hide();
 
         scrollFetch = setTimeout(function () {
             var page_url = $("#home_sections").attr('next-page-url');
-            // console.log("scrolled");
-
-            if (page_url != null && !isFetching) {
-                isFetching = true;
-                $.ajax({
-                    url: page_url,
-                    success: function (data) {
-                        $("#home_sections").append(data.view);
-                        $("#home_sections").attr('next-page-url', data.url);
-                    },
-                });
-            }
+            console.log("scrolled");
+            <?php if( ($order_settings->total()) != ($order_settings->perPage()) ){?>
+               if (page_url != null && !isFetching) {
+                  isFetching = true;
+                  $.ajax({
+                     url: page_url,
+                     success: function (data) {
+                           $("#home_sections").append(data.view);
+                           $("#home_sections").attr('next-page-url', data.url);
+                     },
+                  });
+               }
+            <?php } ?>
         }, 100);
     });
 </script>
