@@ -4515,6 +4515,14 @@ class ChannelController extends Controller
                         $item['users_video_visibility_redirect_url'] = "#";
                     }
 
+                    // Play access for subscirber enable ppv rent
+                    if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && Auth::check() &&  Auth::user()->role == 'subscriber' ) {
+                        $button_text = ButtonText::first();
+                            $item['users_video_visibility_status'] = true ;
+                            $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now');
+                            $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
+                    }
+
                 }
 
                     // video details
@@ -4957,6 +4965,15 @@ class ChannelController extends Controller
                         $item['users_video_visibility_register_button']  = false ;
                         $item['users_video_visibility_redirect_url'] = "#";
                     }
+
+                    // Play access for subscirber enable ppv rent
+                    if ( $setting->enable_ppv_rent == 1 && $item->access == "ppv" && Auth::check() &&  Auth::user()->role == 'subscriber' ) {
+                        $button_text = ButtonText::first();
+                            $item['users_video_visibility_status'] = true ;
+                            $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now');
+                            $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
+                    }
+
                 }
 
                 $item['image_url']        = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();

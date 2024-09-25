@@ -54,7 +54,7 @@
                                         <div class="block-images position-relative">
                                             <div class="border-bg">
                                                 <div class="img-box">
-                                                    <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}">
+                                                    <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}"  aria-label="VideoplayTrailer">
                                                         <!-- <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}"> -->
                                                         <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}" id="latestVideoImg">
                                                     </a>
@@ -81,7 +81,7 @@
                                                 </div>
                                             </div>
                                             <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}" aria-label="playTrailer">
+                                                <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}" aria-label="VideoplayTrailer">
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
@@ -116,7 +116,7 @@
                                                             {{ strlen($watchlater_video->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater_video->description)), 0, 75) . '...' : strip_tags($watchlater_video->description) }}
                                                         </p>
 
-                                                        <div class="movie-time d-flex align-items-center pt-2">
+                                                        <div class="movie-time d-flex row align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($watchlater_video->age_restrict == 0))
                                                                 <span class="position-relative badge p-1 mr-2">{{ $watchlater_video->age_restrict}}</span>
                                                             @endif

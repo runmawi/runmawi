@@ -15,6 +15,7 @@ use View;
 use Theme;
 use App\Episode;
 use App\ThumbnailSetting;
+use App\Series;
 
 class WatchLaterController extends Controller
 {
@@ -136,19 +137,26 @@ class WatchLaterController extends Controller
 
           $ppv_array = array();
           $ppvlive_array = array();
+          $ppvseries_array = array();
           foreach($showppv as $key => $ccfave){
             array_push($ppv_array, $ccfave->video_id);
           }
           foreach($ppvlive as $key => $ccfave){
             array_push($ppvlive_array, $ccfave->video_id);
           }
+
+          foreach($showppv as $key => $ccfave){
+            array_push($ppvseries_array, $ccfave->series_id);
+          }
       
           $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
           $ppvlivevideos = Video::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
+          $ppvseries = Series::where('active', '=', '1')->whereIn('id', $ppvseries_array)->paginate(12);
           $data = array(
             'ppv' => $ppvvideos,
             'ppvlive' => $ppvlivevideos,
             'currency' => CurrencySetting::first(),
+            'ppvseries' => $ppvseries,
             
           );
           return Theme::view('myppv', $data);

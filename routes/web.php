@@ -39,6 +39,7 @@ Route::get('/paypal/create-payment', 'PayPalController@createPayment');
 Route::get('/paypal/execute-payment', 'PayPalController@executePayment');
 Route::post('paypal-ppv-video', 'PaymentController@paypalppvVideo');
 Route::post('paypal-ppv-series-season', 'PaymentController@PayPal_payment_series_season_PPV_Purchase');
+Route::post('paypal-ppv-live', 'PaymentController@LiveRent_Payment');
 
 Route::post('/translate_language', 'AdminDashboardController@TranslateLanguage');
 

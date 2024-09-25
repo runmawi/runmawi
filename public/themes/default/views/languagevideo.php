@@ -63,27 +63,27 @@
                                           <?php if ($ThumbnailSetting->rating == 1) { ?>
                                              <!--Rating  -->
                                              <div class="badge badge-secondary p-1 mr-2">
-                                                <span class="text-white">
+                                                <div class="text-white">
                                                    <i class="fa fa-star-half-o" aria-hidden="true"></i>
                                                    <?php echo __($video->rating); ?>
-                                                </span>
+                                                </div>
                                              </div>
                                           <?php } ?>
                                           <?php if ($ThumbnailSetting->published_year == 1) { ?>
                                              <!-- published_year -->
                                              <div class="badge badge-secondary p-1 mr-2">
-                                                <span class="text-white">
+                                                <div class="text-white">
                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
                                                    <?php echo __($video->year); ?>
-                                                </span>
+                                                </div>
                                              </div>
                                           <?php } ?>
                                           <?php if ($ThumbnailSetting->featured == 1 && $video->featured == 1) { ?>
                                              <!-- Featured -->
                                              <div class="badge badge-secondary p-1 mr-2">
-                                                <span class="text-white">
+                                                <div class="text-white">
                                                    <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                </span>
+                                                </div>
                                              </div>
                                           <?php } ?>
                                        </div>
