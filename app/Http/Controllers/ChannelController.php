@@ -75,6 +75,7 @@ use App\SiteVideoScheduler;
 use App\DefaultSchedulerData;
 use App\EPGSchedulerData;
 use App\ButtonText;
+use App\SiteTheme;
 
 class ChannelController extends Controller
 {
@@ -4332,6 +4333,10 @@ class ChannelController extends Controller
             $getfeching = Geofencing::first();
             $button_text = ButtonText::first();
 
+            $button_sub_pur_status = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
+            $purchase_btn = $button_sub_pur_status->purchase_btn;
+            $subscribe_btn = $button_sub_pur_status->subscribe_btn;
+
             
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
 
@@ -4757,6 +4762,8 @@ class ChannelController extends Controller
                 'current_theme'     => $this->HomeSetting->theme_choosen,
                 'playerui' => Playerui::first(),
                 'paypal_signature' => $paypal_signature,
+                'purchase_btn'                    => $purchase_btn,
+                'subscribe_btn'                    => $subscribe_btn,
             );
 
             return Theme::view('video-js-Player.video.videos-details', $data);

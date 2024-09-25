@@ -337,7 +337,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         </div>
                                     </a>
 
-                                    @if( !Auth::guest() && Auth::user()->role == "registered" && $videodetail->access == "ppv")
+                                    @if( Auth::guest() && $videodetail->access == "ppv" && $subscribe_btn == 1 || Auth::check() && Auth::user()->role == "registered" && $videodetail->access == "ppv" && $subscribe_btn == 1)
                                         <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                             <div class="playbtn" style="gap:5px">
                                                 {!! $play_btn_svg !!}
