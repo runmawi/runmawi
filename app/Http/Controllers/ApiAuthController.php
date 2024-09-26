@@ -7797,7 +7797,8 @@ return response()->json($response, 200);
                                     'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
                                     'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
                                 ->whereIn('episodes.id', $episode_id_query)
-                                ->where('episodes.active', '1')->where('episodes.status', '1')
+                                ->where('episodes.active', '1')
+                                ->where('episodes.status', '1')
                                 ->latest('episodes.created_at')
                                 ->get()->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();
@@ -7805,30 +7806,6 @@ return response()->json($response, 200);
                                     $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
                                     return $item ;
                                 });
-
-                // Episode 
-
-          $episode_id_query = ContinueWatching::query();
-          if ($multiuser_id != null) {
-              $episode_id_query->where('multiuser', $multiuser_id)->where('user_id', $user_id);
-          } else {
-              $episode_id_query->where('user_id', $user_id)->whereNull('multiuser');
-          }
-            $episode_id_query = $episode_id_query->pluck('episodeid');
-
-            $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
-                  ->select('episodes.id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
-                        'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
-                        'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
-                    ->whereIn('episodes.id', $episode_id_query)
-                    ->where('episodes.active', '1')->where('episodes.status', '1')
-                    ->latest('episodes.created_at')
-                    ->get()->map(function($item){
-                        $item['series'] = Series::where('id',$item->series_id)->first();
-                        $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
-                        $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
-                        return $item ;
-                    });
                     
       $response = array(
           'status' => "true",
@@ -26863,6 +26840,8 @@ public function SendVideoPushNotification(Request $request)
   
                                                                                       $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i');
                                                                                       $scheduler_item['converted_end_time'] = $converted_end_time->format('h:i');
+                                                                                      
+                                                                                      $scheduler_item['current_time_now'] = $carbon_now->format('h:i A');
                                 
                                                                                       if ($carbon_now->between($converted_start_time, $converted_end_time)) {
                                                                                           $scheduler_item['video_image_url'] = URL::to('public/uploads/images/'.$scheduler_item->image ) ;

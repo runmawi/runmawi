@@ -748,7 +748,6 @@ class UGCController extends Controller
             return Theme::view("UserGeneratedContent.videos", $data);
 
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return abort(404);
         }
     }

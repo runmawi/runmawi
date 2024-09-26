@@ -29,7 +29,7 @@ class ThemeIntegrationSeeder extends Seeder
                 'updated_at'      => null,
             ],
             [   
-                'theme_name'     => 'theme2', 
+                'theme_name'     => 'theme3', 
                 'theme_images'   => 'Theme-2.png',
                 'theme_css'      => null,
                 'created_at'     => Carbon::now(),
