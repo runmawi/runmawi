@@ -26863,6 +26863,8 @@ public function SendVideoPushNotification(Request $request)
   
                                                                                       $scheduler_item['converted_start_time'] = $converted_start_time->format('h:i');
                                                                                       $scheduler_item['converted_end_time'] = $converted_end_time->format('h:i');
+                                                                                      
+                                                                                      $scheduler_item['current_time_now'] = $carbon_now->format('h:i A');
                                 
                                                                                       if ($carbon_now->between($converted_start_time, $converted_end_time)) {
                                                                                           $scheduler_item['video_image_url'] = URL::to('public/uploads/images/'.$scheduler_item->image ) ;
