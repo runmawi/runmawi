@@ -24,7 +24,7 @@
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1 ml-3">
+             <div class="map1 ml-3" style="height:60px;">
               <?php if(!empty($app_settings->android_url)){ ?>
                 <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
@@ -60,7 +60,7 @@
 
       <div class="row  justify-content-center mb-3">
           <div class="col-sm-3. small m-0 text-white text-right">
-               <div class="map1">
+               <div class="map1" style="height: 40px;">
                     <div class="d-flex p-0 text-white icon align-items-baseline bmk">
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>

@@ -249,8 +249,17 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-   <!-- variable-boots-flick -->
    <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/all.min.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/slick.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/slick-theme.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/owl.carousel.min.css') ;?>" as="style">
+   <link rel="preload" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style">
+
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" >
+
    <!-- Favicon -->
    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
    <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
