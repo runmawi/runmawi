@@ -1063,7 +1063,7 @@
                         </div>
                      </div>
                      <div class="mobile-more-menu">
-                        <button class="more-toggle" id="dropdownMenuButton" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
+                        <button class="more-toggle" id="dropdownMenuButton" aria-label="More Option Button" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
                            <i class="ri-more-line"></i>
                         </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
