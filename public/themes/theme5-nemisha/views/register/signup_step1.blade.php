@@ -504,14 +504,13 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
-                                <div class="col-md-12" style="position:relative;">
-                                    
-                                    <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;" />
-                                    <label for="avatar" class="custom-file-label form-control" >Choose Profile Image</label>
-                                    <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                    <label id="fileLabel">Choose Profile Image</label> -->
-                                 </div>
-                                 @endif
+                                    <div class="col-md-12" style="position:relative;">
+                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;" placeholder="Choose Profile Image   " required />
+                                        <label for="avatar" class="custom-file-label form-control" >Choose Profile Image</label>
+                                        <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
+                                        <label id="fileLabel">Choose Profile Image</label> -->
+                                    </div>
+                                @endif
 
                                  @if(!empty($SignupMenu) && $SignupMenu->dob == 1)
                                 <div class="col-md-12" style="position:relative;">
