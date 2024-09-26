@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\LiveStream;
 
 class LivePurchase extends Model
 {
@@ -14,7 +15,7 @@ class LivePurchase extends Model
 	protected $fillable = array();
 
 	public function livestream() {
-        return $this->belongsTo(Livestream::class, 'video_id');
+        return $this->belongsTo(LiveStream::class, 'video_id');
     }
 
 }
