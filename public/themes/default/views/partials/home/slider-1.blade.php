@@ -412,23 +412,36 @@
 <!-- For Lazyloading the slider bg image -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    var lazyBackgrounds = [].slice.call(document.querySelectorAll(".lazy-bg"));
+        var lazyBackgrounds = [].slice.call(document.querySelectorAll(".lazy-bg"));
 
-    if ("IntersectionObserver" in window) {
-        let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    let bg = entry.target.getAttribute('data-bg');
-                    entry.target.style.backgroundImage = `linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('${bg}')`;
-                    lazyBackgroundObserver.unobserve(entry.target);
-                }
+        if ("IntersectionObserver" in window) {
+            let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(entry) {                    
+                    if (entry.isIntersecting) {
+                        let bg = entry.target.getAttribute('data-bg');
+                        entry.target.style.backgroundImage = `url('${bg}')`;
+                        lazyBackgroundObserver.unobserve(entry.target);
+                    }
+                });
             });
-        });
 
-        lazyBackgrounds.forEach(function(lazyBackground) {
-            lazyBackgroundObserver.observe(lazyBackground);
-        });
-    }
-});
-
+            lazyBackgrounds.forEach(function(lazyBackground) {
+                lazyBackgroundObserver.observe(lazyBackground);
+            });
+        }
+    });
 </script>
+
+<style>
+    .s-bg-1::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), 
+                    linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%);
+        z-index: 0;
+    }
+</style>
