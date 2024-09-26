@@ -213,8 +213,8 @@
     <div id="series_bg">
         <div class="">
             @if(!Auth::guest())
-                @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo)|| $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || Auth::user()->role == 'admin')
-                    @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || Auth::user()->role == 'admin')
+                @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo)|| $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
+                    @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
                             <div id="series_container">
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
