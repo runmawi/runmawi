@@ -904,29 +904,35 @@
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
+                                    <?php if($theme->enable_channel_btn ==1): ?>
                                        <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
                                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="">
                                        <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
                                        <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
                                        <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
                                        <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                                       <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>
-                                    </form>
-                                       <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
-                                          <?php echo __('Logout');?>
-                                                   </a> </li>
+                                       <button type="submit" class="btn bd w-100" style="padding:11px 16px" ><?php echo (__('Visit Channel Portal'));?> </button> </li>
+                                       </form>
+                                    <?php endif; ?>
+                                    <?php if($theme->enable_cpp_btn ==1): ?>
+                                       <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
+                                          <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
+                                          <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                          <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                          <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                          <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
+                                          <button type="submit" class="btn bd w-100" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>
+                                       </form>
+                                    <?php endif; ?>
+                                       
                                  </div>
 
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
-                                    <li class="logout_mobile_view menu-item col-sm-6 channel_contentpr ">
-                                    <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="">
-                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                                    <!-- <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;">CPP Portal </button>                           -->
-                                    <button type="submit" class="btn bd" style="padding:11px 16px" ><?php echo (__('Visit CPP Portal'));?></button> </li>
-                                 </form>
+                                    
+                                 <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
+                                          <?php echo __('Logout');?>
+                                                   </a> </li>
                                     <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
                                                    <?php echo __('My Profile');?>
                                                 </a> </li>
@@ -1040,23 +1046,27 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit CPP Portal'));?></button>
-                        </form>
-                     </div>
+                           <?php if($theme->enable_cpp_btn ==1): ?>
+                              <div class="iq-search-bar ml-auto">
+                                 <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn btn-primary " style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit CPP Portal'));?></button>
+                                 </form>
+                              </div>
+                           <?php endif; ?>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit Channel Portal'));?>  </button>
-                        </form>
-                     </div>
+                        <?php if($theme->enable_channel_btn ==1): ?>
+                           <div class="iq-search-bar ml-auto">
+                              <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                                 <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                 <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                 <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                 <button type="submit" class="btn btn-primary" style="margin-top: 0%;margin-left: 5%;"><?php echo (__('Visit Channel Portal'));?>  </button>
+                              </form>
+                           </div>
+                        <?php endif; ?>
                      <?php } ?></div>
 
                            </ul>
@@ -1095,23 +1105,27 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;"><?php echo (__('Visit CPP Portal'));?> </button>
-                        </form>
-                     </div>
+                           <?php if($theme->enable_cpp_btn ==1): ?>
+                              <div class="iq-search-bar ml-auto">
+                                 <form method="POST" action="<?php echo URL::to('cpp/home') ?>" class="mt-4">
+                                    <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                    <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                    <input id="password" type="hidden"  name="password" value="<?=  @$ModeratorsUser->password ?>" autocomplete="current-password" >
+                                    <button type="submit" class="btn bd " style="margin-top: -20%;margin-left: -14%;"><?php echo (__('Visit CPP Portal'));?> </button>
+                                 </form>
+                              </div>
+                           <?php endif; ?>
                      <?php }if(!Auth::guest() && !empty($Channel)){ ?>
-                     <div class="iq-search-bar ml-auto">
-                        <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
-                           <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
-                           <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
-                           <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
-                           <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;"><?php echo (__('Visit Channel Portal'));?>  </button>
-                        </form>
-                     </div>
+                        <?php if($theme->enable_channel_btn ==1): ?>
+                           <div class="iq-search-bar ml-auto">
+                              <form method="POST" action="<?php echo URL::to('channel/home') ?>" class="mt-4">
+                                 <input type="hidden" name="_token" id= "token" value="<?= csrf_token() ?>">
+                                 <input id="email" type="hidden"  name="email"  value="<?=  Auth::user()->email ?>"  autocomplete="email" autofocus>
+                                 <input id="password" type="hidden"  name="password" value="<?=  @$Channel->unhased_password ?>" autocomplete="current-password" >
+                                 <button type="submit" class="btn bd" style="margin-top: -17%;margin-left: -8%;"><?php echo (__('Visit Channel Portal'));?>  </button>
+                              </form>
+                           </div>
+                        <?php endif; ?>
                      <?php } ?></div>
                      <div class="navbar-right menu-right pt-2">
                         <ul class="d-flex align-items-center list-inline m-0" style="gap:5px">

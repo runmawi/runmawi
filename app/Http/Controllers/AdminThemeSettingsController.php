@@ -291,6 +291,10 @@ class AdminThemeSettingsController extends Controller
         $theme_settings->purchase_btn                   = !empty($data['purchase_btn']) ? '1' : '0';
 
         $theme_settings->subscribe_btn                   = !empty($data['subscribe_btn']) ? '1' : '0';
+
+        $theme_settings->enable_cpp_btn                   = !empty($data['enable_cpp_btn']) ? '1' : '0';
+
+        $theme_settings->enable_channel_btn                   = !empty($data['enable_channel_btn']) ? '1' : '0';
         
         $theme_settings->save();
 

@@ -788,6 +788,34 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable Channel partner button')) }} </label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_channel_btn"  type="checkbox" @if( $settings->enable_channel_btn == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>{{ ucfirst(('Enable CPP button')) }} </label>
+                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                <div style="color:red;">Off</div>
+                                <div class="mt-1">
+                                    <label class="switch">
+                                        <input name="enable_cpp_btn"  type="checkbox" @if( $settings->enable_cpp_btn == "1") checked  @endif >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div style="color:green;">On</div>
+                            </div>
+                        </div>
+
                     </div>
                     </div>
 
