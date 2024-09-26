@@ -416,14 +416,21 @@
 
         if ("IntersectionObserver" in window) {
             let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(entry) {                    
+                entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
                         let bg = entry.target.getAttribute('data-bg');
                         entry.target.style.backgroundImage = `url('${bg}')`;
+                        entry.target.classList.remove('lazy-bg');
                         lazyBackgroundObserver.unobserve(entry.target);
                     }
                 });
+            }, {
+                root: null,
+                threshold: 0.1 
             });
+
+            console.log("lazyBackgroundObserver",lazyBackgroundObservers);
+            
 
             lazyBackgrounds.forEach(function(lazyBackground) {
                 lazyBackgroundObserver.observe(lazyBackground);
