@@ -930,7 +930,10 @@ class FrontEndQueryController extends Controller
 
     public function UGCVideos()
     {
-        $ugcvideos = UGCVideo::where('active',1)->limit(15)->get();
+        $ugcvideos = UGCVideo::where('active',1)
+                    ->limit(15)
+                    ->inRandomOrder()
+                    ->get();
         return $ugcvideos ;
     }
 
@@ -941,7 +944,7 @@ class FrontEndQueryController extends Controller
             'likesDislikes as like_count' => function($query) {
                 $query->where('liked', 1);
             }
-        ])->get();
+        ])->latest()->get();
         return $ugcshortsminis ;
     }
 
