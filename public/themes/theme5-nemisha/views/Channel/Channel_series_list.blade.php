@@ -23,7 +23,7 @@
                            <a  href="{{ URL::to('play_series/'. $Serie->slug ) }}">
                               <div class="block-images position-relative">
                                  <div class="img-box">
-                                    <img src="{{ URL::to('public/uploads/images/'.$Serie->image) }}" class="img-fluid w-100" alt="">
+                                    <img src="{{ URL::to('public/uploads/images/'.$Serie->image) }}" class="img-fluid w-100" alt="Channel-Series-Image">
                                        @if(!empty($Serie->ppv_price))
                                           <p class="p-tag1" >{{ $respond_data['currency']->symbol.' '.$Serie->ppv_price }} </p>
                                        @elseif( !empty($Serie->global_ppv || !empty($Serie->global_ppv) && $Serie->ppv_price == null)) 
