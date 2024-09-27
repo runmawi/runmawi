@@ -2969,11 +2969,11 @@ public function verifyandupdatepassword(Request $request)
       $default_vertical_image_url = default_vertical_image_url();
       $default_horizontal_image_url = default_horizontal_image_url();
 
-      $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price','active','status',
+      $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                           'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                      ->where('active', 1)
+                                      ->where('active', '1')
                                       ->where('status', 1)
                                       ->limit(15)
                                       ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
@@ -2985,7 +2985,7 @@ public function verifyandupdatepassword(Request $request)
                                         return $item;
                                     });
   
-      $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+      $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
 
           $livestream->live_animation = 'true' ;
 
@@ -3043,25 +3043,23 @@ public function verifyandupdatepassword(Request $request)
           return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
       });
 
-      $livestreams = $livestreams->sortBy(function ($livestream) use ($current_timezone) {
-      
-          $timestamp = Carbon::minValue()->timestamp;
+      $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
       
           if ($livestream->publish_type === 'publish_now') {
 
-              $timestamp = Carbon::parse($livestream->created_at)->timestamp;
+              return $livestream->created_at;
 
-          } elseif ($livestream->publish_type === 'publish_later' && $livestream->publish_later_live_animation) {
+          } elseif ($livestream->publish_type === 'publish_later' ) {
 
-              $timestamp = Carbon::parse($livestream->publish_time)->timestamp;
+              return $livestream->publish_time;
 
-          } elseif ($livestream->publish_type === 'recurring_program' && $livestream->recurring_program_live_animation) {
+          } elseif ($livestream->publish_type === 'recurring_program') {
 
-              $timestamp = Carbon::parse($livestream->custom_end_program_time ?? $livestream->program_end_time)->timestamp;
+              return $livestream->custom_start_program_time ?? $livestream->program_start_time;
           }
-      
-          return -$timestamp; 
-      })->values();
+
+          return $livestream->publish_type;
+      })->values();  
 
       $myData[] = array(
         "message" => count($livestreams) > 0 ? 'success' : 'nodata' ,
@@ -5637,6 +5635,7 @@ public function verifyandupdatepassword(Request $request)
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_type'          => 'recurring',
+                'payment_gateway'       =>  'Stripe',
                 'payment_status'        => $subscription['status'],
             );
 
@@ -10157,6 +10156,7 @@ public function LocationCheck(Request $request){
                 'stripe_id'             =>  $subscription['id'] ,
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_gateway'       =>  'Razorpay',
             ]);
 
               return response()->json([

@@ -38,8 +38,6 @@ border-radius: 0px 4px 4px 0px;
                         <div class="form-group mr-2">
                             <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                         </div>
-                            {{-- Bulk video delete --}}
-                            <button style="margin-bottom: 10px" class="btn btn-primary delete_all" >Delete Selected Video</button>
                     </div>
                      </div>
                      <div class="iq-card-body table-responsive p-0">
@@ -47,21 +45,17 @@ border-radius: 0px 4px 4px 0px;
                            <table class="table text-center  table-striped table-bordered table movie_table iq-card " style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th>Select All <input type="checkbox" id="select_all"></th>
                                     <th>Title</th>
                                     <th>Video Uploaded By</th>
                                     <th>Video Type</th>
-                                    <th>Video Access</th>
+                                    <th>Video Status</th>
                                     <th>Views</th>
-                                    {{-- <th>Action</th> --}}
+                                    <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                               @foreach($videos as $key => $video)
                                  <tr id="tr_{{$video->id}}" >
-                                   
-                                    <td><input type="checkbox" id="Sub_chck" class="sub_chk" data-id="{{$video->id}}"></td>
-
                                     <td>
                                        <div class="media align-items-center">
                                           <div class="iq-movie">
@@ -75,9 +69,9 @@ border-radius: 0px 4px 4px 0px;
                                           </div>
                                        </div>
                                     </td>
-                                    <td>@if(isset($video->uploaded_by) && $video->uploaded_by == 'CPP') Uploaded by Content Partner 
-                                       @elseif(isset($video->uploaded_by) && $video->uploaded_by == 'Channel') Uploaded by Channel Partner 
-                                       @else  Uploaded by Admin @endif</td>
+                                    <td>
+                                       {{ $video->user->username }}
+                                    </td>
                                     <td>@if(isset($video->type) && $video->type == "") M3u8 Converted Video  
                                        @elseif(isset($video->type) && $video->type == "mp4_url") MP4 Video
                                        @elseif(isset($video->type) && $video->type == "m3u8_url") M3u8 URL Video
@@ -94,6 +88,10 @@ border-radius: 0px 4px 4px 0px;
                                              <?php }?>
                                     <td>
                                         {{ $video->views }}<i class="lar la-eye "></i>
+                                    </td>
+                                    <td>
+                                       <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                             data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('ugc-delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                     </td>
 
                                     {{-- <td>
