@@ -32,8 +32,6 @@
    .ugc-icon{
     width: 100px;
    }
-   
-
  @keyframes shake {
 	 0%, 100% {
 		 transform: translate3d(0, 0, 0);
@@ -105,6 +103,7 @@
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_m3u8">Submit</button>
+                        <div id="m3u8_error_message" style="color: red; display: none;"></div>
                      </div>
                   </div>
                   <!-- Embedded Video -->        
@@ -116,6 +115,7 @@
                      </div>
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_embed">Submit</button>
+                        <div id="embed_error_message" style="color: red; display: none;"></div>
                      </div>
                   </div>
                   
@@ -128,6 +128,7 @@
                      <div class="new-audio-file mt-3">
                         <button class="btn btn-primary"  id="submit_mp4">Submit</button>
                      </div>
+                     <div id="mp4_error_message" style="color: red; display: none;"></div>
                   </div>
                   <!-- Video upload -->   
                   <div id="video_upload" >
@@ -267,71 +268,113 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                }
        });
-   
-    $(document).ready(function(){
+      $(document).ready(function() {
 
-       var url =$('#m3u8url').val();
-       $('#submit_m3u8').click(function(){
-        $.ajax({
-               url: url,
-               type: "post",
-       data: {
-                      _token: '{{ csrf_token() }}',
-                      m3u8_url: $('#m3u8_video_url').val()
+         var url = $('#m3u8url').val();
 
-                },        success: function(value){
-                console.log(value);
-                   $('#Next').show();
-                  $('#video_id').val(value.video_id);
+         $('#submit_m3u8').on('click', function(e) {
+         e.preventDefault(); 
 
-               }
-           });
-       })
+         var m3u8_url = $('#m3u8_video_url').val();
+         var errorMessage = $('#m3u8_error_message');
 
-    });
+         if (!m3u8_url.endsWith('.m3u8')) {
+            errorMessage.text('Please enter a valid .m3u8 URL.').show();
+         } else {
+            errorMessage.hide();
 
-   $(document).ready(function(){
-       var url =$('#mp4url').val();
-       $('#submit_mp4').click(function(){
-       $.ajax({
-           url: url,
-           type: "post",
-       data: {
-                  _token: '{{ csrf_token() }}',
-                  mp4_url: $('#mp4_url').val()
-   
-            },        success: function(value){
-               console.log(value);
-               $('#Next').show();
-              $('#video_id').val(value.video_id);
-   
-           }
-           });
-       })
-   
-   });
-
-   $(document).ready(function(){
-      var url =$('#embed_url').val();
-      $('#submit_embed').click(function(){
-         // alert($('#embed_code').val());
-         $.ajax({
-            url: url,
-            type: "post",
-            data: {
-               _token: '{{ csrf_token() }}',
-               embed: $('#embed_code').val()
-
-            },        success: function(value){
-            console.log(value);
-               $('#Next').show();
-            $('#video_id').val(value.video_id);
-
-         }
+            $.ajax({
+                  url: url,
+                  type: "post",
+                  data: {
+                     _token: '{{ csrf_token() }}',
+                     m3u8_url: m3u8_url
+                  },
+                  success: function(value) {
+                     console.log(value);
+                     $('#Next').show();
+                     $('#video_id').val(value.video_id);
+                  },
+                  error: function(xhr, status, error) {
+                     console.log('Error:', error);
+                     }
+               });
+            }
          });
-      })
+      });
+
+      $(document).ready(function() {
+
+            var url = $('#mp4url').val(); 
+
+            $('#submit_mp4').on('click', function(e) {
+               e.preventDefault(); 
+
+               var mp4_url = $('#mp4_url').val();
+               var errorMessage = $('#mp4_error_message');
+
     
-   });
+               if (!mp4_url.endsWith('.mp4')) {
+                  errorMessage.text('Please enter a valid .mp4 URL.').show();
+               } else {
+                  errorMessage.hide();
+
+                  $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {
+                           _token: '{{ csrf_token() }}',
+                           mp4_url: mp4_url
+                        },
+                        success: function(value) {
+                           console.log(value);
+                           $('#Next').show(); 
+                           $('#video_id').val(value.video_id); 
+                        },
+                        error: function(xhr, status, error) {
+                           console.log('Error:', error); 
+                        }
+                  });
+               }
+            });
+         });
+
+         $(document).ready(function() {
+               var url = $('#embed_url').val();
+
+               $('#submit_embed').on('click', function(e) {
+                  e.preventDefault();
+
+                  var embed_url = $('#embed_code').val();
+                  var errorMessage = $('#embed_error_message');
+     
+                  var embedUrlPattern = /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
+
+                  if (!embedUrlPattern.test(embed_url)) {
+                        errorMessage.text('Please enter a valid YouTube embed URL.').show();
+                  } else {
+                        errorMessage.hide();
+
+
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    embed: embed_url
+                },
+                success: function(value) {
+                    console.log(value);
+                    $('#Next').show();
+                    $('#video_id').val(value.video_id);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error:', error);
+                }
+            });
+        }
+    });
+});
    	
 </script>
 

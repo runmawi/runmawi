@@ -50,7 +50,6 @@ border-radius: 0px 4px 4px 0px;
                                     <th>Video Type</th>
                                     <th>Uploaded Date</th>
                                     <th>Video Duration</th>
-                                    {{-- <th>Video Meta</th> --}}
                                     <th>Status</th>
                                     <th >Action</th>
                                  </tr>
@@ -90,6 +89,8 @@ border-radius: 0px 4px 4px 0px;
                                           onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/ugc_videos_approval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
                                           <a class="iq-bg-success" 
                                               onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/ugc_videos_reject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
+                                          <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                              data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('ugc-delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -103,7 +104,6 @@ border-radius: 0px 4px 4px 0px;
                               <!-- (for page {{ $videos->currentPage() }} ) -->
                               <?= $videos->appends(Request::only('s'))->render(); ?>
                            </div>
-                              
                         </div>
 		               </div>
                </div>
