@@ -3044,23 +3044,21 @@ public function verifyandupdatepassword(Request $request)
       });
 
       $livestreams = $livestreams->sortBy(function ($livestream) use ($current_timezone) {
-      
-          $timestamp = Carbon::minValue()->timestamp;
-      
           if ($livestream->publish_type === 'publish_now') {
 
-              $timestamp = Carbon::parse($livestream->created_at)->timestamp;
+              return $livestream->created_at;
 
-          } elseif ($livestream->publish_type === 'publish_later' && $livestream->publish_later_live_animation) {
+          } elseif ($livestream->publish_type === 'publish_later' ) {
 
-              $timestamp = Carbon::parse($livestream->publish_time)->timestamp;
+              return $livestream->publish_time;
 
-          } elseif ($livestream->publish_type === 'recurring_program' && $livestream->recurring_program_live_animation) {
+          } elseif ($livestream->publish_type === 'recurring_program') {
 
-              $timestamp = Carbon::parse($livestream->custom_end_program_time ?? $livestream->program_end_time)->timestamp;
+              return $livestream->custom_start_program_time ?? $livestream->program_start_time;
           }
-      
-          return -$timestamp; 
+
+          return $livestream->publish_type;
+          
       })->values();
 
       $myData[] = array(
