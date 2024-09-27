@@ -575,15 +575,6 @@
                 <p class="" style="font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
                 <p class="desc">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
             </div>
-            <div class="float-right">
-                @if ( !is_null($episode_details->PPV_Plan) && $episode_details->PPV_Plan != '1080p')
-                    <a class="btn" data-toggle="modal" data-target="#exampleModalCenter">
-                        <div class="playbtn" style="gap:5px">
-                            <span class="text pr-2"> {{ __( 'Upgrade Now' ) }} </span>
-                        </div>
-                    </a>
-                @endif
-            </div>
             <div class="container-fluid">
                 <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                     <li>
