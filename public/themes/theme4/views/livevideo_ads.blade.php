@@ -3,8 +3,6 @@
     $current_time = Carbon\Carbon::now()->format('H:i:s');
     $advertisement_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
 
-    $Livestream_details = $video ;
-
     $video_js_mid_advertisement_sequence_time = $Livestream_details->video_js_mid_advertisement_sequence_time != null ? Carbon\Carbon::parse( $Livestream_details->video_js_mid_advertisement_sequence_time )->secondsSinceMidnight()  : '300';
 
     $pre_advertisement  = null ;
