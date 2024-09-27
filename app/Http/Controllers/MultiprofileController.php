@@ -225,4 +225,42 @@ class MultiprofileController extends Controller
     
          return redirect( route('myprofile') );
     }
+
+    public function checkProfileLimit()
+    {
+        $multiuserLimit = Setting::pluck('multiuser_limit')->first();
+
+        $currentProfileCount = Multiprofile::where('parent_id', Auth::User()->id)->count();
+
+        if ($currentProfileCount >= $multiuserLimit) {
+            return response()->json(['limitReached' => true]);
+        }
+
+        return response()->json(['limitReached' => false]);
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $existing_mail = User::pluck('email')->all();
+        $request_mail = $request->get('email');
+        
+        if (in_array($request_mail, $existing_mail)) {
+            return response()->json(['exists' => true]);
+        }
+        
+        return response()->json(['exists' => false]);
+    }
+
+    public function checkMobile(Request $request)
+    {
+        $existing_mobile = User::pluck('mobile')->all();
+        $request_mobile = $request->get('mobile');
+        
+        if (in_array($request_mobile, $existing_mobile)) {
+            return response()->json(['exists' => true]);
+        }
+        
+        return response()->json(['exists' => false]);
+    }
+
 }

@@ -23,9 +23,9 @@
 
                             <div class="form-group">  
                                 <img src="{{URL::asset('public/multiprofile/chooseimage.jpg')}}" id="upfile1"  />
-                                     <p class="" style="color:#fff "  style="cursor:pointer" id="upfile"  >Change</p>
-                                <input type="file" id="subuser_image"  name="image" style="display:none"  />
+                                <input type="file" id="subuser_image" name="image" style="display:none"/>
                             </div>
+                            <p class="btn" style="color:#fff;cursor:pointer" id="upfile">Change</p>
   
                             <div class="form-group">  
                                 <input id="subuser_name" type="text" class="form-control" name="name" placeholder="{{ __('Enter Name') }}" value="" required autocomplete="" autofocus>

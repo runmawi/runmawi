@@ -55,6 +55,12 @@
          $menus = App\Menu::orderBy('order', 'asc')->get();
       }
 
+      if(Auth::check()){
+         $user_img = Auth::user()->avatar;
+         $user_avatar = $user_img !== 'avatar.webp' ? URL::to('public/uploads/avatars/'.$user_img) : URL::to('/assets/img/placeholder.webp');
+         // dd($user_avatar);
+      }
+
    ?>
 
    <meta charset="UTF-8">
@@ -496,6 +502,7 @@
                                     $channel = App\Channel::where('email', $userEmail)->first();
 
                                     if (!empty($moderatorsUser)) { ?>
+                                       <?php if($theme->enable_cpp_btn == 1): ?>
                                           <div class="p-2" >
                                              <form method="POST" action="<?= URL::to('cpp/home') ?>" >
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -504,9 +511,11 @@
                                                 <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
                                              </form>
                                           </div>
+                                       <?php endif; ?>
                                     <?php }
                                     
                                     if (!empty($channel)) { ?>
+                                       <?php if($theme->enable_channel_btn == 1): ?>
                                           <div class="p-2" >
                                              <form method="POST" action="<?= URL::to('channel/home') ?>" >
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -515,6 +524,7 @@
                                                 <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
                                              </form>
                                           </div>
+                                       <?php endif; ?>
                                     <?php }
                                  } ?>
                               </div>
@@ -529,6 +539,7 @@
                            $channel = App\Channel::where('email', $userEmail)->first();
 
                            if (!empty($moderatorsUser)) { ?>
+                              <?php if($theme->enable_cpp_btn == 1): ?>
                                  <div class="p-2" >
                                     <form method="POST" action="<?= URL::to('cpp/home') ?>" >
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -537,9 +548,11 @@
                                        <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
                                     </form>
                                  </div>
+                              <?php endif; ?>
                            <?php }
                            
                            if (!empty($channel)) { ?>
+                              <?php if($theme->enable_channel_btn == 1): ?>
                                  <div class="p-2" >
                                     <form method="POST" action="<?= URL::to('channel/home') ?>" >
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -548,6 +561,7 @@
                                        <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
                                     </form>
                                  </div>
+                              <?php endif; ?>
                            <?php }
                         } ?>
                      </div>
@@ -632,7 +646,7 @@
 
                                        <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                           data-toggle="search-toggle">
-                                              <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme6/assets/images/user/user.jpg') ?>"
+                                              <img src="<?= $user_avatar ?>"
                                                 class="img-fluid avatar-40 rounded-circle" alt="user">
                                        </a>
 
