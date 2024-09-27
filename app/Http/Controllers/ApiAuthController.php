@@ -16006,7 +16006,7 @@ public function QRCodeMobileLogout(Request $request)
                                           return $item;
                                       });
     
-        $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
+        $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
 
             $livestream->live_animation = 'true' ;
 
@@ -16064,27 +16064,26 @@ public function QRCodeMobileLogout(Request $request)
             return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
         });
 
-        $livestreams = $livestreams->sortBy(function ($livestream) use ($current_timezone) {
-        
-            $timestamp = Carbon::minValue()->timestamp;
+        $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
         
             if ($livestream->publish_type === 'publish_now') {
 
-                $timestamp = Carbon::parse($livestream->created_at)->timestamp;
+                return $livestream->created_at;
 
-            } elseif ($livestream->publish_type === 'publish_later' && $livestream->publish_later_live_animation) {
+            } elseif ($livestream->publish_type === 'publish_later' ) {
 
-                $timestamp = Carbon::parse($livestream->publish_time)->timestamp;
+                return $livestream->publish_time;
 
-            } elseif ($livestream->publish_type === 'recurring_program' && $livestream->recurring_program_live_animation) {
+            } elseif ($livestream->publish_type === 'recurring_program') {
 
-                $timestamp = Carbon::parse($livestream->custom_end_program_time ?? $livestream->program_end_time)->timestamp;
+                return $livestream->custom_start_program_time ?? $livestream->program_start_time;
             }
+
+            return $livestream->publish_type;
+        })
+        ->values();
         
-            return -$timestamp; 
-        })->values();
-        
-        return $livestreams->take($homepage_input_array['limit']);
+        return $livestreams_sort->take($homepage_input_array['limit']);
 
       endif;
 
