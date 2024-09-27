@@ -2219,6 +2219,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/Multi-profile/create', 'MultiprofileController@Multi_Profile_Create')->name('Multi-profile-create');
     Route::post('/Multi-profile/store', 'MultiprofileController@Multi_Profile_Store')->name('Multi-profile-store');
+    Route::get('/check-profile-limit', 'MultiprofileController@checkProfileLimit')->name('check-profile-limit');
+    Route::post('/check-email', 'MultiprofileController@checkEmail')->name('check.email');
+    Route::post('/check-mobile', 'MultiprofileController@checkMobile')->name('check.mobile');
+
+
 });
 
 // welcome-screen

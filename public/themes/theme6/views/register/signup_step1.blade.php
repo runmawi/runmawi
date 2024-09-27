@@ -198,6 +198,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 2rem;
 }
 .sign-in-from {padding: 21px;}
+.container{margin-top: 0;}
 </style>
 
 <section style="background: #000;">
@@ -288,9 +289,9 @@ input[type=number]::-webkit-outer-spin-button {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-    type = "number"
-    maxlength = "15" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,15);"
+                                    type = "text"
+                                    maxlength = "15" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
@@ -483,8 +484,8 @@ input[type=number]::-webkit-outer-spin-button {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close text-white" data-dismiss="modal" style="opacity: 1;">&times;</button>
         </div>
         <div class="modal-body" style='color: white;' >
             <?php
@@ -547,6 +548,10 @@ input[type=number]::-webkit-outer-spin-button {
   </div>
 </div>
     </section>
+
+@php
+    include public_path('themes/theme6/views/footer.blade.php');
+@endphp
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- Include jQuery library -->
@@ -1096,3 +1101,6 @@ function format(item, state) {
 
 
 @endsection 
+
+
+
