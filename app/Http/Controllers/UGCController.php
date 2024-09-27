@@ -1703,10 +1703,7 @@ class UGCController extends Controller
     
                 UGCVideo::destroy($id);
     
-                return Redirect::to("myprofile")->with([
-                    "message" => "Successfully Deleted Video",
-                    "note_type" => "success",
-                ]);
+                return redirect()->back();
             } catch (\Throwable $th) {
                 return $th->getMessage();
                 return abort(404) ;
