@@ -5637,6 +5637,7 @@ public function verifyandupdatepassword(Request $request)
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_type'          => 'recurring',
+                'payment_gateway'       =>  'Stripe',
                 'payment_status'        => $subscription['status'],
             );
 
@@ -10157,6 +10158,7 @@ public function LocationCheck(Request $request){
                 'stripe_id'             =>  $subscription['id'] ,
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
+                'payment_gateway'       =>  'Razorpay',
             ]);
 
               return response()->json([
