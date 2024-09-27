@@ -196,7 +196,7 @@ border-radius: 0px 4px 4px 0px;
 											break;
 
 											case 4:
-												$recurring_program_week_day =  'Thrusday' ;
+												$recurring_program_week_day =  'Thursday' ;
 											break;
 
 											case 5:
@@ -204,7 +204,7 @@ border-radius: 0px 4px 4px 0px;
 											break;
 
 											case 6:
-												$recurring_program_week_days =  'Saturday' ;
+												$recurring_program_week_day =  'Saturday' ;
 											break;
 
 											default:
@@ -212,6 +212,7 @@ border-radius: 0px 4px 4px 0px;
 											break;
 										}
 									@endphp
+
 
 									@if ( $video->recurring_program == "daily")
 
@@ -231,6 +232,7 @@ border-radius: 0px 4px 4px 0px;
 												<li><span></span> <small>LIVE NOW</small> </li>
 											</ul>
 										@else
+										<small>{{ @$recurring_program_week_day }}</small>
 											<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
 										@endif
 
