@@ -1,9 +1,8 @@
 @php include public_path('themes/theme5-nemisha/views/header.php');  @endphp
 
 @php
-$isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
+    $isSubscribed = auth()->check() ? auth()->user()->subscribers->contains($profileUser->id) : false;
 @endphp
-
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -147,6 +146,10 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
         margin: 7px;
     }
 
+    .music-play-lists li:hover span{
+        background-color: transparent !important;
+    }
+
     @media only screen and (max-width: 600px) {
     .my-video.vjs-fluid {
         padding-top: 0 !important;
@@ -208,12 +211,6 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
                     @endif
                 @endif
             </div>
-           
-            @php 
-            // include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_script_file.blade.php');
-            // include public_path('themes/theme5-nemisha/views/video-js-Player/video/videos_ads.blade.php');
-            // include public_path('themes/theme5-nemisha/views/footer.blade.php'); 
-            @endphp
 
         </div>
         <div class="py-2" style="font-size: 30px; font-weight:bold; color:white;" >
@@ -298,18 +295,20 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
        </div>
     </div>
   
-    @if( auth()->user()->id != $profileUser->id  )
-    <div class="mx-3" >
-        <button 
-        id="subscribe-toggle" 
-        data-user-id="{{ $profileUser->id }}" 
-        data-subscriber-id="{{ auth()->user()->id }}" 
-        class="ugc-subscriber" style="border: none;"
-        aria-pressed="{{ $subscribe_button ? 'true' : 'false' }}" 
-        onclick="toggleSubscription(this)">
-        {{ $subscribe_button == true ? 'Unsubscribe' : 'Subscribe' }}
-    </button>
-    </div>
+    @if(auth()->check())
+        @if(auth()->user()->id != $profileUser->id)
+            <div class="mx-3">
+                <button 
+                    id="subscribe-toggle" 
+                    data-user-id="{{ $profileUser->id }}" 
+                    data-subscriber-id="{{ auth()->user()->id }}" 
+                    class="ugc-subscriber" style="border: none;"
+                    aria-pressed="{{ $subscribe_button ? 'true' : 'false' }}" 
+                    onclick="toggleSubscription(this)">
+                    {{ $subscribe_button ? 'Unsubscribe' : 'Subscribe' }}
+                </button>
+            </div>
+        @endif
     @endif
 
     @if($videodetail->description)
@@ -327,15 +326,15 @@ $isSubscribed = auth()->user()->subscribers->contains($profileUser->id);
     </div>
     @endif
 
+    @if(auth()->check())
      <div class="mx-3">
-        {{-- @if( $CommentSection != null && $CommentSection->videos == 1 ) --}}
         <div class="sectionArtists">   
                 <div >
                     @php include public_path('themes/theme5-nemisha/views/ugc-comments/index.blade.php') @endphp
                 </div>
         </div>
-        {{-- @endif --}}
     </div>
+    @endif
 
 
     </div>

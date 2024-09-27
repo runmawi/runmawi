@@ -61,7 +61,7 @@
           </svg>
         </div>
         <div style="transform: rotate(90deg); padding-left:7px; font-weight:bold; ">
-            Shorts & Minis
+            Shorts and Minis
         </div>
     </div>
     
@@ -78,7 +78,7 @@
         <div style="overflow-y: auto; height:100vh;">
         
         <div style="padding: 10px 0px 10px 10px;" >
-            <h5>Shorts & Minis</h5>
+            <h5>Shorts and Minis</h5>
         </div>
         <p style="text-align: right; cusrsor:pointer; padding:10px;" > 
             <a href="<?php echo URL::to('ugc') ?><?= '/view_all_profile/' ?>" >View All Profile </a>
