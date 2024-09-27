@@ -28,7 +28,7 @@
                                         <a href="{{ $video->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy" data-src="{{ $video->image_url }}" class="img-fluid" alt="">
+                                                    <img loading="lazy" src="{{ $video->image_url }}" class="img-fluid" alt="Channel-Video-Image">
                                                 </div>
 
                                                 <div class="block-description">

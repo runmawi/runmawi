@@ -24,7 +24,7 @@
                                             <div class="block-images position-relative">
                                                 <!-- block-images -->
                                                 <a href="{{ URL::to('live/' . $category_video->slug) }}">
-                                                    <img loading="lazy" data-src="{{ URL::to('public/uploads/images'. $category_video->image)  }}" class="img-fluid">
+                                                    <img loading="lazy" src="{{ URL::to('public/uploads/images'. $category_video->image)  }}" class="img-fluid" alt="Channel-Live-Image">
                                                 </a>
 
                                                 @if ($ThumbnailSetting->free_or_cost_label == 1)
