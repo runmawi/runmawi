@@ -268,113 +268,172 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                }
        });
+     
       $(document).ready(function() {
 
-         var url = $('#m3u8url').val();
+      var url = $('#m3u8url').val();
 
-         $('#submit_m3u8').on('click', function(e) {
-         e.preventDefault(); 
+      $('#m3u8_video_url').on('input', function() {
+         var m3u8_url = $(this).val();
+         var errorMessage = $('#m3u8_error_message');
+         if (m3u8_url.trim() === "") {
+                errorMessage.hide();
+         } 
+         else if (!m3u8_url.endsWith('.m3u8')) {
+                errorMessage.text('Please enter a valid m3u8 URL.').show();
+         } 
+         else {
+                errorMessage.hide();
+         }
+      });
+
+      $('#submit_m3u8').on('click', function(e) {
+         e.preventDefault();
 
          var m3u8_url = $('#m3u8_video_url').val();
          var errorMessage = $('#m3u8_error_message');
 
-         if (!m3u8_url.endsWith('.m3u8')) {
-            errorMessage.text('Please enter a valid .m3u8 URL.').show();
-         } else {
-            errorMessage.hide();
+         // Perform validation on form submit
+         if (m3u8_url.trim() === "") {
+                errorMessage.hide();
+         } 
+         else if (!m3u8_url.endsWith('.m3u8')) {
+                errorMessage.text('Please enter a valid m3u8 URL.').show();
+         } 
+         else {
+                errorMessage.hide();
 
-            $.ajax({
-                  url: url,
-                  type: "post",
-                  data: {
-                     _token: '{{ csrf_token() }}',
-                     m3u8_url: m3u8_url
-                  },
-                  success: function(value) {
-                     console.log(value);
-                     $('#Next').show();
-                     $('#video_id').val(value.video_id);
-                  },
-                  error: function(xhr, status, error) {
-                     console.log('Error:', error);
-                     }
-               });
+                // Proceed with AJAX request if validation passes
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    data: {
+                             _token: '{{ csrf_token() }}',
+                             m3u8_url: m3u8_url
+                    },
+                    success: function(value) {
+                             console.log(value);
+                             $('#Next').show();
+                             $('#video_id').val(value.video_id);
+                    },
+                    error: function(xhr, status, error) {
+                             console.log('Error:', error);
+                    }
+                });
+            }
+         });
+         });
+
+      $(document).ready(function() {
+
+        var url = $('#mp4url').val();
+
+         $('#mp4_url').on('input', function() {
+            var mp4_url = $(this).val();
+            var errorMessage = $('#mp4_error_message');
+
+            // Hide error message if input is empty
+            if (mp4_url.trim() === "") {
+                     errorMessage.hide();
+            } 
+            else if (!mp4_url.endsWith('.mp4')) {
+                     errorMessage.text('Please enter a valid mp4 URL.').show();
+            } 
+            else {
+                     errorMessage.hide();
+            }
+         });
+
+         $('#submit_mp4').on('click', function(e) {
+            e.preventDefault();
+
+            var mp4_url = $('#mp4_url').val();
+            var errorMessage = $('#mp4_error_message');
+
+            // Perform validation on form submit
+            if (mp4_url.trim() === "") {
+                     errorMessage.hide();
+            } 
+            else if (!mp4_url.endsWith('.mp4')) {
+                     errorMessage.text('Please enter a valid mp4 URL.').show();
+            } 
+            else {
+                     errorMessage.hide();
+
+                     // Proceed with AJAX request if validation passes
+                     $.ajax({
+                                 url: url,
+                                 type: "post",
+                                 data: {
+                                            _token: '{{ csrf_token() }}',
+                                            mp4_url: mp4_url
+                                 },
+                                 success: function(value) {
+                                            console.log(value);
+                                            $('#Next').show();
+                                            $('#video_id').val(value.video_id);
+                                 },
+                                 error: function(xhr, status, error) {
+                                            console.log('Error:', error);
+                                 }
+                     });
             }
          });
       });
 
-      $(document).ready(function() {
+         $(document).ready(function() {
+            var url = $('#embed_url').val();
+  
+            $('#embed_code').on('input', function() {
+               var embed_url = $(this).val();
+               var errorMessage = $('#embed_error_message');
+               var embedUrlPattern = /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
 
-            var url = $('#mp4url').val(); 
+               if (embed_url.trim() === "") {
+                     errorMessage.hide();
+               } 
+               else if (!embedUrlPattern.test(embed_url)) {
+                     errorMessage.text('Please enter a valid YouTube embed URL.').show();
+               } 
+               else {
+                     errorMessage.hide();
+               }
+            });
 
-            $('#submit_mp4').on('click', function(e) {
-               e.preventDefault(); 
+            $('#submit_embed').on('click', function(e) {
+               e.preventDefault();
 
-               var mp4_url = $('#mp4_url').val();
-               var errorMessage = $('#mp4_error_message');
+               var embed_url = $('#embed_code').val();
+               var errorMessage = $('#embed_error_message');
+               var embedUrlPattern = /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
 
-    
-               if (!mp4_url.endsWith('.mp4')) {
-                  errorMessage.text('Please enter a valid .mp4 URL.').show();
-               } else {
-                  errorMessage.hide();
-
-                  $.ajax({
+               if (embed_url.trim() === "") {
+                     errorMessage.hide();
+               } 
+               else if (!embedUrlPattern.test(embed_url)) {
+                     errorMessage.text('Please enter a valid YouTube embed URL.').show();
+               } 
+               else {
+                     errorMessage.hide();
+                     $.ajax({
                         url: url,
                         type: "post",
                         data: {
                            _token: '{{ csrf_token() }}',
-                           mp4_url: mp4_url
+                           embed: embed_url
                         },
                         success: function(value) {
                            console.log(value);
-                           $('#Next').show(); 
-                           $('#video_id').val(value.video_id); 
+                           $('#Next').show();
+                           $('#video_id').val(value.video_id);
                         },
                         error: function(xhr, status, error) {
-                           console.log('Error:', error); 
+                           console.log('Error:', error);
                         }
-                  });
+                     });
                }
             });
          });
-
-         $(document).ready(function() {
-               var url = $('#embed_url').val();
-
-               $('#submit_embed').on('click', function(e) {
-                  e.preventDefault();
-
-                  var embed_url = $('#embed_code').val();
-                  var errorMessage = $('#embed_error_message');
-     
-                  var embedUrlPattern = /^https:\/\/www\.youtube\.com\/embed\/[a-zA-Z0-9_-]+(\?.*)?$/;
-
-                  if (!embedUrlPattern.test(embed_url)) {
-                        errorMessage.text('Please enter a valid YouTube embed URL.').show();
-                  } else {
-                        errorMessage.hide();
-
-
-            $.ajax({
-                url: url,
-                type: "post",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    embed: embed_url
-                },
-                success: function(value) {
-                    console.log(value);
-                    $('#Next').show();
-                    $('#video_id').val(value.video_id);
-                },
-                error: function(xhr, status, error) {
-                    console.log('Error:', error);
-                }
-            });
-        }
-    });
-});
    	
 </script>
 
