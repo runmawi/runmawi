@@ -407,7 +407,7 @@ $jsondata = json_decode($jsonString, true); ?>
   </button> -->
 
     <div class="justify-content-end" id="navbarSupportedContent">
-        <button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">Sign in</button>
+        <a class="btn btn-outline-success my-2 mr-2 my-sm-0" href="{{ route('login') }}" >Sign in</a>
         <a class="btn btn-success my-2 my-sm-0"  href="{{ route('signup') }}">Sign up</a>
     </div>
 </div></nav>
@@ -505,10 +505,9 @@ $jsondata = json_decode($jsonString, true); ?>
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                                     <div class="col-md-12" style="position:relative;">
-                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;" placeholder="Choose Profile Image   " required />
+                                        <input type="file" multiple="true" class="form-control" name="avatar" id="avatar" style="padding: 0px;" placeholder="Choose Profile Image " />
                                         <label for="avatar" class="custom-file-label form-control" >Choose Profile Image</label>
-                                        <!-- <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
-                                        <label id="fileLabel">Choose Profile Image</label> -->
+                                      
                                     </div>
                                 @endif
 

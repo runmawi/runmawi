@@ -95,8 +95,9 @@
                     $('#message-note').html(message_note).slideDown('fast');
 
                     setTimeout(function() {
-                        $('#message-note').slideUp('fast');
-                    }, 2000);
+                    $('#message-note').slideUp('fast');
+                    location.reload();
+                }, 1000);
                 }
             },
         });
@@ -133,7 +134,8 @@
 
                     setTimeout(function() {
                         $('#message-note').slideUp('fast');
-                    }, 2000);
+                        location.reload();
+                    }, 1000);
                 }
             },
         });

@@ -1,5 +1,6 @@
+<?php if(count($ugc_videos) > 0): ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h5 class="main-title">User Generated Content</a></h5>
+    <h5 class="main-title">Shorts & Minis</a></h5>
 </div>
 <div class="favorites-contens">
     <div class="ugc-video home-sec list-inline row p-0 mb-0">
@@ -44,7 +45,7 @@
         <?php endforeach; endif; ?>
     </div>
 </div>
-
+<?php endif; ?>
 <!-- Flickity Slider -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
