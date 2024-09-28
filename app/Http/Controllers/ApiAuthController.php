@@ -3058,7 +3058,7 @@ public function verifyandupdatepassword(Request $request)
           }
 
           return $livestream->publish_type;
-      })->values()->take(15);  
+      })->values();  
 
       $myData[] = array(
         "message" => count($livestreams) > 0 ? 'success' : 'nodata' ,
