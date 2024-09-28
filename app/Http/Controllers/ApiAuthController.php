@@ -17780,7 +17780,7 @@ public function QRCodeMobileLogout(Request $request)
           return $livestream->publish_type;
       })->values(); 
         
-    return $livestreams->values();
+    return $livestreams_sort->values();
   }
 
   private static function Channel_Pagelist(){
