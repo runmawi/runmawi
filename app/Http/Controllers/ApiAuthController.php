@@ -26573,7 +26573,7 @@ public function TV_login(Request $request)
                   'otp_request_id' => $msgId ,
                   'otp_through' => $AdminOTPCredentials->otp_vai ,
                   'password'    => Hash::make($random_otp_number),
-                  'email'       => 'No email for this id - '.$user_id,
+                  // 'email'       => 'No email for this id - '.$user_id,
                 ]);
 
                 $response = array(
