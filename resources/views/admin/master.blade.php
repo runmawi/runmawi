@@ -992,17 +992,24 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/livestream/create') }}">{{ (__('Add New Live Stream')) }}</a></li>
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">{{ (__('Live Stream For Approval')) }}</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}">{{ (__('Manage Live Stream Categories')) }}</a></li>
-
-                        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
-                         <li><a  href="{{ URL::to('admin/livestream/radiostationindex') }}" >{{ (__('All Radio Station')) }}</a></li>
-                       
-                         <li><a  href="{{ URL::to('admin/livestream/createradiostation') }}" >{{ (__('Add New Radio Station')) }}</a></li>
-                        @endif 
-
-
                          <li><a href="{{ route('live_event_artist') }}">{{ (__('Live Event Artist')) }}  </a></li>
                      </ul>
                   </li>
+
+
+                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
+                  <li>
+                  <div class="men" style=""> 
+                     <p class="lnk" >{{ (__('Radio Station')) }}</p>
+                     </div>
+                  <a href="#radio-station" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Manage Live stream.svg')?>"><span class="">{{ (__('Radio Station Management')) }}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                  <ul id="radio-station" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                      <li><a  href="{{ URL::to('admin/livestream/radiostationindex') }}" >{{ (__('All Radio Station')) }}</a></li>
+                      <li><a  href="{{ URL::to('admin/livestream/createradiostation') }}" >{{ (__('Add New Radio Station')) }}</a></li>
+                  </ul>
+                  </li>
+                  @endif 
+
                   <div class="men" style=""> 
 
                     <div class="men" style="">

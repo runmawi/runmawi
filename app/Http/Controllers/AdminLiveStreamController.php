@@ -57,6 +57,11 @@ class AdminLiveStreamController extends Controller
         $this->userIp = $geoip->getip();
     }
     
+
+    public function design(){
+        return View('admin.livestream.radiostation.design');
+    }
+
     public function index()
         {
             if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){

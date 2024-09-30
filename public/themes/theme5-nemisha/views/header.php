@@ -1647,6 +1647,11 @@
                                         <?php endif ; ?>
                                    
                                         </li>
+                                        <li>
+                                        <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                            <a href="<?php echo URL::to('radio-station'); ?>"> Radio Station</a>  
+                                        </div>
+                                        </li>
                                         <li class="nav-item nav-icon">
                                          
                                             <div class="iq-sub-dropdown">
