@@ -203,7 +203,7 @@
     .favorites-slider .slick-list {overflow: hidden;}
 
     body.light .modal-content{background: <?php echo GetAdminLightBg(); ?>!important;color: <?php echo GetAdminLightText(); ?>!important;} /* #9b59b6 */
-    body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
+    /* body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;}  */
 
     div#video\ sda{position:relative;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
@@ -225,7 +225,7 @@
     
 /* payment modal */
     #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-    /* #purchase-modal-dialog .modal-content{height: 100vh;} */
+    #purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
     #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
     #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
     #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}

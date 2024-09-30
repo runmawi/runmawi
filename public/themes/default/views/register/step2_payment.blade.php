@@ -643,7 +643,7 @@
                                 @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paypal_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                        <label class="mt-2 ml-2"><p>{{ $paypal_lable }} </p></label>
+                                        <label class="ml-2"><p>{{ $paypal_lable }} </p></label>
                                     </div>
                                 @endif
 
