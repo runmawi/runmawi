@@ -17,7 +17,7 @@
     
 /* payment modal */
 #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-/* #purchase-modal-dialog .modal-content{height: 100vh;} */
+#purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
 #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
 #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
 #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
@@ -885,12 +885,21 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                                     @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
                                         <div class="row mt-3 justify-content-around"> 
-                                            <div class="paypal_button w-100"> <!-- paypal Button -->
+                                            <div class="paypal_button col-12"> <!-- paypal Button -->
                                                 @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
-                                                        <button class="btn btn-primary"
-                                                            onclick="paypal_checkout()" id="paypal_pay_now">
-                                                            {{ __('Pay now') }}
-                                                        </button>
+                                                    <div class="row mt-3 justify-content-around" id="paypal_pay_now"> 
+                                                        <div class="col-md-6 col-6 btn">
+                                                            <button class="btn btn-primary w-100"
+                                                                onclick="paypal_checkout()">
+                                                                {{ __('Pay now') }}
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-5 col-5 btn w-100">
+                                                            <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
+                                                                {{'Cancel'}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
                                                         <div class="payment_card_payment">
                                                             <div id="paypal-button-container"></div>

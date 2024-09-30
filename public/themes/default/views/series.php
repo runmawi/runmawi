@@ -141,7 +141,7 @@
    
   /* payment modal */
   #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-  /* #purchase-modal-dialog .modal-content{height: 100vh;} */
+  #purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
   #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
   #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
   #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
