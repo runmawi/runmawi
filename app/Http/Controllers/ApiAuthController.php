@@ -3058,7 +3058,7 @@ public function verifyandupdatepassword(Request $request)
           }
 
           return $livestream->publish_type;
-      })->values()->take(15);  
+      })->values();  
 
       $myData[] = array(
         "message" => count($livestreams) > 0 ? 'success' : 'nodata' ,
@@ -17780,7 +17780,7 @@ public function QRCodeMobileLogout(Request $request)
           return $livestream->publish_type;
       })->values(); 
         
-    return $livestreams->values();
+    return $livestreams_sort->values();
   }
 
   private static function Channel_Pagelist(){
