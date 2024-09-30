@@ -16,6 +16,7 @@ use App\OrderHomeSetting;
 use App\VideoCategory;
 use App\Channel;
 use App\ButtonText;
+use App\Series;
 
 class PageListController extends Controller
 {
@@ -252,7 +253,10 @@ class PageListController extends Controller
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
             
-            $latest_series_pagelist = ($slug == null) ? $FrontEndQueryController->latest_Series(): $FrontEndQueryController->latest_Series()->filter(function ($latest_Series) use ($channel_partner_id) {
+            $order_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
+            ->where('active', '1')->orderBy('title')->get();
+            
+            $latest_series_pagelist = ($slug == null) ? $order_series: $order_series->filter(function ($latest_Series) use ($channel_partner_id) {
                 if ( $latest_Series->user_id == $channel_partner_id && $latest_Series->uploaded_by == "Channel" ) {
                     return $latest_Series;
                 }
