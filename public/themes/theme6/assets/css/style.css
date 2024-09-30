@@ -463,8 +463,13 @@ ul.f-link li a:hover { color: var(--iq-primary); }
 .share-icons.music-play-lists li span i { font-size: 20px; }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
 .main-content.movi { padding-top: 30px; }
+#sidebar-scrollbar {width: 100%;right: 0;top: 40px;}
+#search_list h6{font-size: 14px;}
+#search_list .list-group-item{color: #000;width: 100%;}
+#search_list a, .list-group.home-search a{font-size: 12px;text-align: left;color:#000 !important;font-weight: 400;}
+li.list-group-item a{background:transparent!important;color:var(--iq-body-text)!important;font-size:12px!important;/*padding-left:10px!important;*/}
 .share { position: relative; }
-.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute;top:33px; width: 190px; left: -130px; background-color: var(--iq-bg1); padding: 0px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
+.share-box { -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.75); display: none; position: absolute;top:33px; width: 130px; left: -130px; background-color: var(--iq-bg1); padding: 10px; border-radius: 5px; text-align: center; z-index: 2; animation: slide-in  0.5s forwards; margin-bottom: 10px; }
 .share:hover .share-box { display: inline-block; }
 .share-box a { background: transparent !important; color: var(--iq-body) !important; margin-right: 15px; }
 .share-box i { font-size: 25px !important; }
