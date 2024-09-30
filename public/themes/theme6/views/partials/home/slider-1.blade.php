@@ -54,11 +54,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
-                            </a>
                             <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center mb-2" data-animation-in="fadeInUp" data-delay-in="1">
@@ -150,11 +148,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
-                            </a>
                             <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -195,11 +191,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
-                            </a>
                             <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -230,11 +224,9 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center  h-100">
                         <div class="col-xl-9 col-lg-12 col-md-12">
-                            <a href="javascript:void(0);">
                                 <div class="channel-logo" data-delay-in="0.5">
                                     <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
                                 </div>
-                            </a>
                             <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
 
                             <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">

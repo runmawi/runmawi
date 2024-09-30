@@ -832,7 +832,7 @@
         left: 0;
         background: #ED563C;
 
-        transition: 0.8s;
+        transition: 0.6s;
         overflow-x: hidden;
         padding-top: 70px;
         white-space: nowrap;

@@ -690,11 +690,10 @@ class UGCController extends Controller
                 return $item;
             })->first();
 
-            $user_id = Auth::user()->id;
+            $user_id = Auth::check() ? Auth::user()->id : null; 
 
-            $user_data = User::withCount('subscribers')->find($profileUser->id);
-
-            $user_details = User::find($user_id);
+            $user_data = ($profileUser && Auth::check()) ? User::withCount('subscribers')->find($profileUser->id) : null;
+            $user_details = $user_id ? User::find($user_id) : null; 
 
             $ugcvideo = UGCVideo::where('active', 1)
                 ->withCount([
@@ -703,22 +702,25 @@ class UGCController extends Controller
                     }
                     ])->inRandomOrder()->get(); 
     
-            $subscribe_button = UGCSubscriber::where('user_id', $profileUser->id)
-                            ->where('subscriber_id', auth()->user()->id)
-                            ->exists();
+            $subscribe_button = (Auth::check() && $profileUser) ? UGCSubscriber::where('user_id', $profileUser->id)
+            ->where('subscriber_id', $user_id)
+            ->exists() : false;
 
             $newvideo = UGCVideo::where('active', 1)->orderBy('created_at', 'DESC')->first(); 
             $currentVideo = UGCVideo::where('slug', $slug)->first();
-            $keywords = explode(' ', $currentVideo->description);
-            $relatedVideos = UGCVideo::where('id', '!=', $currentVideo->id) 
-                             ->where(function($query) use ($keywords) {
-                                foreach ($keywords as $word) {
-                                    $query->orWhere('description', 'LIKE', '%' . $word . '%');
-                                }
-                             })
-                             ->inRandomOrder()
-                             ->limit(5)
-                             ->get();
+            $relatedVideos = [];
+            if ($currentVideo) {
+                $keywords = explode(' ', $currentVideo->description);
+                $relatedVideos = UGCVideo::where('id', '!=', $currentVideo->id)
+                    ->where(function($query) use ($keywords) {
+                        foreach ($keywords as $word) {
+                            $query->orWhere('description', 'LIKE', '%' . $word . '%');
+                        }
+                    })
+                    ->inRandomOrder()
+                    ->limit(5)
+                    ->get();
+            }
 
             $trendingVideos = UGCVideo::where('id', '!=', $currentVideo->id)->orderBy('views', 'DESC')->limit(5)->get();
 
@@ -734,7 +736,7 @@ class UGCController extends Controller
                 'videodetail' => $videodetail ,
                 'profileUser' =>  $profileUser,
                 'subscribe_button' => $subscribe_button,
-                'subscriber_count' => $user_data->subscribers_count ?? 0,
+                'subscriber_count' => $user_data ? $user_data->subscribers_count : 0,
                 'CommentSection' => CommentSection::first(),
                 'source_id'      => $videodetail->id ,
                 'commentable_type' => 'play_ugc_videos',
@@ -1703,10 +1705,7 @@ class UGCController extends Controller
     
                 UGCVideo::destroy($id);
     
-                return Redirect::to("myprofile")->with([
-                    "message" => "Successfully Deleted Video",
-                    "note_type" => "success",
-                ]);
+                return redirect()->back();
             } catch (\Throwable $th) {
                 return $th->getMessage();
                 return abort(404) ;

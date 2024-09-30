@@ -198,6 +198,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 2rem;
 }
 .sign-in-from {padding: 21px;}
+.container{margin-top: 0;}
 </style>
 
 <section style="background: #000;">
@@ -288,9 +289,9 @@ input[type=number]::-webkit-outer-spin-button {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-    type = "number"
-    maxlength = "15" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,15);"
+                                    type = "text"
+                                    maxlength = "15" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
@@ -323,49 +324,44 @@ input[type=number]::-webkit-outer-spin-button {
                                  @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
-                                         </div>
-                                         <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                         </div>
-                                        <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>Password Not matching.</strong>
-                                        </span>
-                                     
-                                         </div>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password_confirm == 1)
-                            <div class="col-md-12">
-                                <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                                    <div >
-                              <span class="input-group-btn" id="eyeSlash1">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                    </div>
-                                </div>
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)</span>
-                            </div>
-     
-                            </div>            
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="confirm-password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash1">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow1" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>            
                                 @endif
-                            
+                                
                                 @if(!empty($SignupMenu) && $SignupMenu->country == 1)
                                 <div class="col-md-12" style="postion:relative;">
                                     <select class="phselect form-control" name="country" id="country" >
@@ -483,8 +479,8 @@ input[type=number]::-webkit-outer-spin-button {
       <!-- Modal content-->
       <div class="modal-content" >
         <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close text-white" data-dismiss="modal" style="opacity: 1;">&times;</button>
         </div>
         <div class="modal-body" style='color: white;' >
             <?php
@@ -547,6 +543,10 @@ input[type=number]::-webkit-outer-spin-button {
   </div>
 </div>
     </section>
+
+@php
+    include public_path('themes/theme6/views/footer.blade.php');
+@endphp
   
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- Include jQuery library -->
@@ -555,6 +555,49 @@ input[type=number]::-webkit-outer-spin-button {
 <!-- Include jQuery UI library -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+{{-- password length validation --}}
+<script>
+    function checkPass() {
+        var pass1 = document.getElementById('password');
+        var pass2 = document.getElementById('password-confirm');
+        var passwordError = document.getElementById('password-error');
+        var confirmPasswordError = document.getElementById('confirm-password-error');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+
+        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
+        if (strongRegex.test(pass1.value)) {
+            pass1.style.backgroundColor = goodColor;
+            passwordError.style.color = goodColor;
+            passwordError.innerHTML = "Strong password";
+            $('.sign-up-buttons').prop('disabled', false);
+            $('#profileUpdate').prop('disabled', false);
+        } else {
+            pass1.style.backgroundColor = badColor;
+            passwordError.style.color = badColor;
+            $('.sign-up-buttons').prop('disabled', true);
+            $('#profileUpdate').prop('disabled', true);
+            passwordError.innerHTML = "Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.";
+        }
+
+        if (pass2.value !== "") {
+            if (pass1.value == pass2.value) {
+                pass2.style.backgroundColor = goodColor;
+                confirmPasswordError.style.color = goodColor;
+                confirmPasswordError.innerHTML = "Password created successfully";
+            } else {
+                pass2.style.backgroundColor = badColor;
+                confirmPasswordError.style.color = badColor;
+                confirmPasswordError.innerHTML = "Passwords did not match";
+            }
+        } else {
+            confirmPasswordError.innerHTML = "";
+        }
+    }
+</script>
+
 
 <script>
     jQuery.noConflict();
@@ -1096,3 +1139,6 @@ function format(item, state) {
 
 
 @endsection 
+
+
+

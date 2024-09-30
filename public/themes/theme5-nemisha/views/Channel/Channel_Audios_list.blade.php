@@ -21,8 +21,8 @@
                                                 <div class="block-images position-relative">
                                                     <div class="img-box">
                                                         <img loading="lazy"
-                                                            data-src="{{ URL::to('public/uploads/images/' . $audios_data->image) }}"
-                                                            class="img-fluid" alt="" width="">
+                                                            src="{{ URL::to('public/uploads/images/' . $audios_data->image) }}"
+                                                            class="img-fluid" alt="Channel-Audio-Image" width="">
                                                     </div>
                                                 </div>
 

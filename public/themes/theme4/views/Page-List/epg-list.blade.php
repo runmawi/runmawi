@@ -41,10 +41,15 @@
                                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                                         <div class="container">
                                             <div class="modal-content" style="border:none;background:transparent;">
+                                                <div class="res-view-hide position-absolute mb-2">
+                                                    <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
+                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                    </button>
+                                                </div>
                                                 <div class="modal-body">
                                                     <div class="col-lg-12">
                                                         <div class="row">
-                                                            <div class="col-lg-6">
+                                                            <div class="col-lg-6 mb-3">
                                                                 <img  src="{{ $epg_channel_data->Player_image_url }}" alt="modal">
                                                             </div>
                                                             <div class="col-lg-6">
@@ -54,7 +59,7 @@
                                                                         <h2 class="caption-h2">{{ optional($epg_channel_data)->name }}</h2>
                     
                                                                     </div>
-                                                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                    <div class="res-view-show col-lg-2 col-md-2 col-sm-2">
                                                                         <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
                                                                             <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
                                                                         </button>
@@ -152,6 +157,16 @@
         animation: pulse 2s infinite;
         position:absolute;
         top:0;
+    }
+
+    @media (max-width:1024px){
+        .modal-body{padding:0 !important;}
+    }
+    @media (max-width:768px){
+        .network-image{flex: 0 0 33.333%;max-width:33.333%;}
+    }
+    @media (max-width:500px){
+        .network-image{flex: 0 0 50%;max-width:50%;}
     }
 
     @keyframes pulse {

@@ -11,7 +11,8 @@ $settings = App\Setting::first();
 .right-card{flex-grow: 4;}
 p.phone-mail {margin-bottom: 0.3rem;}
 span.details {border-radius: 3px;padding: 5px 15px;background: #1F1F1F;font-size: 14px;}
-button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color: #fff;margin-top: 2rem;border: transparent;border-radius: 25px;}
+.form-control.details{height: 25px;font-size: 14px;}
+button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color: #fff;margin-top: 2rem;border: transparent;border-radius: 25px;cursor: pointer;}
 .my-profile .sign-user_card{background-color: var(--iq-body-bg);box-shadow: unset;}
     #main-header{ color: #fff; }
     .svg{ color: #fff; } 
@@ -109,6 +110,37 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
          margin-bottom: 0.5rem;
       }
       .modal-header{padding:1rem 1rem 0 1rem;}
+      .alert.text-red {color: red;opacity: 0.9;}
+      #avatar-edit {
+         position: relative;
+         display: inline-block;
+      }
+
+      /* Initially hide the edit button */
+      #avatar-edit-btn {
+         display: none;
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         background-color: rgba(0, 0, 0, 0.5);
+         color: #fff;
+         padding: 5px;
+         border-radius: 50%;
+      }
+
+      /* Show the edit button when hovering over the image container */
+      #avatar-edit:hover #avatar-edit-btn {
+         display: block;
+         background-color: transparent;
+         cursor: pointer;
+      }
+      #avatar-edit:hover img.rounded-circle.img-fluid.d-block.position-relative.mb-3 {
+         opacity: 0.5;
+      }
+
+      .usk li.active {background-color: #1F1F1F; }
+
 </style>
 
 <body>
@@ -238,9 +270,9 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
             <div class="left-card mb-3 bdr">
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
-                        <li><a class="showSingle" target="1">{{ __('Account Info') }}</a></li>
+                        <li class="active"><a class="showSingle" target="1">{{ __('Account Info') }}</a></li>
                         <li><a class="showSingle" target="2">{{ __('Plan Details') }}</a></li>
-                        <li><a class="showSingle" target="5">Preference for videos</a></li>
+                        <li><a class="showSingle" target="5">{{ __("Preference for videos") }}</a></li>
                         <li><a class="showSingle" target="6">Profile</a></li>
                         <li><a class="showSingle" target="7">Recently Viewed Items</a></li>
                         <li><a class="showSingle" target="8">Tv Activation Code</a></li>
@@ -251,14 +283,30 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
             <div class="right-card mb-3">
                   <div class="targetDiv" id="div1">
                      <div class="profile-pic-name d-flex align-items-center m-5">
-                        @php 
-                           $data =  Session::all()
-                        @endphp
-                        @if($user->provider != 'facebook' || $user->provider != 'google')
-                           <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;"/>
-                        @else
-                           <img class="rounded-circle img-fluid d-block  mb-3"  src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}"  alt="profile-bg" style="height: 65px;width:65px;object-fit:cover;"/>
-                        @endif
+                        <div>
+                           @php 
+                              $data =  Session::all()
+                           @endphp
+                           <div class="">
+                              <div id="avatar-edit">
+                                 @if($user->provider != 'facebook' || $user->provider != 'google')
+                                    <img class="rounded-circle img-fluid d-block position-relative mb-3" src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}" alt="profile-bg" style="height: 65px;width:65px;"/>
+                                 @else
+                                    <img class="rounded-circle img-fluid d-block mb-3" src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}" alt="profile-bg" style="height: 65px;width:65px;object-fit:cover;"/>
+                                 @endif
+                                 <div id="avatar-edit-btn" class="edit-details position-absolute"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+                              </div>
+                              <div id="avatar-submit" style="display: none;">
+                                 <form id="avatar-form" action="{{ URL::to('/profileupdate') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <img id="avatar-preview" class="rounded-circle img-fluid d-block position-relative mb-3" src="{{URL::asset('public/uploads/avatars/').'/'.$user->avatar}}" alt="profile-bg" style="height: 65px;width:65px;"/>
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}" />
+                                    <input type="file" class="form-control editbtn mt-3" name="avatar" id="avatar" accept="image/*" style="display: none;"/>
+                                 </form>
+                                 <button id="submit-avatar" class="edit-details m-0">{{ __('Save') }}</button>
+                              </div>
+                           </div>
+                        </div>
                         <h4 class="pl-3">{{ __($user->username)}}</h4>
                      </div>
                      <div class="phone-email-details row ml-4">
@@ -273,28 +321,40 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                                  <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                  <p class="phone-mail">{{ __('Phone Number') }}</p>
-                                 <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="{{ $user->mobile }}" class="form-control" placeholder="{{ __('Mobile Number') }}">
+                                 <input type="text" id="mobile" name="mobile" value="{{ $user->mobile }}" class="form-control details" placeholder="{{ __('Mobile Number') }}" onkeypress="return isNumberKey(event)" 
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);" minlength="8"
+                                    maxlength="15">
+                                    <span id="mobile_exists_error" style="color: red; display: none;font-size:14px;">Already exists!</span>
+                                    <span id="err-phone-format" style="color: red; display: none;font-size:14px;">Invalid length!</span>
+
                               </form>
-                              <button id="submit-phone" class="edit-details">{{ __('Submit') }}</button>
+                              <button id="submit-phone" class="edit-details" onclick="checkmobile(event)">{{ __('Submit') }}</button>
                            </div>
                         </div>
+                        
                      
-                        <div class="col-3">
-                              <div id="email-edit">
+                           <div class="col-3" id="email-edit">
+                              <div >
                                  <p class="phone-mail">{{ __('Email ID') }}</p>
                                  <span class="details">{{ $user->email }}</span>
                                  <button id="email-edit-btn" class="edit-details">{{ __('Edit') }}</button>
                               </div>
+                           </div>
+                           <div class="col-6">
                               <div id="email-submit" style="display: none;">
                                  <form id="email-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
-                                    <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                                    <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}" />
                                     <p class="phone-mail">{{ __('Email ID') }}</p>
-                                    <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control" placeholder="{{ __('Email') }}">
+                                    <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control details" placeholder="{{ __('Email') }}">
+                                    <span id="email_exists_error" style="color: red; display: none;font-size:14px;">Already exists!</span>
+                                    <span id="err-mail-format" style="color: red; display: none;font-size:14px;">Invalid format!</span>
                                  </form>
-                                 <button id="submit-email" class="edit-details">{{ __('Submit') }}</button>
+                                 <button id="submit-email" class="edit-details" onclick="checkEmail(event)">{{ __('Submit') }}</button>
                               </div>
-                        </div>
+                           </div>
+                        
+
 
                      </div>
 
@@ -317,7 +377,7 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                   </div>
                </div>
                 
-                <div class="targetDiv" id="div3">
+                <div class="targetDiv m-5" id="div3">
                     <div class="row align-items-center justify-content-between mb-3 mt-3">
                         <div class="col-sm-4">
                    <?php  if($user_role == 'registered'){ ?>
@@ -342,12 +402,12 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                         </div>
                     </div>
                 </div>
-                <div class="targetDiv" id="div4">
+                <div class="targetDiv m-5" id="div4">
                  <div class="mb-3" id="updatepic">
                
             </div>
                 </div>
-                <div class="targetDiv" id="div5">
+                <div class="targetDiv m-5" id="div5">
                     <div class=" mb-3">
                   <h4 class="card-title mb-0">Preference for videos</h4>
                   <form action="{{ route('users-profile-Preference') }}" method="POST"  >
@@ -375,44 +435,50 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                   <button class="btn btn-primary noborder-radius btn-login nomargin editbtn mt-2" type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update Profile') }}</button>                   
                   </form>		
               </div>
-                </div>
-                <div class="targetDiv" id="div6"><div class=" mb-3">
-           <h4 class="card-title mb-0 manage"> Profile</h4>
-              <div class="col-md-12 profile_image mt-3 p-0">                  
-                  @forelse  ( $profile_details as $profile )
-
-                    <div class="">
-                        <div>
-                         <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
-
-                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+               </div>
+                  <div class="targetDiv m-5" id="div6">
+                     <div class="p-3 mb-3">
+                        <div class="row justify-content-between">
+                           <h4 class="card-title mb-0 manage"> Profile</h4>
+                           <div id="error-message" class="alert text-red" style="display: none;">
+                              {{ __("You have reached the maximum profile limit.") }}
                         </div>
-                        <div class=" text-center text-white">
-                            
-                           <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
+                     </div>
+                     <div class="col-md-12 profile_image mt-3 p-0">                  
+                        @forelse  ( $profile_details as $profile )
+                           <div class="">
+                              <div>
+                                 <h2 class="name">{{ $profile ? $profile->user_name : ''  }}</h2>
+                                 <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
+                              </div>
+                              <div class=" text-center text-white">
+                                 
+                                 <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
 
-                           @if($Multiuser == null)
-                              <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
-                                 <i class="fa fa-trash"></i>
-                              </a> 
-                           @endif
+                                 @if($Multiuser == null)
+                                    <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
+                                       <i class="fa fa-trash"></i>
+                                    </a> 
+                                 @endif
 
-                        </div>
-                    </div> 
-                  @empty
-                    <div class="col-sm-6">  
-                        <p class="name"> No Profile </p>  </div>
-                  @endforelse
+                              </div>
+                           </div> 
+                        @empty
+                           <div class="col-sm-6">  
+                              <p class="name"> No Profile </p>  
+                           </div>
+                        @endforelse
 
-                  <div class="col-md-6">
-                     <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
-                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
-                     </a> 
+                        <div class="col-md-6">
+                           <a id="add-profile-btn" style="color: white !important; cursor: pointer;">
+                              <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
+                           </a>
+                        </div>                        
+                     </div>
+   
+                     </div> 
                   </div>
-
-              </div>    
-          </div> </div>
-                <div class="targetDiv" id="div7">
+                <div class="targetDiv m-5" id="div7">
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
@@ -466,7 +532,7 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                 </div>
                
                 </div>
-                 <div class="targetDiv" id="div8">
+                 <div class="targetDiv m-5" id="div8">
                   
                           <p class="text-white">Enter Tv Activation Code</p>
                 <form id="tv-code" accept-charset="UTF-8" action="{{ URL::to('user/tv-code') }}"   enctype="multipart/form-data" method="post">
@@ -488,7 +554,7 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                                        </div>
                            </form>
                   </div>
-                  <div class="targetDiv" id="div9">
+                  <div class="targetDiv m-5" id="div9">
                   
                   <p class="text-white">Tv Logged User List</p>
        
@@ -550,15 +616,108 @@ border-radius: 4px;
 
   </div>
 
+  <!-- email validation existing mail -->
+<script>
+   function checkEmail(event) {
+      event.preventDefault();
+      
+      var email = document.getElementById('email').value;
+      // alert(email);
+
+      $.ajax({
+         url: '{{ route('check.email') }}',
+         type: 'POST',
+         data: {
+               _token: '{{ csrf_token() }}',
+               email: email
+         },
+         success: function(response) {
+               if(response.exists) {
+                  $('#email_exists_error').show();
+               } else {
+                  $('#email_exists_error').hide();
+                  document.getElementById('email-form').submit();
+               }
+         }
+      });
+   }
+</script>
+
+<!-- mobile length validation -->
+<script>
+   $(document).ready(function(){
+      
+      $('#mobile').change(function(){
+         var mob_length = $('#mobile').val().length;
+         console.log(mob_length);
+         if(mob_length < 7){
+            $('#submit-phone').attr('disabled',true);
+            $('#err-phone-format').show();
+         } else{
+            $('#submit-phone').attr('disabled',false);
+         }
+      });
+
+      $('#email').change(function() {
+         var value = $('#email').val();
+         var atPosition = value.indexOf('@');
+         var dotPosition = value.lastIndexOf('.');
+
+         if (atPosition === -1 || dotPosition === -1 || dotPosition <= atPosition + 1 || dotPosition === value.length - 1) {
+            $('#submit-email').attr('disabled', true);
+            $('#err-mail-format').show();
+         } else {
+            $('#submit-email').attr('disabled', false);
+         }
+      });
+
+
+   });
+</script>
+
+  <!-- mobile validation existing mobile -->
+<script>
+   function checkmobile(event) {
+      event.preventDefault();
+      
+      var mobile = document.getElementById('mobile').value;
+      // alert(mobile);
+
+
+      $.ajax({
+         url: '{{ route('check.mobile') }}',
+         type: 'POST',
+         data: {
+               _token: '{{ csrf_token() }}',
+               mobile: mobile
+         },
+         success: function(response) {
+               if(response.exists) {
+                  $('#mobile_exists_error').show();
+               } else {
+                  $('#mobile_exists_error').hide();
+                  document.getElementById('phone-form').submit();
+               }
+         }
+      });
+   }
+</script>
+
+
  
 <script>
    document.addEventListener('DOMContentLoaded', function() {
-       var phoneEditBtn = document.getElementById('phone-edit-btn');
-       var emailEditBtn = document.getElementById('email-edit-btn');
-       var phoneNoEdit = document.getElementById('phone-no-edit');
-       var emailEdit = document.getElementById('email-edit');
-       var phoneNoSubmit = document.getElementById('phone-no-submit');
-       var emailSubmit = document.getElementById('email-submit');
+      var phoneEditBtn = document.getElementById('phone-edit-btn');
+      var emailEditBtn = document.getElementById('email-edit-btn');
+      var phoneNoEdit = document.getElementById('phone-no-edit');
+      var emailEdit = document.getElementById('email-edit');
+      var phoneNoSubmit = document.getElementById('phone-no-submit');
+      var emailSubmit = document.getElementById('email-submit');
+      var avatarEditBtn = document.getElementById('avatar-edit-btn');
+      var avatarInput = document.getElementById('avatar');
+      var avatarSubmit = document.getElementById('avatar-submit');
+      var avatarEdit = document.getElementById('avatar-edit');
+      var avatarPreview = document.getElementById('avatar-preview');
 
        phoneEditBtn.addEventListener('click', function(event) {
            event.preventDefault();
@@ -572,15 +731,34 @@ border-radius: 4px;
            emailSubmit.style.display = 'block';
        });
 
-       document.getElementById('submit-phone').addEventListener('click', function() {
-           document.getElementById('phone-form').submit();
-       });
 
-       document.getElementById('submit-email').addEventListener('click', function() {
-           document.getElementById('email-form').submit();
-       });
+      avatarEditBtn.addEventListener('click', function(event) {
+         event.preventDefault();
+         avatarInput.click();
+      });
+
+      avatarInput.addEventListener('change', function() {
+         avatarEdit.style.display = 'none';
+         avatarSubmit.style.display = 'block';
+
+         if (avatarInput.files && avatarInput.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                  avatarPreview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(avatarInput.files[0]);
+         }
+      });
+
+      document.getElementById('submit-avatar').addEventListener('click', function() {
+         document.getElementById('avatar-form').submit();
+      });
    });
 </script>
+
+
   
   <?php $settings = App\Setting::first(); ?>
 
@@ -700,16 +878,62 @@ if (isset($page) && $page =='admin-dashboard') {
 
 
 <script>
-function openForm() {
-document.getElementById("myForm").style.display = "block";
-document.getElementById("personal").style.display = "none";
-document.getElementById("subplan").style.display = "none";
- document.getElementById("Profile").style.display = "none";
-document.getElementById("card").style.display = "none";
-    document.getElementById("subscribe").style.display = "none";
- document.getElementById("avatar").style.display = "none";
- document.getElementById("recentviews").style.display = "none";
-}
+   function openForm() {
+      document.getElementById("myForm").style.display = "block";
+      document.getElementById("personal").style.display = "none";
+      document.getElementById("subplan").style.display = "none";
+      document.getElementById("Profile").style.display = "none";
+      document.getElementById("card").style.display = "none";
+      document.getElementById("subscribe").style.display = "none";
+      document.getElementById("avatar").style.display = "none";
+      document.getElementById("recentviews").style.display = "none";
+   }
+
+   function isNumberKey(evt) {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+         return false;
+      }
+      return true;
+   }
+
+   $(document).ready(function(){
+      $(".usk li:first-child a").trigger("click");
+
+      $(".showSingle").click(function() {
+         var target = $(this).attr("target");
+         
+         $("#div" + target).show();
+
+         $(".usk li").removeClass("active");
+         $(this).parent().addClass("active");
+      });
+   });
+
+
+
+</script>
+
+<!-- check multiprofile validation -->
+<script>
+   document.getElementById('add-profile-btn').addEventListener('click', function () {
+       fetch('{{ route("check-profile-limit") }}', {
+           method: 'GET',
+           headers: {
+               'X-CSRF-TOKEN': '{{ csrf_token() }}',
+               'Accept': 'application/json',
+           }
+       })
+       .then(response => response.json())
+       .then(data => {
+           if (data.limitReached) {
+               document.getElementById('error-message').style.display = 'block';
+           } else {
+               window.location.href = '{{ route("Multi-profile-create") }}';
+           }
+       })
+       .catch(error => console.error('Error:', error));
+   });
 </script>
 
 <script>

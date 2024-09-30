@@ -179,7 +179,7 @@ class LiveStreamController extends Controller
 
     public function Play(Request $request,$vid)
     {
-    //   try {
+      try {
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
@@ -669,11 +669,12 @@ class LiveStreamController extends Controller
 
           //   return view('auth.login',compact('system_settings'));
           // }
-        // } catch (\Throwable $th) {
+          
+        } catch (\Throwable $th) {
 
-        // //   return $th->getMessage();
-        //     return abort(404);
-        // }
+        //   return $th->getMessage();
+            return abort(404);
+        }
         }
 
         public function videojs_live_watchlater(Request $request)

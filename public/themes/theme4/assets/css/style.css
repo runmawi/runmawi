@@ -558,6 +558,7 @@ img{max-width:100%;height: auto;}
 .responsive-toggle-btn{display:none;}
 .video-js {width: 100%; height: 100%;}
 .theme4-slider .slick-list{overflow: visible;}
+.res-view-hide{display: none;bottom: 103%; right: 0;}
 
 /* flickity slider */
 /* .flickity-viewport{min-height: 200px; max-height: 400px;} */
@@ -604,6 +605,8 @@ img{max-width:100%;height: auto;}
   .vib .content-list .depends-row {
       width: 33.33333%;
   }
+  .res-view-hide{display: block;}
+  .res-view-show{display: none;}
   /* #videoInfo, .series-based-network-dropdown {
       max-height: 500px;
       height: 32vw;

@@ -55,6 +55,12 @@
          $menus = App\Menu::orderBy('order', 'asc')->get();
       }
 
+      if(Auth::check()){
+         $user_img = Auth::user()->avatar;
+         $user_avatar = $user_img !== 'avatar.webp' ? URL::to('public/uploads/avatars/'.$user_img) : URL::to('/assets/img/placeholder.webp');
+         // dd($user_avatar);
+      }
+
    ?>
 
    <meta charset="UTF-8">
@@ -320,13 +326,29 @@
 </script>
 <body>
     <!-- loader Start -->
-    <?php if( get_image_loader() == 1 ) { ?>
-      <div class="fullpage-loader">
-         <div class="fullpage-loader__logo">
-               <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
+    <?php if( get_image_loader() == 1) { ?>
+      <div id="loader" class="fullpage-loader">
+         <div class="fullpage-loader__logo" style="text-align:center;" >
+
+
+         <?php if($theme->loader_format == 1 && !(is_null($theme->loader_video))){ ?>
+            <video id="loader-video" class="video-js" autoplay muted preload="auto" data-setup='' loop style="width:300px;">
+               <source src="<?= URL::to('/public/uploads/settings/'.$theme->loader_video) ?>" type='video/mp4'>
+            </video>
+         <?php } else { ?>
+            <?php if($theme_mode == "light" && !empty($theme->light_mode_logo)){ ?>
+               <img src="<?= URL::to('/public/uploads/settings/'. $theme->light_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+            <?php } elseif($theme_mode != "light" && !empty($theme->dark_mode_logo)){ ?>
+               <img src="<?= URL::to('/public/uploads/settings/'. $theme->dark_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+            <?php } else { ?>
+               <img src="<?= URL::to('/public/uploads/settings/'. $settings->logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+            <?php } ?>
+         <?php } ?>
+
+
          </div>
       </div>
-    <?php } ?>
+   <?php } ?>
 
     <header id="main-header">
   <div class="main-header">
@@ -496,6 +518,7 @@
                                     $channel = App\Channel::where('email', $userEmail)->first();
 
                                     if (!empty($moderatorsUser)) { ?>
+                                       <?php if($theme->enable_cpp_btn == 1): ?>
                                           <div class="p-2" >
                                              <form method="POST" action="<?= URL::to('cpp/home') ?>" >
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -504,9 +527,11 @@
                                                 <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
                                              </form>
                                           </div>
+                                       <?php endif; ?>
                                     <?php }
                                     
                                     if (!empty($channel)) { ?>
+                                       <?php if($theme->enable_channel_btn == 1): ?>
                                           <div class="p-2" >
                                              <form method="POST" action="<?= URL::to('channel/home') ?>" >
                                                 <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -515,6 +540,7 @@
                                                 <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
                                              </form>
                                           </div>
+                                       <?php endif; ?>
                                     <?php }
                                  } ?>
                               </div>
@@ -529,6 +555,7 @@
                            $channel = App\Channel::where('email', $userEmail)->first();
 
                            if (!empty($moderatorsUser)) { ?>
+                              <?php if($theme->enable_cpp_btn == 1): ?>
                                  <div class="p-2" >
                                     <form method="POST" action="<?= URL::to('cpp/home') ?>" >
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -537,9 +564,11 @@
                                        <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
                                     </form>
                                  </div>
+                              <?php endif; ?>
                            <?php }
                            
                            if (!empty($channel)) { ?>
+                              <?php if($theme->enable_channel_btn == 1): ?>
                                  <div class="p-2" >
                                     <form method="POST" action="<?= URL::to('channel/home') ?>" >
                                        <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -548,33 +577,34 @@
                                        <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
                                     </form>
                                  </div>
+                              <?php endif; ?>
                            <?php }
                         } ?>
                      </div>
 
                       <div class="navbar-right menu-right">
-                          <ul class="d-flex align-items-center list-inline m-0">
+                           <ul class="d-flex align-items-center list-inline m-0">
 
                               <li class="nav-item nav-icon">
-                                  <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search">
-                                      <i class="ri-search-line"></i>
-                                  </a>
+                                    <a href="<?php echo URL::to('searchResult');?>" aria-label="search" class="search-toggle device-search">
+                                       <i class="ri-search-line"></i>
+                                    </a>
 
-                                 <div class="search-box iq-search-bar d-search">
-                                    <form id="" role="search" action="<?php echo URL::to('searchResult');?>" method="get">
-                                       <div class="form-group position-relative">
-                                          <input type="text" name="search" class="searches" id="searches" autocomplete="off" placeholder="Type here to Search Videos">
-                                          <i class="search-link ri-search-line"></i>
-                                          <?php  include 'public/themes/theme6/partials/Search_content.php'; ?>
+                                    <div class="search-box iq-search-bar d-search">
+                                       <div class="searchbox">
+                                          <div class="form-group position-relative">
+                                             <input type="text" name="search" class="text search-input font-size-12 searches" autocomplete="off" placeholder="Type here to Search Videos" />
+                                             <i class="search-link ri-search-line"></i>
+                                             <?php  include 'public/themes/theme6/partials/Search_content.php'; ?>
+                                          </div>
                                        </div>
-                                    </form>
-                                 </div>
-
-                                 <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
-                                    <div class="iq-card-body">
-                                       <div id="search_list" class="search_list search-toggle device-search" ></div>
+                                       <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar" >
+                                          <div class="iq-card-body">
+                                             <div id="search_list" class="search_list search-toggle device-search" >
+                                             </div>
+                                          </div>
+                                       </div>
                                     </div>
-                                 </div>
                               </li>
 
                               <!-- Notification -->
@@ -632,7 +662,7 @@
 
                                        <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                           data-toggle="search-toggle">
-                                              <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme6/assets/images/user/user.jpg') ?>"
+                                              <img src="<?= $user_avatar ?>"
                                                 class="img-fluid avatar-40 rounded-circle" alt="user">
                                        </a>
 
@@ -945,7 +975,8 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            background: linear-gradient(180deg, #040404 0%, #3D3D47 100%);
+            /* background: linear-gradient(180deg, #040404 0%, #3D3D47 100%); */
+            background: #000;
             z-index: 9999;
             opacity: 1;
             transition: opacity .5s;
@@ -984,5 +1015,6 @@
             .fullpage-loader--invisible {
             opacity: 0;
             }
+            /* END LOADER CSS */
          </style>
 

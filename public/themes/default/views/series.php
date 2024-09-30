@@ -141,13 +141,13 @@
    
   /* payment modal */
   #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-  #purchase-modal-dialog .modal-content{height: 100vh;}
+  #purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
   #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
   #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
   #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
   #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
   .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
-  .modal-open .modal{overflow-y: hidden;}
+  /* .modal-open .modal{overflow-y: hidden;} */
   div#video-purchase-now-modal{padding-right: 0 !important;}
   .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
   .col-md-12.btn {margin-top: 2rem;}
@@ -1332,7 +1332,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                             </div>
                                         <?php endif; ?>
 
-                                          <div class="paypal_button col-md-5 col-5 btn">
+                                          <div class="paypal_button col-md-5 col-5 btn" id="paypal_pay_cancel">
                                             <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
                                               <?= ("Cancel") ?>
                                             </button>
@@ -1358,8 +1358,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
   
 function paypal_checkout(seasons_id, amount) {
-    $('.paypal-button-container').empty();
-    
+    $('#paypal-button-container').empty();
+        $('#paypal_pay_cancel').hide();
         $('.paypal_pay_now').hide();
 
         paypal.Buttons({

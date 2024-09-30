@@ -17,13 +17,13 @@
     
 /* payment modal */
 #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
-#purchase-modal-dialog .modal-content{height: 100vh;}
+#purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
 #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
 #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
 #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
 #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
 .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
-.modal-open .modal{overflow-y: hidden;}
+/* .modal-open .modal{overflow-y: hidden;} */
 div#video-purchase-now-modal{padding-right: 0 !important;}
 .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
 .col-md-12.btn {margin-top: 2rem;}
@@ -885,12 +885,21 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                                     @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
                                         <div class="row mt-3 justify-content-around"> 
-                                            <div class="paypal_button w-100"> <!-- paypal Button -->
+                                            <div class="paypal_button col-12"> <!-- paypal Button -->
                                                 @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
-                                                        <button class="btn btn-primary"
-                                                            onclick="paypal_checkout()" id="paypal_pay_now">
-                                                            {{ __('Pay now') }}
-                                                        </button>
+                                                    <div class="row mt-3 justify-content-around" id="paypal_pay_now"> 
+                                                        <div class="col-md-6 col-6 btn">
+                                                            <button class="btn btn-primary w-100"
+                                                                onclick="paypal_checkout()">
+                                                                {{ __('Pay now') }}
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-5 col-5 btn w-100">
+                                                            <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
+                                                                {{'Cancel'}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
                                                         <div class="payment_card_payment">
                                                             <div id="paypal-button-container"></div>
@@ -936,6 +945,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                 $('#paypal_pay_now').hide();
 
                 const amount = '{{ $videodetail->ppv_price }}';
+                let element = document.querySelector('.paypal-button[aria-label="Debit or Credit Card"]');
+                console.log("element",element);
 
                 paypal.Buttons({
                     createOrder: function (data, actions) {
@@ -979,6 +990,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                         console.error(err);
                     }
                 }).render('#paypal-button-container');
+                console.log("pb",paypal.Buttons());
+                
             }
 
         $(document).ready(function() {
@@ -1158,6 +1171,10 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         })
 
     </script>
+    <style>
+        .billingAddress > div {background-color: white !important;border-radius: 6px !important;margin-bottom: 12px !important;border-color: rgb(183, 188, 191) !important;}
+        .billingAddress p{font-size: 15px;color: rgb(97 100 101);margin: 15px 15px;}
+    </style>
 @php 
     include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-file.blade.php");
     include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-stripe.blade.php");
