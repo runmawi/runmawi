@@ -324,7 +324,8 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                                  <input type="text" id="mobile" name="mobile" value="{{ $user->mobile }}" class="form-control details" placeholder="{{ __('Mobile Number') }}" onkeypress="return isNumberKey(event)" 
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);" minlength="8"
                                     maxlength="15">
-                                    <span id="mobile_exists_error" style="color: red; display: none;">Already exists!</span>
+                                    <span id="mobile_exists_error" style="color: red; display: none;font-size:14px;">Already exists!</span>
+                                    <span id="err-phone-format" style="color: red; display: none;font-size:14px;">Invalid length!</span>
 
                               </form>
                               <button id="submit-phone" class="edit-details" onclick="checkmobile(event)">{{ __('Submit') }}</button>
@@ -346,7 +347,8 @@ button.edit-details {padding: 5px 56px;background: #1F1F1F;font-size: 14px;color
                                     <input type="hidden" name="user_id" value="{{ $user->id }}" />
                                     <p class="phone-mail">{{ __('Email ID') }}</p>
                                     <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control details" placeholder="{{ __('Email') }}">
-                                    <span id="email_exists_error" style="color: red; display: none;">Already exists!</span>
+                                    <span id="email_exists_error" style="color: red; display: none;font-size:14px;">Already exists!</span>
+                                    <span id="err-mail-format" style="color: red; display: none;font-size:14px;">Invalid format!</span>
                                  </form>
                                  <button id="submit-email" class="edit-details" onclick="checkEmail(event)">{{ __('Submit') }}</button>
                               </div>
@@ -620,6 +622,7 @@ border-radius: 4px;
       event.preventDefault();
       
       var email = document.getElementById('email').value;
+      // alert(email);
 
       $.ajax({
          url: '{{ route('check.email') }}',
@@ -649,10 +652,26 @@ border-radius: 4px;
          console.log(mob_length);
          if(mob_length < 7){
             $('#submit-phone').attr('disabled',true);
+            $('#err-phone-format').show();
          } else{
             $('#submit-phone').attr('disabled',false);
          }
       });
+
+      $('#email').change(function() {
+         var value = $('#email').val();
+         var atPosition = value.indexOf('@');
+         var dotPosition = value.lastIndexOf('.');
+
+         if (atPosition === -1 || dotPosition === -1 || dotPosition <= atPosition + 1 || dotPosition === value.length - 1) {
+            $('#submit-email').attr('disabled', true);
+            $('#err-mail-format').show();
+         } else {
+            $('#submit-email').attr('disabled', false);
+         }
+      });
+
+
    });
 </script>
 
@@ -662,7 +681,7 @@ border-radius: 4px;
       event.preventDefault();
       
       var mobile = document.getElementById('mobile').value;
-      // alert(mob_length);
+      // alert(mobile);
 
 
       $.ajax({
@@ -683,6 +702,8 @@ border-radius: 4px;
       });
    }
 </script>
+
+
  
 <script>
    document.addEventListener('DOMContentLoaded', function() {
@@ -896,7 +917,6 @@ if (isset($page) && $page =='admin-dashboard') {
 <!-- check multiprofile validation -->
 <script>
    document.getElementById('add-profile-btn').addEventListener('click', function () {
-       // Make an AJAX call to check the current profile count
        fetch('{{ route("check-profile-limit") }}', {
            method: 'GET',
            headers: {
@@ -907,10 +927,8 @@ if (isset($page) && $page =='admin-dashboard') {
        .then(response => response.json())
        .then(data => {
            if (data.limitReached) {
-               // Show error message if the limit is reached
                document.getElementById('error-message').style.display = 'block';
            } else {
-               // Redirect to the profile creation page if the limit is not reached
                window.location.href = '{{ route("Multi-profile-create") }}';
            }
        })
