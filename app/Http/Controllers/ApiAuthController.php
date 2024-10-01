@@ -3164,6 +3164,9 @@ public function verifyandupdatepassword(Request $request)
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+
+                          $item['Share_URL'] = URL::to('live/'.$item->slug);
+
                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
                           if( $item['livestream_format'] == "mp4"){
@@ -3242,6 +3245,8 @@ public function verifyandupdatepassword(Request $request)
                                         $item['livestream_format'] =  $item->url_type ;
                                         $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
               
+                                        $item['Share_URL'] = URL::to('live/'.$item->slug);
+
                                           //  Livestream URL
 
                                         switch (true) {
@@ -6194,17 +6199,31 @@ public function checkEmailExists(Request $request)
         return response()->json($response, 422); 
       }
 
+      try {
+      
+
       $episodeid = $request->episodeid;
       $user_id   = $request->user_id;
 
-      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+      // Check Episode exist
+
+      Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->firstorfail();
+
+      // Episode Details
+
+      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
          $item['image_url'] = $item->image;
          $item['player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
          $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image);
 
-         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+         $item['series'] = Series::where('id',$item->series_id)->first();
+
+         $item['series_name'] = $item['series']->title;
+
+         $item['Share_url'] = URL::to('episode/'.$item['series']->slug.'/'.$item['slug']);
 
           //Continue Watchings
 
@@ -6326,12 +6345,10 @@ public function checkEmailExists(Request $request)
        }else{
         $Season = '';
        }
-      //  print_r($Season->id);exit;
 
 
       $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.series_id')
       ->where('series_languages.series_id',$series_id)->get('name');
-      // echo "<pre>"; print_r($languages);exit;
 
       foreach($languages as $value){
         $language[] = $value['name'];
@@ -6402,7 +6419,7 @@ public function checkEmailExists(Request $request)
   }else{
     $category = [];
   }
-  // echo "<pre>";print_r($category);exit;
+  
 
     if(!empty($category)){
     $main_genre = implode(",",$category);
@@ -6410,7 +6427,7 @@ public function checkEmailExists(Request $request)
       $main_genre = "";
     }
 
-    // echo "<pre>"; print_r($languages);exit;
+    
     if(!empty($series_id) && !empty($languages)){
     foreach($languages as $value){
       $language[] = $value['name'];
@@ -6425,7 +6442,7 @@ public function checkEmailExists(Request $request)
     }
     if (!empty($episode)) {
     $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
-    // print_r();exit;
+   
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
     // ->where('season_id',$episode[0]->season_id)
     ->where('series_id',$episode[0]->series_id)
@@ -6465,6 +6482,15 @@ public function checkEmailExists(Request $request)
 
       );
       return response()->json($response, 200);
+       
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'true',
+          'message'=> $th->getMessage(),
+        );
+        return response()->json($response, 500);
+      }
     }
 
 
@@ -26580,7 +26606,7 @@ public function TV_login(Request $request)
                   "status"     => 'true' ,
                   "status_code" => 200,
                   "request_id" => $response['request_id'] ,
-                  "message"    => 'SMS Send Successfully' ,
+                  "message"    => 'OTP Sent Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
                 );
 
@@ -26647,7 +26673,7 @@ public function TV_login(Request $request)
         if(!is_null($user)  ){
 
           $otp_status = "true";
-          $message = Str::title('Otp verify successfully !!');
+          $message = Str::title('Otp verify successfully!');
 
         }else{
 
