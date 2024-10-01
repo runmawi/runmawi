@@ -7099,16 +7099,15 @@ return response()->json($response, 200);
 
           if( $userrole == "admin"){
               $item['Episode_url'] =  $item->episode_id_1080p ;
-         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $season->access == 'free'){
 
                   if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
 
-            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $season->access == 'registered' && $userrole == 'registered'){
 
                   if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
 
             }elseif($userrole == "registered" && $season->access == 'ppv'){
-
 
               $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
 
@@ -7125,11 +7124,20 @@ return response()->json($response, 200);
                   }else{
                       $item['PPV_Plan']  = '';
                   }
-         }else{
+         }elseif($userrole == "registered" && $season->access == 'ppv'){
+
+          $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
+
+          if($item['PPV_Plan'] > 0){
+              if($item['PPV_Plan'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+          }else{
+              $item['PPV_Plan']  = '';
+          }
+       }else{
              $item['PPV_Plan']   = '';
          }
 
-      if($ppv_exists_check_query > 0 || $userrole == "admin"){
+         if($ppv_exists_check_query > 0 || $userrole == "admin"){
          
          $videoId = $item['Episode_url']; 
          $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
