@@ -365,6 +365,22 @@
         <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
 
+<script>
+    $(window).load(function() {
+        var email = $('#email').val().trim();
+        var password = $('#password').val().trim();
+        // alert(email);
+
+        var loginButton = $('#email-login-button');
+
+        if (email && password) {
+            loginButton.prop("disabled", false);
+        } else {
+            loginButton.prop("disabled", true);
+        }
+    });
+</script>
+
         <script>
 
             $(document).ready(function(){
