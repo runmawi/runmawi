@@ -4541,13 +4541,14 @@ public function verifyandupdatepassword(Request $request)
       );
     }
     }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal'|| $payment_type == 'CinetPay' ||  $payment_type == 'Applepay'|| $payment_type == 'recurring') {
+
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
-      if ( $ppv_count == 0 ) {
+      if ( $ppv_count == 0 && !empty($video_id) && $video_id != '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv,'ppv_plan'=> $ppv_plan ]
         );
@@ -4555,7 +4556,7 @@ public function verifyandupdatepassword(Request $request)
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
 
-      if ( $serie_ppv_count == 0 ) {
+      if ( $serie_ppv_count == 0 && !empty($series_id) && $series_id != '' && empty($season_id) && $season_id == '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'series_id' => $series_id,'to_time' => $date ]
         );
@@ -4566,7 +4567,7 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date]);
       }
 
-      if ( $season_ppv_count == 0 ) {
+      if ( $season_ppv_count == 0 && !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
         );
@@ -4578,7 +4579,7 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
     
-      if ( $live_ppv_count == 0 ) {
+      if ( $live_ppv_count == 0 && !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
         );
@@ -4589,7 +4590,7 @@ public function verifyandupdatepassword(Request $request)
         );
       }
   
-      if ( $audio_ppv_count == 0 ) {
+      if ( $audio_ppv_count == 0 && !empty($audio_id) && $audio_id != '' ) {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
