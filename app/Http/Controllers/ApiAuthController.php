@@ -6451,7 +6451,7 @@ public function checkEmailExists(Request $request)
         'shareurl' => URL::to('episode').'/'.$episode[0]->series_name.'/'.$episode[0]->slug,
         'episode' => $episode,
         'Season_Name' => $Season_Name,
-        'season' => $Season,
+        'season' => array($Season),
         'Season_array' => $Season_array ,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
