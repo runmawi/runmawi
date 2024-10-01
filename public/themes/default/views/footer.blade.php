@@ -7,6 +7,8 @@
   $app_setting = App\AppSetting::where('id',1)->where('status','hidden')->first();
   $session = session()->all();
 
+  $css = App\Css::pluck('custom_css')->toArray();
+
   $theme = App\SiteTheme::first();
   $theme_mode = $theme->theme_mode;
 ?>
@@ -265,6 +267,14 @@ function about(evt , id) {
       <?php }
     }
      ?>
+
+<?php
+  if(count($css) > 0){
+    foreach($css as $customCss){   ?>
+        <?= $customCss ?>
+    <?php }
+  } 
+?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
