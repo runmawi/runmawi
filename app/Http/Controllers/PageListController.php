@@ -50,7 +50,7 @@ class PageListController extends Controller
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
             
-            $latest_videos_pagelist = ($slug == null) ? $FrontEndQueryController->Latest_videos() : $FrontEndQueryController->latest_videos()->filter(function ($latest_videos) use ($channel_partner_id) {
+            $latest_videos_pagelist = ($slug == null) ? $FrontEndQueryController->Order_Latest_videos() : $FrontEndQueryController->Order_Latest_videos()->filter(function ($latest_videos) use ($channel_partner_id) {
                 if ( $latest_videos->user_id == $channel_partner_id && $latest_videos->uploaded_by == "Channel" ) {
                     return $latest_videos;
                 }
