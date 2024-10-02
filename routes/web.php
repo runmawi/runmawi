@@ -2865,6 +2865,9 @@ Route::get('activationcode', 'AdminUsersController@myprofile');
 
 Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
 
+// videoJs player continue watching
+Route::post('saveContinueWatching','ChannelController@saveContinueWatching')->name('saveContinueWatching');
+
 // For theme6 
 
 Route::post('HomePage-watchlater', 'HomeController@Homepage_watchlater')->name('home-page.watchlater');

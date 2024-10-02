@@ -5822,4 +5822,60 @@ class ChannelController extends Controller
        }
    }
 
+    public function saveContinueWatching(Request $request)
+    {
+        try {
+            
+    
+            $data = $request->all();
+            if (Auth::user())
+            {
+                $user_id = Auth::user()->id;
+                $video_id = $request->video_id;
+                $duration = $request->duration;
+                $currentTime = $request->currentTime;
+                $watch_percentage = ($currentTime * 100 / $duration);
+                $cnt = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->count();
+                $get_cnt = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->first();
+                if ($cnt > 0 && $get_cnt->watch_percentage >= "99")
+                {
+                    ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->delete();
+                }
+                if ($cnt == 0)
+                {
+                    $video = new ContinueWatching;
+                    $video->videoid = $request->video_id;
+                    $video->user_id = $user_id;
+                    $video->currentTime = $request->currentTime;
+                    $video->watch_percentage = $watch_percentage;
+                    $video->save();
+                }
+                else
+                {
+                    $cnt_watch = ContinueWatching::where("videoid", $video_id)->where("user_id", $user_id)->first();
+                    $cnt_watch->currentTime = $request->currentTime;
+                    $cnt_watch->watch_percentage = $watch_percentage;
+                    $cnt_watch->save();
+                }
+    
+                return response()->json(['success' => true], 200);
+            }
+    
+            return response()->json(['error' => 'User not authenticated'], 401);
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Return validation errors
+            return response()->json(['error' => $e->errors()], 422); // 422 status for validation errors
+        } catch (\Exception $e) {
+            // Catch and return any other exceptions
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+   
+   
+   
+
+    
+
+
 }
