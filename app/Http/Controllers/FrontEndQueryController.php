@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\File; 
 use App\CategoryVideo;
 use App\Videoartist;
+use App\ContinueWatching;
 
 class FrontEndQueryController extends Controller
 {
@@ -1191,6 +1192,50 @@ class FrontEndQueryController extends Controller
             $data = array() ;
         }
         return $data;
+    }
+
+    public function VideoJsContinueWatching(){
+        if(!Auth::guest()){
+            $video_cnt = ContinueWatching::where('user_id', Auth::user()->id)
+                                            ->pluck('videoid')
+                                            ->toArray();
+
+            $cnt_watching_videos = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'publish_status', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image',
+                                                'duration', 'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'player_image', 'details', 'description')
+                                        ->with('cnt_watch')
+                                        ->where('active', '1')
+                                        ->where('status', '1')
+                                        ->where('type', '!=', 'embed')
+                                        ->whereIn('id', $video_cnt)
+                                        ->latest()
+                                        ->get();
+
+            return $cnt_watching_videos;
+        }
+
+    }
+
+    public function VideoJsEpisodeContinueWatching(){
+        if(!Auth::guest()){
+            $episode_cnt = ContinueWatching::where('user_id', Auth::user()->id)
+                                            ->pluck('episodeid')
+                                            ->toArray();
+
+            $cnt_watching_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
+                                                    'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
+                                        ->where('active', '1')
+                                        ->where('status', '1')
+                                        ->where('type', '!=', 'embed')
+                                        ->whereIn('id', $episode_cnt)
+                                        ->latest()
+                                        ->get()->map(function($item){
+                                            $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only the necessary fields
+                                            return $item;
+                                        });
+
+            return $cnt_watching_episode;
+        }
+
     }
 
     public function TopTenVideos(){
