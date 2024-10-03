@@ -227,6 +227,7 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
+                            <div id="source_err_validtion_navigation"></div> <!-- Target element for scrolling -->
                             <label class="m-0">Live Stream Source</label>
                             <p class="p1">Select the Live Stream Source :</p>
                             <div class="panel-body">
@@ -278,6 +279,9 @@
                                     <label for=""><label>Live Stream Video</label></label>
                                     <input type="file" multiple="true" accept="video/mp4,video/x-m4v,video/*" class="form-group" name="live_stream_video"  />
                                 </div>
+                                <a href="#source_err_validtion_navigation">
+                                    <span id="source_err_validtion" style="color:red;display:none;">Please enter the live url</span>
+                                </a>
                             </div>
                         </div>
 
@@ -926,6 +930,66 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+
+<!-- Empty url validation Live Stream Source -->
+<script>
+    $(document).ready(function() {
+        $('#url_type').change(function() {
+            let urlType = $('#url_type').val();
+            
+            $('#liveEdit_video').off('submit').on('submit', function(event) {
+                var url_value = $('#mp4_url').val();
+                var embed_url_value = $('#embed_url').val();
+                var live_stream_url_value = $('.live_stream_url_value').val();
+                var m3u_url_value = $('#m3u_url').val();
+                var acc_audio_file_value = $('.audio_stream_url_value').val();
+                var acc_audio_url_value = $('.acc_audio_url_value').val();
+
+                if (urlType === 'mp4' && !url_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else if (urlType === 'embed' && !embed_url_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else if (urlType === 'live_stream_video' && !live_stream_url_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else if (urlType === 'm3u_url' && !m3u_url_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else if (urlType === 'acc_audio_file' && !acc_audio_file_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else if (urlType === 'acc_audio_url' && !acc_audio_url_value) {
+                    $('#source_err_validtion').show();
+                    $('html, body').animate({
+                        scrollTop: $('#source_err_validtion_navigation').offset().top
+                    }, 500);
+                    event.preventDefault();
+                } else {
+                    $('#source_err_validtion').hide();
+                }
+            });
+        });
+    });
+
+</script>
 
 
 {{-- image validation --}}

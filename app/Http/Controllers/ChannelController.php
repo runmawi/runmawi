@@ -5822,4 +5822,69 @@ class ChannelController extends Controller
        }
    }
 
+    public function saveContinueWatching(Request $request)
+    {
+        try {
+            $data = $request->all();
+            
+            if (Auth::user()) {
+                $user_id = Auth::user()->id;
+                $video_id = $request->video_id;
+                $duration = $request->duration;
+                $currentTime = $request->currentTime;
+    
+                if ($duration > 0) {
+                    $watch_percentage = ($currentTime * 100 / $duration);
+                    
+                    $cnt = ContinueWatching::where("videoid", $video_id)
+                                            ->where("user_id", $user_id)
+                                            ->count();
+    
+                    // Get the first record if it exists
+                    $get_cnt = ContinueWatching::where("videoid", $video_id)
+                                                ->where("user_id", $user_id)
+                                                ->first();
+    
+                    // If the user has completed watching (99% or more), remove the entry
+                    if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
+                        ContinueWatching::where("videoid", $video_id)
+                                        ->where("user_id", $user_id)
+                                        ->delete();
+                    }
+                    
+                    // If no entry exists, create a new one
+                    if ($cnt == 0) {
+                        $video = new ContinueWatching;
+                        $video->videoid = $video_id;
+                        $video->user_id = $user_id;
+                        $video->currentTime = $currentTime;
+                        $video->watch_percentage = $watch_percentage;
+                        $video->save();
+                    }
+                    // If the entry already exists, update the existing one
+                    else {
+                        $cnt_watch = ContinueWatching::where("videoid", $video_id)
+                                                        ->where("user_id", $user_id)
+                                                        ->first();
+                        $cnt_watch->currentTime = $currentTime;
+                        $cnt_watch->watch_percentage = $watch_percentage;
+                        $cnt_watch->save();
+                    }
+    
+                    return response()->json(['success' => true], 200);
+                } else {
+                    return response()->json(['error' => 'Invalid video duration'], 400);
+                }
+            }
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+   
+   
+
+
 }

@@ -417,6 +417,27 @@ border-radius: 0px 4px 4px 0px;
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mt-3 p-2">
+                                    <div class="col-sm-6" id="Pay_Per_view_Hours">
+                                        <div class="panel panel-primary" data-collapsed="0">
+                                            <div class="panel-heading">
+                                                <div class="panel-title"><label>Pay Per view Hours</label></div>
+                                                <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p class="p1">Hours :</p>
+                                                <div class="form-group">
+                                                    <div class="make-switch ppv_switvh" data-on="success" data-off="warning">
+                                                        <input type="number" class="form-control" name="ppv_hours" id="ppv_hours"
+                                                            placeholder="# of pay Per view hours"
+                                                            value="@if(!empty($settings->ppv_hours)){{ $settings->ppv_hours }}@endif" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-sm-6" id="PPV_Global_Price">
                                     <div class="panel panel-primary" data-collapsed="0">
                                         <div class="panel-heading">
@@ -554,7 +575,7 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                             {{-- Set Expiry time --}}
-                            <div class="row mt-5 justify-content-between">
+                            {{-- <div class="row mt-5 justify-content-between">
                                 <label class="mt-1">PPV expiry duration for videos</label>
                                 <div class="col-sm-5">
                                     <div class="panel panel-primary" data-collapsed="0">
@@ -610,10 +631,10 @@ border-radius: 0px 4px 4px 0px;
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{-- expiry duration for live --}}
-                            <div class="row mt-5 justify-content-between">
+                            {{-- <div class="row mt-5 justify-content-between">
                                 <label class="mt-1">PPV expiry duration for Live</label>
                                 <div class="col-sm-5">
                                     <div class="panel panel-primary" data-collapsed="0">
@@ -669,10 +690,10 @@ border-radius: 0px 4px 4px 0px;
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{-- expiry duration for Season --}}
-                            <div class="row mt-5 justify-content-between">
+                            {{-- <div class="row mt-5 justify-content-between">
                                 <label class="mt-1">PPV expiry duration for season</label>
                                 <div class="col-sm-5">
                                     <div class="panel panel-primary" data-collapsed="0">
@@ -728,7 +749,7 @@ border-radius: 0px 4px 4px 0px;
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{-- End Set Expiry time --}}
                         </div>

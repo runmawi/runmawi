@@ -489,6 +489,7 @@ class HomeController extends Controller
                 'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                 'ugc_users'         => $FrontEndQueryController->UGCUsers(),
                 'button_text'         => $button_text,
+                'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1237,6 +1238,7 @@ class HomeController extends Controller
                         'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                         'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
                         'button_text'         => $button_text,
+                        'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
                     );
 
                     if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1705,7 +1707,8 @@ class HomeController extends Controller
                     'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
                     'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
                     'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
-                    'button_text'         => $button_text,  
+                    'button_text'         => $button_text, 
+                    'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(), 
                 );
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
