@@ -1195,6 +1195,9 @@ class FrontEndQueryController extends Controller
     }
 
     public function VideoJsContinueWatching(){
+
+        $cnt_watching_videos = [];
+
         if(!Auth::guest()){
             $video_cnt = ContinueWatching::where('user_id', Auth::user()->id)
                                             ->pluck('videoid')
@@ -1210,12 +1213,16 @@ class FrontEndQueryController extends Controller
                                         ->latest()
                                         ->get();
 
-            return $cnt_watching_videos;
         }
+
+        return $cnt_watching_videos;
 
     }
 
     public function VideoJsEpisodeContinueWatching(){
+
+        $cnt_watching_episode = [];
+        
         if(!Auth::guest()){
             $episode_cnt = ContinueWatching::where('user_id', Auth::user()->id)
                                             ->pluck('episodeid')
@@ -1233,8 +1240,9 @@ class FrontEndQueryController extends Controller
                                             return $item;
                                         });
 
-            return $cnt_watching_episode;
         }
+
+        return $cnt_watching_episode;
 
     }
 

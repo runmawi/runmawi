@@ -490,6 +490,8 @@ class HomeController extends Controller
                 'ugc_users'         => $FrontEndQueryController->UGCUsers(),
                 'button_text'         => $button_text,
                 'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
+                'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
