@@ -3164,6 +3164,9 @@ public function verifyandupdatepassword(Request $request)
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+
+                          $item['Share_URL'] = URL::to('live/'.$item->slug);
+
                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
                           if( $item['livestream_format'] == "mp4"){
@@ -3242,6 +3245,8 @@ public function verifyandupdatepassword(Request $request)
                                         $item['livestream_format'] =  $item->url_type ;
                                         $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
               
+                                        $item['Share_URL'] = URL::to('live/'.$item->slug);
+
                                           //  Livestream URL
 
                                         switch (true) {
@@ -4536,13 +4541,14 @@ public function verifyandupdatepassword(Request $request)
       );
     }
     }elseif ($payment_type == 'razorpay' || $payment_type == 'paypal'|| $payment_type == 'CinetPay' ||  $payment_type == 'Applepay'|| $payment_type == 'recurring') {
+
       $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
       $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
 
-      if ( $ppv_count == 0 ) {
+      if ( $ppv_count == 0 && !empty($video_id) && $video_id != '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv,'ppv_plan'=> $ppv_plan ]
         );
@@ -4550,7 +4556,7 @@ public function verifyandupdatepassword(Request $request)
         DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
 
-      if ( $serie_ppv_count == 0 ) {
+      if ( $serie_ppv_count == 0 && !empty($series_id) && $series_id != '' && empty($season_id) && $season_id == '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'series_id' => $series_id,'to_time' => $date ]
         );
@@ -4561,7 +4567,7 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date]);
       }
 
-      if ( $season_ppv_count == 0 ) {
+      if ( $season_ppv_count == 0 && !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
         );
@@ -4573,7 +4579,7 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
       }
     
-      if ( $live_ppv_count == 0 ) {
+      if ( $live_ppv_count == 0 && !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
           ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
         );
@@ -4584,7 +4590,7 @@ public function verifyandupdatepassword(Request $request)
         );
       }
   
-      if ( $audio_ppv_count == 0 ) {
+      if ( $audio_ppv_count == 0 && !empty($audio_id) && $audio_id != '' ) {
         DB::table('ppv_purchases')->insert(
           ['user_id' => $user_id ,'audio_id' => $audio_id,'to_time' => $date,'total_amount'=> $amount_ppv, ]
         );
@@ -6194,17 +6200,31 @@ public function checkEmailExists(Request $request)
         return response()->json($response, 422); 
       }
 
+      try {
+      
+
       $episodeid = $request->episodeid;
       $user_id   = $request->user_id;
 
-      $episode = Episode::where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+      // Check Episode exist
+
+      Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->firstorfail();
+
+      // Episode Details
+
+      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
          $item['image_url'] = $item->image;
          $item['player_image_url'] = URL::to('public/uploads/images/'.$item->player_image);
          $item['tv_image_url'] = URL::to('public/uploads/images/'.$item->tv_image);
 
-         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+         $item['series'] = Series::where('id',$item->series_id)->first();
+
+         $item['series_name'] = $item['series']->title;
+
+         $item['Share_url'] = URL::to('episode/'.$item['series']->slug.'/'.$item['slug']);
 
           //Continue Watchings
 
@@ -6326,12 +6346,10 @@ public function checkEmailExists(Request $request)
        }else{
         $Season = '';
        }
-      //  print_r($Season->id);exit;
 
 
       $languages = SeriesLanguage::Join('languages','languages.id','=','series_languages.series_id')
       ->where('series_languages.series_id',$series_id)->get('name');
-      // echo "<pre>"; print_r($languages);exit;
 
       foreach($languages as $value){
         $language[] = $value['name'];
@@ -6402,7 +6420,7 @@ public function checkEmailExists(Request $request)
   }else{
     $category = [];
   }
-  // echo "<pre>";print_r($category);exit;
+  
 
     if(!empty($category)){
     $main_genre = implode(",",$category);
@@ -6410,7 +6428,7 @@ public function checkEmailExists(Request $request)
       $main_genre = "";
     }
 
-    // echo "<pre>"; print_r($languages);exit;
+    
     if(!empty($series_id) && !empty($languages)){
     foreach($languages as $value){
       $language[] = $value['name'];
@@ -6425,7 +6443,7 @@ public function checkEmailExists(Request $request)
     }
     if (!empty($episode)) {
     $season = SeriesSeason::where('id',$episode[0]->season_id)->first();
-    // print_r();exit;
+   
     $ppv_exist = PpvPurchase::where('user_id',$user_id)
     // ->where('season_id',$episode[0]->season_id)
     ->where('series_id',$episode[0]->series_id)
@@ -6451,7 +6469,7 @@ public function checkEmailExists(Request $request)
         'shareurl' => URL::to('episode').'/'.$episode[0]->series_name.'/'.$episode[0]->slug,
         'episode' => $episode,
         'Season_Name' => $Season_Name,
-        'season' => $Season,
+        'season' => array($Season),
         'Season_array' => $Season_array ,
         'ppv_video_status' => $ppv_video_status,
         'wishlist' => $wishliststatus,
@@ -6465,6 +6483,15 @@ public function checkEmailExists(Request $request)
 
       );
       return response()->json($response, 200);
+       
+      } catch (\Throwable $th) {
+
+        $response = array(
+          'status'=>'true',
+          'message'=> $th->getMessage(),
+        );
+        return response()->json($response, 500);
+      }
     }
 
 
@@ -7072,16 +7099,15 @@ return response()->json($response, 200);
 
           if( $userrole == "admin"){
               $item['Episode_url'] =  $item->episode_id_1080p ;
-         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'guest'){
+         }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $season->access == 'free'){
 
                   if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
 
-            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $item['access'] == 'registered' && $userrole == 'registered'){
+            }elseif(!empty($data['play_videoid']) && $data['play_videoid'] != '' && $season->access == 'registered' && $userrole == 'registered'){
 
                   if($data['play_videoid'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($data['play_videoid'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($data['play_videoid'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
 
             }elseif($userrole == "registered" && $season->access == 'ppv'){
-
 
               $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
 
@@ -7098,11 +7124,20 @@ return response()->json($response, 200);
                   }else{
                       $item['PPV_Plan']  = '';
                   }
-         }else{
+         }elseif($userrole == "registered" && $season->access == 'ppv'){
+
+          $item['PPV_Plan']   = PpvPurchase::where('user_id',$data['user_id'])->where('series_id', '=', $item['series_id'])->where('season_id', '=', $item['season_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
+
+          if($item['PPV_Plan'] > 0){
+              if($item['PPV_Plan'] == '480p'){ $item['Episode_url'] =  $item->episode_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['Episode_url'] =  $item->episode_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['Episode_url'] =  $item->episode_id_1080p ; }else{ $item['Episode_url'] =  '' ;}
+          }else{
+              $item['PPV_Plan']  = '';
+          }
+       }else{
              $item['PPV_Plan']   = '';
          }
 
-      if($ppv_exists_check_query > 0 || $userrole == "admin"){
+         if($ppv_exists_check_query > 0 || $userrole == "admin"){
          
          $videoId = $item['Episode_url']; 
          $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
@@ -12506,16 +12541,16 @@ $cpanel->end();
           'status'=>'true',
           // 'HomeSetting' => $HomeSetting,
           // 'OrderHomeSetting' => $OrderHomeSetting,
-          'featured_videos' => $featured_videos,
+          // 'featured_videos' => $featured_videos,
           'latest_videos' => $latest_videos,
           // 'category_videos' => $myData,
-          'live_videos' => $live_videos,
-          'series' => $series,
-          'audios' => $audios,
-          'albums' => $albums,
+          // 'live_videos' => $live_videos,
+          // 'series' => $series,
+          // 'audios' => $audios,
+          // 'albums' => $albums,
           // 'movies' => $movies,
           // 'LiveCategory' => $LiveCategory,
-          'Alllanguage' => $Alllanguage  ,
+          // 'Alllanguage' => $Alllanguage  ,
           // 'VideoLanguage' => $VideoLanguage  ,
           // 'languagesSeries' => $languagesSeries  ,
           // 'languagesLive' => $languagesLive  ,
@@ -26580,7 +26615,7 @@ public function TV_login(Request $request)
                   "status"     => 'true' ,
                   "status_code" => 200,
                   "request_id" => $response['request_id'] ,
-                  "message"    => 'SMS Send Successfully' ,
+                  "message"    => 'OTP Sent Successfully' ,
                   "user_details" => User::where('id',$user_id)->get() ,
                 );
 
@@ -26647,7 +26682,7 @@ public function TV_login(Request $request)
         if(!is_null($user)  ){
 
           $otp_status = "true";
-          $message = Str::title('Otp verify successfully !!');
+          $message = Str::title('Otp verify successfully!');
 
         }else{
 

@@ -786,18 +786,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('admin/Livestream_bulk_delete', 'AdminLiveStreamController@Livestream_bulk_delete')->name('Livestream_bulk_delete');
     Route::get('admin/Audios_bulk_delete', 'AdminAudioController@Audios_bulk_delete')->name('Audios_bulk_delete');
 
-    // Admin PPV Functionality
-    Route::get('/livestream', 'AdminLiveStreamController@index');
-    Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit');
-    Route::post('/livestream/update', 'AdminLiveStreamController@update');
-    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy']);
-    Route::get('/livestream/create', 'AdminLiveStreamController@create');
-    Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store']);
+    // Admin Livestream 
+    Route::get('/livestream', 'AdminLiveStreamController@index')->name('admin.livestream.index');
+    Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit')->name('admin.livestream.edit');
+    Route::post('/livestream/update', 'AdminLiveStreamController@update')->name('admin.livestream.update');
+    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.livestream.destroy');
+    Route::get('/livestream/create', 'AdminLiveStreamController@create')->name('admin.livestream.create');
+    Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.livestream.store');
 
     // Admin Radio Station
-    Route::get('/livestream/radiostationindex', 'AdminLiveStreamController@radiostationindex');
-    Route::get('/livestream/createradiostation', 'AdminLiveStreamController@createradiostation');
-    Route::get('/livestream/editradiostation/{id}', 'AdminLiveStreamController@editradiostation');
+    
+    Route::get('/radio-station-index', 'AdminLiveStreamController@index')->name('admin.radio-station.index');
+    Route::get('/radio-station/create', 'AdminLiveStreamController@create')->name('admin.radio-station.create');
+    Route::post('/radio-station/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.radio-station.store');
+    Route::get('/radio-station/edit/{id}', 'AdminLiveStreamController@edit')->name('admin.radio-station.edit');
+    Route::post('/radio-station/update', 'AdminLiveStreamController@update')->name('admin.radio-station.update');
+    Route::get('/radio-station/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.radio-station.delete');
 
     // Restream - live
 
@@ -1530,7 +1534,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/CPPVideosReject/{id}', 'AdminVideosController@CPPVideosReject');
     Route::get('/PlanAllCountry', 'AdminUsersController@PlanAllCountry');
     Route::get('/PlanAllCity', 'AdminUsersController@PlanAllCity');
-    Route::get('/CPPLiveVideosIndex', 'AdminLiveStreamController@CPPLiveVideosIndex');
+    Route::get('/CPPLiveVideosIndex', 'AdminLiveStreamController@CPPLiveVideosIndex')->name('admin.livestream.');
     Route::get('/CPPLiveVideosApproval/{id}', 'AdminLiveStreamController@CPPLiveVideosApproval');
     Route::get('/CPPLiveVideosReject/{id}', 'AdminLiveStreamController@CPPLiveVideosReject');
 
@@ -2860,6 +2864,9 @@ Route::get('Landing-page-email-capture', 'LandingPageEmailCaptureController@stor
 Route::get('activationcode', 'AdminUsersController@myprofile');
 
 Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
+
+// videoJs player continue watching
+Route::post('saveContinueWatching','ChannelController@saveContinueWatching')->name('saveContinueWatching');
 
 // For theme6 
 
