@@ -119,7 +119,7 @@ class AdminLiveStreamController extends Controller
             
             if ($currentRouteName == "admin.livestream.index") {
 
-                $query->whereNull('stream_upload_via');
+                $query->whereNull('stream_upload_via')->orwhere('stream_upload_via','live_stream');
             }
             else{
                 $query->orWhere('stream_upload_via', 'radio_station');
@@ -148,7 +148,7 @@ class AdminLiveStreamController extends Controller
                     'delete_route'   => "admin.livestream.delete",
                     'all_list_route' => "admin.livestream.index",
                     'text_main_name' => "Live Stream",
-                    'stream_upload_via' => "livestream",
+                    'stream_upload_via' => "live_stream",
                 );
             }
 
@@ -841,7 +841,7 @@ class AdminLiveStreamController extends Controller
                 'create_route'   => "admin.livestream.create",
                 'view_route'     => "LiveStream_play",
                 'text_main_name' => "Live Stream",
-                'stream_upload_via' => "livestream",
+                'stream_upload_via' => "live_stream",
             );
         }
 
