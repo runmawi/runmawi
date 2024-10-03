@@ -51,21 +51,20 @@ border-radius: 0px 4px 4px 0px;
 <div id="content-page" class="content-page">
    
                     <div class="d-flex">
-                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a>
-                        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
-                        {{-- <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></div> --}}
-						@if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
-						<a class="black" href="{{ URL::to('admin/livestream/radiostationindex') }}">All Radio Station</a>
-                        <a class="black" href="{{ URL::to('admin/livestream/createradiostation') }}" >Add New Radio Station</a>
+                        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ route( $inputs_details_array['all_list_route'] ) }}">{{ "All " . $inputs_details_array['text_main_name'] . " Stream" }}						</a>
+                        <a class="black" href="{{ route( $inputs_details_array['create_route'] ) }}">{{ "Add New ". $inputs_details_array['text_main_name'] ."Stream"}}</a>
+						
+						@if ( $currentRouteName == "admin.livestream.index" )
+                        	<a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
 						@endif
+
 					</div>
          <div class="container-fluid p-0">
 	<div class="admin-section-title">
          <div class="iq-card">
 		<div class="row">
 			<div class="col-md-6">
-                <h4><i class="entypo-video"></i> Live Videos</h4>
+                <h4><i class="entypo-video"></i> {{ $inputs_details_array['text_main_name']  }}</h4>
                 
 			</div>
 			@if (Session::has('message'))
@@ -81,7 +80,7 @@ border-radius: 0px 4px 4px 0px;
                         @endif
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
-                <a href="{{ URL::to('admin/livestream/create') }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Add New</a>
+                <a href="{{ route( $inputs_details_array['create_route'] ) }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Add New</a>
 			 
 				{{-- Bulk video delete --}}
 			 	<button style="margin-bottom: 10px" class="btn btn-primary delete_all"> Delete Selected Video </button>
@@ -99,8 +98,8 @@ border-radius: 0px 4px 4px 0px;
 						<th>Image</th>
 						<th>Title</th>
 						<th>User Name</th>
-						<th>Video Type</th>
-						<th>Video Access</th>
+						<th>{{ $inputs_details_array['text_main_name'] . ' Type'}}</th>
+						<th>{{ $inputs_details_array['text_main_name'] . ' Access'}}</th>
 						<th>Status</th>
 						<th>Stream Type</th>
 						<th>Publish Type</th>
@@ -273,9 +272,9 @@ border-radius: 0px 4px 4px 0px;
 						 </td>
 
 						<td class=" align-items-center list-inline">								
-                            <a href="{{ URL::to('live') .'/'.$video->slug }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-							<a href="{{ URL::to('admin/livestream/edit') . '/' . $video->id }}" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-							<a href="{{ URL::to('admin/livestream/delete') . '/' . $video->id }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                            <a href="{{ route( $inputs_details_array['view_route']  , $video->slug ) }}" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
+							<a href="{{ route( $inputs_details_array['edit_route'] , $video->id) }}" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+							<a href="{{ route( $inputs_details_array['delete_route'] ,  $video->id ) }}" onclick="return confirm('Are you sure?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
 						</td>
 					</tr>
 					@endforeach
@@ -285,7 +284,6 @@ border-radius: 0px 4px 4px 0px;
 
 		<div class="clear"></div>
 
-		<div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right"><?= $videos->appends(Request::only('s'))->render(); ?></div>
 		
 		
 	</div>
