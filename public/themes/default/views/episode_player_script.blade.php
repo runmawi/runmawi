@@ -5,6 +5,54 @@
     $adverister_id = App\Advertisement::where('id',$advertisement_id)->pluck('advertiser_id')->first();
 ?> -->
 
+
+<!-- continue watching script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var player = videojs('episode-player');
+        var episodeId = "<?php echo $episode_details->id; ?>";
+        var userId = "<?php echo auth()->id(); ?>";
+
+        function EpisodeContinueWatching(episodeId, duration, currentTime) {
+            if (duration > 0) {
+                $.ajax({
+                    url: "<?php echo URL::to('EpisodeContinueWatching');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        episode_id: episodeId,
+                        duration: duration,
+                        currentTime: currentTime
+                    },
+                });
+            }
+        }
+
+        player.on('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+        });
+    });
+
+</script>
+
 <script>
 
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
