@@ -2867,6 +2867,7 @@ Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end
 
 // videoJs player continue watching
 Route::post('saveContinueWatching','ChannelController@saveContinueWatching')->name('saveContinueWatching');
+Route::post('EpisodeContinueWatching','TvshowsController@EpisodeContinueWatching')->name('EpisodeContinueWatching');
 
 // For theme6 
 
