@@ -7,6 +7,8 @@
   $app_setting = App\AppSetting::where('id',1)->where('status','hidden')->first();
   $session = session()->all();
 
+  $css = App\Css::pluck('custom_css')->toArray();
+
   $theme = App\SiteTheme::first();
   $theme_mode = $theme->theme_mode;
 ?>
@@ -16,7 +18,7 @@
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
 
-          <div class="col-lg-12 d-flex align-items-center justify-content-center">
+          <div class="down-apps col-lg-12 d-flex align-items-center justify-content-center">
           <?php $app_settings = App\AppSetting::where('id','=',1)->first(); ?>
 
           <?php if(!empty($app_settings->android_url) || !empty($app_settings->ios_url) || !empty($app_settings->android_tv)){ ?>
@@ -24,7 +26,7 @@
           <?php } ?>
 
           <div class=" small m-0 text-white ">
-             <div class="map1 ml-3" style="height:60px;">
+             <div class="map1 ml-3">
               <?php if(!empty($app_settings->android_url)){ ?>
                 <a href="<?= $app_settings->android_url ?>" aria-label="Download the Android app"><img class="lazy" height="60" width="150" style="object-fit:contain;" data-src="<?php echo  URL::to('/assets/img/android.webp')?>" src="<?php echo  URL::to('/assets/img/android.webp')?>" alt="android" /></a>
               <?php } ?>
@@ -265,6 +267,14 @@ function about(evt , id) {
       <?php }
     }
      ?>
+
+<?php
+  if(count($css) > 0){
+    foreach($css as $customCss){   ?>
+        <?= $customCss ?>
+    <?php }
+  } 
+?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
@@ -410,4 +420,12 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
         });
     </script>
 <?php } ?>
+
+<style>
+  @media(max-width:720px){
+    .down-apps{display:block !important;margin-bottom: 2rem;}
+    .down-apps img{width:100%;}
+    p.font-weight-bold.mb-0{font-size: 1.5rem;text-align: center;}
+  }
+</style>
 </body>
