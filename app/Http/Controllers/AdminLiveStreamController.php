@@ -117,13 +117,13 @@ class AdminLiveStreamController extends Controller
 
             $query = LiveStream::query();
             
-            if ($currentRouteName == "admin.livestream.index") {
+            // if ($currentRouteName == "admin.livestream.index") {
 
-                $query->whereNull('stream_upload_via')->orwhere('stream_upload_via','live_stream');
-            }
-            else{
-                $query->orWhere('stream_upload_via', 'radio_station');
-            }
+            //     $query->whereNull('stream_upload_via')->orwhere('stream_upload_via','live_stream');
+            // }
+            // else{
+            //     $query->orWhere('stream_upload_via', 'radio_station');
+            // }
             
             $videos = $query->orderBy('created_at', 'desc')->get();
 
