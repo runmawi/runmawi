@@ -12542,7 +12542,7 @@ $cpanel->end();
           // 'HomeSetting' => $HomeSetting,
           // 'OrderHomeSetting' => $OrderHomeSetting,
           // 'featured_videos' => $featured_videos,
-          'latest_videos' => $latest_videos,
+          'movies' => $latest_videos,
           // 'category_videos' => $myData,
           // 'live_videos' => $live_videos,
           // 'series' => $series,
