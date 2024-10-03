@@ -1193,6 +1193,16 @@ class FrontEndQueryController extends Controller
         return $data;
     }
 
+    public function TopTenVideos(){
+        $top_ten_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','uploaded_by','user_id')
+                                ->orderBy('views', 'desc')
+                                ->limit(10)
+                                ->get();
+
+        return $top_ten_videos;
+    }
+
     // public function continueWatching(){
     //     if ($multiuser != null)
     //     {
