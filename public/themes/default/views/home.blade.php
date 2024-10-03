@@ -17,15 +17,20 @@ $homepage_array_data = [
                       'button_text'   => $button_text,
                    ];
 
-  $Slider_array_data = array(
-      'sliders'               => $sliders,
-      'live_banner'           => $live_banner,
-      'video_banners'         => $video_banners,
-      'series_sliders'        => $series_sliders,
-      'live_event_banners'    => $live_event_banners,
-      'Episode_sliders'       => $Episode_sliders,
-      'VideoCategory_banner'  => $VideoCategory_banner,
-  );
+   $Slider_array_data = array(
+         'sliders'               => $sliders,
+         'live_banner'           => $live_banner,
+         'video_banners'         => $video_banners,
+         'series_sliders'        => $series_sliders,
+         'live_event_banners'    => $live_event_banners,
+         'Episode_sliders'       => $Episode_sliders,
+         'VideoCategory_banner'  => $VideoCategory_banner,
+   );
+
+   $continue_watching = array(
+                              'Video_cnt'    => $VideoJsContinueWatching,
+                              'episode_cnt'  => $VideoJsEpisodeContinueWatching,
+                           );
 
 @endphp
 
@@ -43,7 +48,7 @@ $homepage_array_data = [
 
          {{-- continue watching videos --}}
       @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
-         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/continue-watching", array_merge($homepage_array_data, ['data' => $cnt_watching]) )->content() !!}
+         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/continue-watching", array_merge($homepage_array_data, $continue_watching) )->content() !!}
       @endif
 
       @partial('home_sections')
