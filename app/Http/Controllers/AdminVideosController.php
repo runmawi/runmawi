@@ -528,7 +528,9 @@ class AdminVideosController extends Controller
         $libraryid = $data['UploadlibraryID'];
         $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
         $client = new Client();
-        // print_r($FlussonicUploadlibraryID);exit;
+        
+        // print_r(!is_null($FlussonicUploadlibraryID));exit;
+
         $storage_settings = StorageSetting::first();   
 
         if($site_theme->enable_bunny_cdn == 1){
@@ -539,9 +541,9 @@ class AdminVideosController extends Controller
                 return $value ;
             }
         }elseif($storage_settings->flussonic_storage == 1){
-            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !empty($FlussonicUploadlibraryID) && !empty($mp4_url)){
+            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !is_null($FlussonicUploadlibraryID) && !empty($mp4_url)){
                 return $this->UploadVideoFlussonicStorage( $storage_settings,$FlussonicUploadlibraryID,$mp4_url);
-            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+            }elseif(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && empty($FlussonicUploadlibraryID)){
                 $value["error"] = 3;
                 return $value ;
             }
