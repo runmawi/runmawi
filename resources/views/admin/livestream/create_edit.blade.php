@@ -78,13 +78,10 @@
 <div id="content-page" class="content-page">
     
     <div class="d-flex">
-        <a class="black" href="{{ URL::to('admin/livestream') }}">All Live Stream</a>
-        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ URL::to('admin/livestream/create') }}">Add New Live Stream</a>
-        <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
-        {{-- <a class="black" href="{{ URL::to('admin/livestream/categories') }}">Manage Live Stream Categories</a></div> --}}
-        @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
-        <a class="black" href="{{ URL::to('admin/livestream/radiostationindex') }}">All Radio Station</a>
-        <a class="black" href="{{ URL::to('admin/livestream/createradiostation') }}" >Add New Radio Station</a>
+        <a class="black" href="{{ route( $inputs_details_array['all_list_route'] ) }}"> {{ "All {$inputs_details_array['text_main_name']}" }}</a>
+        <a class="black" style="background:#fafafa!important;color: #006AFF!important;" href="{{ route( $inputs_details_array['create_route']) }}">Add New {{ $inputs_details_array['text_main_name']  }}</a>
+        @if ( $currentRouteName == "admin.livestream.index" )
+            <a class="black" href="{{ URL::to('admin/CPPLiveVideosIndex') }}">Live Stream For Approval</a>
         @endif
     </div>
 
@@ -112,7 +109,7 @@
                         </div>
                     </div>
                     @else
-                    <h5><i class="entypo-plus"></i> Add New LiveStream</h5>
+                    <h5><i class="entypo-plus"></i> Add New {{ $inputs_details_array['text_main_name']  }}</h5>
                     @endif
                     <hr />
                 </div>
@@ -126,21 +123,21 @@
                 @endforeach @endif
                 <div class="clear"></div>
 
-                <form method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="" id="live_video">
+                <form method="POST" action="{{ route($inputs_details_array['post_route'] ) }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" style="" id="live_video">
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Title</label>
-                            <p class="p1">Add the Live stream title in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name'] }} title in the textbox below:</p>
 
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="title" id="title" placeholder="Live stream Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
+                                <input type="text" class="form-control" name="title" id="title" placeholder="{{ $inputs_details_array['text_main_name']  }} Title" value="@if(!empty($video->title)){{ $video->title }}@endif" />
                             </div>
                         </div>
 
                         @if(!empty($video->created_at))
                         <div class="col-sm-6">
                             <label class="m-0">Published Date</label>
-                            <p class="p1">Live stream  Published on Date/Time Below</p>
+                            <p class="p1">{{ $inputs_details_array['text_main_name']  }}  Published on Date/Time Below</p>
                             <div class="panel-body">
                                 <input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($video->created_at)){{ $video->created_at }}@endif" />
                             </div>
@@ -149,9 +146,9 @@
 
                         <div class="col-sm-6">
                             <label class="m-0">Slug</label>
-                            <p class="p1">Add the Live stream  slug in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }}  slug in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="slug" id="slug" placeholder="Live stream Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
+                                <input type="text" class="form-control" name="slug" id="slug" placeholder="{{ $inputs_details_array['text_main_name']  }} Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
                             </div>
                         </div>
                     </div>
@@ -159,15 +156,15 @@
                     <div class="col-md-6">
                    
                                         <div class="">
-                                            <label class="m-0">Live Stream Image Cover</label>
+                                            <label class="m-0">{{ $inputs_details_array['text_main_name']  }} Image Cover</label>
                                             @php 
                                                 $width = $compress_image_settings->width_validation_live;
                                                 $heigth = $compress_image_settings->height_validation_live
                                             @endphp
                                             @if($width !== null && $heigth !== null)
-                                                <p class="p1">{{ ("Select the Live Stream image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                                                <p class="p1">{{ ("Select the {$inputs_details_array['text_main_name'] } image (".''.$width.' x '.$heigth.'px)')}}:</p> 
                                             @else
-                                                <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
                                             @endif
 
                                             <div class="panel-body">
@@ -198,9 +195,9 @@
                                                 $player_heigth = $compress_image_settings->live_player_img_height
                                             @endphp
                                             @if($player_width !== null && $player_heigth !== null)
-                                                <p class="p1">{{ ("Select the Live Stream image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                                                <p class="p1">{{ ("Select the {$inputs_details_array['text_main_name'] } image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                                             @else
-                                                <p class="p1">{{ "Select the Live Stream image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
                                             @endif
 
                                             <div class="panel-body">
@@ -224,19 +221,23 @@
                     </div>
                 </div>
                                     
-
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <div id="source_err_validtion_navigation"></div> <!-- Target element for scrolling -->
-                            <label class="m-0">Live Stream Source</label>
-                            <p class="p1">Select the Live Stream Source :</p>
+                            <label class="m-0">{{ $inputs_details_array['text_main_name']  }} Source</label>
+                            <p class="p1">Select the {{ $inputs_details_array['text_main_name']  }} Source :</p>
                             <div class="panel-body">
                                 <select class="form-control url_type" id="url_type" name="url_type" >
+
                                     <option value="" >Choose URL Format</option>
-                                    <option value="mp4"> MP4/M3U8 URL </option>
-                                    <option value="embed"> Embed URL</option>
-                                    <option value="live_stream_video"> Live Stream Video</option>
-                                    <option value="m3u_url"> M3U URL </option>
+
+                                    @if ( $currentRouteName == "admin.livestream.create")
+                                        <option value="mp4"> MP4/M3U8 URL </option>
+                                        <option value="embed"> Embed URL</option>
+                                        <option value="live_stream_video"> {{ $inputs_details_array['text_main_name']  }} Video</option>
+                                        <option value="m3u_url"> M3U URL </option>
+                                    @endif
+
                                     <option value="acc_audio_file"> Mp3/AAC Audio File </option>
                                     <option value="acc_audio_url"> Mp3/AAC Audio URL </option>
                                     @foreach($Rtmp_urls as $key => $urls)
@@ -244,14 +245,14 @@
                                     @endforeach 
                                 </select>
 
-                                <input type="hidden" name="stream_upload_via" id="stream_upload_via" value="live_stream" />
+                                <input type="hidden" name="stream_upload_via" id="stream_upload_via" value="{{ $inputs_details_array['stream_upload_via'] }}" />
                                 <input type="hidden" name="Rtmp_url" id="Rtmp_url" value="" />
                                 <input type="hidden" name="hls_url" id="hls_url" value="" />
                                 <input type="hidden" name="tv_image_live_validation_status" id="tv_image_live_validation_status" value="{{ tv_image_live_validation_status() }}" />
 
 
                                 <div class="new-video-upload mt-2" id="mp4_code">
-                                    <label for="embed_code"><label class="mb-1">Live Stream URL </label></label>
+                                    <label for="embed_code"><label class="mb-1">{{ $inputs_details_array['text_main_name']  }} URL </label></label>
                                     <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
                                 </div>
 
@@ -276,7 +277,7 @@
                                 </div>
 
                                 <div class="new-video-upload mt-2" id="live_stream_video">
-                                    <label for=""><label>Live Stream Video</label></label>
+                                    <label for=""><label>{{ $inputs_details_array['text_main_name']  }} Video</label></label>
                                     <input type="file" multiple="true" accept="video/mp4,video/x-m4v,video/*" class="form-group" name="live_stream_video"  />
                                 </div>
                                 <a href="#source_err_validtion_navigation">
@@ -289,7 +290,7 @@
                             <label class="m-0">TV Image Cover</label>
                             <div class="panel-body">
                                 <div class="new-video-upload mt-2" id="">
-                                    <p class="p1">Select The Live Stream TV Image  (1920 X 1080  Or 16:9 Ratio) :</p>
+                                    <p class="p1">Select The {{ $inputs_details_array['text_main_name']  }} TV Image  (1920 X 1080  Or 16:9 Ratio) :</p>
                                     <input type="file" multiple="true" class="form-group" name="live_stream_tv_image" id=live_stream_tv_image  accept="image/*" />
                                 </div>
                             </div>
@@ -395,7 +396,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-12">
                             <label class="m-0">Short Description</label>
-                            <p class="p1">Add a short description of the Livestream below:</p>
+                            <p class="p1">Add a short description of the {{$inputs_details_array['text_main_name'] }} below:</p>
                             <div class="panel-body">
                                 <textarea class="form-control" name="description" id="description">@if(!empty($video->description)){{ htmlspecialchars($video->description) }}@endif</textarea>
                             </div>
@@ -404,7 +405,7 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-12">
-                            <label class="m-0">Live Stream Details, Links, and Info</label>
+                            <label class="m-0">{{ $inputs_details_array['text_main_name']  }} Details, Links, and Info</label>
 
                             <div class="panel-body">
                                 <textarea class="form-control" name="details" id="details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
@@ -415,7 +416,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Category</label>
-                            <p class="p1">Select a Live Stream Category Below:</p>
+                            <p class="p1">Select a {{ $inputs_details_array['text_main_name']  }} Category Below:</p>
 
                             <div class="panel-body">
                                 <select name="video_category_id[]" id="video_category_id" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
@@ -429,7 +430,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="m-0">Language</label>
-                            <p class="p1">Select a Live Stream Language Below:</p>
+                            <p class="p1">Select a {{ $inputs_details_array['text_main_name']  }} Language Below:</p>
 
                             <div class="panel-body">
                                 <select class="form-control js-example-basic-multiple" id="language" name="language[]" style="width: 100%;" multiple="multiple">
@@ -445,8 +446,8 @@
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
-                            <label class="m-0">Live Stream  Ratings</label>
-                            <p class="p1">Live stream Ratings 10 out of 10</p>
+                            <label class="m-0">{{ $inputs_details_array['text_main_name']  }}  Ratings</label>
+                            <p class="p1">{{ $inputs_details_array['text_main_name']  }} Ratings 10 out of 10</p>
 
                             <div class="panel-body">
                                 <select class="js-example-basic-single" style="width: 100%;" name="rating" id="rating" tags="true" onkeyup="NumAndTwoDecimals(event , this);">
@@ -465,8 +466,8 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="m-0">Live Stream Year</label>
-                            <p class="p1">Live Stream  Released Year</p>
+                            <label class="m-0">{{ $inputs_details_array['text_main_name']  }} Year</label>
+                            <p class="p1">{{ $inputs_details_array['text_main_name']  }}  Released Year</p>
 
                             <div class="panel-body">
                                 <input class="form-control" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif" />
@@ -598,7 +599,7 @@
 
                         <div class="col-sm-6">
                             <label class="m-0">Free Duration</label>
-                            <p class="p1">Enter the Live Stream Free duration in (HH : MM : SS)</p>
+                            <p class="p1">Enter the {{ $inputs_details_array['text_main_name']  }} Free duration in (HH : MM : SS)</p>
                             <div class="panel-body">
                                 <input class="form-control" name="free_duration" id="free_duration" value="" />
                             </div>
@@ -608,7 +609,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Duration</label>
-                            <p class="p1">Enter the Live Stream duration in (HH : MM : SS)</p>
+                            <p class="p1">Enter the {{ $inputs_details_array['text_main_name']  }} duration in (HH : MM : SS)</p>
                             <div class="panel-body">
                                 <input class="form-control" name="duration" placeholder="HH:MM:SS" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
@@ -616,7 +617,7 @@
                         
                         <div class="col-sm-6">
                             <label class="m-0">Block Country</label>
-                            <p class="p1">( Choose the countries for block the Live Stream )</p>
+                            <p class="p1">( Choose the countries for block the {{ $inputs_details_array['text_main_name']  }} )</p>
                             <div class="panel-body">
                                 <select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
                                     @foreach($countries as $country)
@@ -634,17 +635,17 @@
 
                         <div class="col-sm-6">
                             <label class="m-0">{{ __( ucwords('ads content id') ) }}</label>
-                            <p class="p1">Add the Live stream Ads content id in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }} Ads content id in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="ads_content_id"  placeholder="Live stream Ads Content Id" />
+                                <input type="text" class="form-control" name="ads_content_id"  placeholder="{{ $inputs_details_array['text_main_name']  }} Ads Content Id" />
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <label class="m-0">{{ __( ucwords('ads content title') ) }}</label>
-                            <p class="p1">Add the Live stream Ads content title in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }} Ads content title in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="ads_content_title"  placeholder="Live stream Ads content title" />
+                                <input type="text" class="form-control" name="ads_content_title"  placeholder="{{ $inputs_details_array['text_main_name']  }} Ads content title" />
                             </div>
                         </div>
                     </div>
@@ -653,17 +654,17 @@
 
                         <div class="col-sm-6">
                             <label class="m-0">{{ __( ucwords('Ads content category') ) }}</label>
-                            <p class="p1">Add the Live stream Ads content category in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }} Ads content category in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="ads_content_category"  placeholder="Live stream Ads content category" />
+                                <input type="text" class="form-control" name="ads_content_category"  placeholder="{{ $inputs_details_array['text_main_name']  }} Ads content category" />
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <label class="m-0">{{ __( ucwords('Ads content language') ) }}</label>
-                            <p class="p1">Add the Live stream Ads content language in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }} Ads content language in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="ads_content_language"  placeholder="Live stream Ads content language" />
+                                <input type="text" class="form-control" name="ads_content_language"  placeholder="{{ $inputs_details_array['text_main_name']  }} Ads content language" />
                             </div>
                         </div>
                     </div>
@@ -671,9 +672,9 @@
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">{{ __( ucwords('Ads content genre') ) }}</label>
-                            <p class="p1">Add the Live stream Ads content genre in the textbox below:</p>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }} Ads content genre in the textbox below:</p>
                             <div class="panel-body">
-                                <input type="text" class="form-control" name="ads_content_genre"  placeholder="Live stream Ads content genre" />
+                                <input type="text" class="form-control" name="ads_content_genre"  placeholder="{{ $inputs_details_array['text_main_name']  }} Ads content genre" />
                             </div>
                         </div>
                     </div>
@@ -681,7 +682,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">User Access</label>
-                            <p class="p1">Who is allowed to view this Live Stream ?</p>
+                            <p class="p1">Who is allowed to view this {{ $inputs_details_array['text_main_name']  }} ?</p>
                             <div class="panel-body">
                                 <select class="form-control" id="access" name="access">
                                     <option value="guest" @if(!empty($video->access) && $video->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
@@ -729,17 +730,17 @@
                             <label class="m-0">Status Settings</label>
                             <div class="panel-body">
                                 <div>
-                                    <label class="p2" for="featured">Is this Live stream Featured:</label>
+                                    <label class="p2" for="featured">Is this {{ $inputs_details_array['text_main_name']  }} Featured:</label>
                                     <input type="checkbox" @if(!empty($video->featured) && $video->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
-                                    <label class="p2" for="active">Is this Live stream Active:</label>
+                                    <label class="p2" for="active">Is this {{ $inputs_details_array['text_main_name']  }} Active:</label>
                                     <input type="checkbox" @if(!empty($video->active) && $video->active == 1){{ 'checked="checked"' }}@elseif(!isset($video->active)){{ 'checked="checked"' }}@endif name="active" value="1" id="active" />
                                 </div>
                                 <div class="clear"></div>
                                 <div>
-                                    <label class="p2" for="banner">Is this Live stream display in Banner:</label>
+                                    <label class="p2" for="banner">Is this {{ $inputs_details_array['text_main_name']  }} display in Banner:</label>
                                     <input type="checkbox" @if(!empty($video->banner) && $video->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
                                 </div>
                                 <div>
@@ -1066,7 +1067,7 @@
             $("#video_js_mid_advertisement_sequence_time").mask("00:00:00");
         });
 
-            // Live Stream Validation
+            // Live Stream  Validation
         $(document).on('change', '.url_type', function() {
 
             if($(".url_type").val() == "Encode_video"){

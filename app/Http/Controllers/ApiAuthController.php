@@ -26420,7 +26420,7 @@ public function TV_login(Request $request)
           
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
-          'ccode'         => 'required'
+          'ccode'         => ['required', 'regex:/^\+[\d]+$/'], // Ensure ccode starts with + followed by numbers
         ]);
     
         if ($validator->fails()) {
