@@ -2582,5 +2582,67 @@ public function RemoveDisLikeEpisode(Request $request)
         //     return abort(404);
         // }
     }
+
+    public function EpisodeContinueWatching(Request $request)
+    {
+        try {
+            $data = $request->all();
+            
+            if (Auth::user()) {
+                $user_id = Auth::user()->id;
+                $episode_id = $request->episode_id;
+                $duration = $request->duration;
+                $currentTime = $request->currentTime;
+    
+                if ($duration > 0) {
+                    $watch_percentage = ($currentTime * 100 / $duration);
+                    
+                    $cnt = ContinueWatching::where("episodeid", $episode_id)
+                                            ->where("user_id", $user_id)
+                                            ->count();
+    
+                    // Get the first record if it exists
+                    $get_cnt = ContinueWatching::where("episodeid", $episode_id)
+                                                ->where("user_id", $user_id)
+                                                ->first();
+    
+                    // If the user has completed watching (99% or more), remove the entry
+                    if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
+                        ContinueWatching::where("episodeid", $episode_id)
+                                        ->where("user_id", $user_id)
+                                        ->delete();
+                    }
+                    
+                    // If no entry exists, create a new one
+                    if ($cnt == 0) {
+                        $episode = new ContinueWatching;
+                        $episode->episodeId = $episode_id;
+                        $episode->user_id = $user_id;
+                        $episode->currentTime = $currentTime;
+                        $episode->watch_percentage = $watch_percentage;
+                        $episode->save();
+                    }
+                    // If the entry already exists, update the existing one
+                    else {
+                        $cnt_watch = ContinueWatching::where("episodeid", $episode_id)
+                                                        ->where("user_id", $user_id)
+                                                        ->first();
+                        $cnt_watch->currentTime = $currentTime;
+                        $cnt_watch->watch_percentage = $watch_percentage;
+                        $cnt_watch->save();
+                    }
+    
+                    return response()->json(['success' => true], 200);
+                } else {
+                    return response()->json(['error' => 'Invalid video duration'], 400);
+                }
+            }
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
  
 }
