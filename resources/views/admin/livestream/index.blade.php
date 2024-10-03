@@ -231,8 +231,7 @@ border-radius: 0px 4px 4px 0px;
 												<li><span></span> <small>LIVE NOW</small> </li>
 											</ul>
 										@else
-										<small>{{ @$recurring_program_week_day }}</small>
-											<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . $recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
+											<small> {{ 'Live Starts On Every '. $video->recurring_program . " " . @$recurring_program_week_day . $video->recurring_program_month_day ." from ". Carbon\Carbon::parse($video->program_start_time)->isoFormat('h:mm A') ." to ". Carbon\Carbon::parse($video->program_end_time)->isoFormat('h:mm A') . ' - ' . App\TimeZone::where('id', $video->recurring_timezone)->pluck('time_zone')->first() }} </small>
 										@endif
 
 
@@ -479,7 +478,7 @@ border-radius: 0px 4px 4px 0px;
 
 		$(document).ready(function(){
 			var delete_link = '';
-			$('#DataTables_Table_0_paginate').hide();
+			// $('#DataTables_Table_0_paginate').hide();
 
 			$('.delete').click(function(e){
 				e.preventDefault();

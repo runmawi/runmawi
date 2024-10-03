@@ -1208,6 +1208,7 @@ class FrontEndQueryController extends Controller
                                         ->with('cnt_watch')
                                         ->where('active', '1')
                                         ->where('status', '1')
+                                        ->where('draft', '1')
                                         ->where('type', '!=', 'embed')
                                         ->whereIn('id', $video_cnt)
                                         ->latest()
