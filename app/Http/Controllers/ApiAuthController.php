@@ -5559,6 +5559,12 @@ public function verifyandupdatepassword(Request $request)
     public function stripe_become_subscriber(Request $request)
     {
       try {
+
+          $this->validate($request, [
+            'plan_id'  => 'required' ,
+            'userid'  => 'required'
+          ]);
+
             $stripe = new \Stripe\StripeClient(
               env('STRIPE_SECRET')
             );
@@ -5636,7 +5642,7 @@ public function verifyandupdatepassword(Request $request)
     
             $user_data = array(
                 'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subscription->plan['id'],
+                'stripe_id'             =>  $subscription['id'],
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_type'          => 'recurring',
