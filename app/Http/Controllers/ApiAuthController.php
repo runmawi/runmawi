@@ -7826,14 +7826,16 @@ return response()->json($response, 200);
         $episode_id_query = $episode_id_query->pluck('episodeid');
 
         $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
-                              ->select('episodes.id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
+                              ->select('episodes.id', 'episodes.id' ,'title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                                     'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
                                     'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
                                 ->whereIn('episodes.id', $episode_id_query)
                                 ->where('episodes.active', '1')
                                 ->where('episodes.status', '1')
-                                ->latest('episodes.created_at')
-                                ->get()->map(function($item){
+                                ->latest('continue_watchings.created_at')
+                                ->groupBy('continue_watchings.episodeid')
+                                ->get()
+                                ->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();
                                     $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
                                     $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
