@@ -2923,3 +2923,6 @@ Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');
 Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcvideos_index');
 Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
+
+
+Route::get('radio-station', 'AdminLiveStreamController@design');

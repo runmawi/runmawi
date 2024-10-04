@@ -85,8 +85,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Payment Type:</label><br>
-                        One Time Payment  <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif>
-                        Recurring   <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>
+                        {{-- One Time Payment  <input type="radio"  name="payment_type"  value="one_time" @if ($edit_plan[0]->payment_type=='one_time') checked='checked' @endif> --}}
+                        <input type="radio"  name="payment_type"  value="recurring"  @if ($edit_plan[0]->payment_type=='recurring') checked='checked' @endif>  Recurring  
                     </div> 
 
                     <div class="form-group">
