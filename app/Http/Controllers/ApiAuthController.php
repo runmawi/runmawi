@@ -5559,6 +5559,12 @@ public function verifyandupdatepassword(Request $request)
     public function stripe_become_subscriber(Request $request)
     {
       try {
+
+          $this->validate($request, [
+            'plan_id'  => 'required' ,
+            'userid'  => 'required'
+          ]);
+
             $stripe = new \Stripe\StripeClient(
               env('STRIPE_SECRET')
             );
@@ -5636,7 +5642,7 @@ public function verifyandupdatepassword(Request $request)
     
             $user_data = array(
                 'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subscription->plan['id'],
+                'stripe_id'             =>  $subscription['id'],
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_type'          => 'recurring',
@@ -8859,21 +8865,44 @@ return response()->json($response, 200);
   }
 
   public function VideoLanguage(Request $request) {
+    try {
+     
+      $user_id = $request->user_id;
+      $language_id = $request->language_id;
 
-    $user_id = $request->user_id;
-    $lanid = $request->language_id;
+      $FrontEndQueryController = new FrontEndQueryController();
 
+      $LanguageVideo = LanguageVideo::where('language_id',$language_id)->groupBy('video_id')->pluck('video_id');
 
-    /*channel videos*/
-    $language_videos = Video::where('language', '=', $lanid)->get();
-    $count_language_videos = Video::where('language', '=', $lanid)->count();
+      $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+          ->where('language_id', '=', $language_id)->where('active', '1')->where('status', '1')
+          ->where('draft', '1');
 
-    $response = array(
-        'language_videos'=> $language_videos,
-        'count_language_videos'=> $count_language_videos,
+          if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+              $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+          }
 
+      $language_videos = $language_videos->latest('videos.created_at');
+
+      $response = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Retrieved the Language Videos',
+        'language_videos'=> $language_videos->get(),
+        'count_language_videos'=> $language_videos->count(),
       );
-    return response()->json($response, 200);
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status' => 'true',
+        'status_code' => 500,
+        'message' => $th->getMessage(),
+      );
+
+    }
+
+    return response()->json($response, $response['status_code']);
 
   }
   public function FeaturedVideo() {
@@ -14453,18 +14482,38 @@ public function QRCodeMobileLogout(Request $request)
 
     try {
 
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)
-                  ->where('commentable_type',$request->commentable_type)
-                  ->whereNull('child_id')->get()
-                  ->map(function ($item) {
-                    $item['user_image']     = User::where('id',$item->user_id)->pluck('avatar')->first() ;
-                    $item['user_image_url'] = URL::to('public/uploads/avatars/'.$item->user_image);
-                    $item['user_name'] = User::where('id',$item->user_id)->pluck('username')->first();
-                    return $item;
-                });
+      $validator = Validator::make($request->all(), [
+        'source_id'  => 'required|integer',
+        'commentable_type' => 'required'
+      ]);
+  
+      if ($validator->fails()) {
+
+        $response = [
+            'status'    => 'false',
+            'message'    => $validator->errors()->first(),
+        ];
+
+        return response()->json($response, 422); 
+      }
+
+      $comment = WebComment::with('child_comment')->where('source_id', $request->source_id)
+                              ->where('commentable_type', $request->commentable_type)
+                              ->whereNull('child_id')
+                              ->get()
+                              ->filter(function ($item) {
+                                  return User::where('id', $item->user_id)->exists();
+                              })
+                              ->map(function ($item) {
+                                  $item['user_image'] = User::where('id', $item->user_id)->pluck('avatar')->first();
+                                  $item['user_image_url'] = URL::to('public/uploads/avatars/' . $item['user_image']);
+                                  $item['user_name'] = User::where('id', $item->user_id)->pluck('username')->first();
+                                  return $item;
+                              });
 
       $response = array(
         'status'=> 'true',
+        'status_code'=> 200,
         'message'  => ucwords('Comment Section Message Retrieved Successfully !!'),
         'comment'   => $comment,
       );
@@ -14473,11 +14522,12 @@ public function QRCodeMobileLogout(Request $request)
 
           $response = array(
             'status'=>'false',
+            'status_code'=> 400,
             'message'=>$th->getMessage(),
           );
     }
 
-    return response()->json($response, 200);
+    return response()->json($response, $response['status_code']);
   }
 
   public function channel_partner(Request $request)
