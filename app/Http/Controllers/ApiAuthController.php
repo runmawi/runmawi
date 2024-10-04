@@ -5636,7 +5636,7 @@ public function verifyandupdatepassword(Request $request)
     
             $user_data = array(
                 'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subscription['customer'],
+                'stripe_id'             =>  $subscription->plan['id'],
                 'subscription_start'    =>  $Sub_Startday,
                 'subscription_ends_at'  =>  $Sub_Endday,
                 'payment_type'          => 'recurring',
