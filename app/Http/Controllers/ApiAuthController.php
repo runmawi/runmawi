@@ -12398,18 +12398,39 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-              $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-              $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
-              $item['artist_name'] = Series::where('series_artists.series_id',$item->id)
-                                      ->join('series_artists', 'series_artists.series_id', '=', 'series.id')
-                                      ->join('artists', 'artists.id', '=', 'series_artists.artist_id')
-                                      ->pluck('artist_name');
-                                      $details = html_entity_decode($item->description);
-                                      $description = strip_tags($details);
-                                      $item['description'] = str_replace("\r", '', $description);
-                                      return $item;
+          $series = Series::select('id','title','access','description','details',)->where('active','1')->latest()->get()->map(function ($item) {
+                    $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                    $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+                    $item['seasons'] = SeriesSeason::where('series_id', $item->id)
+                                      ->get()
+                                      ->map(function ($season) {
+                                          return [
+                                              'title'    => $season->series_seasons_name,
+                                              'episodes' => Episode::where('season_id', $season->id)
+                                              ->get()
+                                              ->map(function ($episode) {
+                                                return [
+                                                  'id'                       => $episode->id,
+                                                  'title'                    => $episode->title,
+                                                  'slug'                     => $episode->slug,
+                                                  'episode_description'      => $episode->episode_description,
+                                                  'season_id'                => $episode->season_id,
+                                                  'type'                     => $episode->type,
+                                                  'access'                   => $episode->access,
+                                                  'ppv_status'               => $episode->ppv_status,
+                                                  'ppv_price'                => $episode->ppv_price,
+                                                  'player_image'             => $episode->player_image,
+                                                  'tv_image'                 => $episode->tv_image,
+                                                  'mp4_url'                  => $episode->mp4_url,
+                                                  'url'                      => $episode->url,
+                                                  'status'                   => $episode->status,
+                                                  'episode_order'            => $episode->episode_order,
+                                                ];
+                                              }),
+                                          ];
+                                      });
+                    
+                    return $item;
             });
         }else{
 
