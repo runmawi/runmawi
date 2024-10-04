@@ -12439,6 +12439,56 @@ $cpanel->end();
           $series = null;
         }
 
+        if($HomeSetting->Series_based_on_Networks == 1){
+            $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
+                                                      ->where('in_home', 1)
+                                                      ->orderBy('order')
+                                                      ->get()
+                                                      ->map(function ($item) {
+                                                          $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
+                                                  
+                                                          // Fetch series where network_id in Series table matches the current SeriesNetwork id
+                                                          $item['series'] = Series::select('id', 'title', 'access', 'description', 'details', 'player_image', 'tv_image')
+                                                                                    ->where('active', '1')
+                                                                                    ->where('network_id', 'LIKE', '%"'.$item->id.'"%') // Use LIKE to search for network_id
+                                                                                    ->latest()
+                                                                                    ->get()
+                                                                                    ->map(function ($series) {
+                                                                                        $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
+                                                                                        $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
+                                                                                        $series['episodes'] = Episode::where('series_id', $series->id)
+                                                                                                                      ->get()
+                                                                                                                      ->map(function ($episode) {
+                                                                                                                        return [
+                                                                                                                          'id'                       => $episode->id,
+                                                                                                                          'title'                    => $episode->title,
+                                                                                                                          'slug'                     => $episode->slug,
+                                                                                                                          'episode_description'      => $episode->episode_description,
+                                                                                                                          'season_id'                => $episode->season_id,
+                                                                                                                          'type'                     => $episode->type,
+                                                                                                                          'access'                   => $episode->access,
+                                                                                                                          'ppv_status'               => $episode->ppv_status,
+                                                                                                                          'ppv_price'                => $episode->ppv_price,
+                                                                                                                          'player_image'             => $episode->player_image,
+                                                                                                                          'tv_image'                 => $episode->tv_image,
+                                                                                                                          'mp4_url'                  => $episode->mp4_url,
+                                                                                                                          'url'                      => $episode->url,
+                                                                                                                          'status'                   => $episode->status,
+                                                                                                                          'episode_order'            => $episode->episode_order,
+                                                                                                                        ];
+                                                                                                                      });
+
+                                                                                        return $series;
+                                                                                    });
+                    
+
+                    return $item;
+            });
+
+        }else{
+          $Series_based_on_Networks = null;
+        }
+
         if($HomeSetting->audios == 1){
 
           $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -12576,11 +12626,12 @@ $cpanel->end();
         );
 
         $dataToCheck = [
-            'movies' => $latest_videos,
-            'featured_videos' => $featured_videos,
-            'category_videos' => $myData,
-            'live_videos' => $live_videos,
-            'series' => $series,
+            'movies'                        => $latest_videos,
+            'featured_videos'               => $featured_videos,
+            'category_videos'               => $myData,
+            'live_videos'                   => $live_videos,
+            'series'                        => $series,
+            'Series_based_on_Networks'      => $Series_based_on_Networks,
         ];
 
         foreach ($dataToCheck as $key => $value) {
