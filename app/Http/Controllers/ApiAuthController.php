@@ -14431,18 +14431,38 @@ public function QRCodeMobileLogout(Request $request)
 
     try {
 
-     $comment = WebComment::with('child_comment')->where('source_id',$request->source_id)
-                  ->where('commentable_type',$request->commentable_type)
-                  ->whereNull('child_id')->get()
-                  ->map(function ($item) {
-                    $item['user_image']     = User::where('id',$item->user_id)->pluck('avatar')->first() ;
-                    $item['user_image_url'] = URL::to('public/uploads/avatars/'.$item->user_image);
-                    $item['user_name'] = User::where('id',$item->user_id)->pluck('username')->first();
-                    return $item;
-                });
+      $validator = Validator::make($request->all(), [
+        'source_id'  => 'required|integer',
+        'commentable_type' => 'required'
+      ]);
+  
+      if ($validator->fails()) {
+
+        $response = [
+            'status'    => 'false',
+            'message'    => $validator->errors()->first(),
+        ];
+
+        return response()->json($response, 422); 
+      }
+
+      $comment = WebComment::with('child_comment')->where('source_id', $request->source_id)
+                              ->where('commentable_type', $request->commentable_type)
+                              ->whereNull('child_id')
+                              ->get()
+                              ->filter(function ($item) {
+                                  return User::where('id', $item->user_id)->exists();
+                              })
+                              ->map(function ($item) {
+                                  $item['user_image'] = User::where('id', $item->user_id)->pluck('avatar')->first();
+                                  $item['user_image_url'] = URL::to('public/uploads/avatars/' . $item['user_image']);
+                                  $item['user_name'] = User::where('id', $item->user_id)->pluck('username')->first();
+                                  return $item;
+                              });
 
       $response = array(
         'status'=> 'true',
+        'status_code'=> 200,
         'message'  => ucwords('Comment Section Message Retrieved Successfully !!'),
         'comment'   => $comment,
       );
@@ -14451,11 +14471,12 @@ public function QRCodeMobileLogout(Request $request)
 
           $response = array(
             'status'=>'false',
+            'status_code'=> 400,
             'message'=>$th->getMessage(),
           );
     }
 
-    return response()->json($response, 200);
+    return response()->json($response, $response['status_code']);
   }
 
   public function channel_partner(Request $request)
