@@ -12244,7 +12244,7 @@ $cpanel->end();
               "order_video_categories" => $order_video_categories,
             );
         }
-
+        
 
         if($HomeSetting->featured_videos == 1){
 
@@ -12275,7 +12275,7 @@ $cpanel->end();
 
         }else{
 
-          $featured_videos = [];
+          $featured_videos = null;
         }
 
         if($HomeSetting->latest_videos == 1){
@@ -12305,7 +12305,7 @@ $cpanel->end();
 
         }else{
 
-          $latest_videos = [];
+          $latest_videos = null;
         }
 
         if( $HomeSetting->category_videos == 1 ){
@@ -12376,7 +12376,7 @@ $cpanel->end();
           }
         }
         else{
-          $myData = [];
+          $myData = null;
 
         }
         if( $HomeSetting->live_videos == 1 ){
@@ -12393,7 +12393,7 @@ $cpanel->end();
             });
         }
         else{
-          $live_videos = [];
+          $live_videos = null;
         }
 
         if($HomeSetting->series == 1){
@@ -12413,7 +12413,7 @@ $cpanel->end();
             });
         }else{
 
-          $series = [];
+          $series = null;
         }
 
         if($HomeSetting->audios == 1){
@@ -12541,11 +12541,6 @@ $cpanel->end();
           'status'=>'true',
           // 'HomeSetting' => $HomeSetting,
           // 'OrderHomeSetting' => $OrderHomeSetting,
-          'movies' => $latest_videos,
-          'featured_videos' => $featured_videos,
-          'category_videos' => $myData,
-          'live_videos' => $live_videos,
-          'series' => $series,
           // 'audios' => $audios,
           // 'albums' => $albums,
           // 'movies' => $movies,
@@ -12556,6 +12551,20 @@ $cpanel->end();
           // 'languagesLive' => $languagesLive  ,
           // 'LanguagesAudio' => $LanguagesAudio  ,
         );
+
+        $dataToCheck = [
+            'movies' => $latest_videos,
+            'featured_videos' => $featured_videos,
+            'category_videos' => $myData,
+            'live_videos' => $live_videos,
+            'series' => $series,
+        ];
+
+        foreach ($dataToCheck as $key => $value) {
+            if ($value !== null) {
+                $response[$key] = $value;
+            }
+        }
 
 
       } catch (\Throwable $th) {
