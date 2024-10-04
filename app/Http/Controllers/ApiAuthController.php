@@ -27039,8 +27039,8 @@ public function SendVideoPushNotification(Request $request)
         
           // Check subscription user exists
 
-        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
-                                  ->where('role','subscriber')->where('payment_status','Cancel')->first();
+        $subscription_user = User::query()->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','!=','Cancel')->first();
 
         if(is_null($subscription_user)){
 
