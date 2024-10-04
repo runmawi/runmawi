@@ -5558,6 +5558,7 @@ public function verifyandupdatepassword(Request $request)
     
     public function stripe_become_subscriber(Request $request)
     {
+
       try {
 
           $this->validate($request, [
@@ -5577,6 +5578,7 @@ public function verifyandupdatepassword(Request $request)
             $user         = User::where('id',$user_id)->first();
 
             $product_id =  $stripe->plans->retrieve($plan)->product;
+
 
             if( subscription_trails_status() == 1 ){
               
@@ -5696,13 +5698,16 @@ public function verifyandupdatepassword(Request $request)
               Email_notsent_log($user_id,$email_log,$email_template);
           }
 
+          $user_detail  = User::where('id',$user_id)->first() ;
+
           $data = array(
             'status'        => "true",
             'message'       => "Your Payment done Successfully!",
             'next_billing'  => $nextPaymentAttemptDate ,
             'Subscription'  => $Subscription ,
-            'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
-            'user_id'       => $user->id,
+            'user'          => $user_detail, 
+            'users_role'    => $user_detail->role ,
+            'user_id'       => $user_detail->id,
           );
 
       } catch (\Throwable $th) {
