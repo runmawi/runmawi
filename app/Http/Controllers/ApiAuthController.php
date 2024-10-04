@@ -27162,8 +27162,7 @@ public function SendVideoPushNotification(Request $request)
       $validator = Validator::make($request->all(), [
         'user_id' => 'required',
       ]);
-
-
+      
       if ($validator->fails()) {
 
         return response()->json([
@@ -27261,6 +27260,7 @@ public function SendVideoPushNotification(Request $request)
           'status'  => 'true',
           'status_code'  => 200,
           'Message' => "Subscription has been Cancelled Successfully" ,
+          'user'    => User::find($request->user_id),
         );
 
       } catch (\Throwable $th) {
