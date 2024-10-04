@@ -12400,7 +12400,7 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details',)->where('active','1')->latest()->get()->map(function ($item) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->get()->map(function ($item) {
                     $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                     $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
                     $item['seasons'] = SeriesSeason::where('series_id', $item->id)
