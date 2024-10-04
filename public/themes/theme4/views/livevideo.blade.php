@@ -237,6 +237,7 @@
 
     div#video\ sda{position:relative;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
+    .my-video.vjs-fluid{height: calc(100vh - 70px)!important;}
     @media (max-width: 500px) {
         .category-name {
             display: inline-block;
@@ -331,7 +332,7 @@
                                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                 </button>
                                 <video id="live-stream-player" class="vjs-theme-city my-video video-js vjs-play-control vjs-live-control vjs-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                    preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                                    width="auto" height="auto" playsinline="playsinline" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                                     <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                                 </video>
 
@@ -368,7 +369,7 @@
 
                         <?php else: ?>
                             <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-live-control vjs-control vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                                width="auto" height="auto" playsinline="playsinline" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                                 <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                             </video>
 
@@ -415,7 +416,7 @@
 
                     <?php else: ?>
                         <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city vjs-live-control vjs-control my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                            preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                            width="auto" height="auto" playsinline="playsinline" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                         </video>
 
@@ -438,7 +439,7 @@
                     <?php else: ?>
 
                         <video id="live-stream-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control vjs-live-control vjs-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                            preload="auto" width="auto" height="auto" playsinline="playsinline" muted="muted" preload="yes" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
+                            width="auto" height="auto" playsinline="playsinline" autoplay="autoplay" poster="<?= $Livestream_details->Player_thumbnail ?>">
                             <source src="<?= $Livestream_details->livestream_URL ?>" type="<?= $Livestream_details->livestream_player_type ?>">
                         </video>
 
