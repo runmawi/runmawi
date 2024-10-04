@@ -8859,21 +8859,44 @@ return response()->json($response, 200);
   }
 
   public function VideoLanguage(Request $request) {
+    try {
+     
+      $user_id = $request->user_id;
+      $language_id = $request->language_id;
 
-    $user_id = $request->user_id;
-    $lanid = $request->language_id;
+      $FrontEndQueryController = new FrontEndQueryController();
 
+      $LanguageVideo = LanguageVideo::where('language_id',$language_id)->groupBy('video_id')->pluck('video_id');
 
-    /*channel videos*/
-    $language_videos = Video::where('language', '=', $lanid)->get();
-    $count_language_videos = Video::where('language', '=', $lanid)->count();
+      $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
+          ->where('language_id', '=', $language_id)->where('active', '1')->where('status', '1')
+          ->where('draft', '1');
 
-    $response = array(
-        'language_videos'=> $language_videos,
-        'count_language_videos'=> $count_language_videos,
+          if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
+              $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
+          }
 
+      $language_videos = $language_videos->latest('videos.created_at');
+
+      $response = array(
+        'status' => 'true',
+        'status_code' => 200,
+        'message' => 'Retrieved the Language Videos',
+        'language_videos'=> $language_videos->get(),
+        'count_language_videos'=> $language_videos->count(),
       );
-    return response()->json($response, 200);
+
+    } catch (\Throwable $th) {
+
+      $response = array(
+        'status' => 'true',
+        'status_code' => 500,
+        'message' => $th->getMessage(),
+      );
+
+    }
+
+    return response()->json($response, $response['status_code']);
 
   }
   public function FeaturedVideo() {
