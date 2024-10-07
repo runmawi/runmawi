@@ -29,7 +29,7 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <a href="{{ route('play_episode',[$series_data->slug,$item->slug]) }}">
-                                            <img src="{{ $item->image ?  URL::to('public/uploads/images/' . $item->image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="">
+                                            <img src="{{ $item->player_image ?  URL::to('public/uploads/images/' . $item->player_image ) : default_vertical_image_url() }}" class="img-fluid transimga" alt="{{ $item->title }}">
                                         </a>
                                     </div>
                                     <div class="col-8">

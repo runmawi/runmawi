@@ -658,7 +658,7 @@ class LiveStreamController extends Controller
 
            );           
 
-           if(  $Theme == "default" ){
+           if(  $Theme == "default" || $Theme == "theme6" ){
               return Theme::view('video-js-Player.Livestream.live', $data);
            }else{
               return Theme::view('livevideo', $data);

@@ -1,5 +1,13 @@
 @php  include public_path('themes/theme6/views/header.php'); @endphp
 
+@if(Auth::check() && !Auth::guest())
+    @php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    @endphp
+@endif
+
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/theme6/assets/css/video-js/video-details.css') }}">
 
@@ -19,6 +27,149 @@
     <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-http-source-selector.js') }}"></script>
     <script src="{{ asset('public/themes/theme6/assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
     <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+
+    
+<style>
+    
+    /* payment modal */
+    #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+    #purchase-modal-dialog .modal-content{min-height: 100vh;max-height: 245vh;}
+    #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+    #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+    #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+    .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+    /* .modal-open .modal{overflow-y: hidden;} */
+    div#video-purchase-now-modal{padding-right: 0 !important;}
+    .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
+    .col-md-12.btn {margin-top: 2rem;}
+    .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+    .btn-primary-dark {
+        background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+    }
+    .title-popup {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+    .btn-primary-light {
+        background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+    }
+    .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
+    .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
+    .quality_option {width: 15px;height: 15px;margin-right: 10px;}
+    span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
+    input[type="radio"].payment_btn,input[type="radio"].quality_option {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+        border-radius: 50%;
+        background-color: transparent;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
+        background-color: black;
+        border-color: white;
+    }
+    
+    input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    body.light-theme h4, body.light-theme p {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .vpageBanner .content .right .utilities {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name.titleoverflow {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?>;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .genre {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .heading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .infoItem {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .info {
+        color: <?php echo GetLightText(); ?> !important;
+    }
+    body.light-theme .vpageBanner .opacity-layer {
+        background:none;
+    }
+    #video-purchase-now-modal .modal-footer{
+            background: transparent;
+            border-top: 1px solid black;
+    }
+
+    #quality-options {
+        margin-bottom: 20px;
+    }
+    
+    .main-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: block;
+    }
+    
+    .quality-options-group {
+        display: flex;
+        gap: 20px; 
+        align-items: center;
+    }
+    
+    .quality-options-group .radio-inline {
+        margin-right: 0; 
+    }
+    
+    #guest-qualitys{display:none;}
+    .btn-primary:hover{color:#fff;}
+    .btn-primary {
+        background-color: var(--btn-primary-color);
+    }
+
+    .btn-primary-dark {
+        background-color: rgba(var(--btn-primary-color-rgb), 0.5);
+    }
+
+    .btn-primary-light {
+        background-color: rgba(var(--btn-primary-color-rgb), 0.2);
+    }
+    @media (min-width: 1400px) and (max-width: 2565px) {
+        .my-video.vjs-fluid{
+            height: 50vh !important;
+        }
+    }
+    
+    </style>
 
 {{-- Section content --}}
 
@@ -153,18 +304,92 @@
                         </div>
                     </div>
 
-                    <div class="row">  
-                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                            <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                </svg>
-                                <span class="text pr-2"> Watch Now </span>
-                            </div>
-                        </a>
+                    <div class="row">
+                        @if ( $videodetail->users_video_visibility_status == false )
 
-                        @php include public_path('themes/theme6/views/partials/social-share.php'); @endphp  
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
+                                    </div>
+                                </a>
+                            @else
+                            
+                                @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
+                                    <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                        </div>
+                                    </a>
+
+                                    @if( Auth::guest() && $videodetail->access == "ppv" && $subscribe_btn == 1 || Auth::check() && Auth::user()->role == "registered" && $videodetail->access == "ppv" && $subscribe_btn == 1)
+                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
+
+                                @endif
+                            @endif
+
+                            {{-- subscriber & PPV  --}}
+
+                            {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                    </div>
+                                </a>
+                            @endif  --}}
+
+                        @else
+                            @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' )
+                                
+                            <div class="dropdown btn" id="guest-qualitys-selct">
+                                <div class="playbtn" style="gap:5px;">
+                                    {!! $play_btn_svg !!}
+                                    <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __( $videodetail->users_video_visibility_status_button ) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="guest-qualitys">
+                                <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
+                                    @if(!empty($videodetail->video_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
+                                    @if(!empty($videodetail->video_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
+                                    @if(!empty($videodetail->video_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                </div>
+                            </div>
+                            
+                            @else
+                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                    </div>
+                                </a>
+                            @endif
+                            
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
+                                @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
+                                    <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2"> {{ __( 'Upgrade Now' ) }} </span>
+                                        </div>
+                                    </a>
+                                @endif
+                            @endif
+                            
+                        @endif
+
+                            
+                        @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
                         
                        
                         @if( optional($videodetail)->trailer_videos_url )
@@ -177,13 +402,13 @@
 
                                     <div class="share-box box-watchtrailer">
                                         <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">Watch Trailer</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
 
-                            @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
+                            @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
 
                         @endif
                         
@@ -195,31 +420,11 @@
                                 <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
                             </svg>
                         </div>
-
-
-                        {{-- <?php   $user = Auth::user(); 
-                                if (  ($user->role!="subscriber" && $videodetail->access != 'guest' && $user->role!="admin") ) { ?>
-                                <a href="<?php echo URL::to('/becomesubscriber'); ?>">
-                                    <span class="view-count btn btn-primary subsc-video">
-                                        <?php echo __('Subscribe'); ?>
-                                    </span>
-                                </a>
-                        <?php } ?>
-
-                        <?php if (  $videodetail->global_ppv != null && $user->role!="admin" && $videodetail->ppv_price != null  && $user->role!="admin") { ?>
-                            <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video">
-                                <?php echo __('Purchase Now'); ?> 
-                            </button>
-                        <?php } else { ?>
-                            <a class="view-count btn btn-primary rent-video text-white" href="<?php echo URL::to('/login'); ?>">
-                                <?php echo __('Rent'); ?>
-                            </a>
-                        <?php } ?> --}}
                     </div>
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
                         <div class="overview">
-                            <div class="heading">Description</div>
+                            <div class="heading">{{ __('Description') }}</div>
                             <div class="description">
                                 {!!  html_entity_decode( optional($videodetail)->description ) !!}
                             </div>
@@ -227,8 +432,8 @@
                     @endif
 
                     <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
-                            <span classname="text bold">Status: </span>
+                        <div class="infoItem">
+                            <span classname="text bold">{{ __('Status') }}: </span>
                             <span class="text">{{ $videodetail->video_publish_status }}</span>
                         </div>
                     </div>
@@ -236,7 +441,7 @@
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                         <div class="info">      
-                            <span classname="text bold"> Languages:&nbsp;</span> 
+                            <span classname="text bold"> {{ __('Languages') }}:&nbsp;</span> 
                             @foreach( $videodetail->Language as $item )
                                 <span class="text">
                                     <span><a href="{{ URL::to('language/'. $item->language_id . '/' . $item->name ) }} "> {{ $item->name }} </a>   </span>
@@ -250,7 +455,7 @@
     
             @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
                 <div class="sectionArtists">   
-                    <div class="artistHeading">Top Cast</div>
+                    <div class="artistHeading">{{ __('Top Cast') }}</div>
                     <div class="listItems">
                         @foreach ( $videodetail->artists as $item )
                             <a href="{{ route('artist',[ $item->artist_slug ])}}">
@@ -271,51 +476,53 @@
 
             <!-- Broadcast  -->
 
-            <div class="sectionArtists broadcast">   
-                <div class="artistHeading">
-                    {{ ucwords('Promos & Resources ') }}
-                </div>
-                        
+            @if(($videodetail->trailer) !== null || ($videodetail->reelvideo) !== null || ($videodetail->pdf_files) !== null)
+                <div class="sectionArtists broadcast">   
+                    <div class="artistHeading">
+                        {{ ucwords(__('Promos & Resources')) }}
+                    </div>
+                            
 
-                    <div class="listItems">
+                        <div class="listItems">
 
-                        @if( optional($videodetail)->trailer_videos_url )
-                            <a>
-                                <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                            @if( optional($videodetail)->trailer )
+                                <a>
+                                    <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
+                                        <div class="profileImg">
+                                            <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
+                                                <img src="{{ optional($videodetail)->image_url }}">
+                                            </span>
+
+                                            @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
+
+                                        </div>
+                                        
+                                        <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> {{ __('Trailer') }}</span></div>
+                                    </div>
+                                </a>
+                            @endif
+
+                            @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
+                                                                    
+                                @php  include public_path("themes/{$current_theme}/views/video-js-Player/video/Reels-videos.blade.php"); @endphp
+                            
+                            @endif
+
+                            @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
+                                <div class="listItem">
                                     <div class="profileImg">
                                         <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                            <img src="{{ optional($videodetail)->image_url }}">
+                                            <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
                                         </span>
-
-                                        @php include public_path('themes/theme6/views/video-js-Player/video/videos-trailer.blade.php'); @endphp   
-
                                     </div>
-                                    
-                                    <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> Trailer</span></div>
+                                    <div class="name">{{ __('Document') }}</div>
                                 </div>
-                            </a>
-                        @endif
-
-                        @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
-                                                                
-                            @php  include public_path('themes/theme6/views/video-js-Player/video/Reels-videos.blade.php'); @endphp
+                            @endif
+                                
+                        </div>
                         
-                        @endif
-
-                        @if( optional($videodetail)->pdf_files )            {{-- E-Paper --}}
-                            <div class="listItem">
-                                <div class="profileImg">
-                                    <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                        <a href="{{ $videodetail->pdf_files_url }}" style="font-size:93px; color: #a51212 !important;" class="fa fa-file-pdf-o " download></a>
-                                    </span>
-                                </div>
-                                <div class="name">Document</div>
-                            </div>
-                        @endif
-                            
-                    </div>
-                    
-            </div>
+                </div>
+            @endif
 
             {{-- comment Section --}}
 
@@ -346,145 +553,38 @@
                                 
                                     <li class="slide-item">
                                         <div class="block-images position-relative">
-                                            <!-- block-images -->
-                                            <div class="border-bg">
+                                        
+                                            <a href="{{ URL::to('category/videos/'.$recommended_video->slug ) }}">
+    
                                                 <div class="img-box">
-                                                    <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                        <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->image) }}">
-                                                    </a>
-                                                                    
-                                                             <!-- PPV price -->
-                                                     @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                         @if ($recommended_video->access == 'subscriber')
-                                                             <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                         @elseif($recommended_video->access == 'registered')
-                                                             <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                         @elseif(!empty($recommended_video->ppv_price))
-                                                             <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                        @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                            <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                        @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                            <p class="p-tag">{{ 'Free' }} </p>
-                                                        @endif
-                                                     @endif
-        
-                                                     @if ($ThumbnailSetting->published_on == 1)
-                                                       <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                    @endif
+                                                    <img src="{{ $recommended_video->image ?  URL::to('public/uploads/images/'.$recommended_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                                 </div>
-                                            </div>
-                                                    
-                                            <div class="block-description">
-                                                <a class="playTrailer" href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-                                                    <img loading="lazy" class="img-fluid loading w-100" data-src="{{ URL::to('/public/uploads/images/' . $recommended_video->player_image) }}">
-                                                                  
-                                                                <!-- PPV price -->
-                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                            @if ($recommended_video->access == 'subscriber')
-                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                            @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                            @elseif(!empty($recommended_video->ppv_price))
-                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
+    
+                                                <div class="block-description">
+                                                    <span> {{ strlen($recommended_video->title) > 17 ? substr($recommended_video->title, 0, 18) . '...' : $recommended_video->title }}
+                                                    </span>
+                                                    <div class="movie-time d-flex align-items-center my-2">
+        
+                                                        <span class="text-white">
+                                                            @if($recommended_video->duration != null)
+                                                                @php
+                                                                    $duration = Carbon\CarbonInterval::seconds($recommended_video->duration)->cascade();
+                                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                    $minutes = $duration->format('%imin');
+                                                                @endphp
+                                                                {{ $hours }}{{ $minutes }}
                                                             @endif
-                                                        @endif
-        
-                                                        @if ($ThumbnailSetting->published_on == 1)
-                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
-                                                </a>
-                                                           <!-- PPV price -->
-                                                        @if ($ThumbnailSetting->free_or_cost_label == 1)
-                                                            @if ($recommended_video->access == 'subscriber')
-                                                                <p class="p-tag"> <i style='color:gold' class="fas fa-crown"></i> </p>
-                                                            @elseif($recommended_video->access == 'registered')
-                                                                <p class="p-tag"> {{ 'Register Now' }} </p>
-                                                            @elseif(!empty($recommended_video->ppv_price))
-                                                                <p class="p-tag1"> {{ $currency->symbol . ' ' . $recommended_video->ppv_price }}  </p>
-                                                            @elseif(!empty($recommended_video->global_ppv || (!empty($recommended_video->global_ppv) && $recommended_video->ppv_price == null)))
-                                                                <p class="p-tag1"> {{ $recommended_video->global_ppv . ' ' . $currency->symbol }} </p>
-                                                            @elseif($recommended_video->global_ppv == null && $recommended_video->ppv_price == null)
-                                                                <p class="p-tag">{{ 'Free' }} </p>
-                                                            @endif
-                                                        @endif
-        
-                                                        @if ($ThumbnailSetting->published_on == 1)
-                                                           <p class="published_on1">{{ $recommended_video->video_publish_status }} </p>
-                                                        @endif
-                                                <div class="hover-buttons text-white">
-                                                    <a href="{{ URL::to('category/videos/' . $recommended_video->slug) }}">
-
-                                                        @if ($ThumbnailSetting->title == 1)         <!-- Title -->
-                                                            <p class="epi-name text-left m-0"> {{ strlen($recommended_video->title) > 20 ? substr($recommended_video->title, 0, 21) . '...' : $recommended_video->title }} </p>
-                                                        @endif
-        
-                                                        <div class="movie-time d-flex align-items-center pt-1">
-                                                            @if ($ThumbnailSetting->rating == 1)         <!--Rating  -->
-                                                                <div class="badge badge-secondary p-1 mr-2">
-                                                                    <span class="text-white"> <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                                        {{ $recommended_video->rating }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif
-
-                                                            <!-- Category Thumbnail  setting -->
-                                                            <?php
-                                                                $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id', $recommended_video->id)
-                                                                    ->pluck('video_categories.name');
-                                                                ?>
-                                                                <?php  if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) ) { ?>
-                                                                <span class="text-white">
-                                                                    <?php
-                                                                    $Category_Thumbnail = [];
-                                                                    foreach ($CategoryThumbnail_setting as $key => $CategoryThumbnail) {
-                                                                        $Category_Thumbnail[] = $CategoryThumbnail;
-                                                                    }
-                                                                    echo implode(',' . ' ', $Category_Thumbnail);
-                                                                    ?>
-                                                                </span>
-                                                                <?php } ?>
-                                                            </div>
-        
-                                                        @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->duration == 1)
-                                                            <div class="movie-time d-flex align-items-center pt-1 mb-3">
-
-                                                                @if ($ThumbnailSetting->duration == 1)  <!-- Duration -->
-                                                                    <span class="text-white">
-                                                                        {{ gmdate('H:i:s', $recommended_video->duration) }}
-                                                                    </span>
-                                                                @endif 
-
-                                                                @if ($ThumbnailSetting->age == 1)     <!-- Age -->
-                                                                    <div class="badge badge-secondary p-1 mr-2"> {{ optional($recommended_video)->age_restrict . ' ' . '+' }}</div>
-                                                                @endif
-
-                                                                @if ($ThumbnailSetting->published_year == 1)   <!-- published_year -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                            {{ $recommended_video->year }}
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if ($ThumbnailSetting->featured == 1 && $recommended_video->featured == 1)  <!-- Featured -->
-                                                                    <div class="badge badge-secondary p-1 mr-2">
-                                                                        <span class="text-white"> <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                                        </span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endif
-                                                    </a>
-
-                                                    <a class="epi-name text-white mb-0 btn btn-primary">Watch Now</a>
-
+                                                        </span>
+                                                    </div>
+    
+                                                    <div class="hover-buttons">
+                                                        <span class="btn btn-hover">
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            {{ __('Play Now')}}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </li>
                                 @endforeach
@@ -495,6 +595,251 @@
             @endif
 
         </div>
+
+               {{-- Rent Modal  --}}                
+            <div class="modal fade" id="video-purchase-now-modal" tabindex="-1" role="dialog" aria-labelledby="video-purchase-now-modal-Title" aria-hidden="true">
+                <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content container-fluid bg-dark">
+    
+                        <div class="modal-header align-items-center">
+                            <div class="row">
+                                <div class="col-12">
+                                    <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end">
+                                @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin'))
+                                    <img src="{{ $user_avatar }}" alt="{{ $user_name }}">
+                                    <h5 class="pl-4">{{ $user_name }}</h5>
+                                @endif
+                                
+                            </div>
+                        </div>
+    
+                        <div class="modal-body">
+                            <div class="row justify-content-between m-0">
+                                <h3 class="font-weight-bold">{{ $videodetail->title}}</h3>
+                                <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <p class="text-white">{{ 'You are currently on plan.' }}</p>
+                            <div class="row justify-content-between m-0" style="gap: 4rem;">
+                                <div class="col-sm-4 col-12 p-0" style="">
+                                    <img class="img__img w-100" src="{{ $videodetail->player_image_url }}" class="img-fluid" alt="{{ $videodetail->title }}" style="border-radius: 10px;">
+                                </div>
+    
+                                <div class="col-sm-7 col-12 details">
+    
+                                    <div class="movie-rent btn">
+    
+                                        <div class="">
+                                            <h3 class="font-weight-bold title-popup">{{ $videodetail->title }}</h3>
+                                        </div>
+    
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="col-8 d-flex justify-content-start p-0">
+                                                <span class="descript text-white">{{ $setting->video }}</span>
+                                            </div>
+                                            <div class="col-4">
+                                                @if (Enable_PPV_Plans() == 0)
+                                                    <h3 class="pl-2" style="font-weight:700;" id="price-display">{{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price) :  "{$currency->symbol} {$videodetail->ppv_price}" }}</h3>
+                                                @elseif( Enable_PPV_Plans() == 1 )
+                                                    <h3 class="pl-2" style="font-weight:700;" id="price-display"> {{ $currency->enable_multi_currency == 1 ? Currency_Convert($videodetail->ppv_price_480p) :  $currency->symbol .$videodetail->ppv_price_480p }}</h3>
+                                                @endif
+                                            </div>
+                                        </div>
+    
+                                        <div class="mb-0 mt-3 p-0 text-left">
+                                            <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2"> {{ __('Select payment method') }} : </h5>
+                                        </div>
+    
+                                        <!-- Stripe Button -->
+                                        @if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 0)
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                                {{ $stripe_payment_setting->payment_type }}
+                                            </label>
+                                        @elseif( $stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe' && Enable_PPV_Plans() == 1 )
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="tres_important"  name="payment_method" value="{{ $stripe_payment_setting->payment_type }}" data-value="stripe">
+                                                {{ $stripe_payment_setting->payment_type }}
+                                            </label>
+    
+                                            <div id="quality-options" style="display:none;">
+                                                <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
+                                                <div class="quality-options-group">
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                        Low Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="720p">
+                                                        Medium Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                        High Quality
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endif
+    
+                                        <!-- Razorpay Button -->
+            
+                                        @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 0)
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                                {{ $Razorpay_payment_setting->payment_type }}
+                                            </label>
+                                        @elseif( $Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay' && Enable_PPV_Plans() == 1 )
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="important" name="payment_method" value="{{ $Razorpay_payment_setting->payment_type }}" data-value="Razorpay">
+                                                {{ $Razorpay_payment_setting->payment_type }}
+                                            </label>
+    
+                                            <div id="razorpay-quality-options" style="display:none;">
+                                                <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
+                                                <div class="quality-options-group">
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                        Low Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="720p">
+                                                        Medium Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                        High Quality
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endif
+                                      
+                                        <!-- paypal payment -->
+                                        @if (!empty($paypal_payment_setting) && $paypal_payment_setting->payment_type == 'PayPal' && Enable_PPV_Plans() == 0)
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-video-id="{{$videodetail->id}}" data-video-ppv="{{$videodetail->ppv_price}}" data-value="PayPal">
+                                                {{ $paypal_payment_setting->payment_type }}
+                                            </label>
+                                        @elseif( $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal' && Enable_PPV_Plans() == 1 )
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                <input type="radio" class="payment_btn" id="paypal_pay" name="payment_method" value="{{ $paypal_payment_setting->payment_type }}" data-value="PayPal">
+                                                {{ $paypal_payment_setting->payment_type }}
+                                            </label>
+    
+                                            <div id="paypal-quality-options" style="display:none;">
+                                                <label class="main-label text-left text-white mt-4">{{ __('Choose Video Quality') }}</label>
+                                                <div class="quality-options-group">
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="480p" checked>
+                                                        Low Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="720p">
+                                                        Medium Quality
+                                                    </label>
+                                                    <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center text-white">
+                                                        <input type="radio" class="quality_option" name="quality" value="1080p">
+                                                        High Quality
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class=" becomesubs-page">
+                                        @if ( Enable_PPV_Plans() == 0 && ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) ) || $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price)   )
+                                            <div class="Stripe_button row mt-3 justify-content-around">  
+                                                <div class="Stripe_button col-md-6 col-6 btn"> <!-- Stripe Button -->
+                                                    <button class="btn btn-primary w-100"
+                                                        onclick="location.href ='{{  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id,PPV_CurrencyConvert($videodetail->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $videodetail->id, $videodetail->ppv_price ]) }}' ;">
+                                                        {{ __('Pay now') }}
+                                                    </button>
+                                                </div>
+                                                <div class="Stripe_button col-md-5 col-5 btn">
+                                                    <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
+                                                        {{'Cancel'}}
+                                                    </button>
+                                                </div>
+                                            </div>
+    
+                                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+    
+                                            <div class="Stripe_button"> <!-- Stripe Button -->
+                                        
+                                            </div>
+    
+                                        @endif
+    
+                                        @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
+                                            <div class="row mt-3 justify-content-around"> 
+                                                <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
+                                                    @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
+                                                        <button class="btn btn-primary w-100"
+                                                            onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                                            {{ __('Pay now') }}
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                                <div class="Razorpay_button col-md-5 col-5 btn">
+                                                    <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
+                                                        {{'Cancel'}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+    
+                                            <div class="row mt-3 justify-content-around"></div>
+                                                <div class="Razorpay_button"> <!-- Razorpay Button -->
+    
+                                            </div>
+    
+                                        @endif
+    
+                                        @if ( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price) && Enable_PPV_Plans() == 0)
+                                            <div class="row mt-3 justify-content-around"> 
+                                                <div class="paypal_button col-12"> <!-- paypal Button -->
+                                                    @if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal')
+                                                        <div class="row mt-3 justify-content-around" id="paypal_pay_now"> 
+                                                            <div class="col-md-6 col-6 btn">
+                                                                <button class="btn btn-primary w-100"
+                                                                    onclick="paypal_checkout()">
+                                                                    {{ __('Pay now') }}
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-md-5 col-5 btn w-100">
+                                                                <button type="button" class="btn btn-primary w-100" data-dismiss="modal" aria-label="Close">
+                                                                    {{'Cancel'}}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+    
+                                                            <div class="payment_card_payment">
+                                                                <div id="paypal-button-container"></div>
+                                                            </div>
+                                                            
+                                                         <!-- <button onclick="paypal_checkout()" class="btn2 btn-outline-primary"><?php echo __('Continue'); ?></button> -->
+                                                        <!-- <div id="paypal-button-container-{{$videodetail->id}}-{{$videodetail->ppv_price}}"></div> -->
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @elseif( $videodetail->access == "ppv" && !is_null($videodetail->ppv_price_480p) && !is_null($videodetail->ppv_price_720p) && !is_null($videodetail->ppv_price_1080p) && Enable_PPV_Plans() == 1 )
+    
+                                            <div class="row mt-3 justify-content-around"></div>
+                                                <div class="paypal_button"> <!-- paypal Button -->
+    
+                                            </div>
+    
+                                        @endif
+    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         <div class="videoPopup ">
             <div class="opacityLayer"></div>
@@ -507,7 +852,218 @@
         </div>
     </div>
 
+    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_signature; ?>"></script>
+
+    <script>
+
+        function paypal_checkout() {
+            $('#paypal_pay_now').hide();
+
+            const amount = '{{ $videodetail->ppv_price }}';
+            let element = document.querySelector('.paypal-button[aria-label="Debit or Credit Card"]');
+            console.log("element",element);
+
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: amount,
+                                // currency_code: 'USD'
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // console.log(details);
+                        $.ajax({
+                            url: '{{ URL::to('paypal-ppv-video') }}',
+                            method: 'post',
+                            data: {
+                                _token: '<?= csrf_token() ?>',
+                                amount: amount,
+                                video_id: '<?= @$videodetail->id ?>',
+                            },
+                            success: (response) => {
+                                console.log("Server response:", response);
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+
+
+                            },
+                            error: (error) => {
+                                swal('error');
+                            }
+                        });
+
+                    });
+                    
+                },
+                onError: function (err) {
+                    console.error(err);
+                }
+            }).render('#paypal-button-container');
+            console.log("pb",paypal.Buttons());
+            
+        }
+
+    $(document).ready(function() {
+        $('.open-modal-btn').click(function() {
+            var title = $(this).data('title');
+            var message = $(this).data('message');
+            console.log(title);
+            console.log(message);
+            $('#modalTitle').text(title);
+            $('#modalMessage').text(message);
+        });
+    });
+
+    $(document).ready(function() {
+        
+        var Enable_PPV_Plans = '{{ Enable_PPV_Plans() }}';
+
+        $('.Razorpay_button,.Stripe_button,.paypal_button').hide();
+
+        if (Enable_PPV_Plans == 1) {
+                // Only execute this block if PPV plans are enabled
+                var ppv_price_480p = '{{ $videodetail->ppv_price_480p }}';
+
+                $(".payment_btn").click(function() {
+                    $('.Razorpay_button, .Stripe_button, .paypal_button, #quality-options, #razorpay-quality-options, #paypal-quality-options').hide();
+
+                    let payment_gateway = $('input[name="payment_method"]:checked').val();
+                    if (payment_gateway == "Stripe") {
+                        $('#quality-options').show();
+                        $('#razorpay-quality-options').hide();
+                        $('#paypal-quality-options').hide();
+                        updateContinueButton();
+                    } else if (payment_gateway == "Razorpay") {
+                        $('#razorpay-quality-options').show();
+                        $('#quality-options').hide();
+                        $('#paypal-quality-options').hide();
+                        updateContinueButton();
+                    } else if (payment_gateway == "PayPal") {
+                        $('#razorpay-quality-options').hide();
+                        $('#quality-options').hide();
+                        $('#paypal-quality-options').show();
+                        updateContinueButton();
+                    }
+                });
+
+                $("input[name='quality']").change(function() {
+                    updateContinueButton();
+                });
+
+                function updateContinueButton() {
+                    let payment_gateway = $('input[name="payment_method"]:checked').val();
+
+                    const selectedQuality = $('input[name="quality"]:checked').val() || '480p';
+                    const ppv_price = selectedQuality === '480p' ? '{{ $videodetail->ppv_price_480p }}' :
+                                        selectedQuality === '720p' ? '{{ $videodetail->ppv_price_720p }}' :
+                                        '{{ $videodetail->ppv_price_1080p }}';
+
+                    $('#price-display').text('{{ $currency->symbol }}' + ' ' + ppv_price);
+
+                    const videoId = '{{ $videodetail->id }}';
+                    const isMultiCurrencyEnabled = {{ $currency->enable_multi_currency }};
+                    const amount = isMultiCurrencyEnabled ? PPV_CurrencyConvert(ppv_price) : ppv_price;
+
+                    if(payment_gateway == "Stripe"){
+
+                        const routeUrl = `{{ route('Stripe_payment_video_PPV_Plan_Purchase', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                        .replace('__PPV_PLAN__', selectedQuality)
+                        .replace('__VIDEO_ID__', videoId)
+                        .replace('__AMOUNT__', amount);
+
+                        const continueButtonHtml = `
+                            <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"
+                                onclick="location.href ='${routeUrl}';">
+                                {{ __('Continue') }}
+                            </button>
+                        `;
+
+                        $('.Stripe_button').html(continueButtonHtml).show();
+
+                    }else if(payment_gateway == "Razorpay"){
+
+                        const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                        .replace('__PPV_PLAN__', selectedQuality)
+                        .replace('__VIDEO_ID__', videoId)
+                        .replace('__AMOUNT__', amount);
+
+                        const continueButtonHtml = `
+                            <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"
+                                onclick="location.href ='${routeUrl}';">
+                                {{ __('Continue') }}
+                            </button>
+                        `;
+
+                        $('.Razorpay_button').html(continueButtonHtml).show();
+
+                    }
+
+                }
+
+                $(".payment_btn:checked").trigger('click');
+            }
+            else{
+            $(".payment_btn").click(function() {
+
+                var Video_id = $(this).attr('data-video-id');
+                var Video_ppv_price = $(this).attr('data-video-ppv');
+                
+                // You can now use Video_id and Video_ppv_price
+                console.log("Video ID: " + Video_id);
+                console.log("Video PPV Price: " + Video_ppv_price);
+                $('.Razorpay_button,.Stripe_button').hide();
+                
+
+                let payment_gateway = $('input[name="payment_method"]:checked').val();
+
+                if (payment_gateway == "Stripe") {
+
+                    $('.Stripe_button').show();
+                    $('.paypal_button').hide();
+
+                } else if (payment_gateway == "Razorpay") {
+
+                    $('.Razorpay_button').show();
+                    $('.paypal_button').hide();
+
+                } else if (payment_gateway == "PayPal") {
+
+                    $('.paypal_button').show();
+                } 
+                
+                
+            });
+        }
+
+    });
+
+
+    // guest qualtiy selection
+    $(document).ready(function(){
+
+        $('#guest-qualitys-selct').on('click', function(){
+            console.log('yes true');
+            $('#guest-qualitys').show();
+            $('#guest-qualitys-selct').hide();
+        })
+    })
+
+</script>
+
+<style>
+    .billingAddress > div {background-color: white !important;border-radius: 6px !important;margin-bottom: 12px !important;border-color: rgb(183, 188, 191) !important;}
+    .billingAddress p{font-size: 15px;color: rgb(97 100 101);margin: 15px 15px;}
+    .breadcrumb{background-color: transparent;}
+    ul.breadcrumb li {z-index: 1;}
+</style>
 @php 
-    include public_path('themes/theme6/views/video-js-Player/video/videos-details-script-file.blade.php');
-    include public_path('themes/theme6/views/footer.blade.php'); 
+    include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-file.blade.php");
+    include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-details-script-stripe.blade.php");
+    include public_path("themes/{$current_theme}/views/footer.blade.php"); 
 @endphp

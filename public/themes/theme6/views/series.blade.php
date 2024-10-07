@@ -263,9 +263,9 @@ style="background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))
                                     <div class="play"> <img src="<?php echo URL::to('/assets/img/triangle.webp') ?>" alt=""></div>
                                     <h4 class="text-white font-weight-700">Watch Latest Episode</h4>
                                 </a>
-                                <a class="list-inline p-0 share-icons music-play-lists">
+                                {{-- <a class="list-inline p-0 share-icons music-play-lists">
                                     <li class="mb-0"><span><i class="ri-add-line"></i></span></li>
-                                </a>
+                                </a> --}}
                             </div>
                         @endif
 
