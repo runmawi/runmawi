@@ -682,7 +682,8 @@ Route::group(
             Route::get('translation-checkout', 'ApiAuthController@TranslationEnable'); 
 
             // Sending OTP
-            Route::post('Mobile-exists-verify', 'ApiAuthController@Mobile_exists_verify'); 
+            Route::addRoute(['GET', 'POST'], 'Mobile-exists-verify', 'ApiAuthController@Mobile_exists_verify');
+ 
             Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
             Route::post('Verify-OTP', 'ApiAuthController@Verify_OTP'); 
             Route::post('send-video-push-notifications', 'ApiAuthController@SendVideoPushNotification'); 
