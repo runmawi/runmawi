@@ -1,95 +1,66 @@
-    <section id="">
-        <div class="row">
-          <div class="col-sm-12 ">
-                <div class="iq-main-header align-items-center justify-content-between">
-            </div>
+<section id="">
+    <div class="row">
+      <div class="col-sm-12 ">
+            <div class="iq-main-header align-items-center justify-content-between">
+        </div>
 
-            <div class="favorites-contens">
-               <ul class="favorites-slider list-inline  row p-0 mb-0">
-                    <?php
-                    if(isset($Related_videos)) :
-                        foreach($Related_videos as $related_video): ?>
-                            <li class="slide-item">
-                                <a href="<?php echo URL::to('live/'.$related_video->slug ) ?>">
-                                    <div class="block-images position-relative">
-                                        <div class="img-box">
-                                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid" alt="">
-                                        </div>
-                                        <div class="block-description">
-                                            <h6> <?php  echo (strlen($related_video->title) > 15) ? substr($related_video->title,0,15).'...' : $related_video->title; ?> </h6>
-                                            <div class="movie-time d-flex align-items-center my-2">
-
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                    <?php echo $related_video->age_restrict.' '.'+' ?>
-                                                </div>
-
-                                                <span class="text-white">
-                                                    <?= gmdate('H:i:s', $related_video->duration); ?>
-                                                </span>
-                                            </div>
-
-                                            <div class="hover-buttons">
-                                                    <span class="btn btn-hover">
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Play Now
-                                                    </span>
-                                            </div>
-                                        </div>
-                                        <div class="block-social-info">
-                                            <ul class="list-inline p-0 m-0 music-play-lists">
-                                                <li><span><i class="ri-heart-fill"></i></span></li>
-                                                <li><span><i class="ri-add-line"></i></span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        <?php endforeach;
-                    endif; ?>
-               </ul>
-            </div>
-
-
-
-
-
-
-
-
-            <!-- <div class="favorites-contens ">
-                <ul class="favorites-slider list-inline row mb-0">
-                    <?php
-                     if(isset($Related_videos)) :
-                        foreach($Related_videos as $related_video): ?>
-
+        <div class="favorites-contens">
+            <ul class="favorites-slider list-inline">
+                @foreach ($data as $key => $livestream_videos)
                     <li class="slide-item">
-                        <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
-                            <div class="block-images position-relative">
+                        <div class="block-images position-relative">
+                            <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
+
                                 <div class="img-box">
-                                    <img src="<?php echo URL::to('/').'/public/uploads/images/'.$related_video->image;  ?>" class="img-fluid w-100" alt="">
+                                    <img src="{{ $livestream_videos->image ? URL::to('public/uploads/images/'.$livestream_videos->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                 </div>
 
                                 <div class="block-description">
-                                    <h6><?php  echo (strlen($related_video->title) > 15) ? substr($related_video->title,0,15).'...' : $related_video->title; ?></h6>
+                                    <p> {{ strlen($livestream_videos->title) > 17 ? substr($livestream_videos->title, 0, 18) . '...' : $livestream_videos->title }}</p>
+                                    
+                                    <div class="movie-time d-flex align-items-center my-2">
+                                        {{-- <div class="badge badge-secondary p-1 mr-2">
+                                            {{ optional($livestream_videos)->age_restrict.'+' }}
+                                        </div> --}}
 
-                                    <div class="movie-time  align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2"><?php echo $related_video->age_restrict.' '.'+' ?></div>
-                                        <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $related_video->duration); ?></span>
+                                        <span class="text-white">
+                                            @if($livestream_videos->duration != null)
+                                                @php
+                                                    $duration = Carbon\CarbonInterval::seconds($livestream_videos->duration)->cascade();
+                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                    $minutes = $duration->format('%imin');
+                                                @endphp
+                                                {{ $hours }}{{ $minutes }}
+                                            @endif
+                                        </span>
                                     </div>
 
                                     <div class="hover-buttons">
-                                        <a  href="<?php echo URL::to('live/'.$related_video->slug ) ?>">	
-                                            <span class="text-white">
-                                                <i class="fa fa-play mr-1" aria-hidden="true"></i> Play Now
-                                            </span>
-                                        </a>
+                                        <span class="btn btn-hover">
+                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                            {{ __('Play Now')}}
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+
+                                {{-- WatchLater & wishlist --}}
+
+                                {{-- @php
+                                    $inputs = [
+                                        'source_id'     => $livestream_videos->id ,
+                                        'type'          => null ,
+                                        'wishlist_where_column' =>'livestream_id',
+                                        'watchlater_where_column'=>'live_id',
+                                    ];
+                                @endphp
+
+                                {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/HomePage-wishlist-watchlater', $inputs )->content() !!} --}}
+
+                        </div>
                     </li>
-                    <?php endforeach; endif; ?>
-                </ul>
-            </div> -->
+                @endforeach
+            </ul>
         </div>
-    </section>
+    </div>
+</section>

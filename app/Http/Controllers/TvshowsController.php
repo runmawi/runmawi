@@ -120,8 +120,7 @@ class TvshowsController extends Controller
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
             );   
-
-            if($this->Theme == "default"){
+            if($this->Theme == "default" || $this->Theme == "theme6"){
                 $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
                                     ->where('active', '1')->latest()->get();
 
@@ -1316,7 +1315,7 @@ class TvshowsController extends Controller
             }
         
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
