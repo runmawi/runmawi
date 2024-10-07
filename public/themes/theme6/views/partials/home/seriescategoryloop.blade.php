@@ -9,9 +9,9 @@
                                 {{ !empty($category->home_genre) ?  $category->home_genre : $category->name }}
                             </a>
                         </h4>
-                        <h4 class="main-title text-primary"><a
+                        <h4 class="main-title view-all text-primary"><a
                                 href="{{  URL::to('/series/category/' . $category->slug ) }} ">
-                                {{ 'view all' }}
+                                {{ 'View all' }}
                             </a>
                         </h4>
                     </div>
