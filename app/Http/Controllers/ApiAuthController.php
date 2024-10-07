@@ -5558,6 +5558,7 @@ public function verifyandupdatepassword(Request $request)
     
     public function stripe_become_subscriber(Request $request)
     {
+
       try {
 
           $this->validate($request, [
@@ -5577,6 +5578,7 @@ public function verifyandupdatepassword(Request $request)
             $user         = User::where('id',$user_id)->first();
 
             $product_id =  $stripe->plans->retrieve($plan)->product;
+
 
             if( subscription_trails_status() == 1 ){
               
@@ -5696,13 +5698,16 @@ public function verifyandupdatepassword(Request $request)
               Email_notsent_log($user_id,$email_log,$email_template);
           }
 
+          $user_detail  = User::where('id',$user_id)->first() ;
+
           $data = array(
             'status'        => "true",
             'message'       => "Your Payment done Successfully!",
             'next_billing'  => $nextPaymentAttemptDate ,
             'Subscription'  => $Subscription ,
-            'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
-            'user_id'       => $user->id,
+            'user'          => $user_detail, 
+            'users_role'    => $user_detail->role ,
+            'user_id'       => $user_detail->id,
           );
 
       } catch (\Throwable $th) {
@@ -12468,6 +12473,56 @@ $cpanel->end();
           $series = null;
         }
 
+        if($HomeSetting->Series_based_on_Networks == 1){
+            $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
+                                                      ->where('in_home', 1)
+                                                      ->orderBy('order')
+                                                      ->get()
+                                                      ->map(function ($item) {
+                                                          $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
+                                                  
+                                                          // Fetch series where network_id in Series table matches the current SeriesNetwork id
+                                                          $item['series'] = Series::select('id', 'title', 'access', 'description', 'details', 'player_image', 'tv_image')
+                                                                                    ->where('active', '1')
+                                                                                    ->where('network_id', 'LIKE', '%"'.$item->id.'"%') // Use LIKE to search for network_id
+                                                                                    ->latest()
+                                                                                    ->get()
+                                                                                    ->map(function ($series) {
+                                                                                        $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
+                                                                                        $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
+                                                                                        $series['episodes'] = Episode::where('series_id', $series->id)
+                                                                                                                      ->get()
+                                                                                                                      ->map(function ($episode) {
+                                                                                                                        return [
+                                                                                                                          'id'                       => $episode->id,
+                                                                                                                          'title'                    => $episode->title,
+                                                                                                                          'slug'                     => $episode->slug,
+                                                                                                                          'episode_description'      => $episode->episode_description,
+                                                                                                                          'season_id'                => $episode->season_id,
+                                                                                                                          'type'                     => $episode->type,
+                                                                                                                          'access'                   => $episode->access,
+                                                                                                                          'ppv_status'               => $episode->ppv_status,
+                                                                                                                          'ppv_price'                => $episode->ppv_price,
+                                                                                                                          'player_image'             => $episode->player_image,
+                                                                                                                          'tv_image'                 => $episode->tv_image,
+                                                                                                                          'mp4_url'                  => $episode->mp4_url,
+                                                                                                                          'url'                      => $episode->url,
+                                                                                                                          'status'                   => $episode->status,
+                                                                                                                          'episode_order'            => $episode->episode_order,
+                                                                                                                        ];
+                                                                                                                      });
+
+                                                                                        return $series;
+                                                                                    });
+                    
+
+                    return $item;
+            });
+
+        }else{
+          $Series_based_on_Networks = null;
+        }
+
         if($HomeSetting->audios == 1){
 
           $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
@@ -12605,11 +12660,12 @@ $cpanel->end();
         );
 
         $dataToCheck = [
-            'movies' => $latest_videos,
-            'featured_videos' => $featured_videos,
-            'category_videos' => $myData,
-            'live_videos' => $live_videos,
-            'series' => $series,
+            'movies'                        => $latest_videos,
+            'featured_videos'               => $featured_videos,
+            'category_videos'               => $myData,
+            'live_videos'                   => $live_videos,
+            'series'                        => $series,
+            'Series_based_on_Networks'      => $Series_based_on_Networks,
         ];
 
         foreach ($dataToCheck as $key => $value) {
@@ -27106,7 +27162,7 @@ public function SendVideoPushNotification(Request $request)
       $validator = Validator::make($request->all(), [
         'user_id' => 'required',
       ]);
-
+      
       if ($validator->fails()) {
 
         return response()->json([
@@ -27119,8 +27175,9 @@ public function SendVideoPushNotification(Request $request)
         
           // Check subscription user exists
 
-        $subscription_user = User::query()->where('id',$request->user_id)
-                                  ->where('role','subscriber')->where('payment_status','!=','Cancel')->first();
+        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','!=','Cancel')
+                                  ->first();
 
         if(is_null($subscription_user)){
 
@@ -27184,7 +27241,7 @@ public function SendVideoPushNotification(Request $request)
             break;
         }
         
-        Subscription::where('stripe_id',$subscriptionId)->update([
+        Subscription::where('stripe_id',$subscription_user->stripe_id)->update([
           'stripe_status' =>  'Cancelled',
         ]);
 
@@ -27202,7 +27259,8 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'true',
           'status_code'  => 200,
-          'Message' => "Subscription has been Cancelled Successfully" ,
+          'message' => "Subscription has been Cancelled Successfully" ,
+          'user'    => User::find($request->user_id),
         );
 
       } catch (\Throwable $th) {
@@ -27210,7 +27268,7 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'false',
           'status_code'  => 400,
-          'Message' => $th->getMessage() ,
+          'message' => $th->getMessage() ,
         );
       }
 
