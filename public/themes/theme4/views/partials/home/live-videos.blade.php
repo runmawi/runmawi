@@ -106,7 +106,7 @@
                                             <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%"> 
                                         </div>
 
-                                        <div class="trending-dec">{!! html_entity_decode( $livestream_videos->description ) ??  $livestream_videos->description  !!}</div>
+                                        <div class="trending-dec">{{ html_entity_decode(strip_tags($livestream_videos->description), ENT_QUOTES) }}</div>
 
                                         <div class="p-btns">
                                             <div class="d-flex align-items-center p-0">

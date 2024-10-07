@@ -180,7 +180,7 @@
 
             @if( $item == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
                <?php $video_details = App\Video::where('active',1)->where('status',1)->where('draft',1)->where('today_top_video',1)->first(); ?>
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $top_ten_videos, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
             
             @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     

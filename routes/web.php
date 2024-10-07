@@ -790,7 +790,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/livestream', 'AdminLiveStreamController@index')->name('admin.livestream.index');
     Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit')->name('admin.livestream.edit');
     Route::post('/livestream/update', 'AdminLiveStreamController@update')->name('admin.livestream.update');
-    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.livestream.destroy');
+    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.livestream.delete');
     Route::get('/livestream/create', 'AdminLiveStreamController@create')->name('admin.livestream.create');
     Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.livestream.store');
 
@@ -2865,6 +2865,10 @@ Route::get('activationcode', 'AdminUsersController@myprofile');
 
 Route::get('EPG_date_filter', 'HomeController@EPG_date_filter')->name('front-end.EPG_date_filter');
 
+// videoJs player continue watching
+Route::post('saveContinueWatching','ChannelController@saveContinueWatching')->name('saveContinueWatching');
+Route::post('EpisodeContinueWatching','TvshowsController@EpisodeContinueWatching')->name('EpisodeContinueWatching');
+
 // For theme6 
 
 Route::post('HomePage-watchlater', 'HomeController@Homepage_watchlater')->name('home-page.watchlater');
@@ -2919,3 +2923,6 @@ Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');
 Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcvideos_index');
 Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
+
+
+Route::get('radio-station', 'AdminLiveStreamController@design');

@@ -849,11 +849,15 @@ display: block !important;
 .my-video.video-js .vjs-live-control {
   display: contents;
   align-items: center;
-  line-height: 2em;
+  line-height: 3.5em;
   padding: 10px;
   font-family: Roboto;
   font-weight: 600;
   font-size: 18px;
+}
+
+.vjs-live-display{
+  margin-right: 10px;
 }
 
 .my-video.video-js .vjs-live-control .vjs-hidden {
