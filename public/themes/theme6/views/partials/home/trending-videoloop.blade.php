@@ -7,7 +7,7 @@
                         <h4 class="main-title topten-title-sm"> {{ optional($order_settings_list[0])->header_name }} </h4>
                     </div>
                     <div class="topten-contens">
-                        <h4 class="main-title topten-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
+                        <h4 class="main-title topten-title"><a href="{{ $order_settings_list[0]->url ? URL::to($order_settings_list[0]->url) : null }} ">{{ optional($order_settings_list[0])->header_name }}</a></h4>
                         <ul id="top-ten-slider" class="list-inline p-0 m-0  d-flex align-items-center">
                             @foreach ($data as $key => $featured_videos)
                                 <li>
