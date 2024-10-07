@@ -956,6 +956,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // slider for live stream in index
     Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');
 
+    Route::get('/livestream_calendar', 'AdminLiveStreamController@livestream_calendar')->name('livestream_calendar');
+
     // slider - series & Episode
     Route::post('/series_slider_update', 'AdminSeriesController@series_slider_update');
     Route::post('/episode_slider_update', 'AdminSeriesController@episode_slider_update');
