@@ -1013,6 +1013,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/CPPLiveVideosIndex') }}">{{ (__('Live Stream For Approval')) }}</a></li>
                          <li><a href="{{ URL::to('admin/livestream/categories') }}">{{ (__('Manage Live Stream Categories')) }}</a></li>
                          <li><a href="{{ route('live_event_artist') }}">{{ (__('Live Event Artist')) }}  </a></li>
+                         {{-- <li><a href="{{ route('livestream_calendar') }}">{{ (__('Live Calendar')) }}  </a></li> --}}
                      </ul>
                   </li>
 
