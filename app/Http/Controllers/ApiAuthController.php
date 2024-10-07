@@ -5558,6 +5558,7 @@ public function verifyandupdatepassword(Request $request)
     
     public function stripe_become_subscriber(Request $request)
     {
+
       try {
 
           $this->validate($request, [
@@ -5577,6 +5578,7 @@ public function verifyandupdatepassword(Request $request)
             $user         = User::where('id',$user_id)->first();
 
             $product_id =  $stripe->plans->retrieve($plan)->product;
+
 
             if( subscription_trails_status() == 1 ){
               
@@ -5696,13 +5698,16 @@ public function verifyandupdatepassword(Request $request)
               Email_notsent_log($user_id,$email_log,$email_template);
           }
 
+          $user_detail  = User::where('id',$user_id)->first() ;
+
           $data = array(
             'status'        => "true",
             'message'       => "Your Payment done Successfully!",
             'next_billing'  => $nextPaymentAttemptDate ,
             'Subscription'  => $Subscription ,
-            'users_role'    => User::where('id',$user_id)->pluck('role')->first() ,
-            'user_id'       => $user->id,
+            'user'          => $user_detail, 
+            'users_role'    => $user_detail->role ,
+            'user_id'       => $user_detail->id,
           );
 
       } catch (\Throwable $th) {
@@ -27157,7 +27162,7 @@ public function SendVideoPushNotification(Request $request)
       $validator = Validator::make($request->all(), [
         'user_id' => 'required',
       ]);
-
+      
       if ($validator->fails()) {
 
         return response()->json([
@@ -27170,8 +27175,9 @@ public function SendVideoPushNotification(Request $request)
         
           // Check subscription user exists
 
-        $subscription_user = User::query()->where('id',$request->user_id)
-                                  ->where('role','subscriber')->where('payment_status','!=','Cancel')->first();
+        $subscription_user = User::query()->wherenotNull('stripe_id')->where('id',$request->user_id)
+                                  ->where('role','subscriber')->where('payment_status','!=','Cancel')
+                                  ->first();
 
         if(is_null($subscription_user)){
 
@@ -27235,7 +27241,7 @@ public function SendVideoPushNotification(Request $request)
             break;
         }
         
-        Subscription::where('stripe_id',$subscriptionId)->update([
+        Subscription::where('stripe_id',$subscription_user->stripe_id)->update([
           'stripe_status' =>  'Cancelled',
         ]);
 
@@ -27253,7 +27259,8 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'true',
           'status_code'  => 200,
-          'Message' => "Subscription has been Cancelled Successfully" ,
+          'message' => "Subscription has been Cancelled Successfully" ,
+          'user'    => User::find($request->user_id),
         );
 
       } catch (\Throwable $th) {
@@ -27261,7 +27268,7 @@ public function SendVideoPushNotification(Request $request)
         $response = array(
           'status'  => 'false',
           'status_code'  => 400,
-          'Message' => $th->getMessage() ,
+          'message' => $th->getMessage() ,
         );
       }
 
