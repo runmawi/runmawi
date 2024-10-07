@@ -2689,166 +2689,132 @@ else if(trailer_type == 'null' ){
 </script>
 
 <script>
-    document.getElementById('image').addEventListener('change', function() {
-        var file = this.files[0];
-        if (file) {
-            var img = new Image();
-            img.onload = function() {
-                var width = img.width;
-                var height = img.height;
-                console.log(width);
-                console.log(height);
+   //  document.getElementById('image').addEventListener('change', function() {
+   //      var file = this.files[0];
+   //      if (file) {
+   //          var img = new Image();
+   //          img.onload = function() {
+   //              var width = img.width;
+   //              var height = img.height;
+   //              console.log(width);
+   //              console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_videos }};
-                var validHeight = {{ $compress_image_settings->height_validation_videos }};
-                console.log(validWidth);
-                console.log(validHeight);
+   //              var validWidth = {{ $compress_image_settings->width_validation_videos }};
+   //              var validHeight = {{ $compress_image_settings->height_validation_videos }};
+   //              console.log(validWidth);
+   //              console.log(validHeight);
 
-                if (width !== validWidth || height !== validHeight) {
-                    document.getElementById('video_image_error_msg').style.display = 'block';
-                    $('.update_upload_img').prop('disabled', true);
-                    document.getElementById('video_image_error_msg').innerText = 
-                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                } else {
-                    document.getElementById('video_image_error_msg').style.display = 'none';
-                    $('.update_upload_img').prop('disabled', false);
-                }
-            };
-            img.src = URL.createObjectURL(file);
-        }
-    });
+   //              if (width !== validWidth || height !== validHeight) {
+   //                  document.getElementById('video_image_error_msg').style.display = 'block';
+   //                  $('.update_upload_img').prop('disabled', true);
+   //                  document.getElementById('video_image_error_msg').innerText = 
+   //                      `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+   //              } else {
+   //                  document.getElementById('video_image_error_msg').style.display = 'none';
+   //                  $('.update_upload_img').prop('disabled', false);
+   //              }
+   //          };
+   //          img.src = URL.createObjectURL(file);
+   //      }
+   //  });
 
-    document.getElementById('player_image').addEventListener('change', function() {
-        var file = this.files[0];
-        if (file) {
-            var img = new Image();
-            img.onload = function() {
-                var width = img.width;
-                var height = img.height;
-                console.log(width);
-                console.log(height);
+   //  document.getElementById('player_image').addEventListener('change', function() {
+   //      var file = this.files[0];
+   //      if (file) {
+   //          var img = new Image();
+   //          img.onload = function() {
+   //              var width = img.width;
+   //              var height = img.height;
+   //              console.log(width);
+   //              console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_player_img }};
-                var validHeight = {{ $compress_image_settings->height_validation_player_img }};
-                console.log(validWidth);
-                console.log(validHeight);
+   //              var validWidth = {{ $compress_image_settings->width_validation_player_img }};
+   //              var validHeight = {{ $compress_image_settings->height_validation_player_img }};
+   //              console.log(validWidth);
+   //              console.log(validHeight);
                 
-                if (width !== validWidth || height !== validHeight) {
-                    document.getElementById('player_image_error_msg').style.display = 'block';
-                    $('#useraccess_ppvprice').prop('disabled', true);
-                    document.getElementById('player_image_error_msg').innerText = 
-                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                } else {
-                    document.getElementById('player_image_error_msg').style.display = 'none';
-                    $('.update_upload_img').prop('disabled', false);
-                }
-            };
-            img.src = URL.createObjectURL(file);
-        }
-    });
+   //              if (width !== validWidth || height !== validHeight) {
+   //                  document.getElementById('player_image_error_msg').style.display = 'block';
+   //                  $('#useraccess_ppvprice').prop('disabled', true);
+   //                  document.getElementById('player_image_error_msg').innerText = 
+   //                      `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+   //              } else {
+   //                  document.getElementById('player_image_error_msg').style.display = 'none';
+   //                  $('.update_upload_img').prop('disabled', false);
+   //              }
+   //          };
+   //          img.src = URL.createObjectURL(file);
+   //      }
+   //  });
 
 </script>
 
 
 
 <script>
+
    
-      // $('#image').on('change', function(event) {
+$(document).ready(function(){
+   
+      $('#image_error_msg,#player_image_error_msg,#tv_image_image_error_msg').hide();
 
-      //       $('#image').removeData('imageWidth');
-      //       $('#image').removeData('imageHeight');
-      //       $('#image').removeData('imageratio');
-
-      //       var file = this.files[0];
-      //       var tmpImg = new Image();
-
-      //       tmpImg.src=window.URL.createObjectURL( file ); 
-      //       tmpImg.onload = function() {
-      //           width = tmpImg.naturalWidth,
-      //           height = tmpImg.naturalHeight;
-		// 		    ratio =  Number(width/height).toFixed(2) ;
-      //           image_validation_status = "{{  image_validation_videos() }}" ;
-
-      //           $('#image').data('imageWidth', width);
-      //           $('#image').data('imageHeight', height);
-      //           $('#image').data('imageratio', ratio);
-
-      //           if(  image_validation_status == "0" || ratio == '0.56'|| width == '1080' && height == '1920' ){
-      //             $('.update_upload_img').removeAttr('disabled');
-      //             $('#image_error_msg').hide();
-      //           }
-      //           else{
-      //             $('.update_upload_img').attr('disabled','disabled');
-      //             $('#image_error_msg').show();
-      //           }
-      //       }
-      //   });
-
-        
-      // $('#player_image').on('change', function(event) {
-
-         
-      //    $('#player_image').removeData('imageWidth');
-      //    $('#player_image').removeData('imageHeight');
-      //    $('#player_image').removeData('imageratio');
-
-      //    var file = this.files[0];
-      //    var tmpImg = new Image();
-
-      //    tmpImg.src=window.URL.createObjectURL( file ); 
-      //    tmpImg.onload = function() {
-      //       width = tmpImg.naturalWidth,
-      //       height = tmpImg.naturalHeight;
-		// 	   ratio =  Number(width/height).toFixed(2) ;
-      //       image_validation_status = "{{  image_validation_videos() }}" ;
-
-      //       $('#player_image').data('imageWidth', width);
-      //       $('#player_image').data('imageHeight', height);
-      //       $('#player_image').data('imageratio', ratio);
-
-      //       if(  image_validation_status == "0" || ratio == '1.78' || width == '1280' && height == '720' ){
-      //          $('.update_upload_img').removeAttr('disabled');
-      //          $('#player_image_error_msg').hide();
-      //       }
-      //       else{
-      //          $('.update_upload_img').attr('disabled','disabled');
-      //          $('#player_image_error_msg').show();
-      //       }
-      //    }
-      // });
+      $('#image').on('change', function(event) {
 
 
-      $('#video_tv_image').on('change', function(event) {
+            var file = this.files[0];
+            var tmpImg = new Image();
 
-         
-         $('#video_tv_image').removeData('imageWidth');
-         $('#video_tv_image').removeData('imageHeight');
-         $('#video_tv_image').removeData('imageratio');
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+               width = tmpImg.naturalWidth,
+               height = tmpImg.naturalHeight;
+               image_validation_status = "{{  image_validation_videos() }}" ;
+               console.log(width);
+               var validWidth = {{ $compress_image_settings->width_validation_videos ?: 1080 }};
+               var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1920 }};
+               console.log('validWidth ' + validWidth);
+               console.log(validHeight);
+
+               if (width !== validWidth || height !== validHeight) {
+                     document.getElementById('video_image_error_msg').style.display = 'block';
+                     $('.update_upload_img').prop('disabled', true);
+                     document.getElementById('video_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                  } else {
+                     document.getElementById('video_image_error_msg').style.display = 'none';
+                     $('.update_upload_img').prop('disabled', false);
+                  }
+            }
+      });
+     
+      $('#player_image').on('change', function(event) {
 
          var file = this.files[0];
-         var tmpImg = new Image();
+         var player_Img = new Image();
 
-         tmpImg.src=window.URL.createObjectURL( file ); 
-         tmpImg.onload = function() {
-            width = tmpImg.naturalWidth,
-            height = tmpImg.naturalHeight;
-			   ratio =  Number(width/height).toFixed(2) ;
-            image_validation_status = "{{  image_validation_videos() }}" ;
+         player_Img.src=window.URL.createObjectURL( file ); 
+         player_Img.onload = function() {
+         var width = player_Img.naturalWidth;
+         var height = player_Img.naturalHeight;
+         image_validation_status = "{{  image_validation_videos() }}" ;
+         console.log('player width ' + width)
 
-            $('#video_tv_image').data('imageWidth', width);
-            $('#video_tv_image').data('imageHeight', height);
-            $('#video_tv_image').data('imageratio', ratio);
+         var valid_player_Width = {{ $compress_image_settings->width_validation_player_img ?: 1280 }};
+         var valid_player_Height = {{ $compress_image_settings->height_validation_player_img ?: 720 }};
+         console.log(valid_player_Width + 'player width');
 
-            if(  image_validation_status == "0" || ratio == '1.78' || width == '1920' && height == '1080' ){
-               $('.update_upload_img').removeAttr('disabled');
-               $('#tv_image_image_error_msg').hide();
-            }
-            else{
-               $('.update_upload_img').attr('disabled','disabled');
-               $('#tv_image_image_error_msg').show();
-            }
+         if (width !== valid_player_Width || height !== valid_player_Height) {
+               document.getElementById('player_image_error_msg').style.display = 'block';
+               $('.update_upload_img').prop('disabled', true);
+               document.getElementById('player_image_error_msg').innerText = 
+                  `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+         } else {
+               document.getElementById('player_image_error_msg').style.display = 'none';
+               $('.update_upload_img').prop('disabled', false);
+         }
          }
       });
+   });
 
    </script>
 
