@@ -1,0 +1,28 @@
+/*Styling Scrollbar*/
+		::-webkit-scrollbar {
+		  width: 12px;
+		  cursor:pointer;
+		}
+
+		/* Track */
+		::-webkit-scrollbar-track {
+		  background: #f1f1f1; 
+		}
+		 
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+		  background: #6A5ACD; 
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+		  background: #FFC0CB; 
+		  
+		}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
