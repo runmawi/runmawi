@@ -1,5 +1,5 @@
 <!-- continue watching script -->
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         var player = videojs('my-video');
         var videoId = "<?php echo $videodetail->id; ?>";
@@ -43,9 +43,7 @@
         });
     });
 
-</script>
-
-
+</script> -->
 
 <script>
 
@@ -53,6 +51,8 @@
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
     let PPV_Plan   = "<?php echo $videodetail->PPV_Plan; ?>";
+    var videoId = "<?php echo $videodetail->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
 
     var remainingDuration = false;
 
@@ -91,12 +91,61 @@
         player.el().appendChild(titleButton);
         player.el().appendChild(backButton);        
 
-        player.on('loadedmetadata', function(){
+        function saveContinueWatching(videoId, duration, currentTime) {
+            if (duration > 0) {
+                $.ajax({
+                    url: "<?php echo URL::to('saveContinueWatching');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        duration: duration,
+                        currentTime: currentTime
+                    },
+                });
+            }
+        }
+
+        player.on('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+        });
+        
+        function updateControls() {
             var isMobile = window.innerWidth <= 768;
-            if(!isMobile){
+            var controlBar = player.controlBar;
+
+            if (controlBar.getChild('subtitlesButton')) {
+                controlBar.removeChild('subtitlesButton');
+            }
+            if (controlBar.getChild('playbackRateMenuButton')) {
+                controlBar.removeChild('playbackRateMenuButton');
+            }
+            if (controlBar.getChild('settingsMenuButton')) {
+                controlBar.removeChild('settingsMenuButton');
+            }
+
+            if (!isMobile){
                 controlBar.addChild('subtitlesButton');
                 controlBar.addChild('playbackRateMenuButton');
-            }
+            } 
             else{
                 controlBar.addChild('settingsMenuButton', {
                     entries: [
@@ -105,6 +154,14 @@
                     ]
                 });
             }
+        }
+
+        player.on('loadedmetadata', function() {
+            updateControls();
+        });
+
+        window.addEventListener('resize', function() {
+            updateControls();
         });
 
         if( PPV_Plan == '480p' ||  PPV_Plan == '720p'  ){

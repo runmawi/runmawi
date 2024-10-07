@@ -15,64 +15,70 @@ class GoogleLoginController extends Controller
  
 public function redirect($provider)
 {
-    return Socialite::driver($provider)->redirect();
+    try{
+        return Socialite::driver($provider)->redirect();
+    }
+    catch (\Throwable $th) {
+        // return $th->getMessage();
+        return abort(404);
+    }
 }
  
 public function callback(Request $request ,$provider)
 {
-           
-    if (!$request->has('code') || $request->has('denied')) {
-        return redirect('/');
+    try{
+        if (!$request->has('code') || $request->has('denied')) {
+            return redirect('/');
+        }
+    
+        $getInfo = Socialite::driver($provider)->user();    
+        // $findUser = User::where('email', $getInfo->email)->first();
+    
+        $saveUser = User::updateOrCreate([
+            'email' => $getInfo->getEmail(),
+        ],[
+            'name' => $getInfo->getName(),
+            'username'     => $getInfo->name,
+            'email' => $getInfo->getEmail(),
+            'provider' => $provider,
+            'role'    =>'registered',
+            'active'    =>'1',
+            'provider_id' => $getInfo->id,
+            'provider_avatar' => $getInfo->avatar,
+             ]);
+        Auth::loginUsingId($saveUser->id);
+
+        // if($findUser){
+        //     // Auth::login($findUser);
+        //     auth()->login($findUser);
+        //    $user = $findUser;
+        // }else{
+        //      $user = User::updateOrcreate([
+        //         'name'     => $getInfo->name,
+        //         'username'     => $getInfo->name,
+        //         'active'    =>'1',
+        //         'role'    =>'registered',
+        //         'email'    => $getInfo->email,
+        //         'provider' => $provider,
+        //         'provider_id' => $getInfo->id,
+        //         'provider_avatar' => $getInfo->avatar,
+        //     ]);
+        //     auth()->login($user);
+        // }
+        // $user = $this->createUser($getInfo,$provider);
+     
+        // auth()->login($user);
+        $user = $saveUser;
+        session()->put('user', $user);
+        session()->put('expiresIn', $getInfo->expiresIn);
+        session()->put('providertoken', $getInfo->token);
+    
+        return redirect('/home');
+    }catch (\Throwable $th) {
+        // return $th->getMessage();
+        return abort(404);
     }
-
-    $getInfo = Socialite::driver($provider)->user();
-
-    // $findUser = User::where('email', $getInfo->email)->first();
-
-    $saveUser = User::updateOrCreate([
-        'email' => $getInfo->getEmail(),
-    ],[
-        'name' => $getInfo->getName(),
-        'username'     => $getInfo->name,
-        'email' => $getInfo->getEmail(),
-        'provider' => $provider,
-        'role'    =>'registered',
-        'active'    =>'1',
-        'provider_id' => $getInfo->id,
-        'provider_avatar' => $getInfo->avatar,
-         ]);
-
-    Auth::loginUsingId($saveUser->id);
-
-
-    // if($findUser){
-    //     // Auth::login($findUser);
-    //     auth()->login($findUser);
-    //    $user = $findUser;
-    // }else{
-    //      $user = User::updateOrcreate([
-    //         'name'     => $getInfo->name,
-    //         'username'     => $getInfo->name,
-    //         'active'    =>'1',
-    //         'role'    =>'registered',
-    //         'email'    => $getInfo->email,
-    //         'provider' => $provider,
-    //         'provider_id' => $getInfo->id,
-    //         'provider_avatar' => $getInfo->avatar,
-    //     ]);
-    //     auth()->login($user);
-    // }
-
-
-    // $user = $this->createUser($getInfo,$provider);
- 
-    // auth()->login($user);
-    $user = $saveUser;
-    session()->put('user', $user);
-    session()->put('expiresIn', $getInfo->expiresIn);
-    session()->put('providertoken', $getInfo->token);
-
-    return redirect('/home');
+    
 
 }
 function createUser($getInfo,$provider){
