@@ -216,7 +216,6 @@ class TvshowsController extends Controller
                         'home_settings'  => HomeSetting::first() ,
                         'Slider_array_data' => $Slider_array_data ,
                     ];
-        // dd('end');
                     return Theme::view('tv-home', $data);
 
             }
@@ -254,8 +253,9 @@ class TvshowsController extends Controller
             }
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            return abort(404);
+            // return $th->getMessage();
+            // return abort(404);
+            return Theme::view('tv-home-empty-data');
         }
     }
 
