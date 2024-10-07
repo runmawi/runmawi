@@ -3,6 +3,7 @@
     .form-control{
         background: #fff!important;
     }
+    .btn-danger:hover, .btn-danger.focus, .btn-danger:focus {background-color: var(--iq-danger) !important;border-color: var(--iq-danger) !important;}
 </style>
 @section('content')
 <?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
@@ -76,12 +77,15 @@
                            <div class="iq-header-title">
                             
                            </div>
+                           <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
+
                         </div>
                         <div class="iq-card-body">
                            <div class="table-view">
-                              <table id="users_table" class="table movie_table text-center" style="width:100%">
+                              <table id="users_table" class="table movie_table text-center table-bordered" style="width:100%">
                                  <thead>
                                     <tr class="r1">
+                                       <th><input type="checkbox" id="select-all"></th>
                                        <th style="width: 10%;">Profile</th>
                                        <th style="width: 10%;">Name</th>
                                        <th style="width: 20%;">Contact</th>
@@ -93,7 +97,8 @@
                                  </thead>
                                  <tbody>
                                  @foreach($users as $user)
-                                    <tr>
+                                    <tr id="user-{{ $user->id }}">
+                                       <td><input type="checkbox" class="user-checkbox" value="{{ $user->id }}"></td>
                                        <td>
                                        <img src="{{ $user->avatar ? URL::to('public/uploads/avatars/' . $user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png') }}"
                                        class="img-fluid avatar-50" alt="author-profile">
@@ -131,6 +136,45 @@
 
 
 	@section('javascript')
+
+   <script>
+      document.getElementById('select-all').addEventListener('change', function() {
+         let checkboxes = document.querySelectorAll('.user-checkbox');
+         checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+      });
+
+      document.getElementById('delete-selected').addEventListener('click', function() {
+         let selected = [];
+         document.querySelectorAll('.user-checkbox:checked').forEach(checkbox => {
+               selected.push(checkbox.value);
+         });
+
+         if(selected.length > 0) {
+               if(confirm('Are you sure you want to delete the selected Users?')) {
+                  fetch("{{ route('admin.users.deleteSelected') }}", {
+                     method: 'POST',
+                     headers: {
+                           'Content-Type': 'application/json',
+                           'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                     },
+                     body: JSON.stringify({ids: selected})
+                  }).then(response => response.json())
+                  .then(data => {
+                     if(data.success) {
+                           selected.forEach(id => {
+                              document.getElementById('user-' + id).remove();
+                           });
+                           alert('Deleted Successfully.');
+                     } else {
+                           alert('An error occurred while deleting episodes.');
+                     }
+                  });
+               }
+         } else {
+               alert('No User selected.');
+         }
+      });
+   </script>
 
 	<script>
 
