@@ -273,7 +273,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                {{ !is_null($videodetail->watchlater_exist) ? "Remove from Watchlist" : "Add To Watchlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -285,7 +287,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_wishlist(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Wishlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                {{ !is_null($videodetail->wishlist_exist) ? "Remove from Wishlist" : "Add To Wishlist"  }}
+                                                </span>
                                             </div>
                                         </div>
                                     </li>
@@ -297,7 +301,10 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     </span>
                                     <div class="share-box box-watchtrailer " onclick="video_like(this)" style="top:41px">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Like video') }}</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                <!-- {{ __('Like video') }} -->
+                                                {{ !is_null( $videodetail->Like_exist ) ? "Remove Like" : "Like Video" }}
+                                            </span>
                                         </div>
                                     </div>
                                 </li>
@@ -309,7 +316,10 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     </span>
                                     <div class="share-box box-watchtrailer " onclick="video_dislike(this)" style="top:41px">
                                         <div class="playbtn"  data-toggle="modal">  
-                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Dislike video') }}</span>
+                                            <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
+                                                <!-- {{ __('Dislike video') }} -->
+                                                {{ !is_null( $videodetail->Like_exist ) ? "Remove Dislike" : "Dislike Video" }}
+                                            </span>
                                         </div>
                                     </div>
                                 </li>

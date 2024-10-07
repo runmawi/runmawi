@@ -65,7 +65,7 @@
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
-                            <h4 class="main-title text-primary"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'view all' }}</a></h4>
+                            <h4 class="main-title view-all text-primary"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View all' }}</a></h4>
                         </div>
 
                         <div class="favorites-contens">

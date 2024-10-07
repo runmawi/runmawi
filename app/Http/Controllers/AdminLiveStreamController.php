@@ -2851,4 +2851,75 @@ class AdminLiveStreamController extends Controller
 
         return response()->json($inputs['duration'], 200);
     }
+
+    public function livestream_calendar(Request $request)
+    {
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+
+        $livestreams = LiveStream::where('active', 1)->where('status', 1)->get()->map(function($item){
+
+            if ( $item->publish_type === 'publish_now' ) {
+
+                $return = [
+                    'title' => $item->title,
+                    'start' =>  Carbon::parse($item->created_at)->format('Y-m-d'),
+                    'end'   => Carbon::parse($item->created_at)->addMonths(3)->format('Y-m-d'),  
+                    'color' => 'green',
+                ];
+            }
+
+            if ( $item->publish_type === 'publish_later' ) {
+
+                $return = [
+                    'title' => $item->title,
+                    'start' => Carbon::parse($item->publish_time)->format('Y-m-d'),
+                    'end'   => Carbon::parse($item->publish_time)->addMonths(3)->format('Y-m-d'),  
+                ];
+            }
+
+            if ( $item->publish_type === 'recurring_program' ) {
+
+                switch ($item->recurring_program) {
+                    
+                    case 'custom':
+
+                        $return = [
+                            'title' => $item->title,
+                            'start' => Carbon::parse($item->custom_start_program_time)->format('Y-m-d H:i:s'),
+                            'end' => Carbon::parse($item->custom_end_program_time)->format('Y-m-d H:i:s'),  
+                            'color' => 'purple', 
+                        ];
+                        break;
+
+                        case 'daily':
+                         
+                    case 'weekly':
+
+                        $return = [
+                            'title' => $item->title,
+                            'start' => Carbon::parse($item->program_start_time)->format('Y-m-d'),
+                            'end'   => Carbon::parse($item->program_end_time)->format('Y-m-d'),  
+                            'color' => 'red',
+                        ];
+
+                        // $livestream->recurring_program_week_day->format('N') && $livestream->program_start_time && $livestream->program_end_time ;
+                        break;
+
+                    case 'monthly':
+                        // $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                }
+            }
+
+            return $return; 
+        });
+        
+        $data = array(
+            'Current_date'  => $carbon_now->toDateString() ,
+            'events'   => $livestreams ,
+        );
+
+        return View('admin.livestream.calendar',$data);
+    }
 }

@@ -338,7 +338,8 @@
                                             <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/fb.png'; ?>" width="30" style="margin-bottom:1rem;"></a>
                                         </div>
                                     <?php } ?>
-                                        <?php if(@$system_settings != null && @$system_settings->google == 0 ){  }else{ ?>
+                                    
+                                        <?php if(@$system_settings != null && @$system_settings->google == 1 ){ ?>
                                             <div>
                                                 <a href="{{ url('/auth/redirect/google') }}" class="" >
                                                     <img alt="apps-logo" src="<?php echo URL::to('/').'/assets/img/google.webp'; ?>" width="30" style="margin-bottom:1rem;">
