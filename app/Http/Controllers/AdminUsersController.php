@@ -3503,6 +3503,7 @@ class AdminUsersController extends Controller
         // \DB::raw('(subscription_plans.price) as count')
     // )
     ->get();
+
     $subscriber_Revenue = Subscription::join('users', 'subscriptions.user_id', '=', 'users.id')
     ->select(
             'users.username', 'users.stripe_id', 'users.card_type', 'users.ccode','users.role',
@@ -3511,6 +3512,7 @@ class AdminUsersController extends Controller
         'subscriptions.created_at',
         'subscriptions.countryname',
         'subscriptions.stripe_status',
+        'subscriptions.id as subscriptionid',
         // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
         \DB::raw('(subscriptions.price) as count')
     )->orderBy('subscriptions.created_at','desc')
@@ -5087,5 +5089,16 @@ class AdminUsersController extends Controller
         }
     }
 
-    
+    public function updateStripeStatus(Request $request)
+        {
+
+
+            $user = Subscription::find($request->user_id);
+            $user->stripe_status = $request->stripe_status;
+            $user->save();
+
+            return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+        }
+
+
 }
