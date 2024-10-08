@@ -1,49 +1,3 @@
-<!-- continue watching script -->
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video');
-        var videoId = "<?php echo $videodetail->id; ?>";
-        var userId = "<?php echo auth()->id(); ?>";
-
-        function saveContinueWatching(videoId, duration, currentTime) {
-            if (duration > 0) {
-                $.ajax({
-                    url: "<?php echo URL::to('saveContinueWatching');?>",
-                    type: 'POST',
-                    data: {
-                        _token: '<?= csrf_token() ?>',
-                        video_id: videoId,
-                        duration: duration,
-                        currentTime: currentTime
-                    },
-                });
-            }
-        }
-
-        player.on('loadedmetadata', function() {
-            console.log('Video metadata loaded');
-
-            player.on('timeupdate', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                saveContinueWatching(videoId, duration, currentTime);
-            });
-
-            player.on('pause', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                saveContinueWatching(videoId, duration, currentTime);
-            });
-
-            window.addEventListener('beforeunload', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                saveContinueWatching(videoId, duration, currentTime);
-            });
-        });
-    });
-
-</script> -->
 
 <script>
 
@@ -89,10 +43,13 @@
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
         player.el().appendChild(titleButton);
-        player.el().appendChild(backButton);        
+        player.el().appendChild(backButton);
+        
+        // console.log('videoId: ' + videoId);
 
         function saveContinueWatching(videoId, duration, currentTime) {
             if (duration > 0) {
+                var watch_percentage = (currentTime * 100 / duration);
                 $.ajax({
                     url: "<?php echo URL::to('saveContinueWatching');?>",
                     type: 'POST',
@@ -100,10 +57,14 @@
                         _token: '<?= csrf_token() ?>',
                         video_id: videoId,
                         duration: duration,
-                        currentTime: currentTime
+                        currentTime: currentTime,
+                        watch_percentage: watch_percentage,
                     },
                 });
             }
+            console.log('duration: ' + duration);
+            console.log('currentTime: ' + currentTime);
+            console.log('watch_percentage: ' + watch_percentage);
         }
 
         player.on('loadedmetadata', function() {
