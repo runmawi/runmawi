@@ -154,6 +154,7 @@ Route::post('/admin/users-import', 'AdminUsersController@users_import')->name('u
 // User Revenue analytics
 Route::get('/admin/users/revenue', 'AdminUsersController@UserRevenue');
 Route::get('/admin/users/PayPerview_Revenue', 'AdminUsersController@PayPerviewRevenue');
+Route::post('/admin/users/update-Subscription-status', 'AdminUsersController@updateStripeStatus');
 
 Route::post('/admin/User_exportCsv', 'AdminUsersController@RevenueExportCsv');
 
