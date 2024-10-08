@@ -31,6 +31,11 @@
                 },
                 pictureInPictureToggle: true,
             },
+            html5: {
+                hls: {
+                    overrideNative: true,
+                }
+            }
         });
 
         const playPauseButton = document.querySelector('.vjs-big-play-button');
