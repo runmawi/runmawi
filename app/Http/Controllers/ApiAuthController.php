@@ -12460,8 +12460,8 @@ $cpanel->end();
                                                                                 ],
                                                                                 'duration' => $episode->duration,
                                                                               ],
-                                                'player_image'             => $episode->player_image,
-                                                'tv_image'                 => $episode->tv_image,
+                                                'player_image'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                'tv_image'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
                                                 'status'                   => $episode->status,
                                               ];
                                             });
