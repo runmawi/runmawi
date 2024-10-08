@@ -5097,6 +5097,40 @@ class AdminUsersController extends Controller
             $user->stripe_status = $request->stripe_status;
             $user->save();
 
+            $user_details = User::find($user->user_id);
+            
+            try {
+
+                $email_subject = "You're Subscription status has been successfully updated" ;
+
+                \Mail::send('emails.subscriptionStatusUpdate', array(
+                    'name'          => ucwords($user_details->username),
+                    'username'          => ucwords($user_details->username),
+                    'stripe_status'          => ucwords($request->stripe_status),
+                ), 
+
+                function($message) use ($request,$user_details,$email_subject){
+
+                    $message->from(AdminMail(),GetWebsiteName());
+                    $message->to($user_details->email, $user_details->username)->subject($email_subject);
+                });
+
+                $email_log      = 'Mail Sent Successfully from Become Subscription';
+                $email_template = "45";
+                $user_id = $user_details->id;
+
+                Email_sent_log($user_id,$email_log,$email_template);
+
+            } catch (\Throwable $th) {
+
+                $email_log      = $th->getMessage();
+                $email_template = "23";
+                $user_id = $user_details->id;
+
+                Email_notsent_log($user_id,$email_log,$email_template);
+            }
+
+
             return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
         }
 
