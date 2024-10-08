@@ -12425,6 +12425,7 @@ $cpanel->end();
               $description = strip_tags($details);
               $item['description'] = str_replace("\r", '', $description);
               $item['type'] = $item->url_type;
+              $item['url'] = $item->live_stream_video;
               return $item;
             });
         }
