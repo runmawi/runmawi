@@ -3509,6 +3509,8 @@ class AdminUsersController extends Controller
              'subscriptions.price as total_amount','subscriptions.platform',
              'subscriptions.stripe_plan as stripe_plan',
         'subscriptions.created_at',
+        'subscriptions.countryname',
+        'subscriptions.stripe_status',
         // \DB::raw("MONTHNAME(subscriptions.created_at) as month_name"),
         \DB::raw('(subscriptions.price) as count')
     )->orderBy('subscriptions.created_at','desc')
