@@ -101,6 +101,7 @@ body {font-family: Arial;}
                                             <th>Platform</th>
                                             <th>Price</th>
                                             <th>Country</th>
+                                            <th>Status</th>
                                             <th>TimeStamp</th>
                                             <th>Source</th>
                                         </tr>
@@ -120,7 +121,8 @@ body {font-family: Arial;}
                                         <td> {{ $user->platform }}  </td>
                                         <!-- <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif -->
                                         <td>{{ $user->total_amount  }}</td>   
-                                        <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
+                                        <td>@if(!empty(@$user->countryname))  {{ @$user->countryname }} @else No Country Added @endif</td>
+                                        <td>{{ $user->stripe_status  }}</td>   
                                         <td>{{ $user->created_at  }}</td> 
                                         <td>@if(!empty($user->card_type))  {{ @$user->card_type }} @else No Transaction @endif</td>
                                         </tr>
