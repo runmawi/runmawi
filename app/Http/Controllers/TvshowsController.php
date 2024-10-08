@@ -2588,13 +2588,13 @@ public function RemoveDisLikeEpisode(Request $request)
             $data = $request->all();
             
             if (Auth::user()) {
-                $user_id = Auth::user()->id;
-                $episode_id = $request->episode_id;
-                $duration = $request->duration;
-                $currentTime = $request->currentTime;
+                $user_id            = Auth::user()->id;
+                $episode_id         = $request->episode_id;
+                $duration           = $request->duration;
+                $currentTime        = $request->currentTime;
+                $watch_percentage   = $request->watch_percentage;
     
                 if ($duration > 0) {
-                    $watch_percentage = ($currentTime * 100 / $duration);
                     
                     $cnt = ContinueWatching::where("episodeid", $episode_id)
                                             ->where("user_id", $user_id)
@@ -2606,7 +2606,7 @@ public function RemoveDisLikeEpisode(Request $request)
                                                 ->first();
     
                     // If the user has completed watching (99% or more), remove the entry
-                    if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
+                    if ($cnt > 0 && $watch_percentage >= "99") {
                         ContinueWatching::where("episodeid", $episode_id)
                                         ->where("user_id", $user_id)
                                         ->delete();
