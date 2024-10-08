@@ -12435,43 +12435,62 @@ $cpanel->end();
         if($HomeSetting->series == 1){
 
           $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->get()->map(function ($item) {
-                    $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-                    $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
-                    $item['seasons'] = SeriesSeason::where('series_id', $item->id)
-                                      ->get()
-                                      ->map(function ($season) {
-                                          return [
-                                              'title'    => $season->series_seasons_name,
-                                              'episodes' => Episode::where('season_id', $season->id)
-                                              ->orderBy('episode_order')
-                                              ->get()
-                                              ->map(function ($episode) {
-                                                return [
-                                                  'id'                       => $episode->id,
-                                                  'title'                    => $episode->title,
-                                                  'slug'                     => $episode->slug,
-                                                  'episodeNumber'            => $episode->episode_order,
-                                                  'access'                   => $episode->access,
-                                                  'content'                  => [
-                                                                                  'dateAdded' => $episode->created_at,
-                                                                                  'videos' => [
-                                                                                      [
-                                                                                          'videoType' => $episode->type,
-                                                                                          'url' => $episode->url,
-                                                                                      ],
-                                                                                  ],
-                                                                                  'duration' => $episode->duration,
+            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+                                $item['seasons'] = SeriesSeason::where('series_id', $item->id)
+                                    ->get()
+                                    ->map(function ($season) {
+                                        $episodes = Episode::where('season_id', $season->id)
+                                            ->orderBy('episode_order')
+                                            ->get()
+                                            ->map(function ($episode) {
+                                              return [
+                                                'id'                       => $episode->id,
+                                                'title'                    => $episode->title,
+                                                'slug'                     => $episode->slug,
+                                                'episodeNumber'            => $episode->episode_order,
+                                                'access'                   => $episode->access,
+                                                'content'                  => [
+                                                                                'dateAdded' => $episode->created_at,
+                                                                                'videos' => [
+                                                                                    [
+                                                                                        'videoType' => $episode->type,
+                                                                                        'url' => $episode->url,
+                                                                                    ],
                                                                                 ],
-                                                  'player_image'             => $episode->player_image,
-                                                  'tv_image'                 => $episode->tv_image,
-                                                  'status'                   => $episode->status,
-                                                ];
-                                              }),
-                                          ];
-                                      });
-                    
-                    return $item;
-            });
+                                                                                'duration' => $episode->duration,
+                                                                              ],
+                                                'player_image'             => $episode->player_image,
+                                                'tv_image'                 => $episode->tv_image,
+                                                'status'                   => $episode->status,
+                                              ];
+                                            });
+
+                                        // Only include the season if it has episodes
+                                        if ($episodes->isNotEmpty()) {
+                                            return [
+                                                'title' => $season->series_seasons_name,
+                                                'episodes' => $episodes,
+                                            ];
+                                        }
+
+                                        // Return null for seasons with no episodes
+                                        return null;
+                                    })
+                                    ->filter(function ($value) {
+                                        return $value !== null;
+                                    });
+
+                                // Remove the 'seasons' key if it's an empty array
+                                if ($item['seasons']->isEmpty()) {
+                                    unset($item['seasons']);
+                                }
+
+                                return $item;
+                            });
+
+          
+
         }else{
 
           $series = null;
