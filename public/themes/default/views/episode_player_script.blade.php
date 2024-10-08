@@ -6,57 +6,14 @@
 ?> -->
 
 
-<!-- continue watching script -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('episode-player');
-        var episodeId = "<?php echo $episode_details->id; ?>";
-        var userId = "<?php echo auth()->id(); ?>";
-
-        function EpisodeContinueWatching(episodeId, duration, currentTime) {
-            if (duration > 0) {
-                $.ajax({
-                    url: "<?php echo URL::to('EpisodeContinueWatching');?>",
-                    type: 'POST',
-                    data: {
-                        _token: '<?= csrf_token() ?>',
-                        episode_id: episodeId,
-                        duration: duration,
-                        currentTime: currentTime
-                    },
-                });
-            }
-        }
-
-        player.on('loadedmetadata', function() {
-            console.log('Video metadata loaded');
-
-            player.on('timeupdate', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                EpisodeContinueWatching(episodeId, duration, currentTime);
-            });
-
-            player.on('pause', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                EpisodeContinueWatching(episodeId, duration, currentTime);
-            });
-
-            window.addEventListener('beforeunload', function() {
-                var currentTime = player.currentTime();
-                var duration = player.duration();
-                EpisodeContinueWatching(episodeId, duration, currentTime);
-            });
-        });
-    });
-
-</script>
 
 <script>
 
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
     let episode_ads = <?php echo json_encode( $episode_ads ); ?> ;
+
+    var episodeId = "<?php echo $episode_details->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -92,7 +49,50 @@
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
         player.el().appendChild(titleButton);
-        player.el().appendChild(backButton);  
+        player.el().appendChild(backButton); 
+        
+        // Continue watching script
+        function EpisodeContinueWatching(episodeId, duration, currentTime) {
+            if (duration > 0) {
+                var watch_percentage = (currentTime * 100 / duration);
+                $.ajax({
+                    url: "<?php echo URL::to('EpisodeContinueWatching');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        episode_id: episodeId,
+                        duration: duration,
+                        currentTime: currentTime,
+                        watch_percentage: watch_percentage,
+                    },
+                });
+            }
+            console.log('duration: ' + duration);
+            console.log('currentTime: ' + currentTime);
+            console.log('watch_percentage: ' + watch_percentage);
+        }
+
+        player.on('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+        });
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;

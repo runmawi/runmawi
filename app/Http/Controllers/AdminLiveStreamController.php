@@ -13,6 +13,7 @@ use Intervention\Image\Filters\DemoFilter;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use App\User as User;
 use \Redirect as Redirect;
@@ -57,63 +58,104 @@ class AdminLiveStreamController extends Controller
         $this->userIp = $geoip->getip();
     }
     
+
+    public function design(){
+        return View('admin.livestream.radiostation.design');
+    }
+
     public function index()
+    {
+        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+            return redirect('/admin/restrict');
+        }
+
+        $Stream_key = Session::get('Stream_key');
+        $Stream_error =Session::get('Stream_error');
+        $Rtmp_url = Session::get('Rtmp_url');
+        $title = Session::get('title');
+        $hls_url = Session::get('hls_url');
+
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+
+        if ($current_date > $duedate)
         {
-            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-                return redirect('/admin/restrict');
-            }
+            $client = new Client();
+            $url = "https://flicknexs.com/userapi/allplans";
+            $params = [
+                'userid' => 0,
+            ];
+    
+            $headers = [
+                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+            ];
+            $response = $client->request('post', $url, [
+                'json' => $params,
+                'headers' => $headers,
+                'verify'  => false,
+            ]);
+    
+            $responseBody = json_decode($response->getBody());
+            $settings = Setting::first();
 
-            $Stream_key = Session::get('Stream_key');
-            $Stream_error =Session::get('Stream_error');
-            $Rtmp_url = Session::get('Rtmp_url');
-            $title = Session::get('title');
-            $hls_url = Session::get('hls_url');
-
-            $user =  User::where('id',1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date('Y-m-d');
-            if ($current_date > $duedate)
-            {
-                $client = new Client();
-                $url = "https://flicknexs.com/userapi/allplans";
-                $params = [
-                    'userid' => 0,
-                ];
-        
-                $headers = [
-                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-                ];
-                $response = $client->request('post', $url, [
-                    'json' => $params,
-                    'headers' => $headers,
-                    'verify'  => false,
-                ]);
-        
-                $responseBody = json_decode($response->getBody());
-               $settings = Setting::first();
-               $data = array(
+            $data = array(
                 'settings' => $settings,
                 'responseBody' => $responseBody,
-        );
-                return View::make('admin.expired_dashboard', $data);
-            }else if(check_storage_exist() == 0){
-                $settings = Setting::first();
+            );
 
-                $data = array(
-                    'settings' => $settings,
+            return View::make('admin.expired_dashboard', $data);
+
+        }else if(check_storage_exist() == 0){
+            $settings = Setting::first();
+
+            $data = array(
+                'settings' => $settings,
+            );
+
+            return View::make('admin.expired_storage', $data);
+        }else{
+
+            $currentRouteName = Route::currentRouteName() ;
+
+            // Common Query
+
+            $query = LiveStream::query();
+            
+            if ($currentRouteName == "admin.livestream.index") {
+
+                $query->whereNull('stream_upload_via')->orwhere('stream_upload_via','live_stream');
+            }
+            else{
+                $query->orWhere('stream_upload_via', 'radio_station');
+            }
+            
+            $videos = $query->orderBy('created_at', 'desc')->paginate(10);
+
+            if( $currentRouteName == "admin.radio-station.index" ){
+
+                $inputs_details_array = array(
+                    'create_route'   => "admin.radio-station.create",
+                    'view_route'     => "LiveStream_play",
+                    'edit_route'     => "admin.radio-station.edit",
+                    'delete_route'   => "admin.radio-station.delete",
+                    'all_list_route' => "admin.radio-station.index",
+                    'text_main_name' => "Radio Station",
+                    'stream_upload_via' => "radio_station",
                 );
 
-                return View::make('admin.expired_storage', $data);
             }else{
 
-            if(!empty($search_value)):
-                $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-            else:
-                $videos = LiveStream::where('stream_upload_via', '!=', 'radio_station')
-                                    ->orwhere('stream_upload_via', null)
-                                    ->orderBy('created_at', 'DESC')
-                                    ->paginate(9);
-            endif;
+                $inputs_details_array = array(
+                    'create_route'   => "admin.livestream.create",
+                    'view_route'     => "LiveStream_play",
+                    'edit_route'     => "admin.livestream.edit",
+                    'delete_route'   => "admin.livestream.delete",
+                    'all_list_route' => "admin.livestream.index",
+                    'text_main_name' => "Live Stream",
+                    'stream_upload_via' => "live_stream",
+                );
+            }
 
             $user = Auth::user();
 
@@ -128,97 +170,13 @@ class AdminLiveStreamController extends Controller
                 'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
                 'title' => $title ? $title : null,
                 'hls_url' => $hls_url ? $hls_url : null,
-                );
+                'inputs_details_array' => $inputs_details_array ,
+                'currentRouteName'     => $currentRouteName ,
+            );
 
             return View('admin.livestream.index', $data);
             }
-        }
-    /**
-     * Show the form for creating a new video
-     *
-     * @return Response
-     */
-
-     public function radiostationindex()
-     {
-         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-             return redirect('/admin/restrict');
-         }
-
-         $Stream_key = Session::get('Stream_key');
-         $Stream_error =Session::get('Stream_error');
-         $Rtmp_url = Session::get('Rtmp_url');
-         $title = Session::get('title');
-         $hls_url = Session::get('hls_url');
-
-         $user =  User::where('id',1)->first();
-         $duedate = $user->package_ends;
-         $current_date = date('Y-m-d');
-         if ($current_date > $duedate)
-         {
-             $client = new Client();
-             $url = "https://flicknexs.com/userapi/allplans";
-             $params = [
-                 'userid' => 0,
-             ];
-     
-             $headers = [
-                 'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-             ];
-             $response = $client->request('post', $url, [
-                 'json' => $params,
-                 'headers' => $headers,
-                 'verify'  => false,
-             ]);
-     
-             $responseBody = json_decode($response->getBody());
-            $settings = Setting::first();
-            $data = array(
-             'settings' => $settings,
-             'responseBody' => $responseBody,
-     );
-             return View::make('admin.expired_dashboard', $data);
-         }else if(check_storage_exist() == 0){
-             $settings = Setting::first();
-
-             $data = array(
-                 'settings' => $settings,
-             );
-
-             return View::make('admin.expired_storage', $data);
-         }else{
-
-         if(!empty($search_value)):
-             $videos = LiveStream::where('title', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-         else:
-             $videos = LiveStream::orderBy('created_at', 'DESC')->paginate(9);
-         endif;
-
-         $radiostations = Livestream::where('stream_upload_via', 'radio_station')->paginate(9);
-
-         $user = Auth::user();
-
-         $data = array(
-             'videos' => $radiostations,
-             'user' => $user,
-             'admin_user' => Auth::user(),
-             'Settings'  => Setting::first(),
-             'Video_encoder_Status' => '0',
-             'Stream_key' => $Stream_key,
-             'Stream_error' => $Stream_error ? $Stream_error : 0 ,
-             'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
-             'title' => $title ? $title : null,
-             'hls_url' => $hls_url ? $hls_url : null,
-             );
-
-         return View('admin.livestream.radiostation.radiostationindex', $data);
-         }
-     }
- /**
-  * Show the form for creating a new video
-  *
-  * @return Response
-  */
+    }
 
     public function create()
     {
@@ -267,10 +225,32 @@ class AdminLiveStreamController extends Controller
 
             $settings = Setting::first();
             $compress_image_settings = CompressImage::first();
+            $currentRouteName = Route::currentRouteName() ;
+
+            if( $currentRouteName == "admin.radio-station.create" ){
+
+                $inputs_details_array = array(
+                    'post_route'     => "admin.radio-station.store",
+                    'text_main_name' => "Radio Station",
+                    'stream_upload_via' => "radio_station",
+                    'create_route'   => "admin.radio-station.create",
+                    'all_list_route' => "admin.radio-station.index",
+                );
+
+            }else{
+
+                $inputs_details_array = array(
+                    'post_route'     => "admin.livestream.store",
+                    'text_main_name' => "Live Stream",
+                    'stream_upload_via' => null,
+                    'create_route'   => "admin.livestream.create",
+                    'all_list_route' => "admin.livestream.index",
+                );
+            }
 
             $data = array(
                 'headline' => '<i class="fa fa-plus-circle"></i> New Video',
-                'post_route' => URL::to('admin/livestream/store'),
+                'inputs_details_array' => $inputs_details_array,
                 'button_text' => 'Add New Video',
                 'admin_user' => Auth::user(),
                 'video_categories' => LiveCategory::all(),
@@ -289,6 +269,7 @@ class AdminLiveStreamController extends Controller
                 "countries" => CountryCode::all(),
                 "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
                 'compress_image_settings' => $compress_image_settings,
+                'currentRouteName'  => $currentRouteName ,
             );
 
             return View::make('admin.livestream.create_edit', $data);
@@ -300,79 +281,6 @@ class AdminLiveStreamController extends Controller
      *
      * @return Response
      */
-
-     public function createradiostation()
-    {
-
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-        }
-        
-            $user =  User::where('id',1)->first();
-            $duedate = $user->package_ends;
-            $current_date = date('Y-m-d');
-
-        if ($current_date > $duedate)
-        {
-            $client = new Client();
-            $url = "https://flicknexs.com/userapi/allplans";
-
-            $params = [  'userid' => 0,];
-            $headers = [ 'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ' ];
-
-            $response = $client->request('post', $url, [
-                'json' => $params,
-                'headers' => $headers,
-                'verify'  => false,
-            ]);
-    
-            $responseBody = json_decode($response->getBody());
-            $settings = Setting::first();
-
-            $data = array(
-                'settings' => $settings,
-                'responseBody' => $responseBody,
-            );
-
-            return View::make('admin.expired_dashboard', $data);
-        }else if(check_storage_exist() == 0){
-            $settings = Setting::first();
-
-            $data = array(
-                'settings' => $settings,
-            );
-
-            return View::make('admin.expired_storage', $data);
-        }
-        else{
-
-            $settings = Setting::first();
-
-            $data = array(
-                'headline' => '<i class="fa fa-plus-circle"></i> New Video',
-                'post_route' => URL::to('admin/livestream/store'),
-                'button_text' => 'Add New Radio Station',
-                'admin_user' => Auth::user(),
-                'video_categories' => LiveCategory::all(),
-                'languages' => Language::all(),
-                'category_id' => [],
-                'languages_id' => [],
-                'liveStreamVideo_error' => '0',
-                'Rtmp_urls' => RTMP::all(),
-                'InappPurchase' => InappPurchase::all(),
-                'pre_ads' => Advertisement::where('ads_position','pre')->where('status',1)->get(),
-                'mid_ads' => Advertisement::where('ads_position','mid')->where('status',1)->get(),
-                'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
-                'ppv_gobal_price' => $settings->ppv_price != null ?  $settings->ppv_price : " ",
-                'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
-                'ads_category' => Adscategory::all(),
-                "countries" => CountryCode::all(),
-                "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
-            );
-
-            return View::make('admin.livestream.radiostation.createradiostation', $data);
-        }
-    }
     
        /**
      * Store a newly created video in storage.
@@ -738,7 +646,7 @@ class AdminLiveStreamController extends Controller
         }
 
         $movie->title =$data['title'];
-        $movie->stream_upload_via =$data['stream_upload_via'];
+        $movie->stream_upload_via = $data['stream_upload_via'];
         $movie->embed_url =$embed_url;
         $movie->m3u_url =$data['m3u_url'];
         $movie->url_type =$url_type;
@@ -848,37 +756,29 @@ class AdminLiveStreamController extends Controller
                 }
             }
 
-            if( $data['stream_upload_via'] == 'radio_station' ){
+            if ( $data['stream_upload_via'] == "radio_station" ) {
 
-                if( $data['url_type'] == "Encode_video" ){
-                    return Redirect::to('admin/livestream/radiostationindex') ->with([
-                                                                'Stream_key' => $Stream_key,
-                                                                'Stream_error' => '1' ,
-                                                                'Rtmp_url' => $data['Rtmp_url'],
-                                                                'title' => $data['title'],
-                                                                'hls_url' => $data['hls_url'],
-                                                            ]);                
-                }
-                else{
-                    return Redirect::to('admin/livestream/radiostationindex')->with(array('message' => 'New Radio Station Successfully Added!', 'note_type' => 'success') );
-                }
+                $redirection_route = "admin.radio-station.index" ;
+                $text_main_name    = "Radio Station";
+
+            }else{
+
+                $redirection_route =  "admin.livestream.index"  ;
+                $text_main_name    = "Live Stream";
             }
-            else{
-                if( $data['url_type'] == "Encode_video" ){
-                    return Redirect::to('admin/livestream') ->with([
-                                                                'Stream_key' => $Stream_key,
-                                                                'Stream_error' => '1' ,
-                                                                'Rtmp_url' => $data['Rtmp_url'],
-                                                                'title' => $data['title'],
+
+
+            if( $data['url_type'] == "Encode_video" ){
+
+                return Redirect::route( $redirection_route ) ->with([ 'Stream_key' => $Stream_key, 'Stream_error' => '1' ,
+                                                                'Rtmp_url' => $data['Rtmp_url'],'title' => $data['title'],
                                                                 'hls_url' => $data['hls_url'],
                                                             ]);
-                   
-                }
-                else{
-                    return Redirect::to('admin/livestream')->with(array('message' => 'New PPV Video Successfully Added!', 'note_type' => 'success') );
-                }
+               
             }
- 
+            else{
+                return Redirect::route( $redirection_route )->with(array('message' => "New {$text_main_name} Successfully Added!", 'note_type' => 'success') );
+            }
     }
     
     public function createSlug($title, $id = 0)
@@ -924,10 +824,35 @@ class AdminLiveStreamController extends Controller
         $settings = Setting::first();
         $compress_image_settings = CompressImage::first();
 
+
+        if(  $video->stream_upload_via == "radio_station" ){
+           
+            $inputs_details_array = array(
+                'post_route'     => "admin.radio-station.update",
+                'edit_route'     => "admin.radio-station.edit",
+                'all_list_route' => "admin.radio-station.index",
+                'create_route'   => "admin.radio-station.create",
+                'view_route'     => "LiveStream_play",
+                'text_main_name' => "Radio Station",
+                'stream_upload_via' => "radio_station",
+            );
+
+        }else{
+
+            $inputs_details_array = array(
+                'post_route'     => "admin.livestream.update",
+                'edit_route'     => "admin.livestream.edit",
+                'all_list_route' => "admin.livestream.index",
+                'create_route'   => "admin.livestream.create",
+                'view_route'     => "LiveStream_play",
+                'text_main_name' => "Live Stream",
+                'stream_upload_via' => "live_stream",
+            );
+        }
+
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Video',
             'video' => $video,
-            'post_route' => URL::to('admin/livestream/update'),
             'button_text' => 'Update Video',
             'admin_user' => Auth::user(),
             'video_categories' => LiveCategory::all(),
@@ -952,58 +877,16 @@ class AdminLiveStreamController extends Controller
             "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
             "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
             'compress_image_settings' => $compress_image_settings,
+            'currentRouteName' => Route::currentRouteName() ,
+            'inputs_details_array' => $inputs_details_array ,
         );
 
         return View::make('admin.livestream.edit', $data); 
     }
 
-    public function editradiostation($id)
-    {
-
-        $video = LiveStream::find($id);
-
-        $Stream_key = Session::get('Stream_key');
-        $Stream_error =Session::get('Stream_error');
-        $hls_url  = Session::get('hls_url');
-        $Rtmp_url = Session::get('Rtmp_url');
-        $title = Session::get('title');
-        $settings = Setting::first();
-
-        $data = array(
-            'headline' => '<i class="fa fa-edit"></i> Edit Video',
-            'video' => $video,
-            
-            'post_route' => URL::to('admin/livestream/update'),
-            'button_text' => 'Update Radio Station',
-            'admin_user' => Auth::user(),
-            'video_categories' => LiveCategory::all(),
-            'languages' => Language::all(),
-            'category_id' => CategoryLive::where('live_id', $id)->pluck('category_id')->toArray(),
-            'languages_id' => LiveLanguage::where('live_id', $id)->pluck('language_id')->toArray(),
-            'settings' => $settings,
-            'liveStreamVideo_error' => '0',
-            'Rtmp_urls' => RTMP::all(),
-            'Stream_key' => $Stream_key,
-            'Stream_error' => $Stream_error ? $Stream_error : 0 ,
-            'Rtmp_url'  => $Rtmp_url ? $Rtmp_url : null ,
-            'title' => $title ? $title : null,
-            'hls_url' => $hls_url ? $hls_url : null,
-            'InappPurchase' => InappPurchase::all(),
-            'pre_ads' => Advertisement::where('ads_position','pre')->where('status',1)->get(),
-            'mid_ads' => Advertisement::where('ads_position','mid')->where('status',1)->get(),
-            'post_ads' => Advertisement::where('ads_position','post')->where('status',1)->get(),
-            'video_js_Advertisements'  => Advertisement::where('status',1)->get() ,
-            'ads_category' => Adscategory::all(),
-            "countries" => CountryCode::all(),
-            "block_countries" => BlockLiveStream::where("live_id", $id)->pluck("country")->toArray(),
-            "Timezone"  => TimeZone::where('time_zone',$settings->default_time_zone)->get(),
-        );
-
-        return View::make('admin.livestream.radiostation.editradiostation', $data); 
-    }
-
     public function update(Request $request)
     {
+
         $data = $request->all();   
 
         $randomString = Str::random(3);
@@ -1387,7 +1270,6 @@ class AdminLiveStreamController extends Controller
         $video->player_image = $player_PC_image;
         $video->Tv_live_image = $Tv_live_image;
         $video->image = $PC_image;
-        $video->stream_upload_via = $request['stream_upload_via'];
         $video->publish_status = $request['publish_status'];
         $video->publish_type = $request['publish_type'];
         $video->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
@@ -1488,46 +1370,31 @@ class AdminLiveStreamController extends Controller
             }
         }
 
+        if ( $video->stream_upload_via == "radio_station" ) {
 
-        if( $video['stream_upload_via'] == 'radio_station' ){
-
-            if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
-
-                return Redirect::to('admin/livestream/editradiostation' . '/' . $id)->with(
-                                                        [ 'Stream_key' => $video['Stream_key'],
-                                                          'Stream_error' => '1',
-                                                          'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
-                                                          'title' => $data['title'],
-                                                          'hls_url' =>  $data['hls_url'] ? $data['hls_url'] : $video['hls_url']  ,
-    
-                                                        ]);
-            }else{
-    
-                return Redirect::to('admin/livestream/editradiostation' . '/' . $id)->with(array('message' => 'Successfully Updated Radio Station!', 'note_type' => 'success') );
-            }
-        }
-        else{
-            if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
-
-                return Redirect::to('admin/livestream/edit' . '/' . $id)->with(
-                                                        [ 'Stream_key' => $video['Stream_key'],
-                                                          'Stream_error' => '1',
-                                                          'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
-                                                          'title' => $data['title'],
-                                                          'hls_url' =>  $data['hls_url'] ? $data['hls_url'] : $video['hls_url']  ,
-    
-                                                        ]);
-            }else{
-    
-                return Redirect::to('admin/livestream/edit' . '/' . $id)->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
-            }
+            $redirection_route = "admin.radio-station.edit" ;
+            $text_main_name    = "Radio Station";
+        }else{
+            
+            $redirection_route =  "admin.livestream.edit"  ;
+            $text_main_name    = "Live Stream";
         }
 
 
+        if(!empty($data['url_type']) && $video['url_type'] == "Encode_video" &&  $data['url_type'] == "Encode_video"   ){
 
+            return Redirect::route( $redirection_route,$id )->with(
+                                                    [ 'Stream_key' => $video['Stream_key'],
+                                                        'Stream_error' => '1',
+                                                        'Rtmp_url' => $data['Rtmp_url'] ? $data['Rtmp_url'] : $video['rtmp_url']  ,
+                                                        'title' => $data['title'],
+                                                        'hls_url' =>  $data['hls_url'] ? $data['hls_url'] : $video['hls_url']  ,
 
-       
+                                                    ]);
+        }else{
 
+            return Redirect::route( $redirection_route, $id  )->with(array('message' => 'Successfully Updated Video!', 'note_type' => 'success') );
+        }
     }
     
     public function CPPLiveVideosIndex()
@@ -2983,5 +2850,76 @@ class AdminLiveStreamController extends Controller
         $result == null ? PPVFreeDurationLogs::create($inputs) : PPVFreeDurationLogs::where('id',$result->id)->update($inputs) ;
 
         return response()->json($inputs['duration'], 200);
+    }
+
+    public function livestream_calendar(Request $request)
+    {
+        $current_timezone = current_timezone();
+        $carbon_now = Carbon::now($current_timezone);
+
+        $livestreams = LiveStream::where('active', 1)->where('status', 1)->get()->map(function($item){
+
+            if ( $item->publish_type === 'publish_now' ) {
+
+                $return = [
+                    'title' => $item->title,
+                    'start' =>  Carbon::parse($item->created_at)->format('Y-m-d'),
+                    'end'   => Carbon::parse($item->created_at)->addMonths(3)->format('Y-m-d'),  
+                    'color' => 'green',
+                ];
+            }
+
+            if ( $item->publish_type === 'publish_later' ) {
+
+                $return = [
+                    'title' => $item->title,
+                    'start' => Carbon::parse($item->publish_time)->format('Y-m-d'),
+                    'end'   => Carbon::parse($item->publish_time)->addMonths(3)->format('Y-m-d'),  
+                ];
+            }
+
+            if ( $item->publish_type === 'recurring_program' ) {
+
+                switch ($item->recurring_program) {
+                    
+                    case 'custom':
+
+                        $return = [
+                            'title' => $item->title,
+                            'start' => Carbon::parse($item->custom_start_program_time)->format('Y-m-d H:i:s'),
+                            'end' => Carbon::parse($item->custom_end_program_time)->format('Y-m-d H:i:s'),  
+                            'color' => 'purple', 
+                        ];
+                        break;
+
+                        case 'daily':
+                         
+                    case 'weekly':
+
+                        $return = [
+                            'title' => $item->title,
+                            'start' => Carbon::parse($item->program_start_time)->format('Y-m-d'),
+                            'end'   => Carbon::parse($item->program_end_time)->format('Y-m-d'),  
+                            'color' => 'red',
+                        ];
+
+                        // $livestream->recurring_program_week_day->format('N') && $livestream->program_start_time && $livestream->program_end_time ;
+                        break;
+
+                    case 'monthly':
+                        // $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                        break;
+                }
+            }
+
+            return $return; 
+        });
+        
+        $data = array(
+            'Current_date'  => $carbon_now->toDateString() ,
+            'events'   => $livestreams ,
+        );
+
+        return View('admin.livestream.calendar',$data);
     }
 }

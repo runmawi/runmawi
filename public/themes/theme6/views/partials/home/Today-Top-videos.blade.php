@@ -1,50 +1,57 @@
-@if (!is_null($data))
-    <section id="parallax" class="parallax-window" style="background: url('{{ URL::to('public/uploads/images/' . $data->player_image) }}') center center;background-repeat:no-repeat;background-size:cover;">
-        <div class="container-fluid h-100">
-            <div class="row align-items-center justify-content-center h-100 parallaxt-details">
-                <div class="col-lg-4 r-mb-23">
-                    <div class="text-left">
+@if (!empty($data) && $data->isNotEmpty())
 
+    <section id="iq-favorites">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 overflow-hidden">
 
-                        <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
-                            <h3 class="trending-text big-title text-uppercase">{{ optional($data)->title }}</h3>
-                        </a>
-
-                        <div class="parallax-ratting d-flex align-items-center mt-3 mb-3">
-                            @if( optional($data)->rating )
-                                <ul class="ratting-start list-inline text-primary d-flex align-items-center justify-content-left">
-                                    @php $rating = ($data->rating / 2) ; @endphp
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($rating >= $i)
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                        @elseif ($rating + 0.5 == $i)
-                                            <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                        @else
-                                            <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                                        @endif
-                                    @endfor
-                                </ul>
-                            @endif
-                            
-                            <span class="text-white ml-3">{{ $data->rating ? ( $data->rating / 2 ) : " "  }}</span>
-                        </div>
-                        <div class="movie-time d-flex align-items-center mb-3">
-                            <div class="badge badge-secondary mr-3">{{ optional($data)->age_restrict.'+' }}</div>
-                            <p class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
-                            </p>
-                        </div>
-                        <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
-                        <div class="parallax-buttons">
-                            <a href="{{ URL::to('category/videos/'.$data->slug ) }}" class="btn btn-hover">Play Now</a>
-                        </div>
+                    {{-- Header --}}
+                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                        <h4 class="main-title"><a href="{{ $order_settings_list[28]->url ? URL::to($order_settings_list[28]->url) : null }} ">{{ optional($order_settings_list[28])->header_name }}</a></h4>
+                        <h4 class="main-title view-all text-primary"><a href="{{ $order_settings_list[28]->url ? URL::to($order_settings_list[28]->url) : null }} ">{{ 'View all' }}</a></h4>
                     </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="parallax-img" style="width:250px; height:350px;">
-                        <a href="{{ URL::to('category/videos/'.$data->slug ) }}">
-                            <img src="{{ URL::to('public/uploads/images/' . $data->image) }}"
-                                class="img-fluid" alt="bailey" style="height:100%; width:100%; object-fit:contain;">
-                        </a>
+
+                    <div class="favorites-contens">
+                        <ul class="favorites-slider list-inline">
+                            @foreach ($data as $key => $latest_video)
+                                <li class="slide-item">
+                                    <div class="block-images position-relative">
+                                        
+                                        <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
+
+                                            <div class="img-box">
+                                                <img src="{{ $latest_video->image ?  URL::to('public/uploads/images/'.$latest_video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                            </div>
+
+                                            <div class="block-description">
+                                                <span> {{ strlen($latest_video->title) > 17 ? substr($latest_video->title, 0, 18) . '...' : $latest_video->title }}
+                                                </span>
+                                                <div class="movie-time d-flex align-items-center my-2">
+
+                                                    <span class="text-white">
+                                                        @if($latest_video->duration != null)
+                                                            @php
+                                                                $duration = Carbon\CarbonInterval::seconds($latest_video->duration)->cascade();
+                                                                $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                                $minutes = $duration->format('%imin');
+                                                            @endphp
+                                                            {{ $hours }}{{ $minutes }}
+                                                        @endif
+                                                    </span>
+                                                </div>
+
+                                                <div class="hover-buttons">
+                                                    <span class="btn btn-hover">
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                        {{ __('Play Now')}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>

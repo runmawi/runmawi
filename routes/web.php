@@ -631,6 +631,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
 
     Route::get('/users', 'AdminUsersController@index')->name('users');
+    Route::post('/users/deleteSelected','AdminUsersController@deleteSelected')->name('admin.users.deleteSelected');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
     Route::get('/user/edit/{id}', 'AdminUsersController@edit');
@@ -790,7 +791,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/livestream', 'AdminLiveStreamController@index')->name('admin.livestream.index');
     Route::get('/livestream/edit/{id}', 'AdminLiveStreamController@edit')->name('admin.livestream.edit');
     Route::post('/livestream/update', 'AdminLiveStreamController@update')->name('admin.livestream.update');
-    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.livestream.destroy');
+    Route::get('/livestream/delete/{id}', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@destroy'])->name('admin.livestream.delete');
     Route::get('/livestream/create', 'AdminLiveStreamController@create')->name('admin.livestream.create');
     Route::post('/livestream/store', ['before' => 'demo', 'uses' => 'AdminLiveStreamController@store'])->name('admin.livestream.store');
 
@@ -954,6 +955,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     // slider for live stream in index
     Route::post('/livevideo_slider_update', 'AdminLiveStreamController@livevideo_slider_update');
+
+    Route::get('/livestream_calendar', 'AdminLiveStreamController@livestream_calendar')->name('livestream_calendar');
 
     // slider - series & Episode
     Route::post('/series_slider_update', 'AdminSeriesController@series_slider_update');
@@ -2923,3 +2926,6 @@ Route::get('admin/ugc_videos', 'UGCController@index')->name('ugcvideos');
 Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcvideos_index');
 Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
+
+
+Route::get('radio-station', 'AdminLiveStreamController@design');

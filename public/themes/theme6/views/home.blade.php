@@ -97,7 +97,7 @@
             @endif
 
             @if( $item == 'series' && $home_settings->series == 1 )        {{-- series  --}}
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/latest-series', ['data' => $latest_series, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/latest-series', array_merge($homepage_array_data,['data' => $latest_series, 'order_settings_list' => $order_settings_list ]))->content() !!}
             @endif
 
             @if( $item == 'ContentPartner' && $home_settings->content_partner == 1 )        {{-- content partner  --}}
@@ -112,7 +112,7 @@
 
             @if( $item == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}
                <?php $parentCategories = App\SeriesGenre::orderBy('order','ASC')->get(); ?>
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/SeriesGenre', ['data' => $parentCategories, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/SeriesGenre', array_merge($homepage_array_data,['data' => $parentCategories, 'order_settings_list' => $order_settings_list ]))->content() !!}
             @endif
 
             @if( $item == 'Audio_Genre' && $home_settings->AudioGenre == 1 )        {{-- Audios Genre  --}}
@@ -180,7 +180,7 @@
 
             @if( $item == 'Today-Top-videos' && $home_settings->Today_Top_videos == 1 )      {{-- Today Top video --}} 
                <?php $video_details = App\Video::where('active',1)->where('status',1)->where('draft',1)->where('today_top_video',1)->first(); ?>
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $video_details, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/Today-Top-videos', ['data' => $top_ten_videos, 'order_settings_list' => $order_settings_list ])->content() !!}
             @endif
             
             @if(  $item == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     

@@ -369,7 +369,7 @@
     .vpageBanner {
         margin-bottom: 0;
         padding-top: 30px;
-        /* min-height: 700px; */
+        min-height: 700px;
     }
 
     .vpageBanner .content {

@@ -10,7 +10,7 @@
                 <div class="iq-main-header d-flex align-items-center justify-content-between">
                     <h4 class="main-title">{{ 'Featured Episodes' }}</a></h4>
                     @if($settings->homepage_views_all_button_status == 1)
-                        <h4 class="main-title text-primary"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View All') }}</a> </h4>
+                        <h4 class="main-title view-all text-primary"><a href="{{URL::to('/Featured_episodes')}}"> {{ __('View all') }}</a> </h4>
                     @endif
                 </div>
 

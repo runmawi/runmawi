@@ -120,8 +120,7 @@ class TvshowsController extends Controller
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
             );   
-
-            if($this->Theme == "default"){
+            if($this->Theme == "default" || $this->Theme == "theme6"){
                 $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
                                     ->where('active', '1')->latest()->get();
 
@@ -217,7 +216,6 @@ class TvshowsController extends Controller
                         'home_settings'  => HomeSetting::first() ,
                         'Slider_array_data' => $Slider_array_data ,
                     ];
-        // dd('end');
                     return Theme::view('tv-home', $data);
 
             }
@@ -256,7 +254,8 @@ class TvshowsController extends Controller
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
-            return abort(404);
+            // return abort(404);
+            return Theme::view('tv-home-empty-data');
         }
     }
 
@@ -1316,7 +1315,7 @@ class TvshowsController extends Controller
             }
         
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -2589,13 +2588,13 @@ public function RemoveDisLikeEpisode(Request $request)
             $data = $request->all();
             
             if (Auth::user()) {
-                $user_id = Auth::user()->id;
-                $episode_id = $request->episode_id;
-                $duration = $request->duration;
-                $currentTime = $request->currentTime;
+                $user_id            = Auth::user()->id;
+                $episode_id         = $request->episode_id;
+                $duration           = $request->duration;
+                $currentTime        = $request->currentTime;
+                $watch_percentage   = $request->watch_percentage;
     
                 if ($duration > 0) {
-                    $watch_percentage = ($currentTime * 100 / $duration);
                     
                     $cnt = ContinueWatching::where("episodeid", $episode_id)
                                             ->where("user_id", $user_id)
@@ -2607,7 +2606,7 @@ public function RemoveDisLikeEpisode(Request $request)
                                                 ->first();
     
                     // If the user has completed watching (99% or more), remove the entry
-                    if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
+                    if ($cnt > 0 && $watch_percentage >= "99") {
                         ContinueWatching::where("episodeid", $episode_id)
                                         ->where("user_id", $user_id)
                                         ->delete();
