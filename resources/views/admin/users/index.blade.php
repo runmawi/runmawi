@@ -166,7 +166,7 @@
                            });
                            alert('Deleted Successfully.');
                      } else {
-                           alert('An error occurred while deleting episodes.');
+                           alert('An error occurred while deleting users.');
                      }
                   });
                }
