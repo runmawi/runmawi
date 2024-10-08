@@ -12443,24 +12443,28 @@ $cpanel->end();
                                           return [
                                               'title'    => $season->series_seasons_name,
                                               'episodes' => Episode::where('season_id', $season->id)
+                                              ->orderBy('episode_order')
                                               ->get()
                                               ->map(function ($episode) {
                                                 return [
                                                   'id'                       => $episode->id,
                                                   'title'                    => $episode->title,
                                                   'slug'                     => $episode->slug,
-                                                  'episode_description'      => $episode->episode_description,
-                                                  'season_id'                => $episode->season_id,
-                                                  'type'                     => $episode->type,
+                                                  'episodeNumber'            => $episode->episode_order,
                                                   'access'                   => $episode->access,
-                                                  'ppv_status'               => $episode->ppv_status,
-                                                  'ppv_price'                => $episode->ppv_price,
+                                                  'content'                  => [
+                                                                                  'dateAdded' => $episode->created_at,
+                                                                                  'videos' => [
+                                                                                      [
+                                                                                          'videoType' => $episode->type,
+                                                                                          'url' => $episode->url,
+                                                                                      ],
+                                                                                  ],
+                                                                                  'duration' => $episode->duration,
+                                                                                ],
                                                   'player_image'             => $episode->player_image,
                                                   'tv_image'                 => $episode->tv_image,
-                                                  'mp4_url'                  => $episode->mp4_url,
-                                                  'url'                      => $episode->url,
                                                   'status'                   => $episode->status,
-                                                  'episode_order'            => $episode->episode_order,
                                                 ];
                                               }),
                                           ];
