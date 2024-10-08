@@ -65,6 +65,7 @@
                                             <th>Video Name</th>
                                             <th>Slug</th>
                                             <th>Amount</th>
+                                            <th>Purchased Count</th>
                                             <th>Purchased Date</th>
                                             <!-- <th>Seek Time (Seconds)</th>
                                             <th>Buffered Time (Seconds)</th> -->
@@ -80,6 +81,7 @@
                                         <td><a  href="{{ URL::to('/category/videos') . '/' . $video->slug }}">{{ $video->title  }}</a></td>   
                                         <td>{{ $video->slug  }}</td>   
                                         <td>{{ $currency->symbol.' '.$video->total_amount  }}</td>   
+                                        <td>{{ $video->purchase_count  }}</td>   
                                         <td>
                                         @php
                                             $date=date_create($video->ppvcreated_at);
