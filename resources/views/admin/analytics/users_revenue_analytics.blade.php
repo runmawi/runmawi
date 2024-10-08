@@ -90,43 +90,44 @@ body {font-family: Arial;}
                 
                 <div class="row mt-5">
                             <div class="col-md-12">
-                                <table class="table" id="cpp_revenue_table" style="width:100%">
-                                    <thead>
-                                        <tr class="r1" style="font-size:13px">
-                                            <th>#</th>
-                                            <th>User </th>
-                                            <th>Transaction.no</th>
-                                            <th>Type</th>
-                                            <th>Plan</th>
-                                            <th>Platform</th>
-                                            <th>Price</th>
-                                            <th>Country</th>
-                                            <th>TimeStamp</th>
-                                            <th>Source</th>
-                                        </tr>
-                                    </thead>
-                                <tbody>
-                                    @foreach($subscriber_Revenue as $key => $user)
-
-                                        @if(!empty($user->stripe_id))
-                                            <?php $plans_name = App\SubscriptionPlan::where('plan_id', $user->stripe_plan)->pluck('plans_name')->first(); ?>
-                                        @endif
-                                        <tr>
-                                        <td>{{ $key+1  }}</td>   
-                                        <td>{{ $user->username  }}</td>   
-                                        <td>@if(!empty($user->stripe_id))  {{ @$user->stripe_id }} @else No REF @endif</td>
-                                        <td>{{ $user->role  }}</td>                                      
-                                        <td>@if(!empty($plans_name))  {{ $plans_name }} @else Subscriber @endif</td>
-                                        <td> {{ $user->platform }}  </td>
-                                        <!-- <td> @if(!empty($user->audio_id) ){{ 'Audio' }}@elseif(!empty($user->video_id) ){{ 'Video' }}@elseif(!empty($user->live_id) ){{ 'Live' }}@else @endif -->
-                                        <td>{{ $user->total_amount  }}</td>   
-                                        <td>@if(@$user->phoneccode->phonecode == $user->ccode)  {{ @$user->phoneccode->country_name }} @else No Country Added @endif</td>
-                                        <td>{{ $user->created_at  }}</td> 
-                                        <td>@if(!empty($user->card_type))  {{ @$user->card_type }} @else No Transaction @endif</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                           </table>
+                            <table class="table" id="cpp_revenue_table" style="width:100%">
+            <thead>
+                <tr class="r1" style="font-size:13px">
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Transaction.no</th>
+                    <th>Type</th>
+                    <th>Plan</th>
+                    <th>Platform</th>
+                    <th>Price</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    <th>TimeStamp</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($subscriber_Revenue as $key => $user)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $user->username }}</td>
+                        <td>{{ !empty($user->stripe_id) ? $user->stripe_id : 'No REF' }}</td>
+                        <td>{{ $user->role }}</td>
+                        <td>{{ !empty($plans_name) ? $plans_name : 'Subscriber' }}</td>
+                        <td>{{ $user->platform }}</td>
+                        <td>{{ $user->total_amount }}</td>
+                        <td>{{ !empty($user->countryname) ? $user->countryname : 'No Country Added' }}</td>
+                        <td>
+                            <span class="editable-status" data-user-id="{{ $user->subscriptionid }}" data-status="{{ $user->stripe_status }}">
+                                {{ $user->stripe_status }}
+                            </span>
+                        </td>
+                        <td>{{ $user->created_at }}</td>
+                        <td>{{ !empty($user->card_type) ? $user->card_type : 'No Transaction' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
                         </div>
                     </div>
 
@@ -155,12 +156,71 @@ body {font-family: Arial;}
                 </div>
             </div>
         </div>
-
+<!-- Modal for editing stripe status -->
+<div class="modal fade" id="editStatusModal" tabindex="-1" aria-labelledby="editStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStatusModalLabel">Edit Stripe Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="userId" value="">
+                <label for="stripeStatus">Status:</label>
+                <input type="text" id="stripeStatus" class="form-control" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveStatus">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     
 @stop
 
 <script>
+
+$(document).ready(function() {
+    // Open modal on click of stripe status text
+    $('.editable-status').on('click', function() {
+        var userId = $(this).data('user-id');
+        var currentStatus = $(this).data('status');
+        $('#userId').val(userId);
+        $('#stripeStatus').val(currentStatus);
+        $('#editStatusModal').modal('show');
+    });
+
+    // Save status on click of the "Save" button
+    $('#saveStatus').on('click', function() {
+        var userId = $('#userId').val();
+        var newStatus = $('#stripeStatus').val();
+
+        $.ajax({
+            url: '{{ URL::to('admin/users/update-Subscription-status') }}', 
+            type: 'POST',
+            data: {
+                user_id: userId,
+                stripe_status: newStatus,
+                _token: '{{ csrf_token() }}' 
+            },
+            success: function(response) {
+                // Close the modal
+                $('#editStatusModal').modal('hide');
+
+                // Update the status text in the table
+                $('span[data-user-id="' + userId + '"]').text(newStatus);
+            },
+            error: function(error) {
+                alert('Something went wrong. Please try again.');
+            }
+        });
+    });
+});
+
 
 var usersubscriber_Revenue_count = '<?= count($usersubscriber_Revenue) ?>';
 

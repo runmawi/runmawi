@@ -154,6 +154,7 @@ Route::post('/admin/users-import', 'AdminUsersController@users_import')->name('u
 // User Revenue analytics
 Route::get('/admin/users/revenue', 'AdminUsersController@UserRevenue');
 Route::get('/admin/users/PayPerview_Revenue', 'AdminUsersController@PayPerviewRevenue');
+Route::post('/admin/users/update-Subscription-status', 'AdminUsersController@updateStripeStatus');
 
 Route::post('/admin/User_exportCsv', 'AdminUsersController@RevenueExportCsv');
 
@@ -631,6 +632,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
 
     Route::get('/users', 'AdminUsersController@index')->name('users');
+    Route::post('/users/deleteSelected','AdminUsersController@deleteSelected')->name('admin.users.deleteSelected');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
     Route::get('/user/edit/{id}', 'AdminUsersController@edit');
