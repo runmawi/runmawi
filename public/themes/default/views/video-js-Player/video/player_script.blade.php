@@ -1,6 +1,12 @@
 
 <script>
 
+    if (!videojs.getPlugin('hlsQualitySelector')) {
+        videojs.registerPlugin('hlsQualitySelector', function(options) {
+            console.log('hlsQualitySelector plugin registered');
+        });
+    }
+
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
@@ -32,7 +38,7 @@
                 pictureInPictureToggle: true,
             },
             html5: {
-                hls: {
+                vhs: {
                     overrideNative: true,
                 }
             }
