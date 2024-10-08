@@ -28,7 +28,7 @@
                         $('#message-note').slideUp('fast');
                     }, 2000);
                 }
-                window.location.reload();
+                // window.location.reload();
             },
         });
     }
@@ -61,7 +61,7 @@
                         $('#message-note').slideUp('fast');
                     }, 2000);
                 }
-                window.location.reload();
+                // window.location.reload();
             },
         });
 
@@ -98,7 +98,7 @@
                         $('#message-note').slideUp('fast');
                     }, 2000);
                 }
-                window.location.reload();
+                // window.location.reload();
             },
         });
 
@@ -136,7 +136,7 @@
                         $('#message-note').slideUp('fast');
                     }, 2000);
                 }
-                window.location.reload();
+                // window.location.reload();
             },
         });
 
