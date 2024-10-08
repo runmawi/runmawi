@@ -12425,7 +12425,13 @@ $cpanel->end();
               $description = strip_tags($details);
               $item['description'] = str_replace("\r", '', $description);
               $item['type'] = $item->url_type;
-              $item['video_url'] = $item->live_stream_video;
+              $video_url = $item['url_type'];
+              if($video_url == "live_stream_video"){
+                $item['video_url'] = $item->live_stream_video;
+              }
+              else{
+                $item['video_url'] = $item->hls_url;
+              }
               return $item;
             });
         }
