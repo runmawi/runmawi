@@ -2357,8 +2357,8 @@ class AdminVideosController extends Controller
                 $data["image"] = $video_image;
             }
           
-        }else if (!empty($request->video_image_url)) {
-            $data["image"] = $request->video_image_url;
+        }else if (!empty($request->selected_image_url)) {
+            $data["image"] = $request->selected_image_url;
         } else {
             $data["image"] = $video->image;
         }
@@ -2387,8 +2387,8 @@ class AdminVideosController extends Controller
                 Image::make($player_image)->save(base_path().'/public/uploads/images/'.$players_image );
             }
 
-        }else if (!empty($request->selected_image_url)) {
-            $players_image = $request->selected_image_url;
+        }else if (!empty($request->video_image_url)) {
+            $players_image = $request->video_image_url;
         } else {
             $players_image = $video->player_image;
         }
@@ -3375,7 +3375,7 @@ class AdminVideosController extends Controller
     
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
-        dd($data);
+        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
