@@ -3375,7 +3375,7 @@ class AdminVideosController extends Controller
     
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
-        dd($data);
+        // dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
