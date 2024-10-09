@@ -1216,7 +1216,9 @@ border-radius: 0px 4px 4px 0px;
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                   <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
               </fieldset>
-              
+                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
                            {{-- ADS Management --}}
                   @include('admin.videos.create_edit_ads_fieldset'); 
             </form>

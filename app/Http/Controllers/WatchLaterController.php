@@ -158,6 +158,7 @@ class WatchLaterController extends Controller
             'ppvlive' => $ppvlivevideos,
             'currency' => CurrencySetting::first(),
             'ppvseries' => $ppvseries,
+            'ThumbnailSetting' => ThumbnailSetting::first(),
             
           );
           return Theme::view('myppv', $data);
