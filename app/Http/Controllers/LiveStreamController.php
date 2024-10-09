@@ -395,102 +395,108 @@ class LiveStreamController extends Controller
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
                                             ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
 
-              $item['users_video_visibility_status']         = true ;
-              $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]);
-              $item['users_video_visibility_free_duration_status']  = 0 ;
+                $item['users_video_visibility_status']         = true ;
+                $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]);
+                $item['users_video_visibility_free_duration_status']  = 0 ;
 
                   // Check for guest user
 
-              if( Auth::guest()  && $item->access != "guest"  ){
-                $button_text = ButtonText::first();
+                if( Auth::guest()  && $item->access != "guest"  ){
+                    $button_text = ButtonText::first();
 
-                  $item['users_video_visibility_status'] = false ;
-                  $item['users_video_visibility_status_message'] = !empty($button_text->live_visible_text) ? $button_text->live_visible_text : (($item->access == "ppv") ? 'This Livestream is only for PPV users' : 'This Livestream is only for Subscribed users');
-                  $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
-                  $item['users_video_visibility_Rent_button']      = false ;
-                  $item['users_video_visibility_becomesubscriber'] = false ;
-                  $item['users_video_visibility_register_button']  = true ;
+                    $item['users_video_visibility_status'] = false ;
+                    $item['users_video_visibility_status_message'] = !empty($button_text->live_visible_text) ? $button_text->live_visible_text : (($item->access == "ppv") ? 'This Livestream is only for PPV users' : 'This Livestream is only for Subscribed users');
+                    $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
+                    $item['users_video_visibility_Rent_button']      = false ;
+                    $item['users_video_visibility_becomesubscriber'] = false ;
+                    $item['users_video_visibility_register_button']  = true ;
 
-                  $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                  $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : $item->access.' Now');
+                    $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
+                    $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : $item->access.' Now');
 
-                      // Free duration
-                  if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-                      $item['users_video_visibility_status'] = true ;
-                      $item['users_video_visibility_free_duration_status']  = 1;
-                  }
-              }
+                        // Free duration
+                    if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                        $item['users_video_visibility_status'] = true ;
+                        $item['users_video_visibility_free_duration_status']  = 1;
+                    }
+                }
 
                   // Check for Login user - Register , Subscriber ,PPV
 
-              if ( Auth::guest() || Auth::user()->role != 'admin') {
+                if ( Auth::guest() || Auth::user()->role != 'admin') {
 
-                  if( !Auth::guest() ){
+                    if( !Auth::guest() ){
 
-                      $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
+                        $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
 
-                      $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+
+                        if( $item->access == "ppv" && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent_live == 1 ) {
+                            $PPV_exists = true ;
+                        }
+
+
 
                               // free PPV access for subscriber status Condition
 
-                      if( $settings->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
+                    //   if( $settings->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
 
-                          $PPV_exists = false ;
-                      }
+                    //       $PPV_exists = false ;
+                    //   }
 
-                      if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+                        if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
+                            
+                            $item['users_video_visibility_status'] = false ;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
+                            $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_register_button']  = false ;
 
-                          $item['users_video_visibility_status'] = false ;
-                          $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscriber" : "PPV " )  .' users' )  ;
-                          $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                          $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
-                          $item['users_video_visibility_register_button']  = false ;
+                            $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
+                            $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
 
-                          $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
-                          $item['users_video_visibility_status_button'] = ($item->access == "ppv") ? ' Purchase Now for '.$Rent_ppv_price : $item->access.' Now';
+                            if ($item->access == "ppv") {
 
-                          if ($item->access == "ppv") {
+                                $item['users_video_visibility_redirect_url'] =  'live-purchase-now-button' ;
 
-                              $item['users_video_visibility_redirect_url'] =  'live-purchase-now-button' ;
+                            } elseif( Auth::user()->role == 'registered') {
 
-                          } elseif( Auth::user()->role == 'registered') {
+                                $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
+                            }
 
-                              $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
-                          }
+                                // Free duration
 
-                              // Free duration
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 1;
+                            }
+                        }
 
-                          if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-                              $item['users_video_visibility_status'] = true ;
-                              $item['users_video_visibility_free_duration_status']  = 1;
-                          }
-                      }
-
-                      if ( $settings->enable_ppv_rent_live == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
-                          if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
-                              $item['users_video_visibility_status'] = true ;
-                              $item['users_video_visibility_free_duration_status']  = 0;
-                          }
-                      }
-                  }
+                        if ( $settings->enable_ppv_rent_live == 1 && $item->access == "ppv" && !Auth::guest() &&  Auth::user()->role == 'subscriber' ) {
+                            if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
+                                $item['users_video_visibility_status'] = true ;
+                                $item['users_video_visibility_free_duration_status']  = 0;
+                            }
+                        }
+                    }
                       // Block Countries
 
-                  if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
+                    if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
 
-                      $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
+                        $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
 
-                      if ($block_videos_exists) {
+                        if ($block_videos_exists) {
 
-                          $item['users_video_visibility_status'] = false;
-                          $item['users_video_visibility_status_message'] = Str::title( 'this Livestream only Not available in this country')  ;
-                          $item['users_video_visibility_Rent_button']    = false ;
-                          $item['users_video_visibility_becomesubscriber_button'] = false ;
-                          $item['users_video_visibility_register_button']  = false ;
-                          $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
+                            $item['users_video_visibility_status'] = false;
+                            $item['users_video_visibility_status_message'] = Str::title( 'this Livestream only Not available in this country')  ;
+                            $item['users_video_visibility_Rent_button']    = false ;
+                            $item['users_video_visibility_becomesubscriber_button'] = false ;
+                            $item['users_video_visibility_register_button']  = false ;
+                            $item['users_video_visibility_redirect_url'] = URL::to('/blocked');
 
-                      }
-                  }
-              }
+                        }
+                    }
+                }
 
               $item['Thumbnail']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
               $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
