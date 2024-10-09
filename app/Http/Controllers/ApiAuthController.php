@@ -12464,7 +12464,7 @@ $cpanel->end();
                                                                                 'videos' => [
                                                                                     [
                                                                                         'videoType' => $episode->type,
-                                                                                        'video_url' => $episode->url,
+                                                                                        'url' => $episode->url,
                                                                                     ],
                                                                                 ],
                                                                                 'duration' => $episode->duration,
