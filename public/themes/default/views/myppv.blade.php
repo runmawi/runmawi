@@ -163,63 +163,88 @@
                    </div>
                @endif
 
-               @if(count($ppvlive) > 0)
-                   <div class="col-sm-12 overflow-hidden">
-                       <div class="iq-main-header d-flex align-items-center justify-content-between">
-                           <h4 class="main-title"><a href="#">{{ __('Rental Live Videos') }}</a></h4>
-                       </div>
-                       <div class="favorites-contens">
-                           <ul class="favorites-slider list-inline row p-0 mb-0">
-                               @isset($ppvlive)
-                                   @foreach($ppvlive as $watchlater_video)
-                                       <li class="slide-item">
-                                           <a href="{{ url('home') }}">
-                                               <div class="position-relative">
-                                                   <div class="img-box">
-                                                       <a href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                           <video width="100%" height="auto" class="play-video" poster="{{ url('/public/uploads/images/' . $watchlater_video->image) }}" data-play="hover">
-                                                               <source src="{{ $watchlater_video->trailer }}" type="video/mp4">
-                                                           </video>
-                                                       </a>
-                                                       <div class="corner-text-wrapper">
-                                                           <div class="corner-text">
-                                                               @if(!empty($watchlater_video->ppv_price))
-                                                                   <p class="p-tag1">{{ $currency->symbol . ' ' . $watchlater_video->ppv_price }}</p>
-                                                               @elseif(!empty($watchlater_video->global_ppv) && is_null($watchlater_video->ppv_price))
-                                                                   <p class="p-tag1">{{ $watchlater_video->global_ppv . ' ' . $currency->symbol }}</p>
-                                                               @else
-                                                                   <p class="p-tag">{{ __('Free') }}</p>
-                                                               @endif
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                   <div class="block-description">
-                                                       <a href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                           <h6>{{ __($watchlater_video->title) }}</h6>
-                                                       </a>
-                                                       <div class="movie-time d-flex align-items-center my-2">
-                                                           <div class="badge badge-secondary p-1 mr-2">{{ $watchlater_video->age_restrict }}</div>
-                                                           <span class="text-white"><i class="fa fa-clock-o"></i> {{ gmdate('H:i:s', $watchlater_video->duration) }}</span>
-                                                       </div>
-                                                       <div class="hover-buttons d-flex">
-                                                           <a class="text-white" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                               <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Watch Now') }}
-                                                           </a>
-                                                           <span style="color: white;" class="livemywishlist {{ isset($mywishlisted->id) ? 'active' : '' }}" data-authenticated="{{ !Auth::guest() }}" data-videoid="{{ $watchlater_video->id }}">
-                                                               <i class="{{ isset($mywishlisted->id) ? 'ri-heart-fill' : 'ri-heart-line' }}" style=""></i>
-                                                               <span id="addwatchlist">{{ __('Add to Watchlist') }}</span>
-                                                           </span>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           </a>
-                                       </li>
-                                   @endforeach
-                               @endisset
-                           </ul>
-                       </div>
-                   </div>
-               @endif
+                @if(count($ppvlive) > 0)
+                    <div class="col-sm-12 overflow-hidden">
+                        <div class="iq-main-header d-flex align-items-center justify-content-between">
+                            <h4 class="main-title"><a href="#">{{ __('Rental Live Videos') }}</a></h4>
+                        </div>
+                        <div class="favorites-contens">
+                            <ul class="favorites-slider list-inline row p-0 mb-0">
+                                @isset($ppvlive)
+                                    @foreach($ppvlive as $video)
+                                        <li class="slide-item">
+                                            <div class="block-images position-relative">
+                                                <div class="border-bg">
+                                                    <div class="img-box">
+                                                        <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}">
+                                                            <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+        
+                                                <div class="block-description">
+        
+                                                    <div class="hover-buttons text-white">
+                                                        <a href="{{ URL::to('/') . '/live/' . $video->slug }}">
+                                                            @if($ThumbnailSetting->title == 1)
+                                                                <p class="epi-name text-left m-0 mt-2">{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</p>
+                                                            @endif
+        
+                                                            <p class="desc-name text-left m-0 mt-1">
+                                                                {{ strlen($video->description) > 75 ? substr(html_entity_decode(strip_tags($video->description)), 0, 75) . '...' : strip_tags($video->description) }}
+                                                            </p>
+        
+                                                            <div class="movie-time d-flex align-items-center my-2 pt-2">
+                                                                @if($ThumbnailSetting->age == 1 && !($video->age_restrict == 0))
+                                                                    <span class="position-relative badge p-1 mr-2">{{ $video->age_restrict}}</span>
+                                                                @endif
+        
+                                                                @if($ThumbnailSetting->duration == 1)
+                                                                    <span class="position-relative text-white mr-2">
+                                                                        {{ (floor($video->duration / 3600) > 0 ? floor($video->duration / 3600) . 'h ' : '') . floor(($video->duration % 3600) / 60) . 'm' }}
+                                                                    </span>
+                                                                @endif
+                                                                @if($ThumbnailSetting->published_year == 1 && !($video->year == 0))
+                                                                    <span class="position-relative badge p-1 mr-2">
+                                                                        {{ __($video->year) }}
+                                                                    </span>
+                                                                @endif
+                                                                @if($ThumbnailSetting->featured == 1 && $video->featured == 1)
+                                                                    <span class="position-relative text-white">
+                                                                    {{ __('Featured') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+        
+                                                            <div class="movie-time d-flex align-items-center my-2">
+                                                                @php
+                                                                    $CategoryThumbnail_setting = App\LiveCategory::join('livecategories', 'livecategories.category_id', '=', 'live_categories.id')
+                                                                        ->where('livecategories.live_id', $video->id)
+                                                                        ->pluck('live_categories.name');
+                                                                @endphp
+                                                                @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
+                                                                    <span class="text-white">
+                                                                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                        {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                        </a>
+        
+                                                        <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('/') . '/live/' . $video->slug }}">
+                                                            <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%" />
+                                                            {{ __(!empty($button_text->play_btn_live)? $button_text->play_btn_live : 'Live Now') }}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                @endisset
+                            </ul>
+                        </div>
+                    </div>
+                @endif
            @else
                <p><h2>{{ __('No Videos Rented') }}</h2></p>
                <div class="col-md-12 text-center mt-4">
