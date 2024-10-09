@@ -3745,6 +3745,8 @@ class ChannelController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
 
+            return redirect()->to('Live_list');
+
 
             $livestreams  = LiveStream::select( 'id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                 'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
