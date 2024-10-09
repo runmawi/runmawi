@@ -2337,6 +2337,7 @@ class AdminVideosController extends Controller
                 $video->image = $video_image;
                 $video->mobile_image = $Mobile_image;
                 $video->tablet_image = $Tablet_image;
+                $data["image"] = $video_image;
 
             }
             else{
@@ -2353,6 +2354,7 @@ class AdminVideosController extends Controller
                 $video->image = $video_image;
                 $video->mobile_image = $Mobile_image;
                 $video->tablet_image = $Tablet_image;
+                $data["image"] = $video_image;
             }
           
         }else if (!empty($request->video_image_url)) {
@@ -2779,6 +2781,7 @@ class AdminVideosController extends Controller
         $video->access = $data["access"];
         //  $video->active=1;
         $video->uploaded_by = $uploaded_by;
+        $video->image = $data["image"];
         $video->player_image = $players_image;
         $video->year = $year;
         $video->details = $details;
@@ -3372,7 +3375,7 @@ class AdminVideosController extends Controller
     
         $user_package = User::where('id', 1)->first();
         $data = $request->all();
-
+        dd($data);
         $validatedData = $request->validate([
             'title' => 'required|max:255',
         ]);
@@ -13269,10 +13272,24 @@ class AdminVideosController extends Controller
                             $VideoExtractedImage->image_original_name = $video_id . '_' . $rand . '_' . $index . '.jpg';
                             $VideoExtractedImage->save();
                         } catch (\Exception $e) {
-                            dd($e->getMessage());
+                            // dd($e->getMessage());
                         }
                     }
                     
+                    $value["success"] = 1;
+                    $value["message"] = "Uploaded Successfully!";
+                    $value["video_id"] = $video_id;
+                    $value["video_title"] = $FileName;
+                    return $value ;
+
+                }else{
+
+                    $value["success"] = 1;
+                    $value["message"] = "Uploaded Successfully!";
+                    $value["video_id"] = $video_id;
+                    $value["video_title"] = $FileName;
+                    return $value ;
+
                 }
 
                 } catch (RequestException $e) {
