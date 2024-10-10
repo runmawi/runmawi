@@ -12417,17 +12417,109 @@ $cpanel->end();
         }
         if( $HomeSetting->live_videos == 1 ){
 
-            $live_videos = LiveStream::where('active', '=', '1')->orderBy('id', 'DESC')->get()->map(function ($item) {
-              $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-              $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-              $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
-              $details = html_entity_decode($item->description);
-              $description = strip_tags($details);
-              $item['description'] = str_replace("\r", '', $description);
-              $item['type'] = $item->url_type;
-              $item['url'] = $item->live_stream_video;
-              return $item;
-            });
+          $current_timezone = current_timezone();
+
+            $live_videos = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'url_type', 'hls_url', 'live_stream_video', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                          'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                          'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                          'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                      ->where('active', '=', '1')
+                                      ->get()
+                                      ->map(function ($item) {
+                                        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                                        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                                        $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
+                                        $details = html_entity_decode($item->description);
+                                        $description = strip_tags($details);
+                                        $item['description'] = str_replace("\r", '', $description);
+                                        $item['type'] = $item->url_type;
+                                        $video_url = $item['url_type'];
+                                        if($video_url == "live_stream_video"){
+                                          $item['url'] = $item->live_stream_video;
+                                        }
+                                        else{
+                                          $item['url'] = $item->hls_url;
+                                        }
+                                        return $item;
+                                      });
+
+            $livestreams_filter = $live_videos->filter(function ($livestream) use ($current_timezone) {
+
+              $livestream->live_animation = 'true' ;
+  
+              if ($livestream->publish_type === 'recurring_program') {
+          
+                  $Current_time = Carbon::now($current_timezone);
+                  $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                  $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                  $midnight = $convert_time->copy()->startOfDay();
+          
+                  switch ($livestream->recurring_program) {
+                      case 'custom':
+                          $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                          $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                          break;
+                      case 'daily':
+                          $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                          $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                          break;
+                      case 'weekly':
+                          $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                          $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                          break;
+                      case 'monthly':
+                          $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                          $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                          break;
+                      default:
+                          $recurring_program_Status = false;
+                          $recurring_program_live_animation = false;
+                          break;
+                  }
+  
+                  $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+  
+                  $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+          
+                  return $recurring_program_Status;
+              }
+          
+              if ($livestream->publish_type === 'publish_later') {
+  
+                  $Current_time = Carbon::now($current_timezone);
+                  
+                  $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+                  $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+  
+                  $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+  
+                  $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+  
+                  return $publish_later_Status;
+              }
+          
+              return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
+          });
+    
+          $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
+          
+              if ($livestream->publish_type === 'publish_now') {
+  
+                  return $livestream->created_at;
+  
+              } elseif ($livestream->publish_type === 'publish_later' ) {
+  
+                  return $livestream->publish_time;
+  
+              } elseif ($livestream->publish_type === 'recurring_program') {
+  
+                  return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+              }
+  
+              return $livestream->publish_type;
+          })
+            ->values();
+
         }
         else{
           $live_videos = null;
@@ -12438,6 +12530,8 @@ $cpanel->end();
           $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->get()->map(function ($item) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+            unset($item['player_image']);
+            unset($item['tv_image']);
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->get()
                                     ->map(function ($season) {
@@ -12461,8 +12555,8 @@ $cpanel->end();
                                                                                 ],
                                                                                 'duration' => $episode->duration,
                                                                               ],
-                                                'player_image'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
-                                                'tv_image'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
+                                                'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
                                                 'status'                   => $episode->status,
                                               ];
                                             });
@@ -12514,30 +12608,38 @@ $cpanel->end();
                                                                                     ->map(function ($series) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
-                                                                                        $series['episodes'] = Episode::where('series_id', $series->id)
+                                                                                        $episodes = Episode::where('series_id', $series->id)
                                                                                                                       ->get()
                                                                                                                       ->map(function ($episode) {
                                                                                                                         return [
                                                                                                                           'id'                       => $episode->id,
                                                                                                                           'title'                    => $episode->title,
                                                                                                                           'slug'                     => $episode->slug,
-                                                                                                                          'episode_description'      => $episode->episode_description,
-                                                                                                                          'season_id'                => $episode->season_id,
-                                                                                                                          'type'                     => $episode->type,
+                                                                                                                          'episodeNumber'            => $episode->episode_order,
                                                                                                                           'access'                   => $episode->access,
-                                                                                                                          'ppv_status'               => $episode->ppv_status,
-                                                                                                                          'ppv_price'                => $episode->ppv_price,
-                                                                                                                          'player_image'             => $episode->player_image,
-                                                                                                                          'tv_image'                 => $episode->tv_image,
-                                                                                                                          'mp4_url'                  => $episode->mp4_url,
-                                                                                                                          'url'                      => $episode->url,
+                                                                                                                          'content'                  => [
+                                                                                                                                                          'dateAdded' => $episode->created_at,
+                                                                                                                                                          'videos' => [
+                                                                                                                                                              [
+                                                                                                                                                                  'videoType' => $episode->type,
+                                                                                                                                                                  'video_url' => $episode->url,
+                                                                                                                                                              ],
+                                                                                                                                                          ],
+                                                                                                                                                          'duration' => $episode->duration,
+                                                                                                                                                        ],
+                                                                                                                          'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                          'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
                                                                                                                           'status'                   => $episode->status,
-                                                                                                                          'episode_order'            => $episode->episode_order,
                                                                                                                         ];
                                                                                                                       });
-
-                                                                                        return $series;
-                                                                                    });
+                                                                                        if ($episodes->isNotEmpty()) {
+                                                                                            $series['episodes'] = $episodes;
+                                                                                        } else {
+                                                                                            unset($series['episodes']);
+                                                                                        }
+                                                                            
+                                                                                    return $series;
+                                                                                  });
                     
 
                     return $item;
@@ -12545,6 +12647,12 @@ $cpanel->end();
 
         }else{
           $Series_based_on_Networks = null;
+        }
+
+        if($HomeSetting->epg == 1){
+          $epg = 'test';
+        }else{
+          $epg = null;
         }
 
         if($HomeSetting->audios == 1){
@@ -12687,9 +12795,10 @@ $cpanel->end();
             'movies'                        => $latest_videos,
             'featured_videos'               => $featured_videos,
             'category_videos'               => $myData,
-            'live_videos'                   => $live_videos,
+            'live_videos'                   => $livestreams_sort,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
+            // 'epg'                           => $epg,
         ];
 
         foreach ($dataToCheck as $key => $value) {

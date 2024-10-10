@@ -201,7 +201,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             <div class="scp-breadcrumb">
                 <ul class="breadcrumb">
                 
-                    <li><a href="{{ route('latest-videos') }}">{{ ucwords(__('videos')) }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+                    <li class="breadcrumb-item"><a href="{{ route('latest-videos') }}">{{ ucwords(__('videos')) }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
                 
                     @foreach( $videodetail->categories as $key => $category )
 
@@ -209,9 +209,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                     @endforeach
                     
-                    <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
+                    <li class="breadcrumb-item"> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
                 
-                    <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
+                    <li class="active"><p>{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</p></li>
                 
                 </ul>
             </div>

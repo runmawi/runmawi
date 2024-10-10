@@ -94,14 +94,24 @@
         player.el().appendChild(titleButton);
         player.el().appendChild(backButton);  
 
-        player.on('loadedmetadata', function(){
+        function updateControls() {
             var isMobile = window.innerWidth <= 768;
             var controlBar = player.controlBar;
-            // console.log("controlbar",controlBar);
-            if(!isMobile){
+
+            if (controlBar.getChild('subtitlesButton')) {
+                controlBar.removeChild('subtitlesButton');
+            }
+            if (controlBar.getChild('playbackRateMenuButton')) {
+                controlBar.removeChild('playbackRateMenuButton');
+            }
+            if (controlBar.getChild('settingsMenuButton')) {
+                controlBar.removeChild('settingsMenuButton');
+            }
+
+            if (!isMobile){
                 controlBar.addChild('subtitlesButton');
                 controlBar.addChild('playbackRateMenuButton');
-            }
+            } 
             else{
                 controlBar.addChild('settingsMenuButton', {
                     entries: [
@@ -110,6 +120,14 @@
                     ]
                 });
             }
+        }
+
+        player.on('loadedmetadata', function() {
+            updateControls();
+        });
+
+        window.addEventListener('resize', function() {
+            updateControls();
         });
   
         var hovered = false;

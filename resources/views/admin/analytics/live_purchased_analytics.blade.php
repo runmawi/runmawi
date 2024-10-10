@@ -78,9 +78,9 @@
                                         <td>{{ $Livestream_purchases->email }}</td>
                                         <td><a href="{{ URL::to('live/'. $Livestream_purchases->slug) }}">{{ $Livestream_purchases->title }}</a></td>
                                         <td>{{ currency_symbol() . ' ' . $Livestream_purchases->amount }}</td>
-                                        <td>{{  Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $Livestream_purchases->expired_date)->format('d M Y h:i A')  }}</td>
-                                        <td>{{  Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $Livestream_purchases->unseen_expiry_date)->format('d M Y h:i A')  }}</td>
-                                        
+                                        <td>{{ $Livestream_purchases->expired_date ? Carbon\Carbon::parse($Livestream_purchases->expired_date)->format('d M Y h:i A') : 'N/A' }}</td>
+                                        <td>{{ $Livestream_purchases->unseen_expiry_date ? Carbon\Carbon::parse($Livestream_purchases->unseen_expiry_date)->format('d M Y h:i A') : 'N/A' }}</td>
+
                                         <td>
                                             @php
                                                 $date = date_create($Livestream_purchases->ppvcreated_at);
