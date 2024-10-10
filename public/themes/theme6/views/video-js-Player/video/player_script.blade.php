@@ -81,6 +81,97 @@
         player.hlsQualitySelector({                     // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,
         });    
+
+
+        skipForwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        skipBackwardButton.addEventListener('click', function() {
+            player.currentTime(player.currentTime() - 10);
+        });
+
+        player.on('userinactive', () => {
+        if (skipForwardButton && skipBackwardButton && playPauseButton) {
+            skipForwardButton.style.display = 'none';
+            skipBackwardButton.style.display = 'none';
+            playPauseButton.style.display = 'none';
+            titleButton.style.display = 'none';
+            backButton.style.display = 'none';
+        }
+        });
+
+        player.on('useractive', () => {
+        if (skipForwardButton && skipBackwardButton && playPauseButton) {
+            skipForwardButton.style.display = 'block';
+            skipBackwardButton.style.display = 'block';
+            playPauseButton.style.display = 'block';
+            titleButton.style.display = 'block';
+            backButton.style.display = 'block';
+        }
+        });
+
+        // player.ready(() => {
+        //     playPauseButton.addEventListener('click', e => {
+        //         var playing = document.querySelector('.vjs-playing');
+        //         if(playing){
+        //             console.log("pause triggered");
+        //             player.pause();
+        //         }
+        //         else{
+        //             console.log("play triggered");
+        //             player.play();
+        //         }
+        //     })
+        // });
+
+        player.on('enterpictureinpicture', function() {
+            console.log('Entered Picture-in-Picture mode');
+            player.controlBar.hide();
+            playPauseButton.style.visibility = "hidden";
+            skipForwardButton.style.visibility = 'hidden';
+            skipBackwardButton.style.visibility = 'hidden';
+            titleButton.style.visibility = 'hidden';
+        });
+
+        player.on('leavepictureinpicture', function() {
+            console.log('Exited Picture-in-Picture mode');
+            player.controlBar.show();
+            playPauseButton.style.visibility = "visible";
+            skipForwardButton.style.visibility = 'visible';
+            skipBackwardButton.style.visibility = 'visible';
+            titleButton.style.visibility = 'visible';
+        });
+
+        //Function to Play & Pause when we press "Space Bar Button"
+        function togglePlayPause(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (player.paused()) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+            }
+        }
+        document.addEventListener('keydown', togglePlayPause);
+
+        //Function to "Skip Forward & Backward 10sec" when Arrow key pressed
+        function handleKeydown(e) {
+            if (e.code === 'ArrowRight') {
+                e.preventDefault(); // Prevent default action
+                var currentTime = player.currentTime();
+                var newTime = Math.min(currentTime + 10, player.duration());
+                player.currentTime(newTime);
+            }
+            if (e.code === 'ArrowLeft') {
+                e.preventDefault(); // Prevent default action
+                var currentTime = player.currentTime();
+                var newTime = Math.min(currentTime - 10, player.duration());
+                player.currentTime(newTime);
+            }
+        }
+        document.addEventListener('keydown', handleKeydown);
                                                         
         var vastTagPreroll  =  '<?= $pre_advertisement ?>' ;  // Advertisement
         var vastTagPostroll =  '<?= $post_advertisement ?>' ;

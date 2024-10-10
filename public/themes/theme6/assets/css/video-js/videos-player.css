@@ -379,6 +379,7 @@ line-height: 2.1em;
 
 .video-js .vjs-time-control{
     padding-left: 1px !important;
+    padding-right: 2px !important;
 }
 
 .my-video.vjs-paused .vjs-big-play-button {
@@ -540,7 +541,7 @@ line-height: 2.1em;
     position: absolute;
     background: transparent;
     z-index: 1;
-    top: 5.6%;
+    top: 5.2%;
     left: 4%;
     color: white;
     font-size: 20px;
@@ -551,7 +552,7 @@ line-height: 2.1em;
     border-left: 3px solid #fd0000;
     padding-left: 10px;
     height: 25px;
-    display: flex;
+    display: flex !important;
     align-items: center;
 }
 
