@@ -572,6 +572,9 @@
       }body.light-theme .trending-dec{
       color: <?php echo $GetLightText; ?>!important;
       }
+      body.light-theme .no_vid_avail{
+      color: <?php echo $GetLightText; ?>!important;
+      }
       body.light-theme h6.trash{
       color: black;
       }

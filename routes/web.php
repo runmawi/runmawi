@@ -181,6 +181,18 @@ Route::post('/admin/live/purchased-analytics_startdate_revenue', 'AdminLiveStrea
 Route::post('/admin/live/purchased-analytics_enddate_revenue', 'AdminLiveStreamController@PurchasedLiveEndDateRevenue');
 Route::post('/admin/live/purchased-analytics_exportCsv', 'AdminLiveStreamController@PurchasedLiveExportCsv');
 
+
+// Content Purchased Analytics
+
+Route::get('admin/purchased-analytics', 'AdminVideosController@PurchasedContentAnalytics');
+// Route::get('admin/purchased-analytics', 'AdminVideosController@purchased-analyticsRevenue');
+Route::post('/admin/purchased-analytics_startdate_revenue', 'AdminVideosController@PurchasedContentStartDateRevenue');
+Route::post('/admin/purchased-analytics_enddate_revenue', 'AdminVideosController@PurchasedContentEndDateRevenue');
+Route::post('/admin/purchased-analytics_exportCsv', 'AdminVideosController@PurchasedContentExportCsv');
+
+Route::get('admin/Content-Analytics', 'AdminContentAnalyticsController@ContentAnalytics');
+
+
 // CPP revenue
 
 Route::get('admin/cpp/analytics', 'ModeratorsUserController@Analytics');
@@ -301,6 +313,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // Page List
     Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('Movies', 'PageListController@AllMovies')->name('pagelist.AllMovies');
     Route::get('channel/latest-videos/{slug}', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
     Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
     Route::get('channel/Featured_videos/{slug}', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
@@ -645,6 +658,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');
     Route::get('/mobilenumber_exitsvalidation', 'AdminUsersController@mobilenumber_exitsvalidation')->name('mobilenumber_exitsvalidation');
     Route::get('/password_validation', 'AdminUsersController@password_validation')->name('password_validation');
+    Route::get('/users-statistics', 'AdminUsersController@UsersStats')->name('users.statistics');
+    Route::get('/users-statistics-filter', 'AdminUsersController@UsersStatsFilter')->name('users.statistics.filter');
 
     Route::get('/settings', 'AdminSettingsController@index');
     Route::post('/settings/save_settings', 'AdminSettingsController@save_settings');

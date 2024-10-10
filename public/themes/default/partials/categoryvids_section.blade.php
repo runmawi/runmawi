@@ -111,7 +111,7 @@
                 @endforelse
         <?php } elseif( count($categoryVideos['categoryVideos']) == 0) { ?>
                 <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                    <p ><h3 class="text-center">  {{ __('No video Available') }}</h3>
+                    <h3 class="text-center no_vid_avail">{{ __('No video Available') }}</h3>
                 </div>
          <?php } ?>
 
