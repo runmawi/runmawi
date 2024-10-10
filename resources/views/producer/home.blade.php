@@ -1,7 +1,6 @@
 @extends('producer.layout')
 
 @section('producer.section')
-    
     <div class="row center">
         <h4>SUMMARY</h4>
         (Producer portal hi update a ni a, dik lo lai i hmuh chuan Runmawi lam min hriattir turin kan ngen a che.)
@@ -73,23 +72,33 @@
                     <tbody>
                         <tr>
                             <td>Purchased today : </td>
-                            <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_today_total_amount'], 2) }} </td>
+                            <td class="right">
+                                {{ currency_symbol() . ' ' . number_format($ppv_purchases_amount['ppv_purchases_today_total_amount'], 2) }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Purchased this month : </td>
-                            <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_current_month_total_amount'], 2) }} </td>
+                            <td class="right">
+                                {{ currency_symbol() . ' ' . number_format($ppv_purchases_amount['ppv_purchases_current_month_total_amount'], 2) }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Purchased last month : </td>
-                            <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_last_month_total_amount'], 2) }} </td>
+                            <td class="right">
+                                {{ currency_symbol() . ' ' . number_format($ppv_purchases_amount['ppv_purchases_last_month_total_amount'], 2) }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Purchased this year: </td>
-                            <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_current_year_total_amount'], 2) }} </td>
+                            <td class="right">
+                                {{ currency_symbol() . ' ' . number_format($ppv_purchases_amount['ppv_purchases_current_year_total_amount'], 2) }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Total purchased : </td>
-                            <td class="right"> {{ currency_symbol() ." ".number_format($ppv_purchases_amount['ppv_purchases_total_amount'], 2) }} </td>
+                            <td class="right">
+                                {{ currency_symbol() . ' ' . number_format($ppv_purchases_amount['ppv_purchases_total_amount'], 2) }}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -100,30 +109,94 @@
     </div>
     <br>
 
+    <div class="mt-5">
+        <h5>SALES SUMMARY</h5>
+        <div style='width:100%; overflow:auto'>
+
+            <table style='min-width:600px'>
+                <tr>
+                    <td class=''> {{ __('Source') }} </td>
+                    <td class=''> {{ __('Source id') }} </td>
+                    <td class=''> {{ __('Title') }} </td>
+                    <td class=''> {{ __('Amount ('. currency_symbol() . ' )' ) }}</td>
+                    <td class=''> {{ __('GST 18% ('. currency_symbol() . ' )' ) }} </td>
+                    <td class=''> {{ __('Total ('. currency_symbol() . ' )') }} </td>
+                    <td class=''> {{ __("Producer's share") }} </td>
+                    <td class=''> {{ __("Runmawi's share") }} </td>
+                </tr>
+
+                @php
+                    $admin_commission_sum = 0;
+                    $moderator_commission_sum = 0;
+                @endphp
+
+
+                @forelse ($Sales_Summary as $item)
+                    <tr>
+                        <td> {{ ucwords(@$item->source) }} </td>
+                        <td> {{ @$item->source_id }} </td>
+                        <td> {{ $item->source_name }}</td>
+                        <td> {{  number_format(@$item->total_amount_without_gst, 2) }} </td>
+                        <td> {{ number_format( @$item->gst_value, 2) }} </td>
+                        <td> {{ number_format( @$item->total_amount_with_gst, 2) }} </td>
+                        <td> <b> {{ currency_symbol()." ".  number_format($item->moderator_commission_sum,2) }} ({{ number_format($item->moderator_commission_percentage,2) }}%) </b></td>
+                        <td> <b> {{ currency_symbol()." ".  number_format($item->admin_commission_sum,2) }} ({{ number_format($item->admin_commission_percentage,2) }}%) </b></td>
+                    </tr>
+
+                    @php
+                    $admin_commission_sum += $item->admin_commission_sum;
+                    $moderator_commission_sum += $item->moderator_commission_sum;
+                @endphp
+
+
+                @empty
+                    <tr><td> {{ ucwords('No data found')}}</td></tr>
+                @endforelse
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class='right'></td>
+                    <td>Producer's share</td>
+                    <td class='right'><b>{{ currency_symbol()." ". number_format( @$moderator_commission_sum, 2) }}</b></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class='right'></td>
+                    <td>Runmawi's share</td>
+                    <td class='right'><b>{{ currency_symbol()." ". number_format( @$admin_commission_sum, 2) }}</b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br>
+
     <?php
-
-        $ppv_purchases_count_labels = [];
-        $ppv_purchases_count_data = [];
-
-        $ppv_purchases_amount_data = [];
-
-        for ($i = 14; $i >= 0; $i--) {
-            $date = Carbon\Carbon::now()->subDays($i)->toDateString();
-            
-            $count = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->count();
-
-            $amount = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->sum('total_amount');
-            
-            $ppv_purchases_count_labels[] = $date;
-            $ppv_purchases_count_data[] = $count;
-            $ppv_purchases_amount_data[] = $amount;
-        }
-
-        $ppv_purchases_count_labels = json_encode($ppv_purchases_count_labels);
-        $ppv_purchases_count_data = json_encode($ppv_purchases_count_data);
-        $ppv_purchases_amount_data = json_encode($ppv_purchases_amount_data);
-    ?>
     
+    $ppv_purchases_count_labels = [];
+    $ppv_purchases_count_data = [];
+    
+    $ppv_purchases_amount_data = [];
+    
+    for ($i = 14; $i >= 0; $i--) {
+        $date = Carbon\Carbon::now()->subDays($i)->toDateString();
+    
+        $count = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->count();
+    
+        $amount = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->sum('total_amount');
+    
+        $ppv_purchases_count_labels[] = $date;
+        $ppv_purchases_count_data[] = $count;
+        $ppv_purchases_amount_data[] = $amount;
+    }
+    
+    $ppv_purchases_count_labels = json_encode($ppv_purchases_count_labels);
+    $ppv_purchases_count_data = json_encode($ppv_purchases_count_data);
+    $ppv_purchases_amount_data = json_encode($ppv_purchases_amount_data);
+    ?>
+
     <script>
         $(document).ready(function() {
 
@@ -136,7 +209,7 @@
                     labels: <?php echo $ppv_purchases_count_labels; ?>, // Labels (dates)
                     datasets: [{
                         label: 'No of purchased',
-                        data: <?php echo $ppv_purchases_count_data; ?>, 
+                        data: <?php echo $ppv_purchases_count_data; ?>,
 
                         borderColor: 'rgb(54, 162, 235)',
                         backgroundColor: ['rgba(54, 162, 235, 0.5)'],
@@ -162,17 +235,17 @@
                     datasets: [{
                         label: 'Earnings (Rs)',
                         data: <?php echo $ppv_purchases_amount_data; ?>, // Total purchase amounts
-                        
+
                         borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor:['rgba(255, 99, 132, 0.5)'],
+                        backgroundColor: ['rgba(255, 99, 132, 0.5)'],
                         borderWidth: 1,
-                        fill:true,
+                        fill: true,
                         tension: 0.1,
                     }]
                 },
             });
         });
-        
+
         function LoadModule(id, title, param1) {
             title = "";
             $.ajax({

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\PpvPurchase;
 use App\LiveStream;
@@ -75,6 +76,71 @@ class ProducerController extends Controller
 
         $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)->get();
 
+        $Sales_Summary = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                        ->select([
+                                            'video_id', 
+                                            'live_id', 
+                                            'audio_id', 
+                                            'series_id', 
+                                            'season_id',
+                                            DB::raw('SUM(total_amount) as total_amount_with_gst'),  // Original total amount with GST
+                                            DB::raw('SUM(total_amount / 1.18) as total_amount_without_gst'),  // Amount without GST
+                                            DB::raw('SUM(total_amount) - SUM(total_amount / 1.18) as gst_value'),  // Exact GST value (18%)
+                                            DB::raw('SUM(admin_commssion) as admin_commission_sum'), 
+                                            DB::raw('SUM(moderator_commssion) as moderator_commission_sum'),
+                                            DB::raw('((SUM(admin_commssion) / SUM(total_amount)) * 100) as admin_commission_percentage'),  // Admin commission percentage
+                                            DB::raw('((SUM(moderator_commssion) / SUM(total_amount)) * 100) as moderator_commission_percentage'),  // Moderator commission percentage
+                                            DB::raw('CASE 
+                                                        WHEN live_id IS NOT NULL THEN live_id
+                                                        WHEN video_id IS NOT NULL THEN video_id
+                                                        WHEN audio_id IS NOT NULL THEN audio_id
+                                                        WHEN series_id IS NOT NULL THEN series_id
+                                                        WHEN season_id IS NOT NULL THEN season_id
+                                                        ELSE NULL
+                                                    END as source_id'),
+                                            DB::raw('CASE 
+                                                        WHEN live_id IS NOT NULL THEN "LiveStream"
+                                                        WHEN video_id IS NOT NULL THEN "Video"
+                                                        WHEN audio_id IS NOT NULL THEN "Audio"
+                                                        WHEN series_id IS NOT NULL THEN "Series"
+                                                        WHEN season_id IS NOT NULL THEN "SeriesSeason"
+                                                        ELSE NULL
+                                                    END as source')  
+                                        ])
+                                        ->groupBy('video_id', 'live_id', 'audio_id', 'series_id', 'season_id')
+
+                                        ->get()->map(function($item) {
+
+                                            switch ($item->source) {
+
+                                                case 'LiveStream':
+                                                    $item['source_name'] = LiveStream::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                break;
+
+                                                case 'Video':
+                                                    $item['source_name'] = Video::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                break;
+
+                                                case 'Audio':
+                                                    $item['source_name'] = Audio::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                break;
+
+                                                case 'Series':
+                                                    $item['source_name'] = Series::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                break;
+                                                
+                                                case 'SeriesSeason':
+                                                    $item['source_name'] = SeriesSeason::where('uploaded_by','CPP')->where('id',$item->source_id)->pluck('title')->first();
+                                                break;
+                                                
+                                                default:
+                                                    $item['source_name'] = null;
+                                                break;
+                                            }
+                                            return $item;
+                                        });
+
+
         $ppv_purchases_count = [
             'ppv_purchases_today_count'         => $ppv_purchases_today->count(),
             'ppv_purchases_current_month_count' => $ppv_purchases_current_month->count(),
@@ -105,9 +171,7 @@ class ProducerController extends Controller
             'ppv_purchases_admin_commission_sum' => $ppv_purchases_total->sum('admin_commssion'),
             'ppv_purchases_cpp_commission_sum'  => $ppv_purchases_total->sum('moderator_commssion'),
 
-            'Free_access_with_promotions' =>  $ppv_purchases_total->filter(function ($purchase) {
-                                                        return $purchase->type === 'guest'; 
-                                                    }),
+            'Free_access_with_promotions' =>  0,
         ];
 
 
@@ -125,6 +189,7 @@ class ProducerController extends Controller
             'sources_data'     => $sources_data,
             'currency_symbol'  => currency_symbol(),
             'cpp_user_id' => $cpp_user_id,
+            'Sales_Summary' => $Sales_Summary
         );
 
         return view('Producer.home', $data);
