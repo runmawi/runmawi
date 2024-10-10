@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title">
-                    <h4 class="card-title">Purchased Video Analytics :</h4>
+                    <h4 class="card-title">Top Spents Analytics :</h4>
                 </div>
             </div>
              
@@ -46,10 +46,18 @@
                     <div class="col-md-6 d-flex align-items-end">
                         <span  id="export" class="btn btn-primary" >Download CSV</span>
                     </div>
-
-                    <div class="col-md-4">
-                        <!-- <span  id="export" class="btn btn-primary" >Download CSV</span> -->
-                        <!--btn btn-success btn-sm-->
+                    <br>
+                    <br>
+                    <br>
+                        <div class="col-sm-4 col-xs-6 mb-4 text-center">
+                                <div class="iq-card" >
+                                <div class="tile-stats tile-green">
+                                    <div class="icon"><i class="entypo-user-add"></i></div>
+                                    <div class="num" data-start="0" data-end="{{ $Total_PPV_Amount }}" data-postfix="" data-duration="1500" data-delay="600">{{ $Total_PPV_Amount }}</div>
+                                    <h4>Total PPV Amount</h4>
+                                    <p class="p1">Total PPV Amount.</p>
+                                </div>
+                                </div>
                     </div>
                 </div>
                 </div>
@@ -60,37 +68,33 @@
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
+                                            <th>User ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Video Name</th>
-                                            <th>Slug</th>
-                                            <th>Amount</th>
+                                            <th>Phone Number</th>
+                                            <th>Total Spent</th>
                                             <th>Purchased Count</th>
                                             <th>Purchased Date</th>
-                                            <!-- <th>Seek Time (Seconds)</th>
-                                            <th>Buffered Time (Seconds)</th> -->
-
                                         </tr>
                                     </thead>
                                 <tbody>
                                 <tr>
-                                    @foreach($total_content as $key => $video)
+                                    @foreach($total_content as $key => $content)
                                         <td>{{ $key+1  }}</td>   
-                                        <td>{{ $video->username  }}</td>  
-                                        <td>{{ $video->email  }}</td>   
-                                        <td><a  href="{{ URL::to('/category/videos') . '/' . $video->slug }}">{{ $video->title  }}</a></td>   
-                                        <td>{{ $video->slug  }}</td>   
-                                        <td>{{ $currency->symbol.' '.$video->total_amount  }}</td>   
-                                        <td>{{ $video->purchase_count  }}</td>   
+                                        <td>{{ $content->user_id  }}</td>  
+                                        <td>{{ $content->user_name  }}</td>  
+                                        <td>{{ $content->email  }}</td>   
+                                        <td>{{ $content->mobile  }}</td>   
+                                        <td>{{ $currency->symbol.' '.$content->total_amount  }}</td>   
+                                        <td>{{ $content->purchase_count  }}</td>   
                                         <td>
                                         @php
-                                            $date=date_create($video->ppvcreated_at);
+                                            $date=date_create($content->ppvcreated_at);
                                             $newDate = date_format($date,"d M Y");
                                         @endphp
                                          {{ $newDate }}
                                         </td>   
-                                        <!-- <td>{{ $video->seekTime  }}</td>    -->
-                                        <!-- <td>@if(!empty($playervideo->bufferedTime)){{ $playervideo->bufferedTime  }} @else {{ 'No Buffer' }} @endif</td>    -->
+                                       
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -101,7 +105,7 @@
                 <div class="clear"></div>
                 <br>
 
-                <h4 class="card-title">Purchased Video Graph :</h4>
+                <h4 class="card-title">Purchased Content Graph :</h4>
                 
                 <div class="row">
                     <div class="col-md-6">
@@ -134,7 +138,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             // alert(start_time);
-            var url = "{{ URL::to('admin/video/purchased-analytics_startdate_revenue')  }}";
+            var url = "{{ URL::to('admin/purchased-analytics_startdate_revenue')  }}";
        
        if(start_time != "" && end_time == ""){
         // alert(start_time);
@@ -184,7 +188,7 @@
     $('#end_time').change(function(){
         var start_time =  $('#start_time').val();
         var end_time =  $('#end_time').val();
-        var url = "{{ URL::to('admin/video/purchased-analytics_enddate_revenue')  }}";
+        var url = "{{ URL::to('admin/purchased-analytics_enddate_revenue')  }}";
 
        if(start_time != "" && end_time != ""){
             $.ajax({
@@ -242,7 +246,7 @@
             var start_time =  $('#start_time').val();
             var end_time =  $('#end_time').val();
             var url =  $('#exportCsv_url').val();
-        var url = "{{ URL::to('admin/video/purchased-analytics_exportCsv/')  }}";
+        var url = "{{ URL::to('admin/purchased-analytics_exportCsv/')  }}";
 
             $.ajax({
             url: url,

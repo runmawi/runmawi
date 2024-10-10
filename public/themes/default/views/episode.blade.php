@@ -403,10 +403,15 @@
                                       </div>
 
                                       <div class="row mt-3 justify-content-around"> <!-- PayPal Button -->
-                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                        <?php if (!Auth::guest() && $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
                                                 <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $SeriesSeason->id; ?>, <?php echo $SeriesSeason->ppv_price; ?>)">
                                                     <?= ("Continue") ?>
                                                 </div>
+                                                <?php else :?>
+                                                <a href="<?= URL::to('/login') ?>" >  
+                                                    <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now">
+                                                        <?= ("Continue") ?>
+                                                    </div></a>
                                             <?php endif; ?>
 
                                           <div class="paypal_button col-md-5 col-5 btn">

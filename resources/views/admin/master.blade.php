@@ -1080,6 +1080,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                        <a href="#user" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/user.svg')?>"><span>{{ (__('Users')) }}</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                        <ul id="user" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                            <li><a href="{{ URL::to('admin/users') }}">{{ (__('All Users')) }}</a></li>
+                           <li><a href="{{ URL::to('admin/users-statistics') }}">{{ (__('Users Stats')) }}</a></li>
                            <li><a href="{{ URL::to('admin/user/create') }}">{{ (__('Add New User')) }}</a></li>
                            <li><a href="{{ route('import_users_view') }}">{{ (__('Import Users')) }}  </a></li>
                            <li><a href="{{ URL::to('admin/MultiUser-limit') }}">{{ (__('Multi User Management')) }}</a></li>
@@ -1205,6 +1206,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                          <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}">{{ (__('Player User Analytics')) }}</a></li>
                         <li><a href="{{ URL::to('admin/livestream-analytics') }}">{{ (__('CPP Live Video')) }} </a></li>
                         <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">{{ (__('Purchased LiveStream Analytics')) }} </a></li>
+                        <li><a href="{{ URL::to('admin/purchased-analytics') }}">{{ (__('Purchased Content Analytics')) }}</a></li>
+                        <li><a href="{{ URL::to('admin/Content-Analytics') }}">{{ (__('Content Analytics')) }}</a></li>
 
                      </ul>
                   </li>

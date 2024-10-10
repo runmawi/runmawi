@@ -3745,6 +3745,8 @@ class ChannelController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
 
+            return redirect()->to('Live_list');
+
 
             $livestreams  = LiveStream::select( 'id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                 'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
@@ -5828,13 +5830,13 @@ class ChannelController extends Controller
             $data = $request->all();
             
             if (Auth::user()) {
-                $user_id = Auth::user()->id;
-                $video_id = $request->video_id;
-                $duration = $request->duration;
-                $currentTime = $request->currentTime;
+                $user_id           = Auth::user()->id;
+                $video_id          = $request->video_id;
+                $duration          = $request->duration;
+                $currentTime       = $request->currentTime;
+                $watch_percentage  = $request->watch_percentage;
     
                 if ($duration > 0) {
-                    $watch_percentage = ($currentTime * 100 / $duration);
                     
                     $cnt = ContinueWatching::where("videoid", $video_id)
                                             ->where("user_id", $user_id)
@@ -5846,7 +5848,7 @@ class ChannelController extends Controller
                                                 ->first();
     
                     // If the user has completed watching (99% or more), remove the entry
-                    if ($cnt > 0 && $get_cnt->watch_percentage >= "99") {
+                    if ($cnt > 0 && $watch_percentage >= "99") {
                         ContinueWatching::where("videoid", $video_id)
                                         ->where("user_id", $user_id)
                                         ->delete();

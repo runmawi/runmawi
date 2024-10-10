@@ -183,6 +183,7 @@ $jsondata = json_decode($jsonString, true);
                                 <div class="col-md-4">
                                 <select class="form-control"  id="role" name="role">
                                 <option value="" >Choose Users</option>
+                                <option value="all_users" >All Users </option>
                                 <option value="registered" >Registered Users </option>
                                 <option value="subscriber">Subscriber</option>     
                                 <option value="admin" >Admin</option>
@@ -213,7 +214,7 @@ $jsondata = json_decode($jsonString, true);
                                  </tr>
                               </thead>
                               <tbody class='movie_table'>
-                              @foreach($total_user as $key => $user)
+                              @foreach($all_users as $key => $user)
 
                              <tr>
                              <td>{{ $user->username  }}</td>   

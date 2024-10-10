@@ -2491,6 +2491,7 @@ class HomeController extends Controller
     public function Featured_videos(Request $request)
     {
         try {
+            return redirect()->to('/Featured_videos');
 
             $ThumbnailSetting = ThumbnailSetting::first();
             $currency = CurrencySetting::first();
@@ -2554,6 +2555,8 @@ class HomeController extends Controller
 
             return redirect()->route('landing_page', $landing_page_slug );
         }
+
+        return redirect()->to('/Latest_videos');
 
         $multiuser = Session::get('subuser_id');
 
