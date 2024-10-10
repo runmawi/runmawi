@@ -14647,7 +14647,9 @@ public function QRCodeMobileLogout(Request $request)
                                   $item['user_image_url'] = URL::to('public/uploads/avatars/' . $item['user_image']);
                                   $item['user_name'] = User::where('id', $item->user_id)->pluck('username')->first();
                                   return $item;
-                              });
+                              })
+                              ->values()
+                              ->all();
 
       $response = array(
         'status'=> 'true',
