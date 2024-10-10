@@ -86,3 +86,14 @@
     
 </script>
 
+<style>
+    .ab {font-size: 14px;padding: 5px;}
+    body.light-theme .sign-user_card{
+         background: rgba(240, 240, 240, 0.75);
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      body.light-theme .sign-user_card input{
+         border: 1px solid #000;
+         color:#000 !important;
+      }
+</style>

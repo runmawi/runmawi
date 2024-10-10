@@ -124,6 +124,34 @@ class FrontEndQueryController extends Controller
         return $latest_videos ;
     }
 
+    public function AllMovies()
+    {
+        $All_movies = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
+                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image','user_id','uploaded_by')
+
+                                ->where('active',1)->where('status', 1)->where('draft',1)->orderBy('title');
+
+                                if( $this->getfeching !=null && $this->getfeching->geofencing == 'ON'){
+                                    $All_movies = $All_movies->whereNotIn('videos.id',$this->blockVideos);
+                                }
+
+                                if ($this->videos_expiry_date_status == 1 ) {
+                                    $All_movies = $All_movies->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i') );
+                                }
+                                
+                                if ($this->check_Kidmode == 1) {
+                                    $All_movies = $All_movies->whereBetween('videos.age_restrict', [0, 12]);
+                                }
+
+
+            $All_movies = $All_movies->latest()->get()->map(function ($item) {
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                return $item;
+            });
+        return $All_movies ;
+    }
+
     public function Order_Latest_videos()
     {
         $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
