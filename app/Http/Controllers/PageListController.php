@@ -73,6 +73,39 @@ class PageListController extends Controller
         }
     }
 
+    public function AllMovies($slug = null)
+    {
+        try {
+
+            $channel_partner_id = Channel::where('channel_slug',$slug)->pluck('id')->first(); 
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $All_movies_list = ($slug == null) ? $FrontEndQueryController->AllMovies() : $FrontEndQueryController->AllMovies()->filter(function ($all_movies) use ($channel_partner_id) {
+                if ( $all_movies->user_id == $channel_partner_id && $all_movies->uploaded_by == "Channel" ) {
+                    return $all_movies;
+                }
+            });;
+            $All_movies_paginate = $this->paginateCollection($All_movies_list, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'All_movies_list' => $All_movies_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.all-movies', $data);
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     public function Featured_videos($slug = null)
     {
         try {

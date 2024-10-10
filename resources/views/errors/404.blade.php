@@ -1,22 +1,69 @@
-@php
-    $Theme = \App\HomeSetting::pluck('theme_choosen')->first();
+<section class="page_404">
+	<div class="container">
+		<div class="row">	
+		<div class="col-sm-12 ">
+		<div class="col-sm-10 col-sm-offset-1  text-center">
+		<div class="four_zero_four_bg">
+			<h1 class="text-center ">404</h1>
+		
+		
+		</div>
+		
+		<div class="contant_box_404">
+		<h3 class="h2">
+		Look like you're lost
+		</h3>
+		
+		<p>the page you are looking for not avaible!</p>
+		
+		<a href="{{URL::to('/')}}" class="link_404">Go to Home</a>
+	</div>
+		</div>
+		</div>
+		</div>
+	</div>
+</section>
 
-    $header_url = 'themes/'.$Theme.'/views/header.php';
-    $footer_url = 'themes/'.$Theme.'/views/footer.blade.php'; 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo">
+<style>
+  /*======================
+      404 page
+  =======================*/
 
-    include(public_path($header_url));
-@endphp
+  .page_404 {
+    padding: 40px 0;
+    background: #fff;
+    font-family: "Arvo", serif;
+  }
 
-    <div class="container" style="height: 450px;text-align: center;">
-      <div class="h-100 row align-items-center" style="height:500px!important;">
-        <div class="col">
-          <h1 class="m-0">404</h1><br>
-              <h6>Page not found - <?= GetWebsiteName() ?></h6><br>
-              <h6><a href="{{URL::to('/')}}">Click Here to go Home</a> </h6>
-        </div>
-      </div>
-    </div>
-    
-@php
-    include(public_path($footer_url));
-@endphp
+  .page_404 img {
+    width: 100%;
+  }
+
+  .four_zero_four_bg {
+    background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+    height: 400px;
+    background-position: center;
+  }
+
+  .four_zero_four_bg h1 {
+    font-size: 80px;
+  }
+
+  .four_zero_four_bg h3 {
+    font-size: 80px;
+  }
+
+  .link_404 {
+    color: #fff !important;
+    padding: 10px 20px;
+    background: #39ac31;
+    margin: 20px 0;
+    display: inline-block;
+  }
+  .contant_box_404 {
+    margin-top: -50px;
+  }
+
+</style>
