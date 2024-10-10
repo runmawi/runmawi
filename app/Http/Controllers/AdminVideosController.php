@@ -13388,6 +13388,430 @@ class AdminVideosController extends Controller
         }
     }
 
+    
+    public function PurchasedContentAnalytics()
+    {
+        $user =  User::where('id',1)->first();
+        $duedate = $user->package_ends;
+        $current_date = date('Y-m-d');
+        if ($current_date > $duedate)
+        {
+          $client = new Client();
+          $url = "https://flicknexs.com/userapi/allplans";
+          $params = [
+              'userid' => 0,
+          ];
+  
+          $headers = [
+              'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+          ];
+          $response = $client->request('post', $url, [
+              'json' => $params,
+              'headers' => $headers,
+              'verify'  => false,
+          ]);
+  
+          $responseBody = json_decode($response->getBody());
+         $settings = Setting::first();
+         $data = array(
+          'settings' => $settings,
+          'responseBody' => $responseBody,
+  );
+            return view('admin.expired_dashboard', $data);
+        }else if(check_storage_exist() == 0){
+          $settings = Setting::first();
+
+          $data = array(
+              'settings' => $settings,
+          );
+
+          return View::make('admin.expired_storage', $data);
+      }else{
+            $user_package = User::where("id", 1)->first();
+            $package = $user_package->package;
+            if (
+                (!empty($package) && $package == "Pro") ||
+                (!empty($package) && $package == "Business")
+            ) {
+                $settings = Setting::first();
+
+                $purchases = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                ->select(
+                    DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                    DB::raw('users.username as user_name'),
+                    DB::raw('users.id as user_id'),
+                    DB::raw('users.email'),
+                    DB::raw('users.mobile'),
+                    DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                    DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                    DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                    DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                )
+                ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                ->orderBy('purchase_count', 'desc')
+                ->get();
+            
+
+                $data = [
+                    "settings" => $settings,
+                    "total_content" => $purchases,
+                    "total_video_count" => count($purchases),
+                    "currency" => CurrencySetting::first(),
+                    "Total_PPV_Amount" => PpvPurchase::sum('total_amount'),
+                ];
+                return view("admin.analytics.purchased_content_analytics", $data);
+            } else {
+                return Redirect::to("/blocked");
+            }
+        }
+    }
+
+    public function PurchasedContentStartDateRevenue(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+            if (!empty($start_time) && empty($end_time)) {
+                $settings = Setting::first();
+
+                $total_content = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                    ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                    ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                    ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                    ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                    ->select(
+                        DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                        DB::raw('users.username as user_name'),
+                        DB::raw('users.id as user_id'),
+                        DB::raw('users.email'),
+                        DB::raw('users.mobile'),
+                        DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                        DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                        DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                        DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                    )
+                    ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                    ->orderBy('purchase_count', 'desc')
+                    ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+                    ->get();
+                
+            } else {
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    $currency = CurrencySetting::first();
+
+                    foreach ($total_content as $key => $row) {
+                        $video_url =
+                            URL::to("/category/videos") . "/" . $row->slug;
+                        $date = date_create($row->ppvcreated_at);
+                        $newDate = date_format($date, "d M Y");
+
+                        $output .=
+                            '
+                      <tr>
+                      <td>' .
+                            $i++ .
+                            '</td>
+                        <td>' .
+                            $row->user_id .
+                            '</td>  
+                      <td>' .
+                            $row->user_name .
+                            '</td>
+                      <td>' .
+                            $row->email .
+                            '</td>    
+
+                      <td>' .
+                            $row->mobile .
+                            '</td>     
+                      <td>' .
+                            $currency->symbol .
+                            " " .
+                            $row->total_amount .
+                            '</td>    
+                    <td>' .
+                            $row->purchase_count .
+                            '</td>
+                      <td>' .
+                            $newDate .
+                            '</td>    
+                      </tr>
+                      ';
+                    }
+                } else {
+                    $output = '
+                  <tr>
+                   <td align="center" colspan="5">No Data Found</td>
+                  </tr>
+                  ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PurchasedContentEndDateRevenue(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+
+            if (!empty($start_time) && !empty($end_time)) {
+
+
+                $total_content = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                ->select(
+                    DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                    DB::raw('users.username as user_name'),
+                    DB::raw('users.id as user_id'),
+                    DB::raw('users.email'),
+                    DB::raw('users.mobile'),
+                    DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                    DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                    DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                    DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                )
+                ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                ->orderBy('purchase_count', 'desc')
+                ->whereBetween("ppv_purchases.created_at", [$start_time,$end_time,])
+                ->get();
+
+            } else {
+                $total_content = [];
+            }
+
+            $output = "";
+            $i = 1;
+            if (count($total_content) > 0) {
+                $total_row = $total_content->count();
+                if (!empty($total_content)) {
+                    $currency = CurrencySetting::first();
+
+                    foreach ($total_content as $key => $row) {
+                        $video_url =
+                            URL::to("/category/videos") . "/" . $row->slug;
+                        $date = date_create($row->ppvcreated_at);
+                        $newDate = date_format($date, "d M Y");
+
+                        $output .=
+                            '
+                      <tr>
+                      <td>' .
+                            $i++ .
+                            '</td>
+                    <td>' .
+                            $row->user_id .
+                            '</td>
+                      <td>' .
+                            $row->user_name .
+                            '</td>
+                      <td>' .
+                            $row->email .
+                            '</td>    
+            
+                      <td>' .
+                            $row->mobile .
+                            '</td>           
+                      <td>' .
+                            $currency->symbol .
+                            " " .
+                            $row->total_amount .
+                            '</td>    
+                    <td>' .
+                            $row->purchase_count .
+                            '</td>  
+                      <td>' .
+                            $newDate .
+                            '</td>    
+                      </tr>
+                      ';
+                    }
+                } else {
+                    $output = '
+                  <tr>
+                   <td align="center" colspan="5">No Data Found</td>
+                  </tr>
+                  ';
+                }
+                $value = [
+                    "table_data" => $output,
+                    "total_data" => $total_row,
+                    "total_content" => $total_content,
+                ];
+
+                return $value;
+            }
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PurchasedContentExportCsv(Request $request)
+    {
+        $user_package = User::where("id", 1)->first();
+        $package = $user_package->package;
+        if (
+            (!empty($package) && $package == "Pro") ||
+            (!empty($package) && $package == "Business")
+        ) {
+            $data = $request->all();
+
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+
+            if (!empty($start_time) && empty($end_time)) {
+         
+                    $total_content = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                    ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                    ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                    ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                    ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                    ->select(
+                        DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                        DB::raw('users.username as user_name'),
+                        DB::raw('users.id as user_id'),
+                        DB::raw('users.email'),
+                        DB::raw('users.mobile'),
+                        DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                        DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                        DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                        DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                    )
+                    ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                    ->orderBy('purchase_count', 'desc')
+                    ->whereDate("ppv_purchases.created_at", ">=", $start_time)
+                    ->get();
+
+            } elseif (!empty($start_time) && !empty($end_time)) {
+
+            $total_content = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                ->select(
+                    DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                    DB::raw('users.username as user_name'),
+                    DB::raw('users.id as user_id'),
+                    DB::raw('users.email'),
+                    DB::raw('users.mobile'),
+                    DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                    DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                    DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                    DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                )
+                ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                ->orderBy('purchase_count', 'desc')
+                ->whereBetween("ppv_purchases.created_at", [$start_time,$end_time,])
+                ->get();
+            } else {
+                $total_content = PpvPurchase::leftJoin('users', 'ppv_purchases.user_id', '=', 'users.id')
+                ->leftJoin('videos', 'ppv_purchases.video_id', '=', 'videos.id')
+                ->leftJoin('series', 'ppv_purchases.series_id', '=', 'series.id')
+                ->leftJoin('audio', 'ppv_purchases.audio_id', '=', 'audio.id')
+                ->leftJoin('live_streams', 'ppv_purchases.live_id', '=', 'live_streams.id')
+                ->select(
+                    DB::raw('COALESCE(videos.id, series.id, audio.id, live_streams.id) as content_title'), 
+                    DB::raw('users.username as user_name'),
+                    DB::raw('users.id as user_id'),
+                    DB::raw('users.email'),
+                    DB::raw('users.mobile'),
+                    DB::raw('SUM(ppv_purchases.total_amount) as total_amount'),
+                    DB::raw('COUNT(ppv_purchases.id) as purchase_count'),
+                    DB::raw('MAX(ppv_purchases.to_time) as last_purchase_time'),
+                    DB::raw('MONTHNAME(ppv_purchases.created_at) as month_name')
+                )
+                ->groupBy('users.id', 'month_name', 'videos.id', 'series.id', 'audio.id', 'live_streams.id') 
+                ->orderBy('purchase_count', 'desc')
+                ->get();
+            }
+            $file = "PurchasedVideoAnalytics.csv";
+
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            fputcsv($handle, [
+                "User ID",
+                "UserName",
+                "Email",
+                "Phone Number",
+                "Total Spent",
+                "Purchased Count",
+                "Purchased ON",
+            ]);
+            if (count($total_content) > 0) {
+                foreach ($total_content as $each_user) {
+                    $video_url =
+                        URL::to("/category/videos") . "/" . $each_user->slug;
+                    $date = date_create($each_user->ppvcreated_at);
+                    $newDate = date_format($date, "d M Y");
+
+                    fputcsv($handle, [
+                        $each_user->user_id,
+                        $each_user->user_name,
+                        $each_user->email,
+                        $each_user->mobile,
+                        $each_user->total_amount,
+                        $each_user->purchase_count,
+                        $newDate,
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            \Response::download($filename, "download.csv", $headers);
+
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
 
 }
     
