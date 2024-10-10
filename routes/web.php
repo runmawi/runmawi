@@ -2928,3 +2928,6 @@ Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
 
 
 Route::get('radio-station', 'AdminLiveStreamController@design');
+
+Route::get('producer/home', 'ProducerController@home')->name('producer.home');
+Route::get('producer/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
