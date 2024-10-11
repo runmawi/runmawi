@@ -15,7 +15,7 @@
                         <ul class="favorites-slider list-inline">
                             @foreach ($data as $key => $latest_video)
                                 <li class="slide-item">
-                                    <div class="block-images position-relative">
+                                    <div class="block-images position-relative movie-slide" style="background-image: url('{{ ('assets/img/overlay-' . ($key+1) . '.webp') }}');">
                                         
                                         <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">
 
@@ -58,3 +58,32 @@
         </div>
     </section>
 @endif
+
+<style>
+    .movie-slide {
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: relative;
+        padding: 0 20px;
+    }
+
+    .movie-slide .img-box img {
+        z-index: 2;
+        position: relative;
+    }
+
+    .movie-slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.3;
+    }
+
+    li.slide-item.slick-slide:hover .movie-slide{padding: 0;}
+
+</style>
