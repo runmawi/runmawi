@@ -1897,6 +1897,7 @@ class AdminUsersController extends Controller
         $subscription_count = User::where('role', 'subscriber')->count();
         $admin_count = User::where('role', 'admin')->count();
         $ppvuser_count = User::join('ppv_purchases', 'users.id', '=', 'ppv_purchases.user_id')->count();
+        $all_users_count = User::count();
 
         $data['total_user'] = User::select(\DB::raw("COUNT(*) as count") , \DB::raw("MONTHNAME(created_at) as month_name") , \DB::raw('max(created_at) as createdAt'))->whereYear('created_at', date('Y'))
             ->groupBy('month_name')
@@ -1913,9 +1914,10 @@ class AdminUsersController extends Controller
             'ppvuser_count' => $ppvuser_count,
             'activeuser_count' => User::where('active', 1)->count(),
             'inactiveuser_count' => User::where('active',0)->orwhere('active',null)->count(),
-
+            'all_users_count' => User::count(),
+            'all_users' => User::get(),
         );
-            return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
+            return \View::make('admin.analytics.revenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user, 'all_users' =>  User::get()]);
             // return \View::make('admin.analytics.Userrevenue', ['data1' => $data1, 'data' => $data, 'total_user' => $total_user]);
         }
     }
@@ -5133,6 +5135,257 @@ class AdminUsersController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
         }
+
+
+
+    //     public function UsersStats(Request $request)
+    //     {
+    //         try {
+
+    //             $startDate = $request->input('startDate');
+    //             $endDate = $request->input('endDate');
+
+    //                 $userStatisticsQuery = User::select(
+    //                         DB::raw('DATE_FORMAT(created_at, "%b %Y") as month'), 
+    //                         DB::raw('COUNT(id) as new_users'),
+    //                         DB::raw('(SELECT COUNT(*) FROM users as u2 WHERE u2.created_at <= users.created_at) as total_users')
+    //                     )
+    //                     ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b %Y")'))
+    //                     ->orderBy('created_at', 'desc')
+    //                     ->paginate(10);
+
+    //                 $pastUserStatisticsQuery = User::select(
+    //                     DB::raw('DATE(created_at) as basedate'),
+    //                     DB::raw('DATE_FORMAT(created_at, "%b %d, %Y") as date'),
+    //                     DB::raw('COUNT(id) as new_users'),
+    //                     DB::raw('(SELECT COUNT(*) FROM users as u2 WHERE u2.created_at <= users.created_at) as total_users')
+    //                 )
+    //                 ->where('created_at', '>=', now()->subDays(7))
+    //                 ->groupBy(DB::raw('DATE(created_at)'))
+    //                 ->orderBy('created_at', 'asc')
+    //                 ->get();
+
+    //         if ($request->ajax()) {
+    //             return response()->json([
+    //                 'userStatistics' => $userStatistics,
+    //             ]);
+    //         }
+
+    //         $data = array(
+    //             'userStatistics' => $userStatisticsQuery,
+    //             'PastuserStatisticsQuery' => $pastUserStatisticsQuery,
+    //         );
+
+    //         return view('admin.users.users_statistics', $data);
+        
+    //     } catch (\Throwable $th) {
+    //         throw $th;
+    //     }
+    // }
+        
+    public function UsersStats(Request $request)
+    {
+        try {
+            $selectedYear = $request->input('year', now()->year);
+    
+            $currentMonth = now()->month;
+    
+            $userStatistics = User::select(
+                    DB::raw('DATE_FORMAT(created_at, "%b %Y") as month'),
+                    DB::raw('YEAR(created_at) as year'),
+                    DB::raw('MONTH(created_at) as month_number'),
+                    DB::raw('COUNT(id) as new_users')
+                )
+                ->when($selectedYear == now()->year, function ($query) use ($currentMonth, $selectedYear) {
+                    return $query->whereYear('created_at', $selectedYear)
+                                 ->whereMonth('created_at', '<=', $currentMonth);
+                }, function ($query) use ($selectedYear) {
+                    return $query->whereYear('created_at', $selectedYear);
+                })
+                ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+                ->orderBy('year', 'DESC')
+                ->orderBy('month_number', 'DESC')
+                ->get()
+                ->toArray();
+    
+              $monthlyData = [];
+                $totalUsers = 0; 
+        
+                for ($month = 1; $month <= $currentMonth; $month++) {
+                    $found = false;
+                    foreach ($userStatistics as $stat) {
+                        if ($stat['month_number'] == $month) {
+                            $totalUsers += $stat['new_users']; 
+                            $monthlyData[$month] = [
+                                'month' => date('M Y', mktime(0, 0, 0, $month, 1, $selectedYear)),
+                                'new_users' => $stat['new_users'],
+                                'total_users' => $this->getTotalUsersUpToMonth($month, $selectedYear) 
+                            ];
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if (!$found) {
+                        $previous_total_users = isset($monthlyData[$month - 1]) ? $monthlyData[$month - 1]['total_users'] : $totalUsers; // Default to the last known total
+                        $monthlyData[$month] = [
+                            'month' => date('M Y', mktime(0, 0, 0, $month, 1, $selectedYear)),
+                            'new_users' => 0,
+                            'total_users' => $previous_total_users 
+                        ];
+                    }
+                }
+        
+                $pastUserStatisticsQuery = User::select(
+                        DB::raw('DATE(created_at) as basedate'),
+                        DB::raw('DATE_FORMAT(created_at, "%b %d, %Y") as date'),
+                        DB::raw('COUNT(id) as new_users'),
+                        DB::raw('(SELECT COUNT(*) FROM users as u2 WHERE u2.created_at <= users.created_at) as total_users')
+                    )
+                    ->where('created_at', '>=', now()->subDays(7))
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->orderBy('created_at', 'asc')
+                    ->get()
+                    ->keyBy('basedate');
+        
+                $lastSevenDays = collect();
+                for ($i = 0; $i < 7; $i++) {
+                    $lastSevenDays->push(Carbon::now()->subDays($i)->format('Y-m-d'));
+                }
+        
+                $result = [];
+                foreach ($lastSevenDays as $date) {
+                    $formattedDate = $date;
+                    $result[] = [
+                        'basedate' => $formattedDate,
+                        'date' => Carbon::parse($formattedDate)->format('M d, Y'),
+                        'new_users' => $pastUserStatisticsQuery->get($formattedDate)->new_users ?? 0,
+                        'total_users' => $pastUserStatisticsQuery->get($formattedDate)->total_users ?? 0
+                    ];
+                }
+        
+            $data = [
+                'userStatistics' => array_reverse(array_values($monthlyData)),
+                'pastUserStatisticsQuery' => $result,
+                'currentYear' => now()->year,
+                'selectedYear' => $selectedYear,
+                'years' => range(now()->year - 10, now()->year), 
+            ];
+    
+            return view('admin.users.users_statistics', $data);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    
+    
+    private function getTotalUsersUpToMonth($month, $year)
+    {
+        return User::where(function ($query) use ($month, $year) {
+                $query->whereMonth('created_at', '<=', $month);
+            })
+            ->whereYear('created_at', '<=', now()->year) 
+            ->count();
+    }
+    
+    public function UsersStatsFilter(Request $request)
+    {
+        try {
+            $selectedYear = $request->input('year', now()->year);
+            $currentYear = now()->year;
+            $currentMonth = now()->month;
+    
+            $totalUsersUpToYear = User::whereYear('created_at', '<', $selectedYear)->count();
+    
+            $userStatistics = User::select(
+                    DB::raw('DATE_FORMAT(created_at, "%b %Y") as month'),
+                    DB::raw('YEAR(created_at) as year'),
+                    DB::raw('MONTH(created_at) as month_number'),
+                    DB::raw('COUNT(id) as new_users')
+                )
+                ->whereYear('created_at', $selectedYear) 
+                ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
+                ->orderBy('month_number')
+                ->get()
+                ->toArray();
+    
+            $monthlyData = [];
+            $totalUsers = $totalUsersUpToYear; 
+    
+            $endMonth = ($selectedYear == $currentYear) ? $currentMonth : 12;
+    
+            for ($month = 1; $month <= $endMonth; $month++) {
+                $found = false;
+                foreach ($userStatistics as $stat) {
+                    if ($stat['month_number'] == $month) {
+                        $totalUsers += $stat['new_users']; 
+                        $monthlyData[$month] = [
+                            'month' => date('M Y', mktime(0, 0, 0, $month, 1, $selectedYear)),
+                            'new_users' => $stat['new_users'],
+                            'total_users' => $totalUsers 
+                        ];
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+                    $monthlyData[$month] = [
+                        'month' => date('M Y', mktime(0, 0, 0, $month, 1, $selectedYear)),
+                        'new_users' => 0,
+                        'total_users' => $totalUsers
+                    ];
+                }
+            }
+    
+            $monthlyData = array_reverse(array_values($monthlyData)); 
+    
+            $pastUserStatisticsQuery = User::select(
+                    DB::raw('DATE(created_at) as basedate'),
+                    DB::raw('DATE_FORMAT(created_at, "%b %d, %Y") as date'),
+                    DB::raw('COUNT(id) as new_users'),
+                    DB::raw('(SELECT COUNT(*) FROM users as u2 WHERE u2.created_at <= users.created_at) as total_users')
+                )
+                ->where('created_at', '>=', now()->subDays(7))
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderBy('created_at', 'asc')
+                ->get()
+                ->keyBy('basedate');
+    
+            $lastSevenDays = collect();
+            for ($i = 0; $i < 7; $i++) {
+                $lastSevenDays->push(Carbon::now()->subDays($i)->format('Y-m-d'));
+            }
+    
+            $result = [];
+            foreach ($lastSevenDays as $date) {
+                $formattedDate = $date;
+                $result[] = [
+                    'basedate' => $formattedDate,
+                    'date' => Carbon::parse($formattedDate)->format('M d, Y'),
+                    'new_users' => $pastUserStatisticsQuery->get($formattedDate)->new_users ?? 0,
+                    'total_users' => $pastUserStatisticsQuery->get($formattedDate)->total_users ?? 0
+                ];
+            }
+    
+            $data = [
+                'userStatistics' => $monthlyData, 
+                'pastUserStatisticsQuery' => $result,
+                'currentYear' => now()->year,
+                'selectedYear' => $selectedYear,
+                'years' => range(now()->year - 10, now()->year),
+            ];
+    
+            return response()->json([
+                'userStatistics' => $monthlyData,
+                'pastUserStatisticsQuery' => $result,
+            ]);
+    
+            return view('admin.users.users_statistics', $data);
+    
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    
 
 
 }
