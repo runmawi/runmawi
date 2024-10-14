@@ -4386,6 +4386,7 @@ class ChannelController extends Controller
                         $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
                         ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
                         ->count();
+                        // dd($ppv_exists_check_query);
 
                         $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
                         ->where('user_id', Auth::user()->id)
@@ -4402,13 +4403,14 @@ class ChannelController extends Controller
  
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                        // dd($PPV_exists);
 
                                 // free PPV access for subscriber status Condition
 
-                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+                        // if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
 
-                            $PPV_exists = false ;
-                        }
+                        //     $PPV_exists = false ;
+                        // }
 
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
                             $button_text = ButtonText::first();
