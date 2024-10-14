@@ -459,6 +459,9 @@
       body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme .navbar-collapse{
+         background: <?php echo $GetDarkBg; ?>!important;
+      }
       body.dark-theme header .navbar ul li.menu-item a{
          color: <?php echo $GetDarkText; ?>!important;
       }
@@ -624,7 +627,11 @@
    @media (min-width:801px) { li.logout_mobile_view.menu-item{
       display:none !important;
    } }
-
+   @media (max-width: 991px) {
+      header .navbar ul li.menu-item a {
+         border-top: 1px solid <?php echo $GetDarkText; ?>!important;
+      }
+   }
    .navbar-right .transdropdownlist{
       width:150px;
    }
@@ -635,6 +642,7 @@
          right: 5px;
          position: relative;
       }
+      .navbar-toggler{border:none;}
 
    </style>
 
@@ -675,10 +683,8 @@
                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <div class="navbar-toggler-icon" data-toggle="collapse">
-                           <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                           <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                           <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                        <div class="navbar-toggler" data-toggle="collapse">
+                           <i class="fa fa-bars" aria-hidden="true"></i>
                         </div>
                      </a>
                      <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
@@ -757,7 +763,7 @@
                         <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                            aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
-                              <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                              <i class="fa fa-times" style="font-size: 20px;"></i>
                         </button>
                         </div>
                      <!-- </a> -->
