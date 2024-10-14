@@ -583,7 +583,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4 mt-3">
+                        <!-- <div class="col-sm-4 mt-3">
                             <div class="panel panel-primary" data-collapsed="0">
                                 <div class="panel-heading">
                                     <div class="panel-title"><label>User Access</label></div>
@@ -606,7 +606,7 @@
                                     <div class="clear"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-sm-4">
                             <div class="panel panel-primary" data-collapsed="0">
