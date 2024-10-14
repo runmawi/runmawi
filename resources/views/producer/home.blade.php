@@ -118,9 +118,9 @@
                     <td class=''> {{ __('Source') }} </td>
                     <td class=''> {{ __('Source id') }} </td>
                     <td class=''> {{ __('Title') }} </td>
-                    <td class=''> {{ __('Amount ('. currency_symbol() . ' )' ) }}</td>
-                    <td class=''> {{ __('GST 18% ('. currency_symbol() . ' )' ) }} </td>
-                    <td class=''> {{ __('Total ('. currency_symbol() . ' )') }} </td>
+                    <td class=''> {{ __('Amount (' . currency_symbol() . ' )') }}</td>
+                    <td class=''> {{ __('GST 18% (' . currency_symbol() . ' )') }} </td>
+                    <td class=''> {{ __('Total (' . currency_symbol() . ' )') }} </td>
                     <td class=''> {{ __("Producer's share") }} </td>
                     <td class=''> {{ __("Runmawi's share") }} </td>
                 </tr>
@@ -136,21 +136,26 @@
                         <td> {{ ucwords(@$item->source) }} </td>
                         <td> {{ @$item->source_id }} </td>
                         <td> {{ $item->source_name }}</td>
-                        <td> {{  number_format(@$item->total_amount_without_gst, 2) }} </td>
-                        <td> {{ number_format( @$item->gst_value, 2) }} </td>
-                        <td> {{ number_format( @$item->total_amount_with_gst, 2) }} </td>
-                        <td> <b> {{ currency_symbol()." ".  number_format($item->moderator_commission_sum,2) }} ({{ number_format($item->moderator_commission_percentage,2) }}%) </b></td>
-                        <td> <b> {{ currency_symbol()." ".  number_format($item->admin_commission_sum,2) }} ({{ number_format($item->admin_commission_percentage,2) }}%) </b></td>
+                        <td> {{ number_format(@$item->total_amount_without_gst, 2) }} </td>
+                        <td> {{ number_format(@$item->gst_value, 2) }} </td>
+                        <td> {{ number_format(@$item->total_amount_with_gst, 2) }} </td>
+                        <td> <b> {{ currency_symbol() . ' ' . number_format($item->moderator_commission_sum, 2) }}
+                                ({{ number_format($item->moderator_commission_percentage, 2) }}%) </b></td>
+                        <td> <b> {{ currency_symbol() . ' ' . number_format($item->admin_commission_sum, 2) }}
+                                ({{ number_format($item->admin_commission_percentage, 2) }}%) </b></td>
                     </tr>
 
                     @php
-                    $admin_commission_sum += $item->admin_commission_sum;
-                    $moderator_commission_sum += $item->moderator_commission_sum;
-                @endphp
+                        $admin_commission_sum += $item->admin_commission_sum;
+                        $moderator_commission_sum += $item->moderator_commission_sum;
+                    @endphp
+
 
 
                 @empty
-                    <tr><td> {{ ucwords('No data found')}}</td></tr>
+                    <tr>
+                        <td> {{ ucwords('No data found') }}</td>
+                    </tr>
                 @endforelse
 
                 <tr>
@@ -158,20 +163,46 @@
                     <td></td>
                     <td class='right'></td>
                     <td>Producer's share</td>
-                    <td class='right'><b>{{ currency_symbol()." ". number_format( @$moderator_commission_sum, 2) }}</b></td>
+                    <td class='right'><b>{{ currency_symbol() . ' ' . number_format(@$moderator_commission_sum, 2) }}</b>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td class='right'></td>
                     <td>Runmawi's share</td>
-                    <td class='right'><b>{{ currency_symbol()." ". number_format( @$admin_commission_sum, 2) }}</b></td>
+                    <td class='right'><b>{{ currency_symbol() . ' ' . number_format(@$admin_commission_sum, 2) }}</b></td>
                 </tr>
             </table>
         </div>
     </div>
 
     <br>
+
+    <div class="mt-5" style="overflow:auto">
+        <h5>MONTHLY SUMMARY (After all deductions)</h5>
+
+        @foreach ($monthly_Summary as $item)
+            <h5>{{ @$item->source_name }} (  {{ number_format(@$item->moderator_commission_percentage, 2 )}}% )</h5>
+            <table width=100%>
+                <tr>
+                    <td>Month/Year</td>
+                    <td style='text-align:center'>Units sold</td>
+                    <td style='text-align:right'>Total amount</td>
+                    <td style='text-align:right'>Producer share</td>
+                </tr>
+
+                @foreach ($item->monthly_Summary as $item_monthly_Summary)
+                        <tr>
+                            <td>{{ $item_monthly_Summary->month_year }}</td>
+                            <td style='text-align:center'> {{ $item_monthly_Summary->units_sold ." units" }}</td>
+                            <td style='text-align:right'> {{ currency_symbol() . ' ' . number_format($item_monthly_Summary->total_amount, 2) }} </td>
+                            <td style='text-align:right'> {{ currency_symbol() . ' ' . number_format($item_monthly_Summary->moderator_commission_sum, 2) }} </td>
+                        </tr>
+                @endforeach
+            </table>
+        @endforeach
+    </div>
 
     <?php
     

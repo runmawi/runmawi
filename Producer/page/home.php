@@ -121,92 +121,125 @@
 		$chart2_data = "[" . $chart2_data . "]";
 	}
 ?>
-      <!--   Icon Section   -->
-	  <div class="row center">
-		<h4>SUMMARY</h4>
-		(Producer portal hi update a ni a, dik lo lai i hmuh chuan Runmawi lam min hriattir turin kan ngen a che.)
-	  </div>
-	  
-	  <div class="row">
-        <div class="col s12 m6">
-          <div class="icon-block">
-			
+<!--   Icon Section   -->
+<div class="row center">
+    <h4>SUMMARY</h4>
+    (Producer portal hi update a ni a, dik lo lai i hmuh chuan Runmawi lam min hriattir turin kan ngen a che.)
+</div>
+
+<div class="row">
+    <div class="col s12 m6">
+        <div class="icon-block">
+
             <h5 class="center">PPV stats</h5>
 
             <p class="center light">
-				Number of purchased on Pay per View (PPV) contents.
-				<br><br>
-			<canvas id="myChart1" width="100%" height="70"></canvas>
-				<table>
-					<thead>
-					  <tr>
-						  <th colspan=2>Current statistics</th>
-					  </tr>
-					</thead>
-					<tbody>
-					<tr><td>Purchased today : </td><td class="right"><?php echo $purchased_count_today ?></td></tr>
-					<tr><td>Purchased this month : </td><td class="right"><?php echo $purchased_count_thismonth ?></td></tr>
-					<tr><td>Purchased last month : </td><td class="right"><?php echo $purchased_count_lastmonth ?></td></tr>
-					<tr><td>Purchased this year: </td><td class="right"><?php echo $purchased_count_thisyear ?></td></tr>
-					<tr><td>Total purchased : </td><td class="right"><?php echo $purchased_count_total ?></td></tr>
-					<tr><td>Free access with promotions : </td><td class="right"><?php echo $promotions  ?></td></tr>
-					</tbody>
-				</table>
-			</p>
+                Number of purchased on Pay per View (PPV) contents.
+                <br><br>
+                <canvas id="myChart1" width="100%" height="70"></canvas>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan=2>Current statistics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Purchased today : </td>
+                        <td class="right"><?php echo $purchased_count_today ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased this month : </td>
+                        <td class="right"><?php echo $purchased_count_thismonth ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased last month : </td>
+                        <td class="right"><?php echo $purchased_count_lastmonth ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased this year: </td>
+                        <td class="right"><?php echo $purchased_count_thisyear ?></td>
+                    </tr>
+                    <tr>
+                        <td>Total purchased : </td>
+                        <td class="right"><?php echo $purchased_count_total ?></td>
+                    </tr>
+                    <tr>
+                        <td>Free access with promotions : </td>
+                        <td class="right"><?php echo $promotions  ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            </p>
 
-          </div>
         </div>
-		
-        <div class="col s12 m6">
-          <div class="icon-block">
+    </div>
+
+    <div class="col s12 m6">
+        <div class="icon-block">
             <h5 class="center">Earnings</h5>
             <p class="center light">
-				Earnings from Pay per View (PPV) contents.
-			
-				<br><br>
-				<canvas id="myChart2" width="100%" height="70"></canvas>
-				
-				<table>
-					<thead>
-					  <tr>
-						  <th colspan=2>Current statistics</th>
-					  </tr>
-					</thead>
-					<tbody>
-					<tr><td>Purchased today : </td><td class="right">Rs. <?php echo number_format($purchased_amount_today, 2) ?></td></tr>
-					<tr><td>Purchased this month : </td><td class="right">Rs. <?php echo number_format($purchased_amount_thismonth, 2) ?></td></tr>
-					<tr><td>Purchased last month : </td><td class="right">Rs. <?php echo number_format($purchased_amount_lastmonth, 2) ?></td></tr>
-					<tr><td>Purchased this year: </td><td class="right">Rs. <?php echo number_format($purchased_amount_thisyear, 2) ?></td></tr>
-					<tr><td>Total purchased : </td><td class="right">Rs. <?php echo number_format($purchased_amount_total, 2) ?></td></tr>
-					</tbody>
-				</table>
-			</p>
+                Earnings from Pay per View (PPV) contents.
 
-          </div>
+                <br><br>
+                <canvas id="myChart2" width="100%" height="70"></canvas>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan=2>Current statistics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Purchased today : </td>
+                        <td class="right">Rs. <?php echo number_format($purchased_amount_today, 2) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased this month : </td>
+                        <td class="right">Rs. <?php echo number_format($purchased_amount_thismonth, 2) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased last month : </td>
+                        <td class="right">Rs. <?php echo number_format($purchased_amount_lastmonth, 2) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Purchased this year: </td>
+                        <td class="right">Rs. <?php echo number_format($purchased_amount_thisyear, 2) ?></td>
+                    </tr>
+                    <tr>
+                        <td>Total purchased : </td>
+                        <td class="right">Rs. <?php echo number_format($purchased_amount_total, 2) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            </p>
+
         </div>
+    </div>
 
-		
-      </div>
-	  
-	
-	
-	  
-	 
-	  <div class="mt-5">
-	  <h5>SALES SUMMARY</h5>
-	  <div  style='width:100%; overflow:auto'>
-		
-		<table style='min-width:600px'>
-		<tr>
-			<td class=''>Video id</td>
-			<td>Title</td>
-			<td class=''>Amount(Rs.)</td>
-			<td class=''>GST 18%</td>
-			<td class=''>Total</td>
-			<td class=''>Producer's share</td>
-			<td class=''>Runmawi's share</td>
-		</tr>
-		<?php
+
+</div>
+
+
+
+
+
+<div class="mt-5">
+    <h5>SALES SUMMARY</h5>
+    <div style='width:100%; overflow:auto'>
+
+        <table style='min-width:600px'>
+            <tr>
+                <td class=''>Video id</td>
+                <td>Title</td>
+                <td class=''>Amount(Rs.)</td>
+                <td class=''>GST 18%</td>
+                <td class=''>Total</td>
+                <td class=''>Producer's share</td>
+                <td class=''>Runmawi's share</td>
+            </tr>
+            <?php
 			//
 			$total_producer_share = 0;
 			$total_amount = 0;
@@ -255,17 +288,17 @@
 			echo "<tr><td></td><td></td><td class='right'></td><td>Producer's share</td><td class='right'><b>Rs. ". number_format($total_producer_share, 2) . "</b></td></tr>";
 			echo "<tr><td></td><td></td><td class='right'></td><td>Runmawi's share</td><td class='right'><b>Rs. " . number_format($total_runmawi_share, 2) . "</b></td></tr>";
 		?>
-		
-		</table>
-		</div>
-	  </div>
 
-	  <br>
+        </table>
+    </div>
+</div>
 
-	  <div class="mt-5" style="overflow:auto">
-		<h5>MONTHLY SUMMARY (After all deductions)</h5>
-		<!-- <span style="background-color:tomato; color:white">Disclaimer: This section shows <b>code under implementation</b>. Wrong results may be produced.</span> -->
-		<?php
+<br>
+
+<div class="mt-5" style="overflow:auto">
+    <h5>MONTHLY SUMMARY (After all deductions)</h5>
+    <!-- <span style="background-color:tomato; color:white">Disclaimer: This section shows <b>code under implementation</b>. Wrong results may be produced.</span> -->
+    <?php
 			$sql = "select video_id, share_percent, category from producers_map where producer_id=$runmawi_producer_userid and status>=0 order by id desc";
  					$res = mysqli_query($con, $sql);
 					if(mysqli_num_rows($res) > 0){
@@ -314,69 +347,69 @@
 						}
 					}
  		?>
-		
-	</div>
-					
-					<script>
-$(document).ready(function(){
-	
-	  var ctx1 = document.getElementById('myChart1').getContext('2d');
-	  var myChart1 = new Chart(ctx1, {
-		type: 'line',
-		data: {
-			labels: <?php echo $chart1_labels ?>,
-			datasets: [{
-				label: 'No of purchased',
-				data: <?php echo $chart1_data ?>,
-				
-				borderColor: 'rgb(54, 162, 235)',
-				backgroundColor:['rgba(54, 162, 235, 0.5)'],
-				borderWidth: 1,
-				fill:true,
-				tension: 0.1,
-			}]
-		},
-		options: {
-			scales: {
-				y: {
-					beginAtZero: true
-				}
-			}
-		}
-	});
 
-	 var ctx2 = document.getElementById('myChart2').getContext('2d');
-	  var myChart2 = new Chart(ctx2, {
-		type: 'bar',
-		data: {
-			labels: <?php echo $chart1_labels ?>,
-			datasets: [{
-				label: 'Earnings (Rs)',
-				data: <?php echo $chart2_data ?>,
-				
-				borderColor: 'rgb(255, 99, 132)',
-				backgroundColor:['rgba(255, 99, 132, 0.5)'],
-				borderWidth: 1,
-				fill:true,
-				tension: 0.1,
-			}]
-		},
-	});
+</div>
 
-	  var ctx3 = document.getElementById('myChart3').getContext('2d');
-	  var myChart3 = new Chart(ctx3, {
-		type: 'doughnut',
-		data: {
-			labels: ['Settled amount (Rs)', 'Pending setlement (Rs)'],
-			datasets: [{
-				label: 'No of purchased',
-				data: [30000, 12350],
-				backgroundColor: [
-				  'rgb(255, 99, 132)',
-				  'rgb(54, 162, 235)'
-				],
-			}]
-		},
-	});
+<script>
+$(document).ready(function() {
+
+    var ctx1 = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: <?php echo $chart1_labels ?>,
+            datasets: [{
+                label: 'No of purchased',
+                data: <?php echo $chart1_data ?>,
+
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                borderWidth: 1,
+                fill: true,
+                tension: 0.1,
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: <?php echo $chart1_labels ?>,
+            datasets: [{
+                label: 'Earnings (Rs)',
+                data: <?php echo $chart2_data ?>,
+
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+                borderWidth: 1,
+                fill: true,
+                tension: 0.1,
+            }]
+        },
+    });
+
+    var ctx3 = document.getElementById('myChart3').getContext('2d');
+    var myChart3 = new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            labels: ['Settled amount (Rs)', 'Pending setlement (Rs)'],
+            datasets: [{
+                label: 'No of purchased',
+                data: [30000, 12350],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)'
+                ],
+            }]
+        },
+    });
 });
 </script>
