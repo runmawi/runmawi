@@ -498,7 +498,7 @@ a.title-dec{text-decoration:none}
 .dropdown-item.cont-item{color:#fff;text-align:left}
 header .navbar ul li.menu-item .dropdown-item{text-align:left;border-top:none;font-weight:300}
 a.dropdown-item.cont-item{background-color:transparent}
-footer,.home footer{position:relative;height:auto;width:100%;background:linear-gradient(180deg,#282834 0%,#151517 127.69%)}
+footer,.home footer{position:absolute;height:auto;width:100%;background:linear-gradient(180deg,#282834 0%,#151517 127.69%)}
 .view-all{font-size: 14px;}
 @media (min-width: 411px) {
 .btn-danger:hover{color:#fff}

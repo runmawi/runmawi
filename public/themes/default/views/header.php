@@ -279,6 +279,7 @@
 
    <!-- js -->
    <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
+   <!-- <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery.lazy.min.js');?>" as="script"> -->
 
    <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
 
