@@ -4344,9 +4344,10 @@ class ChannelController extends Controller
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
-
+                                        $button_text = ButtonText::first();
+                                        
                 $item['users_video_visibility_status']         = true ;
-                $item['users_video_visibility_status_button']  = 'Watch Now' ;
+                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
 
 
