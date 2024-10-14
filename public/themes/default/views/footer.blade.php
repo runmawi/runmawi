@@ -153,7 +153,7 @@
       <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
-      {{-- <script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script> --}}
+      <script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
       <!-- Popper js -->
       <link rel="preload" href="<?= URL::to('/'). '/assets/js/popper.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
