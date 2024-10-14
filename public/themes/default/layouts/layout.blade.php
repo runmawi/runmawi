@@ -99,31 +99,31 @@
     .st0 {
         stroke-width: 0.75;
         stroke-miterlimit: 10;
-        fill: {{ button_bg_color() . '!important' }};
-        stroke: {{ button_bg_color() . '!important' }};
+        fill: {{ button_bg_color() }};
+        stroke: {{ button_bg_color() }};
     }
 
     .st1 {
         stroke-width: 0.5;
         stroke-miterlimit: 10;
-        fill: {{ button_bg_color() . '!important' }};
-        stroke: {{ button_bg_color() . '!important' }};
+        fill: {{ button_bg_color()  }};
+        stroke: {{ button_bg_color()  }};
     }
 
     .st2 {
-        fill: {{ button_bg_color() . '!important' }};
+        fill: {{ button_bg_color() }};
     }
 
     .st3 {
-        stroke: {{ button_bg_color() . '!important' }};
+        stroke: {{ button_bg_color() }};
     }
 
     .st4 {
-        stroke: {{ button_bg_color() . '!important' }};
+        stroke: {{ button_bg_color() }};
     }
 
     .st5 {
-        fill: {{ button_bg_color() . '!important' }};
+        fill: {{ button_bg_color() }};
     }
 
     .st6 {
@@ -131,7 +131,7 @@
         stroke-width: 3;
         stroke-linecap: round;
         stroke-linejoin: round;
-        stroke: {{ button_bg_color() . '!important' }}
+        stroke: {{ button_bg_color()  }}
     }
 
     .sta {
