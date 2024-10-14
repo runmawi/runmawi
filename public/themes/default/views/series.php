@@ -1865,6 +1865,16 @@ amount: amount * 100
             }
         });
 
+        player.on('userinactive', () => {
+            $('.vjs-big-play-button').hide();
+        });
+
+        player.on('useractive', () => {
+            $('.vjs-big-play-button').show();
+        });
+
+
+
         player.src({
           type: player_type,
           src: player_url,

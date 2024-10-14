@@ -11,6 +11,7 @@
       $website_default_language = $settings->translate_language ? $settings->translate_language : 'en';
 
       $GetLightText = GetLightText();
+      $GetDarkText = GetDarkText();
       $GetLightBg   = GetLightBg();
       $GetWebsiteName  = GetWebsiteName();
       $GetDarkBg    = GetDarkBg();
@@ -454,6 +455,41 @@
          
       body.dark-theme {
          background: <?php echo $GetDarkBg; ?>!important;
+      }
+      body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
+         background: <?php echo $GetDarkBg; ?>!important;
+      }
+      body.dark-theme header .navbar ul li.menu-item a{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme .sliderk{
+         background-color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{
+         background-color: <?php echo $GetDarkBg; ?>!important;
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header#main-header{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header .st0, .st2{
+         fill: <?php echo $GetDarkText; ?>!important;
+         stroke: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header .st6,.st3,.st1 {
+         stroke: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header .st5 {
+         fill: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header h1, h2, h3, h4, h5, h6{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme header .cont-item:hover{
+         background-color: transparent !important;
+      }
+      body.dark-theme header .dropdown-menu.categ-head{
+         background-color: <?php echo $GetDarkBg; ?>!important;
       }
       body.light-theme {
       background: <?php echo $GetLightBg; ?>!important;

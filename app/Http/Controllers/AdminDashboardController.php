@@ -237,7 +237,7 @@ class AdminDashboardController extends Controller
          $total_ppvvideos = PpvVideo::where('active','=',1)->count();
          
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
-        $top_rated_videos = Video::where("rating",">",7)->get();
+        $top_rated_videos = Video::orderBy('rating','DESC')->limit(10)->get();
         $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
         $recent_view = $recent_views->unique('video_id');
         $page = 'admin-dashboard';
