@@ -95,9 +95,11 @@
                                                             <p class="epi-name text-left m-0 mt-2">{{ strlen($video->title) > 17 ? substr($video->title, 0, 18) . '...' : $video->title }}</p>
                                                         @endif
 
-                                                        <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($video->description) > 75 ? (html_entity_decode(strip_tags($video->description))) . '...' : strip_tags($video->description) }}
-                                                        </p>
+                                                        @if($ThumbnailSetting->enable_description == 1)
+                                                            <p class="desc-name text-left m-0 mt-1">
+                                                                {{ strlen($video->description) > 75 ? (html_entity_decode(strip_tags($video->description))) . '...' : strip_tags($video->description) }}
+                                                            </p>
+                                                        @endif
 
                                                         <div class="movie-time d-flex align-items-center my-2 pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($video->age_restrict == 0))
@@ -157,14 +159,18 @@
 
 <script>
     var elem = document.querySelector('.live-video');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
-    });
+    if (elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: true,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyload: true,
+        });
+    } else {
+        console.error("Carousel element not found");
+    }
  </script>

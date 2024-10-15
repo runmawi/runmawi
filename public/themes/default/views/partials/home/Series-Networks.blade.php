@@ -54,9 +54,11 @@
                                                     <div class="movie-time d-flex align-items-center my-2"></div>
                                                 </a>
 
-                                                <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($series_networks->description) > 75 ? substr(html_entity_decode(strip_tags($series_networks->description)), 0, 75) . '...' : strip_tags($series_networks->description) }}
-                                                </p>
+                                                @if($ThumbnailSetting->enable_description == 1)
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        {{ strlen($series_networks->description) > 75 ? substr(html_entity_decode(strip_tags($series_networks->description)), 0, 75) . '...' : strip_tags($series_networks->description) }}
+                                                    </p>
+                                                @endif
 
                                                 <a class="epi-name mt-2 mb-0 btn" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
                                                     <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -85,6 +87,6 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyload: true,
     });
  </script>

@@ -83,6 +83,7 @@
         });    
 
 
+        var hovered = false;
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
         });
@@ -92,38 +93,63 @@
         });
 
         player.on('userinactive', () => {
-        if (skipForwardButton && skipBackwardButton && playPauseButton) {
-            skipForwardButton.style.display = 'none';
-            skipBackwardButton.style.display = 'none';
-            playPauseButton.style.display = 'none';
-            titleButton.style.display = 'none';
-            backButton.style.display = 'none';
-        }
+            skipForwardButton.addEventListener('mouseenter',handleHover);
+            skipBackwardButton.addEventListener('mouseenter',handleHover);
+
+            skipForwardButton.addEventListener('mouseleave',handleHover);
+            skipBackwardButton.addEventListener('mouseleave',handleHover);
+
+            function handleHover(event) {
+                const element = event.target;
+                if (event.type === 'mouseenter') {
+                    console.log("hovered");
+                    hovered = true;
+                    skipButton = true;
+                } else if (event.type === 'mouseleave') {
+                    console.log("not hovered");
+                    hovered = false;
+                    skipButton = false;
+                }
+            }
+
+            // Hide the Play pause, skip forward and backward buttons when the user becomes inactive
+            if (skipForwardButton && skipBackwardButton) {
+                if(hovered == false && remainingDuration == false){
+                    skipForwardButton.style.visibility = 'hidden';
+                    skipBackwardButton.style.visibility = 'hidden';
+                    playPauseButton.style.visibility = 'hidden';
+                    backButton.style.visibility = 'hidden';
+                    titleButton.style.visibility = 'hidden';
+                }
+            }
         });
 
         player.on('useractive', () => {
-        if (skipForwardButton && skipBackwardButton && playPauseButton) {
-            skipForwardButton.style.display = 'block';
-            skipBackwardButton.style.display = 'block';
-            playPauseButton.style.display = 'block';
-            titleButton.style.display = 'block';
-            backButton.style.display = 'block';
-        }
+            // Show the Play pause, skip forward and backward buttons when the user becomes active
+            if (skipForwardButton && skipBackwardButton) {
+                if(player.currentTime != player.duration){
+                    skipForwardButton.style.visibility = 'visible';
+                    skipBackwardButton.style.visibility = 'visible';
+                    playPauseButton.style.visibility = 'visible';
+                    backButton.style.visibility = 'visible';
+                    titleButton.style.visibility = 'visible';
+                }
+            }
         });
 
-        // player.ready(() => {
-        //     playPauseButton.addEventListener('click', e => {
-        //         var playing = document.querySelector('.vjs-playing');
-        //         if(playing){
-        //             console.log("pause triggered");
-        //             player.pause();
-        //         }
-        //         else{
-        //             console.log("play triggered");
-        //             player.play();
-        //         }
-        //     })
-        // });
+        player.ready(() => {
+            playPauseButton.addEventListener('click', e => {
+                var playing = document.querySelector('.vjs-playing');
+                if(playing){
+                    console.log("pause triggered");
+                    player.pause();
+                }
+                else{
+                    console.log("play triggered");
+                    player.play();
+                }
+            })
+        });
 
         player.on('enterpictureinpicture', function() {
             console.log('Entered Picture-in-Picture mode');

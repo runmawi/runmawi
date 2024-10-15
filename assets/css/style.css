@@ -17,7 +17,7 @@
 #video .plyr.plyr--full-ui,#video-trailer .plyr.plyr--full-ui,#video_container .plyr.plyr--full-ui,#video_container .plyr__video-embed,#watch_trailer .plyr.plyr--full-ui,#watch_trailer .plyr__video-embed{height:calc(100vh - 80px - 8px)!important;max-width:none}
 video{min-width:100%;min-height:100%}
 .img-box{width:inherit;background:rgba(0,0,0,0.5);overflow:hidden;position:relative;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:5px;-webkit-transition:transform .25s cubic-bezier(0.33,0.04,0.63,0.93);-o-transition:transform .25s cubic-bezier(0.33,0.04,0.63,0.93);-webkit-transition:-webkit-transform .25s cubic-bezier(0.33,0.04,0.63,0.93);transition:-webkit-transform .25s cubic-bezier(0.33,0.04,0.63,0.93);-o-transition:-o-transform .25s cubic-bezier(0.33,0.04,0.63,0.93);transition:transform .25s cubic-bezier(0.33,0.04,0.63,0.93);transition:transform .25s cubic-bezier(0.33,0.04,0.63,0.93),-webkit-transform .25s cubic-bezier(0.33,0.04,0.63,0.93),-o-transform .25s cubic-bezier(0.33,0.04,0.63,0.93)}
-body{background:#040404}
+/* body{background:#040404} */
 .slick-arrow
 header#main-header{position:relative;left:0;right:0;text-align:center;z-index:99}
 header .navbar-light .navbar-brand img.logo{width:160px}
@@ -498,7 +498,7 @@ a.title-dec{text-decoration:none}
 .dropdown-item.cont-item{color:#fff;text-align:left}
 header .navbar ul li.menu-item .dropdown-item{text-align:left;border-top:none;font-weight:300}
 a.dropdown-item.cont-item{background-color:transparent}
-footer,.home footer{position:relative;height:auto;width:100%;background:linear-gradient(180deg,#282834 0%,#151517 127.69%)}
+footer,.home footer{position:absolute;height:auto;width:100%;background:linear-gradient(180deg,#282834 0%,#151517 127.69%)}
 .view-all{font-size: 14px;}
 @media (min-width: 411px) {
 .btn-danger:hover{color:#fff}

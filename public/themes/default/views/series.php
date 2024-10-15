@@ -137,6 +137,11 @@
             max-width: 1400px !important;
         }
   }
+  @media(max-width:720px){
+    div#video-js-trailer-player {
+        height: 25vh !important;
+    }
+  }
 
    
   /* payment modal */
@@ -1746,6 +1751,16 @@ amount: amount * 100
                 }
             }
         });
+
+        player.on('userinactive', () => {
+            $('.vjs-big-play-button').hide();
+        });
+
+        player.on('useractive', () => {
+            $('.vjs-big-play-button').show();
+        });
+
+
 
         player.src({
           type: player_type,

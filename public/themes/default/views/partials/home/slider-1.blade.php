@@ -407,6 +407,7 @@
     @endforeach
 @endif
 
+
 <!-- For Lazyloading the slider bg image -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {

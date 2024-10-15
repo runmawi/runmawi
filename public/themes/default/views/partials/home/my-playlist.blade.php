@@ -46,9 +46,11 @@
                                                   <a href="{{ url('/playlist/' . $My_Playlist->slug) }}">
                                                         <p class="epi-name text-left mt-2 m-0">{{ $My_Playlist->title }}</p>
 
-                                                        <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($My_Playlist->description) > 75 ? substr(html_entity_decode(strip_tags($My_Playlist->description)), 0, 75) . '...' : strip_tags($My_Playlist->description) }}
-                                                        </p>
+                                                        @if($ThumbnailSetting->enable_description == 1)
+                                                            <p class="desc-name text-left m-0 mt-1">
+                                                                {{ strlen($My_Playlist->description) > 75 ? substr(html_entity_decode(strip_tags($My_Playlist->description)), 0, 75) . '...' : strip_tags($My_Playlist->description) }}
+                                                            </p>
+                                                        @endif
                                                   </a>
                                                   <a class="epi-name mt-3 mb-0 btn" href="{{ url('/playlist/' . $My_Playlist->slug) }}">
                                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -77,6 +79,6 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyload: true,
     });
  </script>

@@ -237,7 +237,7 @@ class AdminDashboardController extends Controller
          $total_ppvvideos = PpvVideo::where('active','=',1)->count();
          
         $total_recent_subscription = Subscription::orderBy('created_at', 'DESC')->whereDate('created_at', '>', \Carbon\Carbon::now()->today())->count();
-        $top_rated_videos = Video::where("rating",">",7)->get();
+        $top_rated_videos = Video::orderBy('rating','DESC')->limit(10)->get();
         $recent_views = RecentView::limit(10)->orderBy('id','DESC')->get();
         $recent_view = $recent_views->unique('video_id');
         $page = 'admin-dashboard';
@@ -340,8 +340,8 @@ class AdminDashboardController extends Controller
 
                 $audios = Audio::orderBy('created_at', 'DESC')->get();
 
-                $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
-                            ->orderBy('created_at', 'DESC')->get();
+                $Episode = Episode::Select('episodes.*','series.title as series_title','series.access as series_access','series_seasons.access as series_seasons_access')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
+                            ->leftjoin('series_seasons', 'series_seasons.id', '=', 'episodes.season_id')->orderBy('created_at', 'DESC')->get();
 
                 $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
 

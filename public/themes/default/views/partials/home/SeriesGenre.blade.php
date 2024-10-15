@@ -45,9 +45,11 @@
                                                       <div class="movie-time d-flex align-items-center my-2"></div>
                                                   </a>
 
-                                                  <p class="desc-name text-left m-0 mt-1">
+                                                    @if($ThumbnailSetting->enable_description == 1)
+                                                        <p class="desc-name text-left m-0 mt-1">
                                                             {{ strlen($Series_Genre->description) > 75 ? substr(html_entity_decode(strip_tags($Series_Genre->description)), 0, 75) . '...' : strip_tags($Series_Genre->description) }}
-                                                    </p>
+                                                        </p>
+                                                    @endif
 
                                                   <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('series/category/'. $Series_Genre->slug) }}">
                                                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
@@ -77,6 +79,6 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyload: true,
     });
  </script>

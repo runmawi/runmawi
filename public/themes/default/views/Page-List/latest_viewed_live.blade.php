@@ -78,9 +78,11 @@
                                                         </p>
                                                     @endif
 
-                                                    <p class="desc-name text-left m-0 mt-1">
-                                                        {{ strlen($live->description) > 75 ? substr(html_entity_decode(strip_tags($live->description)), 0, 75) . '...' : strip_tags($live->description) }}
-                                                    </p>
+                                                    @if($ThumbnailSetting->enable_description == 1)
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($live->description) > 75 ? substr(html_entity_decode(strip_tags($live->description)), 0, 75) . '...' : strip_tags($live->description) }}
+                                                        </p>
+                                                    @endif
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($live->age_restrict == 0))
