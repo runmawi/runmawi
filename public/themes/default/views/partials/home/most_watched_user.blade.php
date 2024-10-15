@@ -143,14 +143,18 @@
 
 <script>
     var elem = document.querySelector('.most-watched-user');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
-    });
+    if (elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: true,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: false,
+            lazyload: true,
+        });
+    } else {
+        console.error("Carousel element not found");
+    }
  </script>

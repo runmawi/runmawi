@@ -13,7 +13,7 @@
   $theme_mode = $theme->theme_mode;
 ?>
 
-<footer class="py-4 mt-auto">
+<footer class="py-4 mt-5">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
@@ -72,7 +72,7 @@
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" alt="t" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
@@ -153,6 +153,7 @@
       <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
       <!-- Popper js -->
       <link rel="preload" href="<?= URL::to('/'). '/assets/js/popper.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
