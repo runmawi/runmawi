@@ -193,6 +193,19 @@
                                 </td>
                             </tbody>
 
+                            <tbody>
+                                <td> {{ '13'}} </td>
+                                <td> {{ 'Description'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="enable_description" id="enable_description" class="enable_description" type="checkbox" @if( $thumbnail_setting->enable_description == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>
+
                         </table>
 
                         <div class="col-md-12 form-group" align="right">
