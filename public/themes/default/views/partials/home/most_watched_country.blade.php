@@ -82,9 +82,11 @@
                                                             </p>
                                                         @endif  
 
-                                                        <p class="desc-name text-left mt-2 m-0 mt-1">
-                                                            {{ strlen($Most_watched_countries->description) > 75 ? substr(html_entity_decode(strip_tags($Most_watched_countries->description)), 0, 75) . '...' : strip_tags($Most_watched_countries->description) }}
-                                                        </p>
+                                                        @if($ThumbnailSetting->enable_description == 1)
+                                                            <p class="desc-name text-left mt-2 m-0 mt-1">
+                                                                {{ strlen($Most_watched_countries->description) > 75 ? substr(html_entity_decode(strip_tags($Most_watched_countries->description)), 0, 75) . '...' : strip_tags($Most_watched_countries->description) }}
+                                                            </p>
+                                                        @endif
 
                                                         <div class="movie-time d-flex align-items-center pt-2">
                                                             @if($ThumbnailSetting->age == 1 && !($Most_watched_countries->age_restrict == 0))

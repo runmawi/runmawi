@@ -80,9 +80,11 @@
                                                         </p>
                                                     @endif
 
-                                                    <p class="desc-name text-left m-0 mt-1">
-                                                        {{ strlen($watchlater->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater->description)), 0, 75) . '...' : strip_tags($watchlater->description) }}
-                                                    </p>
+                                                    @if($ThumbnailSetting->enable_description == 1)
+                                                        <p class="desc-name text-left m-0 mt-1">
+                                                            {{ strlen($watchlater->description) > 75 ? substr(html_entity_decode(strip_tags($watchlater->description)), 0, 75) . '...' : strip_tags($watchlater->description) }}
+                                                        </p>
+                                                    @endif
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($watchlater->age_restrict == 0))

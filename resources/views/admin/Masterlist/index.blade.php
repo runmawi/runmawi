@@ -341,7 +341,17 @@ border-radius: 0px 4px 4px 0px;
                                        <td> <p class = "bg-danger video_active"><?php echo "Rejected"; ?></p></td>
                                     @endif
       
-                                    <td> {{ $Episodes->access }} </td>
+                                    @if ($Episodes->series_access == 'guest' && $Episodes->series_seasons_access == 'free') 
+                                       <td >{{ "Guest" }} </td>
+                                    @elseif ($Episodes->series_access == 'registered') 
+                                       <td >{{ "Registered" }} </td>
+                                    @elseif ($Episodes->series_access == 'subscriber') 
+                                       <td >{{ "Subscriber" }} </td>
+                                    @elseif ($Episodes->series_access == 'ppv' || $Episodes->series_seasons_access == 'ppv' ) 
+                                        <td >{{ "PPV" }} </td>
+                                    @endif
+
+                                    <!-- <td> {{ $Episodes->access }} </td> -->
                                     <td> {{ 'Episodes'}} </td>
                                        
                                     <td>
