@@ -591,7 +591,7 @@ function current_timezone()
         $current_timezone = App\Setting::pluck('default_time_zone')->first();
     }
 
-    return $current_timezone;
+    return $current_timezone['timezone'];
 }
 
 function Country_name(){
