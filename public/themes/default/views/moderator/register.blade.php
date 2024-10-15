@@ -47,7 +47,7 @@ $system_settings = App\SystemSetting::find(1);
                       <form action="{{ URL::to('cpp/moderatoruser/store') }}" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->username)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->username == 1)
                                 <div class="col-md-12 p-0">
                                     <input id="username" type="text"  class="form-control alphaonly  @error('name') is-invalid @enderror" name="username" value="{{ old('name') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
                                     @error('username')
@@ -58,7 +58,7 @@ $system_settings = App\SystemSetting::find(1);
                                 </div>
                             @endif
 
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->email)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->email == 1)
                                 <div class="col-md-12 p-0">
                                     <input id="email_id" type="email" placeholder="{{ __('Email Address') }}"  class="form-control @error('email_id') is-invalid @enderror" name="email_id" value="{{ old('email_id') }}" required autocomplete="off">
                                     @error('email')
@@ -69,7 +69,7 @@ $system_settings = App\SystemSetting::find(1);
                                 </div>
                             @endif
 
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->mobile)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->mobile == 1)
                                 <div class="col-md-12 p-0">
                                     <div class="row">
                                         <div class="col-sm-5 ">
@@ -94,21 +94,21 @@ $system_settings = App\SystemSetting::find(1);
                             @endif
                                 
                                 
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->image)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->image == 1)
                                 <div class="col-md-12 p-0 text-left">
                                     <label for="" style="color: white;">{{ __('Upload Picture') }}  :</label>
                                     <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="picture" id="picture" />
                                 </div>
                             @endif
 
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->upload_video)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->upload_video == 1)
                                 <div class="col-md-12 p-0 text-left">
                                     <label for="" style="color: white;">{{ __('Upload your best work') }}  :</label>
                                     <input type="file" multiple="true" class="form-control" style="padding: 0px;" accept="video/mp4,video/x-m4v,video/*" name="intro_video" id="intro_video" />
                                 </div>
                             @endif
 
-                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password)
+                            @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password == 1)
                                 <div class="col-md-12 p-0">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -131,7 +131,7 @@ $system_settings = App\SystemSetting::find(1);
                         </div>
                     @endif
 
-                    @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password_confirm)
+                    @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->password_confirm == 1)
                         <div class="col-md-12 p-0">
                             <div class="row">
                                 <div class="col-md-12">
