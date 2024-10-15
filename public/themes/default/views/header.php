@@ -280,6 +280,7 @@
 
    <!-- js -->
    <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
+   <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery.lazy.min.js');?>" as="script">
 
    <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
 
@@ -290,6 +291,7 @@
 
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
 
+   <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" as="style">
    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
 
 
@@ -458,6 +460,9 @@
       body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme .navbar-collapse{
+         background: <?php echo $GetDarkBg; ?>!important;
+      }
       body.dark-theme header .navbar ul li.menu-item a{
          color: <?php echo $GetDarkText; ?>!important;
       }
@@ -623,7 +628,11 @@
    @media (min-width:801px) { li.logout_mobile_view.menu-item{
       display:none !important;
    } }
-
+   @media (max-width: 991px) {
+      header .navbar ul li.menu-item a {
+         border-top: 1px solid <?php echo $GetDarkText; ?>!important;
+      }
+   }
    .navbar-right .transdropdownlist{
       width:150px;
    }
@@ -634,6 +643,7 @@
          right: 5px;
          position: relative;
       }
+      .navbar-toggler{border:none;}
 
    </style>
 
@@ -674,10 +684,8 @@
                      <a href="#" class="navbar-toggler c-toggler" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <div class="navbar-toggler-icon" data-toggle="collapse">
-                           <span class="navbar-menu-icon navbar-menu-icon--top"></span>
-                           <span class="navbar-menu-icon navbar-menu-icon--middle"></span>
-                           <span class="navbar-menu-icon navbar-menu-icon--bottom"></span>
+                        <div class="navbar-toggler" data-toggle="collapse">
+                           <i class="fa fa-bars" aria-hidden="true"></i>
                         </div>
                      </a>
                      <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
@@ -756,7 +764,7 @@
                         <button type="button" class="navbar-toggler c-toggler p-0 border-0" data-toggle="collapse"
                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                            aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border-top: none; float:right">
-                              <i class="fa fa-times" style="font-size: 20px;color: white;"></i>
+                              <i class="fa fa-times" style="font-size: 20px;"></i>
                         </button>
                         </div>
                      <!-- </a> -->
@@ -971,10 +979,10 @@
                                  <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
                                     <!-- <div class="row "> -->
                                     
-                                 <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>">
+                                 <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('/logout'); ?>" style="color:#fff !important;">
                                           <?php echo __('Logout');?>
                                                    </a> </li>
-                                    <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>">
+                                    <li class="logout_mobile_view menu-item col-sm-6 myp"><a class="btn btn-primary" href="<?php echo URL::to('myprofile') ?>" style="color:#fff !important;">
                                                    <?php echo __('My Profile');?>
                                                 </a> </li>
                                  </div>

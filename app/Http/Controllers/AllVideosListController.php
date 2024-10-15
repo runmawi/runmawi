@@ -443,6 +443,8 @@ class AllVideosListController extends Controller
 
             $OrderHomeSetting = OrderHomeSetting::get(); 
 
+            $FrontEndQueryController = new FrontEndQueryController();
+
 
              // Fetch all ContinueWatching videos list
                 
@@ -485,14 +487,19 @@ class AllVideosListController extends Controller
                     ['path' => request()->url()]
                 );
 
+                $Video_cnt         = $FrontEndQueryController->VideoJsContinueWatching();
+                $episode_cnt         = $FrontEndQueryController->VideoJsEpisodeContinueWatching();
+
             $respond_data = array(
-                'videos'    => $videos,
-                'ppv_gobal_price'  => $this->ppv_gobal_price,
-                'currency'         => CurrencySetting::first(),
-                'ThumbnailSetting' => ThumbnailSetting::first(),
+                'Video_cnt'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                'episode_cnt'           => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                'ppv_gobal_price'       => $this->ppv_gobal_price,
+                'currency'              => CurrencySetting::first(),
+                'ThumbnailSetting'      => ThumbnailSetting::first(),
             );
+            // dd($Video_cnt);
     
-            return Theme::view('All-Videos.ContinueWatchingList',['respond_data' => $respond_data]);
+            return Theme::view('All-Videos.ContinueWatchingList', $respond_data);
 
         } catch (\Throwable $th) {
             // return $th->getMessage();

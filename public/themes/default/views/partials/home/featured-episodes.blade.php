@@ -82,15 +82,19 @@
 @endif
 
 <script>
-  var elem = document.querySelector('.featured-episodes');
-  var flkty = new Flickity(elem, {
-      cellAlign: 'left',
-      contain: true,
-      groupCells: true,
-      pageDots: false,
-      draggable: true,
-      freeScroll: true,
-      imagesLoaded: true,
-      lazyload:true,
-  });
+    var elem = document.querySelector('.featured-episodes');
+    if (elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: true,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyload: true,
+        });
+    } else { 
+        console.error("Carousel element not found"); 
+    }
 </script>

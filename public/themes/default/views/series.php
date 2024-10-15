@@ -137,6 +137,11 @@
             max-width: 1400px !important;
         }
   }
+  @media(max-width:720px){
+    div#video-js-trailer-player {
+        height: 25vh !important;
+    }
+  }
 
    
   /* payment modal */
