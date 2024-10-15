@@ -67,7 +67,6 @@ border-radius: 0px 4px 4px 0px;
                 <h4><i class="entypo-video"></i> {{ $inputs_details_array['text_main_name']  }}</h4>
                 
 			</div>
-			@dd($inputs_details_array);
 			@if (Session::has('message'))
 				<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
 			@endif
