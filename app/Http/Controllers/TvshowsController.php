@@ -266,7 +266,7 @@ class TvshowsController extends Controller
             return $this->VideoCipher_Episode($series_name, $episode_name,$plan);
         }
 
-        // try {
+        try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $ppv_series_description = Setting::pluck('series')->first();
@@ -1071,11 +1071,11 @@ class TvshowsController extends Controller
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
         }
     
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
     
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+            return $th->getMessage();
+            return abort(404);
+        }
     }
     
     public function handleViewCount($id)
