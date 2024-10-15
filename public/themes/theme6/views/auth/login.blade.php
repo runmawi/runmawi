@@ -7,104 +7,87 @@
 ?>
 <html>
 <head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Login | <?php echo $settings->website_name ; ?></title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login | <?php echo $settings->website_name ; ?></title>
        <!--<script type="text/javascript" src="<?php echo URL::to('/').'/assets/js/jquery.hoverplay.js';?>"></script>-->
-<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
       <!-- Favicon -->
-      <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
+    <link rel="shortcut icon" href="<?= URL::to('/'). '/public/uploads/settings/' . $settings->favicon; ?>" />
       <!-- Bootstrap CSS -->
     <link rel="preload" href="assets/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
-      <link rel="stylesheet" href="" />
-      <!-- Typography CSS -->
-      <link rel="stylesheet" href="<?= typography_link()?>" />
-      <!-- Style -->
-      <link rel="stylesheet" href="<?= style_sheet_link()?>" />
-      <!-- Responsive -->
-      <link rel="stylesheet" href="assets/css/responsive.css" />
- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-  </script>
+    <noscript><link rel="stylesheet" href="assets/css/bootstrap.min.css"></noscript>
+    <link rel="stylesheet" href="" />
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<?= typography_link()?>" />
+    <!-- Style -->
+    <link rel="stylesheet" href="<?= style_sheet_link()?>" />
+    <!-- Responsive -->
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
-  </script>
+    </script>
+
 <style>
-.reveal{
-margin-left: -57px;
-height: 45px !important;
-background: #ED553B !important;
-color: #fff !important;
-position: absolute;
-right: 0px;
-border-radius: 0!important;
-top: -61px;
-}
-.sign-in-page{background:none;}
-.sign-in-page .btn{
-border-radius: 0!important;
-}
-h3 {font-size: 30px!important;}
-.from-control::placeholder{
-color: #7b7b7b!important;
-}
-.links{
-color: #fff;
-}
-.nv{
-font-size: 14px;
-color: #fff;
-margin-top: 25px;
-}
-.km{
-text-align:center;
-font-size: 75px;
-font-weight: 900;
-}
-.signcont {
-}
-a.f-link {
-margin-bottom: 1rem;
-font-size: 14px;
-}
-.d-inline-block {
-display: block !important;
-}
-i.fa.fa-google-plus {
-padding: 10px !important;
-}
-.demo_cred {
-background: #5c5c5c69;
-padding: 15px;
-border-radius: 15px;
-border: 2px dashed #51bce8;
-text-align: left;
-}  
-.sign-user_card .row.justify-content-center {
-    padding: 21px;
-    background-color: #111111;
-    border-radius: 15px;
-    margin-top: 2rem;
-}
-.sign-user_card {
-    width: 40%;
-    background: none;
-}
-.sign-user_card .row.justify-content-center {
-    padding: 21px;
-    background-color: #111111;
-    border-radius: 15px;
-    margin-top: 2rem;
-}
-.sign-user_card input {
-    background-color: #000 !important;
-    border: none !important;
-}  
+    .reveal{margin-left:-68px;height:45px!important;background:#ED553B!important;color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px}
+    .sign-in-page .btn{border-radius:0!important}
+    h3{font-size:30px!important}
+    .from-control::placeholder{color:#7b7b7b!important}
+    .links{color:#fff}
+    .nv{font-size:14px;color:#fff;margin-top:25px}
+    .km{text-align:center;font-size:75px;font-weight:900}
+    a.f-link{margin-bottom:1rem;font-size:14px}
+    .d-inline-block{display:block!important}
+    i.fa.fa-google-plus{padding:10px!important}
+    .demo_cred{background:#5c5c5c69;padding:15px;border-radius:15px;border:2px dashed #51bce8;text-align:left}
+    .sign-user_card .row.justify-content-center{padding:21px;background-color:#111;border-radius:15px;margin-top:2rem}
+    .sign-user_card{width:40%;background:none}
+    .sign-user_card input{background-color:#000!important;border:none!important}
+    .sign-in-page{background:none}
+    button.btn.btn-default.reveal{background:transparent!important}
+    .sign-in-page .btn{padding:5px}
+    button.btn.btn-default.reveal{margin-right:15px}
+    iframe{height:60px}
+    @media (max-width:992px) {
+    .sign-user_card{width:80%}
+    }
+    @media (max-width:768px) {
+    .sign-user_card{width:80%}
+    }
+    @media screen and (max-width: 767px) {
+    .col-md-4.recaptcha{width:100%}
+    }
+    @media (max-width:600px) {
+    .sign-user_card{width:85%}
+    }
+    @media (max-width:530px) {
+    h4{font-size:15px}
+    a.f-link{font-size:12px}
+    }
+    @media (max-width:425px) {
+    img.apps{width:150px}
+    }
+    @media screen and (min-width: 768px) and (max-width: 991px) {
+    .col-md-4.recaptcha{width:50%}
+    }
+    @media screen and (min-width: 992px) {
+    .col-md-4.recaptcha{width:33.33%}
+    }
+    @media screen and (max-width: 370px) {
+    iframe{width:70%}
+    }
+    body{font-family:'Sen',sans-serif!important}
+    h1,h2,h3,h4,h5,h6,p{font-family:'Sen',sans-serif!important}
+    .sign-in-page{background-color: #000;}
+        
 </style>
-    </head>
+
+  
+</head>
 
 <body>
 <section class="sign-in-page" >
@@ -127,7 +110,7 @@ text-align: left;
                                 <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:0.3rem;"></div></div>
                             <?php } ?>
                         <div class="row justify-content-center">
-                            <h4 class="title"><?= 'Login to your '. $settings->website_name . ' account' ?></h4>
+                            <h4 class="title"><?= 'Login to your '. $settings->website_name . ' Account' ?></h4>
                             <div class="col-md-12">
                                 <?php if($settings->demo_mode == 1) { ?>
                                     <div class="demo_cred">

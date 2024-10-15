@@ -241,7 +241,7 @@ input[type=number]::-webkit-outer-spin-button {
 
                       <div align="center">
 
-                          <h4 class="mb-3 text-center"><?= 'Sign up to your '. $settings->website_name. ' account' ?></h4>
+                          <h4 class="mb-3 text-center"><?= 'Signup to your '. $settings->website_name. ' Account' ?></h4>
                       </div>
                       <form onsubmit="return ValidationEvent()" action="<?php if (isset($ref) ) { echo URL::to('/').'/register1?ref='.$ref.'&coupon='.$coupon; } else { echo URL::to('/').'/register1'; } ?>" method="POST" id="stripe_plan" class="stripe_plan" name="member_signup" enctype="multipart/form-data">
                         @csrf
