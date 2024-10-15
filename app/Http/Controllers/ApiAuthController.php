@@ -3089,10 +3089,11 @@ public function verifyandupdatepassword(Request $request)
 
       $validator = Validator::make($request->all(), [
                     'liveid' => 'required', 
-                    'user_id' => 'required'],
+                    // 'user_id' => 'required'
+                  ],
                     [
                       'liveid.required'  => 'Please enter your liveid',
-                      'user_id.required' => 'Please enter your user_id',
+                      // 'user_id.required' => 'Please enter your user_id',
                     ]);
 
       if ($validator->fails()) {
