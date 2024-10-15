@@ -68,16 +68,16 @@ border-radius: 0px 4px 4px 0px;
                 
 			</div>
 			@if (Session::has('message'))
-                       <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
-                        @endif
-                        @if(count($errors) > 0)
-                        @foreach( $errors->all() as $message )
-                        <div class="alert alert-danger display-hide" id="successMessage" >
-                        <button id="successMessage" class="close" data-close="alert"></button>
-                        <span>{{ $message }}</span>
-                        </div>
-                        @endforeach
-                        @endif
+				<div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+			@endif
+			@if(count($errors) > 0)
+				@foreach( $errors->all() as $message )
+					<div class="alert alert-danger display-hide" id="successMessage" >
+						<button id="successMessage" class="close" data-close="alert"></button>
+						<span>{{ $message }}</span>
+					</div>
+				@endforeach
+			@endif
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
                 <a href="{{ route( $inputs_details_array['create_route'] ) }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Add New</a>
