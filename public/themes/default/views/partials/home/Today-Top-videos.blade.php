@@ -44,7 +44,10 @@
                             <h6 class="text-white"> {{ $data->duration !=null ? Carbon\CarbonInterval::seconds($data->duration)->cascade()->format('%im %ss') : null }}
                             </h6>
                         </div>
-                        <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
+                        @if($ThumbnailSetting->enable_description == 1)
+                            <p> {!! html_entity_decode( optional($data)->description ) !!}</p>
+                        @endif
+                        
                         <div class="parallax-buttons">
                             <a href="{{ URL::to('category/videos/'.$data->slug ) }}" class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>Play Now</a>
                         </div>

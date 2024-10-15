@@ -52,9 +52,11 @@
                                                             </p>
                                                          @endif
 
-                                                         <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : strip_tags($Categories->description) }}
-                                                         </p>
+                                                         @if($ThumbnailSetting->enable_description == 1)
+                                                            <p class="desc-name text-left m-0 mt-1">
+                                                               {{ strlen($Categories->description) > 75 ? substr(html_entity_decode(strip_tags($Categories->description)), 0, 75) . '...' : strip_tags($Categories->description) }}
+                                                            </p>
+                                                         @endif
 
                                                    </a>
                                                    <a class="epi-name mt-2 mb-0 btn" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">

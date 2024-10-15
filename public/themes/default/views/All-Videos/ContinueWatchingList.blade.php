@@ -70,9 +70,12 @@
                                           {{ strlen($cont_video->title) > 17 ? substr($cont_video->title, 0, 18) . '...' : $cont_video->title }}
                                        </p>
                                     @endif
-                                    <p class="desc-name text-left m-0 mt-1">
-                                       {{ strlen($cont_video->description) > 75 ? substr(html_entity_decode(strip_tags($cont_video->description)), 0, 75) . '...' : strip_tags($cont_video->description) }}
-                                    </p>
+
+                                    @if($ThumbnailSetting->enable_description == 1)
+                                       <p class="desc-name text-left m-0 mt-1">
+                                          {{ strlen($cont_video->description) > 75 ? substr(html_entity_decode(strip_tags($cont_video->description)), 0, 75) . '...' : strip_tags($cont_video->description) }}
+                                       </p>
+                                    @endif
                                     <div class="movie-time d-flex align-items-center pt-1">
                                        @if($ThumbnailSetting->age == 1 && !($cont_video->age_restrict == 0))
                                           <!-- Age -->
