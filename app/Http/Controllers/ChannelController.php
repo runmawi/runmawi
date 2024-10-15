@@ -4869,10 +4869,10 @@ class ChannelController extends Controller
 
                                 // free PPV access for subscriber status Condition
 
-                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+                        // if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
 
-                            $PPV_exists = false ;
-                        }
+                        //     $PPV_exists = false ;
+                        // }
 
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
