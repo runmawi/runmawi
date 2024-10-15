@@ -35,7 +35,6 @@
                                                                 {{ strlen($featured_episodes->title) > 17 ? substr($featured_episodes->title, 0, 18) . '...' : $featured_episodes->title }}
                                                             </p>
                                                         @endif
-
                                                         @if($ThumbnailSetting->enable_description == 1)
                                                             <p class="desc-name text-left m-0 mt-1">
                                                                 {{ strlen($featured_episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($featured_episodes->episode_description)), 0, 75) . '...' : strip_tags($featured_episodes->episode_description) }}
@@ -85,19 +84,15 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.featured-episodes');
-    if (elem) {
-        var flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: true,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyload: true,
-        });
-    } else { 
-        console.error("Carousel element not found"); 
-    }
+  var elem = document.querySelector('.featured-episodes');
+  var flkty = new Flickity(elem, {
+      cellAlign: 'left',
+      contain: true,
+      groupCells: true,
+      pageDots: false,
+      draggable: true,
+      freeScroll: true,
+      imagesLoaded: true,
+      lazyload: true,
+  });
 </script>
