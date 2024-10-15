@@ -19,6 +19,7 @@
   <!-- JS -->
 
   <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
      .black{
         color: #000;
@@ -35,7 +36,7 @@
 
     .dz-progress{  
       opacity: 1 !important;
-      background: #0993d2 !important;
+      /* background: #0993d2 !important; */
       top: 82% !important;
       font-weight: 800 !important;
       font-size: 10px;
@@ -92,9 +93,7 @@
           acceptedFiles: "video/mp4,video/x-m4v,video/*"
       });
   
-      // Add progress event listener
       myDropzone.on("uploadprogress", function(file, progress) {
-          // Target the automatically created dz-progress div and update its content
           var progressDiv = file.previewElement.querySelector(".dz-progress");
           if (progressDiv) {
               progressDiv.innerHTML = Math.round(progress) + "%";
@@ -107,13 +106,18 @@
       });
   
       myDropzone.on("success", function(file, response) {
-          if (response.episode_id == Episodeid) {
-              swal("Episode Update Successful!");
-              window.location.href = "/season/edit/" + series_id + "/" + season_id;
-          }
-      });
+        if (response.Episode_id == Episodeid) {
+            // Use SweetAlert2 for the alert
+            Swal.fire({
+                title: "Episode Update Successful!",
+                icon: "success"
+            }).then(() => {
+              window.history.back();
+            });
+        }
+    });
   </script>
-
+  
   </body>
 </html>
 
