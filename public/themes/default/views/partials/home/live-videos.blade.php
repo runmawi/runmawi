@@ -167,7 +167,7 @@
             pageDots: false,
             draggable: true,
             freeScroll: true,
-            imagesLoaded: false,
+            imagesLoaded: true,
             lazyload: true,
         });
     } else {
