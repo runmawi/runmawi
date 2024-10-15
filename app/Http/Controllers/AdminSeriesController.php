@@ -2162,7 +2162,7 @@ class AdminSeriesController extends Controller
 
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
-            $episodes->access =  $data['access'];
+            // $episodes->access =  $data['access'];
             $episodes->active =  $active;
             $episodes->search_tags =  $searchtags;
             $episodes->player_image =  $player_image;
