@@ -619,6 +619,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/epg/create', 'AdminEPGController@create')->name('admin.epg.create');
     Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
     Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
+    Route::get('/epg/download-json/{id}', 'AdminEPGController@downloadJson')->name('admin.download.json');
+
+    
     
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
