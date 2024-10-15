@@ -13,23 +13,34 @@
     <!-- CSS -->
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}">
+    <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="{{asset('dropzone/dist/min/dropzone.min.css')}}" />
 
-    <!-- JS -->
-    
-    <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
+  <!-- JS -->
+
+  <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
 <style>
      .black{
         color: #000;
         background: #f2f5fa;
         padding: 20px 20px;
-border-radius: 0px 4px 4px 0px;
+        border-radius: 0px 4px 4px 0px;
     }
     .black:hover{
         background: #fff;
          padding: 20px 20px;
         color: rgba(66, 149, 210, 1);
 
+    }
+
+    .dz-progress{  
+      opacity: 1 !important;
+      background: #0993d2 !important;
+      top: 82% !important;
+      font-weight: 800 !important;
+      font-size: 10px;
+      height: 14px !important;
+      text-align: center;
     }
 
       </style>
@@ -56,8 +67,8 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
             <div class="row">
                   <div class='content' id="video_upload" style="margin-left: 36%;">
-                <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
-                </form> 
+                    <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
+                    </form> 
                 </div> 
              </div>
         </div>
@@ -70,26 +81,38 @@ border-radius: 0px 4px 4px 0px;
  
     <!-- Script -->
     <script>
-    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-    var Episodeid = '<?= $videos->id ?>' ;
-
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone(".dropzone",{ 
-        maxFilesize: 150000000,
-        acceptedFiles: "video/mp4,video/x-m4v,video/*",
-    });
-    myDropzone.on("sending", function(file, xhr, formData) {
-        formData.append('Episodeid',Episodeid);
-       formData.append("_token", CSRF_TOKEN);
-       this.on("success", function(file, value) {
-          
-         if(value.episode_id == Episodeid){
-                     swal("Episode Update Successfull !");
-                  }
-         
-        });
-    }); 
-    </script>
+      var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+      var Episodeid = '<?= $videos->id ?>';
+      var series_id = '<?= $videos->series_id ?>';
+      var season_id = '<?= $videos->season_id ?>';
+  
+      Dropzone.autoDiscover = false;
+      var myDropzone = new Dropzone(".dropzone", {
+          maxFilesize: 150000000,
+          acceptedFiles: "video/mp4,video/x-m4v,video/*"
+      });
+  
+      // Add progress event listener
+      myDropzone.on("uploadprogress", function(file, progress) {
+          // Target the automatically created dz-progress div and update its content
+          var progressDiv = file.previewElement.querySelector(".dz-progress");
+          if (progressDiv) {
+              progressDiv.innerHTML = Math.round(progress) + "%";
+          }
+      });
+  
+      myDropzone.on("sending", function(file, xhr, formData) {
+          formData.append('Episodeid', Episodeid);
+          formData.append("_token", CSRF_TOKEN);
+      });
+  
+      myDropzone.on("success", function(file, response) {
+          if (response.episode_id == Episodeid) {
+              swal("Episode Update Successful!");
+              window.location.href = "/season/edit/" + series_id + "/" + season_id;
+          }
+      });
+  </script>
 
   </body>
 </html>
