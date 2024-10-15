@@ -340,8 +340,8 @@ class AdminDashboardController extends Controller
 
                 $audios = Audio::orderBy('created_at', 'DESC')->get();
 
-                $Episode = Episode::Select('episodes.*','series.title as series_title')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
-                            ->orderBy('created_at', 'DESC')->get();
+                $Episode = Episode::Select('episodes.*','series.title as series_title','series.access as series_access','series_seasons.access as series_seasons_access')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
+                            ->leftjoin('series_seasons', 'series_seasons.id', '=', 'episodes.season_id')->orderBy('created_at', 'DESC')->get();
 
                 $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
 
