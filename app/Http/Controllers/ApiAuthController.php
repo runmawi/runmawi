@@ -18780,7 +18780,7 @@ public function QRCodeMobileLogout(Request $request)
       $response = array(
         'status' => "true",
         'videos'=> $videos,
-        'episode_videos'=> $episode_videos,
+        'episodes'=> $episode_videos,
       );
     }else if ( $video_ids_count  > 0 || $episode_ids_count  > 0) {
 
@@ -18810,7 +18810,7 @@ public function QRCodeMobileLogout(Request $request)
       $response = array(
         'status' => "true",
         'videos'=> $videos,
-        'episode_videos'=> $episode_videos,
+        'episodes'=> $episode_videos,
       );
     }elseif ( $andrio_video_ids_count  > 0  || $andrio_episode_ids_count  > 0 ) {
 
@@ -18841,13 +18841,13 @@ public function QRCodeMobileLogout(Request $request)
       $response = array(
         'status' => "true",
         'videos'=> $videos,
-        'episode_videos'=> $episode_videos,
+        'episodes'=> $episode_videos,
       );
     }else{
       $response = array(
         'status' => "false",
         'videos'=> [],
-        'episode_videos'=> [],
+        'episodes'=> [],
       );
     }
 
