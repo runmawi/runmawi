@@ -18758,10 +18758,10 @@ public function QRCodeMobileLogout(Request $request)
 
 
       foreach ($EpisodeContinueWatching as $key => $Episodevalue1) {
-        $k2[] = $Episodevalue1['episodeid'];
+        $k1[] = $Episodevalue1['episodeid'];
       }
 
-      $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
         $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
@@ -18791,10 +18791,10 @@ public function QRCodeMobileLogout(Request $request)
       });
 
       foreach ($episode_ids as $key => $Episodevalue1) {
-        $k2[] = $Episodevalue1['episodeid'];
+        $k1[] = $Episodevalue1['episodeid'];
       }
 
-      $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
         $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
@@ -18822,10 +18822,10 @@ public function QRCodeMobileLogout(Request $request)
 
 
       foreach ($andrio_episode_ids as $key => $Episodevalue1) {
-        $k2[] = $Episodevalue1['episodeid'];
+        $k1[] = $Episodevalue1['episodeid'];
       }
 
-      $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
         $item['andriod_watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
@@ -22143,10 +22143,10 @@ public function Android_ShowVideo_wishlist(Request $request)
     
 
     foreach ($EpisodeWishlist as $key => $Episodevalue1) {
-      $k2[] = $Episodevalue1['episode_id'];
+      $k1[] = $Episodevalue1['episode_id'];
     }
 
-    $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
       $item['source'] = 'episode';
@@ -22170,10 +22170,10 @@ public function Android_ShowVideo_wishlist(Request $request)
     });
 
     foreach ($andriod_Wishlist_episode_ids as $key => $Episodevalue1) {
-      $k2[] = $Episodevalue1['episode_id'];
+      $k1[] = $Episodevalue1['episode_id'];
     }
 
-    $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
       $item['source'] = 'episode';
@@ -22197,10 +22197,10 @@ public function Android_ShowVideo_wishlist(Request $request)
     });
 
     foreach ($andriod_episode_ids as $key => $Episodevalue1) {
-      $k2[] = $Episodevalue1['episode_id'];
+      $k1[] = $Episodevalue1['episode_id'];
     }
 
-    $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
       $item['source'] = 'episode';
@@ -22918,10 +22918,10 @@ public function Android_ShowVideo_favorite(Request $request) {
         });
         
           foreach ($EpisodeFavorite as $key => $Episodevalue1) {
-            $k2[] = $Episodevalue1['episode_id'];
+            $k1[] = $Episodevalue1['episode_id'];
           }
 
-          $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item) {
+          $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
             $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
             $item['source'] = 'episode';
@@ -22948,10 +22948,10 @@ public function Android_ShowVideo_favorite(Request $request) {
         });
         
         foreach ($user_favorite_episode_ids as $key => $Episodevalue1) {
-          $k2[] = $Episodevalue1['episode_id'];
+          $k1[] = $Episodevalue1['episode_id'];
         }
         
-        $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item) {
+        $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
           $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
           $item['source'] = 'episode';
@@ -22978,10 +22978,10 @@ public function Android_ShowVideo_favorite(Request $request) {
         
                 
         foreach ($andriod_favorite_episode_ids as $key => $Episodevalue1) {
-          $k2[] = $Episodevalue1['episode_id'];
+          $k1[] = $Episodevalue1['episode_id'];
         }
         
-        $episode_videos = Episode::whereIn('id',$k2)->orderBy('episode_order')->get()->map(function ($item) {
+        $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
           $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
           $item['source'] = 'episode';
