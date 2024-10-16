@@ -68,10 +68,11 @@
                       <p class="epi-name text-left m-0 mt-2">
                           <?= strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title ?>
                       </p>
-                 
-                      <p class="desc-name text-left m-0 mt-1">
-                            <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
-                        </p>
+                        <?php if($ThumbnailSetting->enable_description == 1 ) : ?>
+                            <p class="desc-name text-left m-0 mt-1">
+                                <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                            </p>
+                        <?php endif; ?>
 
                   <div class="movie-time d-flex align-items-center pt-1">
                     <?php if($ThumbnailSetting->age == 1 && !($episodes->age_restrict == 0)): ?>

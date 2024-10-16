@@ -447,10 +447,10 @@
       }
       /* Rounded sliders */
       .sliderk.round {
-      border-radius: 34px;
+         border-radius: 34px;
       }
       .sliderk.round:before {
-      border-radius: 50%;
+         border-radius: 50%;
       }
       /* Dark mode and light Mode */
          
@@ -464,6 +464,15 @@
          background: <?php echo $GetDarkBg; ?>!important;
       }
       body.dark-theme header .navbar ul li.menu-item a{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme a, body.dark-theme p{
+         color: <?php echo $GetDarkText; ?>;
+      }
+      body.dark-theme .share-icons.music-play-lists li span i{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme ol.breadcrumb{
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme .sliderk{
@@ -513,6 +522,9 @@
       }
       body.light-theme .copyright{
       background-color: <?php echo $GetLightBg; ?>;
+      color: <?php echo $GetLightText; ?>;
+      }
+      body.light-theme .dropdown-item.cont-item{
       color: <?php echo $GetLightText; ?>;
       }
       body.light-theme .s-icon{
