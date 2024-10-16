@@ -21223,53 +21223,78 @@ public function Android_ContinueWatchingExits(Request $request)
   $video_id = $request->video_id;
   $user_id = $request->user_id;
   $andriodId = $request->andriodId;
+  $episodeid = $request->episode_id;
   if(!empty($user_id)){
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
+    $ContinueWatchingVideoCount = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->count();
+    $ContinueWatchingEpisodeCount = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->count();
 
   }else{
-    $ContinueWatching = 0;
+    $ContinueWatchingVideoCount = 0;
+    $ContinueWatchingEpisodeCount = 0;
   }
 
   if(!empty($andriodId)){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->count();
-  }else{
-    $Android_ContinueWatching = 0;
-  }
+    $Android_ContinueWatchingVideoCount = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->count();
+    $Android_ContinueWatchingEpisodeCount = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->count();
 
-  if($Android_ContinueWatching > 0 && $ContinueWatching > 0){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  }else{
+    $Android_ContinueWatchingVideoCount = 0;
+    $Android_ContinueWatchingEpisodeCount = 0;
+  }
+  
+  if($Android_ContinueWatchingVideoCount > 0 && $ContinueWatchingVideoCount > 0 || $Android_ContinueWatchingEpisodeCount > 0 && $ContinueWatchingEpisodeCount > 0){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->get();
+
+    $ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $Android_ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+
     $response = array(
       'status' => 'true',
-      'User_status' => 'true',
-      'Android_status' => 'true',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => $ContinueWatching,
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => $Android_ContinueWatchingEpisode,
+      'ContinueWatchingEpisode' => $ContinueWatchingEpisode,
     );
-  }elseif($Android_ContinueWatching > 0 ){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  }elseif($Android_ContinueWatchingVideoCount > 0 || $Android_ContinueWatchingEpisodeCount > 0 ){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+    $Android_ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
     $response = array(
       'status' => 'true',
-      'User_status' => 'false',
-      'Android_status' => 'true',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => [],
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => $Android_ContinueWatchingEpisode,
+      'ContinueWatchingEpisode' => [],
     );
-  }elseif($ContinueWatching > 0){
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  }elseif($ContinueWatchingVideoCount > 0 || $ContinueWatchingEpisodeCount > 0){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $response = array(
       'status' => 'true',
-      'User_status' => 'true',
-      'Android_status' => 'false',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => [],
       'ContinueWatching' => $ContinueWatching,
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => [],
+      'ContinueWatchingEpisode' => $ContinueWatchingEpisode,
     );
   }else{
     $response = array(
       'status' => 'false',
-      'User_status' => 'false',
-      'Android_status' => 'false',
+      'User_Video_status' => 0,
+      'Android_Video_status' => 0,
+      'User_Episode_status' => 0,
+      'Android_Episode_status' => 0,
       // 'ContinueWatching' => "video has been added"
     );
   }
