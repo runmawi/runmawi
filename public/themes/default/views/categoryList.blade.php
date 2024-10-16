@@ -2,7 +2,7 @@
     include(public_path('themes/default/views/header.php'));
 @endphp
     
-<section id="iq-favorites" style="display: grid; grid-template-rows: 1fr auto; min-height: 100vh;" >
+<section id="iq-favorites" style="display: grid; grid-template-rows: 1fr auto; " >
     <div class="container-fluid" style=" overflow-y: auto; !important"  >
         <div class="row">
             <div class="col-sm-12 page-height">
