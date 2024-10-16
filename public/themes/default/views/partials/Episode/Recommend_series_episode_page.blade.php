@@ -62,9 +62,11 @@
                             <p class="epi-name text-left m-0 mt-2">
                                 <?php echo __($series_list->title); ?>
                             </p>
+                            <?php if($ThumbnailSetting->enable_description == 1 ) : ?>
                                 <p class="desc-name text-left m-0 mt-1">
                                     <?= strlen($series_list->description) > 75 ? substr(html_entity_decode(strip_tags($series_list->description)), 0, 75) . '...' : strip_tags($series_list->description) ?>
                                 </p>
+                            <?php endif; ?>
                             <div class="movie-time d-flex align-items-center my-2">
 
                                 <?php if($ThumbnailSetting->age == 1 && !($series_list->age_restrict == 0)): ?>
