@@ -51,6 +51,7 @@ class ModeratorsUserTableSeeder extends Seeder
                 'status' => '1' ,
                 'picture' => 'Default.png' ,
                 'user_role' => '3' ,
+                'commission_percentage' => 60,
                 'user_permission'  => '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16',
                 'activation_code' => null,
                 'created_at' => Carbon::now(),
