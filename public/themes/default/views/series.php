@@ -127,7 +127,8 @@
     .modal {
         top: 2%;
     }
-    div#myImage{height: calc(100vh - 260px);}
+    div#myImage{height: auto;}
+    #descriptionContainer p{color:#fff;margin:0;}
     div#video-js-trailer-player{height:65vh !important;}
     @media (min-width: 1400px) and (max-width: 2565px) {
       div#video-js-trailer-player {
@@ -238,7 +239,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                            
 
                                 <?php
-                                  $description = $series->description;
+                                  $description = $series->details;
 
                                   if (strlen($description) > 200) {
                                       $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
@@ -249,6 +250,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                                   <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
                                       <?php echo $shortDescription; ?>
+                                  </div>
+
+                                  <div class="details-show mt-3">
+                                    <span><?= nl2br($series->description) ?></span>
                                   </div>
 
                                     <script>
@@ -274,8 +279,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <div class="d-flex p-0 mt-3 align-items-center" style="gap:3rem;">
                                 <?php if(!empty($season->first()->trailer)) {?>
                                   <div class="trailerbutton">  
-                                      <a data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
-                                        <img class="ply" src="<?= URL::to('assets/img/default_play_buttons.svg') ;  ?>" alt="ply"/>
+                                      <a class="btn" data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
+                                        <?= __("Play Trailer") ?>
                                       </a>
                                     </div>
                                   <?php } ?>
