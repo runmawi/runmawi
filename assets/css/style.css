@@ -840,6 +840,7 @@ li.slide-item.slick-current .block-description{display:none!important}
 li.slide-item.slick-current:hover .block-images,li.slide-item:hover .block-images,li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active:hover .block-images,li.slide-item.slick-active + li.slide-item.slick-active + li.slide-item.slick-active:hover .block-images{transform:none}
 .type{padding:9px 10px;font-size:13px}
 #home-slider .container-fluid.position-relative.h-100{ background: none;}
+.no-more-cont{font-size: 20px;}
 }
 @media (max-width:767px) {
 .parallax-window{padding:60px 0}
