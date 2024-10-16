@@ -89,6 +89,23 @@ class AdminEPGController extends Controller
         }
     }
 
+    public function downloadJson($id)
+    {
+        $data = AdminEPG::where('id',$id)->where('status', 1)->latest()->get()->map(function ($item) {
+            $item['channel_name'] = AdminEPGChannel::where('id', $item->epg_channel_id)->pluck('name')->first();
+            return $item;
+        });
+
+        $jsonData = json_encode($data);
+        
+        $fileName = $id.'-EPG-'. date('d/m/y') . '.json';
+
+        return Response::make($jsonData, 200, [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ]);
+    }
+
     public function create()
     {
         $user =  User::where('id',1)->first();
