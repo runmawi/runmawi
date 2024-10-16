@@ -35,7 +35,7 @@
                 <p>
                     @foreach ($sources_data['livestream'] as $item)
                         <div class="collection">
-                            <a class="collection-item" href="{{ route('producer.stats',['live_stream', $item->id]) }}"> {{ @$item->title }}  </a>
+                            <a class="collection-item" href="{{ route('producer.stats',['livestream', $item->id]) }}"> {{ @$item->title }}  </a>
                             <br>
                         </div>
                     @endforeach

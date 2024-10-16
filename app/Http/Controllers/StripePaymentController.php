@@ -643,7 +643,6 @@ class StripePaymentController extends Controller
                     $moderators_id = $video->user_id;
                 }
 
-
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;

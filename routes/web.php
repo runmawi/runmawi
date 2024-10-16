@@ -2949,5 +2949,14 @@ Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
 
 Route::get('radio-station', 'AdminLiveStreamController@design');
 
-Route::get('producer/home', 'ProducerController@home')->name('producer.home');
-Route::get('producer/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
+// Runmawi Producer
+
+Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSession']], function () {
+
+    Route::get('/login', 'ProducerController@login')->name('producer.login');
+    Route::post('/verify-login', 'ProducerController@verify_login')->name('producer.verify_login');
+    Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
+    Route::get('/home', 'ProducerController@home')->name('producer.home');
+    Route::get('/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
+    Route::get('/logout', 'ProducerController@logout')->name('producer.logout');
+});

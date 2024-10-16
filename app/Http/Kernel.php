@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
         'channel'      => \App\Http\Middleware\Channel::class,
         'RazorpayMiddleware'      => \App\Http\Middleware\RazorpayMiddleware::class,
         'CheckAuthTheme5'      => \App\Http\Middleware\CheckAuthTheme5::class,
+        'runmawi.CheckCPPLoginSession' => \App\Http\Middleware\CheckCPPLoginSession::class,
     ];
 }
