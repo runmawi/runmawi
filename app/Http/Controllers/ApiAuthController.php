@@ -6218,6 +6218,8 @@ public function checkEmailExists(Request $request)
       $episodeid = $request->episodeid;
       $user_id   = $request->user_id;
       $andriodId   = $request->andriodId;
+      $IOSId      = $request->IOSId;
+
 
       // Check Episode exist
 
@@ -6270,6 +6272,19 @@ public function checkEmailExists(Request $request)
 
         }
         
+
+        if( isset($IOSId) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('IOSId',$IOSId)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+
          //  Episode URL
          
          switch (true) {
@@ -6518,6 +6533,36 @@ public function checkEmailExists(Request $request)
           $andriod_favorite = 'false';
         }
 
+        if($request->IOSId != ''){
+          $IOSId = $request->IOSId;
+          $cnt = Wishlist::select('episode_id')->where('IOSId','=',$IOSId)->where('episode_id','=',$request->episodeid)->count();
+          $IOS_wishliststatus =  ($cnt == 1) ? "true" : "false";
+        }else{
+          $IOS_wishliststatus = 'false';
+        }
+        if(!empty($request->IOSId)){
+          $IOSId = $request->IOSId;
+          $cnt = Watchlater::select('episode_id')->where('IOSId','=',$IOSId)->where('episode_id','=',$request->episodeid)->count();
+          $IOS_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+        }else{
+          $IOS_watchlaterstatus = 'false';
+        }
+
+        if($request->IOSId != ''){
+        $IOS_like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("liked","=",1)->count();
+        $IOS_dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("disliked","=",1)->count();
+        $IOS_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->count();
+        $IOS_like = ($IOS_like_data == 1) ? "true" : "false";
+        $IOS_dislike = ($IOS_dislike_data == 1) ? "true" : "false";
+        $IOS_favorite = ($IOS_favoritestatus > 0) ? "true" : "false";
+
+      }else{
+        $IOS_like = 'false';
+        $IOS_dislike = 'false';
+        $IOS_favorite = 'false';
+      }
+
+      
       $response = array(
         'status'=>'true',
         'message'=>'success',
@@ -6540,6 +6585,11 @@ public function checkEmailExists(Request $request)
         'andriod_dislike' => $andriod_dislike,
         'andriod_favorite' => $andriod_favorite,
         'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
+        'IOS_wishliststatus' => $IOS_wishliststatus,
+        'IOS_like' => $IOS_like,
+        'IOS_dislike' => $IOS_dislike,
+        'IOS_favorite' => $IOS_favorite,
+        'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
       );
       return response()->json($response, 200);
        
@@ -21241,7 +21291,7 @@ public function Android_ContinueWatchingExits(Request $request)
     $Android_ContinueWatchingVideoCount = 0;
     $Android_ContinueWatchingEpisodeCount = 0;
   }
-  
+
   if($Android_ContinueWatchingVideoCount > 0 && $ContinueWatchingVideoCount > 0 || $Android_ContinueWatchingEpisodeCount > 0 && $ContinueWatchingEpisodeCount > 0){
     $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
     $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->get();
