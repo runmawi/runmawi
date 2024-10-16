@@ -18739,6 +18739,10 @@ public function QRCodeMobileLogout(Request $request)
           $episode_ids_count = 0;
       }
 
+      $k2 = [];
+      $k1 = [];
+
+
        if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0 || $andrio_episode_ids_count  > 0 && $episode_ids_count  > 0) {
         $ContinueWatching         = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
         $EpisodeContinueWatching  = array_merge($episode_ids->toArray(), $andrio_episode_ids->toArray());
@@ -22127,6 +22131,9 @@ public function Android_ShowVideo_wishlist(Request $request)
         $andriod_Wishlist_episode_ids_count = 0;
     }
 
+    $k2 = [];
+    $k1 = [];
+    
      if ( $video_Wishlist_ids_count  > 0 && $andrio_video_ids_count  > 0 || $andriod_episode_ids_count  > 0 && $andriod_Wishlist_episode_ids_count  > 0) {
       
     $Wishlist = array_merge($video_Wishlist_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
@@ -22898,7 +22905,11 @@ public function Android_ShowVideo_favorite(Request $request) {
     $user_favorite_episode_ids = [];
     $user_favorite_episode_ids_count = 0;
 }
- 
+
+$k2 = [];
+$k1 = [];
+
+
         if ( $user_favorite_ids_count  > 0 && $andriod_favorite_ids_count  > 0 || $user_favorite_episode_ids_count  > 0 && $user_favorite_episode_ids_count  > 0 ) {
           
         $Favorite = array_merge($user_favorite_ids->toArray(), $andriod_favorite_ids->toArray());
