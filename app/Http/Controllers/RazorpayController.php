@@ -385,7 +385,7 @@ class RazorpayController extends Controller
                 $percentage = $commssion->percentage; 
                 $ppv_price = $video->ppv_price;
                 $admin_commssion = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_commssion = $ppv_price - $admin_commssion;
                 $moderator_id = $moderators_id;
             }
             else
@@ -499,7 +499,7 @@ class RazorpayController extends Controller
                 $percentage       = $commssion->percentage; 
                 $ppv_price        = $video->ppv_price;
                 $admin_commssion  = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_commssion = $ppv_price - $admin_commssion;
                 $moderator_id = $moderators_id;
             }
             else
@@ -902,7 +902,7 @@ class RazorpayController extends Controller
                 $percentage = $commssion->percentage; 
                 $ppv_price = $request->amount;
                 $admin_commssion = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
+                $moderator_commssion = $ppv_price - $admin_commssion;
                 $moderator_id = $moderators_id;
             }
             else
