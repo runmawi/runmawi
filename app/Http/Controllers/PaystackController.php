@@ -453,18 +453,18 @@ class PaystackController extends Controller
                 $moderator = ModeratorsUser::where('id','=',$moderators_id)->first();  
                 $total_amount = $video->ppv_price;
                 $title =  $video->title;
-                $commssion = VideoCommission::first();
-                $percentage = $commssion->percentage; 
-                $ppv_price = $video->ppv_price;
-                $admin_commssion = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
-                $moderator_id = $moderators_id;
+                $commssion           =  VideoCommission::where('type','CPP')->first();
+                $percentage          =  $moderator->commission_percentage; 
+                $ppv_price           =  $video->ppv_price;
+                $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                $admin_commssion     =  $ppv_price - $moderator_commssion;
+                $moderator_id        =  $moderators_id;
             }
             else
             {
                 $total_amount = $video->ppv_price;
                 $title =  $video->title;
-                $commssion = VideoCommission::first();
+                $commssion  =  VideoCommission::where('type','CPP')->first();
                 $percentage = null; 
                 $ppv_price = $video->ppv_price;
                 $admin_commssion =  null;
@@ -571,18 +571,18 @@ class PaystackController extends Controller
                 $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
                 $total_amount     = $video->ppv_price;
                 $title            =  $video->title;
-                $commssion        = VideoCommission::first();
-                $percentage       = $commssion->percentage; 
-                $ppv_price        = $video->ppv_price;
-                $admin_commssion  = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
-                $moderator_id = $moderators_id;
+                $commssion           =  VideoCommission::where('type','CPP')->first();
+                $percentage          =  $moderator->commission_percentage; 
+                $ppv_price           =  $video->ppv_price;
+                $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                $admin_commssion     =  $ppv_price - $moderator_commssion;
+                $moderator_id        =  $moderators_id;
             }
             else
             {
                 $total_amount   = $video->ppv_price;
                 $title          =  $video->title;
-                $commssion      = VideoCommission::first();
+                $commssion      =  VideoCommission::where('type','CPP')->first();
                 $percentage     = null; 
                 $ppv_price       = $video->ppv_price;
                 $admin_commssion =  null;

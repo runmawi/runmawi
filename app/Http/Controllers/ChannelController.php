@@ -3602,7 +3602,7 @@ class ChannelController extends Controller
     {
         try {
             $settings = Setting::first();
-            $category_list = VideoCategory::latest()->get();
+            $category_list = VideoCategory::orderBy('order')->get();
             $default_vertical_image_url = default_vertical_image_url();
            
             if ($settings->enable_landing_page == 1 && Auth::guest()) {

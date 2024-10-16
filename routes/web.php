@@ -619,6 +619,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/epg/create', 'AdminEPGController@create')->name('admin.epg.create');
     Route::post('/epg/generate', 'AdminEPGController@generate')->name('admin.epg.generate');
     Route::get('/epg/delete/{id}', 'AdminEPGController@delete')->name('admin.epg.delete');
+    Route::get('/epg/download-json/{id}', 'AdminEPGController@downloadJson')->name('admin.download.json');
+
+    
     
     // Splash Screen
     Route::post('/mobile_app/store', 'AdminUsersController@mobileappupdate');
@@ -1479,7 +1482,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/rtmp_setting/update', 'AdminAppSettings@rtmpUpdate');
     Route::get('/rtmp_setting/rtmp_remove', 'AdminAppSettings@rtmp_remove');
 
-    Route::get('/allmoderator', 'ModeratorsUserController@view');
+    Route::get('/allmoderator', 'ModeratorsUserController@view')->name('admin.allmoderator');
     Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
     Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
     Route::post('/moderatoruser/update', 'ModeratorsUserController@update');

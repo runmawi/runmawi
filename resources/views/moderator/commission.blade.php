@@ -55,7 +55,8 @@
 
                                         <div class="panel-body" style="display: block;">
                                             <p class="p1">Add the Commissiom for Admin <small>{{ "( Only for CPP )" }} </small> </p> 
-											<input type="number" class="form-control" name="percentage" id="percentage"  value="{{ (!is_null($commission->percentage)) ? $commission->percentage : null }}" 
+                                            <p class="p1">{{ "( Note: while CPP signup, remaining (%) will be allowed for CPP Users )" }} </p> 
+											<input type="number" class="form-control" name="percentage" id="percentage"  value="{{ ( !empty($commission->percentage)) ? $commission->percentage : null }}" 
 													min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
 										</div>
                                     </div>
