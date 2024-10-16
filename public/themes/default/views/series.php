@@ -601,9 +601,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <?php echo __(strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title); ?>
                                                 </p>
 
-                                                <p class="desc-name text-left m-0 mt-1">
-                                                    <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
-                                                </p>
+                                                <?php if($ThumbnailSetting->enable_description == 1 ) { ?>
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                                                    </p>
+                                                <?php } ?>
                                                   
                                                   <div class="movie-time d-flex align-items-center my-2">
                                                     <div class="badge p-1 mr-2"><?php echo $episodes->age_restrict ?></div>
