@@ -57,7 +57,7 @@
                                     <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Description</th>
-                                    <!-- <th>Total Videos</th> -->
+                                    <th>Commission Percentage</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -68,6 +68,8 @@
                                         <td valign="bottom"><p>{{ $user->email }}</p></td>
                                         <td valign="bottom"><p>{{ $user->mobile_number }}</p></td>
                                         <td valign="bottom"><p>{{ $user->description }}</p></td>
+                                        <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
+                                        
                                         <?php if($user->status == 0){ ?>
                                        <td class="bg-warning"> <?php echo "Pending"; ?></td>
                                         <?php }elseif($user->status == 1){ ?>

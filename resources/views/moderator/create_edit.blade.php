@@ -93,56 +93,51 @@
  -->
 
                         <div class="col-md-6" >
-
-                        <div class="form-group row">
-                            <label for="description" class=" col-form-label text-md-right">{{ __('Description') }}</label>
-
-                           
-                               
-                            <input id="description" type="textarea" class="form-control" name="description" value ="{{ $moderators->description }}" autocomplete="description">
+                            <div class="form-group row">
+                                <label for="description" class=" col-form-label text-md-right">{{ __('Description') }}</label>
+                                <input id="description" type="textarea" class="form-control" name="description" value ="{{ $moderators->description }}" autocomplete="description">
                             </div>
                         </div>
 
+                        <div class="col-md-6" >
+                            <div class="form-group row">
+                                <label for="" class=" col-form-label text-md-right">{{ __('Commission Percentage') }}</label>
+                                <input type="number" class="form-control" name="commission_percentage" id="percentage"  value="{{ (!is_null($moderators->commission_percentage)) ? $moderators->commission_percentage : null }}" 
+                                    min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                            </div>
+                        </div>
 
                         <div class="col-md-6" >
+                            <div class="form-group row">
+                                <label for="user_role" class=" col-form-label text-md-right">{{ __('User Roles') }}</label>
+                        
+                                <select class="form-control" id="user_role" name="user_role">
+                                    <option value="">Select Roles</option>
 
-                        <div class="form-group row">
-                            <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
-
-                            <input id="picture" type="hidden" class="form-control" id= "picture" name="picture"  value="">
-                           
-                                <input id="picture" type="file" class="form-control" id= "picture" name="picture"  value="DefaultImageName">
-                               <p class="text" id= "error_picture"> </p>
-                      
+                                    @if($roles->count() > 0)
+                                        @foreach($roles as $value)
+                                            <option value="{{ $value->id }}" @if(!empty($moderators->user_role) && $moderators->user_role == $value->id){{ 'selected' }}@endif>{{ $value->role_name }}</option>
+                                        @endforeach
+                                    @else
+                                        No Record Found
+                                    @endif   
+                                </select>         
                             </div>
+                        </div>
+
+                        <div class="col-md-6" >
+                            <div class="form-group row">
+                                <label for="picture" class=" col-form-label text-md-right">{{ __('Picture') }}</label>
+                                <input id="picture" type="hidden" class="form-control" id= "picture" name="picture"  value="">
+                                <input id="picture" type="file" class="form-control" id= "picture" name="picture"  value="DefaultImageName">
+                                <p class="text" id= "error_picture"> </p>
+                            </div>
+                            
                             @if(!empty($moderators->picture))
-                            <img class="w-50 mt-2 rounded" src="<?php if($moderators->picture == "Default.png") { echo  URL::to('/public/uploads/avatars/profile.png') ; }else { echo  $moderators->picture; }?>"  />
+                                <img class="w-50 mt-2 rounded" src="<?php if($moderators->picture == "Default.png") { echo  URL::to('/public/uploads/avatars/profile.png') ; }else { echo  $moderators->picture; }?>"  />
                             @endif
                         </div>
 
-                        <div class="col-md-6" >
-
-
-                        <div class="form-group row">
-                            <label for="user_role" class=" col-form-label text-md-right">{{ __('User Roles') }}</label>
-
-                     
-                            <select class="form-control" id="user_role" name="user_role">
-                            <option value="">Select Roles</option>
-
-                                    @if($roles->count() > 0)
-                                    @foreach($roles as $value)
-                                    <!-- <option value="{{$value->id}}">{{$value->role_name}}</option> -->
-                                    <option value="{{ $value->id }}" @if(!empty($moderators->user_role) && $moderators->user_role == $value->id){{ 'selected' }}@endif>{{ $value->role_name }}</option>
-
-                                    @endForeach
-                                    @else
-                                    No Record Found
-                                    @endif   
-
-                        </select>         
-                        </div>
-                        </div>
                     </div>
                     <br>
                                             <div class="form-group row mb-0">

@@ -791,6 +791,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser["status"] = $status;
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
+                $moderatorsuser["commission_percentage"] = $data["commission_percentage"];
 
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";
