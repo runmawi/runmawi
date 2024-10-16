@@ -1750,36 +1750,34 @@ public function RemoveDisLikeEpisode(Request $request)
     }
 
     
-    public function SeriescategoryList(Request $request)
+    
+    
 
+    public function SeriescategoryList(Request $request)
     {
         try {
-
-            $Theme = HomeSetting::pluck('theme_choosen')->first();
-            Theme::uses($Theme);
-
             $settings = Setting::first();
-
+            $category_list = SeriesGenre::orderBy('order')->get();
+            $default_vertical_image_url = default_vertical_image_url();
+           
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
-                $landing_page_slug = AdminLandingPage::where('status', 1)
-                    ->pluck('slug')
-                    ->first()
-                    ? AdminLandingPage::where('status', 1)
-                        ->pluck('slug')
-                        ->first()
-                    : 'landing-page';
+
+                $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : 'landing-page';
 
                 return redirect()->route('landing_page', $landing_page_slug);
             }
 
+            $category_list = $this->paginateCollection($category_list, $this->videos_per_page);
+
+
             $data = [
-                'category_list' => SeriesGenre::all(),
+                'category_list' => $category_list,
+                'default_vertical_image_url' => $default_vertical_image_url,
             ];
 
             return Theme::view('SeriescategoryList', $data);
-
         } catch (\Throwable $th) {
-
+            // return $th->getMessage();
             return abort(404);
         }
     }
