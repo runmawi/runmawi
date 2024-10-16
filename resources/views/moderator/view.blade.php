@@ -1,14 +1,11 @@
 @extends('admin.master')
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
-
 @endsection
+
 @section('content')
-<?php
-    //   echo "<pre>";
-    //   print_r($moderatorsuser);
-    //   exit();
-?>
+
 <div id="content-page" class="content-page">
             <div class="container-fluid">
 	<div class="admin-section-title">
@@ -65,7 +62,7 @@
                                     <tr id="{{ $user->id }}">
                                     	<td valign="bottom" class="text-center"><img src="{{  $user->picture }}" width="50" height="50"></td>
                                         <td valign="bottom"><p>{{ $user->username }}</p></td>
-                                        <td valign="bottom"><p>{{ $user->email }}</p></td>
+                                        <td valign="bottom"> {{ $user->email }} </td>
                                         <td valign="bottom"><p>{{ $user->mobile_number }}</p></td>
                                         <td valign="bottom"><p>{{ $user->description }}</p></td>
                                         <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
@@ -99,7 +96,4 @@
 </div>
 
 	<input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
-
-
-
 @stop

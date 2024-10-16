@@ -1482,7 +1482,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/rtmp_setting/update', 'AdminAppSettings@rtmpUpdate');
     Route::get('/rtmp_setting/rtmp_remove', 'AdminAppSettings@rtmp_remove');
 
-    Route::get('/allmoderator', 'ModeratorsUserController@view');
+    Route::get('/allmoderator', 'ModeratorsUserController@view')->name('admin.allmoderator');
     Route::get('/moderatorsuser/edit/{id}', 'ModeratorsUserController@edit');
     Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
     Route::post('/moderatoruser/update', 'ModeratorsUserController@update');

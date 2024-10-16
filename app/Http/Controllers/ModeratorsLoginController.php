@@ -260,7 +260,7 @@ class ModeratorsLoginController extends Controller
         $user_package = User::where('id', 1)->first();
         $package = $user_package->package;
 
-        $commission_percentage = VideoCommission::pluck('percentage')->first();
+        $commission_percentage = VideoCommission::where('type','CPP')->pluck('percentage')->first();
         $commission_percentage = $commission_percentage ? 100 - $commission_percentage  : null;
 
         if (!empty($package) && $package == "Pro" || !empty($package) && $package == "Business")
