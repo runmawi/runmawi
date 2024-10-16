@@ -6217,6 +6217,7 @@ public function checkEmailExists(Request $request)
 
       $episodeid = $request->episodeid;
       $user_id   = $request->user_id;
+      $andriodId   = $request->andriodId;
 
       // Check Episode exist
 
@@ -6224,7 +6225,7 @@ public function checkEmailExists(Request $request)
 
       // Episode Details
 
-      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id,$andriodId){
 
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
@@ -6248,6 +6249,18 @@ public function checkEmailExists(Request $request)
         if( isset($user_id) ){
 
           $ContinueWatching = ContinueWatching::query()->where('user_id',$user_id)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+        
+        if( isset($andriodId) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('andriodId',$andriodId)->where('episodeid',$item->id)->latest()->first();
           
           $item['ContinueWatching'] = $ContinueWatching ;
 
@@ -6372,7 +6385,7 @@ public function checkEmailExists(Request $request)
         $languages = "";
       }
 
-
+      
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
@@ -6475,6 +6488,36 @@ public function checkEmailExists(Request $request)
       }
 
 
+              
+          if($request->andriodId != ''){
+            $andriodId = $request->andriodId;
+            $cnt = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+            $andriod_wishliststatus =  ($cnt == 1) ? "true" : "false";
+          }else{
+            $andriod_wishliststatus = 'false';
+          }
+          if(!empty($request->andriodId)){
+            $andriodId = $request->andriodId;
+            $cnt = Watchlater::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+            $andriod_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+          }else{
+            $andriod_watchlaterstatus = 'false';
+          }
+
+          if($request->andriodId != ''){
+          $andriod_like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("liked","=",1)->count();
+          $andriod_dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("disliked","=",1)->count();
+          $andriod_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->count();
+          $andriod_like = ($andriod_like_data == 1) ? "true" : "false";
+          $andriod_dislike = ($andriod_dislike_data == 1) ? "true" : "false";
+          $andriod_favorite = ($andriod_favoritestatus > 0) ? "true" : "false";
+
+        }else{
+          $andriod_like = 'false';
+          $andriod_dislike = 'false';
+          $andriod_favorite = 'false';
+        }
+
       $response = array(
         'status'=>'true',
         'message'=>'success',
@@ -6492,7 +6535,11 @@ public function checkEmailExists(Request $request)
         'dislike' => $dislike,
         'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
         'languages' => $languages,
-
+        'andriod_wishliststatus' => $andriod_wishliststatus,
+        'andriod_like' => $andriod_like,
+        'andriod_dislike' => $andriod_dislike,
+        'andriod_favorite' => $andriod_favorite,
+        'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
       );
       return response()->json($response, 200);
        
@@ -18596,7 +18643,7 @@ public function QRCodeMobileLogout(Request $request)
       }else{
         $skip_time = 0;
       }
-      if($request->video_id){
+      if($request->video_id != ''){
           $video_id = $request->video_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
           $andriodId_count = ContinueWatching::where('andriodId', '=', $andriodId)->where('videoid', '=', $video_id)->count();
@@ -18623,7 +18670,34 @@ public function QRCodeMobileLogout(Request $request)
           );
 
         }
-      }
+      } else if($request->episode_id != ''){
+              $episode_id = $request->episode_id;
+              $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
+              $andriodId_count = ContinueWatching::where('andriodId', '=', $andriodId)->where('episodeid', '=', $episode_id)->count();
+              if ( $count > 0 ) {
+                ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+                $response = array(
+                  'status'=>'true',
+                  'message'=>'Current Time updated'
+              );
+            }else if ( $andriodId_count > 0 ) {
+              ContinueWatching::where('andriodId', '=', $andriodId)->where('episodeid', '=', $episode_id)
+              ->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,
+              'skip_time' => $skip_time]);
+              $response = array(
+                'status'=>'true',
+                'message'=>'Current Time updated'
+            );
+          } else {
+                $data = array('user_id' => $user_id,'andriodId' => $andriodId,'UserType'=> $UserType, 'episodeid' => $episode_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
+                ContinueWatching::insert($data);
+                $response = array(
+                  'status'=>'true',
+                  'message'=>'Added  to  Continue Watching List'
+              );
+
+            }
+          }
 
 
       return response()->json($response, 200);
