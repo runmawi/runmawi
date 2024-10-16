@@ -55,18 +55,18 @@ class CinetPayController extends Controller
             $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
             $total_amount     = $video->ppv_price;
             $title            =  $video->title;
-            $commssion        = VideoCommission::first();
-            $percentage       = $commssion->percentage; 
-            $ppv_price        = $video->ppv_price;
-            $admin_commssion  = ($percentage/100) * $ppv_price ;
-            $moderator_commssion = $ppv_price - $percentage;
-            $moderator_id = $moderators_id;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  $moderator->commission_percentage; 
+            $ppv_price           =  $video->ppv_price;
+            $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
         }
         else
         {
             $total_amount   = $video->ppv_price;
             $title          =  $video->title;
-            $commssion      = VideoCommission::first();
+            $commssion      =  VideoCommission::where('type','CPP')->first();
             $percentage     = null; 
             $ppv_price       = $video->ppv_price;
             $admin_commssion =  null;
@@ -226,12 +226,12 @@ class CinetPayController extends Controller
             $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
             $total_amount     = $audio->ppv_price;
             $title            =  $audio->title;
-            $commssion        = VideoCommission::first();
-            $percentage       = $commssion->percentage; 
-            $ppv_price        = $audio->ppv_price;
-            $admin_commssion  = ($percentage/100) * $ppv_price ;
-            $moderator_commssion = $ppv_price - $percentage;
-            $moderator_id = $moderators_id;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  $moderator->commission_percentage; 
+            $ppv_price           =  $video->ppv_price;
+            $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
         }
         else
         {
@@ -239,7 +239,7 @@ class CinetPayController extends Controller
 
             $total_amount   = $request->ppv_price;
             $title          =  $audio->title;
-            $commssion      = VideoCommission::first();
+            $commssion      =  VideoCommission::where('type','CPP')->first();
             $percentage     = null; 
             $ppv_price       = $request->amount;
             $admin_commssion =  null;
@@ -312,18 +312,18 @@ class CinetPayController extends Controller
                 $moderator        = ModeratorsUser::where('id','=',$moderators_id)->first();  
                 $total_amount     = $video->ppv_price;
                 $title            =  $video->title;
-                $commssion        = VideoCommission::first();
-                $percentage       = $commssion->percentage; 
-                $ppv_price        = $video->ppv_price;
-                $admin_commssion  = ($percentage/100) * $ppv_price ;
-                $moderator_commssion = $ppv_price - $percentage;
-                $moderator_id = $moderators_id;
+                $commssion           =  VideoCommission::where('type','CPP')->first();
+                $percentage          =  $moderator->commission_percentage; 
+                $ppv_price           =  $video->ppv_price;
+                $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                $admin_commssion     =  $ppv_price - $moderator_commssion;
+                $moderator_id        =  $moderators_id;
             }
             else
             {
                 $total_amount   = $video->ppv_price;
                 $title          =  $video->title;
-                $commssion      = VideoCommission::first();
+                $commssion      =  VideoCommission::where('type','CPP')->first();
                 $percentage     = null; 
                 $ppv_price       = $video->ppv_price;
                 $admin_commssion =  null;
