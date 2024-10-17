@@ -62,7 +62,7 @@ use App\AudioAlbums as AudioAlbums;
 use Illuminate\Support\Facades\Cache;
 use App\Audio as Audio;
 use File;
-use App\VideoCommission as VideoCommission;
+use App\VideoCommission;
 use Mail;
 use App\EmailTemplate;
 use App\PlayerAnalytic;
@@ -143,12 +143,17 @@ class ModeratorsUserController extends Controller
                     $moderatorspermission = ModeratorsPermission::all();
                     $moderatorsuser = ModeratorsUser::all();
 
+                    $commission_percentage = VideoCommission::where('type','CPP')->pluck('percentage')->first();
+                    $CPP_commission_percentage = $commission_percentage ? 100 - $commission_percentage  : null;
+
                     $data = [
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
+                        "CPP_commission_percentage" => $CPP_commission_percentage ,
                     ];
 
                     return view("moderator.index", $data);
+                    
                 } elseif ($package == "Basic") {
                     return view("blocked");
                 }
@@ -179,6 +184,7 @@ class ModeratorsUserController extends Controller
                     "email_id" =>"required|email|unique:moderators_users,email",
                     "password" => "min:6", 
                     "confirm_password" =>"required_with:password|same:password|min:6",
+                    "commission_percentage" => "required",
                     "mobile_number" => [
                         'required',
                         'regex:/^\d{10}$/', // Ensures exactly 10 digits
@@ -210,6 +216,8 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->ccode = $ccode;
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
+                $moderatorsuser->commission_percentage = $request->commission_percentage;
+
 
                 $logopath = URL::to("/public/uploads/moderator_albums/");
                 $path = public_path() . "/uploads/moderator_albums/";
@@ -291,8 +299,7 @@ class ModeratorsUserController extends Controller
     
                     }
 
-
-                return back()->with("message", "Successfully Users saved!.");
+                return redirect()->route('admin.allmoderator')->with('message', 'Successfully Users saved!');
 
             } elseif ($package == "Basic") {
                 return view("blocked");
@@ -791,6 +798,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser["status"] = $status;
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
+                $moderatorsuser["commission_percentage"] = $data["commission_percentage"];
 
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";
@@ -4901,10 +4909,11 @@ class ModeratorsUserController extends Controller
             return View::make("admin.expired_dashboard", $data);
         } else {
             $commission = VideoCommission::where('type', 'CPP')->first();
-            // dd($commission);
+
             $data = [
                 "commission" => $commission,
             ];
+            
             return view("moderator.commission", $data);
         }
     }

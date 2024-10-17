@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <style>
+        body{background-color:#000;}
         .round { background-color: #8a0303 !important;color: #fff !important;padding: 14px 20px;}
         #coupon_code_stripe {background-color: #ddd;}
         * {box-sizing: border-box;}
@@ -498,6 +499,7 @@
         html {
             scroll-behavior: smooth;
         }
+        svg{width:30px;color: #fff;}
     </style>
 
     @if (Session::has('message'))
@@ -514,12 +516,12 @@
     @endif
    
 
-    <section class="flick">
+    <section class="flick p-4">
         
         <div class="col-sm-12">
-            <a href="{{ route('home') }}">
-                <svg style="{{ 'color:'. front_End_text_color() }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
-            </a>
+            <button href="" onclick="history.back()" style="background: transparent;border:none;cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+            </button>
         </div>
 
         <div class="container">

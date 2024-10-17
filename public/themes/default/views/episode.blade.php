@@ -525,8 +525,8 @@
             </div>
 
             <div class="container-fluid description">
-                <span class="text-white" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
-                <p class="mb-0" style="font-size: 80%;color: white;">
+                <span class="your_watching" style="font-size: 120%;font-weight: 700;">{{ __("You're watching") }}:</span>
+                <p class="mb-0" style="font-size: 80%;">
                     @php
                         $seasons = App\SeriesSeason::where('series_id', '=', $SeriesSeason->series_id)->with('episodes')->get();
                         $Episode = App\Episode::where('season_id', '=', $SeriesSeason->id)->where('series_id', '=', $SeriesSeason->series_id)->get();
@@ -545,7 +545,7 @@
                     @endforeach
                 </p>
 
-                <p class="" style="font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
+                <p class="" style="font-size: 100%;font-weight: 700;">{{ $episode->title }}</p>
                 <p class="desc">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
             </div>
 
@@ -1338,9 +1338,6 @@
         }, false);
     </script>
     <style>
-        p {
-            color: #fff;
-        }
 
         .free_content {
             margin: 100px;

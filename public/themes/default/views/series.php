@@ -127,7 +127,8 @@
     .modal {
         top: 2%;
     }
-    div#myImage{height: calc(100vh - 260px);}
+    div#myImage{height: auto;}
+    #descriptionContainer p{color:#fff;margin:0;}
     div#video-js-trailer-player{height:65vh !important;}
     @media (min-width: 1400px) and (max-width: 2565px) {
       div#video-js-trailer-player {
@@ -238,7 +239,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                            
 
                                 <?php
-                                  $description = $series->description;
+                                  $description = $series->details;
 
                                   if (strlen($description) > 200) {
                                       $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
@@ -249,6 +250,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                                   <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
                                       <?php echo $shortDescription; ?>
+                                  </div>
+
+                                  <div class="details-show mt-3">
+                                    <span><?= nl2br($series->description) ?></span>
                                   </div>
 
                                     <script>
@@ -274,8 +279,8 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             <div class="d-flex p-0 mt-3 align-items-center" style="gap:3rem;">
                                 <?php if(!empty($season->first()->trailer)) {?>
                                   <div class="trailerbutton">  
-                                      <a data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
-                                        <img class="ply" src="<?= URL::to('assets/img/default_play_buttons.svg') ;  ?>" alt="ply"/>
+                                      <a class="btn" data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
+                                        <?= __("Play Trailer") ?>
                                       </a>
                                     </div>
                                   <?php } ?>
@@ -378,10 +383,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <div class="d-flex">
                                                     <?php if($subscribe_btn == 1): ?>
                                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                            <button id="button" class="view-count rent-video btn btn-primary mr-4 text-white"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                            <button id="button" class="view-count rent-video btn bd mr-4 text-white"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                                         </form>
                                                       <?php endif; ?>
-                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
                                                           <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
                                                       </button>
                                                   </div>
@@ -389,16 +394,16 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <div class="d-flex">
                                                     <?php if($subscribe_btn == 1): ?>
                                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                        <button id="button" class="view-count rent-video btn text-white btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                        <button id="button" class="view-count rent-video btn text-white bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                                         </form>
                                                     <?php endif; ?>
-                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
                                                           <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
                                                       </button>
                                                   </div>
                                               <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
                                                   <div class="d-flex">
-                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
                                                           <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
                                                       </button>
                                                   </div>
@@ -408,7 +413,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <div class="d-flex">
                                                     <?php if($subscribe_btn == 1): ?>
                                                         <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                                                        <button id="button" class="view-count rent-video btn btn-primary text-white mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                        <button id="button" class="view-count rent-video btn bd text-white mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                                                         </form>
                                                     <?php endif; ?>
                                                       <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>">
@@ -428,7 +433,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                               <?php endif; ?>
                                           <?php elseif($series->access == "subscriber" && $seasons->access == "ppv"): ?>
                                               <?php if($settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
-                                                  <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn btn-primary">
+                                                  <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
                                                       <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
                                                   </button>
                                               <?php endif; ?>
@@ -543,9 +548,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <?php echo __(strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title); ?>
                                                 </p>
 
-                                                <p class="desc-name text-left m-0 mt-1">
-                                                    <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
-                                                </p>
+                                                <?php if($ThumbnailSetting->enable_description == 1 ) { ?>
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                                                    </p>
+                                                <?php } ?>
                                                   
                                                   <div class="movie-time d-flex align-items-center my-2">
                                                     <div class="badge p-1 mr-2"><?php echo $episodes->age_restrict ?></div>
@@ -594,9 +601,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                                   <?php echo __(strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title); ?>
                                                 </p>
 
-                                                <p class="desc-name text-left m-0 mt-1">
-                                                    <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
-                                                </p>
+                                                <?php if($ThumbnailSetting->enable_description == 1 ) { ?>
+                                                    <p class="desc-name text-left m-0 mt-1">
+                                                        <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                                                    </p>
+                                                <?php } ?>
                                                   
                                                   <div class="movie-time d-flex align-items-center my-2">
                                                     <div class="badge p-1 mr-2"><?php echo $episodes->age_restrict ?></div>
@@ -758,21 +767,21 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
               <h2 class="text"> 
               <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
                     <form method="get" action="<?= URL::to('signup') ?>">
-                        <button id="button" class="view-count rent-video btn btn-primary"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        <button id="button" class="view-count rent-video btn bd"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                     </form>
           <?php elseif($series->access == 'registered'): ?>
             <form method="get" action="<?= URL::to('signup') ?>">
-                  <button id="button" class="view-count rent-video btn btn-primary">
+                  <button id="button" class="view-count rent-video btn bd">
                     <?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
               </form>
           <?php elseif($series->ppv_status == 1): ?>
           <div class="d-flex">
                     <form method="get" action="<?= URL::to('signup') ?>">
-                        <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                     </form>
 
             <form method="get" action="<?= URL::to('signup') ?>">
-                  <button id="button" class="view-count rent-video btn btn-primary">
+                  <button id="button" class="view-count rent-video btn bd">
                     <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?></button>
               </form>
           </div>
@@ -788,7 +797,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 				<div class="col-md-2 text-center text-white">
                 <div class="col-md-4">
 			<?php if ( $series->ppv_status == 1 && !Auth::guest() && Auth::User()->role !="admin") { ?>
-			<button class="btn btn-primary" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
+			<button class="btn bd" onclick="pay(<?php echo $settings->ppv_price; ?>)" >
 			Purchase For <?php echo $currency->symbol.' '.$settings->ppv_price; ?></button>
 			<?php } ?>
             <br>
@@ -899,13 +908,13 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         <h2 class="text" > 
               <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
                     <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                        <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                     </form>
               <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
             <!-- <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
                     class="view-count rent-video btn btn-primary">
                     <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button> -->
-                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
                 <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
 
             <?php elseif($series->ppv_status == 1 ): ?>
@@ -913,10 +922,10 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
               <div class="d-flex">
                 <?php if($subscribe_btn == 1): ?>
                     <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                        <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                     </form>
                 <?php endif; ?>
-              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn btn-primary">
+              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
                 <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
                     </div>
             <?php endif; ?></h2>
@@ -1019,18 +1028,18 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
               <h2 class="text" > 
                   <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
                         <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button" class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                            <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                         </form>
                   <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
                     <div class="d-flex">
 
                         <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                         </form>
 
                   <form action="<?= URL::to('/signup') ?>">
                 <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn btn-primary">
+                        class="view-count rent-video btn bd">
                         <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
                         </form>
                         </div>
@@ -1039,11 +1048,11 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                   <div class="d-flex">
                   <form method="get" action="<?= URL::to('/signup') ?>">
-                      <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
+                      <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
                   </form>
                   <form action="<?= URL::to('/signup') ?>">
                       <button  data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn btn-primary">
+                        class="view-count rent-video btn bd">
                         <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
                         </form>
                         </div>
@@ -1052,12 +1061,12 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                     <div class="d-flex">
 
                         <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
                         </form>
 
                   <form action="<?= URL::to('/signup') ?>">
                 <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn btn-primary">
+                        class="view-count rent-video btn bd">
                         <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
                         </form>
                         </div>
@@ -1066,7 +1075,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                         <div class="d-flex">
                         <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn btn-primary mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
+                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
                         </form>
                               </div>
                 <?php endif; ?></h2>

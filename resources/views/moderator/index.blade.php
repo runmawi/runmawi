@@ -138,6 +138,13 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6" >
+                            <div class="form-group row">
+                                <label for="" class=" col-form-label text-md-right">{{ __('Commission Percentage') }}</label>
+                                <input type="number" class="form-control" name="commission_percentage" id="commission_percentage"  value="{{ ( !empty($CPP_commission_percentage)) ? $CPP_commission_percentage : null }}" 
+                                min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                            </div>
+                        </div>
 
                         <div class="col-md-6" >
                              <div class="form-group row">

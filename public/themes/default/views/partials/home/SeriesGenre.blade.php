@@ -7,20 +7,35 @@
                 <div class="row">
                     <div class="col-sm-12 ">
 
-                      <div class="iq-main-header d-flex align-items-center justify-content-between">
-                          <h4 class="main-title">
-                              <a href="{{ $order_settings_list[19]->header_name ? url('/' . $order_settings_list[19]->url) : '' }}">
-                                  {{ $order_settings_list[19]->header_name ? __($order_settings_list[19]->header_name) : '' }}
-                              </a>
-                          </h4>
-                          @if($settings->homepage_views_all_button_status == 1)
-                              <h4 class="main-title view-all">
-                                  <a href="{{ $order_settings_list[19]->header_name ? url('/' . $order_settings_list[19]->url) : '' }}">
-                                      {{ __('View all') }}
-                                  </a>
-                              </h4>
-                          @endif
-                      </div>
+                        <div class="iq-main-header d-flex align-items-center justify-content-between">
+                            @if(!preg_match('/tv-shows$/', request()->path()))
+                                <h4 class="main-title">
+                                    <a href="{{ $order_settings_list[19]->header_name ? url('/' . $order_settings_list[19]->url) : '' }}">
+                                        {{ $order_settings_list[19]->header_name ? __($order_settings_list[19]->header_name) : '' }}
+                                    </a>
+                                </h4>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h4 class="main-title view-all">
+                                        <a href="{{ $order_settings_list[19]->header_name ? url('/' . $order_settings_list[19]->url) : '' }}">
+                                            {{ __('View all') }}
+                                        </a>
+                                    </h4>
+                                @endif
+                            @else
+                                <h4 class="main-title">
+                                    <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
+                                        {{ $order_settings_list[0]->header_name ? __($order_settings_list[0]->header_name) : '' }}
+                                    </a>
+                                </h4>
+                                @if($settings->homepage_views_all_button_status == 1)
+                                    <h4 class="main-title view-all">
+                                        <a href="{{ $order_settings_list[0]->header_name ? url('/' . $order_settings_list[0]->url) : '' }}">
+                                            {{ __('View all') }}
+                                        </a>
+                                    </h4>
+                                @endif
+                            @endif
+                        </div>
 
 
                       <div class="favorites-contens">

@@ -139,9 +139,9 @@
 
             foreach($cmspages as $key => $page) {
               if($page->slug == 'contact-us') { ?>
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1" style="color:#fff !important;"> <?= __($page->title) ?> </a>
               <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1" style="color:#fff !important;"> <?= __($page->title) ?> </a>
             <?php } } ?>
           </p>
           <p class="text-center">
@@ -427,6 +427,10 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     .down-apps{display:block !important;margin-bottom: 2rem;}
     .down-apps img{width:100%;}
     p.font-weight-bold.mb-0{font-size: 1.5rem;text-align: center;}
+    
   }
+  body.light-theme footer a, body.light-theme footer p{color: #000  !important; }
+  footer p{color: #fff  !important; }
+  footer a{color: #fff  !important; }
 </style>
 </body>
