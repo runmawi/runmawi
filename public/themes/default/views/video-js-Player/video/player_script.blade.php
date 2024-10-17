@@ -73,9 +73,9 @@
                     },
                 });
             }
-            console.log('duration: ' + duration);
-            console.log('currentTime: ' + currentTime);
-            console.log('watch_percentage: ' + watch_percentage);
+            // console.log('duration: ' + duration);
+            // console.log('currentTime: ' + currentTime);
+            // console.log('watch_percentage: ' + watch_percentage);
         }
 
         player.on('loadedmetadata', function() {
@@ -239,11 +239,11 @@
             function handleHover(event) {
                 const element = event.target;
                 if (event.type === 'mouseenter') {
-                    console.log("hovered");
+                    // console.log("hovered");
                     hovered = true;
                     skipButton = true;
                 } else if (event.type === 'mouseleave') {
-                    console.log("not hovered");
+                    // console.log("not hovered");
                     hovered = false;
                     skipButton = false;
                 }
@@ -403,9 +403,9 @@
                     markers.push({ time: 0 });
                 }
 
-                if(!!midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0 ){
+                if(!!midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0 ){                    
                     for (let time = midrollincreaseInterval; time < total; time += midrollincreaseInterval) {
-                        markers.push({ time });
+                        markers.push({ time });                        
                     }
                 }
 
@@ -414,6 +414,8 @@
                 }
 
                 var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);
+                console.log("marker_space",marker_space);
+                
 
                 for (var i = 0; i < markers.length; i++) {
 
@@ -421,10 +423,12 @@
 
                     var time = markers[i].time;
 
-                    var el = jQuery('<div class="vjs-marker" style="left:' + left + '" data-time="' + time + '"></div>');
-                        el.click(function() {
-                            player.currentTime($(this).data('time'));
-                        });
+                    var el = jQuery('<div class="vjs-marker" style="left:' + left + '" data-time="' + time + '"></div>');                    
+                    el.click(function() {
+                        player.currentTime($(this).data('time'));
+                        console.log("player.currentTime($(this).data('time'))",player.currentTime($(this).data('time')));
+                        
+                    });
 
                     marker_space.append(el);
                 }
@@ -455,6 +459,7 @@
         var postrollTriggered = false;
 
         const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
+        console.log("vastTagMidroll_array",vastTagMidroll_array);
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;
@@ -505,10 +510,15 @@
                 console.log("Midroll triggered");
 
                 const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
-
+                console.log("random_array_index",random_array_index);
+                
                 const vastTagMidroll = vastTagMidrollArray[random_array_index];
+                console.log("vastTagMidrollArray",vastTagMidrollArray);
+                
 
                 requestMidrollAd(vastTagMidroll);
+                // console.log("requestMidrollAd",requestMidrollAd(vastTagMidroll););
+                
             }
 
             // Free Duration
