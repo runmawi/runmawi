@@ -12696,16 +12696,17 @@ $cpanel->end();
                                                       ->get()
                                                       ->map(function ($item) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
-                                                  
+                                                          
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
                                                           $item['series'] = Series::select('id', 'title', 'access', 'description', 'details', 'player_image', 'tv_image')
                                                                                     ->where('active', '1')
                                                                                     ->where('network_id', 'LIKE', '%"'.$item->id.'"%') // Use LIKE to search for network_id
                                                                                     ->latest()
                                                                                     ->get()
-                                                                                    ->map(function ($series) {
+                                                                                    ->map(function ($series) use ($item) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
+                                                                                        $series['network_name'] = $item->name;
                                                                                         $episodes = Episode::where('series_id', $series->id)
                                                                                                                       ->get()
                                                                                                                       ->map(function ($episode) {
@@ -12738,9 +12739,10 @@ $cpanel->end();
                                                                             
                                                                                     return $series;
                                                                                   });
+                                                          unset($item['id'],$item['name'],$item['order'],$item['image'],$item['banner_image'],$item['slug'],$item['in_home']);
                     
 
-                    return $item;
+                    return $item['series'];
             });
 
         }else{
