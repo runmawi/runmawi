@@ -678,7 +678,12 @@ class AdminLiveStreamController extends Controller
         $movie->custom_end_program_time   =  $request->publish_type == "recurring_program"  && ( !is_null($request->custom_end_program_time) && $request->recurring_program == "custom" ) ? $request->custom_end_program_time : null ;
         $movie->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
         $movie->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
-        
+
+        $movie->scheduler_program_days    =  $request->publish_type == "schedule_program"  ? json_encode($request->scheduler_program_days) : null ;
+        $movie->scheduler_program_title   =  $request->publish_type == "schedule_program"  ? json_encode($request->scheduler_program_title) : null ;
+        $movie->scheduler_program_start_time  =  $request->publish_type == "schedule_program"  ? json_encode($request->scheduler_program_start_time) : null ;
+        $movie->scheduler_program_end_time    =  $request->publish_type == "schedule_program"  ? json_encode($request->scheduler_program_end_time) : null ;
+
         // Ads
 
         if( choosen_player() == 1  && ads_theme_status() == 1){
@@ -836,6 +841,14 @@ class AdminLiveStreamController extends Controller
                 'stream_upload_via' => "radio_station",
             );
 
+            $scheduler_program = array(
+                'scheduler_program_days'       => !empty($video->scheduler_program_days) ? json_decode($video->scheduler_program_days) : [] ,
+                'scheduler_program_title'      => !empty($video->scheduler_program_title) ? json_decode($video->scheduler_program_title): [] ,
+                'scheduler_program_start_time' => !empty($video->scheduler_program_start_time) ? json_decode($video->scheduler_program_start_time): [] ,
+                'scheduler_program_end_time'   => !empty($video->scheduler_program_end_time) ? json_decode($video->scheduler_program_end_time): [] ,
+                'scheduler_program_count'      => !empty($video->scheduler_program_title) ? count(json_decode($video->scheduler_program_title,true) ) : 0 ,
+            );
+
         }else{
 
             $inputs_details_array = array(
@@ -846,6 +859,13 @@ class AdminLiveStreamController extends Controller
                 'view_route'     => "LiveStream_play",
                 'text_main_name' => "Live Stream",
                 'stream_upload_via' => "live_stream",
+            );
+
+            $scheduler_program = array(
+                'scheduler_program_days'       =>  [] ,
+                'scheduler_program_title'      =>  [] ,
+                'scheduler_program_start_time' =>  [] ,
+                'scheduler_program_end_time'   =>  [] ,
             );
         }
 
@@ -878,6 +898,7 @@ class AdminLiveStreamController extends Controller
             'compress_image_settings' => $compress_image_settings,
             'currentRouteName' => Route::currentRouteName() ,
             'inputs_details_array' => $inputs_details_array ,
+            'scheduler_program'    => $scheduler_program,
         );
 
         return View::make('admin.livestream.edit', $data); 
@@ -1287,6 +1308,10 @@ class AdminLiveStreamController extends Controller
         $video->recurring_program_week_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_week_day) && $request->recurring_program == "weekly" ) ? $request->recurring_program_week_day : null ;
         $video->recurring_program_month_day   =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_program_month_day) && $request->recurring_program == "monthly" ) ? $request->recurring_program_month_day : null ;
 
+        $video->scheduler_program_days    =  $request->publish_type == "schedule_program"  &&  !empty($request->scheduler_program_days)  ?  json_encode($request->scheduler_program_days) : null ;
+        $video->scheduler_program_title   =  $request->publish_type == "schedule_program"   &&  !empty($request->scheduler_program_title) ? json_encode($request->scheduler_program_title) : null ;
+        $video->scheduler_program_start_time  =  $request->publish_type == "schedule_program"  &&  !empty($request->scheduler_program_start_time) ? json_encode($request->scheduler_program_start_time) : null ;
+        $video->scheduler_program_end_time    =  $request->publish_type == "schedule_program"  &&  !empty($request->scheduler_program_end_time)   ? json_encode($request->scheduler_program_end_time) : null ;
 
         // Ads
 
