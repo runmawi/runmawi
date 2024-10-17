@@ -405,7 +405,7 @@ class FrontEndQueryController extends Controller
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                         ->where('active', '1')
                                         ->where('status', 1)
-                                        ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
+                                        ->get()->latest()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
                                             $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                             $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
                                             $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
