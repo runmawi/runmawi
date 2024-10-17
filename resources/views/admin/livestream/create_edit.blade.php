@@ -64,6 +64,58 @@
     display: inline-block;
     cursor: pointer;
 } */
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+   
+.modal-content {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #888;
+    width: 50%; /* Adjust the width for medium size */
+    max-width: 60%; /* Maximum width limit */
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cancel-btn{
+    background-color: gray;
+    padding: 7px;
+    color: #fafafa;
+    cursor: pointer;
+    border-radius: 7px
+}
+
+.submit-btn{
+    background-color:#006AFF;
+    padding: 7px;
+    color: #fafafa;
+    cursor: pointer;
+    border-radius: 7px
+}
+
+.close-icon{
+    font-size: 20px;
+    font-weight:bold;
+    cursor: pointer;"
+}
+
+@keyframes animatetop {
+    from { top: -300px; opacity: 0; }
+    to { top: 50%; opacity: 1; }
+}
+
 </style>
 
 @section('css')
@@ -151,6 +203,13 @@
                                 <input type="text" class="form-control" name="slug" id="slug" placeholder="{{ $inputs_details_array['text_main_name']  }} Slug" value="@if(!empty($video->slug)){{ $video->slug }}@endif" />
                             </div>
                         </div>
+                        {{-- <div class="col-sm-6">
+                            <label class="m-0">Program Name</label>
+                            <p class="p1">Add the {{ $inputs_details_array['text_main_name']  }}  program name the textbox below:</p>
+                            <div class="panel-body">
+                                <input type="text" class="form-control" name="radiostation_program" placeholder="{{ $inputs_details_array['text_main_name']  }} Program Name" />
+                            </div>
+                        </div> --}}
                     </div>
                 <div class="row mt-2 align-items-center">
                     <div class="col-md-6">
@@ -723,6 +782,70 @@
                                 <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                                 <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later <br />
                                 <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
+                                <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> {{ __('Schedule Program')}} <br />
+                            </div>
+                        </div>
+
+                        <div id="schedule_program_modal" class="modal">
+                            <div class="modal-content" style="overflow-y: auto;">
+                                <div class="modal-header d-flex justify-content-between">
+                                        <div class="">
+                                            <h4>Schedule Program</h4>
+                                        </div>
+                                        <div class="close-icon" >
+                                            &times;
+                                        </div>
+                                </div>
+                               
+                                <div class="modal-body">
+
+                                    <div class="row mt-2">
+                                        <div class="col-sm-8">
+                                            <label class="m-0">Program Days</label>
+                                            <div class="panel-body">
+                                                <select class="form-control js-example-basic-multiple" id="scheduler_program_days" name="scheduler_program_days[]" style="width: 100%;" multiple="multiple">
+                                                    <option value="0">Sunday</option>
+                                                    <option value="1">Monday</option>
+                                                    <option value="2">Tuesday</option>
+                                                    <option value="3">Wednesday</option>
+                                                    <option value="4">Thursday</option>
+                                                    <option value="5">Friday</option>
+                                                    <option value="6">Saturday</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="program-fields-container">
+                                    <div class="row mt-4 program-fields">
+                                        <div class="col-sm-4">
+                                            <label class="m-0">Program Title</label>
+                                            <div class="panel-body">
+                                                <input class="form-control"  name="scheduler_program_title[]" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                                <label class="m-0">Program Start Time</label>
+                                                <div class="panel-body">
+                                                    <input type="time" class="form-control"  name="scheduler_start_time[]" />
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="m-0">Program End Time</label>
+                                            <div class="panel-body">
+                                                <input type="time" class="form-control" name="scheduler_end_time[]"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="mt-4">
+                                    <button type="button" style="background-color: #2c2c2c; padding:5px; border-radius:7px; color:#fafafa" id="add-program-btn">Add Program</button>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="cancel-btn" id="cancelModal">Cancel</div>
+                                    <div class="submit-btn" id="submitModal">Submit</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1660,6 +1783,145 @@
 
         });
     </script>
+
+<script>
+
+        document.getElementById("scheduleprogram").addEventListener("click", function() {
+        var modal = document.getElementById("schedule_program_modal");
+        modal.style.display = "block"; 
+        modal.style.background = 'rgba(0, 0, 0, 0.7)';
+        });
+
+        window.onclick = function(event) {
+            var modal = document.getElementById("schedule_program_modal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+                document.getElementById("scheduleprogram").checked = false; 
+            }
+        };
+
+        document.querySelector(".modal-footer .cancel-btn").addEventListener("click", function() {
+            var modal = document.getElementById("schedule_program_modal");
+            modal.style.display = "none";
+            document.getElementById("scheduleprogram").checked = false; 
+        });
+
+        document.querySelector(".modal-header .close-icon").addEventListener("click", function() {
+            var modal = document.getElementById("schedule_program_modal");
+            modal.style.display = "none";
+            document.getElementById("scheduleprogram").checked = false; 
+        });
+
+        document.getElementById("submitModal").addEventListener("click", function() {
+        var isValid = true; 
+        var programFields = document.querySelectorAll('.program-fields'); 
+        var timeSlots = []; 
+
+        document.querySelectorAll('.is-invalid').forEach(function(input) {
+            input.classList.remove('is-invalid');
+        });
+        document.querySelectorAll('.error-message').forEach(function(message) {
+            message.remove();
+        });
+
+        programFields.forEach(function(fields) {
+            var titleInput = fields.querySelector('input[name="scheduler_program_title[]"]');
+            var startTimeInput = fields.querySelector('input[name="scheduler_start_time[]"]');
+            var endTimeInput = fields.querySelector('input[name="scheduler_end_time[]"]');
+            var title = titleInput.value;
+            var startTime = startTimeInput.value;
+            var endTime = endTimeInput.value;
+
+            if (!title) {
+                isValid = false;
+                showErrorMessage(titleInput, "Program title is required.");
+            }
+            if (!startTime) {
+                isValid = false;
+                showErrorMessage(startTimeInput, "Start time is required.");
+            }
+            if (!endTime) {
+                isValid = false;
+                showErrorMessage(endTimeInput, "End time is required.");
+            }
+
+            if (startTime && endTime) {
+              
+                var startDateTime = new Date("1970-01-01T" + startTime + ":00");
+                var endDateTime = new Date("1970-01-01T" + endTime + ":00");
+
+                if (startDateTime >= endDateTime) {
+                    isValid = false; 
+                    showErrorMessage(startTimeInput, "Start time must be earlier than end time.");
+                    showErrorMessage(endTimeInput, "End time must be later than start time.");
+                }
+
+                if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
+                    isValid = false;
+                    showErrorMessage(startTimeInput, "A program with the same start and end time already exists.");
+                    showErrorMessage(endTimeInput, "A program with the same start and end time already exists.");
+                }
+
+                if (isValid) {
+                    timeSlots.push({ startTime: startTime, endTime: endTime });
+                }
+            }
+        });
+
+            if (isValid) {
+                document.getElementById("schedule_program_modal").style.display = "none";
+            }
+        });
+
+        function showErrorMessage(inputElement, message) {
+            inputElement.classList.add('is-invalid');
+            var errorSpan = document.createElement('span');
+            errorSpan.classList.add('text-danger', 'error-message');
+            errorSpan.textContent = message;
+            inputElement.parentNode.appendChild(errorSpan);
+        }
+
+        document.getElementById('add-program-btn').addEventListener('click', function() {
+            var container = document.getElementById('program-fields-container');
+            
+            var newFields = document.createElement('div');
+            newFields.classList.add('row', 'mt-4', 'program-fields');
+            newFields.innerHTML = `
+                <div class="col-sm-5">
+                    <label class="m-0">Program Title</label>
+                    <div class="panel-body">
+                        <input class="form-control" name="scheduler_program_title[]" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="m-0">Program Start Time</label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="scheduler_start_time[]" />
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <label class="m-0">Program End Time</label>
+                    <div class="panel-body">
+                        <input type="time" class="form-control" name="scheduler_end_time[]" />
+                    </div>
+                </div>
+                <div class="col-sm-1" style="margin-top:30px;" >
+                    <div class="btn btn-danger delete-program-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                        </svg>    
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(newFields);
+
+            newFields.querySelector('.delete-program-btn').addEventListener('click', function() {
+                container.removeChild(newFields);
+            });
+        });
+</script>
 
 @include('admin.livestream.search_tag'); 
 
