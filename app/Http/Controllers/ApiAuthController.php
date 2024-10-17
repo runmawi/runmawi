@@ -12776,72 +12776,71 @@ $cpanel->end();
               'homepage_default_horizontal_image_url' => default_horizontal_image_url(),
             );
 
-            $epg =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
-                        
-              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
-              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
-              $item['tv_image_url']     = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
-              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
-                                                  
-              $item['series'] = [
-                [
-                    'title' => $item->name,
-                    'player_image_url' => $item['Player_image_url'],
-                    'season' => [
-                        [
-                      'title' => $item->name,
-                      'player_image_url' => $item['Player_image_url'],
+            $epg = AdminEPGChannel::where('status', 1)->get()->map(function ($item) use ($homepage_default_image_url, $carbon_now, $carbon_today, $current_timezone) {
 
-                    'episodes' => ChannelVideoScheduler::where('channe_id', $item->id)
-                                                          ->where('choosed_date', $carbon_today)
-                                                          ->get()
-                                                          ->map(function ($item) use ($carbon_now, $current_timezone) {
-
-                                                              $TimeZone = TimeZone::where('id', $item->time_zone)->first();
-
-                                                              $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . ' ' . $item->start_time, $TimeZone->time_zone)
-                                                                  ->copy()
-                                                                  ->tz($current_timezone);
-
-                                                              $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . ' ' . $item->end_time, $TimeZone->time_zone)
-                                                                  ->copy()
-                                                                  ->tz($current_timezone);
-
-                                                              // Check if the current time falls within the start and end time
-                                                              if ($carbon_now->between($converted_start_time, $converted_end_time)) {
-                                                                  return [
-                                                                      'id' => $item->id,
-                                                                      'socure_title' => $item->socure_title,
-                                                                      'duration' => $item->duration,
-                                                                      'player_image_url' => URL::to('public/uploads/images/' . $item->image),
-                                                                      'AM_PM_Time' => $converted_start_time->format('h:i A') . ' - ' . $converted_end_time->format('h:i A'),
-                                                                      'description' => $item->description,
-                                                                      'content' => [
-                                                                          'choosed_date' => $item->choosed_date,
-                                                                          'videos' => [
-                                                                              [
-                                                                                  'videoType' => $item->type,
-                                                                                  'url' => $item->url,
-                                                                              ],
-                                                                          ],
-                                                                          'duration' => $item->duration,
-                                                                      ],
-                                                                      'Tv_image_url' => URL::to('public/uploads/images/' . $item->image),
-                                                                      'status' => $item->status,
-                                                                  ];
-                                                              }
-
-                                                              return null;
-
-                                                          })->filter()
-                                                          ]
-                ]
-                ]
-    ];
-
-              $item['source'] = 'EPG';
-              return $item;
-            });
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/' . $item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'];
+              $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/EPG-Channel/' . $item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
+              $item['tv_image_url'] = $item->player_image != null ? URL::to('public/uploads/EPG-Channel/' . $item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
+              $item['Logo_url'] = $item->logo != null ? URL::to('public/uploads/EPG-Channel/' . $item->logo) : $homepage_default_image_url['homepage_default_vertical_image_url'];
+          
+                $item['series'] = [
+                    [
+                        'title' => $item->name,
+                        'player_image_url' => $item['Player_image_url'],
+                          'season' => [
+                              [
+                                  'title' => $item->name,
+                                  'player_image_url' => $item['Player_image_url'],
+                                  'episodes' => array_values(ChannelVideoScheduler::where('channe_id', $item->id)
+                                                                                    ->where('choosed_date', $carbon_today)
+                                                                                    ->get()
+                                                                                    ->map(function ($episode) use ($carbon_now, $current_timezone) {
+                                                            
+                                                                                        $TimeZone = TimeZone::where('id', $episode->time_zone)->first();
+                                                            
+                                                                                        $converted_start_time = Carbon::createFromFormat('m-d-Y H:i:s', $episode->choosed_date . ' ' . $episode->start_time, $TimeZone->time_zone)
+                                                                                            ->copy()
+                                                                                            ->tz($current_timezone);
+                                                            
+                                                                                        $converted_end_time = Carbon::createFromFormat('m-d-Y H:i:s', $episode->choosed_date . ' ' . $episode->end_time, $TimeZone->time_zone)
+                                                                                            ->copy()
+                                                                                            ->tz($current_timezone);
+                                                            
+                                                                                        if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                            return [
+                                                                                                'id' => $episode->id,
+                                                                                                'socure_title' => $episode->socure_title,
+                                                                                                'duration' => $episode->duration,
+                                                                                                'episodeNumber' => '1',
+                                                                                                'player_image_url' => URL::to('public/uploads/images/' . $episode->image),
+                                                                                                'AM_PM_Time' => $converted_start_time->format('h:i A') . ' - ' . $converted_end_time->format('h:i A'),
+                                                                                                'description' => $episode->description,
+                                                                                                'content' => [
+                                                                                                    'choosed_date' => $episode->choosed_date,
+                                                                                                    'videos' => [
+                                                                                                        [
+                                                                                                            'videoType' => $episode->type,
+                                                                                                            'url' => $episode->url,
+                                                                                                        ],
+                                                                                                    ],
+                                                                                                    'duration' => $episode->duration,
+                                                                                                ],
+                                                                                                'Tv_image_url' => URL::to('public/uploads/images/' . $episode->image),
+                                                                                                'status' => $episode->status,
+                                                                                            ];
+                                                                                        }
+                                                            
+                                                                                        return null;
+                                                                                    })->filter()->toArray()) // Ensure that filtered result is converted to an array
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                ];
+                                                            
+                                                                $item['source'] = 'EPG';
+                                                                return $item;
+                                                            });
+          
         }else{
           $epg = null;
         }
