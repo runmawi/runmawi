@@ -2,7 +2,9 @@
 <fieldset>
    <div class="form-card">
 
-      @if( choosen_player() == 1 )    {{-- Video.Js Player--}}
+
+      {{-- Video.Js Player--}}
+      {{-- @if( choosen_player() == 0 )     --}}
 
          <div class="row">
                
@@ -471,13 +473,14 @@
             </div>
          </div>
 
-      @else                           {{-- Plyr.io Player --}}
+         {{-- Plyr.io Player --}}
+      {{-- @else                           
 
          <div class="row">
 
             <div class="col-7"> <h2 class="fs-title">ADS Management:</h2> </div>
 
-            <div class="col-sm-6 form-group mt-3">     {{-- Ads Category--}}
+            <div class="col-sm-6 form-group mt-3">     
 
                <label class="">Choose Ads Position</label>
                <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
@@ -489,7 +492,7 @@
                </select>
             </div>
 
-            <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div">   {{-- Ads --}}
+            <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div">  
                <label class="">Choose Advertisement</label>
                <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
                   <option value=" ">Select the Advertisement </option>
@@ -497,7 +500,7 @@
             </div>
          </div> 
 
-      @endif
+      @endif --}}
 
 
       @if(isset($video->id))

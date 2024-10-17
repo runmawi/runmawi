@@ -53,7 +53,7 @@
     
                               {{-- Video.Js Player--}}
 
-      @if( choosen_player() == 1  )   
+      {{-- @if( choosen_player() == 1  )    --}}
 
             
          <div id="accordionExample" class="accordion">
@@ -507,9 +507,10 @@
             </div>
          </div>
 
-      @else                           {{-- Plyr.io Player --}}
+         {{-- Plyr.io Player --}}
+      {{-- @else                          
          <div class="row">
-            <div class="col-sm-6 form-group mt-3">                        {{-- Ads Category--}}
+            <div class="col-sm-6 form-group mt-3">                        
                <label class="">Choose the Ads Position</label>
                <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
                   <option value=" ">Select the Ads Position </option>
@@ -520,7 +521,7 @@
                </select>
             </div>
 
-            <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >   {{-- Ads --}}
+            <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >   
                <label class="">Choose Advertisement</label>
                <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
                   @if( $ads_tag_urls != null)
@@ -531,7 +532,7 @@
                </select>
             </div>
          </div>
-      @endif
+      @endif --}}
 
       <div class="row">
 
