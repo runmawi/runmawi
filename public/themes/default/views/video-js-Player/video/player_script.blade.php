@@ -413,9 +413,7 @@
                     markers.push({ time: total });
                 }
 
-                var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);
-                console.log("marker_space",marker_space);
-                
+                var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);                
 
                 for (var i = 0; i < markers.length; i++) {
 
@@ -423,11 +421,9 @@
 
                     var time = markers[i].time;
 
-                    var el = jQuery('<div class="vjs-marker" style="left:' + left + '" data-time="' + time + '"></div>');                    
+                    var el = jQuery('<div class="vjs-marker" style="left:' + left + '" data-time="' + time + '"></div>');                                     
                     el.click(function() {
-                        player.currentTime($(this).data('time'));
-                        console.log("player.currentTime($(this).data('time'))",player.currentTime($(this).data('time')));
-                        
+                        player.currentTime($(this).data('time'));                        
                     });
 
                     marker_space.append(el);
@@ -459,7 +455,6 @@
         var postrollTriggered = false;
 
         const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
-        console.log("vastTagMidroll_array",vastTagMidroll_array);
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;
@@ -510,15 +505,9 @@
                 console.log("Midroll triggered");
 
                 const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
-                console.log("random_array_index",random_array_index);
-                
-                const vastTagMidroll = vastTagMidrollArray[random_array_index];
-                console.log("vastTagMidrollArray",vastTagMidrollArray);
-                
+                const vastTagMidroll = vastTagMidrollArray[random_array_index];                
 
                 requestMidrollAd(vastTagMidroll);
-                // console.log("requestMidrollAd",requestMidrollAd(vastTagMidroll););
-                
             }
 
             // Free Duration
