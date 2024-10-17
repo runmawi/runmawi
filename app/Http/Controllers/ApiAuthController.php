@@ -12706,35 +12706,54 @@ $cpanel->end();
                                                                                     ->map(function ($series) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
-                                                                                        $episodes = Episode::where('series_id', $series->id)
-                                                                                                                      ->get()
-                                                                                                                      ->map(function ($episode) {
-                                                                                                                        return [
-                                                                                                                          'id'                       => $episode->id,
-                                                                                                                          'title'                    => $episode->title,
-                                                                                                                          'slug'                     => $episode->slug,
-                                                                                                                          'episodeNumber'            => $episode->episode_order,
-                                                                                                                          'access'                   => $episode->access,
-                                                                                                                          'content'                  => [
-                                                                                                                                                          'dateAdded' => $episode->created_at,
-                                                                                                                                                          'videos' => [
-                                                                                                                                                              [
-                                                                                                                                                                  'videoType' => $episode->type,
-                                                                                                                                                                  'video_url' => $episode->url,
-                                                                                                                                                              ],
-                                                                                                                                                          ],
-                                                                                                                                                          'duration' => $episode->duration,
-                                                                                                                                                        ],
-                                                                                                                          'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
-                                                                                                                          'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
-                                                                                                                          'status'                   => $episode->status,
-                                                                                                                        ];
-                                                                                                                      });
-                                                                                        if ($episodes->isNotEmpty()) {
-                                                                                            $series['episodes'] = $episodes;
-                                                                                        } else {
-                                                                                            unset($series['episodes']);
-                                                                                        }
+                                                                                        $series['seasons'] = SeriesSeason::where('series_id', $series->id)
+                                                                                                                        ->get()
+                                                                                                                        ->map(function ($season) {
+                                                                                                                            $episodes = Episode::where('season_id', $season->id)
+                                                                                                                                ->orderBy('episode_order')
+                                                                                                                                ->get()
+                                                                                                                                ->map(function ($episode) {
+                                                                                                                                  return [
+                                                                                                                                    'id'                       => $episode->id,
+                                                                                                                                    'title'                    => $episode->title,
+                                                                                                                                    'slug'                     => $episode->slug,
+                                                                                                                                    'episodeNumber'            => $episode->episode_order,
+                                                                                                                                    'access'                   => $episode->access,
+                                                                                                                                    'content'                  => [
+                                                                                                                                                                    'dateAdded' => $episode->created_at,
+                                                                                                                                                                    'videos' => [
+                                                                                                                                                                        [
+                                                                                                                                                                            'videoType' => $episode->type,
+                                                                                                                                                                            'url' => $episode->url,
+                                                                                                                                                                        ],
+                                                                                                                                                                    ],
+                                                                                                                                                                    'duration' => $episode->duration,
+                                                                                                                                                                  ],
+                                                                                                                                    'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                                    'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
+                                                                                                                                    'status'                   => $episode->status,
+                                                                                                                                  ];
+                                                                                                                                });
+
+                                                                                                                            // Only include the season if it has episodes
+                                                                                                                            if ($episodes->isNotEmpty()) {
+                                                                                                                                return [
+                                                                                                                                    'title' => $season->series_seasons_name,
+                                                                                                                                    'episodes' => $episodes,
+                                                                                                                                ];
+                                                                                                                            }
+
+                                                                                                                            // Return null for seasons with no episodes
+                                                                                                                            return null;
+                                                                                                                        })
+                                                                                                                        ->filter(function ($value) {
+                                                                                                                            return $value !== null;
+                                                                                                                        });
+
+                                                                                                                    // Remove the 'seasons' key if it's an empty array
+                                                                                                                    if ($series['seasons']->isEmpty()) {
+                                                                                                                        unset($series['seasons']);
+                                                                                                                    }
                                                                             
                                                                                     return $series;
                                                                                   });
