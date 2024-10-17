@@ -12641,6 +12641,7 @@ $cpanel->end();
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
                                                 'slug'                     => $episode->slug,
+                                                'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
                                                 'episodeNumber'            => $episode->episode_order,
                                                 'access'                   => $episode->access,
                                                 'content'                  => [
@@ -12653,7 +12654,6 @@ $cpanel->end();
                                                                                 ],
                                                                                 'duration' => $episode->duration,
                                                                               ],
-                                                'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
                                                 'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
                                                 'status'                   => $episode->status,
                                               ];
@@ -12717,6 +12717,7 @@ $cpanel->end();
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
                                                                                                                                     'slug'                     => $episode->slug,
+                                                                                                                                    'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
                                                                                                                                     'episodeNumber'            => $episode->episode_order,
                                                                                                                                     'access'                   => $episode->access,
                                                                                                                                     'content'                  => [
@@ -12729,7 +12730,6 @@ $cpanel->end();
                                                                                                                                                                     ],
                                                                                                                                                                     'duration' => $episode->duration,
                                                                                                                                                                   ],
-                                                                                                                                    'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
                                                                                                                                     'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
                                                                                                                                     'status'                   => $episode->status,
                                                                                                                                   ];
@@ -12952,7 +12952,7 @@ $cpanel->end();
             'live_videos'                   => $livestreams_sort,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
-            // 'epg'                           => $epg,
+            'epg'                           => $epg,
         ];
 
         foreach ($dataToCheck as $key => $value) {
