@@ -22,15 +22,17 @@
                 </a>
 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1): ?>
-                    <?php if($episodes->access == 'subscriber'): ?>
+                    <?php if($series->access == 'subscriber'): ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                    <?php elseif($episodes->access == 'registered'): ?>
+                    <?php elseif($series->access == 'registered'): ?>
                         <p class="p-tag"><?php echo __('Register Now'); ?></p>
-                    <?php elseif(!empty($episodes->ppv_status)): ?>
+                    <?php elseif(!empty($series->ppv_status) && $series->ppv_status == 1): ?>
                         <p class="p-tag"><?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></p>
-                    <?php elseif(!empty($episodes->ppv_status) || (!empty($episodes->ppv_status) && $episodes->ppv_status == null)): ?>
+                    <?php elseif(!empty($seasons->access) || $seasons->access == 'ppv'): ?>
+                            <p class="p-tag"><?php echo $currency->symbol . ' ' . $seasons->ppv_price; ?></p>
+                    <?php elseif(!empty($series->ppv_status) || (!empty($series->ppv_status) && $series->ppv_status == null)): ?>
                         <p class="p-tag"><?php echo $currency->symbol . ' ' . $settings->ppv_status; ?></p>
-                    <?php elseif($episodes->ppv_status == null && $episodes->ppv_price == null): ?>
+                    <?php elseif($series->ppv_status == null && $series->ppv_price == null  || $seasons->access == 'free'): ?>
                         <p class="p-tag"><?php echo __('Free'); ?></p>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -42,15 +44,17 @@
               <a class="playTrailer" href="<?= $settings->enable_https ? secure_url('episodes') : URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug ?>">
                 
                 <?php if($ThumbnailSetting->free_or_cost_label == 1): ?>
-                    <?php if($episodes->access == 'subscriber'): ?>
+                    <?php if($series->access == 'subscriber'): ?>
                         <p class="p-tag"> <i class="fas fa-crown" style='color:gold'></i> </p>
-                    <?php elseif($episodes->access == 'registered'): ?>
+                    <?php elseif($series->access == 'registered'): ?>
                         <p class="p-tag"><?php echo __('Register Now'); ?></p>
-                    <?php elseif(!empty($episodes->ppv_status)): ?>
+                    <?php elseif(!empty($series->ppv_status)  && $series->ppv_status == 1): ?>
                         <p class="p-tag"><?php echo $currency->symbol . ' ' . $settings->ppv_price; ?></p>
-                    <?php elseif(!empty($episodes->ppv_status) || (!empty($episodes->ppv_status) && $episodes->ppv_status == null)): ?>
+                    <?php elseif(!empty($series->ppv_status) || (!empty($series->ppv_status) && $series->ppv_status == null)): ?>
                         <p class="p-tag"><?php echo $currency->symbol . ' ' . $settings->ppv_status; ?></p>
-                    <?php elseif($episodes->ppv_status == null && $episodes->ppv_price == null): ?>
+                    <?php elseif(!empty($seasons->access) || $seasons->access == 'ppv'): ?>
+                        <p class="p-tag"><?php echo $currency->symbol . ' ' . $seasons->ppv_price; ?></p>
+                    <?php elseif($series->ppv_status == null && $series->ppv_price == null || $seasons->access == 'free'): ?>
                         <p class="p-tag"><?php echo __('Free'); ?></p>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -64,10 +68,11 @@
                       <p class="epi-name text-left m-0 mt-2">
                           <?= strlen($episodes->title) > 17 ? substr($episodes->title, 0, 18) . '...' : $episodes->title ?>
                       </p>
-                 
-                      <p class="desc-name text-left m-0 mt-1">
-                            <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
-                        </p>
+                        <?php if($ThumbnailSetting->enable_description == 1 ) : ?>
+                            <p class="desc-name text-left m-0 mt-1">
+                                <?= strlen($episodes->episode_description) > 75 ? substr(html_entity_decode(strip_tags($episodes->episode_description)), 0, 75) . '...' : strip_tags($episodes->episode_description) ?>
+                            </p>
+                        <?php endif; ?>
 
                   <div class="movie-time d-flex align-items-center pt-1">
                     <?php if($ThumbnailSetting->age == 1 && !($episodes->age_restrict == 0)): ?>

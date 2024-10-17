@@ -90,15 +90,15 @@ endif;
 </div>
 
 <script>
-  var elem = document.querySelector('.free-content');
-  var flkty = new Flickity(elem, {
-      cellAlign: 'left',
-      contain: true,
-      groupCells: true,
-      pageDots: false,
-      draggable: true,
-      freeScroll: true,
-      imagesLoaded: true,
-      lazyload:true,
-  });
+    var elem = document.querySelector('.free-content');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload: true,
+    });
 </script>

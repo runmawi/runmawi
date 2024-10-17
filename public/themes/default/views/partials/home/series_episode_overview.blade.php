@@ -103,6 +103,6 @@ $data = App\Series::where('active', '1')->limit(15)
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyload: true,
     });
  </script>

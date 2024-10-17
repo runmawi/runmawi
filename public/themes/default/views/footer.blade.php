@@ -13,7 +13,7 @@
   $theme_mode = $theme->theme_mode;
 ?>
 
-<footer class="py-4 mt-auto">
+<footer class="py-4 mt-5">
   <div class="container-fluid px-5 mt-5">
      <!-- <p class="text-white text-center mb-4">Chat-box will be sent later.</p>-->
       <div class="row justify-content-center align-items-center">
@@ -72,7 +72,7 @@
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" src="<?php echo  URL::to('/assets/img/lan/t (1).webp')?>" alt="t" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" alt="t" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
@@ -139,9 +139,9 @@
 
             foreach($cmspages as $key => $page) {
               if($page->slug == 'contact-us') { ?>
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1" style="color:#fff !important;"> <?= __($page->title) ?> </a>
               <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1" style="color:#fff !important;"> <?= __($page->title) ?> </a>
             <?php } } ?>
           </p>
           <p class="text-center">
@@ -153,6 +153,7 @@
       <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
       <script  src="<?= URL::to('/'). '/assets/js/jquery-3.4.1.min.js';?>"></script>
+      <script  src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
       <!-- Popper js -->
       <link rel="preload" href="<?= URL::to('/'). '/assets/js/popper.min.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/popper.min.js';?>"></script>
@@ -426,6 +427,10 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     .down-apps{display:block !important;margin-bottom: 2rem;}
     .down-apps img{width:100%;}
     p.font-weight-bold.mb-0{font-size: 1.5rem;text-align: center;}
+    
   }
+  body.light-theme footer a, body.light-theme footer p{color: #000  !important; }
+  footer p{color: #fff  !important; }
+  footer a{color: #fff  !important; }
 </style>
 </body>

@@ -62,7 +62,6 @@ use App\AudioAlbums as AudioAlbums;
 use Illuminate\Support\Facades\Cache;
 use App\Audio as Audio;
 use File;
-use App\VideoCommission as VideoCommission;
 use Mail;
 use App\EmailTemplate;
 use App\RevenueSetting;

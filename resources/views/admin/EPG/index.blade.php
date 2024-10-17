@@ -109,6 +109,11 @@
                                                         <img class="ply" src="{{ URL::to('/assets/img/icon/download-line.svg') }}">
                                                     </a>
 
+                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" data-original-title="Edit" 
+                                                        href="{{ route('admin.download.json',[$epg_data->id]) }}">
+                                                        <img class="ply" src="https://localhost/flicknexs/assets/img/json.svg">
+                                                    </a>
+
                                                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top"
                                                         title="" onclick="return confirm('Are you sure?')" data-original-title="Delete"
                                                         href="{{ route('admin.epg.delete',[$epg_data->id] ) }}">

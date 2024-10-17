@@ -869,7 +869,7 @@ border-radius: 0px 4px 4px 0px;
 
 
                                           {{-- Video Title Thumbnail --}}
-                        <div class="row">
+                        <div class="row mt-3">
                            <div class="col-sm-6 form-group">
                               <label class="mb-1"> Video Title Thumbnail </label><br>
                               <input type="file" name="video_title_image" id="video_title_image" >
@@ -2522,67 +2522,132 @@ else if(trailer_type == 'null' ){
 </script>
 
 <script>
-   document.getElementById('image').addEventListener('change', function() {
-       var file = this.files[0];
-       if (file) {
-           var img = new Image();
-           img.onload = function() {
-               var width = img.width;
-               var height = img.height;
+   $(document).ready(function(){
+   
+      $('#image_error_msg,#player_image_error_msg,#tv_image_image_error_msg').hide();
+
+      $('#image').on('change', function(event) {
+
+
+            var file = this.files[0];
+            var tmpImg = new Image();
+
+            tmpImg.src=window.URL.createObjectURL( file ); 
+            tmpImg.onload = function() {
+               width = tmpImg.naturalWidth,
+               height = tmpImg.naturalHeight;
+               image_validation_status = "{{  image_validation_videos() }}" ;
                console.log(width);
-               console.log(height);
-               
-               var validWidth = {{ $compress_image_settings->width_validation_videos }};
-               var validHeight = {{ $compress_image_settings->height_validation_videos }};
-               console.log(validWidth);
+               var validWidth = {{ $compress_image_settings->width_validation_videos ?: 1080 }};
+               var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1920 }};
+               console.log('validWidth ' + validWidth);
                console.log(validHeight);
 
                if (width !== validWidth || height !== validHeight) {
-                  
-                   document.getElementById('video_image_error_msg').style.display = 'block';
-                   $('.update_upload_img').prop('disabled', true);
-                   document.getElementById('video_image_error_msg').innerText = 
-                       `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-               } else {
-                  
-                   document.getElementById('video_image_error_msg').style.display = 'none';
-                   $('.update_upload_img').prop('disabled', false);
-               }
-           };
-           img.src = URL.createObjectURL(file);
-       }
+                     document.getElementById('video_image_error_msg').style.display = 'block';
+                     $('.update_upload_img').prop('disabled', true);
+                     document.getElementById('video_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                  } else {
+                     document.getElementById('video_image_error_msg').style.display = 'none';
+                     $('.update_upload_img').prop('disabled', false);
+                  }
+            }
+      });
+     
+      $('#player_image').on('change', function(event) {
+
+         var file = this.files[0];
+         var player_Img = new Image();
+
+         player_Img.src=window.URL.createObjectURL( file ); 
+         player_Img.onload = function() {
+         var width = player_Img.naturalWidth;
+         var height = player_Img.naturalHeight;
+         image_validation_status = "{{  image_validation_videos() }}" ;
+         console.log('player width ' + width)
+
+         var valid_player_Width = {{ $compress_image_settings->width_validation_player_img ?: 1280 }};
+         var valid_player_Height = {{ $compress_image_settings->height_validation_player_img ?: 720 }};
+         console.log(valid_player_Width + 'player width');
+
+         if (width !== valid_player_Width || height !== valid_player_Height) {
+               document.getElementById('player_image_error_msg').style.display = 'block';
+               $('.update_upload_img').prop('disabled', true);
+               document.getElementById('player_image_error_msg').innerText = 
+                  `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+         } else {
+               document.getElementById('player_image_error_msg').style.display = 'none';
+               $('.update_upload_img').prop('disabled', false);
+         }
+         }
+      });
    });
 
-   document.getElementById('player_image').addEventListener('change', function() {
-       var file = this.files[0];
-       if (file) {
-           var img = new Image();
-           img.onload = function() {
-               var width = img.width;
-               var height = img.height;
-               console.log(width);
-               console.log(height);
+</script>
+
+<script>
+   // document.getElementById('image').addEventListener('change', function() {
+   //     var file = this.files[0];
+   //     if (file) {
+   //         var img = new Image();
+   //         img.onload = function() {
+   //             var width = img.width;
+   //             var height = img.height;
+   //             console.log(width);
+   //             console.log(height);
                
-               var validWidth = {{ $compress_image_settings->width_validation_player_img }};
-               var validHeight = {{ $compress_image_settings->height_validation_player_img }};
-               console.log(validWidth);
-               console.log(validHeight);
+   //             var validWidth = {{ $compress_image_settings->width_validation_videos }};
+   //             var validHeight = {{ $compress_image_settings->height_validation_videos }};
+   //             console.log(validWidth);
+   //             console.log(validHeight);
+
+   //             if (width !== validWidth || height !== validHeight) {
+                  
+   //                 document.getElementById('video_image_error_msg').style.display = 'block';
+   //                 $('.update_upload_img').prop('disabled', true);
+   //                 document.getElementById('video_image_error_msg').innerText = 
+   //                     `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+   //             } else {
+                  
+   //                 document.getElementById('video_image_error_msg').style.display = 'none';
+   //                 $('.update_upload_img').prop('disabled', false);
+   //             }
+   //         };
+   //         img.src = URL.createObjectURL(file);
+   //     }
+   // });
+
+   // document.getElementById('player_image').addEventListener('change', function() {
+   //     var file = this.files[0];
+   //     if (file) {
+   //         var img = new Image();
+   //         img.onload = function() {
+   //             var width = img.width;
+   //             var height = img.height;
+   //             console.log(width);
+   //             console.log(height);
                
-               if (width !== validWidth || height !== validHeight) {
-                  console.log('failed')
-                   document.getElementById('player_video_image_error_msg').style.display = 'block';
-                   $('.update_upload_img').prop('disabled', true);
-                   document.getElementById('player_video_image_error_msg').innerText = 
-                       `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-               } else {
-                  console.log('success')
-                   document.getElementById('player_video_image_error_msg').style.display = 'none';
-                   $('.update_upload_img').prop('disabled', false);
-               }
-           };
-           img.src = URL.createObjectURL(file);
-       }
-   });
+   //             var validWidth = {{ $compress_image_settings->width_validation_player_img }};
+   //             var validHeight = {{ $compress_image_settings->height_validation_player_img }};
+   //             console.log(validWidth);
+   //             console.log(validHeight);
+               
+   //             if (width !== validWidth || height !== validHeight) {
+   //                console.log('failed')
+   //                 document.getElementById('player_video_image_error_msg').style.display = 'block';
+   //                 $('.update_upload_img').prop('disabled', true);
+   //                 document.getElementById('player_video_image_error_msg').innerText = 
+   //                     `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+   //             } else {
+   //                console.log('success')
+   //                 document.getElementById('player_video_image_error_msg').style.display = 'none';
+   //                 $('.update_upload_img').prop('disabled', false);
+   //             }
+   //         };
+   //         img.src = URL.createObjectURL(file);
+   //     }
+   // });
 
 </script>
 

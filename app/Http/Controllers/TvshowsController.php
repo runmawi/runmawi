@@ -854,43 +854,68 @@ class TvshowsController extends Controller
             // default episode play
             $season_ide = Episode::where('slug', $episode_name)->pluck('season_id')->first();
             $season_access_ppv = SeriesSeason::where('id', $season_ide)->pluck('access')->first();
-            $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
+            if(!Auth::guest()){
+                $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
 
-            $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
-            ->where('user_id', Auth::user()->id)
-            ->first();
-    
-            if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
-                $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
-                $currentdate = date("M d , y H:i:s");
-                $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
-            }
-            else{
-                $ppv_exists_check_query = 0;
-            }    
-
-                // dd($ppv_purchase);
-            if($season_access_ppv == "free" || Auth::user()->role == "admin"){
-                $episode_play_access = 1;
-            }else{
-                if(Auth::guest()){
-                    $episode_play_access = 0;
-                }elseif(Auth::user()->role == "registered"){
-                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0){
-                        $episode_play_access = 1;
-                    }else{
-                        $episode_play_access = 0;
-                    }
-                }elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1){
-                    $episode_play_access = 1;
+                $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
+                ->where('user_id', Auth::user()->id)
+                ->first();
+        
+                if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                    $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                    $currentdate = date("M d , y H:i:s");
+                    $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
                 }
-                elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0){
-                    if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0 ){
-                        $episode_play_access = 1;
-                    }else{
+                else{
+                    $ppv_exists_check_query = 0;
+                }    
+
+                    // dd($ppv_purchase);
+                if($season_access_ppv == "free" && $series->access == 'guest' || Auth::user()->role == "admin"){
+                    $episode_play_access = 1;
+                }else{
+                    if(Auth::guest()){
                         $episode_play_access = 0;
+                    }elseif(Auth::user()->role == "registered"){
+                        if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0){
+                            $episode_play_access = 1;
+                        }else{
+                            $episode_play_access = 0;
+                        }
+                    }elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1){
+                        $episode_play_access = 1;
+                    }
+                    elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0){
+                        if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0 ){
+                            $episode_play_access = 1;
+                        }else{
+                            $episode_play_access = 0;
+                        }
+                    }
+                }
+            }else{
+                if($season_access_ppv == "free" && $series->access == 'guest'){
+                    $episode_play_access = 1;
+                }else{
+                    if(Auth::guest()){
+                        $episode_play_access = 0;
+                    }elseif(Auth::user()->role == "registered"){
+                        if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0){
+                            $episode_play_access = 1;
+                        }else{
+                            $episode_play_access = 0;
+                        }
+                    }elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1){
+                        $episode_play_access = 1;
+                    }
+                    elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0){
+                        if($ppv_purchase_user && $ppv_purchase_user->season_id == $season_ide || $ppv_exists_check_query > 0 ){
+                            $episode_play_access = 1;
+                        }else{
+                            $episode_play_access = 0;
+                        }
                     }
                 }
             }
@@ -933,7 +958,6 @@ class TvshowsController extends Controller
                         break;
                 }
             }
-
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -1726,36 +1750,34 @@ public function RemoveDisLikeEpisode(Request $request)
     }
 
     
-    public function SeriescategoryList(Request $request)
+    
+    
 
+    public function SeriescategoryList(Request $request)
     {
         try {
-
-            $Theme = HomeSetting::pluck('theme_choosen')->first();
-            Theme::uses($Theme);
-
             $settings = Setting::first();
-
+            $category_list = SeriesGenre::orderBy('order')->get();
+            $default_vertical_image_url = default_vertical_image_url();
+           
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
-                $landing_page_slug = AdminLandingPage::where('status', 1)
-                    ->pluck('slug')
-                    ->first()
-                    ? AdminLandingPage::where('status', 1)
-                        ->pluck('slug')
-                        ->first()
-                    : 'landing-page';
+
+                $landing_page_slug = AdminLandingPage::where('status', 1)->pluck('slug')->first() ? AdminLandingPage::where('status', 1)->pluck('slug')->first() : 'landing-page';
 
                 return redirect()->route('landing_page', $landing_page_slug);
             }
 
+            $category_list = $this->paginateCollection($category_list, $this->videos_per_page);
+
+
             $data = [
-                'category_list' => SeriesGenre::all(),
+                'category_list' => $category_list,
+                'default_vertical_image_url' => $default_vertical_image_url,
             ];
 
             return Theme::view('SeriescategoryList', $data);
-
         } catch (\Throwable $th) {
-
+            // return $th->getMessage();
             return abort(404);
         }
     }

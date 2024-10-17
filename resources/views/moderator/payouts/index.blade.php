@@ -48,7 +48,6 @@
                                             @foreach($last_paid_amount as $keys => $paid_amount)
                                                 @if ($payout->moderator_id == $keys && $paid_amount  )
                                                     {{ $paid_amount }}
-                                                    <!-- @break -->
                                                     @break
                                                 @else                                
                                                  @continue

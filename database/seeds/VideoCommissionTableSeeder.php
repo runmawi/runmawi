@@ -17,12 +17,19 @@ class VideoCommissionTableSeeder extends Seeder
         VideoCommission::truncate();
 
         $Video_Commission = [
-            [  'percentage' => '60', 
-               'user_id' => '1',
+            [  'percentage' => 60, 
+               'user_id'    => '1',
                'created_at' => Carbon::now(),
                'updated_at' => null,
+               'type'       => null
             ],
- 
+
+            [  'percentage' => 40, 
+               'user_id'    => '1',
+               'created_at' => Carbon::now(),
+               'updated_at' => null,
+               'type'       => 'CPP'
+            ],
         ];
 
         VideoCommission::insert($Video_Commission);

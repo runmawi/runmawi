@@ -561,20 +561,37 @@ function Geofencing(){
     return $getfeching;
 }
 
+// function current_timezone()
+// {
+//     $current_location = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+//     $current_ip = $current_location->getip();
+
+//     $apiUrl = "http://ip-api.com/php/{$current_ip}";
+
+//     $response = \Http::get($apiUrl);
+
+//     $data = unserialize($response->body());
+
+//     $timezone = $data['status'] == "success" ? $data['timezone'] : null ;
+
+//     return $timezone ;
+// }
+
 function current_timezone()
 {
-    $current_location = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-    $current_ip = $current_location->getip();
+    $current_timezone = null;
 
-    $apiUrl = "http://ip-api.com/php/{$current_ip}";
+    $response = Http::withOptions([
+        'verify' => false, 
+    ])->get('https://get.geojs.io/v1/ip/geo.json');
+    
+    if ($response->successful()) {
+        $current_timezone = $response->json('timezone'); 
+    } else {
+        $current_timezone = App\Setting::pluck('default_time_zone')->first();
+    }
 
-    $response = \Http::get($apiUrl);
-
-    $data = unserialize($response->body());
-
-    $timezone = $data['status'] == "success" ? $data['timezone'] : null ;
-
-    return $timezone ;
+    return $current_timezone['timezone'];
 }
 
 function Country_name(){

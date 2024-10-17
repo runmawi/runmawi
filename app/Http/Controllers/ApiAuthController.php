@@ -3089,10 +3089,11 @@ public function verifyandupdatepassword(Request $request)
 
       $validator = Validator::make($request->all(), [
                     'liveid' => 'required', 
-                    'user_id' => 'required'],
+                    // 'user_id' => 'required'
+                  ],
                     [
                       'liveid.required'  => 'Please enter your liveid',
-                      'user_id.required' => 'Please enter your user_id',
+                      // 'user_id.required' => 'Please enter your user_id',
                     ]);
 
       if ($validator->fails()) {
@@ -6216,6 +6217,9 @@ public function checkEmailExists(Request $request)
 
       $episodeid = $request->episodeid;
       $user_id   = $request->user_id;
+      $andriodId   = $request->andriodId;
+      $IOSId      = $request->IOSId;
+
 
       // Check Episode exist
 
@@ -6223,7 +6227,7 @@ public function checkEmailExists(Request $request)
 
       // Episode Details
 
-      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id){
+      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id,$andriodId){
 
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
@@ -6256,6 +6260,31 @@ public function checkEmailExists(Request $request)
 
         }
         
+        if( isset($andriodId) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('andriodId',$andriodId)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+        
+
+        if( isset($IOSId) ){
+
+          $ContinueWatching = ContinueWatching::query()->where('IOSId',$IOSId)->where('episodeid',$item->id)->latest()->first();
+          
+          $item['ContinueWatching'] = $ContinueWatching ;
+
+          $item['current_time'] = !is_null($ContinueWatching )? $ContinueWatching->currentTime :  '00:00' ;
+          $item['watch_percentage'] = !is_null($ContinueWatching )? $ContinueWatching->watch_percentage :  null ;
+          $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
+
+        }
+
          //  Episode URL
          
          switch (true) {
@@ -6371,7 +6400,7 @@ public function checkEmailExists(Request $request)
         $languages = "";
       }
 
-
+      
       if($request->user_id != ''){
         $user_id = $request->user_id;
         $cnt = Wishlist::select('episode_id')->where('user_id','=',$user_id)->where('episode_id','=',$request->episodeid)->count();
@@ -6474,6 +6503,66 @@ public function checkEmailExists(Request $request)
       }
 
 
+              
+          if($request->andriodId != ''){
+            $andriodId = $request->andriodId;
+            $cnt = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+            $andriod_wishliststatus =  ($cnt == 1) ? "true" : "false";
+          }else{
+            $andriod_wishliststatus = 'false';
+          }
+          if(!empty($request->andriodId)){
+            $andriodId = $request->andriodId;
+            $cnt = Watchlater::select('episode_id')->where('andriodId','=',$andriodId)->where('episode_id','=',$request->episodeid)->count();
+            $andriod_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+          }else{
+            $andriod_watchlaterstatus = 'false';
+          }
+
+          if($request->andriodId != ''){
+          $andriod_like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("liked","=",1)->count();
+          $andriod_dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->where("disliked","=",1)->count();
+          $andriod_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("andriodId","=",$andriodId)->count();
+          $andriod_like = ($andriod_like_data == 1) ? "true" : "false";
+          $andriod_dislike = ($andriod_dislike_data == 1) ? "true" : "false";
+          $andriod_favorite = ($andriod_favoritestatus > 0) ? "true" : "false";
+
+        }else{
+          $andriod_like = 'false';
+          $andriod_dislike = 'false';
+          $andriod_favorite = 'false';
+        }
+
+        if($request->IOSId != ''){
+          $IOSId = $request->IOSId;
+          $cnt = Wishlist::select('episode_id')->where('IOSId','=',$IOSId)->where('episode_id','=',$request->episodeid)->count();
+          $IOS_wishliststatus =  ($cnt == 1) ? "true" : "false";
+        }else{
+          $IOS_wishliststatus = 'false';
+        }
+        if(!empty($request->IOSId)){
+          $IOSId = $request->IOSId;
+          $cnt = Watchlater::select('episode_id')->where('IOSId','=',$IOSId)->where('episode_id','=',$request->episodeid)->count();
+          $IOS_watchlaterstatus =  ($cnt == 1) ? "true" : "false";
+        }else{
+          $IOS_watchlaterstatus = 'false';
+        }
+
+        if($request->IOSId != ''){
+        $IOS_like_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("liked","=",1)->count();
+        $IOS_dislike_data = LikeDisLike::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->where("disliked","=",1)->count();
+        $IOS_favoritestatus = Favorite::where("episode_id","=",$episodeid)->where("IOSId","=",$IOSId)->count();
+        $IOS_like = ($IOS_like_data == 1) ? "true" : "false";
+        $IOS_dislike = ($IOS_dislike_data == 1) ? "true" : "false";
+        $IOS_favorite = ($IOS_favoritestatus > 0) ? "true" : "false";
+
+      }else{
+        $IOS_like = 'false';
+        $IOS_dislike = 'false';
+        $IOS_favorite = 'false';
+      }
+
+      
       $response = array(
         'status'=>'true',
         'message'=>'success',
@@ -6491,7 +6580,16 @@ public function checkEmailExists(Request $request)
         'dislike' => $dislike,
         'main_genre' =>preg_replace( "/\r|\n/", "", $main_genre ),
         'languages' => $languages,
-
+        'andriod_wishliststatus' => $andriod_wishliststatus,
+        'andriod_like' => $andriod_like,
+        'andriod_dislike' => $andriod_dislike,
+        'andriod_favorite' => $andriod_favorite,
+        'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
+        'IOS_wishliststatus' => $IOS_wishliststatus,
+        'IOS_like' => $IOS_like,
+        'IOS_dislike' => $IOS_dislike,
+        'IOS_favorite' => $IOS_favorite,
+        'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
       );
       return response()->json($response, 200);
        
@@ -12522,7 +12620,7 @@ $cpanel->end();
 
         }
         else{
-          $live_videos = null;
+          $livestreams_sort = null;
         }
 
         if($HomeSetting->series == 1){
@@ -12608,35 +12706,54 @@ $cpanel->end();
                                                                                     ->map(function ($series) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
-                                                                                        $episodes = Episode::where('series_id', $series->id)
-                                                                                                                      ->get()
-                                                                                                                      ->map(function ($episode) {
-                                                                                                                        return [
-                                                                                                                          'id'                       => $episode->id,
-                                                                                                                          'title'                    => $episode->title,
-                                                                                                                          'slug'                     => $episode->slug,
-                                                                                                                          'episodeNumber'            => $episode->episode_order,
-                                                                                                                          'access'                   => $episode->access,
-                                                                                                                          'content'                  => [
-                                                                                                                                                          'dateAdded' => $episode->created_at,
-                                                                                                                                                          'videos' => [
-                                                                                                                                                              [
-                                                                                                                                                                  'videoType' => $episode->type,
-                                                                                                                                                                  'video_url' => $episode->url,
-                                                                                                                                                              ],
-                                                                                                                                                          ],
-                                                                                                                                                          'duration' => $episode->duration,
-                                                                                                                                                        ],
-                                                                                                                          'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
-                                                                                                                          'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
-                                                                                                                          'status'                   => $episode->status,
-                                                                                                                        ];
-                                                                                                                      });
-                                                                                        if ($episodes->isNotEmpty()) {
-                                                                                            $series['episodes'] = $episodes;
-                                                                                        } else {
-                                                                                            unset($series['episodes']);
-                                                                                        }
+                                                                                        $series['seasons'] = SeriesSeason::where('series_id', $series->id)
+                                                                                                                        ->get()
+                                                                                                                        ->map(function ($season) {
+                                                                                                                            $episodes = Episode::where('season_id', $season->id)
+                                                                                                                                ->orderBy('episode_order')
+                                                                                                                                ->get()
+                                                                                                                                ->map(function ($episode) {
+                                                                                                                                  return [
+                                                                                                                                    'id'                       => $episode->id,
+                                                                                                                                    'title'                    => $episode->title,
+                                                                                                                                    'slug'                     => $episode->slug,
+                                                                                                                                    'episodeNumber'            => $episode->episode_order,
+                                                                                                                                    'access'                   => $episode->access,
+                                                                                                                                    'content'                  => [
+                                                                                                                                                                    'dateAdded' => $episode->created_at,
+                                                                                                                                                                    'videos' => [
+                                                                                                                                                                        [
+                                                                                                                                                                            'videoType' => $episode->type,
+                                                                                                                                                                            'url' => $episode->url,
+                                                                                                                                                                        ],
+                                                                                                                                                                    ],
+                                                                                                                                                                    'duration' => $episode->duration,
+                                                                                                                                                                  ],
+                                                                                                                                    'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                                    'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
+                                                                                                                                    'status'                   => $episode->status,
+                                                                                                                                  ];
+                                                                                                                                });
+
+                                                                                                                            // Only include the season if it has episodes
+                                                                                                                            if ($episodes->isNotEmpty()) {
+                                                                                                                                return [
+                                                                                                                                    'title' => $season->series_seasons_name,
+                                                                                                                                    'episodes' => $episodes,
+                                                                                                                                ];
+                                                                                                                            }
+
+                                                                                                                            // Return null for seasons with no episodes
+                                                                                                                            return null;
+                                                                                                                        })
+                                                                                                                        ->filter(function ($value) {
+                                                                                                                            return $value !== null;
+                                                                                                                        });
+
+                                                                                                                    // Remove the 'seasons' key if it's an empty array
+                                                                                                                    if ($series['seasons']->isEmpty()) {
+                                                                                                                        unset($series['seasons']);
+                                                                                                                    }
                                                                             
                                                                                     return $series;
                                                                                   });
@@ -12650,7 +12767,44 @@ $cpanel->end();
         }
 
         if($HomeSetting->epg == 1){
-          $epg = 'test';
+            $current_timezone = current_timezone();
+            $carbon_now = Carbon::now($current_timezone);
+            $carbon_current_time =  $carbon_now->format('H:i:s');
+            $carbon_today =  $carbon_now->format('n-j-Y');
+            $homepage_default_image_url = array(
+              'homepage_default_vertical_image_url' => default_vertical_image_url(),
+              'homepage_default_horizontal_image_url' => default_horizontal_image_url(),
+            );
+
+            $epg =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($homepage_default_image_url , $carbon_now , $carbon_today , $current_timezone) {
+                        
+              $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+              $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+              $item['tv_image_url']     = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+              $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                                  
+              $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
+                                                                          ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
+
+                                                                              $TimeZone   = TimeZone::where('id',$item->time_zone)->first();
+
+                                                                              $converted_start_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->start_time, $TimeZone->time_zone )
+                                                                                                                              ->copy()->tz( $current_timezone );
+
+                                                                              $converted_end_time =Carbon::createFromFormat('m-d-Y H:i:s', $item->choosed_date . $item->end_time, $TimeZone->time_zone )
+                                                                                                                              ->copy()->tz( $current_timezone );
+
+                                                                              if ($carbon_now->between($converted_start_time, $converted_end_time)) {
+                                                                                  $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                  $item['converted_start_time'] = $converted_start_time->format('h:i A');
+                                                                                  $item['converted_end_time']   =   $converted_end_time->format('h:i A');
+                                                                                  return $item ;
+                                                                              }
+
+                                                                          })->filter()->first();
+              $item['source'] = 'EPG';
+              return $item;
+            });
         }else{
           $epg = null;
         }
@@ -18595,7 +18749,7 @@ public function QRCodeMobileLogout(Request $request)
       }else{
         $skip_time = 0;
       }
-      if($request->video_id){
+      if($request->video_id != ''){
           $video_id = $request->video_id;
           $count = ContinueWatching::where('user_id', '=', $user_id)->where('videoid', '=', $video_id)->count();
           $andriodId_count = ContinueWatching::where('andriodId', '=', $andriodId)->where('videoid', '=', $video_id)->count();
@@ -18622,7 +18776,34 @@ public function QRCodeMobileLogout(Request $request)
           );
 
         }
-      }
+      } else if($request->episode_id != ''){
+              $episode_id = $request->episode_id;
+              $count = ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->count();
+              $andriodId_count = ContinueWatching::where('andriodId', '=', $andriodId)->where('episodeid', '=', $episode_id)->count();
+              if ( $count > 0 ) {
+                ContinueWatching::where('user_id', '=', $user_id)->where('episodeid', '=', $episode_id)->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time]);
+                $response = array(
+                  'status'=>'true',
+                  'message'=>'Current Time updated'
+              );
+            }else if ( $andriodId_count > 0 ) {
+              ContinueWatching::where('andriodId', '=', $andriodId)->where('episodeid', '=', $episode_id)
+              ->update(['currentTime' => $current_duration,'watch_percentage' => $watch_percentage,
+              'skip_time' => $skip_time]);
+              $response = array(
+                'status'=>'true',
+                'message'=>'Current Time updated'
+            );
+          } else {
+                $data = array('user_id' => $user_id,'andriodId' => $andriodId,'UserType'=> $UserType, 'episodeid' => $episode_id,'currentTime' => $current_duration,'watch_percentage' => $watch_percentage,'skip_time' => $skip_time );
+                ContinueWatching::insert($data);
+                $response = array(
+                  'status'=>'true',
+                  'message'=>'Added  to  Continue Watching List'
+              );
+
+            }
+          }
 
 
       return response()->json($response, 200);
@@ -18639,25 +18820,38 @@ public function QRCodeMobileLogout(Request $request)
         $andriodId = $request->andriodId;
         $andrio_video_ids = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->get();
         $andrio_video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('andriodId','=',$andriodId)->count();    
+        $andrio_episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('andriodId','=',$andriodId)->get();
+        $andrio_episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('andriodId','=',$andriodId)->count();  
       }else{
         $andriodId = 0;
-        $andrio_video_ids = 0;
+        $andrio_video_ids = [];
         $andrio_video_ids_count = 0;
+        $andrio_episode_ids = [];
+        $andrio_episode_ids_count = 0;
       }
       if(!empty($user_id) ){
           /*channel videos*/
           $user_id = $request->user_id;
           $video_ids = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->get();
           $video_ids_count = ContinueWatching::where('videoid','!=',NULL)->where('user_id','=',$user_id)->count();
+          $episode_ids = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->get();
+          $episode_ids_count = ContinueWatching::where('episodeid','!=',NULL)->where('user_id','=',$user_id)->count();  
       }else{
           /*channel videos*/
           $user_id = $request->user_id;
-          $video_ids = 0;
+          $video_ids = [];
           $video_ids_count = 0;
+          $episode_ids = [];
+          $episode_ids_count = 0;
       }
 
-       if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0) {
-    $ContinueWatching = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
+      $k2 = [];
+      $k1 = [];
+
+
+       if ( $andrio_video_ids_count  > 0 && $video_ids_count  > 0 || $andrio_episode_ids_count  > 0 && $episode_ids_count  > 0) {
+        $ContinueWatching         = array_merge($video_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
+        $EpisodeContinueWatching  = array_merge($episode_ids->toArray(), $andrio_episode_ids->toArray());
 
       foreach ($ContinueWatching as $key => $value1) {
         $k2[] = $value1['videoid'];
@@ -18671,11 +18865,30 @@ public function QRCodeMobileLogout(Request $request)
         $item['andriod_skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
         return $item;
       });
+
+
+      foreach ($EpisodeContinueWatching as $key => $Episodevalue1) {
+        $k1[] = $Episodevalue1['episodeid'];
+      }
+
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        $item['andriod_watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['andriod_skip_time'] = ContinueWatching::where('episodeid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
+        $item['source'] = 'episode';
+        return $item;
+      });
+
+      
       $response = array(
         'status' => "true",
         'videos'=> $videos,
+        'episodes'=> $episode_videos,
       );
-    }else if ( $video_ids_count  > 0) {
+    }else if ( $video_ids_count  > 0 || $episode_ids_count  > 0) {
 
       foreach ($video_ids as $key => $value1) {
         $k2[] = $value1->videoid;
@@ -18686,11 +18899,26 @@ public function QRCodeMobileLogout(Request $request)
         $item['skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
         return $item;
       });
+
+      foreach ($episode_ids as $key => $Episodevalue1) {
+        $k1[] = $Episodevalue1['episodeid'];
+      }
+
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+        $item['watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('watch_percentage')->min();
+        $item['skip_time'] = ContinueWatching::where('episodeid','=',$item->id)->where('user_id','=',$user_id)->pluck('skip_time')->min();
+        $item['source'] = 'episode';
+        return $item;
+      });
+
       $response = array(
         'status' => "true",
         'videos'=> $videos,
+        'episodes'=> $episode_videos,
       );
-    }elseif ( $andrio_video_ids_count  > 0) {
+    }elseif ( $andrio_video_ids_count  > 0  || $andrio_episode_ids_count  > 0 ) {
 
       foreach ($andrio_video_ids as $key => $value1) {
         $k2[] = $value1->videoid;
@@ -18701,14 +18929,31 @@ public function QRCodeMobileLogout(Request $request)
         $item['andriod_skip_time'] = ContinueWatching::where('videoid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
          return $item;
       });
+
+
+      foreach ($andrio_episode_ids as $key => $Episodevalue1) {
+        $k1[] = $Episodevalue1['episodeid'];
+      }
+
+      $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+        $item['andriod_watch_percentage'] = ContinueWatching::where('episodeid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('watch_percentage')->min();
+        $item['andriod_skip_time'] = ContinueWatching::where('episodeid','=',$item->id)->where('andriodId','=',$andriodId)->pluck('skip_time')->min();
+        $item['source'] = 'episode';
+        return $item;
+      });
+
       $response = array(
         'status' => "true",
         'videos'=> $videos,
+        'episodes'=> $episode_videos,
       );
     }else{
       $response = array(
         'status' => "false",
         'videos'=> [],
+        'episodes'=> [],
       );
     }
 
@@ -21084,53 +21329,78 @@ public function Android_ContinueWatchingExits(Request $request)
   $video_id = $request->video_id;
   $user_id = $request->user_id;
   $andriodId = $request->andriodId;
+  $episodeid = $request->episode_id;
   if(!empty($user_id)){
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->count();
+    $ContinueWatchingVideoCount = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->count();
+    $ContinueWatchingEpisodeCount = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->count();
 
   }else{
-    $ContinueWatching = 0;
+    $ContinueWatchingVideoCount = 0;
+    $ContinueWatchingEpisodeCount = 0;
   }
 
   if(!empty($andriodId)){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->count();
+    $Android_ContinueWatchingVideoCount = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->count();
+    $Android_ContinueWatchingEpisodeCount = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->count();
+
   }else{
-    $Android_ContinueWatching = 0;
+    $Android_ContinueWatchingVideoCount = 0;
+    $Android_ContinueWatchingEpisodeCount = 0;
   }
 
-  if($Android_ContinueWatching > 0 && $ContinueWatching > 0){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  if($Android_ContinueWatchingVideoCount > 0 && $ContinueWatchingVideoCount > 0 || $Android_ContinueWatchingEpisodeCount > 0 && $ContinueWatchingEpisodeCount > 0){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->get();
+
+    $ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $Android_ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+
     $response = array(
       'status' => 'true',
-      'User_status' => 'true',
-      'Android_status' => 'true',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => $ContinueWatching,
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => $Android_ContinueWatchingEpisode,
+      'ContinueWatchingEpisode' => $ContinueWatchingEpisode,
     );
-  }elseif($Android_ContinueWatching > 0 ){
-    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('andriodId',$andriodId)->get();
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  }elseif($Android_ContinueWatchingVideoCount > 0 || $Android_ContinueWatchingEpisodeCount > 0 ){
+    $Android_ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
+    $Android_ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('andriodId',$andriodId)->orderBy('created_at', 'desc')->get();
     $response = array(
       'status' => 'true',
-      'User_status' => 'false',
-      'Android_status' => 'true',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => $Android_ContinueWatching,
       'ContinueWatching' => [],
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => $Android_ContinueWatchingEpisode,
+      'ContinueWatchingEpisode' => [],
     );
-  }elseif($ContinueWatching > 0){
-    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('user_id',$user_id)->get();
+  }elseif($ContinueWatchingVideoCount > 0 || $ContinueWatchingEpisodeCount > 0){
+    $ContinueWatching = ContinueWatching::where('videoid',$video_id)->where('videoid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $ContinueWatchingEpisode = ContinueWatching::where('episodeid',$episodeid)->where('episodeid','!=','')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
     $response = array(
       'status' => 'true',
-      'User_status' => 'true',
-      'Android_status' => 'false',
+      'User_Video_status' => $ContinueWatchingVideoCount,
+      'Android_Video_status' => $Android_ContinueWatchingVideoCount,
       'Android_ContinueWatching' => [],
       'ContinueWatching' => $ContinueWatching,
+      'User_Episode_status' => $ContinueWatchingEpisodeCount,
+      'Android_Episode_status' => $Android_ContinueWatchingEpisodeCount,
+      'Android_ContinueWatchingEpisode' => [],
+      'ContinueWatchingEpisode' => $ContinueWatchingEpisode,
     );
   }else{
     $response = array(
       'status' => 'false',
-      'User_status' => 'false',
-      'Android_status' => 'false',
+      'User_Video_status' => 0,
+      'Android_Video_status' => 0,
+      'User_Episode_status' => 0,
+      'Android_Episode_status' => 0,
       // 'ContinueWatching' => "video has been added"
     );
   }
@@ -21965,10 +22235,14 @@ public function Android_ShowVideo_wishlist(Request $request)
       $andriodId = $request->andriodId;
       $andrio_video_ids = Wishlist::select('video_id')->where('andriodId','=',$andriodId)->get();
       $andrio_video_ids_count = Wishlist::select('video_id')->where('andriodId','=',$andriodId)->count();
+      $andriod_episode_ids = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->get();
+      $andriod_episode_ids_count = Wishlist::select('episode_id')->where('andriodId','=',$andriodId)->count();
     }else{
       $andriodId = 0;
-      $andrio_video_ids = 0;
+      $andrio_video_ids = [];
       $andrio_video_ids_count = 0;
+      $andriod_episode_ids = [];
+      $andriod_episode_ids_count = 0;
     }
 
     if(!empty($user_id) ){
@@ -21977,16 +22251,24 @@ public function Android_ShowVideo_wishlist(Request $request)
         /*channel videos*/
         $video_Wishlist_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->get();
         $video_Wishlist_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
+        $andriod_Wishlist_episode_ids = Wishlist::select('episode_id')->where('user_id','=',$user_id)->get();
+        $andriod_Wishlist_episode_ids_count = Wishlist::select('episode_id')->where('user_id','=',$user_id)->count();
         }else{
         /*channel videos*/
         $user_id = $request->user_id;
-        $video_Wishlist_ids = 0;
+        $video_Wishlist_ids = [];
         $video_Wishlist_ids_count = 0;
+        $andriod_Wishlist_episode_ids = [];
+        $andriod_Wishlist_episode_ids_count = 0;
     }
 
-     if ( $video_Wishlist_ids_count  > 0 && $andrio_video_ids_count  > 0) {
+    $k2 = [];
+    $k1 = [];
+    
+     if ( $video_Wishlist_ids_count  > 0 && $andrio_video_ids_count  > 0 || $andriod_episode_ids_count  > 0 && $andriod_Wishlist_episode_ids_count  > 0) {
       
     $Wishlist = array_merge($video_Wishlist_ids->toArray(), $andrio_video_ids->toArray()/*, $arrayN, $arrayN*/);
+    $EpisodeWishlist = array_merge($andriod_Wishlist_episode_ids->toArray(), $andriod_episode_ids->toArray());
 
     foreach ($Wishlist as $key => $value1) {
       $k2[] = $value1['video_id'];
@@ -21997,11 +22279,24 @@ public function Android_ShowVideo_wishlist(Request $request)
        return $item;
     });
     
+
+    foreach ($EpisodeWishlist as $key => $Episodevalue1) {
+      $k1[] = $Episodevalue1['episode_id'];
+    }
+
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+      $item['source'] = 'episode';
+      return $item;
+    });
+
     $response = array(
       'status' => "true",
       'channel_videos'=> $videos,
+      'episode_videos'=> $episode_videos,
     );
-  }else if ( $video_Wishlist_ids_count  > 0) {
+  }else if ( $video_Wishlist_ids_count  > 0 || $andriod_Wishlist_episode_ids_count  > 0) {
 
     foreach ($video_Wishlist_ids as $key => $value1) {
       $k2[] = $value1['video_id'];
@@ -22011,12 +22306,25 @@ public function Android_ShowVideo_wishlist(Request $request)
       $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
        return $item;
     });
+
+    foreach ($andriod_Wishlist_episode_ids as $key => $Episodevalue1) {
+      $k1[] = $Episodevalue1['episode_id'];
+    }
+
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+      $item['source'] = 'episode';
+      return $item;
+    });
+
     
     $response = array(
       'status' => "true",
       'channel_videos'=> $videos,
+      'episode_videos'=> $episode_videos,
     );
-  }elseif ( $andrio_video_ids_count  > 0) {
+  }elseif ( $andrio_video_ids_count  > 0 || $andriod_episode_ids_count  > 0) {
 
     foreach ($andrio_video_ids as $key => $value1) {
       $k2[] = $value1['video_id'];
@@ -22026,14 +22334,27 @@ public function Android_ShowVideo_wishlist(Request $request)
        return $item;
     });
 
+    foreach ($andriod_episode_ids as $key => $Episodevalue1) {
+      $k1[] = $Episodevalue1['episode_id'];
+    }
+
+    $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item)  use ($user_id,$andriodId) {
+      $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+      $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+      $item['source'] = 'episode';
+      return $item;
+    });
+
     $response = array(
       'status' => "true",
       'channel_videos'=> $videos,
+      'episode_videos'=> $episode_videos,
     );
   }else{
     $response = array(
       'status' => "false",
       'channel_videos'=> [],
+      'episode_videos'=> [],
     );
   }
 
@@ -22689,25 +23010,43 @@ public function Android_ShowVideo_favorite(Request $request) {
     $andriodId = $request->andriodId;
     $andriod_favorite_ids = Favorite::select('video_id')->where('andriodId','=',$andriodId)->get();
     $andriod_favorite_ids_count = Favorite::select('video_id')->where('andriodId','=',$andriodId)->count();
+
+    $andriod_favorite_episode_ids = Favorite::select('episode_id')->where('andriodId','=',$andriodId)->get();
+    $andriod_favorite_episode_ids_count = Favorite::select('episode_id')->where('andriodId','=',$andriodId)->count();
+
   }else{
     $andriodId = 0;
-    $andriod_favorite_ids = 0;
+    $andriod_favorite_ids = [];
     $andriod_favorite_ids_count = 0;
+    $andriod_favorite_episode_ids = [];
+    $andriod_favorite_episode_ids_count = 0;
   }
   if(!empty($user_id) ){
     $user_id = $request->user_id;
-    /*channel videos*/
     $user_favorite_ids = Favorite::select('video_id')->where('user_id',$user_id)->get();
     $user_favorite_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+
+    $user_favorite_episode_ids = Favorite::select('episode_id')->where('user_id',$user_id)->get();
+    $user_favorite_episode_ids_count = Favorite::select('episode_id')->where('user_id',$user_id)->count();
+    
    }else{
     $user_id = $request->user_id;
-    $user_favorite_ids = 0;
+    $user_favorite_ids = [];
     $user_favorite_ids_count = 0;
+    $user_favorite_episode_ids = [];
+    $user_favorite_episode_ids_count = 0;
 }
- 
-        if ( $user_favorite_ids_count  > 0 && $andriod_favorite_ids_count  > 0) {
+
+$k2 = [];
+$k1 = [];
+
+
+        if ( $user_favorite_ids_count  > 0 && $andriod_favorite_ids_count  > 0 || $user_favorite_episode_ids_count  > 0 && $user_favorite_episode_ids_count  > 0 ) {
           
-        $Favorite = array_merge($user_favorite_ids->toArray(), $andriod_favorite_ids->toArray()/*, $arrayN, $arrayN*/);
+        $Favorite = array_merge($user_favorite_ids->toArray(), $andriod_favorite_ids->toArray());
+
+        $EpisodeFavorite = array_merge($user_favorite_episode_ids->toArray(), $andriod_favorite_episode_ids->toArray());
+
 
         foreach ($Favorite as $key => $value1) {
           $k2[] = $value1['video_id'];
@@ -22720,11 +23059,24 @@ public function Android_ShowVideo_favorite(Request $request) {
           return $item;
         });
         
+          foreach ($EpisodeFavorite as $key => $Episodevalue1) {
+            $k1[] = $Episodevalue1['episode_id'];
+          }
+
+          $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
+            $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+            $item['source'] = 'episode';
+            return $item;
+          });
+
         $response = array(
           'status' => "true",
           'channel_videos'=> $videos,
+          'episode_videos'=> $episode_videos,
         );
-      }else if ( $user_favorite_ids_count  > 0) {
+
+      }else if ( $user_favorite_ids_count  > 0 || $user_favorite_episode_ids_count  > 0 ) {
 
         foreach ($user_favorite_ids as $key => $value1) {
           $k2[] = $value1['video_id'];
@@ -22737,11 +23089,23 @@ public function Android_ShowVideo_favorite(Request $request) {
           return $item;
         });
         
+        foreach ($user_favorite_episode_ids as $key => $Episodevalue1) {
+          $k1[] = $Episodevalue1['episode_id'];
+        }
+        
+        $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
+
         $response = array(
           'status' => "true",
           'channel_videos'=> $videos,
+          'episode_videos'=> $episode_videos,
         );
-      }elseif ( $andriod_favorite_ids_count  > 0) {
+      }elseif ( $andriod_favorite_ids_count  > 0 ||  $andriod_favorite_episode_ids_count  > 0) {
 
         foreach ($andriod_favorite_ids as $key => $value1) {
           $k2[] = $value1['video_id'];
@@ -22754,14 +23118,28 @@ public function Android_ShowVideo_favorite(Request $request) {
           return $item;
         });
         
+                
+        foreach ($andriod_favorite_episode_ids as $key => $Episodevalue1) {
+          $k1[] = $Episodevalue1['episode_id'];
+        }
+        
+        $episode_videos = Episode::whereIn('id',$k1)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
+
         $response = array(
           'status' => "true",
           'channel_videos'=> $videos,
+          'episode_videos'=> $episode_videos,
         );
       }else{
         $response = array(
           'status' => "false",
           'channel_videos'=> [],
+          'episode_videos'=> [],
         );
       }
 

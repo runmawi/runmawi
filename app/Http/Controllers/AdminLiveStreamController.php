@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Streaming\Representation;
-use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;

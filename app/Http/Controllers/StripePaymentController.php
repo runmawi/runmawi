@@ -433,16 +433,16 @@ class StripePaymentController extends Controller
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
-                    $commssion           =  VideoCommission::first();
-                    $percentage          =  $commssion->percentage; 
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
+                    $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $video->ppv_price;
-                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                    $moderator_commssion =  $ppv_price - $percentage;
+                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                    $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
                 }else{
                     $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
                     $title              =   $video->title;
-                    $commssion          =   VideoCommission::first();
+                    $commssion          =  VideoCommission::where('type','CPP')->first();
                     $ppv_price          =   $video->ppv_price;
                     $percentage         =   null; 
                     $admin_commssion    =   null;
@@ -647,23 +647,25 @@ class StripePaymentController extends Controller
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
-                    $commssion           =  VideoCommission::first();
-                    $percentage          =  $commssion->percentage; 
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
+                    $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $video->ppv_price;
-                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                    $moderator_commssion =  $ppv_price - $percentage;
+                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                    $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
                 }else{
                     $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
                     $title              =   $video->title;
-                    $commssion          =   VideoCommission::first();
+                    $commssion          =  VideoCommission::where('type','CPP')->first();
                     $ppv_price          =   $video->ppv_price;
                     $percentage         =   null; 
                     $admin_commssion    =   null;
                     $moderator_commssion =  null;
                     $moderator_id        =  null;
                 }
-            
+
+
+
                 PpvPurchase::create([
                     'user_id'       =>  Auth::user()->id ,
                     'video_id'       => $video->id ,
@@ -844,18 +846,18 @@ class StripePaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                    $total_amount        =  $SeriesSeason->ppv_price;
-                    $title               =  $SeriesSeason->series_seasons_name;
-                    $commssion           =  VideoCommission::first();
-                    $percentage          =  $commssion->percentage; 
-                    $ppv_price           =  $SeriesSeason->ppv_price;
-                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                    $moderator_commssion =  $ppv_price - $percentage;
+                    $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
+                    $title               =  $video->title;
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
+                    $percentage          =  $moderator->commission_percentage; 
+                    $ppv_price           =  $video->ppv_price;
+                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                    $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
                 }else{
                     $total_amount       =   $SeriesSeason->ppv_price;
                     $title              =   $SeriesSeason->series_seasons_name;
-                    $commssion          =   VideoCommission::first();
+                    $commssion          =  VideoCommission::where('type','CPP')->first();
                     $ppv_price          =   $SeriesSeason->ppv_price;
                     $percentage         =   null; 
                     $admin_commssion    =   null;
@@ -1043,18 +1045,18 @@ class StripePaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                    $total_amount        =  $Series->ppv_price;
-                    $title               =  $Series->title;
-                    $commssion           =  VideoCommission::first();
-                    $percentage          =  $commssion->percentage; 
-                    $ppv_price           =  $Series->ppv_price;
-                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                    $moderator_commssion =  $ppv_price - $percentage;
+                    $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
+                    $title               =  $video->title;
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
+                    $percentage          =  $moderator->commission_percentage; 
+                    $ppv_price           =  $video->ppv_price;
+                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                    $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
                 }else{
                     $total_amount       =   $Series->ppv_price;
                     $title              =   $Series->title;
-                    $commssion          =   VideoCommission::first();
+                    $commssion          =  VideoCommission::where('type','CPP')->first();
                     $ppv_price          =   $Series->ppv_price;
                     $percentage         =   null; 
                     $admin_commssion    =   null;
@@ -1253,16 +1255,16 @@ class StripePaymentController extends Controller
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
-                    $commssion           =  VideoCommission::first();
-                    $percentage          =  $commssion->percentage; 
-                    $ppv_price           =  $ppv_price;
-                    $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                    $moderator_commssion =  $ppv_price - $percentage;
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
+                    $percentage          =  $moderator->commission_percentage; 
+                    $ppv_price           =  $video->ppv_price;
+                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                    $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
                 }else{
                     $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
                     $title              =   $video->title;
-                    $commssion          =   VideoCommission::first();
+                    $commssion           =  VideoCommission::where('type','CPP')->first();
                     $ppv_price          =   $ppv_price;
                     $percentage         =   null; 
                     $admin_commssion    =   null;
@@ -1458,18 +1460,18 @@ class StripePaymentController extends Controller
     
                     if(!empty($moderators_id)){
                         $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                        $total_amount        =  $SeriesSeason->ppv_price;
-                        $title               =  $SeriesSeason->series_seasons_name;
-                        $commssion           =  VideoCommission::first();
-                        $percentage          =  $commssion->percentage; 
-                        $ppv_price           =  $SeriesSeason->ppv_price;
-                        $admin_commssion     =  ($percentage/100) * $ppv_price ;
-                        $moderator_commssion =  $ppv_price - $percentage;
+                        $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
+                        $title               =  $video->title;
+                        $commssion           =  VideoCommission::where('type','CPP')->first();
+                        $percentage          =  $moderator->commission_percentage; 
+                        $ppv_price           =  $video->ppv_price;
+                        $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                        $admin_commssion     =  $ppv_price - $moderator_commssion;
                         $moderator_id        =  $moderators_id;
                     }else{
                         $total_amount       =   $SeriesSeason->ppv_price;
                         $title              =   $SeriesSeason->series_seasons_name;
-                        $commssion          =   VideoCommission::first();
+                        $commssion          =  VideoCommission::where('type','CPP')->first();
                         $ppv_price          =   $SeriesSeason->ppv_price;
                         $percentage         =   null; 
                         $admin_commssion    =   null;

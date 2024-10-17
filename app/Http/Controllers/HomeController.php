@@ -63,7 +63,6 @@ use App\EmailTemplate;
 use App\VideoSchedules ;
 use App\ScheduleVideos ;
 use App\Language ;
-use GuzzleHttp\Client;
 use App\MusicStation ;
 use App\GuestLoggedDevice ;
 use App\LanguageVideo;

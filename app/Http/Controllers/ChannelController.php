@@ -3602,7 +3602,7 @@ class ChannelController extends Controller
     {
         try {
             $settings = Setting::first();
-            $category_list = VideoCategory::latest()->get();
+            $category_list = VideoCategory::orderBy('order')->get();
             $default_vertical_image_url = default_vertical_image_url();
            
             if ($settings->enable_landing_page == 1 && Auth::guest()) {
@@ -4344,9 +4344,10 @@ class ChannelController extends Controller
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
-
+                                        $button_text = ButtonText::first();
+                                        
                 $item['users_video_visibility_status']         = true ;
-                $item['users_video_visibility_status_button']  = 'Watch Now' ;
+                $item['users_video_visibility_status_button']  = (!empty($button_text->play_text) ? $button_text->play_text :'Watch now') ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
 
 
@@ -4386,6 +4387,7 @@ class ChannelController extends Controller
                         $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
                         ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
                         ->count();
+                        // dd($ppv_exists_check_query);
 
                         $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
                         ->where('user_id', Auth::user()->id)
@@ -4402,13 +4404,14 @@ class ChannelController extends Controller
  
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                        // dd($PPV_exists);
 
                                 // free PPV access for subscriber status Condition
 
-                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+                        // if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
 
-                            $PPV_exists = false ;
-                        }
+                        //     $PPV_exists = false ;
+                        // }
 
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
                             $button_text = ButtonText::first();
@@ -4866,10 +4869,10 @@ class ChannelController extends Controller
 
                                 // free PPV access for subscriber status Condition
 
-                        if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
+                        // if( $setting->enable_ppv_rent == 1 && Auth::user()->role != 'subscriber' ){
 
-                            $PPV_exists = false ;
-                        }
+                        //     $PPV_exists = false ;
+                        // }
 
                         if( ( $item->access == "subscriber" && Auth::user()->role == 'registered' ) ||  ( $item->access == "ppv" && $PPV_exists == false ) ) {
 
