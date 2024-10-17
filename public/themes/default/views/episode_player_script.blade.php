@@ -67,9 +67,9 @@
                     },
                 });
             }
-            console.log('duration: ' + duration);
-            console.log('currentTime: ' + currentTime);
-            console.log('watch_percentage: ' + watch_percentage);
+            // console.log('duration: ' + duration);
+            // console.log('currentTime: ' + currentTime);
+            // console.log('watch_percentage: ' + watch_percentage);
         }
 
         player.on('loadedmetadata', function() {

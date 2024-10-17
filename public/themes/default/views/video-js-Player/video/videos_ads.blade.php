@@ -11,8 +11,7 @@
 
     if(  plans_ads_enable() == 1 ){
 
-            // Pre-advertisement 
-
+        // Pre-advertisement 
         $pre_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
                                         ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
                                         ->where('advertisements.status', 1)
@@ -38,8 +37,7 @@
                                         ->pluck('ads_path')
                                         ->first();
 
-            // Mid-advertisement 
-
+        // Mid-advertisement 
         $mid_advertisement = App\Advertisement::select('advertisements.*', 'ads_events.ads_id', 'ads_events.status', 'ads_events.end', 'ads_events.start')
                                     ->join('ads_events', 'ads_events.ads_id', '=', 'advertisements.id')
                                     ->where('advertisements.status', 1)
@@ -64,9 +62,7 @@
                                     
                                     ->pluck('ads_path');
 
-
-            // Post-advertisement 
-
+        // Post-advertisement 
         $post_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
                                         ->join('ads_events','ads_events.ads_id','=','advertisements.id')
                                         ->where('advertisements.status', 1 )

@@ -16,7 +16,7 @@
                 @if (($latest_series_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline row p-0 m-0">
                             @forelse($latest_series_pagelist as $key => $series)
                                 <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <div class="block-images position-relative">
@@ -87,7 +87,7 @@
 
                                                     <div class="movie-time d-flex align-items-center pt-2">
                                                         @if($ThumbnailSetting->age == 1 && !($series->age_restrict == 0))
-                                                            <span class="position-relative badge p-1 mr-2">{{ $series->age_restrict}}</span>
+                                                            <span class="position-relative p-1 mr-2">{{ $series->age_restrict}}</span>
                                                         @endif
 
                                                         @if($ThumbnailSetting->duration == 1)
@@ -96,7 +96,7 @@
                                                             </span>
                                                         @endif
                                                         @if($ThumbnailSetting->published_year == 1 && !($series->year == 0))
-                                                            <span class="position-relative badge p-1 mr-2">
+                                                            <span class="position-relative p-1 mr-2">
                                                                 {{ __($series->year) }}
                                                             </span>
                                                         @endif

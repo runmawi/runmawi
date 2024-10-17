@@ -13,7 +13,7 @@
                         {{ $order_settings_list[11]->header_name ? __($order_settings_list[11]->header_name) : '' }}
                     </h2>  
                 </div> -->
-<?php dd($video_based_category_pagelist)?>
+                
                 @if (($video_based_category_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
