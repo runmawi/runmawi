@@ -44,14 +44,6 @@
         position: relative;
     }
 
-    .current-time-line {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background-color: red;
-        z-index: 1000; /* Ensure it's on top of other elements */
-    }
 
     .epg-program {
         position: relative;
@@ -110,20 +102,22 @@
         <div class="epg-timeline-container">
             <div class="epg-programs">
                 <div class="epg-timeline">
+                    @php $lastShownIndex = null;  @endphp
+                
                     @for ($i = 0; $i < 96; $i++)
                         @php
                             $time = \Carbon\Carbon::createFromTime(0, 0)->addMinutes($i * 15); 
                             $timeFormatted = $time->format('H:i');
                             $nextTime = \Carbon\Carbon::createFromTime(0, 0)->addMinutes(($i + 1) * 15); 
                         @endphp
-
+                    
                         <div class="timeline-slot">
                             <div class="timeline">{{ $timeFormatted }}</div>
-
+                    
                             @if ($now->between($time, $nextTime))
                                 <div class="current-time-line" style="position: absolute; top: 0; left: 50%; width: 2px; background-color: red; height: 100%;"></div>
                             @endif
-
+                    
                             @if ($Livestream_details->publish_type == "schedule_program")
                                 @php
                                     $scheduler_program_title      = json_decode($Livestream_details->scheduler_program_title);
@@ -131,25 +125,31 @@
                                     $scheduler_program_end_time   = json_decode($Livestream_details->scheduler_program_end_time);
                                     $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink'];
                                 @endphp
-
+                    
                                 @foreach ($scheduler_program_title as $index => $title)
-                                    @if ($title)
+                                    @if ($title) 
                                         @php
                                             $startTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_start_time[$index]);
                                             $endTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_end_time[$index]);
-                                            $color = $colors[$index % count($colors)]; 
+                                            $color = $colors[$index % count($colors)];
                                         @endphp
-
+                    
                                         @if ($time->between($startTime, $endTime))
+
                                             <div class="epg-program epg-timeline-{{ $index }}" style="background-color: {{ $color }};">
-                                                {{ $title }}
+                                                @if ($title && $index !== $lastShownIndex) 
+                                                    <b class=""> {{ "{$title} ( Start From {$scheduler_program_start_time[0]} to {$scheduler_program_end_time[0]} ) "}} </b> 
+                                                @endif
                                             </div>
+
+                                            @php $lastShownIndex = $index; @endphp
                                         @endif
                                     @endif
                                 @endforeach
                             @endif
                         </div>
                     @endfor
+                
                 </div>
             </div>
         </div>
