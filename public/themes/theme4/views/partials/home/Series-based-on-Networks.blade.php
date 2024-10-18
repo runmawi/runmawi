@@ -61,11 +61,11 @@
                                                 @foreach ($series->Series_depends_episodes as $episode_key => $episode)
                                                     <div class="depends-row">
                                                         <div class="depend-items">
-                                                            <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
+                                                            <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
                                                                     <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
                                                                     <div class="controls">
-                                                                        <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}">
+                                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
                                                                         </a>
 
@@ -144,7 +144,7 @@
                                                     <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
                                                 @endif
 
-                                                <a href="{{ route('network_play_episode', [$series->slug, $episode->slug]) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
 
                                             </div>
                                         </div>
