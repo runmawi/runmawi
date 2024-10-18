@@ -31,6 +31,30 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+      .dropzone .dz-preview .dz-progress{height:14px !important;}
+      span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;color:#000;}
+      .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+      .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+      .dz-cancel {color: #FF0000;background: none;border: none;padding: 5px;}
+      .dz-cancel:hover {text-decoration: underline;}
+      .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
+      .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+         width: 30px;
+         height: 30px;
+      }
+      .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+         top: 0;
+         left: 0;
+         margin-left: 0;
+         margin-top: 0;
+         width: 20px;
+      }
+      .dz-success-mark path {
+         fill: #008000;
+      }
+      .dz-error-mark g {
+         fill: #FF0000;
+      }
 
       </style>
   </head>
@@ -128,6 +152,14 @@ border-radius: 0px 4px 4px 0px;
     var myDropzone = new Dropzone(".dropzone",{ 
         maxFilesize: 150000000,
         acceptedFiles: "video/mp4,video/x-m4v,video/*",
+    });
+
+    myDropzone.on("uploadprogress", function(file, progress) {
+        var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+        
+        if (progressElement) {
+            progressElement.textContent = Math.round(progress) + '%';
+        }
     });
     myDropzone.on("sending", function(file, xhr, formData) {
         formData.append('videoid',videoid);
