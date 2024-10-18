@@ -139,6 +139,9 @@ class CPPSeriesController extends Controller
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
+        $compress_image_settings = CompressImage::first();
+
         if ($current_date > $duedate)
         {
             $client = new Client();
@@ -171,6 +174,7 @@ class CPPSeriesController extends Controller
                 'category_id' => [],
                 'languages_id' => [],
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings'  => $compress_image_settings,
 
             );
             return View::make('moderator.cpp.series.create_edit', $data);
