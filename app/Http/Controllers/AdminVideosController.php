@@ -3105,7 +3105,6 @@ class AdminVideosController extends Controller
             //     }
             // }
 
-
             function convertTimeFormat($hours, $minutes, $seconds, $milliseconds) {
                 $totalSeconds = $hours * 3600 + $minutes * 60 + $seconds + $milliseconds / 1000;
                 $formattedTime = gmdate("H:i:s", $totalSeconds);

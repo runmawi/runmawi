@@ -105,8 +105,8 @@
       Dropzone.autoDiscover = false;
       var myDropzone = new Dropzone(".dropzone", {
           maxFilesize: 150000000,
-          acceptedFiles: "video/mp4,video/x-m4v,video/*"
-      });
+          acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+        });
   
       myDropzone.on("uploadprogress", function(file, progress) {
           var progressElement = file.previewElement.querySelector('.dz-upload-percentage');

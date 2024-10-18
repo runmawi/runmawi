@@ -127,8 +127,8 @@ border-radius: 0px 4px 4px 0px;
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone(".dropzone",{ 
         maxFilesize: 150000000,
-        acceptedFiles: "video/mp4,video/x-m4v,video/*",
-    });
+        acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+      });
     myDropzone.on("sending", function(file, xhr, formData) {
         formData.append('videoid',videoid);
        formData.append("_token", CSRF_TOKEN);

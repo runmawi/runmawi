@@ -994,7 +994,7 @@
         var myDropzone = new Dropzone(".dropzone", {
             //   maxFilesize: 900,  // 3 mb
             maxFilesize: 15000,
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
         });
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append('series_id',series_id);

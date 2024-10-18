@@ -554,7 +554,9 @@
                     <div class="row mt-5">
                               <div class="panel panel-primary" data-collapsed="0">
                                  <div class="panel-heading col-sm-12">
-                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt)) :</h3></label>
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
+                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a></label>
                                     </div>
                                     <div class="panel-options"> 
                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
@@ -1500,7 +1502,7 @@ document.getElementById('select-all').addEventListener('change', function() {
         var myDropzone = new Dropzone(".dropzone", { 
             parallelUploads: 10,
             maxFilesize: 15000000000000000, // 15000MB
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
             previewTemplate: document.getElementById('template').innerHTML,
             init: function() {
                 this.on("sending", function(file, xhr, formData) {

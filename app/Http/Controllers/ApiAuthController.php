@@ -4272,9 +4272,18 @@ public function verifyandupdatepassword(Request $request)
         return $item;
       });
 
+    $payperview_episodes = PpvPurchase::join('episodes', 'episodes.id', '=', 'ppv_purchases.episode_id')
+      ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.episode_id', '!=', 0)
+      ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
+          $item['ppv_episodes_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+          $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          return $item;
+        });
+
     $response = array(
       'status' => 'true',
-      'payperview_video' => $payperview_video
+      'payperview_video' => $payperview_video,
+      'payperview_episodes' => $payperview_episodes
     );
 
     return response()->json($response, 200);
