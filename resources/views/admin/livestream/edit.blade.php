@@ -230,9 +230,9 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
                             <div class="mt-2 text-center">
-                                <div class="panel-body">
+                                <div class="panel-body" style="width:200px;height:200px;overflow:hidden;">
                                     @if(!empty($video->image))
-                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg w-100" width=""/>
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg w-100" width="" style="height: 100%;object-fit:contain;"/>
                                     @endif
                                 </div>
                             </div>
@@ -338,17 +338,17 @@ border-radius: 0px 4px 4px 0px;
 
                             <div class="new-video-upload mt-2" id="mp4_code">
                                 <label for="embed_code"><label>{{  $inputs_details_array['text_main_name'] }} URL</label></label>
-                                <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
+                                <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" placeholder=" MP4/M3U8 URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="embed_code">
                                 <label for="embed_code"><label>Live Embed URL</label></label>
-                                <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                                <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" placeholder="Embed URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="m3u_urls">
                                 <label for="m3u_url"><label class="mb-1"> M3U URL</label></label>
-                                <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" />
+                                <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" placeholder="M3U URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="live_stream_video">
@@ -1190,84 +1190,6 @@ border-radius: 0px 4px 4px 0px;
             } );
 </script>
 
-<!-- Empty url validation Live Stream Source -->
-<script>
-    $(document).ready(function() {
-        function validateForm(event) {
-            let urlType = $('#url_type').val(); // Get the selected URL type
-            var url_value = $('#mp4_url').val();
-            var embed_url_value = $('#embed_url').val();
-            var live_stream_url_value = $('.live_stream_url_value').val();
-            var m3u_url_value = $('#m3u_url').val();
-            var acc_audio_file_value = $('.audio_stream_url_value').val();
-            var acc_audio_url_value = $('.acc_audio_url_value').val();
-
-            // If urlType is not selected or invalid, prevent form submission
-            if (urlType === '') {
-                $('#source_err_validtion').show().text('Please select a URL type.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-                return false;
-            }
-
-            // Validate based on selected urlType
-            if (urlType === 'mp4' && !url_value) {
-                $('#source_err_validtion').show().text('Please enter the MP4 URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'embed' && !embed_url_value) {
-                $('#source_err_validtion').show().text('Please enter the Embed URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'live_stream_video' && !live_stream_url_value) {
-                $('#source_err_validtion').show().text('Please select a Live Stream video.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'm3u_url' && !m3u_url_value) {
-                $('#source_err_validtion').show().text('Please enter the M3U URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'acc_audio_file' && !acc_audio_file_value) {
-                $('#source_err_validtion').show().text('Please upload an AAC audio file.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'acc_audio_url' && !acc_audio_url_value) {
-                $('#source_err_validtion').show().text('Please enter the AAC audio URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else {
-                $('#source_err_validtion').hide(); // Hide the error if validation passes
-            }
-        }
-
-        // Trigger validation when form is submitted
-        $('#liveEdit_video').on('submit', function(event) {
-            validateForm(event);
-        });
-
-        // Trigger validation when url type is changed
-        $('#url_type').change(function() {
-            validateForm(); // Ensure validation runs when user changes the url_type
-        });
-    });
-
-
-
-</script>
 
 <script type="text/javascript">
    $ = jQuery;
