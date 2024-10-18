@@ -1,4 +1,3 @@
-
 <style>
     body{background-color:#000;color:#fff;font-family:Arial,sans-serif}
     .epg-container{padding:20px}
@@ -18,13 +17,28 @@
     .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px}
     .epg-programs{overflow-x:auto;white-space:nowrap}
     .epg-program-row{display:flex;margin-bottom:10px}
-    .epg-program{background-color:#444;border-radius:8px;height:75px;position:relative;margin:0 5px;color:#fff;text-align:center;line-height:75px}
+    .epg-program{height:75px;position:relative;margin:0 5px;color:#fff;text-align:center;line-height:75px}
     .clearfix::after{content:"";display:table;clear:both}
     .epg-navigation{width:15%;height:38px;z-index:0;position:relative;overflow-x:auto;border-bottom:1px solid #555}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
     .day-nav{margin:0 50px}
     .date-nav{gap:25px;white-space:nowrap;align-items:center;border-bottom:1px solid #555;background-color:#333;padding-left:20px}
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
+ 
+    .timeline-slot {
+        width: calc(100% / 96); 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .epg-program {
+        background-color: lightblue;
+        padding: 5px;
+        text-align: center;
+        width: 100%;
+        margin-top: 5px;
+    }
 </style>
 
 
@@ -34,12 +48,12 @@
         <img src="{{ @$Livestream_details->Player_thumbnail }}" alt="Program Image">
 
         <div class="epg-info">
-            <h2> {{ ucwords(@$Livestream_details->title) }}</h2>
-            <p>{!! html_entity_decode( @$Livestream_details->details) !!}</p>
+            <h2> {{ ucwords(@$Livestream_details->title) }} </h2>
+            <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
         </div>
         
         <div class="epg-time">
-            <span>4 Mar Fri: 1:30PM - 2:30PM</span>
+            <span>4 Mar Fri</span>
         </div>
     </div>
 
@@ -68,32 +82,37 @@
                             $timeFormatted = $time->format('H:i');
                         @endphp
                         
-                        <div class="timeline">{{ $timeFormatted }}</div>
-
-                        @if ( $Livestream_details->publish_type == "schedule_program" )
-
-                            @php
-                                $scheduler_program_title      = json_decode($Livestream_details->scheduler_program_title);
-                                $scheduler_program_start_time = json_decode($Livestream_details->scheduler_program_start_time);
-                                $scheduler_program_end_time   = json_decode($Livestream_details->scheduler_program_end_time);
-                            @endphp
-
-                            @foreach ( $scheduler_program_title as $index => $title)
-                                @if ($title) 
-                                    <?php
-                                        $startTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_start_time[$index]);
-                                        $endTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_end_time[$index]);
-                                    ?>
-                                    
-                                    @if ($time->between($startTime, $endTime)) 
-                                        <div class="epg-program" style="background-color: lightblue;">{{ $title }}</div>
+                        <div class="timeline-slot">
+                            <div class="timeline">{{ $timeFormatted }}</div>
+        
+                            @if ($Livestream_details->publish_type == "schedule_program")
+                                @php
+                                    $scheduler_program_title      = json_decode($Livestream_details->scheduler_program_title);
+                                    $scheduler_program_start_time = json_decode($Livestream_details->scheduler_program_start_time);
+                                    $scheduler_program_end_time   = json_decode($Livestream_details->scheduler_program_end_time);
+                                    $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink']; // Array of colors
+                                @endphp
+        
+                                @foreach ($scheduler_program_title as $index => $title)
+                                    @if ($title)
+                                        @php
+                                            $startTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_start_time[$index]);
+                                            $endTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_end_time[$index]);
+                                            $color = $colors[$index % count($colors)]; 
+                                        @endphp
+        
+                                        @if ($time->between($startTime, $endTime))
+                                            <div class="epg-program epg-timeline-{{ $index }}" style="background-color: {{ $color }};">
+                                                {{ $title }}
+                                            </div>
+                                        @endif
                                     @endif
-                                @endif
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        </div>
                     @endfor
                 </div>
             </div>
-        </div>                        
+        </div>
     </div>
 </div>
