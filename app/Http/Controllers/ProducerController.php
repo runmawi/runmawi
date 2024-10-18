@@ -48,7 +48,7 @@ class ProducerController extends Controller
                 return back()->withErrors(['mobile_number' => 'Invalid Mobile Number.']);
             }
         
-            if ($ModeratorsUser->otp !== $request->otp) {
+            if ($ModeratorsUser->otp != $request->otp) {
                 return back()->withErrors(['Password' => 'Invalid Password.']);
             }
         
@@ -332,6 +332,7 @@ class ProducerController extends Controller
             return view('producer.home', $data);
 
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
