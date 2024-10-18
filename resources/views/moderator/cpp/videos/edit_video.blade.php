@@ -31,6 +31,38 @@ border-radius: 0px 4px 4px 0px;
         color: rgba(66, 149, 210, 1);
 
     }
+      .dropzone .dz-preview .dz-progress{height:14px !important;}
+      span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;color:#000;}
+      .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+      .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+      .dz-cancel {color: #FF0000;background: none;border: none;}
+      .dz-cancel:hover {text-decoration: underline;}
+      .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
+      .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+         width: 30px;
+         height: 30px;
+      }
+      .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+         top: 0;
+         left: 0;
+         margin-left: 0;
+         margin-top: 0;
+         width: 20px;
+      }
+      .dz-success-mark path {
+         fill: #008000;
+      }
+      .dz-error-mark g {
+         fill: #FF0000;
+      }
+      .file {
+         background: rgb(255 255 255 / 100%);
+         border-radius: 10px;
+         text-align: center;
+         margin: 0 auto;
+         /* width: 75%; */
+         border: 2px dashed;
+      }
 
       </style>
   </head>
@@ -98,7 +130,7 @@ border-radius: 0px 4px 4px 0px;
                   <input type="hidden" id="mp4url" value="<?php echo URL::to('/cpp/Updatemp4url');?>">
                   <input type="hidden" id="m3u8url" value="<?php echo URL::to('/cpp/Updatem3u8url');?>">
 
-                  <div class='content' id="video_upload">
+                  <div class='content file' id="video_upload">
                 <!-- Dropzone -->
                 <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
                 </form> 
@@ -128,7 +160,36 @@ border-radius: 0px 4px 4px 0px;
     var myDropzone = new Dropzone(".dropzone",{ 
         maxFilesize: 150000000,
         acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+    });
+
+   myDropzone.on("uploadprogress", function(file, progress) {
+      var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+      
+      if (progressElement) {
+         progressElement.textContent = Math.round(progress) + '%';
+      }
+
+      if (Math.round(progress) === 100) {
+         var cancelButton = file.previewElement.querySelector('.dz-cancel');
+         if (cancelButton) {
+               cancelButton.style.opacity = '0';
+         }
+      }
+   });
+
+      myDropzone.on("addedfile", function(file) {
+         // Create a cancel button for each file preview
+         var cancelButton = file.previewElement.querySelector('.dz-cancel');
+         cancelButton.addEventListener('click', function() {
+            var confirmCancel = confirm("Are you sure you want to cancel the upload?");
+            if (confirmCancel) {
+                  // Remove the file from the dropzone
+                  myDropzone.removeFile(file);
+            }
+         });
       });
+
+
     myDropzone.on("sending", function(file, xhr, formData) {
         formData.append('videoid',videoid);
        formData.append("_token", CSRF_TOKEN);
