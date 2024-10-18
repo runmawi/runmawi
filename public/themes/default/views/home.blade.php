@@ -56,34 +56,33 @@ $homepage_array_data = [
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    var lazyloadImages = document.querySelectorAll("img.lazy");
-    var lazyloadThrottleTimeout;
+   var lazyloadImages = document.querySelectorAll("img.lazy");
+   var lazyloadThrottleTimeout;
 
-    function lazyload() {
-        if (lazyloadThrottleTimeout) {
-            clearTimeout(lazyloadThrottleTimeout);
-        }
+   function lazyload() {
+      if (lazyloadThrottleTimeout) {
+         clearTimeout(lazyloadThrottleTimeout);
+      }
 
-        lazyloadThrottleTimeout = setTimeout(function() {
-         // var scrollTop = window.pageYOffset;
-            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            lazyloadImages.forEach(function(img) {
-                if (img.offsetTop < (window.innerHeight + scrollTop)) {
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
-                }
-            });
-            if (lazyloadImages.length == 0) {
-                document.removeEventListener("scroll", lazyload);
-                window.removeEventListener("resize", lazyload);
-                window.removeEventListener("orientationchange", lazyload);
-            }
-        }, 20);
-    }
+      lazyloadThrottleTimeout = setTimeout(function() {
+         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+         lazyloadImages.forEach(function(img) {
+               if (img.offsetTop < (document.documentElement.clientHeight + scrollTop)) {
+                  img.src = img.dataset.src;
+                  img.classList.remove('lazy');
+               }
+         });
+         if (lazyloadImages.length == 0) {
+               document.removeEventListener("scroll", lazyload);
+               document.body.removeEventListener("resize", lazyload);
+               window.matchMedia("(orientation: portrait)").removeListener(lazyload);
+         }
+      }, 20);
+   }
 
-    document.addEventListener("scroll", lazyload);
-    window.addEventListener("resize", lazyload);
-    window.addEventListener("orientationchange", lazyload);
+   document.addEventListener("scroll", lazyload);
+   document.body.addEventListener("resize", lazyload);
+   window.matchMedia("(orientation: portrait)").addListener(lazyload);
 });
 
 //  family & Kids Mode Restriction
@@ -166,7 +165,8 @@ $(".home-search").hide();
          readMoreBtn.style.display = 'inline';
          readLessBtn.style.display = 'none';
          description.style.maxHeight = '100px';
-         if (window.matchMedia("(max-width: 500px)").matches) {
+         var width = window.innerWidth || document.documentElement.clientWidth;
+         if (width <= 500) {
             description.style.maxHeight = '65px';
          }
       } else {
@@ -213,7 +213,7 @@ $(".home-search").hide();
    var isFetching = false;
    var scrollFetch;
 
-   $(window).scroll(function () {
+   $(document).scroll(function () {
       clearTimeout(scrollFetch);
 
       scrollFetch = setTimeout(function () {
