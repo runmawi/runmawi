@@ -2954,6 +2954,7 @@ Route::get('radio-station', 'AdminLiveStreamController@design');
 
 Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSession']], function () {
 
+    Route::get('/', 'ProducerController@login')->name('producer.login');
     Route::get('/login', 'ProducerController@login')->name('producer.login');
     Route::post('/verify-login', 'ProducerController@verify_login')->name('producer.verify_login');
     Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
