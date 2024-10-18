@@ -877,9 +877,12 @@ class ApiAuthController extends Controller
                                         $uname = $input['username'];
 
                                         try {
-                                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                            Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), 
+                                            function($message) use ($email,$uname) {
+                                              $message->from(AdminMail(),GetWebsiteName());
                                               $message->to($email,$uname)->subject('Verify your email address');
                                             });
+
                                         } catch (\Throwable $th) {
                                           //throw $th;
                                         }
@@ -913,6 +916,7 @@ class ApiAuthController extends Controller
 
                                             try {
                                               Mail::send('emails.verify', array('activation_code' => $user->activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
+                                                $message->from(AdminMail(),GetWebsiteName());
                                                 $message->to($email,$uname)->subject('Verify your email address');
                                               });
                                             } catch (\Throwable $th) {
@@ -26144,7 +26148,7 @@ public function TV_login(Request $request)
               $uname = $request->name;
 
               Mail::send('emails.verify', array('activation_code' => $activation_code, 'website_name' => $settings->website_name), function($message) use ($email,$uname) {
-
+                  $message->from(AdminMail(),GetWebsiteName());
                   $message->to($email,$uname)->subject('Verify your email address');
 
               });
