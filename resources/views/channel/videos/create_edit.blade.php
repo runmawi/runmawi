@@ -603,7 +603,9 @@ border-radius: 0px 4px 4px 0px;
                <div class="row">    
                <div class="panel panel-primary" data-collapsed="0"> 
                <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (srt or txt)
+               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
+                  <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                  <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
                <i class="las la-exclamation-circle"></i>
                </a>:</h3>
