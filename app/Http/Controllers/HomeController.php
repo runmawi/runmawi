@@ -1941,10 +1941,11 @@ class HomeController extends Controller
                     \Mail::send('emails.verify', array(
                         'activation_code' => $string,
                         'website_name' => $settings->website_name
-                    ) , function ($message) use ($request)
-                    {
-                        $message->to($request->email, $request->name)
-                            ->subject('Verify your email address');
+                    ) , 
+
+                    function($message) use ($request) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($request->email, $request->name)->subject('Verify your email address');
                     });
 
                     $email_log      = 'Mail Sent Successfully from Verify';
