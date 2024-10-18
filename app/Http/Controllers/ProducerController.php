@@ -26,7 +26,7 @@ class ProducerController extends Controller
     public function login(Request $request)
     {
         try {
-            return view('Producer.login');
+            return view('producer.login');
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -329,7 +329,7 @@ class ProducerController extends Controller
 
             );
 
-            return view('Producer.home', $data);
+            return view('producer.home', $data);
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -601,7 +601,7 @@ class ProducerController extends Controller
                 'cpp_user_id' => $cpp_user_id,
             );
 
-            return view('Producer.stats', $data);
+            return view('producer.stats', $data);
 
         } catch (\Throwable $th) {
 
