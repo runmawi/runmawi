@@ -1257,7 +1257,7 @@ class StripePaymentController extends Controller
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::where('type','CPP')->first();
                     $percentage          =  $moderator->commission_percentage; 
-                    $ppv_price           =  $video->ppv_price;
+                    $ppv_price           =  $ppv_price;
                     $moderator_commssion =  ($percentage/100) * $ppv_price ;
                     $admin_commssion     =  $ppv_price - $moderator_commssion;
                     $moderator_id        =  $moderators_id;
@@ -1464,7 +1464,7 @@ class StripePaymentController extends Controller
                         $title               =  $video->title;
                         $commssion           =  VideoCommission::where('type','CPP')->first();
                         $percentage          =  $moderator->commission_percentage; 
-                        $ppv_price           =  $video->ppv_price;
+                        $ppv_price           =  $ppv_price;
                         $moderator_commssion =  ($percentage/100) * $ppv_price ;
                         $admin_commssion     =  $ppv_price - $moderator_commssion;
                         $moderator_id        =  $moderators_id;
