@@ -34,14 +34,29 @@
 
     }
 
-    .dz-progress{  
-      opacity: 1 !important;
-      /* background: #0993d2 !important; */
-      top: 82% !important;
-      font-weight: 800 !important;
-      font-size: 10px;
-      height: 14px !important;
-      text-align: center;
+    .dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;color:#000;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+    .dz-cancel {color: #FF0000;background: none;border: none;}
+    .dz-cancel:hover {text-decoration: underline;}
+    .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
+    .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+        width: 30px;
+        height: 30px;
+    }
+    .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+        top: 0;
+        left: 0;
+        margin-left: 0;
+        margin-top: 0;
+        width: 20px;
+    }
+    .dz-success-mark path {
+        fill: #008000;
+    }
+    .dz-error-mark g {
+        fill: #FF0000;
     }
 
       </style>
@@ -94,11 +109,29 @@
         });
   
       myDropzone.on("uploadprogress", function(file, progress) {
-          var progressDiv = file.previewElement.querySelector(".dz-progress");
-          if (progressDiv) {
-              progressDiv.innerHTML = Math.round(progress) + "%";
+          var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+          
+          if (progressElement) {
+            progressElement.textContent = Math.round(progress) + '%';
+          }
+
+          if (Math.round(progress) === 100) {
+            var cancelButton = file.previewElement.querySelector('.dz-cancel');
+            if (cancelButton) {
+                  cancelButton.style.opacity = '0';
+            }
           }
       });
+
+          myDropzone.on("addedfile", function(file) {
+            var cancelButton = file.previewElement.querySelector('.dz-cancel');
+            cancelButton.addEventListener('click', function() {
+                var confirmCancel = confirm("Are you sure you want to cancel the upload?");
+                if (confirmCancel) {
+                      myDropzone.removeFile(file);
+                }
+            });
+          });
   
       myDropzone.on("sending", function(file, xhr, formData) {
           formData.append('Episodeid', Episodeid);
@@ -107,7 +140,6 @@
   
       myDropzone.on("success", function(file, response) {
         if (response.Episode_id == Episodeid) {
-            // Use SweetAlert2 for the alert
             Swal.fire({
                 title: "Episode Update Successful!",
                 icon: "success"
