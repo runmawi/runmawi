@@ -891,9 +891,16 @@ class RazorpayController extends Controller
             $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
             $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
 
-            if(!empty($SeriesSeason)){
-            $moderators_id = Auth::User()->id;
+            // if(!empty($SeriesSeason)){
+            // $moderators_id = Auth::User()->id;
+            // }
+
+            $Series = Series::where('id',$series_id)->first();
+
+            if(!empty($Series) && $Series->uploaded_by == 'CPP'){
+                $moderators_id = $Series->user_id;
             }
+            
             if(!empty($moderators_id)){
                 $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                 $total_amount        =  $video->ppv_price;
