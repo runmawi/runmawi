@@ -127,6 +127,41 @@
     }
 </style>
 
+{{-- Style for Radio-Station --}}
+    <style>
+        body{background-color:#000;color:#fff;font-family:Arial,sans-serif}
+        .epg-container{padding:20px}
+        .epg-header{display:flex;align-items:center;background-color:#1c1c1c;padding:15px;border-radius:8px}
+        .epg-header img{width:120px;height:auto;border-radius:8px}
+        .epg-info{margin-left:20px;flex-grow:1}
+        .epg-info h2{font-size:24px;font-weight:700;margin-bottom:10px}
+        .epg-info p{font-size:14px;color:#bbb}
+        .epg-time{text-align:right;width:20%;position:relative;top:-25px}
+        .epg-time span{font-size:12px;color:#f0f0f0}
+        .epg-grid{margin-top:20px;background-color:#1c1c1c;border-radius:8px;padding:10px;height:50vh!important;overflow:overlay}
+        .epg-timeline-container{overflow-x:auto;white-space:nowrap;position:relative}
+        .epg-timeline{display:flex;justify-content:flex-start;padding:10px;border-bottom:1px solid #555;background-color:#333;color:#ccc;font-size:12px;width:352%}
+        .timeline{margin:0 10px}
+        .epg-timeline div{flex:0 0 60px;text-align:center}
+        .current-time-indicator{position:absolute;height:100%;width:2px;background-color:red;top:0;pointer-events:none}
+        .epg-timeline-container::-webkit-scrollbar{display:none}
+        .epg-timeline-container{-ms-overflow-style:none;scrollbar-width:none}
+        .epg-channels{width:15%;float:left;padding-right:10px}
+        .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px}
+        .epg-programs{overflow-x:auto;white-space:nowrap}
+        .epg-program-row{display:flex;margin-bottom:10px}
+        .epg-program{background-color:#444;border-radius:8px;height:75px;position:relative;margin:0 5px;color:#fff;text-align:center;line-height:75px}
+        .epg-program.current{background-color:red;color:#fff}
+        .epg-program.active::after{content:'LIVE';position:absolute;top:5px;right:10px;background-color:red;color:#fff;padding:2px 5px;font-size:12px;border-radius:4px}
+        .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
+        .epg-programs{-ms-overflow-style:none;scrollbar-width:none}
+        .clearfix::after{content:"";display:table;clear:both}
+        .epg-navigation{width:14%;height:38px;z-index:0;position:absolute;overflow-x:auto;border-bottom:1px solid #555}
+        .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
+        .day-nav{margin:0 50px}.date-nav{gap:25px;white-space:nowrap;align-items:center}
+    </style>
+{{-- End of Radio-Station style --}}
+
 <input type="hidden" name="video_id" id="video_id" value="{{ $video->id }}">
 
 
@@ -514,6 +549,56 @@ if(empty($new_date)){
             </div>
 
 
+            {{-- Radio-Station --}}
+
+                <div class="epg-container">
+                    <!-- Header Section -->
+                    <div class="epg-header">
+                        <img src="https://via.placeholder.com/120" alt="Program Image">
+                        <div class="epg-info">
+                            <h2>The Tree of Life Season 6 Episode</h2>
+                            <p>
+                                The Tree of Life is a 2011 American drama film with experimental elements written and directed by
+                                Terrence Malick and starring Brad Pitt, Sean Penn, and Jessica Chastain.
+                            </p>
+                        </div>
+                        <div class="epg-time">
+                            <span>4 Mar Fri: 1:30PM - 2:30PM</span>
+                        </div>
+                    </div>
+            
+                    <!-- Grid Section -->
+                    <div class="epg-grid clearfix">
+            
+                        <!-- Navigation Section (new) -->
+                        <div class="epg-navigation d-flex" style="overflow: auto;">
+                            <button class="nav-arrow" onclick="scrollLeft()">&lt;</button>
+                            <div class="date-nav d-flex">
+                                <div class="day-nav active">Today</div>
+                                <div class="day-nav">Tomorrow</div>
+                                <div class="day-nav">Day After Tomorrow</div>
+                            </div>
+                            <button class="nav-arrow" onclick="scrollRight()" style="left: 85%; position: absolute;">&gt;</button>
+                        </div>
+            
+                        <!-- Channels Column -->
+                        <div class="epg-channels mt-5" id="epg-channels"></div>
+            
+                        <!-- Timeline Section & Programs Column-->
+                        <div class="epg-timeline-container">
+                            <div class="epg-programs">
+                                <div class="epg-timeline" id="epg-timeline"></div>
+                                <div class="epg-program-row mt-2" id="epg-program-row"></div>
+                                <!-- Current Time Indicator -->
+                                <!-- <div class="current-time-indicator" id="current-time-indicator"></div>  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {{-- End of Radio-Station  --}}
+
+
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -712,8 +797,103 @@ if(empty($new_date)){
     });
 </script>
 
-<!-- RESIZING FLUID VIDEO for VIDEO JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+{{-- Script for Radio-Station --}}
+    <script>
+        const channels = ["Channel 1","Channel 2"];
+
+        const programs = [
+            { title: "Prog1", startTime: "06:00", endTime: "06:45", status: "LIVE" },
+            { title: "Prog2", startTime: "08:00", endTime: "09:00", status: "UPCOMING" },
+        ];
+
+        function generateChannels() {
+            const channelContainer = document.getElementById("epg-channels");
+            channels.forEach(channel => {
+                const channelDiv = document.createElement("div");
+                channelDiv.className = "epg-channel";
+                channelDiv.innerText = channel;
+                channelContainer.appendChild(channelDiv);
+            });
+        }
+
+        // Generate the timeline & program blocks
+        function generateTimeline() {
+            const timelineContainer = document.getElementById("epg-timeline");
+            const programRowContainer = document.getElementById("epg-program-row");
+            const startHour = 0; 
+            const endHour = 23; 
+
+            for (let hour = startHour; hour <= endHour; hour++) {
+                for (let half = 0; half < 2; half++) {
+                    const hourDiv = document.createElement("div");
+                    hourDiv.className = "timeline";
+                    const displayHour = (hour === 0) ? 12 : (hour > 12 ? hour - 12 : hour);
+                    const suffix = (hour < 12) ? "AM" : "PM";
+                    hourDiv.innerText = `${displayHour}:${half === 0 ? "00" : "30"} ${suffix}`;
+                    timelineContainer.appendChild(hourDiv);
+                }
+            }
+
+            // Program blocks
+            programs.forEach(program => {
+                const programDiv = document.createElement("div");
+                const startTime = program.startTime.split(":").map(Number);
+                const endTime = program.endTime.split(":").map(Number);
+                const duration = (endTime[0] - startTime[0]) * 60 + (endTime[1] - startTime[1]);
+                const leftPosition = (startTime[0] - startHour) * 60 + startTime[1];
+                const leftPercent = (leftPosition / ((endHour - startHour) * 60)) * 100;
+                programDiv.className = `epg-program ${program.status.toLowerCase()}`;
+                programDiv.style.width = `${(duration / ((endHour - startHour) * 60)) * 100}%`;
+                programDiv.style.left = `${leftPercent}%`;
+                programDiv.innerText = program.title;
+
+                programRowContainer.appendChild(programDiv);
+            });
+        }
+
+        
+        function positionCurrentTimeIndicator() {
+            const indicator = document.getElementById("current-time-indicator");
+            const now = new Date();
+            const istOffset = 5.5 * 60 * 60 * 1000; 
+            const istTime = new Date(now.getTime() + istOffset); 
+
+            const currentHour = istTime.getHours();
+            const currentMinutes = istTime.getMinutes();
+            const currentSeconds = istTime.getSeconds();
+            const startHour = 0; 
+            const endHour = 23;
+
+            if (currentHour >= startHour && currentHour <= endHour) {
+                const totalMinutes = (currentHour - startHour) * 60 + currentMinutes + currentSeconds / 60; 
+                const leftPercent = (totalMinutes / ((endHour - startHour) * 60)) * 100; 
+                indicator.style.left = `${leftPercent}%`;
+                indicator.classList.add('current');
+            }
+        }
+
+        function scrollLeft() {
+            const container = document.querySelector('.epg-timeline-container');
+            container.scrollBy({ left: -100, behavior: 'smooth' });
+        }
+
+        function scrollRight() {
+            const container = document.querySelector('.epg-timeline-container');
+            container.scrollBy({ left: 100, behavior: 'smooth' });
+        }
+
+        generateChannels();
+        generateTimeline();
+        // positionCurrentTimeIndicator();
+        
+        // setInterval(positionCurrentTimeIndicator, 1000); 
+    </script>
+{{-- End of Radio-Station script --}}
+
+
+<!-- RESIZING FLUID VIDEO for VIDEO JS -->
 <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 
 
