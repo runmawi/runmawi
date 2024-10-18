@@ -833,7 +833,7 @@
                                     </div>
                             
                                     <div class="modal-footer">
-                                        <div class=" btn-primary" id="submitModal"> Schedule </div>
+                                        <div class="submit-btn btn-primary" id="submitModal"> Schedule </div>
                                     </div>
                                 </div>
                             </div>
@@ -1773,131 +1773,131 @@
     });
 </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            let rowCount = 1; 
-
-            $(document).on('click', '.add-program-btn', function () {
-                rowCount++; 
-                let newRow = `
-                    <tr class="program-fields">
-                        <td>${rowCount}</td> <!-- Dynamic S.No -->
-                        <td>
-                            <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" />
-                        </td>
-
-                        <td>
-                            <input type="time" class="form-control" name="scheduler_program_start_time[]" />
-                        </td>
-
-                        <td>
-                            <input type="time" class="form-control" name="scheduler_program_end_time[]" />
-                        </td>
-
-                        <td class="d-flex justify-content-center align-items-center p-3">
-                            <i class="fa fa-plus-circle add-program-btn mx-2"></i>
-                            <i class="fa fa-minus-circle remove-program-btn mx-2"></i>
-                        </td>
-
-                    </tr>`;
-                $('#program-fields-table tbody').append(newRow);
-            });
-
-            $(document).on('click', '.remove-program-btn', function () {
-                $(this).closest('tr').remove();
-                updateSerialNumbers(); 
-            });
-
-            function updateSerialNumbers() {
-                $('#program-fields-table tbody tr').each(function(index) {
-                    $(this).find('td:first').text(index + 1); 
-                });
-                rowCount = $('#program-fields-table tbody tr').length; 
-            }
-
-            $('.close-icon').on('click', function () {
-                $('#schedule_program_modal').hide();
-            });
-
-        });
-
-        $("#submitModal").on("click", function() {
-
-            var isValid = true; 
-            var timeSlots = [];
-
-            $(".is-invalid").removeClass("is-invalid");
-            $(".error-message").remove();
-
-            var scheduler_program_days = $('#scheduler_program_days').val();
-
-            if (!scheduler_program_days || scheduler_program_days.length === 0) {
-                isValid = false;
-                var $schedulerProgramDaysInput = $('#scheduler_program_days');
-                showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
-            }
-
-            $(".program-fields").each(function() {
-
-                var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
-                var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
-                var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
-
-                var title = $titleInput.val();
-                var startTime = $startTimeInput.val();
-                var endTime = $endTimeInput.val();
-               
-                if (!title) {
-                    isValid = false;
-                    showErrorMessage($titleInput, "Program title is required.");
-                }
-                
-                if (!startTime) {
-                    isValid = false;
-                    showErrorMessage($startTimeInput, "Start time is required.");
-                }
-             
-                if (!endTime) {
-                    isValid = false;
-                    showErrorMessage($endTimeInput, "End time is required.");
-                }
-               
-                if (startTime && endTime) {
-                    if (startTime >= endTime) {
-                        isValid = false;
-                        showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
-                        showErrorMessage($endTimeInput, "End time must be later than start time.");
-                    }
-
-                    if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
-                        isValid = false;
-                        showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
-                        showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
-                    }
-
-                    if (isValid) {
-                        timeSlots.push({ startTime: startTime, endTime: endTime });
-                    }
-                }
-
-            });
-
-            if (isValid) {
-                $("#schedule_program_modal").hide();
-            }
-        });
-
-        function showErrorMessage($input, message) {
-            var $error = $("<span>").addClass("error-message text-danger").text(message);
-            $input.addClass("is-invalid").after($error);
-        }
-
-    </script>
-
 @include('admin.livestream.search_tag'); 
 
 @include('admin.livestream.Ads_live'); 
 
-@stop @stop
+@stop
+
+<script>
+    $(document).ready(function () {
+        let rowCount = 1; 
+
+        $(document).on('click', '.add-program-btn', function () {
+            rowCount++; 
+            let newRow = `
+                <tr class="program-fields">
+                    <td>${rowCount}</td> <!-- Dynamic S.No -->
+                    <td>
+                        <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" />
+                    </td>
+
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_start_time[]" />
+                    </td>
+
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_end_time[]" />
+                    </td>
+
+                    <td class="d-flex justify-content-center align-items-center p-3">
+                        <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                        <i class="fa fa-minus-circle remove-program-btn mx-2"></i>
+                    </td>
+
+                </tr>`;
+            $('#program-fields-table tbody').append(newRow);
+        });
+
+        $(document).on('click', '.remove-program-btn', function () {
+            $(this).closest('tr').remove();
+            updateSerialNumbers(); 
+        });
+
+        function updateSerialNumbers() {
+            $('#program-fields-table tbody tr').each(function(index) {
+                $(this).find('td:first').text(index + 1); 
+            });
+            rowCount = $('#program-fields-table tbody tr').length; 
+        }
+
+        $('.close-icon').on('click', function () {
+            $('#schedule_program_modal').hide();
+        });
+
+    });
+
+    $("#submitModal").on("click", function() {
+
+        var isValid = true; 
+        var timeSlots = [];
+
+        $(".is-invalid").removeClass("is-invalid");
+        $(".error-message").remove();
+
+        var scheduler_program_days = $('#scheduler_program_days').val();
+
+        if (!scheduler_program_days || scheduler_program_days.length === 0) {
+            isValid = false;
+            var $schedulerProgramDaysInput = $('#scheduler_program_days');
+            showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
+        }
+
+        $(".program-fields").each(function() {
+
+            var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
+            var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
+            var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
+
+            var title = $titleInput.val();
+            var startTime = $startTimeInput.val();
+            var endTime = $endTimeInput.val();
+           
+            if (!title) {
+                isValid = false;
+                showErrorMessage($titleInput, "Program title is required.");
+            }
+            
+            if (!startTime) {
+                isValid = false;
+                showErrorMessage($startTimeInput, "Start time is required.");
+            }
+         
+            if (!endTime) {
+                isValid = false;
+                showErrorMessage($endTimeInput, "End time is required.");
+            }
+           
+            if (startTime && endTime) {
+                if (startTime >= endTime) {
+                    isValid = false;
+                    showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
+                    showErrorMessage($endTimeInput, "End time must be later than start time.");
+                }
+
+                if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
+                    isValid = false;
+                    showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
+                    showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
+                }
+
+                if (isValid) {
+                    timeSlots.push({ startTime: startTime, endTime: endTime });
+                }
+            }
+
+        });
+
+        if (isValid) {
+            $("#schedule_program_modal").hide();
+        }
+    });
+
+    function showErrorMessage($input, message) {
+        var $error = $("<span>").addClass("error-message text-danger").text(message);
+        $input.addClass("is-invalid").after($error);
+    }
+
+</script>
+
+@stop
