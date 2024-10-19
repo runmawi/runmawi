@@ -12650,11 +12650,13 @@ $cpanel->end();
                                             ->orderBy('episode_order')
                                             ->get()
                                             ->map(function ($episode) {
+                                              $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
                                               return [
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
                                                 'slug'                     => $episode->slug,
-                                                'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                'description'              => $description,
                                                 'episodeNumber'            => $episode->episode_order,
                                                 'access'                   => $episode->access,
                                                 'content'                  => [
@@ -12726,11 +12728,13 @@ $cpanel->end();
                                                                                                                                 ->orderBy('episode_order')
                                                                                                                                 ->get()
                                                                                                                                 ->map(function ($episode) {
+                                                                                                                                  $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
                                                                                                                                   return [
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
                                                                                                                                     'slug'                     => $episode->slug,
-                                                                                                                                    'player_image_url'             => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                                    'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                                    'description'              => $description,
                                                                                                                                     'episodeNumber'            => $episode->episode_order,
                                                                                                                                     'access'                   => $episode->access,
                                                                                                                                     'content'                  => [
