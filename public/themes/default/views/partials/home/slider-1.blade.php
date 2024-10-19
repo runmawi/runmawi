@@ -417,14 +417,28 @@
             let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        let computedStyle = window.getComputedStyle(entry.target);
-                        let bg = computedStyle.getPropertyValue('background-image');
+                        let bg = entry.target.style.backgroundImage;
 
                         if (!bg || bg === 'none') {
-                            let newBg = entry.target.style.backgroundImage;
-                            entry.target.style.backgroundImage = newBg;
+                            let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                            
+                            if (isSafari) {
+                                bg = entry.target.style.backgroundImage;
+                            } else {
+                                try {
+                                    bg = entry.target.currentStyle 
+                                        ? entry.target.currentStyle.backgroundImage 
+                                        : entry.target.style.backgroundImage;
+                                } catch (e) {
+                                    console.log("Could not get computed style in Safari: ", e);
+                                }
+                            }
                         }
-                        
+
+                        if (bg && bg !== 'none') {
+                            entry.target.style.backgroundImage = bg;
+                        }
+
                         entry.target.classList.remove('lazy-bg');
                         lazyBackgroundObserver.unobserve(entry.target);
                     }
