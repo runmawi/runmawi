@@ -2884,6 +2884,8 @@ Route::post('videojs_live_Like', 'LiveStreamController@videojs_live_Like')->name
 
 Route::post('videojs_live_dislike', 'LiveStreamController@videojs_live_disLike')->name('videojs.live.dislike');
 
+Route::get('/livestream-fetch-timeline', 'LiveStreamController@fetchTimeline')->name('livestream-fetch-timeline');
+
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
 Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
@@ -2955,4 +2957,4 @@ Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcv
 Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
 
-Route::get('radio-station', 'AdminLiveStreamController@design')->name('radio-station');
+Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->name('fetch-timeline');

@@ -409,7 +409,7 @@
 
 
 <!-- For Lazyloading the slider bg image -->
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         var lazyBackgrounds = [].slice.call(document.querySelectorAll(".lazy-bg"));
 
@@ -453,7 +453,7 @@
             });
         }
     });
-</script>
+</script> --}}
 
 <style>
     .s-bg-1::before {
