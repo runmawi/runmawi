@@ -193,6 +193,23 @@ $(".home-search").hide();
       }
    }
 
+   // episode slider read more option
+   function episodeReadMore(key) {
+      const description = document.getElementById('epidetails-' + key);
+      const readMoreBtn = document.getElementById('read-more-episode-' + key);
+      const readLessBtn = document.getElementById('read-less-episode-' + key);
+
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
+
    // live slider read more option
    function liveReadMore(key) {
       const description = document.getElementById('live-details-' + key);
