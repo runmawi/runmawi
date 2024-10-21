@@ -3346,7 +3346,8 @@ class CPPAdminVideosController extends Controller
                 \LogActivity::addVideoLog("Failed Bunny CDN VIDEO Upload.", $video_id);
                 return $value ;
             }
-        }
+    
+    }
     
 
         public function UploadBunnyCDNVideo(Request $request)
@@ -3622,7 +3623,7 @@ class CPPAdminVideosController extends Controller
                 return $value ;
             }
         }
-    }
+     }
 
 
     

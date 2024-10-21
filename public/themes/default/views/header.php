@@ -452,6 +452,7 @@
       .sliderk.round:before {
          border-radius: 50%;
       }
+      body{background: #000;}
       /* Dark mode and light Mode */
          
       body.dark-theme {
@@ -475,15 +476,15 @@
       body.dark-theme ol.breadcrumb{
          color: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme .sliderk{
-         background-color: <?php echo $GetDarkText; ?>!important;
-      }
       body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{
          background-color: <?php echo $GetDarkBg; ?>!important;
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme header#main-header{
          color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme #home-slider p{
+         color: #fff !important;
       }
       body.dark-theme header .st0, .st2{
          fill: <?php echo $GetDarkText; ?>!important;
@@ -495,7 +496,7 @@
       body.dark-theme header .st5 {
          fill: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme header h1, h2, h3, h4, h5, h6{
+      body.dark-theme header h1, body.dark-theme header h2, body.dark-theme header h3, body.dark-theme header h4, body.dark-theme header h5, body.dark-theme header h6{
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme header .cont-item:hover{
@@ -506,6 +507,9 @@
       }
       body.light-theme {
       background: <?php echo $GetLightBg; ?>!important;
+      }
+      body.light-theme #home-slider .container-fluid.position-relative.h-100{
+         background: linear-gradient(1deg, rgb(255, 255, 255) 0%, transparent 0%), linear-gradient(90deg, rgb(240, 240, 240) 50%, transparent 50%);
       }
       body.light-theme h4, body.light-theme p {
       color: <?php echo $GetLightText; ?>;

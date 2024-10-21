@@ -165,13 +165,26 @@
             border-radius: 15px;
             border: 2px dashed #51bce8;
             text-align: left;
-            }   
+            }  
+            footer.py-4.mt-5{
+                margin-top: 0 !important;
+            } 
+            .sign-in-page{background: #000;}
             
         </style>
     </head>
 
+    @php
+        $login_bg_img = $settings->login_content;
+        $login_bgimg = $login_bg_img == 'Landban.png' ? false : true;
+    @endphp
+
     <body>
-        <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+        @if($login_bgimg)
+            <section class="sign-in-page" style="background:url('{{ asset('public/uploads/settings/' . $settings->login_content) }}') no-repeat scroll 0 0; background-size: cover;">
+        @else
+            <section class="sign-in-page bg-set">
+        @endif
         <div class="container">
             <div class="row mb-4  align-items-center height-self-center">
                 <div class="col-lg-7  col-12">
@@ -367,7 +380,7 @@
         <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
 
 <script>
-    $(window).load(function() {
+    $(globalThis).load(function() {
         var email = $('#email').val().trim();
         var password = $('#password').val().trim();
         // alert(email);
@@ -382,6 +395,22 @@
     });
 </script>
 
+<script>
+    $(document).ready(function(){
+        var theme_change = "{{ $theme_mode }}";
+        var bg_img_check = "{{ $login_bgimg ? 'true' : 'false' }}";
+        console.log('theme_change ' + theme_change);
+        
+        if(theme_change === 'dark' && bg_img_check === 'false'){
+            $(".bg-set").css("background", "#000");
+            $(".km").css("color", "#fff");
+        }
+        else if(theme_change === 'light' && bg_img_check === 'false'){
+            $(".bg-set").css("background", "#fff");
+            $(".km").css("color", "#000");
+        }
+    });
+</script>
         <script>
 
             $(document).ready(function(){
@@ -557,7 +586,7 @@
 
                     if( response.status == true ){
 
-                        window.location.href = response.redirection_url;
+                        globalThis.location.href = response.redirection_url;
 
                     }else if ( response.status == false ) {
 
