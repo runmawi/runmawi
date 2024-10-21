@@ -319,7 +319,7 @@
                 // });
 
                 hls.attachMedia(video);
-                window.hls = hls;
+                globalThis.hls = hls;
             }
 
             function addSeekedEventListener(player) {
@@ -362,12 +362,12 @@
 
             function updateQuality(newQuality) {
                 if (newQuality === 0) {
-                    window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                    globalThis.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
                 } else {
-                    window.hls.levels.forEach((level, levelIndex) => {
+                    globalThis.hls.levels.forEach((level, levelIndex) => {
                         if (level.height === newQuality) {
                             console.log("Found quality match with " + newQuality);
-                            window.hls.currentLevel = levelIndex;
+                            globalThis.hls.currentLevel = levelIndex;
                         }
                     });
                 }
@@ -376,7 +376,7 @@
 
         // VIDEO WATCHED TIME CONTINUE WATCHING
 
-        $(window).on("beforeunload", function() {
+        $(globalThis).on("beforeunload", function() {
 
             var vid = document.getElementById("video");
             var currentTime = vid.currentTime;
@@ -547,7 +547,7 @@
                 // });
 
                 hls.attachMedia(video);
-                window.hls = hls;
+                globalThis.hls = hls;
             }
 
             function addSeekedEventListener(player) {
@@ -592,12 +592,12 @@
 
             function updateQuality(newQuality) {
                 if (newQuality === 0) {
-                    window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                    globalThis.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
                 } else {
-                    window.hls.levels.forEach((level, levelIndex) => {
+                    globalThis.hls.levels.forEach((level, levelIndex) => {
                         if (level.height === newQuality) {
                             console.log("Found quality match with " + newQuality);
-                            window.hls.currentLevel = levelIndex;
+                            globalThis.hls.currentLevel = levelIndex;
                         }
                     });
                 }
@@ -699,7 +699,7 @@
                         });
 
                 hls.attachMedia(video);
-                window.hls = hls;
+                globalThis.hls = hls;
 
                 // Get seek time when Plyr's timeupdate event is triggered
                 function addSeekedEventListener(player) {
@@ -743,12 +743,12 @@
 
                 function updateQuality(newQuality) {
                     if (newQuality === 0) {
-                        window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+                        globalThis.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
                     } else {
-                        window.hls.levels.forEach((level, levelIndex) => {
+                        globalThis.hls.levels.forEach((level, levelIndex) => {
                             if (level.height === newQuality) {
                                 console.log("Found quality match with " + newQuality);
-                                window.hls.currentLevel = levelIndex;
+                                globalThis.hls.currentLevel = levelIndex;
                             }
                         });
                     }
@@ -756,7 +756,7 @@
 
                 // VIDEO WATCHED TIME CONTINUE WATCHING
 
-                $(window).on("beforeunload", function() {
+                $(globalThis).on("beforeunload", function() {
 
                     var vid = document.getElementById("video");
                     var currentTime = vid.currentTime;
@@ -781,7 +781,7 @@
 
                 // VIDEO WATCHED TIME CONTINUE WATCHING
 
-                $(window).on("beforeunload", function() {
+                $(globalThis).on("beforeunload", function() {
 
                     var vid = document.getElementById("video");
                     var currentTime = vid.currentTime;
@@ -865,7 +865,7 @@
                 });
                 // VIDEO WATCHED TIME CONTINUE WATCHING
 
-                $(window).on("beforeunload", function() {
+                $(globalThis).on("beforeunload", function() {
 
                     var vid = document.getElementById("video");
                     var currentTime = vid.currentTime;
@@ -890,7 +890,7 @@
 
                 // VIDEO WATCHED TIME CONTINUE WATCHING
 
-                $(window).on("beforeunload", function() {
+                $(globalThis).on("beforeunload", function() {
 
                     var vid = document.getElementById("video");
                     var currentTime = vid.currentTime;

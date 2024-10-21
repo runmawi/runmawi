@@ -969,7 +969,7 @@ $(document).ready(function() {
 //
 //                                    setTimeout(function() {
 //                                    //location.reload();
-//                                    window.location.replace(base_url+'/register2');
+//                                    globalThis.location.replace(base_url+'/register2');
 //
 //                                  }, 2000);
 //                               });
@@ -1027,7 +1027,7 @@ $(document).ready(function() {
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    globalThis.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }
