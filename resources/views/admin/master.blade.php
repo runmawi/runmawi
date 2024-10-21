@@ -1018,7 +1018,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   </li>
 
 
-                  @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
+                  {{-- @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1)
                   <li>
                   <div class="men" style=""> 
                      <p class="lnk" >{{ (__('Radio Station')) }}</p>
@@ -1029,7 +1029,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       <li><a  href="{{ URL::to('admin/livestream/createradiostation') }}" >{{ (__('Add New Radio Station')) }}</a></li>
                   </ul>
                   </li>
-                  @endif 
+                  @endif  --}}
 
                   <div class="men" style=""> 
 
