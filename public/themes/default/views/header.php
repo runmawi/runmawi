@@ -475,9 +475,6 @@
       body.dark-theme ol.breadcrumb{
          color: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme .sliderk{
-         background-color: <?php echo $GetDarkText; ?>!important;
-      }
       body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{
          background-color: <?php echo $GetDarkBg; ?>!important;
          color: <?php echo $GetDarkText; ?>!important;
