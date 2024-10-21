@@ -511,7 +511,7 @@
       body.light-theme #home-slider .container-fluid.position-relative.h-100{
          background: linear-gradient(1deg, rgb(255, 255, 255) 0%, transparent 0%), linear-gradient(90deg, rgb(240, 240, 240) 50%, transparent 50%);
       }
-      body.light-theme h4, body.light-theme p {
+      body.light-theme h4, body.light-theme p, body.light-theme span {
       color: <?php echo $GetLightText; ?>;
       }
       body.light-theme header#main-header{
@@ -559,6 +559,9 @@
          color: var(--iq-body-text) !important;
       }
       body.light-theme .searchbox h6, body.light-theme .iq-card-body h6{
+         color: var(--iq-body-text) !important;
+      }
+      body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6{
          color: var(--iq-body-text) !important;
       }
       body.light-theme .media-body h6{
