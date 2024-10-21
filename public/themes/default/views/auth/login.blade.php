@@ -367,7 +367,7 @@
         <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
 
 <script>
-    $(window).load(function() {
+    $(globalThis).load(function() {
         var email = $('#email').val().trim();
         var password = $('#password').val().trim();
         // alert(email);
@@ -557,7 +557,7 @@
 
                     if( response.status == true ){
 
-                        window.location.href = response.redirection_url;
+                        globalThis.location.href = response.redirection_url;
 
                     }else if ( response.status == false ) {
 
