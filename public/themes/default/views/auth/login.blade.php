@@ -169,6 +169,7 @@
             footer.py-4.mt-5{
                 margin-top: 0 !important;
             } 
+            .sign-in-page{background: #000;}
             
         </style>
     </head>
@@ -187,7 +188,7 @@
         @if($login_bgimg)
             <section class="sign-in-page" style="background:url('{{ asset('public/uploads/settings/' . $settings->login_content) }}') no-repeat scroll 0 0; background-size: cover;">
         @else
-            <section class="sign-in-page" style="background:#000; background-size: cover;">
+            <section class="sign-in-page bg-set">
         @endif
         <div class="container">
             <div class="row mb-4  align-items-center height-self-center">
@@ -399,6 +400,21 @@
     });
 </script>
 
+<script>
+    $(document).ready(function(){
+        var theme_change = "{{ $theme_mode }}";
+        console.log(theme_change);
+        
+        if(theme_change === 'dark'){
+            $(".bg-set").css("background", "#000");
+            $(".km").css("color", "#fff");
+        }
+        else if(theme_change === 'light'){
+            $(".bg-set").css("background", "#fff");
+            $(".km").css("color", "#000");
+        }
+    });
+</script>
         <script>
 
             $(document).ready(function(){
