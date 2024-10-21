@@ -270,7 +270,6 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                             } else {
                                                 moreText.style.display = 'none';
                                                 seeMoreButton.innerText = ' See More ';
-                                                myImage.style.height = 'calc(100vh - 260px)';
                                                 
                                             }
                                         }
@@ -558,34 +557,41 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
 
                           <?php
-                            $description = $series->description;
+                                  $description = $series->details;
 
-                            if (strlen($description) > 200) {
-                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
-                            } else {
-                                $shortDescription = html_entity_decode($description);
-                            }
-                            ?>
-
-                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
-                                <?php echo $shortDescription; ?>
-                            </div>
-
-                              <script>
-                                  function toggleDescription() {
-                                      var descriptionContainer = document.querySelector('.description-container');
-                                      var moreText = descriptionContainer.querySelector('.more-text');
-                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
-
-                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
-                                          moreText.style.display = 'inline';
-                                          seeMoreButton.innerText = ' See Less ';
-                                      } else {
-                                          moreText.style.display = 'none';
-                                          seeMoreButton.innerText = ' See More ';
-                                      }
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                                  } else {
+                                      $shortDescription = html_entity_decode($description);
                                   }
-                              </script>
+                                  ?>
+
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
+
+                                  <div class="details-show mt-3">
+                                    <span><?= nl2br($series->description) ?></span>
+                                  </div>
+
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
+                                            var myImage = document.querySelector('#myImage');
+
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                                myImage.style.height = 'auto';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                                
+                                            }
+                                        }
+                                    </script>
 
 
 
@@ -646,28 +652,33 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
             </div>
 
-              <h2 class="text"> 
-              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
-                    <form method="get" action="<?= URL::to('signup') ?>">
-                        <button id="button" class="view-count rent-video btn bd"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                    </form>
-          <?php elseif($series->access == 'registered'): ?>
-            <form method="get" action="<?= URL::to('signup') ?>">
-                  <button id="button" class="view-count rent-video btn bd">
-                    <?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
-              </form>
-          <?php elseif($series->ppv_status == 1): ?>
-          <div class="d-flex">
-                    <form method="get" action="<?= URL::to('signup') ?>">
-                        <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                    </form>
+            <div class="container">
+                <h2 class="text"> 
+                    <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+                        <form method="get" action="<?= URL::to('signup') ?>">
+                            <button id="button" class="view-count rent-video btn bd"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        </form>
+                    <?php elseif($series->access == 'registered'): ?>
+                        <form method="get" action="<?= URL::to('signup') ?>">
+                            <button id="button" class="view-count rent-video btn bd">
+                                <?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?>
+                            </button>
+                        </form>
+                    <?php elseif($series->ppv_status == 1): ?>
+                        <div class="d-flex">
+                            <form method="get" action="<?= URL::to('signup') ?>">
+                                <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                            </form>
 
-            <form method="get" action="<?= URL::to('signup') ?>">
-                  <button id="button" class="view-count rent-video btn bd">
-                    <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?></button>
-              </form>
-          </div>
-            <?php endif; ?></h2>
+                            <form method="get" action="<?= URL::to('signup') ?>">
+                                <button id="button" class="view-count rent-video btn bd">
+                                    <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?>
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
+                </h2>
+            </div>
 
 
 				
@@ -703,34 +714,41 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                       <?php echo __('Season'); ?>  <span class="sea"> 1 </span>
 
                       <?php
-                        $description = $series->description;
+                                  $description = $series->details;
 
-                        if (strlen($description) > 200) {
-                            $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
-                        } else {
-                            $shortDescription = html_entity_decode($description);
-                        }
-                        ?>
-
-                        <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
-                            <?php echo $shortDescription; ?>
-                        </div>
-
-                          <script>
-                              function toggleDescription() {
-                                  var descriptionContainer = document.querySelector('.description-container');
-                                  var moreText = descriptionContainer.querySelector('.more-text');
-                                  var seeMoreButton = descriptionContainer.querySelector('.see-more');
-
-                                  if (moreText.style.display === 'none' || moreText.style.display === '') {
-                                      moreText.style.display = 'inline';
-                                      seeMoreButton.innerText = ' See Less ';
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
                                   } else {
-                                      moreText.style.display = 'none';
-                                      seeMoreButton.innerText = ' See More ';
+                                      $shortDescription = html_entity_decode($description);
                                   }
-                              }
-                          </script>
+                                  ?>
+
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
+
+                                  <div class="details-show mt-3">
+                                    <span><?= nl2br($series->description) ?></span>
+                                  </div>
+
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
+                                            var myImage = document.querySelector('#myImage');
+
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                                myImage.style.height = 'auto';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                                
+                                            }
+                                        }
+                                    </script>
 
 
 
@@ -787,30 +805,34 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
             </div>
 
 
-        <h2 class="text" > 
-              <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
-                    <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                        <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                    </form>
-              <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
-            <!-- <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                    class="view-count rent-video btn btn-primary">
-                    <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button> -->
-                <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
-                <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
-
-            <?php elseif($series->ppv_status == 1 ): ?>
-
-              <div class="d-flex">
-                <?php if($subscribe_btn == 1): ?>
-                    <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
-                        <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                    </form>
-                <?php endif; ?>
-              <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
-                <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
-                    </div>
-            <?php endif; ?></h2>
+            <div class="container">
+                <h2 class="text" > 
+                    <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                            <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                        </form>
+                    <?php elseif($series->ppv_status == 1 &&  Auth::User()->role == "subscriber" ): ?>
+                        <!-- <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
+                                class="view-count rent-video btn btn-primary">
+                            </button> -->
+                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?>
+                        <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
+                            <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> 
+                        </button>
+                    <?php elseif($series->ppv_status == 1 ): ?>
+                        <div class="d-flex">
+                            <?php if($subscribe_btn == 1): ?>
+                                <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                    <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                </form>
+                            <?php endif; ?>
+                            <button data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
+                                <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> 
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                </h2>
+            </div>
           </div>
           </div>
          
@@ -825,34 +847,41 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                           <?php echo __('Season'); ?>  <span class="sea"> 1 </span>
 
                           <?php
-                            $description = $series->description;
+                                  $description = $series->details;
 
-                            if (strlen($description) > 200) {
-                                $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
-                            } else {
-                                $shortDescription = html_entity_decode($description);
-                            }
-                            ?>
-
-                            <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
-                                <?php echo $shortDescription; ?>
-                            </div>
-
-                              <script>
-                                  function toggleDescription() {
-                                      var descriptionContainer = document.querySelector('.description-container');
-                                      var moreText = descriptionContainer.querySelector('.more-text');
-                                      var seeMoreButton = descriptionContainer.querySelector('.see-more');
-
-                                      if (moreText.style.display === 'none' || moreText.style.display === '') {
-                                          moreText.style.display = 'inline';
-                                          seeMoreButton.innerText = ' See Less ';
-                                      } else {
-                                          moreText.style.display = 'none';
-                                          seeMoreButton.innerText = ' See More ';
-                                      }
+                                  if (strlen($description) > 200) {
+                                      $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
+                                  } else {
+                                      $shortDescription = html_entity_decode($description);
                                   }
-                              </script>
+                                  ?>
+
+                                  <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
+                                      <?php echo $shortDescription; ?>
+                                  </div>
+
+                                  <div class="details-show mt-3">
+                                    <span><?= nl2br($series->description) ?></span>
+                                  </div>
+
+                                    <script>
+                                        function toggleDescription() {
+                                            var descriptionContainer = document.querySelector('.description-container');
+                                            var moreText = descriptionContainer.querySelector('.more-text');
+                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
+                                            var myImage = document.querySelector('#myImage');
+
+                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
+                                                moreText.style.display = 'inline';
+                                                seeMoreButton.innerText = ' See Less ';
+                                                myImage.style.height = 'auto';
+                                            } else {
+                                                moreText.style.display = 'none';
+                                                seeMoreButton.innerText = ' See More ';
+                                                
+                                            }
+                                        }
+                                    </script>
 
                             <!-- <p  style="color:#fff!important;"><?php echo $series->details;?></p>
                             <b><p  style="color:#fff;"><?php echo $series->description;?></p></b> -->
@@ -907,60 +936,56 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                 </div>
 
 
-              <h2 class="text" > 
-                  <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
-                        <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                        </form>
-                  <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
-                    <div class="d-flex">
-
-                        <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                        </form>
-
-                  <form action="<?= URL::to('/signup') ?>">
-                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn bd">
-                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
-                        </form>
-                        </div>
-
-                <?php elseif($series->ppv_status == 1 &&  $series->access == 'registered' ): ?>
-
-                  <div class="d-flex">
-                  <form method="get" action="<?= URL::to('/signup') ?>">
-                      <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
-                  </form>
-                  <form action="<?= URL::to('/signup') ?>">
-                      <button  data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn bd">
-                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
-                        </form>
-                        </div>
-
+                <div class="container">
+                    <h2 class="text" > 
+                        <?php if($series->access == 'subscriber' && $series->ppv_status == 0): ?>
+                            <form method="get" action="<?= URL::to('/signup') ?>">
+                                <button id="button" class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                            </form>
                         <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
-                    <div class="d-flex">
-
-                        <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
-                        </form>
-
-                  <form action="<?= URL::to('/signup') ?>">
-                <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"
-                        class="view-count rent-video btn bd">
-                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> </button>
-                        </form>
-                        </div>
-
+                            <div class="d-flex">
+                                <form method="get" action="<?= URL::to('/signup') ?>">
+                                    <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                </form>
+                                <form action="<?= URL::to('/signup') ?>">
+                                    <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter" class="view-count rent-video btn bd">
+                                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> 
+                                    </button>
+                                </form>
+                            </div>
+                        <?php elseif($series->ppv_status == 1 &&  $series->access == 'registered' ): ?>
+                            <div class="d-flex">
+                                <form method="get" action="<?= URL::to('/signup') ?>">
+                                    <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
+                                </form>
+                                <form action="<?= URL::to('/signup') ?>">
+                                    <button  data-toggle="modal" data-target="#exampleModalCenter"  class="view-count rent-video btn bd">
+                                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> 
+                                    </button>
+                                </form>
+                            </div>
+                        <?php elseif($series->ppv_status == 1 &&  $series->access == 'subscriber'): ?>
+                            <div class="d-flex">
+                                <form method="get" action="<?= URL::to('/signup') ?>">
+                                    <button id="button"  class="view-count rent-video btn bd mr-4">
+                                        <?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?>
+                                    </button>
+                                </form>
+                                <form action="<?= URL::to('/signup') ?>">
+                                    <button style="margin-left: 46%;margin-top: 1%;" data-toggle="modal" data-target="#exampleModalCenter"  class="view-count rent-video btn bd">
+                                        <?php echo __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now '); ?> 
+                                    </button>
+                                </form>
+                            </div>
                         <?php elseif($series->ppv_status == 0 &&  $series->access == 'registered' ): ?>
-
-                        <div class="d-flex">
-                        <form method="get" action="<?= URL::to('/signup') ?>">
-                            <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
-                        </form>
-                              </div>
-                <?php endif; ?></h2>
+                            <div class="d-flex">
+                                <form method="get" action="<?= URL::to('/signup') ?>">
+                                    <button id="button"  class="view-count rent-video btn bd mr-4"><?php echo __(!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'); ?></button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+                    </h2>
+                </div>
               </div>
               </div>
 

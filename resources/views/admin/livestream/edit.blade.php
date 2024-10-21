@@ -47,8 +47,51 @@ border-radius: 0px 4px 4px 0px;
     margin: 0 7px 3px;
     display: inline-block;
     cursor: pointer;
-} */
+} 
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+   
+.modal-content {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #888;
+    width: 50%; /* Adjust the width for medium size */
+    max-width: 60%; /* Maximum width limit */
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.submit-btn{
+    padding: 7px;
+    color: #fafafa;
+    cursor: pointer;
+    border-radius: 7px
+}
+
+.close-icon{
+    font-size: 20px;
+    font-weight:bold;
+    cursor: pointer;"
+}
+
+@keyframes animatetop {
+    from { top: -300px; opacity: 0; }
+    to { top: 50%; opacity: 1; }
+}
 </style>
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 <style>
@@ -187,9 +230,9 @@ border-radius: 0px 4px 4px 0px;
                             </div>
 
                             <div class="mt-2 text-center">
-                                <div class="panel-body">
+                                <div class="panel-body" style="width:200px;height:200px;overflow:hidden;">
                                     @if(!empty($video->image))
-                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg w-100" width=""/>
+                                        <img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" class="video-imgimg w-100" width="" style="height: 100%;object-fit:contain;"/>
                                     @endif
                                 </div>
                             </div>
@@ -295,17 +338,17 @@ border-radius: 0px 4px 4px 0px;
 
                             <div class="new-video-upload mt-2" id="mp4_code">
                                 <label for="embed_code"><label>{{  $inputs_details_array['text_main_name'] }} URL</label></label>
-                                <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" />
+                                <input type="text" name="mp4_url" class="form-control" id="mp4_url" value="@if(!empty($video->mp4_url) ) {{ $video->mp4_url}}  @endif" placeholder=" MP4/M3U8 URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="embed_code">
                                 <label for="embed_code"><label>Live Embed URL</label></label>
-                                <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" />
+                                <input type="text" name="embed_url" class="form-control" id="embed_url" value="@if(!empty($video->embed_url) ) {{ $video->embed_url}}  @endif" placeholder="Embed URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="m3u_urls">
                                 <label for="m3u_url"><label class="mb-1"> M3U URL</label></label>
-                                <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" />
+                                <input type="text" name="m3u_url" class="form-control" id="m3u_url" value="@if(!empty($video->m3u_url) ) {{ $video->m3u_url}}  @endif" placeholder="M3U URL"/>
                             </div>
 
                             <div class="new-video-upload mt-2" id="live_stream_video">
@@ -825,10 +868,111 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Publish Type</label>
                     <div class="panel-body" style="color: #000;">
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
-				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}> Publish Later <br>
+				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later")) ? "checked" : "" }}> Publish Later <br>
                         <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
+                        @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
+                            <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> {{ __('Schedule Program')}} <br />
+                        @endif
                     </div>
                 </div>
+
+        
+                {{-- Schedule Program Modal --}}
+
+                @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
+                    <div class="modal" data-keyboard="false" data-backdrop="static" id="schedule_program_modal"  tabindex="-1" role="dialog">
+                        <div class="modal-content" style="overflow-y: auto;">
+                            <div class="modal-header d-flex justify-content-between">
+                                <div class=""><h4>Schedule Program</h4></div>
+                                <div class="close-icon">&times;</div>
+                            </div>
+                    
+                            <div class="modal-body">
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label class="m-0">Program Days <small>(Select the Multiple days)</small></label>
+                                        <div class="panel-body">
+                                            <select class="form-control js-example-basic-multiple" id="scheduler_program_days" name="scheduler_program_days[]" style="width: 100%;" multiple="multiple">
+                                                <option value="0" {{ !empty($video->scheduler_program_days) && in_array("0", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Sunday</option>
+                                                <option value="1" {{ !empty($video->scheduler_program_days) && in_array("1", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Monday</option>
+                                                <option value="2" {{ !empty($video->scheduler_program_days) && in_array("2", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Tuesday</option>
+                                                <option value="3" {{ !empty($video->scheduler_program_days) && in_array("3", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Wednesday</option>
+                                                <option value="4" {{ !empty($video->scheduler_program_days) && in_array("4", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Thursday</option>
+                                                <option value="5" {{ !empty($video->scheduler_program_days) && in_array("5", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Friday</option>
+                                                <option value="6" {{ !empty($video->scheduler_program_days) && in_array("6", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Saturday</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                    
+                                <table class="table custom-table" id="program-fields-table" style="margin-top: 10px;">
+                                    <thead style="border-bottom: none !important;">
+                                        <tr>
+                                            <th> <label> # </label></th> 
+                                            <th> <label>  Program Title </label></th>
+                                            <th> <label> Start Time <small>(24-hrs format)</small> </label> </th>
+                                            <th> <label>End Time <small>(24-hrs format)</small> </label> </th>
+                                            <th> <label> Action </label></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @forelse ($scheduler_program['scheduler_program_title'] as $index => $title)
+                                            <tr class="program-fields">
+                                                <td>{{ $index + 1 }}</td>
+
+                                                <td>
+                                                    <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" value="{{ $title }}" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_start_time[]" value="{{ $scheduler_program['scheduler_program_start_time'][$index] ?? '' }}" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_end_time[]" value="{{ $scheduler_program['scheduler_program_end_time'][$index] ?? '' }}" required />
+                                                </td>
+
+                                                <td class="d-flex justify-content-center align-items-center p-3">
+                                                    <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr class="program-fields">
+                                                <td>{{ 1 }}</td>
+
+                                                <td>
+                                                    <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]"  required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_start_time[]" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_end_time[]"  required />
+                                                </td>
+
+                                                <td class="d-flex justify-content-center align-items-center p-3">
+                                                    <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                                                </td>
+                                            </tr>
+                                            
+                                        @endforelse
+
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                    
+                            <div class="modal-footer" style="background:#ffffff">
+                                <div class="submit-btn btn-primary" id="submitModal"> Schedule </div>
+                            </div>
+
+                        </div>
+                    </div>
+                @endif
 
                 <div class="col-sm-4" >
                     <div id="publishlater" style="{{ !empty($video->publish_time)  ? '' : 'display: none' }}">
@@ -1046,84 +1190,6 @@ border-radius: 0px 4px 4px 0px;
             } );
 </script>
 
-<!-- Empty url validation Live Stream Source -->
-<script>
-    $(document).ready(function() {
-        function validateForm(event) {
-            let urlType = $('#url_type').val(); // Get the selected URL type
-            var url_value = $('#mp4_url').val();
-            var embed_url_value = $('#embed_url').val();
-            var live_stream_url_value = $('.live_stream_url_value').val();
-            var m3u_url_value = $('#m3u_url').val();
-            var acc_audio_file_value = $('.audio_stream_url_value').val();
-            var acc_audio_url_value = $('.acc_audio_url_value').val();
-
-            // If urlType is not selected or invalid, prevent form submission
-            if (urlType === '') {
-                $('#source_err_validtion').show().text('Please select a URL type.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-                return false;
-            }
-
-            // Validate based on selected urlType
-            if (urlType === 'mp4' && !url_value) {
-                $('#source_err_validtion').show().text('Please enter the MP4 URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'embed' && !embed_url_value) {
-                $('#source_err_validtion').show().text('Please enter the Embed URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'live_stream_video' && !live_stream_url_value) {
-                $('#source_err_validtion').show().text('Please select a Live Stream video.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'm3u_url' && !m3u_url_value) {
-                $('#source_err_validtion').show().text('Please enter the M3U URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'acc_audio_file' && !acc_audio_file_value) {
-                $('#source_err_validtion').show().text('Please upload an AAC audio file.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else if (urlType === 'acc_audio_url' && !acc_audio_url_value) {
-                $('#source_err_validtion').show().text('Please enter the AAC audio URL.');
-                $('html, body').animate({
-                    scrollTop: $('#source_err_validtion_navigation').offset().top
-                }, 500);
-                event.preventDefault();
-            } else {
-                $('#source_err_validtion').hide(); // Hide the error if validation passes
-            }
-        }
-
-        // Trigger validation when form is submitted
-        $('#liveEdit_video').on('submit', function(event) {
-            validateForm(event);
-        });
-
-        // Trigger validation when url type is changed
-        $('#url_type').change(function() {
-            validateForm(); // Ensure validation runs when user changes the url_type
-        });
-    });
-
-
-
-</script>
 
 <script type="text/javascript">
    $ = jQuery;
@@ -1576,7 +1642,7 @@ $(document).ready(function(){
 
     $(document).ready(function () {
         
-        $("input[name='publish_type']").change(function () {
+        $("input[name='publish_type']").on('click change', function () {
             
             $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day,.recurring_timezone").hide();
 
@@ -1588,6 +1654,12 @@ $(document).ready(function(){
 
             if( publishType == "recurring_program" ){
                 $("#recurring_program , .recurring_timezone").show();
+            }
+
+            if( publishType == "schedule_program" ){
+                var modal = document.getElementById("schedule_program_modal");
+                modal.style.display = "block"; 
+                modal.style.background = 'rgba(0, 0, 0, 0.7)';
             }
         });
 
@@ -2071,3 +2143,129 @@ $(document).ready(function(){
     }
 </style>
 
+{{-- Schedule Program --}}
+
+<script>
+
+    $(document).ready(function () {
+
+        $(document).on('click', '.add-program-btn', function () {
+
+            var rowCount = $('.program-fields').length;
+            
+            rowCount++; 
+
+            let newRow = `
+                <tr class="program-fields">
+                    <td>${rowCount}</td> <!-- Dynamic S.No -->
+                    <td>
+                        <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" required/>
+                    </td>
+
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_start_time[]" required/>
+                    </td>
+
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_end_time[]" required />
+                    </td>
+
+                    <td class="d-flex justify-content-center align-items-center p-3">
+                        <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                        <i class="fa fa-minus-circle remove-program-btn mx-2"></i>
+                    </td>
+                </tr>`;
+            $('#program-fields-table tbody').append(newRow);
+        });
+
+        $(document).on('click', '.remove-program-btn', function () {
+            $(this).closest('tr').remove();
+            updateSerialNumbers(); 
+        });
+
+        function updateSerialNumbers() {
+            $('#program-fields-table tbody tr').each(function(index) {
+                $(this).find('td:first').text(index + 1); 
+            });
+            rowCount = $('#program-fields-table tbody tr').length; 
+        }
+
+        $('.close-icon').on('click', function () {
+
+            if (confirm('Are you sure to Close ?') == true) {
+                $('#schedule_program_modal').hide();
+            }
+        });
+
+        $(document).on('click', '#submitModal', function () {
+
+            var isValid = true; 
+            var timeSlots = [];
+
+            $(".is-invalid").removeClass("is-invalid");
+            $(".error-message").remove();
+
+            var scheduler_program_days = $('#scheduler_program_days').val();
+
+            if (!scheduler_program_days || scheduler_program_days.length === 0) {
+                isValid = false;
+                var $schedulerProgramDaysInput = $('#scheduler_program_days');
+                showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
+            }
+
+            $(".program-fields").each(function() {
+
+                var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
+                var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
+                var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
+
+                var title = $titleInput.val();
+                var startTime = $startTimeInput.val();
+                var endTime = $endTimeInput.val();
+                
+                if (!title) {
+                    isValid = false;
+                    showErrorMessage($titleInput, "Program title is required.");
+                }
+                
+                if (!startTime) {
+                    isValid = false;
+                    showErrorMessage($startTimeInput, "Start time is required.");
+                }
+                
+                if (!endTime) {
+                    isValid = false;
+                    showErrorMessage($endTimeInput, "End time is required.");
+                }
+                
+                if (startTime && endTime) {
+                    if (startTime >= endTime) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
+                        showErrorMessage($endTimeInput, "End time must be later than start time.");
+                    }
+
+                    if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
+                        showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
+                    }
+
+                    if (isValid) {
+                        timeSlots.push({ startTime: startTime, endTime: endTime });
+                    }
+                }
+
+            });
+
+            if (isValid) {
+                $("#schedule_program_modal").hide();
+            }
+        });
+    });
+
+    function showErrorMessage($input, message) {
+        var $error = $("<span>").addClass("error-message text-danger").text(message);
+        $input.addClass("is-invalid").after($error);
+    }
+</script>

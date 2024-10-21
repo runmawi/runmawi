@@ -63,6 +63,7 @@ use App\ModeratorSubscription;
 use App\Audio;
 use App\SiteTheme;
 use App\CompressImage;
+use App\StorageSetting;
 
 class CPPSeriesController extends Controller
 {
@@ -75,6 +76,12 @@ class CPPSeriesController extends Controller
     public function __construct()
     {
         $this->enable_moderator_Monetization = SiteTheme::pluck('enable_moderator_Monetization')->first();
+        $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
+        $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
+        $this->Flussonic_Auth_Key  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_Auth_Key;
+        $this->Flussonic_Server_Base_URL  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_site_base_url;
+        $this->Flussonic_Storage_Tag  = $this->Enable_Flussonic_Upload_Details->flussonic_storage_tag;
+
     }
  
     public function index(Request $request)
@@ -139,6 +146,9 @@ class CPPSeriesController extends Controller
         $user = User::where('id', 1)->first();
         $duedate = $user->package_ends;
         $current_date = date('Y-m-d');
+
+        $compress_image_settings = CompressImage::first();
+
         if ($current_date > $duedate)
         {
             $client = new Client();
@@ -171,6 +181,7 @@ class CPPSeriesController extends Controller
                 'category_id' => [],
                 'languages_id' => [],
                 'InappPurchase' => InappPurchase::all() ,
+                'compress_image_settings'  => $compress_image_settings,
 
             );
             return View::make('moderator.cpp.series.create_edit', $data);
@@ -1349,6 +1360,112 @@ class CPPSeriesController extends Controller
         // dd($series_id);
         $episodes = Episode::where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->orderBy('episode_order')
             ->get();
+
+
+        // Bunny Cdn get Videos 
+
+        $storage_settings = StorageSetting::first();
+
+        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+        && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+        && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+
+            $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            
+            if (!$response) {
+                die("Error: " . curl_error($ch));
+            } else {
+                $decodedResponse = json_decode($response, true);
+            
+                if ($decodedResponse === null) {
+                    die("Error decoding JSON response: " . json_last_error_msg());
+                }
+        
+            }
+            curl_close($ch);
+            // dd($decodedResponse);
+
+            
+            $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $videolibraryurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            $videolibrary = json_decode($response, true);
+            curl_close($ch);
+            // dd($videolibrary); ApiKey
+
+        }else{
+            $decodedResponse = [];
+            $videolibrary = [];
+
+        }
+    
+        // $response->getBody();
+
+        if(!empty($storage_settings) && !empty($storage_settings->bunny_cdn_file_linkend_hostname) ){
+            $streamUrl = $storage_settings->bunny_cdn_file_linkend_hostname;
+        }else{
+            $streamUrl = '';
+        }
+
+    $theme_settings = SiteTheme::first();
+    if($theme_settings->enable_video_cipher_upload == 1){
+        $post_route = URL::to('admin/episode/VideoCipheCreate');
+    }else{
+        $post_route = URL::to('admin/episode/create');
+    }
+
+
+    if($this->Enable_Flussonic_Upload == 1){
+        
+        try {
+            $client = new \GuzzleHttp\Client();
+
+            $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}", [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                'Content-Type' => 'application/json', 
+            ]
+        ]);
+    
+        $responseData = json_decode($response->getBody(), true);
+        $FlussonicUploadlibrary =  $responseData['storages'];
+            
+        } catch (RequestException $e) {
+            $FlussonicUploadlibrary = [];
+        }
+    }else{
+        $FlussonicUploadlibrary = [];
+    }
+    $season_name = SeriesSeason::where('id', $season_id)->pluck('series_seasons_name')->first();
+    
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Manage episodes of Season ' . $season_id . ' : ' . $series->title,
             'episodes' => $episodes,
@@ -1361,7 +1478,14 @@ class CPPSeriesController extends Controller
             'settings' => Setting::first() ,
             'InappPurchase' => InappPurchase::all() ,
             'compress_image_settings' => $compress_image_settings,
-
+            'storage_settings' => $storage_settings ,
+            'videolibrary' => $videolibrary ,
+            'streamUrl' => $streamUrl ,
+            'theme_settings' => SiteTheme::first(),
+            'compress_image_settings' => $compress_image_settings,
+            'theme_settings' => $theme_settings ,
+            'season_name'        => $season_name,
+            'FlussonicUploadlibrary' => $FlussonicUploadlibrary ,
         );
 
         return View::make('moderator.cpp.series.season_edit', $data);
@@ -1929,6 +2053,34 @@ class CPPSeriesController extends Controller
         $mp4_url = $data['file'];
         $settings = Setting::first();
 
+
+        $mp4_url = $data['file'];
+
+        $libraryid = $data['UploadlibraryID'];
+        $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
+
+        $storage_settings = StorageSetting::first();
+        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+
+        if($enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                return $this->UploadEpisodeBunnyCDNStream( $storage_settings,$libraryid,$data,$season_id);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }elseif($storage_settings->flussonic_storage == 1){
+
+            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !is_null($FlussonicUploadlibraryID) && !empty($mp4_url)){
+
+                return $this->UploadEpisodeFlussonicStorage(  $storage_settings,$FlussonicUploadlibraryID,$mp4_url,$season_id,$data);
+            }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
+                $value["error"] = 3;
+                return $value ;
+            }
+        }        
+        print_r($storage_settings->flussonic_storage);exit;
+
         if ($pack != "Business" || $pack == "Business" && $settings->transcoding_access == 0)
         {
 
@@ -2475,6 +2627,475 @@ class CPPSeriesController extends Controller
  
     }
     
+
+    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data,$season_id){
+
+        // Bunny Cdn get Videos 
+    
+        $mp4_url = $data['file'];
+        $user = Session::get('user');
+        $user_id = $user->id;
+        $storage_settings = StorageSetting::first();
+    
+        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+        && !empty($storage_settings->bunny_cdn_access_key) ){
+            
+            $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $libraryurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            $librarys = json_decode($response, true);
+            curl_close($ch);
+    
+        }else{
+            $librarys = [];
+    
+        }
+        if(count($librarys) > 0){
+            foreach($librarys as $key => $value){
+                if( $value['Id'] == $libraryid){
+                    $library_id = $value['Id'];
+                    $library_ApiKey = $value['ApiKey']; 
+                    $library_PullZoneId = $value['PullZoneId']; 
+                    break;
+                }else{
+                    $library_id = null;
+                    $library_ApiKey = null; 
+                    $library_PullZoneId = null; 
+                }
+            }
+        }else{
+            $library_id = null;
+            $library_ApiKey = null; 
+            $library_PullZoneId = null; 
+        }
+        
+        if($library_id != null && $library_ApiKey != null){
+    
+            $client = new \GuzzleHttp\Client();
+            
+            $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+                'headers' => [
+                    'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                    'accept' => 'application/json',
+                ],
+            ]);
+    
+            $PullZoneData = json_decode($PullZone->getBody()->getContents());
+    
+                if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                    $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                }else{
+                    $PullZoneURl = null;
+                }    
+            }
+            
+            $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename =  str_replace(' ', '_',$file_name);
+    
+            // Step 1: Create the video entry in the library
+            try {
+                $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
+                    'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                    'headers' => [
+                        'AccessKey' => $library_ApiKey,
+                        'Accept' => 'application/json',
+                    ]
+                ]);
+            
+                $responseData = json_decode($response->getBody(), true);
+                $guid = $responseData['guid'];
+            } catch (RequestException $e) {
+                echo "Error creating video entry: " . $e->getMessage();
+                exit;
+            }
+            
+            // Step 2: Upload the video file
+    
+            try {
+    
+                $context = stream_context_create([
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]);
+                // Fetch video file content using file_get_contents with SSL context
+                $videoData = file_get_contents($mp4_url, false, $context);
+                
+                $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
+                    'headers' => [
+                        'AccessKey' => $library_ApiKey,
+                        'Content-Type' => 'video/mp4' 
+                    ],
+                    'body' => $videoData 
+                ]);
+    
+                $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
+                // echo "<pre>";
+                // echo "Video uploaded successfully: " . $videoUrl;
+                // echo "<pre>";
+                // echo "Video uploaded successfully: " . $guid;
+                // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
+    
+                $responseuploaded = json_decode($response->getBody(), true);
+                $statusCode = $responseuploaded['statusCode'];
+    
+            } catch (RequestException $e) {
+                echo "Error uploading video: " . $e->getMessage();
+                exit;
+            }
+            $value = [];
+            if($statusCode == 200){
+                
+
+                $series_id = $data['series_id'];
+                $season_id = $data['season_id'];
+                    
+                $Episode = new Episode();
+                $Episode->disk = "public";
+                $Episode->title = $file_name;
+                $Episode->series_id = $series_id;
+                $Episode->season_id = $season_id;
+                $Episode->url = $videoUrl;
+                $Episode->type = "bunny_cdn";
+                $Episode->active = 1;
+                $Episode->image = default_vertical_image();
+                $Episode->tv_image = default_horizontal_image();
+                $Episode->player_image = default_horizontal_image();
+                $Episode->user_id = $user_id;
+                $Episode->uploaded_by = 'CPP';
+                $Episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+                $Episode->save();
+
+                $Episode_id = $Episode->id;
+
+
+            
+                $value["success"] = 1;
+                $value["message"] = "Uploaded Successfully!";
+                $value["Episode_id"] = $Episode_id;
+        
+    
+                return $value ;
+            }else{
+                $value["success"] = 2;
+                return $value ;
+            }
+        }
+
+
+
+        
+    public function UploadEpisodeFlussonicStorage($storage_settings,$FlussonicUploadlibraryID,$mp4_url,$season_id,$data)
+    {
+        $user = Session::get('user');
+        $user_id = $user->id;
+
+        $FileName = str_replace(' ', '-', $mp4_url->getClientOriginalName());
+        if($this->Enable_Flussonic_Upload == 1){
+       
+            try {
+                $client = new \GuzzleHttp\Client();
+
+                $response = $client->request('PUT', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$FlussonicUploadlibraryID}/files/{$FileName}", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                    'Content-Type' => 'application/json', 
+                ],
+                'body' => fopen($mp4_url, 'r'), 
+            ]);
+        
+            $responseData = json_decode($response->getBody(), true);
+                
+            $url = "{$this->Flussonic_Server_Base_URL}{$responseData['name']}/index.m3u8";
+            $videoUrl = str_replace('http://', 'https://', $url);
+            $series_id = $data['series_id'];
+            $season_id = $data['season_id'];
+                
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $FileName;
+            $Episode->series_id = $series_id;
+            $Episode->season_id = $season_id;
+            $Episode->url = $videoUrl;
+            $Episode->type = "m3u8_url";
+            $Episode->active = 1;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = $user_id;
+            $Episode->uploaded_by = 'CPP';
+            $Episode->episode_order = Episode::where('season_id',$season_id)->max('episode_order') + 1 ;
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+    
+
+            return $value ;
+   
+
+            } catch (RequestException $e) {
+                $value["success"] = 2;
+                \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+                return $value ;
+            }
+        }else{
+            $value["success"] = 2;
+            \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+            return $value ;
+        }
+
+    }
+
+
+    
+    public function Flussonicepisodelibrary(Request $request)
+    {
+
+        if($this->Enable_Flussonic_Upload == 1){
+       
+            try {
+                $client = new \GuzzleHttp\Client();
+                // http://localhost:8080/streamer/api/v3/vods/{prefix}/storages/{storage_index}/files
+
+                
+                $response = $client->request('GET', "{$this->Flussonic_Server_Base_URL}streamer/api/v3/vods/{$this->Flussonic_Storage_Tag}/storages/{$request->FlussonicepisodelibraryID}/files", [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->Flussonic_Auth_Key, 
+                        'Content-Type' => 'application/json', 
+                    ]
+                ]);
+              
+        
+            $response = json_decode($response->getBody(), true);
+            $url = "{$this->Flussonic_Server_Base_URL}";
+            $StreamURL = str_replace('http://', 'https://', $url);
+
+            $responseData = [
+                'streamvideos' => $response,
+                'StreamURL' => $StreamURL,
+            ];
+        
+            return $responseData;
+
+        }catch (RequestException $e) {
+            $value["success"] = 2;
+            // echo"<pre>";
+            // print_r($e->getMessage());exit;
+            \LogActivity::addVideoLog("Failed Flussonic VIDEO Upload.", $video_id);
+            return $value ;
+        }
+    }
+}
+
+
+
+    
+    public function StreamFlussonicEpisode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+        $user = Session::get('user');
+        $user_id = $user->id;
+        if (!empty($data["stream_flussonic_episode"])) {
+
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $data["stream_flussonic_episode"];
+            $Episode->url = $data["stream_flussonic_episode"];
+            $Episode->series_id = $data["series_id"];
+            $Episode->season_id = $data["season_id"];
+            $Episode->type = "m3u8_url";
+            $Episode->active = 1;
+            $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = $user_id;
+            $Episode->uploaded_by = 'CPP';
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+
+            return $value;
+        }
+    }
+
+
+
+    public function BunnycdnEpisodelibrary(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+           // Bunny Cdn get Episodes 
+                
+           $storage_settings = StorageSetting::first();
+
+           if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+           && !empty($storage_settings->bunny_cdn_hostname) && !empty($storage_settings->bunny_cdn_storage_zone_name) 
+           && !empty($storage_settings->bunny_cdn_ftp_access_key)  ){
+               
+               $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+               
+               $ch = curl_init();
+               
+               $options = array(
+                   CURLOPT_URL => $videolibraryurl,
+                   CURLOPT_RETURNTRANSFER => true,
+                   CURLOPT_HTTPHEADER => array(
+                       "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                       'Content-Type: application/json',
+                   ),
+               );
+               
+               curl_setopt_array($ch, $options);
+               
+               $response = curl_exec($ch);
+               $videolibrary = json_decode($response, true);
+               curl_close($ch);
+               // dd($videolibrary); ApiKey
+
+           }else{
+               $decodedResponse = [];
+               $videolibrary = [];
+
+           }
+
+           if(count($videolibrary) > 0){
+
+                foreach($videolibrary as $key => $value){
+
+
+
+                    if( $value['Id'] == $request->episodelibrary_id){
+
+
+
+                        $videolibrary_id = $value['Id'];
+                        $videolibrary_ApiKey = $value['ApiKey']; 
+                        $videolibrary_PullZoneId = $value['PullZoneId']; 
+                        break;
+                    }else{
+                        $videolibrary_id = null;
+                        $videolibrary_ApiKey = null; 
+                        $videolibrary_PullZoneId = null; 
+                    }
+                }
+         
+
+           }else{
+                $videolibrary_id = null;
+                $videolibrary_ApiKey = null; 
+                $videolibrary_PullZoneId = null; 
+            }
+
+        
+            if($videolibrary_id != null && $videolibrary_ApiKey != null){
+
+                $client = new \GuzzleHttp\Client();
+                // $videolibrary_PullZoneId
+                $client = new \GuzzleHttp\Client();
+                
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $videolibrary_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+
+                    if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
+                        // vz-2117a0a6-f55  https://vz-5c4af3d1-257.b-cdn.net
+                        $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
+                    }else{
+                        $PullZoneURl = null;
+                    }
+                    // dd($PullZoneURl);
+
+                $response = $client->request('GET', 'https://video.bunnycdn.com/library/' . $videolibrary_id . '/videos?page=1&itemsPerPage=100&orderBy=date', [
+                        'headers' => [
+                        'AccessKey' => $videolibrary_ApiKey,
+                        'accept' => 'application/json',
+                    ],
+                ]);
+                $streamvideos = $response->getBody()->getContents();
+                // echo $response->getBody();
+                // exit;
+           
+            }else{
+                $streamvideos = [];
+            }
+
+        // print_r($response);exit;
+            // return $streamvideos;
+            $responseData = [
+                'streamvideos' => $streamvideos,
+                'PullZoneURl' => $PullZoneURl,
+            ];
+        
+            return $responseData;
+        
+    }
+
+    
+    public function StreamBunnyCdnEpisode(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+        $user = Session::get('user');
+        $user_id = $user->id;
+
+        if (!empty($data["stream_bunny_cdn_episode"])) {
+
+            $Episode = new Episode();
+            $Episode->disk = "public";
+            $Episode->title = $data["stream_bunny_cdn_episode"];
+            $Episode->url = $data["stream_bunny_cdn_episode"];
+            $Episode->series_id = $data["series_id"];
+            $Episode->season_id = $data["season_id"];
+            $Episode->type = "bunny_cdn";
+            $Episode->active = 1;
+            $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
+            $Episode->image = default_vertical_image();
+            $Episode->tv_image = default_horizontal_image();
+            $Episode->player_image = default_horizontal_image();
+            $Episode->user_id = $user_id;
+            $Episode->uploaded_by = 'CPP';
+            $Episode->save();
+
+            $Episode_id = $Episode->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["Episode_id"] = $Episode_id;
+
+            return $value;
+        }
+    }
 
 }
 

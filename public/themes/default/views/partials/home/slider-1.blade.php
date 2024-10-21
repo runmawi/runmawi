@@ -57,7 +57,7 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h2 class="text-white" style="color: var(--iq-white) !important;">
+                                <h2>
                                     {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
                                 </h2>
                             @endif
@@ -106,7 +106,7 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-5 col-md-12">
                             <div style="width: 100%;" >
-                            <h2 class="slider-text title text-uppercase" style="color: var(--iq-white) !important;">
+                            <h2 class="slider-text title text-uppercase">
                                 {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
                             </h2>
                             </div>
@@ -158,7 +158,7 @@
 {{-- Tv-shows Episode Slider  --}}
 
 @if (!empty($Episode_sliders) && $Episode_sliders->isNotEmpty())
-    @foreach ($Episode_sliders as $Episode_slider)
+    @foreach ($Episode_sliders as $key => $Episode_slider)
 
     <?php
         $series_trailer = App\Series::Select('series.*', 'series_seasons.trailer', 'series_seasons.trailer_type')
@@ -176,12 +176,25 @@
                 <div class="row align-items-center bl h-100">
                     <div class="col-xl-6 col-lg-6 col-md-12">
 
-                        <h2 class="text-white" style="color: var(--iq-white) !important;">
+                        <h2 class="text-white">
                             {{ strlen($Episode_slider->title) > 15 ? substr($Episode_slider->title, 0, 50) . '...' : $Episode_slider->title }}
                         </h2>
 
-                        <div style="overflow: hidden !important; text-overflow: ellipsis !important; margin-bottom: 20px; color:#fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            {{ __(strip_tags(html_entity_decode($Episode_slider->episode_description)))}}
+                        <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
+                            @php
+                                $details = __(strip_tags(html_entity_decode($Episode_slider->episode_description)));
+                            @endphp
+
+                            <div class="video-banner">
+                                <p class="desc" id="epidetails-{{ $key }}" style="max-height: 100px; overflow: hidden;">
+                                    {{ $details }}
+                                </p>
+
+                                @if(strlen($details) > 300)
+                                    <button class="des-more-less-btns text-primary p-0" id="read-more-episode-{{ $key }}" onclick="episodeReadMore({{ $key }})">{{ __('Read More') }}</button>
+                                    <button class="des-more-less-btns text-primary p-0" id="read-less-episode-{{ $key }}" onclick="episodeReadMore({{ $key }})" style="display: none;">{{ __('Read Less') }}</button>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-evenly align-items-center r-mb-23">
@@ -270,7 +283,7 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
 
-                            <h2 class="text-white mb-2" style="color: var(--iq-white) !important;">
+                            <h2 class="text-white mb-2" >
                                 {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
                             </h2>
                             <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
@@ -314,7 +327,7 @@
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
-                            <h2 class="text-white" style="color: var(--iq-white) !important;">
+                            <h2 class="text-white">
                                 {{ strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 50) . '...' : $live_event_banner->title }}
                             </h2>
 
@@ -368,7 +381,7 @@
                                     $title = str_replace('<br>',' ',$videos->title);
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
-                                <h2 class="text-white" style="color: var(--iq-white) !important;">
+                                <h2 class="">
                                     {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
                                 </h2>
                             @endif
@@ -409,7 +422,7 @@
 
 
 <!-- For Lazyloading the slider bg image -->
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         var lazyBackgrounds = [].slice.call(document.querySelectorAll(".lazy-bg"));
 
@@ -417,14 +430,28 @@
             let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        let computedStyle = window.getComputedStyle(entry.target);
-                        let bg = computedStyle.getPropertyValue('background-image');
+                        let bg = entry.target.style.backgroundImage;
 
                         if (!bg || bg === 'none') {
-                            let newBg = entry.target.style.backgroundImage;
-                            entry.target.style.backgroundImage = newBg;
+                            let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                            
+                            if (isSafari) {
+                                bg = entry.target.style.backgroundImage;
+                            } else {
+                                try {
+                                    bg = entry.target.currentStyle 
+                                        ? entry.target.currentStyle.backgroundImage 
+                                        : entry.target.style.backgroundImage;
+                                } catch (e) {
+                                    console.log("Could not get computed style in Safari: ", e);
+                                }
+                            }
                         }
-                        
+
+                        if (bg && bg !== 'none') {
+                            entry.target.style.backgroundImage = bg;
+                        }
+
                         entry.target.classList.remove('lazy-bg');
                         lazyBackgroundObserver.unobserve(entry.target);
                     }
@@ -439,7 +466,7 @@
             });
         }
     });
-</script>
+</script> --}}
 
 <style>
     .s-bg-1::before {

@@ -2966,7 +2966,7 @@ class AdminSeriesController extends Controller
                 return $value ;
             }
         }elseif($storage_settings->flussonic_storage == 1){
-            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !empty($FlussonicUploadlibraryID) && !empty($mp4_url)){
+            if(!empty($storage_settings) && $storage_settings->flussonic_storage == 1 && !is_null($FlussonicUploadlibraryID) && !empty($mp4_url)){
                 return $this->UploadEpisodeFlussonicStorage(  $storage_settings,$FlussonicUploadlibraryID,$mp4_url,$season_id,$data);
             }elseif(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && empty($libraryid)){
                 $value["error"] = 3;

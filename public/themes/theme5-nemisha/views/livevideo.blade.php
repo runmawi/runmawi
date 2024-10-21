@@ -89,9 +89,7 @@
         overflow: hidden;
         outline: 0;
     }
-</style>
 
-<style>
     .vjs-skin-hotdog-stand {
         color: #FF0000;
     }
@@ -126,6 +124,7 @@
         height: calc(100vh - 80px) !important;
     }
 </style>
+
 
 <input type="hidden" name="video_id" id="video_id" value="{{ $video->id }}">
 
@@ -513,6 +512,9 @@ if(empty($new_date)){
                 </div>
             </div>
 
+                {{-- Radio-Station --}}
+
+            {!! Theme::uses('theme5-nemisha')->load('public/themes/theme5-nemisha/views/livevideo-schedule-epg',  ['Livestream_details' => $Livestream_details , ])->content() !!}
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -712,8 +714,9 @@ if(empty($new_date)){
     });
 </script>
 
-<!-- RESIZING FLUID VIDEO for VIDEO JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- RESIZING FLUID VIDEO for VIDEO JS -->
 <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 
 

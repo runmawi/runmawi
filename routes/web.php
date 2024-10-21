@@ -1695,6 +1695,14 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
     // Route::get('/Homeone',  'ModeratorsLoginController@Home');
 
+
+    Route::post('/upload_bunny_cdn_video', 'CPPAdminVideosController@UploadBunnyCDNVideo');
+    Route::post('/bunnycdn_videolibrary', 'CPPAdminVideosController@BunnycdnVideolibrary');
+    Route::post('/stream_bunny_cdn_video', 'CPPAdminVideosController@StreamBunnyCdnVideo');
+
+    Route::post('/FlussonicUploadlibrary', 'CPPAdminVideosController@FlussonicUploadlibrary');
+    Route::post('/Flussonic_Storage_UploadURL', 'CPPAdminVideosController@Flussonic_Storage_UploadURL');
+
     // CPP Live Event for artist
     Route::get('/live-event-artist', 'CPPLiveEventArtist@CPPindex')->name('cpp_live_event_artist');
 
@@ -1808,7 +1816,12 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::get('/season/edit/{season_id}', 'CPPSeriesController@Edit_season');
     Route::post('/season/update', 'CPPSeriesController@Update_season');
     Route::get('/season/delete/{id}', 'CPPSeriesController@destroy_season');
-
+    Route::post('/bunnycdn_episodelibrary', 'CPPSeriesController@BunnycdnEpisodelibrary');
+    Route::post('/stream_bunny_cdn_episode', 'CPPSeriesController@StreamBunnyCdnEpisode');
+    Route::Post('/Series_Season_order', 'CPPSeriesController@Series_Season_order');
+    Route::post('/Flussonicepisodelibrary', 'CPPSeriesController@Flussonicepisodelibrary');
+    Route::post('/stream_Flussonic_episode', 'CPPSeriesController@StreamFlussonicEpisode');
+    
     //CPP Series Episode Manage
 
     Route::post('/episode/create', 'CPPSeriesController@create_episode');
@@ -1884,6 +1897,15 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
 
     // Route::get('episode/{episode_name}', 'ChannelSeriesController@PlayEpisode');
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
+
+    
+    Route::post('/upload_bunny_cdn_video', 'ChannelVideosController@UploadBunnyCDNVideo');
+    Route::post('/bunnycdn_videolibrary', 'ChannelVideosController@BunnycdnVideolibrary');
+    Route::post('/stream_bunny_cdn_video', 'ChannelVideosController@StreamBunnyCdnVideo');
+
+    Route::post('/FlussonicUploadlibrary', 'ChannelVideosController@FlussonicUploadlibrary');
+    Route::post('/Flussonic_Storage_UploadURL', 'ChannelVideosController@Flussonic_Storage_UploadURL');
+
 
     // Channel Live Event for artist
     Route::get('/live-event-artist', 'ChannelLiveEventArtist@index')->name('channel_live_event_artist');
@@ -2022,7 +2044,12 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::get('/season/edit/{season_id}', 'ChannelSeriesController@Edit_season');
     Route::post('/season/update', 'ChannelSeriesController@Update_season');
     Route::get('/season/delete/{id}', 'ChannelSeriesController@destroy_season');
-
+    Route::post('/bunnycdn_episodelibrary', 'ChannelSeriesController@BunnycdnEpisodelibrary');
+    Route::post('/stream_bunny_cdn_episode', 'ChannelSeriesController@StreamBunnyCdnEpisode');
+    Route::Post('/Series_Season_order', 'ChannelSeriesController@Series_Season_order');
+    Route::post('/Flussonicepisodelibrary', 'ChannelSeriesController@Flussonicepisodelibrary');
+    Route::post('/stream_Flussonic_episode', 'ChannelSeriesController@StreamFlussonicEpisode');
+    
     //Channel Series Episode Manage
 
     Route::post('/episode/create', 'ChannelSeriesController@create_episode');
@@ -2876,6 +2903,8 @@ Route::post('videojs_live_Like', 'LiveStreamController@videojs_live_Like')->name
 
 Route::post('videojs_live_dislike', 'LiveStreamController@videojs_live_disLike')->name('videojs.live.dislike');
 
+Route::get('/livestream-fetch-timeline', 'LiveStreamController@fetchTimeline')->name('livestream-fetch-timeline');
+
 Route::get('rentals', 'MoviesHomePageController@index')->name('videos.Movies-Page');
 
 Route::get('/channel-video-scheduler/{slug}', 'ChannelVideoSchedulerController@index')->name('Front-End.Channel-video-scheduler');
@@ -2947,8 +2976,6 @@ Route::get('admin/ugc_videos_index', 'UGCController@UGCvideosIndex')->name('ugcv
 Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
 
-
-Route::get('radio-station', 'AdminLiveStreamController@design');
 
 // Runmawi Producer
 

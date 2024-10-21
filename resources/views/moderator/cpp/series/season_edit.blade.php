@@ -80,6 +80,33 @@
 	font-size: 14px;
     color: red;
 }
+
+.dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;color:#000;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+    .dz-cancel {color: #FF0000;background: none;border: none;}
+    .dz-cancel:hover {text-decoration: underline;}
+    .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
+    .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+        width: 30px;
+        height: 30px;
+    }
+    .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+        top: 0;
+        left: 0;
+        margin-left: 0;
+        margin-top: 0;
+        width: 20px;
+    }
+    .dz-success-mark path {
+        fill: #008000;
+    }
+    .dz-error-mark g {
+        fill: #FF0000;
+    }
+
+
 </style>
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -104,16 +131,111 @@
             </div>
             <div class="clear"></div>
             <div id="episode_uploads">
-                <div class="content file">
+
+            @if(Enable_Flussonic_Upload() == 1)
+                    
+                    <label for="flussonic_upload_video">Flussonic Library:</label>
+                    <!-- FlussonicUploadlibraryID -->
+                    <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                                <option value="">{{ __('Choose Stream Library from Flussonic') }}</option>
+                                @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                @endforeach
+                        </select>  
+    
+                        <br>
+                    @else
+                    <input type="hidden" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" value="">
+                    @endif
+    
+                    @if(@$theme_settings->enable_bunny_cdn == 1)
+    
+                    <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                        <!-- videolibrary -->
+                        <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                                <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                @foreach($videolibrary as $library)
+                                <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                @endforeach
+                        </select> 
+                        @else
+                            <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                            @endif 
+                        <br>
+
+
+                <div class="content file UploadEnable">
                     <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
                     <!-- Dropzone -->
                     <form action="{{URL::to('cpp/episode_upload')}}" method="post" class="dropzone"></form>
                     <p class="p1">Trailers Can Be Uploaded From Video Edit Screen</p>
                 </div>
             </div>
+
+                    <!-- BunnyCDN Video -->        
+                    <div id="bunnycdnvideo" style="">
+                <div class="new-audio-file mt-3">
+                <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                <!-- videolibrary -->
+                <select class="phselect form-control" name="episodelibrary" id="episodelibrary" >
+                            <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                            @foreach($videolibrary as $library)
+                            <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                            @endforeach
+                    </select>  
+                </div>
+                    
+                <div class="new-audio-file mt-3">
+                <select class="form-control" id="stream_bunny_cdn_episode" name="stream_bunny_cdn_episode">
+                    <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                </select>
+                </div>
+                <div class="new-audio-file mt-3">
+                <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
+                </div>
+            </div>
+                            <!-- Flussonic Video -->        
+            <div id="flussonicvideo" style="">
+                <div class="new-audio-file mt-3">
+                <label for="stream_flussonic_episode">Flussonic URL:</label>
+                <!-- FlussonicepisodelibraryID -->
+                <select class="phselect form-control" name="FlussonicepisodelibraryID" id="FlussonicepisodelibraryID" >
+                        <option>{{ __('Choose Stream Library from Flussonic Path') }}</option>
+                        @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                            <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                        @endforeach
+                </select>  
+                </div>
+                    
+                <div class="new-audio-file mt-3">
+                <select class="form-control" id="stream_flussonic_episode" name="stream_flussonic_episode">
+                    <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                </select>
+                </div>
+                <div class="new-audio-file mt-3">
+                <button class="btn btn-primary"  id="submit_flussonic">Submit</button>
+                </div>
+            </div>
+
             <div class="text-center" id="buttonNext" style="margin-top: 30px;">
                 <input type="button" id="Next" value="Proceed to Next Step" class="btn btn-primary" />
             </div>
+
+            
+            <div class="col-md-12 text-center">
+                <div id="optionradio"  >
+                    <input type="radio" class="text-black" value="episodeupload" id="episodeupload" name="episodefile" checked="checked"> Episode Upload &nbsp;&nbsp;&nbsp;
+                    @if(@$theme_settings->enable_bunny_cdn == 1)
+                        <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="episodefile"> Bunny CDN Episodes              
+                    @endif
+                    
+                  @if(Enable_Flussonic_Upload() == 1)
+                     <input type="radio" class="text-black" value="flussonic_storage_video"  id="flussonic_storage_video" name="videofile"> Flussonic Videos              
+                  @endif
+                  
+                </div>
+            </div>
+
 
             <?php //dd($season_id); ?>
 
@@ -702,6 +824,32 @@
     });
     tagInput1.addData([]);
 
+    var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+         var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
+            $('.UploadEnable').hide();
+         }
+
+            $('#UploadlibraryID').change(function(){
+               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+               // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
+
+            $('#FlussonicUploadlibraryID').change(function(){
+               if($('#FlussonicUploadlibraryID').val() != null && $('#FlussonicUploadlibraryID').val() != ''){
+               // alert($('#FlussonicUploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
+
+
         // $("#intro_start_time").datetimepicker({
         //     format: "hh:mm ",
         // });
@@ -724,6 +872,165 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
 
+$('#episode_uploads').show();
+            $('#bunnycdnvideo').hide();
+             $('#flussonicvideo').hide();
+             $('#episodeupload').click(function(){
+                $('#episode_uploads').show();
+                $('#bunnycdnvideo').hide();
+                $('#flussonicvideo').hide();
+                // $("#episode_uploads").addClass('collapse');
+                $("#bunny_cdn_video").removeClass('collapse');         
+                $("#flussonic_storage_video").removeClass('collapse');         
+            })
+            
+            $('#bunny_cdn_video').click(function(){
+
+                $('#episode_uploads').hide();
+                $('#bunnycdnvideo').show();
+                $('#flussonicvideo').hide();
+                // $("#episode_uploads").removeClass('collapse');         
+                $("#flussonic_storage_video").removeClass('collapse');
+
+            })
+
+            $('#flussonic_storage_video').click(function(){
+
+                $('#episode_uploads').hide();
+                $('#bunnycdnvideo').hide();
+                $('#flussonicvideo').show();
+                $("#episode_uploads").removeClass('collapse');         
+                $("#bunny_cdn_video").removeClass('collapse');
+
+            })
+
+
+
+   $(document).ready(function(){
+            
+         $(document).ready(function() {
+            $('#stream_bunny_cdn_episode').select2();
+         });
+
+         $(document).ready(function() {
+            $('#stream_flussonic_episode').select2();
+         });
+
+
+         $('#FlussonicepisodelibraryID').on('change', function() {
+
+            var FlussonicepisodelibraryID = this.value;
+            // alert(FlussonicepisodelibraryID);
+                  $("#stream_flussonic_episode").html('');
+                     $.ajax({
+                     url:"{{url::to('cpp/Flussonicepisodelibrary')}}",
+                     type: "POST",
+                     data: {
+                        FlussonicepisodelibraryID: FlussonicepisodelibraryID,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+
+                        var streamvideos = result.streamvideos.files;
+                        console.log(result.streamvideos.files); 
+                        var StreamURL = result.StreamURL;
+
+                        $('#stream_flussonic_episode').html('<option value="">Choose Episodes from Flussonic</option>'); 
+
+                        $.each(streamvideos, function(key, value) {
+                                var videoUrl = StreamURL + value.name + '/index.m3u8';
+                                // console.log(videoUrl); 
+                            $("#stream_flussonic_episode").append('<option value="' + videoUrl + '">' + value.name + '</option>');
+                        });
+                     }
+                });
+
+            }); 
+
+
+            $('#episodelibrary').on('change', function() {
+                  
+                  var episodelibrary_id = this.value;
+                  $("#stream_bunny_cdn_episode").html('');
+                     $.ajax({
+                     url:"{{url::to('cpp/bunnycdn_episodelibrary')}}",
+                     type: "POST",
+                     data: {
+                     episodelibrary_id: episodelibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
+
+                  // console.log(decodedStreamVideos);
+
+
+                  $('#stream_bunny_cdn_episode').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
+                        console.log(value.title);
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#stream_bunny_cdn_episode").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                        // $("#stream_bunny_cdn_episode").append('<option value="'+videoUrl+'">'+value.title+'</option>');
+                     });
+
+                     }
+                });
+
+            }); 
+
+
+
+      $('#submit_bunny_cdn').click(function(){
+            $.ajax({
+                url: '{{ URL::to('/cpp/stream_bunny_cdn_episode') }}',
+                type: "post",
+                 data: {
+                        _token: '{{ csrf_token() }}',
+                        stream_bunny_cdn_episode: $('#stream_bunny_cdn_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
+        
+                    },        success: function(value){
+                        console.log(value);
+                                       // console.log(value);
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.Episode_id);
+            
+                    }
+                });
+            })
+
+
+            
+        $('#submit_flussonic').click(function(){
+            $.ajax({
+                url: '{{ URL::to('/cpp/stream_Flussonic_episode') }}',
+                type: "post",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        stream_flussonic_episode: $('#stream_flussonic_episode').val(),
+                        series_id : '<?= $series->id ?>' ,
+                        season_id : '<?= $season_id ?>' ,
+        
+                    },        success: function(value){
+                        $("#buttonNext").show();
+                        $("#episode_id").val(value.Episode_id);
+            
+                    }
+                });
+            })
+
+
+
+        });
+        
         // Image upload dimention validation
 		// $.validator.addMethod('dimention', function(value, element, param) {
         //     if(element.files.length == 0){
@@ -994,11 +1301,28 @@
         var myDropzone = new Dropzone(".dropzone", {
             //   maxFilesize: 900,  // 3 mb
             maxFilesize: 15000,
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+        });
+        myDropzone.on("uploadprogress", function(file, progress) {
+            var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+            
+            if (progressElement) {
+                progressElement.textContent = Math.round(progress) + '%';
+            }
+
+            if (Math.round(progress) === 100) {
+                var cancelButton = file.previewElement.querySelector('.dz-cancel');
+                if (cancelButton) {
+                    cancelButton.style.opacity = '0';
+                }
+            }
         });
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append('series_id',series_id);
             formData.append('season_id',season_id);
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+            formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
+
             formData.append("_token", CSRF_TOKEN);
             // console.log(value)
             this.on("success", function (file, value) {

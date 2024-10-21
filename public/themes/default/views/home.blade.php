@@ -56,33 +56,33 @@ $homepage_array_data = [
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-var lazyloadImages = document.querySelectorAll("img.lazy");
-var lazyloadThrottleTimeout;
+   var lazyloadImages = document.querySelectorAll("img.lazy");
+   var lazyloadThrottleTimeout;
 
-function lazyload () {
-if(lazyloadThrottleTimeout) {
-clearTimeout(lazyloadThrottleTimeout);
-}
+   function lazyload() {
+      if (lazyloadThrottleTimeout) {
+         clearTimeout(lazyloadThrottleTimeout);
+      }
 
-lazyloadThrottleTimeout = setTimeout(function() {
- var scrollTop = window.pageYOffset;
- lazyloadImages.forEach(function(img) {
-     if(img.offsetTop < (window.innerHeight + scrollTop)) {
-       img.src = img.dataset.src;
-       img.classList.remove('lazy');
-     }
- });
- if(lazyloadImages.length == 0) {
-   document.removeEventListener("scroll", lazyload);
-   window.removeEventListener("resize", lazyload);
-   window.removeEventListener("orientationChange", lazyload);
- }
-}, 20);
-}
+      lazyloadThrottleTimeout = setTimeout(function() {
+         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+         lazyloadImages.forEach(function(img) {
+               if (img.offsetTop < (document.documentElement.clientHeight + scrollTop)) {
+                  img.src = img.dataset.src;
+                  img.classList.remove('lazy');
+               }
+         });
+         if (lazyloadImages.length == 0) {
+               document.removeEventListener("scroll", lazyload);
+               document.body.removeEventListener("resize", lazyload);
+               globalThis.matchMedia("(orientation: portrait)").removeListener(lazyload);
+         }
+      }, 20);
+   }
 
-document.addEventListener("scroll", lazyload);
-window.addEventListener("resize", lazyload);
-window.addEventListener("orientationChange", lazyload);
+   document.addEventListener("scroll", lazyload);
+   document.body.addEventListener("resize", lazyload);
+   globalThis.matchMedia("(orientation: portrait)").addListener(lazyload);
 });
 
 //  family & Kids Mode Restriction
@@ -157,29 +157,47 @@ $(".home-search").hide();
 
 <script>
    function toggleReadMore(key) {
-    const description = document.getElementById('description-' + key);
-    const readMoreBtn = document.getElementById('read-more-btn-' + key);
-    const readLessBtn = document.getElementById('read-less-btn-' + key);
+      const description = document.getElementById('description-' + key);
+      const readMoreBtn = document.getElementById('read-more-btn-' + key);
+      const readLessBtn = document.getElementById('read-less-btn-' + key);
 
-    if (readMoreBtn.style.display === 'none') {
-        readMoreBtn.style.display = 'inline';
-        readLessBtn.style.display = 'none';
-        description.style.maxHeight = '100px';
-        if (window.innerWidth <= 500) {
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+         var width = globalThis.innerWidth || document.documentElement.clientWidth;
+         if (width <= 500) {
             description.style.maxHeight = '65px';
-        }
-    } else {
+         }
+      } else {
         readMoreBtn.style.display = 'none';
         readLessBtn.style.display = 'inline';
         description.style.maxHeight = 'none';
-    }
-}
+      }
+   }
 
    // series slider read more option
    function detailsReadMore(key) {
       const description = document.getElementById('details-' + key);
       const readMoreBtn = document.getElementById('read-more-details-' + key);
       const readLessBtn = document.getElementById('read-less-details-' + key);
+
+      if (readMoreBtn.style.display === 'none') {
+         readMoreBtn.style.display = 'inline';
+         readLessBtn.style.display = 'none';
+         description.style.maxHeight = '100px';
+      } else {
+         readMoreBtn.style.display = 'none';
+         readLessBtn.style.display = 'inline';
+         description.style.maxHeight = 'none';
+      }
+   }
+
+   // episode slider read more option
+   function episodeReadMore(key) {
+      const description = document.getElementById('epidetails-' + key);
+      const readMoreBtn = document.getElementById('read-more-episode-' + key);
+      const readLessBtn = document.getElementById('read-less-episode-' + key);
 
       if (readMoreBtn.style.display === 'none') {
          readMoreBtn.style.display = 'inline';
@@ -209,29 +227,29 @@ $(".home-search").hide();
       }
    }
 
-    var isFetching = false;
-    var scrollFetch;
+   var isFetching = false;
+   var scrollFetch;
 
-    $(window).scroll(function () {
-        clearTimeout(scrollFetch);
+   $(document).scroll(function () {
+      clearTimeout(scrollFetch);
 
-        scrollFetch = setTimeout(function () {
-            var page_url = $("#home_sections").attr('next-page-url');
-            console.log("scrolled");
-            <?php if( ($order_settings->total()) != ($order_settings->perPage()) ){?>
-               if (page_url != null && !isFetching) {
-                  isFetching = true;
-                  $.ajax({
-                     url: page_url,
-                     success: function (data) {
-                           $("#home_sections").append(data.view);
-                           $("#home_sections").attr('next-page-url', data.url);
-                     },
-                  });
-               }
-            <?php } ?>
-        }, 100);
-    });
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         console.log("scrolled");
+         <?php if( ($order_settings->total()) != ($order_settings->perPage()) ){?>
+            if (page_url != null && !isFetching) {
+               isFetching = true;
+               $.ajax({
+                  url: page_url,
+                  success: function (data) {
+                        $("#home_sections").append(data.view);
+                        $("#home_sections").attr('next-page-url', data.url);
+                  },
+               });
+            }
+         <?php } ?>
+      }, 100);
+   });
 </script>
 
 <style>

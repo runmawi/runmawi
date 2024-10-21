@@ -176,6 +176,52 @@
                                 </div>
                             </div> 
 
+                                                  <!-- BunnyCDN Video -->        
+                  <div id="bunnycdnvideo" style="">
+                     <div class="new-audio-file mt-3">
+                        <label for="bunny_cdn_linked_video">BunnyCDN URL:</label>
+                        <!-- videolibrary -->
+                        <select class="phselect form-control" name="videolibrary" id="videolibrary" >
+                                 <option>{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                    @foreach($videolibrary as $library)
+                                    <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                    @endforeach
+                           </select>  
+                     </div>
+                           
+                     <div class="new-audio-file mt-3">
+                        <select class="form-control" id="bunny_cdn_linked_video" name="bunny_cdn_linked_video">
+                           <!-- <option selected  value="0">Choose Videos from Bunny CDN</option> -->
+                        </select>
+                     </div>
+                     <div class="new-audio-file mt-3">
+                        <button class="btn btn-primary"  id="submit_bunny_cdn">Submit</button>
+                     </div>
+                  </div>
+
+
+                                             <!-- Flussonic Video -->        
+                                <div id="flussonicstoragevideo" style="">
+                                    <div class="new-audio-file mt-3">
+                                        <label for="Flussonic_linked_video">Flussonic Upload Path:</label>
+                                        <!-- FlussonicUploadlibrary -->
+                                        <select class="phselect form-control" name="FlussonicUploadlibrary" id="FlussonicUploadlibrary" >
+                                                <option>{{ __('Choose Stream Library from Flussonic Path') }}</option>
+                                                    @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                                        <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                                    @endforeach
+                                        </select>  
+                                    </div>
+                                        
+                                    <div class="new-audio-file mt-3">
+                                        <select class="form-control" id="Flussonic_linked_video" name="Flussonic_linked_video">
+                                        </select>
+                                    </div>
+                                    <div class="new-audio-file mt-3">
+                                        <button class="btn btn-primary"  id="submit_Flussonic_storage">Submit</button>
+                                    </div>
+                                </div>
+                                
                             <!-- MP4 Video -->        
                             <div id="video_mp4" style="">
                                 <div class="new-audio-file mt-3" >
@@ -186,7 +232,40 @@
 
                             <!-- Video upload -->        
                             <div id="video_upload" style="">
-                            <div class='content file'>
+
+                            @if(Enable_Flussonic_Upload() == 1)
+                        
+                                    <label for="flussonic_upload_video">Flussonic Library:</label>
+                                    <!-- FlussonicUploadlibraryID -->
+                                    <select class="phselect form-control" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" >
+                                            <option value="">{{ __('Choose Stream Library from Flussonic') }}</option>
+                                                @foreach($FlussonicUploadlibrary as $key => $Uploadlibrary)
+                                                <option value="{{  @$key }}" data-FlussonicUploadlibraryID-key="{{ @$Uploadlibrary['url'] }}">{{ @$Uploadlibrary['url'] }}</option>
+                                                @endforeach
+                                    </select>  
+
+                                    <br>
+                                @else
+                                    <input type="hidden" name="FlussonicUploadlibraryID" id="FlussonicUploadlibraryID" value="">
+                                @endif
+
+                                @if(@$theme_settings->enable_bunny_cdn == 1)
+                                    
+                                    <label for="bunny_cdn_upload_video">BunnyCDN Library:</label>
+                                    <!-- UploadlibraryID -->
+                                    <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                                            <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                                @foreach($videolibrary as $library)
+                                                <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                                @endforeach
+                                    </select>  
+
+                                    <br>
+                                @else
+                                    <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                                @endif
+
+                            <div class='content file UploadEnable'>
                                     <h4 class="card-title">Upload Full Video Here</h4>
                                     <!-- Dropzone -->
                                     <form action="{{URL::to('/channel/uploadFile')}}" method= "post" class='dropzone' ></form> 
@@ -208,7 +287,15 @@
                                 <input type="radio" class="text-black" value="videoupload" id="videoupload" name="videofile" checked="checked"> Video Upload &nbsp;&nbsp;&nbsp;
                                 <input type="radio" class="text-black" value="m3u8"  id="m3u8" name="videofile">m3u8 Url &nbsp;&nbsp;&nbsp;
                                 <input type="radio" class="text-black" value="videomp4"  id="videomp4" name="videofile"> Video mp4 &nbsp;&nbsp;&nbsp;
-                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code              
+                                <input type="radio" class="text-black" value="embed_video"  id="embed_video" name="videofile"> Embed Code         
+                                @if(@$theme_settings->enable_bunny_cdn == 1)
+                                    <input type="radio" class="text-black" value="bunny_cdn_video"  id="bunny_cdn_video" name="videofile"> Bunny CDN Videos              
+                                @endif
+
+                                @if(Enable_Flussonic_Upload() == 1)
+                                    <input type="radio" class="text-black" value="flussonic_storage_video"  id="flussonic_storage_video" name="videofile"> Flussonic Videos              
+                                @endif
+     
                         </div>
                     </div>
             </div>
@@ -220,64 +307,221 @@
 <script>
    
 $(document).ready(function(){
-	$('#video_upload').show();
-	$('#video_mp4').hide();
-	$('#embedvideo').hide();
-	$('#m3u8_url').hide();
+
+    var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+         var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+
+         if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
+            $('.UploadEnable').hide();
+         }
+
+            $('#UploadlibraryID').change(function(){
+               if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+               // alert($('#UploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
 
 
+            $('#FlussonicUploadlibraryID').change(function(){
+               if($('#FlussonicUploadlibraryID').val() != null && $('#FlussonicUploadlibraryID').val() != ''){
+               // alert($('#FlussonicUploadlibraryID').val());
+                  $('.UploadEnable').show();
+               }else{
+                  $('.UploadEnable').hide();
+               }
+            });
 
-$('#videoupload').click(function(){
-	$('#video_upload').show();
-	$('#video_mp4').hide();
-	$('#embedvideo').hide();
-	$('#m3u8_url').hide();
+         $(document).ready(function() {
+            $('#bunny_cdn_linked_video').select2();
+         });
 
-	$("#video_upload").addClass('collapse');
-	$("#video_mp4").removeClass('collapse');
-	$("#embed_video").removeClass('collapse');
-	$("#m3u8").removeClass('m3u8');
+         $(document).ready(function() {
+            $('#Flussonic_linked_video').select2();
+         });
 
-
-})
-$('#videomp4').click(function(){
-	$('#video_upload').hide();
-	$('#video_mp4').show();
-	$('#embedvideo').hide();
-	$('#m3u8_url').hide();
-
-	$("#video_upload").removeClass('collapse');
-	$("#video_mp4").addClass('collapse');
-	$("#embed_video").removeClass('collapse');
-	$("#m3u8").removeClass('m3u8');
+         $(document).ready(function(){
 
 
-})
-$('#embed_video').click(function(){
-	$('#video_upload').hide();
-	$('#video_mp4').hide();
-	$('#embedvideo').show();
-	$('#m3u8_url').hide();
+            $('#FlussonicUploadlibrary').on('change', function() {
+                  
+                  var FlussonicUploadlibraryID = this.value;
+                  $("#Flussonic_linked_video").html('');
+                     $.ajax({
+                     url:"{{url::to('channel/FlussonicUploadlibrary')}}",
+                     type: "POST",
+                     data: {
+                     FlussonicUploadlibraryID: FlussonicUploadlibraryID,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        var streamvideos = result.streamvideos.files;
+                        console.log(result.streamvideos.files); 
+                        var StreamURL = result.StreamURL;
 
-	$("#video_upload").removeClass('collapse');
-	$("#video_mp4").removeClass('collapse');
-	$("#embed_video").addClass('collapse');
-	$("#m3u8").removeClass('m3u8');
+                  $('#Flussonic_linked_video').html('<option value="">Choose Videos from Flussonic</option>'); 
+
+                     $.each(streamvideos, function(key, value) {
+                           var videoUrl = StreamURL + value.name + '/index.m3u8';
+                           // console.log(videoUrl); 
+                           $("#Flussonic_linked_video").append('<option value="' + videoUrl + '">' + value.name + '</option>');
+                        });
+                     }
+                  });
+
+               }); 
 
 
-})
-$('#m3u8').click(function(){
-	$('#video_upload').hide();
-	$('#video_mp4').hide();
-	$('#embedvideo').hide();
-	$('#m3u8_url').show();
-	$("#video_upload").removeClass('collapse');
-	$("#video_mp4").removeClass('collapse');
-	$("#embed_video").removeClass('collapse');
-	$("#m3u8").addClass('m3u8');
+            $('#videolibrary').on('change', function() {
+                  
+                  var videolibrary_id = this.value;
+                  $("#bunny_cdn_linked_video").html('');
+                     $.ajax({
+                     url:"{{url::to('channel/bunnycdn_videolibrary')}}",
+                     type: "POST",
+                     data: {
+                     videolibrary_id: videolibrary_id,
+                     _token: '{{csrf_token()}}' 
+                     },
+                     dataType : 'json',
+                     success: function(result){
+                        // alert();
+                  // var streamUrl = '{{$streamUrl}}' ;
+                  var streamvideos = result.streamvideos;
+                  var PullZoneURl = result.PullZoneURl;
+                  var decodedStreamVideos = JSON.parse(streamvideos);
+
+                  // console.log(decodedStreamVideos);
 
 
-})
+                  $('#bunny_cdn_linked_video').html('<option value="">Choose Videos from Bunny CDN</option>'); 
+
+                     $.each(decodedStreamVideos.items, function(key, value) {
+                        console.log(value.title);
+                        var videoUrl = PullZoneURl + '/' + value.guid + '/playlist.m3u8';
+                        $("#bunny_cdn_linked_video").append('<option value="' + videoUrl + '">' + value.title + '</option>');
+                     });
+                     }
+                  });
+
+               }); 
+
+
+         	$('#video_upload').show();
+         	$('#video_mp4').hide();
+         	$('#embedvideo').hide();
+         	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+         
+         
+         $('#videoupload').click(function(){
+         	$('#video_upload').show();
+         	$('#video_mp4').hide();
+         	$('#embedvideo').hide();
+         	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+
+         
+         	$("#video_upload").addClass('collapse');
+         	$("#video_mp4").removeClass('collapse');
+         	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
+         	$("#m3u8").removeClass('m3u8');
+         
+         
+         })
+         $('#videomp4').click(function(){
+         	$('#video_upload').hide();
+         	$('#video_mp4').show();
+         	$('#embedvideo').hide();
+         	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+         
+         	$("#video_upload").removeClass('collapse');
+         	$("#video_mp4").addClass('collapse');
+         	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
+         	$("#m3u8").removeClass('m3u8');
+         
+         
+         })
+         $('#embed_video').click(function(){
+         	$('#video_upload').hide();
+         	$('#video_mp4').hide();
+         	$('#embedvideo').show();
+         	$('#m3u8_url').hide();
+         	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+         
+         	$("#video_upload").removeClass('collapse');
+         	$("#video_mp4").removeClass('collapse');
+         	//$("#embed_video").addClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
+         	$("#m3u8").removeClass('m3u8');
+         
+         
+         })
+         $('#m3u8').click(function(){
+         	$('#video_upload').hide();
+         	$('#video_mp4').hide();
+         	$('#embedvideo').hide();
+         	$('#m3u8_url').show();
+         	$('#bunnycdnvideo').hide();
+         	$('#flussonicstoragevideo').hide();
+
+         	$("#video_upload").removeClass('collapse');
+         	$("#video_mp4").removeClass('collapse');
+         	$("#embed_video").removeClass('collapse');
+         	$("#bunny_cdn_video").removeClass('collapse');
+         	$("#flussonic_storage_video").removeClass('collapse');
+         	$("#m3u8").addClass('m3u8');
+         
+         })
+
+            $('#bunny_cdn_video').click(function(){
+
+               $('#video_upload').hide();
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#bunnycdnvideo').show();
+               $('#flussonicstoragevideo').hide();
+
+               $("#video_upload").removeClass('collapse');
+               $("#video_mp4").removeClass('collapse');
+               $("#embed_video").removeClass('collapse');
+               // $("#bunny_cdn_video").removeClass('collapse');
+               $("#flussonic_storage_video").removeClass('collapse');
+               $("#m3u8").addClass('m3u8');
+            })
+
+            $('#flussonic_storage_video').click(function(){
+
+               $('#video_upload').hide();
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#bunnycdnvideo').hide();
+               $('#flussonicstoragevideo').show();
+
+               $("#video_upload").removeClass('collapse');
+               $("#video_mp4").removeClass('collapse');
+               $("#embed_video").removeClass('collapse');
+               $("#bunny_cdn_video").removeClass('collapse');
+               $("#m3u8").addClass('m3u8');
+            })
+         });
+         
+
 });
 
 
@@ -379,6 +623,44 @@ data: {
         }
     });
 })
+
+
+$('#submit_bunny_cdn').click(function(){
+   	// alert($('#embed_code').val());
+   	$.ajax({
+           url: '{{ URL::to('/channel/stream_bunny_cdn_video') }}',
+           type: "post",
+   data: {
+                  _token: '{{ csrf_token() }}',
+                  bunny_cdn_linked_video: $('#bunny_cdn_linked_video').val()
+   
+            },        success: function(value){
+   			console.log(value);
+               $('#Next').show();
+              $('#video_id').val(value.video_id);
+   
+           }
+       });
+   })
+
+   
+   $('#submit_Flussonic_storage').click(function(){
+   	// alert($('#embed_code').val());
+   	$.ajax({
+           url: '{{ URL::to('/channel/Flussonic_Storage_UploadURL') }}',
+           type: "post",
+            data: {
+                  _token: '{{ csrf_token() }}',
+                  Flussonic_linked_video: $('#Flussonic_linked_video').val()
+   
+            },        success: function(value){
+   			console.log(value);
+               $('#Next').show();
+              $('#video_id').val(value.video_id);
+   
+           }
+       });
+   })
 
 });
 	// http://localhost/flicknexs/public/uploads/audios/23.mp3
@@ -658,7 +940,9 @@ data: {
                                             <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
-                                        <div class="panel-title" style="color: #000;">Subtitles (srt or txt)
+                                        <div class="panel-title" style="color: #000;">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                            <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                                            <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
                                             <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
                                                 <i class="las la-exclamation-circle"></i>
                                             </a>:
@@ -1623,9 +1907,12 @@ $(document).ready(function(){
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
         maxFilesize: 15000000000,
-        acceptedFiles: "video/mp4,video/x-m4v,video/*",
+        acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
     });
     myDropzone.on("sending", function(file, xhr, formData) {
+
+        formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+        formData.append("FlussonicUploadlibraryID", $('#FlussoFnicUploadlibraryID').val());
        formData.append("_token", CSRF_TOKEN);
       // console.log(value)
       this.on("success", function(file, value) {
