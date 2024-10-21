@@ -483,6 +483,9 @@
       body.dark-theme header#main-header{
          color: <?php echo $GetDarkText; ?>!important;
       }
+      body.dark-theme #home-slider p{
+         color: #fff !important;
+      }
       body.dark-theme header .st0, .st2{
          fill: <?php echo $GetDarkText; ?>!important;
          stroke: <?php echo $GetDarkText; ?>!important;
@@ -504,6 +507,9 @@
       }
       body.light-theme {
       background: <?php echo $GetLightBg; ?>!important;
+      }
+      body.light-theme #home-slider .container-fluid.position-relative.h-100{
+         background: linear-gradient(1deg, rgb(255, 255, 255) 0%, transparent 0%), linear-gradient(90deg, rgb(240, 240, 240) 50%, transparent 50%);
       }
       body.light-theme h4, body.light-theme p {
       color: <?php echo $GetLightText; ?>;
