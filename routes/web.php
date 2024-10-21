@@ -1695,6 +1695,14 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     // Route::middleware(['prefix' => 'cpp' ,cpp::class])->group(function(){
     // Route::get('/Homeone',  'ModeratorsLoginController@Home');
 
+
+    Route::post('/upload_bunny_cdn_video', 'CPPAdminVideosController@UploadBunnyCDNVideo');
+    Route::post('/bunnycdn_videolibrary', 'CPPAdminVideosController@BunnycdnVideolibrary');
+    Route::post('/stream_bunny_cdn_video', 'CPPAdminVideosController@StreamBunnyCdnVideo');
+
+    Route::post('/FlussonicUploadlibrary', 'CPPAdminVideosController@FlussonicUploadlibrary');
+    Route::post('/Flussonic_Storage_UploadURL', 'CPPAdminVideosController@Flussonic_Storage_UploadURL');
+
     // CPP Live Event for artist
     Route::get('/live-event-artist', 'CPPLiveEventArtist@CPPindex')->name('cpp_live_event_artist');
 

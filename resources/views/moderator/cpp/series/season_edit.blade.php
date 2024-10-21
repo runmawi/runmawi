@@ -80,6 +80,33 @@
 	font-size: 14px;
     color: red;
 }
+
+.dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;color:#000;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+    .dz-cancel {color: #FF0000;background: none;border: none;}
+    .dz-cancel:hover {text-decoration: underline;}
+    .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
+    .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg {
+        width: 30px;
+        height: 30px;
+    }
+    .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+        top: 0;
+        left: 0;
+        margin-left: 0;
+        margin-top: 0;
+        width: 20px;
+    }
+    .dz-success-mark path {
+        fill: #008000;
+    }
+    .dz-error-mark g {
+        fill: #FF0000;
+    }
+
+
 </style>
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -994,7 +1021,21 @@
         var myDropzone = new Dropzone(".dropzone", {
             //   maxFilesize: 900,  // 3 mb
             maxFilesize: 15000,
-            acceptedFiles: "video/mp4,video/x-m4v,video/*",
+            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+        });
+        myDropzone.on("uploadprogress", function(file, progress) {
+            var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+            
+            if (progressElement) {
+                progressElement.textContent = Math.round(progress) + '%';
+            }
+
+            if (Math.round(progress) === 100) {
+                var cancelButton = file.previewElement.querySelector('.dz-cancel');
+                if (cancelButton) {
+                    cancelButton.style.opacity = '0';
+                }
+            }
         });
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append('series_id',series_id);

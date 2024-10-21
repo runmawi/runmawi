@@ -47,13 +47,57 @@ border-radius: 0px 4px 4px 0px;
     margin: 0 7px 3px;
     display: inline-block;
     cursor: pointer;
-} */
+} 
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+   
+.modal-content {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #888;
+    width: 50%; /* Adjust the width for medium size */
+    max-width: 60%; /* Maximum width limit */
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.submit-btn{
+    padding: 7px;
+    color: #fafafa;
+    cursor: pointer;
+    border-radius: 7px
+}
+
+.close-icon{
+    font-size: 20px;
+    font-weight:bold;
+    cursor: pointer;"
+}
+
+@keyframes animatetop {
+    from { top: -300px; opacity: 0; }
+    to { top: 50%; opacity: 1; }
+}
 </style>
+
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 <style>
     ''
 </style>
+
 
 @stop
  
@@ -824,74 +868,111 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Publish Type</label>
                     <div class="panel-body" style="color: #000;">
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
-				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later"))? "checked" : "" }}> Publish Later <br>
+				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later")) ? "checked" : "" }}> Publish Later <br>
                         <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
-                        <input type="radio" id="scheduleprogram"     name="publish_type"  value="schedule_program"  {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> {{ __('Schedule Program')}} <br />
+                        @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
+                            <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> {{ __('Schedule Program')}} <br />
+                        @endif
                     </div>
                 </div>
 
-                <div id="schedule_program_modal" class="modal">
-                    <div class="modal-content" style="overflow-y: auto;">
-                        <div class="modal-header d-flex justify-content-between">
-                                <div class="">
-                                    <h4>Schedule Program</h4>
-                                </div>
-                                <div class="close-icon" >
-                                    &times;
-                                </div>
-                        </div>
-                       
-                        <div class="modal-body">
+        
+                {{-- Schedule Program Modal --}}
 
-                            <div class="row mt-2">
-                                <div class="col-sm-8">
-                                    <label class="m-0">Program Days</label>
-                                    <div class="panel-body">
-                                        <select class="form-control js-example-basic-multiple" id="scheduler_program_days" name="scheduler_program_days[]" style="width: 100%;" multiple="multiple">
-                                            <option value="0">Sunday</option>
-                                            <option value="1">Monday</option>
-                                            <option value="2">Tuesday</option>
-                                            <option value="3">Wednesday</option>
-                                            <option value="4">Thursday</option>
-                                            <option value="5">Friday</option>
-                                            <option value="6">Saturday</option>
-                                        </select>
-                                    </div>
-                                </div>
+                @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
+                    <div class="modal" data-keyboard="false" data-backdrop="static" id="schedule_program_modal"  tabindex="-1" role="dialog">
+                        <div class="modal-content" style="overflow-y: auto;">
+                            <div class="modal-header d-flex justify-content-between">
+                                <div class=""><h4>Schedule Program</h4></div>
+                                <div class="close-icon">&times;</div>
                             </div>
-
-                            <div id="program-fields-container">
-                            <div class="row mt-4 program-fields">
-                                <div class="col-sm-4">
-                                    <label class="m-0">Program Title</label>
-                                    <div class="panel-body">
-                                        <input class="form-control"  name="scheduler_program_title[]" />
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                        <label class="m-0">Program Start Time</label>
+                    
+                            <div class="modal-body">
+                                <div class="row mt-2">
+                                    <div class="col-sm-12">
+                                        <label class="m-0">Program Days <small>(Select the Multiple days)</small></label>
                                         <div class="panel-body">
-                                            <input type="time" class="form-control"  name="scheduler_start_time[]" />
+                                            <select class="form-control js-example-basic-multiple" id="scheduler_program_days" name="scheduler_program_days[]" style="width: 100%;" multiple="multiple">
+                                                <option value="0" {{ !empty($video->scheduler_program_days) && in_array("0", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Sunday</option>
+                                                <option value="1" {{ !empty($video->scheduler_program_days) && in_array("1", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Monday</option>
+                                                <option value="2" {{ !empty($video->scheduler_program_days) && in_array("2", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Tuesday</option>
+                                                <option value="3" {{ !empty($video->scheduler_program_days) && in_array("3", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Wednesday</option>
+                                                <option value="4" {{ !empty($video->scheduler_program_days) && in_array("4", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Thursday</option>
+                                                <option value="5" {{ !empty($video->scheduler_program_days) && in_array("5", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Friday</option>
+                                                <option value="6" {{ !empty($video->scheduler_program_days) && in_array("6", json_decode($video->scheduler_program_days)) ? 'selected' : '' }}>Saturday</option>
+                                            </select>
                                         </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="m-0">Program End Time</label>
-                                    <div class="panel-body">
-                                        <input type="time" class="form-control" name="scheduler_end_time[]"  />
                                     </div>
+                                    
                                 </div>
+                    
+                                <table class="table custom-table" id="program-fields-table" style="margin-top: 10px;">
+                                    <thead style="border-bottom: none !important;">
+                                        <tr>
+                                            <th> <label> # </label></th> 
+                                            <th> <label>  Program Title </label></th>
+                                            <th> <label> Start Time <small>(24-hrs format)</small> </label> </th>
+                                            <th> <label>End Time <small>(24-hrs format)</small> </label> </th>
+                                            <th> <label> Action </label></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @forelse ($scheduler_program['scheduler_program_title'] as $index => $title)
+                                            <tr class="program-fields">
+                                                <td>{{ $index + 1 }}</td>
+
+                                                <td>
+                                                    <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" value="{{ $title }}" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_start_time[]" value="{{ $scheduler_program['scheduler_program_start_time'][$index] ?? '' }}" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_end_time[]" value="{{ $scheduler_program['scheduler_program_end_time'][$index] ?? '' }}" required />
+                                                </td>
+
+                                                <td class="d-flex justify-content-center align-items-center p-3">
+                                                    <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr class="program-fields">
+                                                <td>{{ 1 }}</td>
+
+                                                <td>
+                                                    <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]"  required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_start_time[]" required />
+                                                </td>
+
+                                                <td>
+                                                    <input type="time" class="form-control" name="scheduler_program_end_time[]"  required />
+                                                </td>
+
+                                                <td class="d-flex justify-content-center align-items-center p-3">
+                                                    <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                                                </td>
+                                            </tr>
+                                            
+                                        @endforelse
+
+                                    </tbody>
+                                </table>
+                                
                             </div>
+                    
+                            <div class="modal-footer" style="background:#ffffff">
+                                <div class="submit-btn btn-primary" id="submitModal"> Schedule </div>
                             </div>
-                            <div class="mt-4">
-                            <button type="button" style="background-color: #2c2c2c; padding:5px; border-radius:7px; color:#fafafa" id="add-program-btn">Add Program</button>
-                        </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="cancel-btn" id="cancelModal">Cancel</div>
-                            <div class="submit-btn" id="submitModal">Submit</div>
+
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="col-sm-4" >
                     <div id="publishlater" style="{{ !empty($video->publish_time)  ? '' : 'display: none' }}">
@@ -1110,7 +1191,7 @@ border-radius: 0px 4px 4px 0px;
 </script>
 
 <!-- Empty url validation Live Stream Source -->
-{{-- <script>
+<script>
     $(document).ready(function() {
         function validateForm(event) {
             let urlType = $('#url_type').val(); // Get the selected URL type
@@ -1186,7 +1267,7 @@ border-radius: 0px 4px 4px 0px;
 
 
 
-</script> --}}
+</script>
 
 <script type="text/javascript">
    $ = jQuery;
@@ -1639,7 +1720,7 @@ $(document).ready(function(){
 
     $(document).ready(function () {
         
-        $("input[name='publish_type']").change(function () {
+        $("input[name='publish_type']").on('click change', function () {
             
             $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day,.recurring_timezone").hide();
 
@@ -1651,6 +1732,12 @@ $(document).ready(function(){
 
             if( publishType == "recurring_program" ){
                 $("#recurring_program , .recurring_timezone").show();
+            }
+
+            if( publishType == "schedule_program" ){
+                var modal = document.getElementById("schedule_program_modal");
+                modal.style.display = "block"; 
+                modal.style.background = 'rgba(0, 0, 0, 0.7)';
             }
         });
 
@@ -1761,10 +1848,14 @@ $(document).ready(function(){
                 img.onload = function() {
                     var width = img.width;
                     var height = img.height;
-                 
+                    console.log(width);
+                    console.log(height);
+                    
                     var validWidth = {{ $compress_image_settings->width_validation_live }};
                     var validHeight = {{ $compress_image_settings->height_validation_live }};
-                
+                    console.log(validWidth);
+                    console.log(validHeight);
+
                     if (width !== validWidth || height !== validHeight) {
                         document.getElementById('live_image_error_msg').style.display = 'block';
                         $('.pull-right').prop('disabled', true);
@@ -1786,11 +1877,14 @@ $(document).ready(function(){
                 img.onload = function() {
                     var width = img.width;
                     var height = img.height;
-                   
+                    console.log(width);
+                    console.log(height);
                     
-                    var validWidth = {{ $compress_image_settings->live_player_img_width ? $compress_image_settings->live_player_img_width : null }};
-                    var validHeight = {{ $compress_image_settings->live_player_img_height ? $compress_image_settings->live_player_img_height : null }};
-                 
+                    var validWidth = {{ $compress_image_settings->live_player_img_width }};
+                    var validHeight = {{ $compress_image_settings->live_player_img_height }};
+                    console.log(validWidth);
+                    console.log(validHeight);
+
                     if (width !== validWidth || height !== validHeight) {
                         document.getElementById('live_player_image_error_msg').style.display = 'block';
                         $('.pull-right').prop('disabled', true);
@@ -2127,194 +2221,129 @@ $(document).ready(function(){
     }
 </style>
 
-
-
-<style>
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .modal-content {
-        position: absolute;
-        background-color: #fff;
-        border-radius: 10px;
-        border: 1px solid #888;
-        width: 50%; /* Adjust the width for medium size */
-        max-width: 60%; /* Maximum width limit */
-        height: 70%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .cancel-btn{
-        background-color: gray;
-        padding: 7px;
-        color: #fafafa;
-        cursor: pointer;
-        border-radius: 7px
-    }
-
-    .submit-btn{
-        background-color:#006AFF;
-        padding: 7px;
-        color: #fafafa;
-        cursor: pointer;
-        border-radius: 7px
-    }
-
-    .close-icon{
-        font-size: 20px;
-        font-weight:bold;
-        cursor: pointer;"
-    }
-
-    @keyframes animatetop {
-        from { top: -300px; opacity: 0; }
-        to { top: 50%; opacity: 1; }
-    }
-
-</style>
-
+{{-- Schedule Program --}}
 
 <script>
-    document.getElementById("scheduleprogram").addEventListener("click", function() {
-    var modal = document.getElementById("schedule_program_modal");
-    modal.style.display = "block"; 
-    modal.style.background = 'rgba(0, 0, 0, 0.7)';
-    });
-    window.onclick = function(event) {
-        var modal = document.getElementById("schedule_program_modal");
-        if (event.target == modal) {
-            modal.style.display = "none";
-            document.getElementById("scheduleprogram").checked = false; 
-        }
-    };
-    document.querySelector(".modal-footer .cancel-btn").addEventListener("click", function() {
-        var modal = document.getElementById("schedule_program_modal");
-        modal.style.display = "none";
-        document.getElementById("scheduleprogram").checked = false; 
-    });
 
-    document.querySelector(".modal-header .close-icon").addEventListener("click", function() {
-        var modal = document.getElementById("schedule_program_modal");
-        modal.style.display = "none";
-        document.getElementById("scheduleprogram").checked = false; 
-    });
+    $(document).ready(function () {
 
-    document.getElementById("submitModal").addEventListener("click", function() {
-    var isValid = true; 
-    var programFields = document.querySelectorAll('.program-fields'); 
-    var timeSlots = []; 
+        $(document).on('click', '.add-program-btn', function () {
 
-    document.querySelectorAll('.is-invalid').forEach(function(input) {
-        input.classList.remove('is-invalid');
-    });
-    document.querySelectorAll('.error-message').forEach(function(message) {
-        message.remove();
-    });
+            var rowCount = $('.program-fields').length;
+            
+            rowCount++; 
 
-    programFields.forEach(function(fields) {
-        var titleInput = fields.querySelector('input[name="scheduler_program_title[]"]');
-        var startTimeInput = fields.querySelector('input[name="scheduler_start_time[]"]');
-        var endTimeInput = fields.querySelector('input[name="scheduler_end_time[]"]');
-        var title = titleInput.value;
-        var startTime = startTimeInput.value;
-        var endTime = endTimeInput.value;
+            let newRow = `
+                <tr class="program-fields">
+                    <td>${rowCount}</td> <!-- Dynamic S.No -->
+                    <td>
+                        <input class="form-control" placeholder="Enter the Show Name" name="scheduler_program_title[]" required/>
+                    </td>
 
-        if (!title) {
-            isValid = false;
-            showErrorMessage(titleInput, "Program title is required.");
-        }
-        if (!startTime) {
-            isValid = false;
-            showErrorMessage(startTimeInput, "Start time is required.");
-        }
-        if (!endTime) {
-            isValid = false;
-            showErrorMessage(endTimeInput, "End time is required.");
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_start_time[]" required/>
+                    </td>
+
+                    <td>
+                        <input type="time" class="form-control" name="scheduler_program_end_time[]" required />
+                    </td>
+
+                    <td class="d-flex justify-content-center align-items-center p-3">
+                        <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                        <i class="fa fa-minus-circle remove-program-btn mx-2"></i>
+                    </td>
+                </tr>`;
+            $('#program-fields-table tbody').append(newRow);
+        });
+
+        $(document).on('click', '.remove-program-btn', function () {
+            $(this).closest('tr').remove();
+            updateSerialNumbers(); 
+        });
+
+        function updateSerialNumbers() {
+            $('#program-fields-table tbody tr').each(function(index) {
+                $(this).find('td:first').text(index + 1); 
+            });
+            rowCount = $('#program-fields-table tbody tr').length; 
         }
 
-        if (startTime && endTime) {
-          
-            var startDateTime = new Date("1970-01-01T" + startTime + ":00");
-            var endDateTime = new Date("1970-01-01T" + endTime + ":00");
+        $('.close-icon').on('click', function () {
 
-            if (startDateTime >= endDateTime) {
-                isValid = false; 
-                showErrorMessage(startTimeInput, "Start time must be earlier than end time.");
-                showErrorMessage(endTimeInput, "End time must be later than start time.");
+            if (confirm('Are you sure to Close ?') == true) {
+                $('#schedule_program_modal').hide();
             }
+        });
 
-            if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
+        $(document).on('click', '#submitModal', function () {
+
+            var isValid = true; 
+            var timeSlots = [];
+
+            $(".is-invalid").removeClass("is-invalid");
+            $(".error-message").remove();
+
+            var scheduler_program_days = $('#scheduler_program_days').val();
+
+            if (!scheduler_program_days || scheduler_program_days.length === 0) {
                 isValid = false;
-                showErrorMessage(startTimeInput, "A program with the same start and end time already exists.");
-                showErrorMessage(endTimeInput, "A program with the same start and end time already exists.");
+                var $schedulerProgramDaysInput = $('#scheduler_program_days');
+                showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
             }
+
+            $(".program-fields").each(function() {
+
+                var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
+                var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
+                var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
+
+                var title = $titleInput.val();
+                var startTime = $startTimeInput.val();
+                var endTime = $endTimeInput.val();
+                
+                if (!title) {
+                    isValid = false;
+                    showErrorMessage($titleInput, "Program title is required.");
+                }
+                
+                if (!startTime) {
+                    isValid = false;
+                    showErrorMessage($startTimeInput, "Start time is required.");
+                }
+                
+                if (!endTime) {
+                    isValid = false;
+                    showErrorMessage($endTimeInput, "End time is required.");
+                }
+                
+                if (startTime && endTime) {
+                    if (startTime >= endTime) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
+                        showErrorMessage($endTimeInput, "End time must be later than start time.");
+                    }
+
+                    if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
+                        showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
+                    }
+
+                    if (isValid) {
+                        timeSlots.push({ startTime: startTime, endTime: endTime });
+                    }
+                }
+
+            });
 
             if (isValid) {
-                timeSlots.push({ startTime: startTime, endTime: endTime });
+                $("#schedule_program_modal").hide();
             }
-        }
-    });
-
-        if (isValid) {
-            document.getElementById("schedule_program_modal").style.display = "none";
-        }
-    });
-
-    function showErrorMessage(inputElement, message) {
-        inputElement.classList.add('is-invalid');
-        var errorSpan = document.createElement('span');
-        errorSpan.classList.add('text-danger', 'error-message');
-        errorSpan.textContent = message;
-        inputElement.parentNode.appendChild(errorSpan);
-    }
-
-    document.getElementById('add-program-btn').addEventListener('click', function() {
-        var container = document.getElementById('program-fields-container');
-        
-        var newFields = document.createElement('div');
-        newFields.classList.add('row', 'mt-4', 'program-fields');
-        newFields.innerHTML = `
-            <div class="col-sm-5">
-                <label class="m-0">Program Title</label>
-                <div class="panel-body">
-                    <input class="form-control" name="scheduler_program_title[]" />
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <label class="m-0">Program Start Time</label>
-                <div class="panel-body">
-                    <input type="time" class="form-control" name="scheduler_start_time[]" />
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <label class="m-0">Program End Time</label>
-                <div class="panel-body">
-                    <input type="time" class="form-control" name="scheduler_end_time[]" />
-                </div>
-            </div>
-            <div class="col-sm-1" style="margin-top:30px;" >
-                <div class="btn btn-danger delete-program-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                    </svg>    
-                </div>
-            </div>
-        `;
-        
-        container.appendChild(newFields);
-        newFields.querySelector('.delete-program-btn').addEventListener('click', function() {
-            container.removeChild(newFields);
         });
     });
+
+    function showErrorMessage($input, message) {
+        var $error = $("<span>").addClass("error-message text-danger").text(message);
+        $input.addClass("is-invalid").after($error);
+    }
 </script>

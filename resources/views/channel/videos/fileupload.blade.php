@@ -658,7 +658,9 @@ data: {
                                             <div class="row mt-5">    
                                 <div class="panel panel-primary" data-collapsed="0"> 
                                     <div class="panel-heading"> 
-                                        <div class="panel-title" style="color: #000;">Subtitles (srt or txt)
+                                        <div class="panel-title" style="color: #000;">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                            <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                                            <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
                                             <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Please choose language" data-original-title="this is the tooltip" href="#">
                                                 <i class="las la-exclamation-circle"></i>
                                             </a>:
@@ -1623,7 +1625,7 @@ $(document).ready(function(){
     var myDropzone = new Dropzone(".dropzone",{ 
       //   maxFilesize: 900,  // 3 mb
         maxFilesize: 15000000000,
-        acceptedFiles: "video/mp4,video/x-m4v,video/*",
+        acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
     });
     myDropzone.on("sending", function(file, xhr, formData) {
        formData.append("_token", CSRF_TOKEN);

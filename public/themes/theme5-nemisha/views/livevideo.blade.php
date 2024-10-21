@@ -127,6 +127,36 @@
     }
 </style>
 
+{{-- Style for Radio-Station --}}
+    <style>
+        body{background-color:#000;color:#fff;font-family:Arial,sans-serif}
+        .epg-container{padding:20px}
+        .epg-header{display:flex;align-items:center;background-color:#1c1c1c;padding:15px;border-radius:8px}
+        .epg-header img{width:120px;height:auto;border-radius:8px}
+        .epg-info{margin-left:20px;flex-grow:1}
+        .epg-info h2{font-size:24px;font-weight:700;margin-bottom:10px}
+        .epg-info p{font-size:14px;color:#bbb}
+        .epg-time{text-align:right;width:20%;position:relative;top:-25px}
+        .epg-time span{font-size:12px;color:#f0f0f0}
+        .epg-grid{margin-top:20px;background-color:#1c1c1c;border-radius:8px;padding:10px;height:50vh!important;overflow:overlay}
+        .epg-timeline-container{overflow-x:auto;white-space:nowrap;position:relative;top:-37px}
+        .epg-timeline{display:flex;justify-content:flex-start;padding:10px;border-bottom:1px solid #555;background-color:#333;color:#ccc;font-size:12px;width:352%}
+        .timeline{margin:0 10px}
+        .epg-timeline div{flex:0 0 60px;text-align:center}
+        .epg-channels{width:16%;float:left;padding-right:10px}
+        .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px}
+        .epg-programs{overflow-x:auto;white-space:nowrap}
+        .epg-program-row{display:flex;margin-bottom:10px}
+        .epg-program{background-color:#444;border-radius:8px;height:75px;position:relative;margin:0 5px;color:#fff;text-align:center;line-height:75px}
+        .clearfix::after{content:"";display:table;clear:both}
+        .epg-navigation{width:15%;height:38px;z-index:0;position:relative;overflow-x:auto;border-bottom:1px solid #555}
+        .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
+        .day-nav{margin:0 50px}
+        .date-nav{gap:25px;white-space:nowrap;align-items:center;border-bottom:1px solid #555;background-color:#333;padding-left:20px}
+        .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
+    </style>
+{{-- End of Radio-Station style --}}
+
 <input type="hidden" name="video_id" id="video_id" value="{{ $video->id }}">
 
 
@@ -514,6 +544,110 @@ if(empty($new_date)){
             </div>
 
 
+            {{-- Radio-Station --}}
+
+                <div class="epg-container">
+                    <!-- Header Section -->
+                    <div class="epg-header">
+                        <img src="https://via.placeholder.com/120" alt="Program Image">
+                        <div class="epg-info">
+                            <h2>The Tree of Life Season 6 Episode</h2>
+                            <p>
+                                The Tree of Life is a 2011 American drama film with experimental elements written and directed by
+                                Terrence Malick and starring Brad Pitt, Sean Penn, and Jessica Chastain.
+                            </p>
+                        </div>
+                        <div class="epg-time">
+                            <span>4 Mar Fri: 1:30PM - 2:30PM</span>
+                        </div>
+                    </div>
+            
+                    <!-- Grid Section -->
+                    <div class="epg-grid clearfix">
+            
+                        <!-- Navigation Section (new) -->
+                        <div class="epg-navigation d-flex" style="overflow: auto;">
+                            <div class="date-nav d-flex">
+                                <div class="day-nav active">Today</div>
+                                <div class="day-nav">Tomorrow</div>
+                                <div class="day-nav">Day After Tomorrow</div>
+                            </div>
+                            <button class="nav-arrow" style="position: absolute;">&lt;</button>
+                            <button class="nav-arrow" style="left: 85%; position: absolute;">&gt;</button>
+                        </div>
+            
+                        <!-- Channels Column -->
+                        <div class="epg-channels mt-2">
+                            <div class="epg-channel">Channel 1</div>
+                            <div class="epg-channel">Channel 2</div>
+                        </div>
+            
+                        <!-- Timeline Section & Programs Column-->
+                        <div class="epg-timeline-container">
+                            <div class="epg-programs">
+                                <div class="epg-timeline">
+                                    <div class="timeline">12:00 AM</div>
+                                    <div class="timeline">12:30 AM</div>
+                                    <div class="timeline">1:00 AM</div>
+                                    <div class="timeline">1:30 AM</div>
+                                    <div class="timeline">2:00 AM</div>
+                                    <div class="timeline">2:30 AM</div>
+                                    <div class="timeline">3:00 AM</div>
+                                    <div class="timeline">3:30 AM</div>
+                                    <div class="timeline">4:00 AM</div>
+                                    <div class="timeline">4:30 AM</div>
+                                    <div class="timeline">5:00 AM</div>
+                                    <div class="timeline">5:30 AM</div>
+                                    <div class="timeline">6:00 AM</div>
+                                    <div class="timeline">6:30 AM</div>
+                                    <div class="timeline">7:00 AM</div>
+                                    <div class="timeline">7:30 AM</div>
+                                    <div class="timeline">8:00 AM</div>
+                                    <div class="timeline">8:30 AM</div>
+                                    <div class="timeline">9:00 AM</div>
+                                    <div class="timeline">9:30 AM</div>
+                                    <div class="timeline">10:00 AM</div>
+                                    <div class="timeline">10:30 AM</div>
+                                    <div class="timeline">11:00 AM</div>
+                                    <div class="timeline">11:30 AM</div>
+                                    <div class="timeline">12:00 PM</div>
+                                    <div class="timeline">12:30 PM</div>
+                                    <div class="timeline">1:00 PM</div>
+                                    <div class="timeline">1:30 PM</div>
+                                    <div class="timeline">2:00 PM</div>
+                                    <div class="timeline">2:30 PM</div>
+                                    <div class="timeline">3:00 PM</div>
+                                    <div class="timeline">3:30 PM</div>
+                                    <div class="timeline">4:00 PM</div>
+                                    <div class="timeline">4:30 PM</div>
+                                    <div class="timeline">5:00 PM</div>
+                                    <div class="timeline">5:30 PM</div>
+                                    <div class="timeline">6:00 PM</div>
+                                    <div class="timeline">6:30 PM</div>
+                                    <div class="timeline">7:00 PM</div>
+                                    <div class="timeline">7:30 PM</div>
+                                    <div class="timeline">8:00 PM</div>
+                                    <div class="timeline">8:30 PM</div>
+                                    <div class="timeline">9:00 PM</div>
+                                    <div class="timeline">9:30 PM</div>
+                                    <div class="timeline">10:00 PM</div>
+                                    <div class="timeline">10:30 PM</div>
+                                    <div class="timeline">11:00 PM</div>
+                                    <div class="timeline">11:30 PM</div>
+                                </div>
+            
+                                <div class="epg-program-row mt-2">
+                                    <div class="epg-program" style="width: 20%;left: 74.5%;">Prog1</div>
+                                    <div class="epg-program" style="width: 14%;left: 82%;">Prog2</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {{-- End of Radio-Station  --}}
+
+
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -712,8 +846,9 @@ if(empty($new_date)){
     });
 </script>
 
-<!-- RESIZING FLUID VIDEO for VIDEO JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- RESIZING FLUID VIDEO for VIDEO JS -->
 <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
 
 

@@ -8,7 +8,9 @@
 
     <script
         src="https://www.paypal.com/sdk/js?client-id=Aclkx_Wa7Ld0cli53FhSdeDt1293Vss8nSH6HcSDQGHIBCBo42XyfhPFF380DjS8N0qXO_JnR6Gza5p2&vault=true&intent=subscription"
-        data-sdk-integration-source="button-factory"></script>
+        data-sdk-integration-source="button-factory">
+    </script>
+
     <style>
         .round {
             background-color: #8a0303 !important;
@@ -588,6 +590,7 @@
         $Razorpay_payment_settings = App\PaymentSetting::where('payment_type', 'Razorpay')->first();
         $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay')->first();
         $Paydunya_payment_settings = App\PaymentSetting::where('payment_type','Paydunya')->first();
+        $recurly_payment_settings = App\PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
 
         // lable
         $stripe_lable = App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() ? App\PaymentSetting::where('payment_type', 'Stripe')->pluck('stripe_lable')->first() : 'Stripe';
@@ -596,12 +599,20 @@
         $Razorpay_lable = App\PaymentSetting::where('payment_type', 'Razorpay_lable')->pluck('Razorpay_lable')->first() ? App\PaymentSetting::where('payment_type', 'Razorpay')->pluck('Razorpay_lable')->first() : 'Razorpay';
         $CinetPay_lable = App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() ? App\PaymentSetting::where('payment_type', 'CinetPay')->pluck('CinetPay_Lable')->first() : 'CinetPay';
         $Paydunya_label = App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() ? App\PaymentSetting::where('payment_type','Paydunya')->pluck('paydunya_label')->first() : "Paydunya";
-        
+        $recurly_label = App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() ? App\PaymentSetting::where('payment_type','Recurly')->pluck('recurly_label')->first() : "Recurly";
+
         $CurrencySetting = App\CurrencySetting::pluck('enable_multi_currency')->first();
 
     @endphp
 
     <section class="flick">
+        
+        <div class="col-sm-12">
+            <a href="{{ route('home') }}">
+                <svg style="{{ 'color:'. front_End_text_color() }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+            </a>
+        </div>
+
         <div class="container">
             <div align="center">
 
@@ -619,7 +630,7 @@
                                 <!-- Stripe -->
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                         <label class=" ml-2"> <p>{{ $stripe_lable }} </p> </label>
                                     </div>
                                 @endif
@@ -635,8 +646,8 @@
                                  <!-- PayPal -->
                                 @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="paystack_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                        <label class="mt-2 ml-2"><p>{{ $paypal_lable }} </p></label>
+                                        <input type="radio" id="paypal_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
+                                        <label class="ml-2"><p>{{ $paypal_lable }} </p></label>
                                     </div>
                                 @endif
 
@@ -663,6 +674,14 @@
                                         <label class=" ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
                                     </div>
                                 @endif
+
+                                    {{-- Recurly --}}
+                                @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
+                                    <div class=" align-items-center ml-2">
+                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" checked>
+                                        <label class=" ml-2"> <p>{{ __($recurly_label) }} </p></label> 
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -674,7 +693,7 @@
                                         @endphp
 
                                         <div style="" class="col-md-6 plan_details p-0" data-plan-id={{ 'active' . $plan->id }} data-plan-price="{{ $CurrencySetting == 1 ? Currency_Convert($plan->price) : round($plan->price,2) }}"
-                                            data-plan_id={{ $plan->plan_id }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
+                                            data-plan_id={{ $plan->plan_id }} data-pay-type={{ $plan->type }} data-payment-type={{ $plan->payment_type }} onclick="plan_details(this)">
 
                                             <a href="#payment_card_scroll">
                                                 <div class="row dg align-items-center mb-4" id={{ 'active' . $plan->id }}>
@@ -757,6 +776,17 @@
                                     </button>
                                 </div>
 
+                                {{-- Recurly --}}
+                                <div class="col-md-12 Recurly_payment">
+                                    <form action="{{ route('Recurly.checkout_page') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" id="plan_name" name="recurly_plan_id" value="{{ $plan_name ?? '' }}">
+                                        <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
+                                            {{ __('Pay Now') }}
+                                        </button>
+                                    </form>
+                                </div>
+
                                 <input type="hidden" id="payment_image" value="<?php echo URL::to('/') . '/public/Thumbnai_images'; ?>">
                                 <input type="hidden" id="currency_symbol" value="{{ currency_symbol() }}">
                             </div>
@@ -782,7 +812,7 @@
                                 </div>
 
                                 <div class="mt-3"></div>
-                                <div id="paypal-button-container-P-6XA79361YH9914942MMPN3BQ"></div>
+                                <div id="paypal-button-container"></div>
                             </div>
                         </div>
                     </div>
@@ -967,20 +997,100 @@
 
             var plans_id = $(ele).attr('data-plan_id');
             var plan_payment_type = $(ele).attr('data-payment-type');
+            var plan_pay_type = $(ele).attr('data-pay-type');
             var plan_price = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
             let currency_symbols = document.getElementById("currency_symbol").value;
+            $('#paypal-button-container').empty();
+            $('#paypal-button-container').hide();
+           
 
-            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
-            $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-            $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
-            $('.plan_price').empty(plan_price).append( plan_price);
+            if(plan_pay_type == 'PayPal'){
+                $('#paypal-button-container').show();
+                $('.Stripe_Payment').show();
+                var plans_id = $(ele).attr('data-plan_id');
+                var plan_payment_type = $(ele).attr('data-payment-type');
+                var plan_price = $(ele).attr('data-plan-price');
+                var plan_id_class = $(ele).attr('data-plan-id');
+                let currency_symbols = document.getElementById("currency_symbol").value;
 
-            $('#coupon_amt_deduction').empty(plan_price);
-            $('#coupon_amt_deduction').append(currency_symbols + plan_price);
+                var classname = 'paypal-button-container-' + plans_id
+                $('#paypal-button-container').addClass(classname)
+                // $("#paypal-button-container").append('<div class:' + classname + ';></div>');
+                $("#paypal-button-container").append('<div id="' + classname + '";></div>');
 
-            $('.dg').removeClass('actives');
-            $('#' + plan_id_class).addClass('actives');
+                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
+                    plan_payment_type + '">');
+                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
+                $('.plan_price').empty(plan_price);
+                $('.plan_price').append(plan_price);
+
+                $('.dg').removeClass('actives');
+                $('#' + plan_id_class).addClass('actives');
+
+
+                var plan_data = $("#plan_name").val();
+                var coupon_code = $("#coupon_code").val();
+                var payment_type = $("#payment_type").val();
+                var final_payment = $(".final_payment").val();
+                var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
+
+                paypal.Buttons({
+                    style: {
+                        shape: 'pill',
+                        color: 'white',
+                        layout: 'vertical',
+                        label: 'subscribe'
+                    },
+                    createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                            plan_id: plans_id
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        // alert(data.subscriptionID); // You can add optional success message for the subscriber here
+                        if (!empty(data.subscriptionID)) {
+                            $.post(base_url + '/paypal-subscription', {
+                                    payment_type: payment_type,
+                                    amount: final_payment,
+                                    plan: plan_data,
+                                    plans_id: plans_id,
+                                    subscriptionID: data.subscriptionID,
+                                    coupon_code: final_coupon_code_stripe,
+                                    _token: '<?= csrf_token() ?>'
+                                },
+
+                                function(data) {
+                                    $('#loader').css('display', 'block');
+                                    swal({
+                                        title: "Subscription Purchased Successfully!",
+                                        text: "Your Payment done Successfully!",
+                                        icon: payment_images + '/Successful_Payment.gif',
+                                        buttons: false,
+                                        closeOnClickOutside: false,
+                                    });
+                                    setTimeout(function() {
+                                        window.location.replace(base_url + '/login');
+                                    }, 2000);
+                                });
+                        }
+                    }
+                }).render('#paypal-button-container-'+plans_id);
+                
+            }
+            else{
+                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
+                $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
+                $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
+                $('.plan_price').empty(plan_price).append( plan_price);
+
+                $('#coupon_amt_deduction').empty(plan_price);
+                $('#coupon_amt_deduction').append(currency_symbols + plan_price);
+
+                $('.dg').removeClass('actives');
+                $('#' + plan_id_class).addClass('actives');
+            }
+           
 
         }
         var base_url = $('#base_url').val();
@@ -1010,80 +1120,78 @@
 
     <!-- paypay script -->
 
-    <script
-        src="https://www.paypal.com/sdk/js?client-id=AVGcAgzu_FN6jiaO8AAqyaXxFPeVfWMBG9OK2CJbnbgqDpnAsNqEpOQ12-Sor5eK0NRduzL4RddazjoV&vault=true&intent=subscription"
-        data-sdk-integration-source="button-factory"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AcG3EJ9YtZXPBRDwe_PkmI3ZYMXmUtvjyYC7OLHmV9Q1x0rfFiFtDCQQA5ICspAHfLXt3P7WwG_pOZs-&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
     <script>
-        function paypalplan_details(ele) {
-            var plans_id = $(ele).attr('data-plan_id');
-            var plan_payment_type = $(ele).attr('data-payment-type');
-            var plan_price = $(ele).attr('data-plan-price');
-            var plan_id_class = $(ele).attr('data-plan-id');
-            let currency_symbols = document.getElementById("currency_symbol").value;
+        // function paypalplan_details(ele) {
+        //     var plans_id = $(ele).attr('data-plan_id');
+        //     var plan_payment_type = $(ele).attr('data-payment-type');
+        //     var plan_price = $(ele).attr('data-plan-price');
+        //     var plan_id_class = $(ele).attr('data-plan-id');
+        //     let currency_symbols = document.getElementById("currency_symbol").value;
 
-            var classname = 'paypal-button-container-' + plans_id
-            $('#paypal-button-container').addClass(classname)
-            $("#paypal-button-container").append('<div class:' + classname + ';></div>');
+        //     var classname = 'paypal-button-container-' + plans_id
+        //     $('#paypal-button-container').addClass(classname)
+        //     $("#paypal-button-container").append('<div class:' + classname + ';></div>');
 
-            $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
-                plan_payment_type + '">');
-            $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-            $('.plan_price').empty(plan_price);
-            $('.plan_price').append(currency_symbols + plan_price);
+        //     $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
+        //         plan_payment_type + '">');
+        //     $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
+        //     $('.plan_price').empty(plan_price);
+        //     $('.plan_price').append(currency_symbols + plan_price);
 
-            $('.dg').removeClass('actives');
-            $('#' + plan_id_class).addClass('actives');
+        //     $('.dg').removeClass('actives');
+        //     $('#' + plan_id_class).addClass('actives');
 
 
-            var plan_data = $("#plan_name").val();
-            var coupon_code = $("#coupon_code").val();
-            var payment_type = $("#payment_type").val();
-            var final_payment = $(".final_payment").val();
-            var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
+        //     var plan_data = $("#plan_name").val();
+        //     var coupon_code = $("#coupon_code").val();
+        //     var payment_type = $("#payment_type").val();
+        //     var final_payment = $(".final_payment").val();
+        //     var final_coupon_code_stripe = $("#final_coupon_code_stripe").val();
 
-            paypal.Buttons({
-                style: {
-                    shape: 'pill',
-                    color: 'white',
-                    layout: 'vertical',
-                    label: 'subscribe'
-                },
-                createSubscription: function(data, actions) {
-                    return actions.subscription.create({
-                        plan_id: plans_id
-                    });
-                },
-                onApprove: function(data, actions) {
-                    // alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                    if (!empty(data.subscriptionID)) {
-                        $.post(base_url + '/paypal-subscription', {
-                                payment_type: payment_type,
-                                amount: final_payment,
-                                plan: plan_data,
-                                plans_id: plans_id,
-                                subscriptionID: data.subscriptionID,
-                                coupon_code: final_coupon_code_stripe,
-                                _token: '<?= csrf_token() ?>'
-                            },
+        //     paypal.Buttons({
+        //         style: {
+        //             shape: 'pill',
+        //             color: 'white',
+        //             layout: 'vertical',
+        //             label: 'subscribe'
+        //         },
+        //         createSubscription: function(data, actions) {
+        //             return actions.subscription.create({
+        //                 plan_id: plans_id
+        //             });
+        //         },
+        //         onApprove: function(data, actions) {
+        //             // alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        //             if (!empty(data.subscriptionID)) {
+        //                 $.post(base_url + '/paypal-subscription', {
+        //                         payment_type: payment_type,
+        //                         amount: final_payment,
+        //                         plan: plan_data,
+        //                         plans_id: plans_id,
+        //                         subscriptionID: data.subscriptionID,
+        //                         coupon_code: final_coupon_code_stripe,
+        //                         _token: '<?= csrf_token() ?>'
+        //                     },
 
-                            function(data) {
-                                $('#loader').css('display', 'block');
-                                swal({
-                                    title: "Subscription Purchased Successfully!",
-                                    text: "Your Payment done Successfully!",
-                                    icon: payment_images + '/Successful_Payment.gif',
-                                    buttons: false,
-                                    closeOnClickOutside: false,
-                                });
-                                setTimeout(function() {
-                                    window.location.replace(base_url + '/login');
-                                }, 2000);
-                            });
-                    }
-                }
-            }).render('#paypal-button-container-' + plans_id); // Renders the PayPal button
-        }
+        //                     function(data) {
+        //                         $('#loader').css('display', 'block');
+        //                         swal({
+        //                             title: "Subscription Purchased Successfully!",
+        //                             text: "Your Payment done Successfully!",
+        //                             icon: payment_images + '/Successful_Payment.gif',
+        //                             buttons: false,
+        //                             closeOnClickOutside: false,
+        //                         });
+        //                         setTimeout(function() {
+        //                             window.location.replace(base_url + '/login');
+        //                         }, 2000);
+        //                     });
+        //             }
+        //         }
+        //     }).render('#paypal-button-container-' + plans_id); // Renders the PayPal button
+        // }
     </script>
 
     <script>
@@ -1101,7 +1209,7 @@
                 }
             });
             $('#Paypal_lable').click(function() {
-                if ($(this).val() == 'Paypal_lable') {
+                if ($(this).val() == 'paypal') {
                     $('#Stripe_lable').prop('checked', false);
                     $('.PaypalPayment').show();
                     $('.paypal_plan_details').show();
@@ -1117,10 +1225,10 @@
     <script>
         window.onload = function() {
 
-            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+            $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
             $('.Summary').empty();
 
-            $(".payment_gateway").trigger("click")
+            // $(".payment_gateway").trigger("click")
 
             if ($('input[name="payment_gateway"]:checked').val() == "stripe") {
                 $('.stripe_payment').show();
@@ -1142,13 +1250,21 @@
                 $('.Paydunya_payment').show();
             }
 
+            if ($('input[name="payment_gateway"]:checked').val() == "Recurly") {
+                $('.Recurly_payment').show();
+            }
+
+            if ($('input[name="payment_gateway"]:checked').val() == "paypal") {
+                $('.PaypalPayment').show();
+            }
+
         };
 
         $(document).ready(function() {
 
             $(".payment_gateway").click(function() {
 
-                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment').hide();
+                $('.paystack_payment,.stripe_payment,.Razorpay_payment,.cinetpay_button,.Paydunya_payment,.Recurly_payment,.PaypalPayment').hide();
                 $('.Summary').empty();
 
                 let payment_gateway = $('input[name="payment_gateway"]:checked').val();
@@ -1173,6 +1289,14 @@
 
                     $('.Paydunya_payment').show();
 
+                } else if (payment_gateway == "paypal") {
+
+                    $('.PaypalPayment').show();
+
+                }
+                else if (payment_gateway == "Recurly") {
+
+                    $('.Recurly_payment').show();
                 }
             });
         });
@@ -1226,7 +1350,7 @@
 
                             html +=
                                 '<a href="#payment_card_scroll" > <div class="col-md-6 plan_details p-0"  data-plan-id="active' + plan_data.id + '" data-plan-price="' + plan_data.price +
-                                '"  data-plan_id="' + plan_data.plan_id + '"  data-payment-type="' + plan_data.payment_type + '" onclick="plan_details(this)">';
+                                    '"  data-plan_id="' + plan_data.plan_id + '"  data-payment-type="' +  plan_data.payment_type + '"  data-pay-type="' +  plan_data.type + '" onclick="plan_details(this)">';
                             html += '<div class="row dg align-items-center mb-4" id="active' +plan_data.id + '" >';
 
                             html += '<div class="col-md-12 ambk p-0 text-center">';
