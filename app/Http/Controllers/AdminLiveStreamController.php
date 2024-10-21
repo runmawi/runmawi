@@ -148,118 +148,118 @@ class AdminLiveStreamController extends Controller
             $startTime->addHour();
         }
     
-        $programs = [];
-        foreach ($stations as $program) {
+        // $programs = [];
+        // foreach ($stations as $program) {
     
-            $programTitles = json_decode($program->scheduler_program_title, true) ?? [];
-            $programDays = json_decode($program->scheduler_program_days, true) ?? [];
-            $programStartTimes = json_decode($program->scheduler_start_time, true) ?? [];
-            $programEndTimes = json_decode($program->scheduler_end_time, true) ?? [];
+        //     $programTitles = json_decode($program->scheduler_program_title, true) ?? [];
+        //     $programDays = json_decode($program->scheduler_program_days, true) ?? [];
+        //     $programStartTimes = json_decode($program->scheduler_start_time, true) ?? [];
+        //     $programEndTimes = json_decode($program->scheduler_end_time, true) ?? [];
     
-            if ($program->publish_type === 'recurring_program') {
-                $startTime = $program->program_start_time ? Carbon::parse($program->program_start_time)->setTimezone($current_timezone) : Carbon::now($current_timezone);
-                $endTime = $program->program_end_time ? Carbon::parse($program->program_end_time)->setTimezone($current_timezone) : Carbon::today()->endOfDay();
-            } elseif ($program->publish_type === 'publish_now') {
-                $startTime = $carbon_now;
-                $endTime = Carbon::today()->endOfDay();
+        //     if ($program->publish_type === 'recurring_program') {
+        //         $startTime = $program->program_start_time ? Carbon::parse($program->program_start_time)->setTimezone($current_timezone) : Carbon::now($current_timezone);
+        //         $endTime = $program->program_end_time ? Carbon::parse($program->program_end_time)->setTimezone($current_timezone) : Carbon::today()->endOfDay();
+        //     } elseif ($program->publish_type === 'publish_now') {
+        //         $startTime = $carbon_now;
+        //         $endTime = Carbon::today()->endOfDay();
     
-                if (!$startTime->isToday()) {
-                    continue; 
-                }
-            } elseif ($program->publish_type === 'schedule_program') {
+        //         if (!$startTime->isToday()) {
+        //             continue; 
+        //         }
+        //     } elseif ($program->publish_type === 'schedule_program') {
 
-                $demo = [];
+        //         $demo = [];
 
-                if(in_array($selectedDay, $programDays)){
-                    foreach ($programTitles as $index => $programTitle) {
-                        $title = $programTitles[$index];
-                        $startTime = isset($programStartTimes[$index]) ? Carbon::parse($programStartTimes[$index])->setTimezone($current_timezone) : Carbon::now($current_timezone);
-                        $endTime = isset($programEndTimes[$index]) ? Carbon::parse($programEndTimes[$index])->setTimezone($current_timezone) : Carbon::today()->endOfDay();
+        //         if(in_array($selectedDay, $programDays)){
+        //             foreach ($programTitles as $index => $programTitle) {
+        //                 $title = $programTitles[$index];
+        //                 $startTime = isset($programStartTimes[$index]) ? Carbon::parse($programStartTimes[$index])->setTimezone($current_timezone) : Carbon::now($current_timezone);
+        //                 $endTime = isset($programEndTimes[$index]) ? Carbon::parse($programEndTimes[$index])->setTimezone($current_timezone) : Carbon::today()->endOfDay();
     
-                        $duration = $endTime->diffInMinutes($startTime);
-                        $columnSpan = $duration < 0 ? 0 : $duration;
-                        $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
-                        $startColumn = $startColumn > 0 ? $startColumn : 0;
+        //                 $duration = $endTime->diffInMinutes($startTime);
+        //                 $columnSpan = $duration < 0 ? 0 : $duration;
+        //                 $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
+        //                 $startColumn = $startColumn > 0 ? $startColumn : 0;
     
-                        $formattedStartTime = $startTime->format('H:00');
-                        $formattedEndTime = $endTime->format('H:00');
+        //                 $formattedStartTime = $startTime->format('H:00');
+        //                 $formattedEndTime = $endTime->format('H:00');
 
-                        $programs[$index] = [
-                            'id' => $program->id,
-                            'title' => $title, 
-                            'column_span' => $columnSpan,
-                            'start_column' => $startColumn,
-                            'row' => $program->id,
-                            'start_time' => $formattedStartTime,
-                            'end_time' => $formattedEndTime,
-                            'publish_type' => $program->publish_type,
-                        ];
+        //                 $programs[$index] = [
+        //                     'id' => $program->id,
+        //                     'title' => $title, 
+        //                     'column_span' => $columnSpan,
+        //                     'start_column' => $startColumn,
+        //                     'row' => $program->id,
+        //                     'start_time' => $formattedStartTime,
+        //                     'end_time' => $formattedEndTime,
+        //                     'publish_type' => $program->publish_type,
+        //                 ];
 
-                    }
-                }
-
-
+        //             }
+        //         }
 
 
 
-                // foreach ($programDays as $index => $programDay) {
-                //     if ($programDay == $selectedDay) {
+
+
+        //         // foreach ($programDays as $index => $programDay) {
+        //         //     if ($programDay == $selectedDay) {
                        
-                //         $title = $programTitles[$index];
-                //         $startTime = isset($programStartTimes[$index]) ? Carbon::parse($programStartTimes[$index])->setTimezone($current_timezone) : Carbon::now($current_timezone);
-                //         $endTime = isset($programEndTimes[$index]) ? Carbon::parse($programEndTimes[$index])->setTimezone($current_timezone) : Carbon::today()->endOfDay();
+        //         //         $title = $programTitles[$index];
+        //         //         $startTime = isset($programStartTimes[$index]) ? Carbon::parse($programStartTimes[$index])->setTimezone($current_timezone) : Carbon::now($current_timezone);
+        //         //         $endTime = isset($programEndTimes[$index]) ? Carbon::parse($programEndTimes[$index])->setTimezone($current_timezone) : Carbon::today()->endOfDay();
     
-                //         $duration = $endTime->diffInMinutes($startTime);
-                //         $columnSpan = $duration < 0 ? 0 : $duration;
-                //         $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
-                //         $startColumn = $startColumn > 0 ? $startColumn : 0;
+        //         //         $duration = $endTime->diffInMinutes($startTime);
+        //         //         $columnSpan = $duration < 0 ? 0 : $duration;
+        //         //         $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
+        //         //         $startColumn = $startColumn > 0 ? $startColumn : 0;
     
-                //         $formattedStartTime = $startTime->format('H:00');
-                //         $formattedEndTime = $endTime->format('H:00');
+        //         //         $formattedStartTime = $startTime->format('H:00');
+        //         //         $formattedEndTime = $endTime->format('H:00');
     
-                //         // $demo.push([
-                //         //     'id' => $program->id,
-                //         //     'title' => $title, 
-                //         //     'column_span' => $columnSpan,
-                //         //     'start_column' => $startColumn,
-                //         //     'row' => $program->id,
-                //         //     'start_time' => $formattedStartTime,
-                //         //     'end_time' => $formattedEndTime,
-                //         //     'publish_type' => $program->publish_type,
-                //         // ]);
+        //         //         // $demo.push([
+        //         //         //     'id' => $program->id,
+        //         //         //     'title' => $title, 
+        //         //         //     'column_span' => $columnSpan,
+        //         //         //     'start_column' => $startColumn,
+        //         //         //     'row' => $program->id,
+        //         //         //     'start_time' => $formattedStartTime,
+        //         //         //     'end_time' => $formattedEndTime,
+        //         //         //     'publish_type' => $program->publish_type,
+        //         //         // ]);
                      
                        
 
                        
-                //     }
-                // }
+        //         //     }
+        //         // }
 
                 
-                continue; 
-            }
+        //         continue; 
+        //     }
     
-            // if ($program->publish_type !== 'schedule_program') {
+        //     // if ($program->publish_type !== 'schedule_program') {
 
-            //     $duration = $endTime->diffInMinutes($startTime);
-            //     $columnSpan = $duration < 0 ? 0 : $duration;
-            //     $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
-            //     $startColumn = $startColumn > 0 ? $startColumn : 0;
+        //     //     $duration = $endTime->diffInMinutes($startTime);
+        //     //     $columnSpan = $duration < 0 ? 0 : $duration;
+        //     //     $startColumn = ($startTime->hour * 60 + $startTime->minute) - ($carbon_now->hour * 60 + $carbon_now->minute);
+        //     //     $startColumn = $startColumn > 0 ? $startColumn : 0;
     
-            //     $formattedStartTime = $startTime->format('H:00');
-            //     $formattedEndTime = $endTime->format('H:00');
+        //     //     $formattedStartTime = $startTime->format('H:00');
+        //     //     $formattedEndTime = $endTime->format('H:00');
     
-            //     $programs[] = [
-            //         'id' => $program->id,
-            //         'title' => $program->title,
-            //         'column_span' => $columnSpan,
-            //         'start_column' => $startColumn,
-            //         'row' => $program->id,
-            //         'start_time' => $formattedStartTime,
-            //         'end_time' => $formattedEndTime,
-            //         'publish_type' => $program->publish_type,
-            //     ];
-            // }
-        }
+        //     //     $programs[] = [
+        //     //         'id' => $program->id,
+        //     //         'title' => $program->title,
+        //     //         'column_span' => $columnSpan,
+        //     //         'start_column' => $startColumn,
+        //     //         'row' => $program->id,
+        //     //         'start_time' => $formattedStartTime,
+        //     //         'end_time' => $formattedEndTime,
+        //     //         'publish_type' => $program->publish_type,
+        //     //     ];
+        //     // }
+        // }
         // dd( $programs);
         if ($request->ajax()) {
             return response()->json([
@@ -680,30 +680,30 @@ class AdminLiveStreamController extends Controller
         $url_type   = !empty($data['url_type']) ? $data['url_type'] : null ;
         $mp4_url    = !empty($data['mp4_url']) ? $data['mp4_url'] : null ;
 
-        $programs = [];
+        // $programs = [];
 
-        if (is_array($request->scheduler_program_title) && !empty($request->scheduler_program_title)) {
-            foreach ($request->scheduler_program_title as $index => $title) {
+        // if (is_array($request->scheduler_program_title) && !empty($request->scheduler_program_title)) {
+        //     foreach ($request->scheduler_program_title as $index => $title) {
                
-                if (!empty($title) && isset($request->scheduler_start_time[$index]) && isset($request->scheduler_end_time[$index])) {
-                    $programs[] = [
-                        'title' => $title, 
-                        'start_time' => $request->scheduler_start_time[$index],
-                        'end_time' => $request->scheduler_end_time[$index] 
-                    ];
-                }
-            }
-        }
+        //         if (!empty($title) && isset($request->scheduler_start_time[$index]) && isset($request->scheduler_end_time[$index])) {
+        //             $programs[] = [
+        //                 'title' => $title, 
+        //                 'start_time' => $request->scheduler_start_time[$index],
+        //                 'end_time' => $request->scheduler_end_time[$index] 
+        //             ];
+        //         }
+        //     }
+        // }
 
         $movie = new LiveStream;
 
         $StorageSetting = StorageSetting::first();
         $settings = Setting::first();
 
-        $movie->scheduler_program_title = json_encode(array_column($programs, 'title'));
-        $movie->scheduler_program_days = json_encode($request->scheduler_program_days);
-        $movie->scheduler_start_time = json_encode(array_column($programs, 'start_time')); 
-        $movie->scheduler_end_time = json_encode(array_column($programs, 'end_time')); 
+        // $movie->scheduler_program_title = json_encode(array_column($programs, 'title'));
+        // $movie->scheduler_program_days = json_encode($request->scheduler_program_days);
+        // $movie->scheduler_start_time = json_encode(array_column($programs, 'start_time')); 
+        // $movie->scheduler_end_time = json_encode(array_column($programs, 'end_time')); 
 
         // live stream video
         if($StorageSetting->site_storage == 1){
