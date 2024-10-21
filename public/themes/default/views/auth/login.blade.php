@@ -165,13 +165,30 @@
             border-radius: 15px;
             border: 2px dashed #51bce8;
             text-align: left;
-            }   
+            }  
+            footer.py-4.mt-5{
+                margin-top: 0 !important;
+            } 
             
         </style>
     </head>
 
+    @php
+        $login_bg_img = $settings->login_content;
+        if($login_bg_img == 'Landban.png'){
+            $login_bgimg = false;
+        }
+        else {
+            $login_bgimg = true;
+        }
+    @endphp
+
     <body>
-        <section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+        @if($login_bgimg)
+            <section class="sign-in-page" style="background:url('{{ asset('public/uploads/settings/' . $settings->login_content) }}') no-repeat scroll 0 0; background-size: cover;">
+        @else
+            <section class="sign-in-page" style="background:#000; background-size: cover;">
+        @endif
         <div class="container">
             <div class="row mb-4  align-items-center height-self-center">
                 <div class="col-lg-7  col-12">
