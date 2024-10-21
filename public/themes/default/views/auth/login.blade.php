@@ -176,12 +176,7 @@
 
     @php
         $login_bg_img = $settings->login_content;
-        if($login_bg_img == 'Landban.png'){
-            $login_bgimg = false;
-        }
-        else {
-            $login_bgimg = true;
-        }
+        $login_bgimg = $login_bg_img == 'Landban.png' ? false : true;
     @endphp
 
     <body>
@@ -403,13 +398,14 @@
 <script>
     $(document).ready(function(){
         var theme_change = "{{ $theme_mode }}";
-        console.log(theme_change);
+        var bg_img_check = "{{ $login_bgimg ? 'true' : 'false' }}";
+        console.log('theme_change ' + theme_change);
         
-        if(theme_change === 'dark'){
+        if(theme_change === 'dark' && bg_img_check === 'false'){
             $(".bg-set").css("background", "#000");
             $(".km").css("color", "#fff");
         }
-        else if(theme_change === 'light'){
+        else if(theme_change === 'light' && bg_img_check === 'false'){
             $(".bg-set").css("background", "#fff");
             $(".km").css("color", "#000");
         }
