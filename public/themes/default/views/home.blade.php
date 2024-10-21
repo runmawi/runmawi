@@ -75,14 +75,14 @@ document.addEventListener("DOMContentLoaded", function() {
          if (lazyloadImages.length == 0) {
                document.removeEventListener("scroll", lazyload);
                document.body.removeEventListener("resize", lazyload);
-               window.matchMedia("(orientation: portrait)").removeListener(lazyload);
+               globalThis.matchMedia("(orientation: portrait)").removeListener(lazyload);
          }
       }, 20);
    }
 
    document.addEventListener("scroll", lazyload);
    document.body.addEventListener("resize", lazyload);
-   window.matchMedia("(orientation: portrait)").addListener(lazyload);
+   globalThis.matchMedia("(orientation: portrait)").addListener(lazyload);
 });
 
 //  family & Kids Mode Restriction
@@ -165,7 +165,7 @@ $(".home-search").hide();
          readMoreBtn.style.display = 'inline';
          readLessBtn.style.display = 'none';
          description.style.maxHeight = '100px';
-         var width = window.innerWidth || document.documentElement.clientWidth;
+         var width = globalThis.innerWidth || document.documentElement.clientWidth;
          if (width <= 500) {
             description.style.maxHeight = '65px';
          }
