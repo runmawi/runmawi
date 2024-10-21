@@ -452,6 +452,7 @@
       .sliderk.round:before {
          border-radius: 50%;
       }
+      body{background: #000;}
       /* Dark mode and light Mode */
          
       body.dark-theme {
@@ -475,9 +476,6 @@
       body.dark-theme ol.breadcrumb{
          color: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme .sliderk{
-         background-color: <?php echo $GetDarkText; ?>!important;
-      }
       body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{
          background-color: <?php echo $GetDarkBg; ?>!important;
          color: <?php echo $GetDarkText; ?>!important;
@@ -495,7 +493,7 @@
       body.dark-theme header .st5 {
          fill: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme header h1, h2, h3, h4, h5, h6{
+      body.dark-theme header h1, body.dark-theme header h2, body.dark-theme header h3, body.dark-theme header h4, body.dark-theme header h5, body.dark-theme header h6{
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme header .cont-item:hover{

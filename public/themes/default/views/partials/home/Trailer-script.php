@@ -34,14 +34,14 @@
                         const player = new Plyr(video, defaultOptions);
                         });
                         hls.attachMedia(video);
-                        window.hls = hls;
+                        globalThis.hls = hls;
                 }
 
                 function updateQuality(newQuality) {
-                    window.hls.levels.forEach((level, levelIndex) => {
+                    globalThis.hls.levels.forEach((level, levelIndex) => {
                         if (level.height === newQuality) {
                             console.log("Found quality match with " + newQuality);
-                            window.hls.currentLevel = levelIndex;
+                            globalThis.hls.currentLevel = levelIndex;
                         }
                     });
                 }
@@ -95,14 +95,14 @@
                         const player = new Plyr(video, defaultOptions);
                         });
                         hls.attachMedia(video);
-                        window.hls = hls;
+                        globalThis.hls = hls;
                 }
 
                 function updateQuality(newQuality) {
-                    window.hls.levels.forEach((level, levelIndex) => {
+                    globalThis.hls.levels.forEach((level, levelIndex) => {
                         if (level.height === newQuality) {
                             console.log("Found quality match with " + newQuality);
-                            window.hls.currentLevel = levelIndex;
+                            globalThis.hls.currentLevel = levelIndex;
                         }
                     });
             }
@@ -139,14 +139,14 @@
                         const player = new Plyr(video, defaultOptions);
                         });
                         hls.attachMedia(video);
-                        window.hls = hls;
+                        globalThis.hls = hls;
                 }
 
                 function updateQuality(newQuality) {
-                    window.hls.levels.forEach((level, levelIndex) => {
+                    globalThis.hls.levels.forEach((level, levelIndex) => {
                         if (level.height === newQuality) {
                             console.log("Found quality match with " + newQuality);
-                            window.hls.currentLevel = levelIndex;
+                            globalThis.hls.currentLevel = levelIndex;
                         }
                     });
                 }
