@@ -461,10 +461,16 @@
       body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
       body.dark-theme .navbar-collapse{
          background: <?php echo $GetDarkBg; ?>!important;
       }
       body.dark-theme header .navbar ul li.menu-item a{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme .vpageBanner .content .right , body.dark-theme .vpageBanner .content .right .utilities{
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme a, body.dark-theme p{

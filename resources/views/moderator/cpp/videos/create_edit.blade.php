@@ -600,34 +600,50 @@ border-radius: 0px 4px 4px 0px;
                 </div>
             </div>
                 <hr />
-               <div class="row">    
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                  <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                  <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
-               <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-               <i class="las la-exclamation-circle"></i>
-               </a>:</h3>
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
-               <div class="panel-body" style="display: block;"> 
-               @foreach($subtitles as $subtitle)
-               <div class="col-sm-6 form-group" style="float: left;">
-               <div class="align-items-center" style="clear:both;" >
-               <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-               <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
-               </div>
-               </div>
-               @endforeach
-               </div> 
-               </div>
-               </div>
+                  <div class="row">    
+                     <div class="panel panel-primary" data-collapsed="0"> 
+                        <div class="panel-heading"> 
+                           <div class="panel-title col-sm-12"> 
+                              <h3 class="fs-title"> Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
+                              <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                              <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
+                              <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                 <i class="las la-exclamation-circle"></i>
+                              </a>:
+                           </div> 
+                           <div class="panel-options"> 
+                              <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                           </div>
+                        </div> 
+                        <div class="panel-body" style="display: block;"> 
+                           @foreach($subtitles as $subtitle)
+
+                              <div class="col-sm-6 form-group" style="float: left;">
+                                 <div class="align-items-center" style="clear:both;" >
+                                    <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                    @if(@$subtitlescount > 0)
+                                       @foreach($MoviesSubtitles as $movies_subtitles)
+
+                                          @if(@$movies_subtitles->sub_language == $subtitle->language)
+                                             Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
+                                             &nbsp;&nbsp;&nbsp;
+                                             <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                                data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/subtitle/delete') . '/' . $movies_subtitles->id }}">
+                                                <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                          @endif
+
+                                       @endforeach
+                                    @endif
+
+                                    <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                    <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                    <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                 </div>
+                              </div>
+                           @endforeach
+                        </div> 
+                     </div>
+                  </div>
                </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> 
                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                <button type="submit" class="btn btn-primary" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
@@ -893,14 +909,11 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                         </div>
                   
-                      <div class="row">
+                     <div class="row mb-4">
 
                         <div class="col-7">
                            <h2 class="fs-title">Trailer Upload:</h2>
-                        </div>
-
-                        <div class="col-sm-6">
-                           <label class="m-0">Video Trailer Type:</label>
+                           {{-- <label class="m-0">Video Trailer Type:</label> --}}
                            <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
                               <option   value="null"> Select the Video Trailer Type </option>
                               <option  @if( $video->trailer_type == 'video_mp4' || $video->trailer_type == 'm3u8' ) {{ 'selected' }} @endif value="video_mp4" >Video Upload</option>
@@ -912,6 +925,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                      </div>
 
+                     <div class="selected-options">
                         <div class="row trailer_m3u8_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0"> Trailer m3u8 Url :</label>
@@ -924,8 +938,6 @@ border-radius: 0px 4px 4px 0px;
 
                            </div>
                         </div>
-
-                    
                         <div class="row trailer_mp4_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0"> Trailer mp4 Url :</label>
@@ -938,7 +950,6 @@ border-radius: 0px 4px 4px 0px;
                               @endif
                            </div>
                         </div>
-
                         <div class="row trailer_embed_url">
                            <div class="col-sm-6 form-group" >
                               <label class="m-0">Trailer Embed Code :</label>
@@ -950,34 +961,42 @@ border-radius: 0px 4px 4px 0px;
 
                            </div>
                         </div>
-
-
-                     <div class="row trailer_video_upload">
-                           <div class="col-sm-8 form-group">
-                              <label class="m-0">Upload Trailer :</label><br />
-                              <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
-                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
-                                  <p style="font-size: 14px !important;">Drop and drag the video file</p>
-                              </div>
-                              <!-- <span id="remove" class="danger">Remove</span> -->
-                          </div>
-                          <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                <span id="remove" class="danger">Remove</span> -->
-                           <div class="col-sm-8 mt-5 form-group">
-                              <!--<p>Upload Trailer video</p>-->
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
-                              <video width="200" height="200" controls>
-                                  <source src="{{ $video->trailer }}" type="video/mp4" />
+                        <div class="row trailer_video_upload">
+                              <div class="col-sm-8 form-group">
+                                 <label class="m-0">Upload Trailer :</label><br />
+                                 <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
+                                    <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
+                                    <p style="font-size: 14px !important;">Drop and drag the video file</p>
+                                 </div>
+                                 <!-- <span id="remove" class="danger">Remove</span> -->
+                           </div>
+                           <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                 <span id="remove" class="danger">Remove</span> -->
+                              <div class="col-sm-8 mt-5 form-group">
+                                 <!--<p>Upload Trailer video</p>-->
+                                 @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
+                                 <video width="200" height="200" controls>
+                                    <source src="{{ $video->trailer }}" type="video/mp4" />
+                                 </video>
+                                 @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
+                                 <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
+                              <source type="application/x-mpegURL" src="{{ $video->trailer }}">
+                                 </video>
+                                 @endif
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-5">
+                           @if(!empty($video->trailer))
+                              <video width="200" height="200" controls style="width: 90%;">
+                                 <source src="<?php echo $video->trailer; ?>" type="video/mp4" />
                               </video>
-                              @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
-                              <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
-                            <source type="application/x-mpegURL" src="{{ $video->trailer }}">
-                              </video>
-                              @endif
-                          </div>
+                           @endif
+                        </div>
                      </div>
 
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-sm-8  form-group">
                            <label class="m-0">Trailer Description:</label>
                            <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"

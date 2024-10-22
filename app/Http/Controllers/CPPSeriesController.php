@@ -1090,6 +1090,7 @@ class CPPSeriesController extends Controller
 
         $series = new SeriesSeason;
         $series->series_id = $data['series_id'];
+        $series->series_seasons_name = $data['series_seasons_name'];
         $series->image = $data['image'];
         $series->trailer = $data['trailer'];
         $series->trailer_type = $data['trailer_type'];
