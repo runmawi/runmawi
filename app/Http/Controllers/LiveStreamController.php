@@ -558,44 +558,52 @@ class LiveStreamController extends Controller
 
                 //   Livestream schedule epg
 
+                $i = 0;
+
                 switch ($item->publish_type) {
-                                                
+                                 
+                    
                     case 'publish_now':
 
-                        $item['program_title'] = $item->title;
-                        $item['program_start_time'] = null;
-                        $item['program_end_time']   = null;
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = null;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
 
                     break;
 
                     case 'publish_later':
 
-                        $item['program_title'] = $item->title;
-                        $item['program_start_time'] = $item->publish_time;
-                        $item['program_end_time']   = null;
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = $item->publish_time;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
 
                     break;
                     
                     case 'recurring':
 
-                        $item['program_title'] = $item->title;
-                        $item['program_start_time'] = json_decode($item->scheduler_program_start_time);
-                        $item['program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
 
                     break;
 
                     case 'schedule_program':
 
-                        $item['program_title'] = json_decode($item->scheduler_program_title);
-                        $item['program_start_time'] = json_decode($item->scheduler_program_start_time);
-                        $item['program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_program_title'] = json_decode($item->scheduler_program_title);
+                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
 
                         break;
 
                     default:
-                        $item['program_title']      = null;
-                        $item['program_start_time'] = null;
-                        $item['program_end_time']   = null;
+                        $item['epg_program_title']      = null;
+                        $item['epg_program_start_time'] = null;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_time_loop']   = null ;
 
                         break;
                 }
@@ -1218,33 +1226,33 @@ class LiveStreamController extends Controller
                                 switch ($item->publish_type) {
 
                                     case 'publish_now':
-                                        $item['program_title'] = $item->title;
-                                        $item['program_start_time'] = null;
-                                        $item['program_end_time']   = null;
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = null;
+                                        $item['epg_program_end_time']   = null;
                                         break;
                             
                                     case 'publish_later':
-                                        $item['program_title'] = $item->title;
-                                        $item['program_start_time'] = $item->publish_time;
-                                        $item['program_end_time']   = null;
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = $item->publish_time;
+                                        $item['epg_program_end_time']   = null;
                                         break;
                                     
                                     case 'recurring':
-                                        $item['program_title'] = $item->title;
-                                        $item['program_start_time'] = json_decode($item->scheduler_program_start_time);
-                                        $item['program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
                                         break;
                             
                                     case 'schedule_program':
-                                        $item['program_title'] = json_decode($item->scheduler_program_title);
-                                        $item['program_start_time'] = json_decode($item->scheduler_program_start_time);
-                                        $item['program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_title'] = json_decode($item->scheduler_program_title);
+                                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
                                         break;
                             
                                     default:
-                                        $item['program_title']      = null;
-                                        $item['program_start_time'] = null;
-                                        $item['program_end_time']   = null;
+                                        $item['epg_program_title']      = null;
+                                        $item['epg_program_start_time'] = null;
+                                        $item['epg_program_end_time']   = null;
                                         break;
                                 }
                             

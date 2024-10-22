@@ -2,9 +2,9 @@
 @if (!is_null($Livestream_details))
 
     @php
-        $program_title      = $Livestream_details->program_title ;
-        $program_start_time = $Livestream_details->program_start_time ;
-        $program_end_time   = $Livestream_details->program_end_time ;
+        $epg_program_title      = $Livestream_details->epg_program_title ;
+        $epg_program_start_time = $Livestream_details->epg_program_start_time ;
+        $epg_program_end_time   = $Livestream_details->epg_program_end_time ;
 
         $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink'];
       
@@ -35,7 +35,7 @@
 
                 @if ( $Livestream_details->publish_type == "publish_now")
                     <div class="epg-program" style="background-color: {{ $colors[2] }};">
-                        <b>{{ $program_title_once_show ?  @$Livestream_details->program_title :null }}</b>          
+                        <b>{{ $program_title_once_show ?  @$Livestream_details->epg_program_title :null }}</b>          
                         @php $program_title_once_show = false; @endphp 
                     </div>
                 @endif
@@ -43,9 +43,9 @@
                    {{-- Publish later  --}}
 
                 @if ( $Livestream_details->publish_type == "publish_later")
-                    @if ($time->gte($program_start_time))
+                    @if ($time->gte($epg_program_start_time))
                         <div class="epg-program" style="background-color: {{ $colors[1] }};">
-                            <b>{{ $program_title_once_show ? "{$Livestream_details->program_title} (Start: {$program_start_time}" : null }}</b>
+                            <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title} (Start: {$epg_program_start_time}" : null }}</b>
                             @php $program_title_once_show = false; @endphp 
                         </div>
                     @endif
@@ -54,18 +54,18 @@
                 {{-- Schedular Program --}}
                   
                 @if ( $Livestream_details->publish_type == "schedule_program")
-                    @forelse ($program_title as $index => $title)
+                    @forelse ($epg_program_title as $index => $title)
                         @if ($title)
                             @php
-                                $startTime = \Carbon\Carbon::createFromFormat('H:i', $program_start_time[$index]);
-                                $endTime = \Carbon\Carbon::createFromFormat('H:i', $program_end_time[$index]);
+                                $startTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_start_time[$index]);
+                                $endTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_end_time[$index]);
                                 $color = $colors[$index % count($colors)];
                             @endphp
 
                             @if ($time->between($startTime, $endTime))
                                 <div class="epg-program epg-timeline-{{ $index }}" style="background-color: {{ $color }};">
                                     @if ($title && $index !== $lastShownIndex)
-                                        <b>{{ "{$title} (Start: {$program_start_time[$index]} - End: {$program_end_time[$index]})" }}</b>
+                                        <b>{{ "{$title} (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]})" }}</b>
                                     @endif
                                 </div>
                                 @php $lastShownIndex = $index; @endphp
