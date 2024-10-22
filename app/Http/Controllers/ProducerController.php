@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\AdminOTPCredentials;
 use App\ModeratorsUser;
 use App\SeriesSeason;
 use App\PpvPurchase;
@@ -60,6 +62,121 @@ class ProducerController extends Controller
 
             return abort(404);
         }
+    }
+
+    public function signup(Request $request)
+    {
+        try {
+
+            return view('producer.signup');
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
+    public function signup_otp(Request $request)
+    {
+        try {
+
+            // Moderators User exists
+            
+            $ModeratorsUser_exists = ModeratorsUser::where('mobile_number',$request->mobile_number)->exists();
+
+            if ($ModeratorsUser_exists) {
+                
+                return back()->withErrors(['mobile_number' => 'This Mobile Number alreay taken !!.']);
+            }
+
+            // OTP Credentials
+
+            $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
+
+            if(is_null($AdminOTPCredentials)){
+    
+                return back()->withErrors(['mobile_number' => 'Error In OTP , Please, Check the Admin OTP Credentials']);
+            }
+
+            // OTP Sending
+
+            if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
+
+                $random_otp_number = random_int(1000, 9999);
+
+                $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
+    
+                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
+                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+    
+                $inputs = array(
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $request->mobile_number,
+                    'SenderID' => $SenderID,
+                    'ServiceName' => $ServiceName,
+                );
+    
+                if ($ServiceName == "TEMPLATE_BASED") {
+                    $inputs += array(
+                        'Message' => $message,
+                    );
+                }
+    
+                $response = Http::withoutVerifying()->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
+    
+                if (str_contains($response->body(), 'success')) {
+    
+                    $parts = explode(':', $response->body());
+                    $msgId = $parts[1];
+    
+                    ModeratorsUser::create([
+                        'mobile_number' => $request->mobile_number,
+                        'username'  => $request->username,
+                        'otp'   => $random_otp_number,
+                    ]);
+
+                }else {
+                    return back()->withErrors(['mobile_number' => 'Error In OTP , Please, Check the Admin OTP Credentials']);
+                }      
+            }
+
+            $data = array(
+                'mobile_number' => $request->mobile_number,
+            );
+
+            return view('producer.signup-otp',$data);
+
+        }  catch (\Throwable $th) {
+
+            return abort(404);
+        }
+    }
+
+    public function verify_signup(Request $request)
+    {
+        // try {
+
+            $ModeratorsUser_exists = ModeratorsUser::where('mobile_number', $request->mobile_number)->where('otp', $request->otp)->first();
+
+
+            if (is_null($ModeratorsUser_exists)) {
+                
+                // return redirect()->route('producer.login', ['param' => 'value']);
+
+                return back()->withErrors(['otp' => 'Incorrect OTP.']);
+            }
+
+
+            $request->session()->put('cpp_user_id', $ModeratorsUser_exists->id);
+
+            return redirect()->intended(route('producer.home'));
+
+        // }  catch (\Throwable $th) {
+
+        //     return abort(404);
+        // }
     }
 
     public function home(Request $request)

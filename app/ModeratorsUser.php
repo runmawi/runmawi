@@ -24,6 +24,7 @@ class ModeratorsUser extends Model
         'email_id',
         'mobile_number',
         'password',
+        'otp',
         'confirm_password',
         'description',
         'picture',

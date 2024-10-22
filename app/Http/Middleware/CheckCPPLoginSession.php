@@ -17,9 +17,18 @@ class CheckCPPLoginSession
 
     public function handle($request, Closure $next)
     {
-        if ( $request->route()->getName() === 'producer.login' || $request->route()->getName() === "producer.verify_login") {
+        $allowedRoutes = [
+            'producer.login',
+            'producer.verify_login',
+            'producer.signup',
+            'producer.signup_login',
+            'producer.signup_otp',
+            'producer.verify_signup',
+        ];
+        
+        if (in_array($request->route()->getName(), $allowedRoutes)) {
             return $next($request);
-        }
+        }        
 
         if (is_null(Session::get('cpp_user_id'))) {
             return redirect()->route('producer.login')->withErrors(['session' => 'Session expired !!']);

@@ -30,15 +30,10 @@
 
                 <button type="submit" id="btn-login">Login</button>
 
-                <div class="row text-secondary">
-                    <div class="col-12">
-                        <a href="#resetpassword" class="float-right text-warning"></a>
-                    </div>
-                </div>
             </div>
 
-            <div class="container text-secondary text-center" style="background-color:#f1f1f1">
-                <a href="#register" type="button" class="cancelbtn btn-primary"></a>
+            <div class="container text-secondary text-center" style="background-color:#04AA6D">
+                <a href="{{ route('producer.signup')}}" type="button" class="cancelbtn btn-primary"> New user? sign up</a>
             </div>
         </form>
 

@@ -2983,6 +2983,11 @@ Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSe
 
     Route::get('/', 'ProducerController@login')->name('producer.login');
     Route::get('/login', 'ProducerController@login')->name('producer.login');
+
+    Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
+    Route::get('/signup-otp', 'ProducerController@signup_otp')->name('producer.signup_otp');
+    Route::get('/verify-signup', 'ProducerController@verify_signup')->name('producer.verify_signup');
+
     Route::post('/verify-login', 'ProducerController@verify_login')->name('producer.verify_login');
     Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
     Route::get('/home', 'ProducerController@home')->name('producer.home');
