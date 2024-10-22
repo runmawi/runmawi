@@ -100,7 +100,7 @@
 
                     @php $day = $now->copy()->addDays($i); @endphp
 
-                    <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $now->format('Y-m-d\TH:i') }}" >
+                    <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
                         {{ $day->format('l') }} 
                     </div>
                 @endfor

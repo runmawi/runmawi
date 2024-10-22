@@ -558,18 +558,14 @@ class LiveStreamController extends Controller
 
                 //   Livestream schedule epg
 
-                $i = 0;
-
                 switch ($item->publish_type) {
-                                 
                     
                     case 'publish_now':
 
                         $item['epg_program_title'] = $item->title;
                         $item['epg_program_start_time'] = null;
                         $item['epg_program_end_time']   = null;
-                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
-
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
                     break;
 
                     case 'publish_later':
@@ -577,8 +573,7 @@ class LiveStreamController extends Controller
                         $item['epg_program_title'] = $item->title;
                         $item['epg_program_start_time'] = $item->publish_time;
                         $item['epg_program_end_time']   = null;
-                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
-
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
                     break;
                     
                     case 'recurring':
@@ -586,8 +581,7 @@ class LiveStreamController extends Controller
                         $item['epg_program_title'] = $item->title;
                         $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
                         $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
-                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
-
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
                     break;
 
                     case 'schedule_program':
@@ -595,16 +589,14 @@ class LiveStreamController extends Controller
                         $item['epg_program_title'] = json_decode($item->scheduler_program_title);
                         $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
                         $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
-                        $item['epg_time_loop']   = Carbon::createFromTime(0, 0)->addMinutes($i * 15) ;
-
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
                         break;
 
                     default:
                         $item['epg_program_title']      = null;
                         $item['epg_program_start_time'] = null;
                         $item['epg_program_end_time']   = null;
-                        $item['epg_time_loop']   = null ;
-
+                        $item['epg_program_timeloop_parse']   = null;
                         break;
                 }
 
@@ -1216,10 +1208,10 @@ class LiveStreamController extends Controller
                             });
 
                             $livestream = $Livestream_details->when($selectedDate && $publish_type == 'publish_later', function ($query)use ($selectedDate)  {
-                                return $query->where('publish_time','>=',$selectedDate);
+                                return $query->where('publish_time','<=',$selectedDate);
                             })
 
-                            ->get()->map(function ($item) {
+                            ->get()->map(function ($item) use ($selectedDate) {
 
                                 // Livestream schedule epg
 
@@ -1229,30 +1221,35 @@ class LiveStreamController extends Controller
                                         $item['epg_program_title'] = $item->title;
                                         $item['epg_program_start_time'] = null;
                                         $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
                                         break;
                             
                                     case 'publish_later':
                                         $item['epg_program_title'] = $item->title;
                                         $item['epg_program_start_time'] = $item->publish_time;
                                         $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
                                         break;
                                     
                                     case 'recurring':
                                         $item['epg_program_title'] = $item->title;
                                         $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
                                         $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
                                         break;
                             
                                     case 'schedule_program':
                                         $item['epg_program_title'] = json_decode($item->scheduler_program_title);
                                         $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
                                         $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
                                         break;
                             
                                     default:
                                         $item['epg_program_title']      = null;
                                         $item['epg_program_start_time'] = null;
                                         $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse'] = null;
                                         break;
                                 }
                             

@@ -5,6 +5,7 @@
         $epg_program_title      = $Livestream_details->epg_program_title ;
         $epg_program_start_time = $Livestream_details->epg_program_start_time ;
         $epg_program_end_time   = $Livestream_details->epg_program_end_time ;
+        $epg_program_timeloop_parse   = $Livestream_details->epg_program_timeloop_parse ;
 
         $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink'];
       
@@ -18,7 +19,7 @@
 
         @for ($i = 0; $i < 96; $i++)
             @php
-                $time = \Carbon\Carbon::createFromTime(0, 0)->addMinutes($i * 15);
+                $time = \Carbon\Carbon::createFromTime(0, 0)->addMinutes($i * 15)->setDateFrom($epg_program_timeloop_parse);  
                 $timeFormatted = $time->format('H:i');
                 $nextTime = \Carbon\Carbon::createFromTime(0, 0)->addMinutes(($i + 1) * 15);
             @endphp
@@ -27,9 +28,9 @@
                 <div class="timeline">{{ $timeFormatted }}</div>
 
                         {{-- Current Time Line --}}
-                @if ($now->between($time, $nextTime))
+                {{-- @if ($now->between($time, $nextTime))
                     <div class="current-time-line" style="position: absolute; top: 0; left: 50%; width: 2px; background-color: red; height: 100%;"></div>
-                @endif
+                @endif --}}
               
                         {{-- Publish now  --}}
 
@@ -43,7 +44,8 @@
                    {{-- Publish later  --}}
 
                 @if ( $Livestream_details->publish_type == "publish_later")
-                    @if ($time->gte($epg_program_start_time))
+
+                    @if ($time->greaterThan($epg_program_start_time))
                         <div class="epg-program" style="background-color: {{ $colors[1] }};">
                             <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title} (Start: {$epg_program_start_time}" : null }}</b>
                             @php $program_title_once_show = false; @endphp 
