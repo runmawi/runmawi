@@ -298,7 +298,7 @@
                            <div class="iq-card-body1" >
                               <div class="d-flex align-items-center justify-content-center">
                                  <div class="iq-cart-text text-center text-capitalize">
-                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.png';  ?>"> 
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.webp';  ?>" loading="lazy"> 
                                     <p class="mb-0 mt-3">
                                        view
                                     </p>
@@ -355,7 +355,7 @@
                            <div class="iq-card-body1">
                               <div class="d-flex align-items-center justify-content-center">
                                  <div class="iq-cart-text text-center text-uppercase">
-                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.png';  ?>"> 
+                                      <img class="ply" src="<?php echo URL::to('/').'/assets/img/visitor.webp';  ?>" loading="lazy"> 
                                     <p class="mb-0 mt-3">
                                        Visitors
                                     </p>
@@ -427,7 +427,7 @@
                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                            </div>
                            <div class="media align-items-center">
-                              <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>"> </div>
+                              <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>" loading="lazy"> </div>
                               <div class="media-body text-white">
                                  <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($key);?></h6>
                                  <small class=" mb-0 val">+ {{ $value }} Videos</small>
@@ -470,7 +470,7 @@
                                     <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
                                  </div>
                                  <div class="media align-items-center">
-                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>"></div>
+                                    <div class="iq-icon-box-view rounded mr-3 iq-bg-secondary"> <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/icon.svg';  ?>" loading="lazy"></div>
                                     <div class="media-body text-white">
                                        <h6 class="mb-0 font-size-22 line"><?php echo ucfirst($category->name);?></h6>
                                        <small class="val mb-0">+ {{ $categoty_sum }} views</small>
@@ -499,13 +499,13 @@
                            <table class="data-tables table movie_table" style="width:100%">
                               <thead>
                                  <tr class="r1">
-                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/video.svg';  ?>">Video</th>
-                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>">Rating</th>
-                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>">Category</th>
-                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>">Views</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/video.svg';  ?>" loading="lazy">Video</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/rat.svg';  ?>" loading="lazy">Rating</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/ct.svg';  ?>" loading="lazy">Category</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/viw.svg';  ?>" loading="lazy">Views</th>
                                     
                                     <!-- <th style="width:20%;">Date</th> -->
-                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>">Favourites</th>
+                                    <th style=""><img width="25" class="ply" src="<?php echo URL::to('/').'/assets/img/icon/lik.svg';  ?>" loading="lazy">Favourites</th>
                                  </tr>
                               </thead>
                               <tbody>
