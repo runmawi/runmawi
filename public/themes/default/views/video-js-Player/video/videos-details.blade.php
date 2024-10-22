@@ -191,6 +191,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             .vpageBanner .content .right svg{height: 40px !important;}
             .row.plays_btn_res {justify-content: center;}
             a.btn.play_button{width: 100%;display: flex;justify-content: center;margin: 1rem 0 0;}
+            body.dark-theme .navbar-collapse {background: <?php echo $GetDarkBg; ?>!important;}
         }
 
     .opacity-layer{display: none;}
