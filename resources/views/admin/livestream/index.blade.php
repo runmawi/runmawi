@@ -515,24 +515,19 @@ border-radius: 0px 4px 4px 0px;
 						session()->forget('title');
 						session()->forget('hls_url');
 				@endphp
-				location.href = "{{ URL::to('admin/livestream')}}";
+				location.reload();
 			}
 			})
 		}
 	});
-	</script>
 
-
-<script>
     $(document).ready(function(){
-        // $('#message').fadeOut(120);
+       
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
     })
-</script>
 
-<script>
 	function update_video_banner(ele){
 
 	var video_id = $(ele).attr('data-video-id');
