@@ -173,6 +173,8 @@ body{
 h1, h2, h3, h4, h5, h6, p{
     font-family: 'Sen', sans-serif !important;
 }
+footer.mb-3{margin-top: 0 !important;}
+.sign-in-page{background-color: #000;}
 
 </style>
     </head>
@@ -349,6 +351,22 @@ h1, h2, h3, h4, h5, h6, p{
   });
   
 }, 2000);
+</script>
+
+<script>
+    $(document).ready(function(){
+        var theme_change = "{{ $theme_mode }}";
+        console.log('theme_change ' + theme_change);
+        
+        if(theme_change === 'dark' && bg_img_check === 'false'){
+            $(".sign-in-page").css("background", "#000");
+            $(".km").css("color", "#fff");
+        }
+        else if(theme_change === 'light' && bg_img_check === 'false'){
+            $(".sign-in-page").css("background", "#fff");
+            $(".km").css("color", "#000");
+        }
+    });
 </script>
 
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
