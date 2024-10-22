@@ -64,11 +64,6 @@
 </style>
 
 @php
-    $scheduler_program_title = json_decode($Livestream_details->scheduler_program_title);
-    $scheduler_program_start_time = json_decode($Livestream_details->scheduler_program_start_time);
-    $scheduler_program_end_time = json_decode($Livestream_details->scheduler_program_end_time);
-    $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink'];
-    $lastShownIndex = null;
     $now = \Carbon\Carbon::now(); 
 @endphp
 
@@ -103,21 +98,10 @@
             <div class="date-nav">
                 @for ($i = 0; $i < 7; $i++)
 
-                    @php $day = $now->copy()->addDays($i);  @endphp
+                    @php $day = $now->copy()->addDays($i); @endphp
 
-                    <div class="day-nav" data-day="{{ $day->format('N') }}">
-                        @switch($i)
-                            @case(0)
-                                {{ "Today" }}
-                                @break
-
-                            @case(1)
-                                {{"Tomorrow"}}
-                                @break
-
-                            @default
-                            {{ $day->format('l') }} 
-                        @endswitch
+                    <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $now->format('Y-m-d\TH:i') }}" >
+                        {{ $day->format('l') }} 
                     </div>
                 @endfor
             </div>
@@ -139,43 +123,11 @@
                     </div>
                 </div>
 
-                <div class="epg-timeline" id="timeline">
-
-                    @for ($i = 0; $i < 96; $i++)
-                        @php
-                            $time = \Carbon\Carbon::createFromTime(0, 0)->addMinutes($i * 15);
-                            $timeFormatted = $time->format('H:i');
-                            $nextTime = \Carbon\Carbon::createFromTime(0, 0)->addMinutes(($i + 1) * 15);
-                        @endphp
-
-                        <div class="timeline-slot">
-                            <div class="timeline">{{ $timeFormatted }}</div>
-
-                            @if ($now->between($time, $nextTime))
-                                <div class="current-time-line" style="position: absolute; top: 0; left: 50%; width: 2px; background-color: red; height: 100%;"></div>
-                            @endif
-
-                            @foreach ($scheduler_program_title as $index => $title)
-                                @if ($title)
-                                    @php
-                                        $startTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_start_time[$index]);
-                                        $endTime = \Carbon\Carbon::createFromFormat('H:i', $scheduler_program_end_time[$index]);
-                                        $color = $colors[$index % count($colors)];
-                                    @endphp
-
-                                    @if ($time->between($startTime, $endTime))
-                                        <div class="epg-program epg-timeline-{{ $index }}" style="background-color: {{ $color }};">
-                                            @if ($title && $index !== $lastShownIndex)
-                                                <b>{{ "{$title} (Start: {$scheduler_program_start_time[$index]} - End: {$scheduler_program_end_time[$index]})" }}</b>
-                                            @endif
-                                        </div>
-                                        @php $lastShownIndex = $index; @endphp
-                                    @endif
-                                @endif
-                            @endforeach
-                        </div>
-                    @endfor
+                <div id="data">
+                    {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
+                    ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
                 </div>
+
             </div>
         </div>
     </div>
@@ -184,19 +136,24 @@
 <script>
     $(document).ready(function(){
         $('.day-nav').click(function() {
-            var selectedDate = $(this).data('day'); 
+
+            var selectedDay = $(this).data('day'); 
+            var selectedDate = $(this).data('date'); 
 
             $.ajax({
                 url: "{{ route('livestream-fetch-timeline') }}", 
                 type: "GET",
                 data: {
-                    date: selectedDate 
+                    day: selectedDay ,
+                    date: selectedDate ,
+                    publish_type  : "<?php echo $Livestream_details->publish_type ?>",
+                    Livestream_id : "<?php echo $Livestream_details->id ?>"
                 },
                 success: function(response) {
-                    $('#epg-timeline-container').html(response);
+                    $('#data').html(response);
                 },
                 error: function(xhr) {
-                    console.log(xhr.responseText); // Log errors if any
+                    console.log(xhr.responseText); 
                 }
             });
         });
