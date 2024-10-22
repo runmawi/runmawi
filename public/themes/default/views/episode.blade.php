@@ -615,7 +615,7 @@
                     </li>
 
                     <li>
-                        <a onclick="EmbedCopy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
+                        <a onclick="Copy();" class="share-ico"><span><i class="ri-links-fill mt-1"></i></span></a>
                     </li>
                 </ul>
             </div>
@@ -1508,13 +1508,17 @@
     <!-- Watchlater & wishlist -->
     <script>
         function episodewatchlater(ele) {
+            console.log("ele",ele);            
             var episode_id = $(ele).attr('data-video-id');
             var key_value = $(ele).attr('data-list');
             var id = '#episode_add_watchlist_' + key_value;
             var my_value = $(id).data('myval');
+            console.log("my_value",my_value + " key_value",key_value + " episode_id",episode_id);
+            
 
             if (my_value != "remove") {
                 var url = '<?= URL::to('/episode_watchlist') ?>';
+                console.log("url",url);
             } else if (my_value == "remove") {
                 var url = '<?= URL::to('/episode_watchlist_remove') ?>';
             }
