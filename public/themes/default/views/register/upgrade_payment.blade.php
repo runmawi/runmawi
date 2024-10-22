@@ -2,12 +2,37 @@
 
 @php
     include public_path('themes/default/views/header.php');
+
+
+$PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
+
+$PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+
+$paypal_signature = null;
+
+if (!is_null($PayPalpayment)) {
+    switch ($PayPalpayment->live_mode) {
+        case 0:
+            $paypalClientId = $PayPalpayment->test_paypal_signature;
+            break;
+
+        case 1:
+            $paypalClientId = $PayPalpayment->live_paypal_signature;
+            break;
+        default:
+            $paypalClientId = null;
+            break;
+    }
+}
+
 @endphp
 
 
 @section('content')
 
-<script src="https://www.paypal.com/sdk/js?client-id=AcG3EJ9YtZXPBRDwe_PkmI3ZYMXmUtvjyYC7OLHmV9Q1x0rfFiFtDCQQA5ICspAHfLXt3P7WwG_pOZs-&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+<script src="https://www.paypal.com/sdk/js?client-id={{ $paypalClientId }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
 
     <style>
         .round {
