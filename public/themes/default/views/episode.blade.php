@@ -711,10 +711,16 @@
 
                 <!-- Remaining Episodes -->
                 <!-- Recommend Series Based on Category -->
-                @php
-                    include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
-                    include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
-                @endphp
+                    @if(count($season) > 0)
+                        @php
+                            include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
+                        @endphp
+                    @endif
+                    @if(count($series_lists) > 0)
+                        @php
+                            include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
+                        @endphp
+                    @endif
 
             </div>
         </div>

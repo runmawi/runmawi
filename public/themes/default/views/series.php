@@ -130,6 +130,7 @@
     div#myImage{height: auto;}
     #descriptionContainer p{color:#fff;margin:0;}
     div#video-js-trailer-player{height:65vh !important;}
+    #series_title h1{color:#fff !important;}
     @media (min-width: 1400px) and (max-width: 2565px) {
       div#video-js-trailer-player {
             height: 50vh !important;
@@ -220,7 +221,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 		<div class="col-md-7 p-0">
 			<div id="series_title">
 				<div class="container-fluid">
-					 <h1><?= $series->title ?></h1>
+					 <h1 class=""><?= $series->title ?></h1>
                   
 					<!--<div class="col-md-6 p-0">
 						<select class="form-control" id="season_id" name="season_id">
@@ -495,22 +496,15 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
         </div>
       </div> -->
 
-		<div class="row">
-			<div class="col-md-12 mt-4">
-				<nav class="nav-justified pl-3">
-					<div class="nav nav-tabs nav-fill container-fluid " id="nav-tab" role="tablist">
-                        <h4 class="ml-3"><?php echo __('Episode'); ?></h4>
-						<!--<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Episode</a>
-						<!--<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Related</a>
-						<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Detail</a>-->
-					</div>
-				</nav>
+		<div class="row container-fluid mt-4">
+            <div class="container-fluid mb-4">
+			    <h4 class=""><?php echo __('Episode'); ?></h4>
             </div>
 <!-- $series->title -->
 						<div class="container-fluid">
-				        <div class="favorites-contens pl-5">
+				        <div class="favorites-contens">
                   <div class="row justify-content-between m-0">
-                    <div class="col-3 p-0">
+                    <div class="col-md-3 col-6 p-0">
                       <select class="form-control" id="season_id" name="season_id">
                         <?php foreach($season as $key => $seasons): ?>
                           <option data-key="<?= $key+1 ;?>" value="season_<?= $seasons->id;?>" ><?php echo __('Season'); ?> <?= $key+1; ?></option>

@@ -427,7 +427,15 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     .down-apps{display:block !important;margin-bottom: 2rem;}
     .down-apps img{width:100%;}
     p.font-weight-bold.mb-0{font-size: 1.5rem;text-align: center;}
-    
+    .map1.ml-3 {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px; /* Adjust the gap between items */
+      }
+
+      .map1.ml3 a {
+          text-align: center;
+      }
   }
   body.light-theme footer a, body.light-theme footer p{color: #000  !important; }
   footer p{color: #fff  !important; }
