@@ -445,6 +445,7 @@
       -ms-transform: translateX(26px);
       transform: translateX(26px);
       }
+      li.logout_mobile_view.col-sm-6.myp h6{font-weight:600;}
       /* Rounded sliders */
       .sliderk.round {
          border-radius: 34px;
@@ -458,12 +459,16 @@
       body.dark-theme {
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme i{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
       body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
          background: <?php echo $GetDarkBg; ?>!important;
       }
       body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6{
          color: <?php echo $GetDarkText; ?>!important;
       }
+      
       body.dark-theme .navbar-collapse{
          background: <?php echo $GetDarkBg; ?>!important;
       }
@@ -489,7 +494,10 @@
       body.dark-theme header#main-header{
          color: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme #home-slider p{
+      body.dark-theme .breadcrumb i {
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme #home-slider p, body.dark-theme #home-slider h2{
          color: #fff !important;
       }
       body.dark-theme header .st0, .st2{
@@ -1148,7 +1156,7 @@
                      </div>
                      <div class="mobile-more-menu">
                         <button class="more-toggle" id="dropdownMenuButton" aria-label="More Option Button" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
-                           <i class="ri-more-line"></i>
+                           <i class="ri-search-line"></i>
                         </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">
