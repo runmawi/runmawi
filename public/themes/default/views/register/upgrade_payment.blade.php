@@ -519,11 +519,26 @@
             padding: 10px;
         }
 
-        .ambk {
-            background-color: #000;
+        body.dark-theme .ambk {
+            background: <?php echo $GetDarkText; ?>!important;
+            color: <?php echo $GetDarkBg; ?>!important;
             padding: 10px !important;
         }
+        body.dark-theme .ambk h6{
+            color: <?php echo $GetDarkBg; ?>!important;
+        }
+
+        body.dark-theme .small-heading, body.dark-theme .medium-heading{
+            color: <?php echo $GetDarkText; ?>!important;
+        }
+
         body.light-theme p{
+            color: <?php echo GetLightText(); ?> !important;
+        }
+        body.light-theme .bg-white{
+            background: <?php echo $GetDarkBg; ?>!important;
+        }
+        body.light-theme .small-heading, body.light-theme .medium-heading{
             color: <?php echo GetLightText(); ?> !important;
         }
         body.light-theme p{
@@ -579,11 +594,11 @@
                     <div class="flick1">
 
                         
-                        <div class="small-heading text-white">Step 2 of<span class="ml-2">2</span></div>
+                        <div class="small-heading">Step 2 of<span class="ml-2">2</span></div>
 
                         <p style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
-                        <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
+                        <div class="medium-heading pb-3"> {{ $signup_step2_title }} </div>
 
                         <div class="col-md-12 p-0">
                             <p class="meth"> Payment Method</p>
