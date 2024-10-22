@@ -337,7 +337,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
+                                        <span class="text pr-2 text-white"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
                             @else
@@ -346,7 +346,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                            <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                         </div>
                                     </a>
 
@@ -354,7 +354,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
                                             <div class="playbtn" style="gap:5px">
                                                 {!! $play_btn_svg !!}
-                                                <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                                <span class="text pr-2 text-white"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                             </div>
                                         </a>
                                     @endif
@@ -396,7 +396,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                        <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                     </div>
                                 </a>
                             @endif
@@ -406,7 +406,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( 'Upgrade Now' ) }} </span>
+                                            <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
                                         </div>
                                     </a>
                                 @endif
@@ -679,8 +679,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                                         </div>
                                                     </a>
 
-                                                    <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/>{{ __('Watch Now') }} 
+                                                    <a class="epi-name mt-2 mb-0 btn text-white" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
+                                                        <i class="fa fa-play mr-1" ></i>{{ __('Watch Now') }} 
                                                     </a>
                                                 </div>
                                             </div>
