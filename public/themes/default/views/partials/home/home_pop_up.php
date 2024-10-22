@@ -33,7 +33,7 @@
 
 <script>
 
-    $(window).on('load', function() {
+    $(globalThis).on('load', function() {
         var pop_up_enable =  <?php  echo json_encode( $enable_popup); ?>; 
         var auth_user_role  = <?php  echo json_encode($auth_user_role); ?>; 
         var auth_guest_user =  <?php  echo json_encode( $auth_guest_user); ?>; 

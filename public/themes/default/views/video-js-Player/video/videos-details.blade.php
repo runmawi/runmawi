@@ -110,6 +110,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     body.light-theme .vpageBanner .opacity-layer {
         background:none;
     }
+    body.light-theme .share-box a{color: <?php echo $GetLightText; ?> !important;}
+    body.light-theme .share-box span{color: <?php echo $GetLightText; ?> !important;}
+
     #video-purchase-now-modal .modal-footer{
             background: transparent;
             border-top: 1px solid black;

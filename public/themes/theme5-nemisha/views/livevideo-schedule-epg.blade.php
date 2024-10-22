@@ -10,14 +10,14 @@
     .epg-time span{font-size:12px;color:#f0f0f0}
     .epg-grid{margin-top:20px;background-color:#1c1c1c;border-radius:8px;padding:10px;height:50vh!important;overflow:overlay}
     .epg-timeline-container{overflow-x:auto;white-space:nowrap;position:relative;top:-37px}
-    .epg-timeline{display:flex;justify-content:flex-start;padding:10px;border-bottom:1px solid #555;background-color:#333;color:#ccc;font-size:12px;width:352%}
+    .epg-timeline{display:flex;justify-content:flex-start;padding:10px;color:#ccc;font-size:12px; position: relative;width:100%; white-space: nowrap;scroll-behavior: smooth;}
     .timeline{margin:0 10px}
-    .epg-timeline div{flex:0 0 60px;text-align:center}
+    .epg-timeline div{flex:0 0 60px;text-align:center;}
     .epg-channels{width:16%;float:left;padding-right:10px}
     .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px}
-    .epg-programs{overflow-x:auto;white-space:nowrap}
+    .epg-programs{overflow-x:auto;white-space:nowrap; padding-bottom: 20px;}
     .epg-program-row{display:flex;margin-bottom:10px}
-    .epg-program{height:75px;position:relative;margin:0 5px;color:#fff;text-align:center;line-height:75px}
+    .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
     .clearfix::after{content:"";display:table;clear:both}
     .epg-navigation{width:15%;height:38px;z-index:0;position:relative;overflow-x:auto;border-bottom:1px solid #555}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
@@ -25,20 +25,24 @@
     .date-nav{gap:25px;white-space:nowrap;align-items:center;border-bottom:1px solid #555;background-color:#333;padding-left:20px}
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
  
-    .timeline-slot {
-        width: calc(100% / 96); 
+    .epg-arrow-buttons {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        padding-bottom: 50px;
     }
 
-    .epg-program {
-        background-color: lightblue;
-        padding: 5px;
-        text-align: center;
-        width: 100%;
-        margin-top: 5px;
+
+    .timeline-slot {
+        width: calc(100% / 96);
+        flex-direction: column;
+        align-items: center;
+        position: relative;
     }
+
 
     .epg-timeline-container {
         position: relative;
@@ -51,16 +55,11 @@
         margin: 5px 0;
     }
 
-    .timeline-slot {
-        position: relative;
-        display: inline-block;
-        width: calc(100% / 96); /* Assuming 96 slots for 15-minute intervals in a 24-hour period */
-    }
-
+    
     .timeline {
         text-align: center;
         font-size: 12px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 </style>
 
@@ -130,8 +129,18 @@
 
         <div class="epg-timeline-container">
             <div class="epg-programs">
-                <div class="epg-timeline">
-                
+
+                <div class="epg-arrow-buttons">
+                    <div class="left-arrow">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </div>
+                    <div class="right-arrow">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+                <div class="epg-timeline" id="timeline">
+
                     @for ($i = 0; $i < 96; $i++)
                         @php
                             $time = \Carbon\Carbon::createFromTime(0, 0)->addMinutes($i * 15);
@@ -192,4 +201,48 @@
             });
         });
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+    const timeSlots = document.querySelector('.epg-timeline');
+    const programRows = document.querySelectorAll('.timeline-slot');
+
+    let currentOffset = 0;
+    const scrollAmount = 100;
+
+    function getMaxScroll() {
+        const timeSlotsWidth = timeSlots.scrollWidth;
+        const wrapperWidth = timeSlots.parentElement.offsetWidth;
+        return -(timeSlotsWidth - wrapperWidth);
+    }
+
+    function scrollEPG(offset) {
+        const maxScroll = getMaxScroll();
+
+        currentOffset += offset;
+
+        if (currentOffset > 0) {
+            currentOffset = 0;
+        } else if (currentOffset < maxScroll) {
+            currentOffset = maxScroll;
+        }
+
+        timeSlots.style.transition = 'transform 0.3s ease-in-out'; 
+        timeSlots.style.transform = `translateX(${currentOffset}px)`;
+        programRows.forEach(row => {
+            row.style.transform = `translateX(${currentOffset}px)`;
+        });
+    }
+
+    leftArrow.addEventListener('click', function () {
+        scrollEPG(scrollAmount);
+    });
+
+    rightArrow.addEventListener('click', function () {
+        scrollEPG(-scrollAmount);
+    });
+});
 </script>

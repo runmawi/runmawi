@@ -1087,7 +1087,7 @@ function format(item, state) {
 // //
 // //                                    setTimeout(function() {
 // //                                    //location.reload();
-// //                                    window.location.replace(base_url+'/register2');
+// //                                    globalThis.location.replace(base_url+'/register2');
 // //
 // //                                  }, 2000);
 // //                               });
@@ -1145,7 +1145,7 @@ function format(item, state) {
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    globalThis.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }
