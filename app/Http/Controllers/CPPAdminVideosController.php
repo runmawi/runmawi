@@ -1167,6 +1167,20 @@ class CPPAdminVideosController extends Controller
 
         $compress_image_settings = CompressImage::first();
 
+        $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+
+        $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['movie_id' => $id])
+                ->count();
+            
+            if ($subtitlescount > 0) {
+                $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                    ->where(['movie_id' => $id])
+                    ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
+            } else {
+                $subtitles = Subtitle::all();
+            }
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $settings = Setting::first();
 
@@ -1200,6 +1214,8 @@ class CPPAdminVideosController extends Controller
             $data = [
                 'headline' => '<i class="fa fa-edit"></i> Edit Video',
                 'video' => $video,
+                "MoviesSubtitles" => $MoviesSubtitles ,
+                "subtitlescount"  => $subtitlescount,
                 'post_route' => URL::to('/cpp/videos/update'),
                 'button_text' => 'Update Video',
                 // 'admin_user' => Auth::user(),

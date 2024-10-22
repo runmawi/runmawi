@@ -710,49 +710,50 @@ border-radius: 0px 4px 4px 0px;
             </div>
                 <hr />
                <div class="row">    
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title"> Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                  <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                  <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
-               <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-               <i class="las la-exclamation-circle"></i>
-               </a>:</h3>
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
-               <div class="panel-body" style="display: block;"> 
-               @foreach($subtitles as $subtitle)
+                  <div class="panel panel-primary" data-collapsed="0"> 
+                     <div class="panel-heading"> 
+                        <div class="panel-title col-sm-12"> 
+                           <h3 class="fs-title"> Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
+                           <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                           <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
+                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                              <i class="las la-exclamation-circle"></i>
+                           </a>:
+                        </div> 
+                        <div class="panel-options"> 
+                           <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                        </div>
+                     </div> 
+                     <div class="panel-body" style="display: block;"> 
+                        @foreach($subtitles as $subtitle)
 
-               <div class="col-sm-6 form-group" style="float: left;">
-               <div class="align-items-center" style="clear:both;" >
-               <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-               <?php //dd($movies_subtitles->sub_language); ?>
-               @if(@$subtitlescount > 0)
-                  @foreach($MoviesSubtitles as $movies_subtitles)
+                           <div class="col-sm-6 form-group" style="float: left;">
+                              <div class="align-items-center" style="clear:both;">
+                                 <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                 <?php //dd($movies_subtitles->sub_language); ?>
+                                 @if(@$subtitlescount > 0)
+                                    @foreach($MoviesSubtitles as $movies_subtitles)
 
-                     @if(@$movies_subtitles->sub_language == $subtitle->language)
+                                       @if(@$movies_subtitles->sub_language == $subtitle->language)
 
-                     Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
-                     &nbsp;&nbsp;&nbsp;
-                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                        data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/subtitle/delete') . '/' . $movies_subtitles->id }}">
-                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                  @endif
+                                       Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
+                                       &nbsp;&nbsp;&nbsp;
+                                       <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
+                                          data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/subtitle/delete') . '/' . $movies_subtitles->id }}">
+                                          <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
+                                    @endif
 
-                  @endforeach
-               @endif
+                                    @endforeach
+                                 @endif
 
-               <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
-               </div>
-               </div>
-               @endforeach
-               </div> 
-               </div>
+                                 <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                 <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                 <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                              </div>
+                           </div>
+                        @endforeach
+                     </div> 
+                  </div>
                </div>
                </div> <input type="button" name="next" class="next action-button" value="Next" id="next3"/> 
                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
