@@ -184,6 +184,7 @@ h1, h2, h3, h4, h5, h6, p, button, input{
     font-size:25px;
     border-radius:5px !important;
 }
+.sign-in-page{background: #000;}
 
 </style>
     </head>
@@ -360,6 +361,23 @@ h1, h2, h3, h4, h5, h6, p, button, input{
   
 }, 2000);
 </script>
+
+<script>
+    $(document).ready(function(){
+        var theme_change = "{{ $theme_mode }}";
+        console.log('theme_change ' + theme_change);
+        
+        if(theme_change === 'dark'){
+            $(".sign-in-page").css("background", "#000");
+            $(".km").css("color", "#fff");
+        }
+        else if(theme_change === 'light'){
+            $(".sign-in-page").css("background", "#fff");
+            $(".km").css("color", "#000");
+        }
+    });
+</script>
+
 
 <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>                
