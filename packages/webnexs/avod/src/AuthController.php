@@ -1155,7 +1155,6 @@ class AuthController extends Controller
         }
 
         $inputs = [
-            'advertiser_id' => $advertisement_id,
             'ads_name' => $request->ads_name,
             'ads_category' => $request->ads_category,
             'ads_position' => $request->ads_position,
