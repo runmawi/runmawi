@@ -55,7 +55,7 @@
                                             <!--General Information  fieldsets -->
                                             <fieldset>
                                                 <div class="form-card p-0">
-                                                    <h4 class="fs-title ">General Information</h4>
+                                                    {{-- <h4 class="fs-title ">General Information</h4> --}}
                                                     <div class="row col-md-12">
                                                         <div
                                                             class="form-group mb-0 col-md-3 p-0 d-flex align-items-baseline ">
@@ -149,7 +149,7 @@
 
                                             <fieldset>
                                                 <div class="form-card">
-                                                    <h2 class="fs-title">Ads Details</h2>
+                                                    {{-- <h2 class="fs-title">Ads Details</h2> --}}
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group ">
@@ -227,7 +227,7 @@
 
                                             <fieldset>
                                                 <div class="form-card">
-                                                    <h2 class="fs-title">Location Details</h2>
+                                                    {{-- <h2 class="fs-title">Location Details</h2> --}}
 
                                                     <div class="row">
                                                         <div class="col-sm-1">
@@ -273,7 +273,7 @@
                                             <!--Schedule Ads Details fieldsets -->
                                             <fieldset>
                                                 <div class="form-card p-0">
-                                                    <h2 class="fs-title">Set your weekly hours</h2>
+                                                    {{-- <h2 class="fs-title">Set your weekly hours</h2> --}}
                                                     <div class="col-md-6"> </div>
 
                                                     <div class="row ">
