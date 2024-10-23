@@ -512,10 +512,13 @@ if(empty($new_date)){
                 </div>
             </div>
 
-            {{-- Radio-Station --}}
+                {{-- Radio-Station --}}
+            @if( (!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1) && ( \Route::currentRouteName() == "Radio_station_play" ) )
 
                 {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg",  ['Livestream_details' => $Livestream_details , 'current_theme' => $current_theme])->content() !!}
 
+            @endif
+         
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
