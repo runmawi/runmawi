@@ -1300,7 +1300,7 @@ select{
     background: #0993d2;
 }
 .custom-select{
-    margin-top: 13px;
+    margin-top: 0px;
 }
 label{
     font-weight: 500;
