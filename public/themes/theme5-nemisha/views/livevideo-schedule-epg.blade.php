@@ -11,20 +11,21 @@
     .epg-grid{margin-top:20px;background-color:#1c1c1c;border-radius:8px;padding:10px;height:50vh!important;overflow:overlay}
     .epg-timeline-container{overflow-x:auto;white-space:nowrap;position:relative;top:-37px}
     .epg-timeline{display:flex;justify-content:flex-start;padding:10px;color:#ccc;font-size:12px; position: relative;width:100%; white-space: nowrap;scroll-behavior: smooth;}
-    .timeline{margin:0 10px}
-    .epg-timeline div{flex:0 0 60px;text-align:center;}
+    /* .timeline{margin:0 10px} */
+    .epg-timeline div{flex:0 0 100px;text-align:center;}
     .epg-channels{width:16%;float:left;padding-right:10px}
-    .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px}
+    .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px;text-align: center;}
     .epg-programs{overflow-x:auto;white-space:nowrap; padding-bottom: 20px;}
     .epg-program-row{display:flex;margin-bottom:10px}
     .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
     .clearfix::after{content:"";display:table;clear:both}
-    .epg-navigation{width:15%;height:38px;z-index:0;position:relative;overflow-x:auto;border-bottom:1px solid #555}
+    .epg-navigation{width:15%;height:38px;z-index:0;position:relative;overflow-x:auto; background-color: #333;}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
     .day-nav{margin:0 50px}
-    .date-nav{gap:25px;white-space:nowrap;align-items:center;border-bottom:1px solid #555;background-color:#333;padding-left:20px}
+    .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex;}
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
- 
+    .timeline-slot:first-child{border-left: 1px solid;}
+    /* .timeline-slot:last-child{border-left: 1px solid;} */
     .epg-arrow-buttons {
         display: flex;
         justify-content: space-between;
@@ -32,7 +33,8 @@
         left: 0;
         right: 0;
         z-index: 10;
-        padding-bottom: 50px;
+        /* padding-bottom: 50px; */
+        top: 20px;  
     }
 
 
@@ -41,6 +43,7 @@
         flex-direction: column;
         align-items: center;
         position: relative;
+        border-bottom: 1px solid;
     }
 
 
@@ -52,15 +55,24 @@
     .epg-program {
         position: relative;
         padding: 5px;
-        margin: 5px 0;
+        /* margin: 5px 0; */
     }
 
     
     .timeline {
         text-align: center;
         font-size: 12px;
-        margin-bottom: 15px;
+        /* margin-bottom: 15px; */
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        border-left: 1px solid #fff;
+        background: #333;
+        color: white;
+        padding: 12px 0px;
     }
+    #data{margin: 0 20px;overflow: hidden;}
+    .fa-chevron-right:before{font-size: 22px}
+    .fa-chevron-left:before{font-size: 22px}
 </style>
 
 @php
