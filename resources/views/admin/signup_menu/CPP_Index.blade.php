@@ -97,6 +97,47 @@
 
                             <tbody>
                                 <td> {{ '6'}} </td>
+                                <td> {{ 'Thumbnail'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="thumbnail_image" class="thumbnail_image" id="thumbnail_image" type="checkbox" @if( @$CPPSignupMenu->thumbnail_image == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>      
+
+                            <tbody>
+                                <td> {{ '7'}} </td>
+                                <td> {{ 'Bank Details'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="bank_details" class="bank_details" id="bank_details" type="checkbox" @if( @$CPPSignupMenu->bank_details == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>      
+
+                            <tbody>
+                                <td> {{ '8'}} </td>
+                                <td> {{ 'Social Media'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="socialmedia_details" class="socialmedia_details" id="socialmedia_details" type="checkbox" @if( @$CPPSignupMenu->socialmedia_details == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>      
+
+
+
+                            <tbody>
+                                <td> {{ '9'}} </td>
                                 <td> {{ 'Profile Password'}} </td>
                                 <td> 
                                     <div class="mt-1">
@@ -110,7 +151,7 @@
 
 
                             <tbody>
-                                <td> {{ '7'}} </td>
+                                <td> {{ '10'}} </td>
                                 <td> {{ 'Profile Password Confirm'}} </td>
                                 <td> 
                                     <div class="mt-1">

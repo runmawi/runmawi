@@ -189,6 +189,9 @@ class AdminSignupMenuController extends Controller
             $CPPSignupMenu->upload_video           =  $request->has('upload_video') ? 1 : 0 ?? 0;   
             $CPPSignupMenu->password               =  $request->has('password') ? 1 : 0 ?? 0;  
             $CPPSignupMenu->password_confirm       =  $request->has('password_confirm') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->thumbnail_image       =  $request->has('thumbnail_image') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->socialmedia_details       =  $request->has('socialmedia_details') ? 1 : 0 ?? 0;   
+            $CPPSignupMenu->bank_details       =  $request->has('bank_details') ? 1 : 0 ?? 0;   
             $CPPSignupMenu->save();  
         
         return redirect()->route('cppsignupindex');
@@ -269,6 +272,10 @@ class AdminSignupMenuController extends Controller
         $ChannelSignupMenu->upload_video           =  $request->has('upload_video') ? 1 : 0 ?? 0;   
         $ChannelSignupMenu->password               =  $request->has('password') ? 1 : 0 ?? 0;  
         $ChannelSignupMenu->password_confirm       =  $request->has('password_confirm') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->thumbnail_image       =  $request->has('thumbnail_image') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->socialmedia_details       =  $request->has('socialmedia_details') ? 1 : 0 ?? 0;   
+        $ChannelSignupMenu->bank_details       =  $request->has('bank_details') ? 1 : 0 ?? 0;   
+
         $ChannelSignupMenu->save();  
     
         return redirect()->route('channelsignupindex');

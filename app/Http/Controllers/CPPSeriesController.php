@@ -1489,6 +1489,7 @@ class CPPSeriesController extends Controller
             'FlussonicUploadlibrary' => $FlussonicUploadlibrary ,
         );
 
+        // dd($data);
         return View::make('moderator.cpp.series.season_edit', $data);
 
     }
@@ -1497,6 +1498,7 @@ class CPPSeriesController extends Controller
     {
 
         $data = $request->all();
+        // dd($data);
         $settings = Setting::first();
 
         $user = Session::get('user');
@@ -1517,6 +1519,7 @@ class CPPSeriesController extends Controller
         }
         // dd($data);
         $id = $data['episode_id'];
+        // dd($id);
         $episodes = Episode::findOrFail($id);
 
         if ($episodes->type == 'm3u8')

@@ -137,6 +137,7 @@ class ChannelLoginController extends Controller
 
             $intro_video = (isset($input['intro_video'])) ? $input['intro_video'] : '';
             $image = (isset($input['image'])) ? $input['image'] : '';
+            $thumbnail = (isset($input['thumbnail'])) ? $input['thumbnail'] : '';
 
 
             $logopath = URL::to("/public/uploads/channel/");
@@ -167,6 +168,32 @@ class ChannelLoginController extends Controller
             else
             {
                 $image = "default_image.jpg";
+            }
+
+            if ($thumbnail != '')
+            {
+                //code for remove old file
+                if ($thumbnail != '' && $thumbnail != null)
+                {
+                    $file_old = $path . $thumbnail;
+                    if (file_exists($file_old))
+                    {
+                        unlink($file_old);
+                    }
+                }
+                //upload new file
+                $randval = Str::random(16);
+                $file = $thumbnail;
+                $thumbnail_ext = $randval . '.' . $request->file('thumbnail')
+                    ->extension();
+                $file->move($path, $thumbnail_ext);
+
+                $thumbnail = URL::to('/') . '/public/uploads/channel/' . $thumbnail_ext;
+
+            }
+            else
+            {
+                $thumbnail = "default_image.jpg";
             }
 
             if ($intro_video != '')
@@ -212,6 +239,13 @@ class ChannelLoginController extends Controller
             $channel->role_id       = !empty($ChannelRoles) ? $ChannelRoles->id : 3;
             $channel->user_permission = !empty($ChannelRoles) ? $ChannelRoles->user_permission : '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19';
             $channel->status = 0;
+            $channel->thumbnail = $thumbnail;
+            $channel->facebook = $request->facebook;
+            $channel->instagram = $request->instagram;
+            $channel->bank_name = $request->bank_name;
+            $channel->branch_name = $request->branch_name;
+            $channel->account_number = $request->account_number;
+            $channel->IFSC_Code = $request->IFSC_Code;
             $channel->save();
             
             $user_data = User::where('email', $request->email_id)->first();
