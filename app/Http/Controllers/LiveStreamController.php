@@ -42,6 +42,7 @@ use App\LikeDislike;
 use Theme;
 use App\ButtonText;
 use App\SiteTheme;
+use App\AdminAccessPermission;
 
 class LiveStreamController extends Controller
 {
@@ -704,7 +705,7 @@ class LiveStreamController extends Controller
                                     </svg>',
                 'paypal_payment_setting' => $PayPalpayment,
                 'paypal_signature' => $paypal_signature,
-
+                'AdminAccessPermission' => AdminAccessPermission::first(),
            );           
 
            if(  $Theme == "default" || $Theme == "theme6" ){
@@ -721,7 +722,7 @@ class LiveStreamController extends Controller
           
         } catch (\Throwable $th) {
 
-          return $th->getMessage();
+            //   return $th->getMessage();
             return abort(404);
         }
         }

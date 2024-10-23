@@ -348,7 +348,7 @@ class AdminLiveStreamController extends Controller
 
                 $inputs_details_array = array(
                     'create_route'   => "admin.radio-station.create",
-                    'view_route'     => "LiveStream_play",
+                    'view_route'     => "Radio_station_play",
                     'edit_route'     => "admin.radio-station.edit",
                     'delete_route'   => "admin.radio-station.delete",
                     'all_list_route' => "admin.radio-station.index",
@@ -1069,7 +1069,7 @@ class AdminLiveStreamController extends Controller
                 'edit_route'     => "admin.radio-station.edit",
                 'all_list_route' => "admin.radio-station.index",
                 'create_route'   => "admin.radio-station.create",
-                'view_route'     => "LiveStream_play",
+                'view_route'     => "Radio_station_play",
                 'text_main_name' => "Radio Station",
                 'stream_upload_via' => "radio_station",
             );
