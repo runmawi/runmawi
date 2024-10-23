@@ -42,6 +42,7 @@ use App\LikeDislike;
 use Theme;
 use App\ButtonText;
 use App\SiteTheme;
+use App\AdminAccessPermission;
 
 class LiveStreamController extends Controller
 {
@@ -179,7 +180,7 @@ class LiveStreamController extends Controller
 
     public function Play(Request $request,$vid)
     {
-      try {
+    //   try {
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
@@ -704,7 +705,7 @@ class LiveStreamController extends Controller
                                     </svg>',
                 'paypal_payment_setting' => $PayPalpayment,
                 'paypal_signature' => $paypal_signature,
-
+                'AdminAccessPermission' => AdminAccessPermission::first(),
            );           
 
            if(  $Theme == "default" || $Theme == "theme6" ){
@@ -719,11 +720,11 @@ class LiveStreamController extends Controller
           //   return view('auth.login',compact('system_settings'));
           // }
           
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-            //   return $th->getMessage();
-            return abort(404);
-        }
+        //     //   return $th->getMessage();
+        //     return abort(404);
+        // }
         }
 
         public function videojs_live_watchlater(Request $request)
