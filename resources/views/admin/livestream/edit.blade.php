@@ -869,7 +869,11 @@ border-radius: 0px 4px 4px 0px;
                     <div class="panel-body" style="color: #000;">
                         <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
 				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later")) ? "checked" : "" }}> Publish Later <br>
-                        <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
+
+                        @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
+                            <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
+                        @endif
+
                         @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
                             <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> {{ __('Schedule Program')}} <br />
                         @endif
@@ -936,6 +940,7 @@ border-radius: 0px 4px 4px 0px;
 
                                                 <td class="d-flex justify-content-center align-items-center p-3">
                                                     <i class="fa fa-plus-circle add-program-btn mx-2"></i>
+                                                    <i class="fa fa-minus-circle remove-program-btn mx-2"></i>
                                                 </td>
                                             </tr>
                                         @empty
