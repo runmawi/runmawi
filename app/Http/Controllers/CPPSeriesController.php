@@ -2080,7 +2080,7 @@ class CPPSeriesController extends Controller
                 return $value ;
             }
         }        
-        print_r($storage_settings->flussonic_storage);exit;
+        // print_r($storage_settings->flussonic_storage);exit;
 
         if ($pack != "Business" || $pack == "Business" && $settings->transcoding_access == 0)
         {
