@@ -53,7 +53,6 @@
         cursor: pointer;
     }
 
-    */
 </style>
 
     <div id="content-page" class="content-page">
