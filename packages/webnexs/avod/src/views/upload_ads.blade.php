@@ -9,6 +9,9 @@
         padding: 0;
         vertical-align: baseline !important;
     }
+    #progressbar li img{
+        width: 50px !important;
+    }
 </style>
 
 <div id="main-admin-content">
