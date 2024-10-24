@@ -89,41 +89,45 @@
                   <div class="row d-flex p-0">
 
                      <div class="col-md-12 pb-2">
-                        <label>Plan Name</label>
-                        <input type="text" name="plan_name" id="plan_name" value="" class="form-control" placeholder="Ads Plan Name">
+                        <label for="plan_name">Plan Name</label>
+                        <input type="text" name="plan_name" id="plan_name" class="form-control" placeholder="Ads Plan Name" >
                      </div>
-
+                  
                      <div class="col-md-12 pb-2">
-                        <label>Plan Amount</label>
-                        <input type="text" name="plan_amount" id="plan_amount" value="" class="form-control" placeholder="Ads Plan Amount">
+                        <label for="plan_amount">Plan Amount</label>
+                        <div class="d-flex">
+                           <input type="text" style="text-align: center;" name="currency_symbol" id="currency_symbol" class="form-control col-md-4" value="{{ currency_symbol() }}" readonly>
+                           <input type="number" name="plan_amount" id="plan_amount" class="form-control col-md-8" placeholder="Ads Plan Amount">
+                        </div>
                      </div>
-
+                  
                      <div class="col-md-12 pb-2">
-                        <label>Plan Id</label>
-                        <input type="text" name="plan_id" id="plan_id" value="" class="form-control" placeholder="Ads Stripe Plan Id">
+                        <label for="plan_id">Plan Id</label>
+                        <input type="text" name="plan_id" id="plan_id" class="form-control" placeholder="Ads Stripe Plan Id" >
                      </div>
-
-                     <div class="col-md-12 pb-2" >
-                        <label>No of Ads Upload count</label>
-                        <input type="text" name="no_of_ads" id="no_of_ads" value="" class="form-control" placeholder="No of Ads Upload count">
-                     </div>
-
+                  
                      <div class="col-md-12 pb-2">
-                        <label for="">  Status </label>
+                        <label for="no_of_ads">No of Ads Upload Count</label>
+                        <input type="number" name="no_of_ads" id="no_of_ads" class="form-control" placeholder="No of Ads Upload count" >
+                     </div>
+                  
+                     <div class="col-md-12 pb-2">
+                        <label for="description">Plan Description</label>
+                        <input type="text" name="description" id="description" class="form-control" placeholder="Description" >
+                     </div>
+                  
+                     <div class="col-md-12 pb-2">
+                        <label>Status</label>
                         <div class="d-flex justify-content-around align-items-center" style="width:50%;">
-
                            <div style="color:red;">Disable</div>
-
                            <div class="mt-1">
                               <label class="switch">
                                  <input type="checkbox" name="status" id="status" >
                                  <span class="slider round"></span>
                               </label>
                            </div>
-
                            <div style="color:green;">Enable</div>
                         </div>
-                        <div class="make-switch" data-on="success" data-off="warning"></div>
                      </div>
                   </div>
                </div>
@@ -146,36 +150,47 @@
                $('#userCrudModal').html("Add Plan");
                $('#submit').val("Add Plan");
                $('#edit_modal').modal('show');
-               $('#plan_id').val('');
-               $('#plan_name').val('');
-               $('#plan_amount').val('');
-               $('#no_of_ads').val('');
+               $('#plan_id,#plan_name,#plan_amount,#no_of_ads,#description,#status').val('');
                $('#url').val('add_ads_plan');
             });
 
             $('body').on('click', '#submit', function (event) {
                event.preventDefault();
-               
-               var status = $('#status').is(':checked') ? 1 : 0;
 
-               $.post({
-                  url: $("#url").val(),
-                  data: {
-                        _token: $("#token").val(),
-                        plan_name: $("#plan_name").val(),
-                        plan_amount: $("#plan_amount").val(),
-                        no_of_ads: $("#no_of_ads").val(),
-                        status: status,
-                        plan_id: $("#plan_id").val(),
-                        id: $("#id").val(),
-                  },
-                  dataType: 'json',
-                  success: function () {
-                        $('#companydata').trigger("reset");
-                        $('#edit_modal').modal('hide');
-                        window.location.reload(true);
+               var isValid = true;
+
+               $('.error-message').remove();
+
+               ['#plan_name', '#plan_id','#no_of_ads','#description','#plan_amount'].forEach(function (field) {
+                  if ($(field).val().trim() === "") {
+                     isValid = false;
+                     $(field).after('<span class="error-message" style="color:red;">' + $(field).attr('id').replace('_', ' ') + ' is required</span>');
                   }
                });
+
+               if (isValid) {
+                  var status = $('#status').is(':checked') ? 1 : 0;
+
+                  $.post({
+                     url: $("#url").val(),
+                     data: {
+                           _token: $("#token").val(),
+                           plan_name: $("#plan_name").val(),
+                           plan_amount: $("#plan_amount").val(),
+                           no_of_ads: $("#no_of_ads").val(),
+                           status: status,
+                           plan_id: $("#plan_id").val(),
+                           description: $('#description').val(),
+                           id: $("#id").val(),
+                     },
+                     dataType: 'json',
+                     success: function () {
+                           $('#companydata').trigger("reset");
+                           $('#edit_modal').modal('hide');
+                           window.location.reload(true);
+                     }
+                  });
+               }
             });
 
 
@@ -192,6 +207,7 @@
                   $('#plan_name').val(data.data.plan_name);
                   $('#plan_amount').val(data.data.plan_amount);
                   $('#no_of_ads').val(data.data.no_of_ads);
+                  $('#description').val(data.data.description);
                   if (data.data.status == 1) {
                         $('#status').prop('checked', true);
                   } else {
@@ -211,4 +227,10 @@
 
       </script>
    @stop
+
+   <style>
+      .error-message{
+         text-transform: capitalize;
+      }
+   </style>
 @stop

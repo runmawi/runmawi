@@ -625,6 +625,7 @@ class AdminAdvertiserController extends Controller
            'no_of_ads'  => $request->no_of_ads,
            'status'     => $request->status ,
            'plan_id'    => $request->plan_id,
+           'description' => $request->description,
         ]);
       
         return response()->json(['success' => true]);
@@ -642,6 +643,7 @@ class AdminAdvertiserController extends Controller
         $Adsplan->no_of_ads   = $request->no_of_ads;
         $Adsplan->status      = $request->status;
         $Adsplan->plan_id     = $request->plan_id;
+        $Adsplan->description = $request->description;
         $Adsplan->save();
 
         return response()->json(['success' => true]);

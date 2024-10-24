@@ -15,6 +15,7 @@ class Adsplan extends Model
                                 'plan_amount',
                                 'no_of_ads',
                                 'status',
-                                'plan_id'
+                                'plan_id',
+                                'description'
                             );
 }
