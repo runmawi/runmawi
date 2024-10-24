@@ -55,7 +55,7 @@
                                             <!--General Information  fieldsets -->
                                             <fieldset>
                                                 <div class="form-card p-0">
-                                                    <h4 class="fs-title ">General Information</h4>
+                                                    {{-- <h4 class="fs-title ">General Information</h4> --}}
                                                     <div class="row col-md-12">
                                                         <div
                                                             class="form-group mb-0 col-md-3 p-0 d-flex align-items-baseline ">
@@ -149,13 +149,13 @@
 
                                             <fieldset>
                                                 <div class="form-card">
-                                                    <h2 class="fs-title">Ads Details</h2>
+                                                    {{-- <h2 class="fs-title">Ads Details</h2> --}}
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group ">
                                                                 <div class="d-flex align-items-baseline">
                                                                     <label>Ads Name:</label>
-                                                                    <p class="error-message ml-1"   style="color: red;font-size:10px;">(This filed    is required)</p>
+                                                                    <p class="error-message ml-1"   style="color: red;font-size:10px;">(This Field    is required)</p>
                                                                 </div>
                                                                 <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Please! Enter the Ads Name" />
                                                             </div>
@@ -186,10 +186,10 @@
                                                                 <div class="d-flex align-items-baseline">
                                                                     <label> Ads upload Type:</label>
                                                                     <p class="error-message ml-1"
-                                                                        style="color: red;font-size:10px;">(This filed is required)</p>
+                                                                        style="color: red;font-size:10px;">(This Field is required)</p>
                                                                 </div>
                                                                 <select class="form-control ads_type" name="ads_upload_type" >
-                                                                    <option selected="selected" value="null">select Ads Type </option>
+                                                                    <option selected="selected" value="null">Select Ads Type </option>
                                                                     <option value="tag_url">Ad Tag Url </option>
                                                                     <option value="ads_video_upload">Ads Video Upload
                                                                     </option>
@@ -227,7 +227,7 @@
 
                                             <fieldset>
                                                 <div class="form-card">
-                                                    <h2 class="fs-title">Location Details</h2>
+                                                    {{-- <h2 class="fs-title">Location Details</h2> --}}
 
                                                     <div class="row">
                                                         <div class="col-sm-1">
@@ -273,7 +273,7 @@
                                             <!--Schedule Ads Details fieldsets -->
                                             <fieldset>
                                                 <div class="form-card p-0">
-                                                    <h2 class="fs-title">Set your weekly hours</h2>
+                                                    {{-- <h2 class="fs-title">Set your weekly hours</h2> --}}
                                                     <div class="col-md-6"> </div>
 
                                                     <div class="row ">
