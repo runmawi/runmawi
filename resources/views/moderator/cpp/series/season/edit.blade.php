@@ -6,6 +6,12 @@
         <div class="iq-card">
             <div class="modal-body">
                 <form id="update-cat-form" accept-charset="UTF-8" action="{{ URL::to('cpp/season/update') }}" method="post" enctype="multipart/form-data">
+                    
+                    <div class="form-group">
+                        <label>Season Title:</label>
+                        <input type="text" id="series_seasons_name" name="series_seasons_name" value="{{ optional($season)->series_seasons_name }}" placeholder="Enter the Season Title" class="form-control">
+                    </div>  
+                    
                     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
                         <label class="m-0">Season Thumbnail </label>
                         <p class="p1">(16:9 Ratio or 1080 X 1920px)</p>
@@ -21,11 +27,16 @@
                             <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
                             <p class="p1">Drop and drag the video file</p>
                         </div>
-                        <?php if(!empty($season->trailer)){ ?>
-                        <video width="200" height="200" controls>
-                            <source src="<?php echo $season->trailer; ?>" type="video/mp4" />
-                        </video>
-                        <?php }else{  } ?>
+                        
+                        <div class="row">
+                            <div class="col-sm-5">
+                               @if(!empty($season->trailer))
+                                  <video width="200" height="200" controls  style="width: 90%;">
+                                     <source src="<?php echo $season->landing_mp4_url; ?>" type="video/mp4" />
+                                  </video>
+                               @endif
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group {{ $errors->has('ppv_access') ? 'has-error' : '' }}">
