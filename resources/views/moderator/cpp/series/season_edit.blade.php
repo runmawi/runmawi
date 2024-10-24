@@ -355,7 +355,7 @@
                         </div>
                     </div>
 
-                      {{-- <div class="row mb-3">
+                      <div class="row mb-3">
                         <div class="col-sm-12">
                             <label class="m-0"> Episode Description </label>
                             <p class="p1"> Add a description of the Episode below: </p> 
@@ -363,7 +363,7 @@
                                 <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
 
 
 
