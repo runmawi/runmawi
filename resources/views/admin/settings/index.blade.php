@@ -1844,28 +1844,26 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                     <div class="make-switch" data-on="success" data-off="warning"></div>
                                 </div>
+                                <br>
 
                                 <div class="col-md-6">
 
                                         {{-- default URL --}}
                                     <div class="form-group ">
                                         <label>Default Ads url</label>
-                                        <input id="default_ads" type="text" name="default_ads_url" class="form-control"
-                                        placeholder="Default Ads in videos"
+                                        <input id="default_ads" type="text" name="default_ads_url" class="form-control" placeholder="Default Ads in videos"
                                         value="@if(!empty($settings->default_ads_url)){{ $settings->default_ads_url }}@endif" />
                                     </div>
 
                                     <div class="form-group add-profile-pic">
                                         <label>Featured Ad Pre Roll:</label>
-                                        <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control"
-                                        placeholder="Featured Ad Pre Roll"
+                                        <input id="featured_pre_ad" type="text" name="featured_pre_ad" class="form-control" placeholder="Featured Ad Pre Roll"
                                         value="@if(!empty($settings->featured_pre_ad)){{ $settings->featured_pre_ad }}@endif" />
                                     </div>
 
                                     <div class="form-group add-profile-pic">
                                         <label>Featured Ad Mid Roll:</label>
-                                        <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"
-                                        placeholder="Featured Ad Mid Roll"
+                                        <input id="featured_mid_ad" type="text" name="featured_mid_ad" class="form-control"placeholder="Featured Ad Mid Roll"
                                         value="@if(!empty($settings->featured_mid_ad)){{ $settings->featured_mid_ad }}@endif" />
                                     </div>
 
@@ -1873,32 +1871,53 @@ border-radius: 0px 4px 4px 0px;
                                         <label>Featured Ad Post Roll:</label>
                                         <input id="featured_post_ad" type="text" name="featured_post_ad" class="form-control" placeholder="Featured Ad Post Roll"
                                         value="@if(!empty($settings->featured_post_ad)){{ $settings->featured_post_ad }}@endif" />
-                                    </div></div> <div class="col-md-6">
+                                    </div>
+                                </div> <br>
+
+                                <div class="col-md-6">
                                     <div class="form-group add-profile-pic">
                                         <label>Cost Per Click Advertiser:</label>
-                                        <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control"
-                                        placeholder="Cost Per Click Advertiser"
+                                        <input id="cpc_advertiser" type="text" name="cpc_advertiser" class="form-control" placeholder="Cost Per Click Advertiser"
                                         value="@if(!empty($settings->cpc_advertiser)){{ $settings->cpc_advertiser }}@endif" />
                                     </div>
 
                                     <div class="form-group add-profile-pic">
                                         <label>Cost Per Click Admin:</label>
-                                        <input id="cpc_admin" type="text" name="cpc_admin" class="form-control"
-                                        placeholder="Cost Per Click Admin"
+                                        <input id="cpc_admin" type="text" name="cpc_admin" class="form-control" placeholder="Cost Per Click Admin"
                                         value="@if(!empty($settings->cpc_admin)){{ $settings->cpc_admin }}@endif" />
                                     </div>
+
                                     <div class="form-group add-profile-pic">
                                         <label>Cost Per View Advertiser:</label>
-                                        <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control"
-                                        placeholder="Cost Per View Advertiser"
+                                        <input id="cpv_advertiser" type="text" name="cpv_advertiser" class="form-control" placeholder="Cost Per View Advertiser"
                                         value="@if(!empty($settings->cpv_advertiser)){{ $settings->cpv_advertiser }}@endif" />
                                     </div>
+
                                     <div class="form-group add-profile-pic">
                                         <label>Cost Per View Admin:</label>
-                                        <input id="cpv_admin" type="text" name="cpv_admin" class="form-control"
-                                        placeholder="Cost Per View Admin"
+                                        <input id="cpv_admin" type="text" name="cpv_admin" class="form-control" placeholder="Cost Per View Admin"
                                         value="@if(!empty($settings->cpv_admin)){{ $settings->cpv_admin }}@endif" />
                                     </div>
+                                </div>
+
+                                {{-- Note: Adveristment Redirectio for Payment Page While Signup/login --}}
+
+                                <div class="col-md-6">
+                                    <label for="">Enable Payment Page <Small> (Adveristment Panel)</Small> :</label>
+                                    <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+
+                                        <div style="color:red;">Disable</div>
+
+                                        <div class="mt-1">
+                                            <label class="switch">
+                                                <input type="checkbox"  {{ ($settings->ads_payment_page_status == 1) ? 'Checked' : null}} name="ads_payment_page_status" id="ads_payment_page_status">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+
+                                        <div style="color:green;">Enable</div>
+                                    </div>
+                                    <div class="make-switch" data-on="success" data-off="warning"></div>
                                 </div>
                             </div>
                         </div>
