@@ -570,7 +570,7 @@ class AdminAdvertiserController extends Controller
             $setting = Setting::first();
             if ($setting->ads_on_videos == 1) {
                 $data = [
-                    'ads_plans' => Adsplan::orderBy('created_at', 'desc')->paginate(9),
+                    'ads_plans' => Adsplan::paginate(9),
                 ];
                 return view('admin.ads_management.ads_plans_list', $data);
             } else {
@@ -623,7 +623,7 @@ class AdminAdvertiserController extends Controller
            'plan_name'   => $request->plan_name,
            'plan_amount' => $request->plan_amount,
            'no_of_ads'  => $request->no_of_ads,
-           'status'     => $request->status,
+           'status'     => $request->status ,
            'plan_id'    => $request->plan_id,
         ]);
       

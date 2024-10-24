@@ -103,7 +103,7 @@
                         <input type="text" name="plan_id" id="plan_id" value="" class="form-control" placeholder="Ads Stripe Plan Id">
                      </div>
 
-                     <div class="col-md-12 pb-2">
+                     <div class="col-md-12 pb-2" >
                         <label>No of Ads Upload count</label>
                         <input type="text" name="no_of_ads" id="no_of_ads" value="" class="form-control" placeholder="No of Ads Upload count">
                      </div>
@@ -156,6 +156,8 @@
             $('body').on('click', '#submit', function (event) {
                event.preventDefault();
                
+               var status = $('#status').is(':checked') ? 1 : 0;
+
                $.post({
                   url: $("#url").val(),
                   data: {
@@ -163,7 +165,7 @@
                         plan_name: $("#plan_name").val(),
                         plan_amount: $("#plan_amount").val(),
                         no_of_ads: $("#no_of_ads").val(),
-                        status: $("#status").val(),
+                        status: status,
                         plan_id: $("#plan_id").val(),
                         id: $("#id").val(),
                   },
@@ -190,7 +192,11 @@
                   $('#plan_name').val(data.data.plan_name);
                   $('#plan_amount').val(data.data.plan_amount);
                   $('#no_of_ads').val(data.data.no_of_ads);
-                  $('#status').val(data.data.status);
+                  if (data.data.status == 1) {
+                        $('#status').prop('checked', true);
+                  } else {
+                        $('#status').prop('checked', false);
+                  }                 
                   $('#plan_id').val(data.data.plan_id);
                   $('#url').val('edit_ads_plan');
                })
