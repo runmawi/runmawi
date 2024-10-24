@@ -1558,11 +1558,7 @@
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
 
-                        if(Auth::guest()){ ?>
-                            <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold;" >
-                                <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
-                            </div>
-                        <?php }
+                        
 
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
@@ -1740,6 +1736,13 @@
                                                     </a>
                                                 </li> -->
                                             <?php endif ; ?>
+
+                                           
+                                            <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold;" >
+                                                <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
+                                            </div>
+                     
+
                                         <?php else: ?>
                                         <li class="nav-item nav-icon">
                                             <a href="#"
