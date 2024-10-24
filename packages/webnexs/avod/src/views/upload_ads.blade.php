@@ -155,7 +155,7 @@
                                                             <div class="form-group ">
                                                                 <div class="d-flex align-items-baseline">
                                                                     <label>Ads Name:</label>
-                                                                    <p class="error-message ml-1"   style="color: red;font-size:10px;">(This filed    is required)</p>
+                                                                    <p class="error-message ml-1"   style="color: red;font-size:10px;">(This Field    is required)</p>
                                                                 </div>
                                                                 <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Please! Enter the Ads Name" />
                                                             </div>
@@ -186,10 +186,10 @@
                                                                 <div class="d-flex align-items-baseline">
                                                                     <label> Ads upload Type:</label>
                                                                     <p class="error-message ml-1"
-                                                                        style="color: red;font-size:10px;">(This filed is required)</p>
+                                                                        style="color: red;font-size:10px;">(This Field is required)</p>
                                                                 </div>
                                                                 <select class="form-control ads_type" name="ads_upload_type" >
-                                                                    <option selected="selected" value="null">select Ads Type </option>
+                                                                    <option selected="selected" value="null">Select Ads Type </option>
                                                                     <option value="tag_url">Ad Tag Url </option>
                                                                     <option value="ads_video_upload">Ads Video Upload
                                                                     </option>
