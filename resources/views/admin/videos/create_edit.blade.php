@@ -213,6 +213,9 @@ border-radius: 0px 4px 4px 0px;
    display: grid;
    grid-template-columns: repeat(5, calc(100% / 5));
 }
+button[data-plyr="captions"] {
+    display: none !important;
+}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -367,11 +370,21 @@ border-radius: 0px 4px 4px 0px;
                         @if($video->type == 'mp4_url')
                            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4">
                               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
-                           </video>
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
+                              </video>
                            @elseif ($video->type == 'm3u8_url')
                            <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
                               <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type="application/x-mpegURL" label='auto' >
-                           </video>
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
+                              </video>
                            @elseif($video->type == 'embed')
                            <div class="plyr__video-embed" id="player">
                               <iframe
@@ -383,10 +396,12 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                            @elseif ($video->type == '')
                            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                              <source 
-                                 type="application/x-mpegURL" 
-                                 src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
-                                 >
+                              <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
                            </video>
                            @elseif ($video->type == 'aws_m3u8') 
                            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
@@ -394,6 +409,11 @@ border-radius: 0px 4px 4px 0px;
                                  type="application/x-mpegURL" 
                                  src="<?php if($video->type == "aws_m3u8"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>"
                                  >
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
                            </video>
                         @endif
                         </div>
