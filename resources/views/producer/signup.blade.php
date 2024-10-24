@@ -1,18 +1,20 @@
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <div class="pop">
     <center>
         <div class="form-wrapper">
             <form class="" action="{{ route('producer.signup_otp') }}" method="get">
 
                 <div class="imgcontainer">
-                    <img src="{{ front_end_logo() }}" alt="Avatar" class="avatar" style="width:46px; height:46px">
+                    <img src="{{ front_end_logo() }}" alt="Avatar" class="avatar">
                 </div>
 
-                <center> <h4 class="text-dark mt-3 mb-2"> Register </h4> </center>
+                <h1 class="text-dark"> Register </h4>
 
                 <div id="login-step2" class="container">
-
                     @if ($errors->any())
-                        <div id="error-message" class="alert alert-danger" style="color: red;">
+                        <div id="error-message" class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -21,38 +23,48 @@
                         </div>
                     @endif
 
-                    <label><b> {{ __('User Name') }} </b></label>
-                    <input type="text" class="login-input-text" placeholder="Enter the User Name" name="username" required>
-
-                    <label><b> {{ __('Mobile no') }} </b></label>
-                    <input type="text" class="login-input-text" placeholder="Enter 10 digit number" name="mobile_number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
-
-                    <button type="submit" id="btn-login">Verify Mobile Number</button>
-
-                    <label><b> {{ __('Enter OTP') }} </b></label>
-                    <input type="text" class="login-input-text" placeholder="Enter OTP" name="mobile_number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)" required>
-                    <a href="" target="_blank" rel="noopener noreferrer">Resend OTP</a>  
-
-                    <button type="submit" id="btn-login">Verify OTP</button>
-
-                    <div class="text-end">
-                        <a style="display:none; float:right" class='text-dark' id='btn-resend' onclick="$('#btn-getotp').click()">Resend OTP</a>
+                    <div class="input-group">
+                        <label for="username" class="label-name">User Name</label>
+                        <input type="text" id="username" class="login-input-text" placeholder="Enter User Name" name="username" required>
                     </div>
 
-                    <button type="submit" id="btn-login">Register Now </button>
+                    <div class="input-group">
+                        <label for="mobile_number" class="label-name">Mobile Number</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control login-input-text" id="mobile_number" placeholder="Enter mobile number" aria-label="Mobile Number" aria-describedby="basic-addon2" name="mobile_number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
+                            <div class="input-group-append ">
+                              <button class="btn btn-outline-secondary btn-main" type="submit">Verify Number</button>
+                            </div>
+                          </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="otp" class="label-name">Enter OTP</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control login-input-text" id="otp" placeholder="Enter OTP" aria-label="OTP" aria-describedby="basic-addon2" name="otp" maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)" required>
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary btn-main" type="submit">Verify OTP</button>
+                            </div>
+                        </div>
+                        <div class="resend-container">
+                            <a href="" target="_blank" rel="noopener noreferrer" class="resend-link">Resend OTP</a>
+                        </div>
+                    </div>  
+
+                    <div class="register-now">
+                        <button type="submit" class="btn-main">Register Now </button>
+                    </div>
 
                 </div>
 
-                <div class="container text-end">
+                <div class="container text-center existing-user mt-4">Already Existing user?
+                    <a href="{{ route('producer.login') }}" class="login" style="color: #0072ff;"> Login now</a>
                 </div>
 
-                <div class="container text-secondary text-center" style="background-color:#04AA6D">
-                    <a href="{{ route('producer.login') }}" type="button" class="cancelbtn btn-primary">Already Existing user? Login now</a>
-                </div>
             </form>
 
-            <div class="container text-center">
-                <h6 class="text-secondary">Copyright &copy; 2021<br> Runmawi</h6>
+            <div class="footer text-center">
+                <p>Copyright &copy; 2021 <br>Runmawi</p>
             </div>
         </div>
     </center>
@@ -61,142 +73,93 @@
 <style>
     .form-wrapper {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 50px auto;
     }
-
-    #form-login {
-        position: fixed;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        background-color: #f3f3f3;
-        z-index: 100001;
-        overflow: auto;
-        padding: 12px;
-    }
-
-    #form-login2 {
-        position: fixed;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        background-color: #f3f3f3;
-        z-index: 100001;
-        overflow: auto;
-        padding: 12px;
-        display: none;
-    }
-
-    #form-register {
-        position: fixed;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        background-color: #f3f3f3;
-        z-index: 100001;
-        overflow: auto;
-        display: none;
-        padding: 12px;
-
-    }
-
-
-    .login-input-text {
-        width: 100%;
-        margin: 8px 0;
-        border: 1px solid #eeeeee !important;
-        box-sizing: border-box !important;
-        background-color: white !important;
-        color: #666666 !important;
-        height: 40px !important;
-    }
-
-    button {
-        background-color: #04AA6D;
-        color: white;
-        padding: 8px 12px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-    }
-
-
-    .cancelbtn {
-        padding: 6px 10px;
-        color: #ffffff;
-        background-color: #0000cc text-align:center;
-        margin-top: 5px;
-    }
-
     .imgcontainer {
         text-align: center;
-        margin: 24px 0 12px 0;
+        margin-bottom: 50px;
     }
 
     img.avatar {
-        width: 40%;
-        border-radius: 50%;
+        width: 50%;
+        height: 75px;
+        
     }
-
-    .container {
-        padding: 16px;
+    h1 {
+        /* font-weight: 600; */
+        margin-bottom: 30px;
+        letter-spacing: 3px;
     }
-
-
-    /* Change styles for span and cancel button on extra small screens */
-    @media screen and (max-width: 300px) {
-        span.psw {
-            display: block;
-            float: none;
-        }
-
-        .cancelbtn {
-            width: 100%;
-        }
+    .input-group {
+        margin-bottom: 20px;
     }
-
-    /***** Slide Up *****/
-    .slide-up {
-        animation: 0.3s slide-up;
+    .input-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 18px;
+        float: left;
     }
-
-    @keyframes slide-up {
-        from {
-            margin-top: 100%;
-        }
-
-        to {
-            margin-bottom: 0%;
-        }
+    .login-input-text {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+        color: #333;
+        font-size: 14px;
     }
-
-    /***** Slide Down *****/
-    .slide-down {
-        animation: 0.3s slide-down;
+    .btn-main {
+        background-color: #0072ff;
+        color: white;
+        padding: 12px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
     }
-
-    @keyframes slide-down {
-        from {
-            margin-bottom: 100%;
-        }
-
-        to {
-            margin-to: 0%;
-        }
+    .btn-main:hover {
+        background-color: #005bb5;
+        border-radius: 8px;
     }
-
-    /***** Pop *****/
-    .pop {
-        animation: pop 0.2s linear 1;
+    .btn-secondary {
+        display: block;
+        text-decoration: none;
+        padding: 12px;
+        margin-top: 10px;
+        background-color: #0072ff;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
     }
-
-    @keyframes pop {
-        10% {
-            transform: scale(1.1);
-        }
+    .btn-secondary:hover {
+        background-color: #0072ff;
+        border-radius: 8px;
+    }
+    .resend-container {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+    .resend-link {
+        color: #0072ff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    .footer {
+        margin-top: 20px;
+    }
+    .footer p {
+        font-size: 12px;
+        color: #666;
     }
 </style>
