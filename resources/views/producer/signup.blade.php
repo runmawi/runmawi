@@ -27,11 +27,19 @@
                     <label><b> {{ __('Mobile no') }} </b></label>
                     <input type="text" class="login-input-text" placeholder="Enter 10 digit number" name="mobile_number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" required>
 
+                    <button type="submit" id="btn-login">Verify Mobile Number</button>
+
+                    <label><b> {{ __('Enter OTP') }} </b></label>
+                    <input type="text" class="login-input-text" placeholder="Enter OTP" name="mobile_number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4)" required>
+                    <a href="" target="_blank" rel="noopener noreferrer">Resend OTP</a>  
+
+                    <button type="submit" id="btn-login">Verify OTP</button>
+
                     <div class="text-end">
                         <a style="display:none; float:right" class='text-dark' id='btn-resend' onclick="$('#btn-getotp').click()">Resend OTP</a>
                     </div>
 
-                    <button type="submit" id="btn-login">Verify & Send OTP</button>
+                    <button type="submit" id="btn-login">Register Now </button>
 
                 </div>
 
