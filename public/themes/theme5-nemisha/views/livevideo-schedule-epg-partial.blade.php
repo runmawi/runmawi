@@ -65,11 +65,18 @@
                             @endphp
 
                             @if ($time->between($startTime, $endTime))
-                                <div class="epg-program epg-timeline-{{ $index }}" style="background-color: {{ $color }};">
-                                    @if ($title && $index !== $lastShownIndex)
-                                        <b>{{ "{$title} (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]})" }}</b>
-                                    @endif
-                                </div>
+                                @if($time == $startTime)
+                                    <div class="epg-program epg-timeline-{{ $index }}" style="border-left:1px solid #fff;">
+                                        @if ($title && $index !== $lastShownIndex)
+                                            <b style="position:absolute;">{{ "{$title} (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]})" }}</b>
+                                        @endif
+                                    </div>
+                                @endif
+                                @if($time == $endTime)
+                                    <div class="epg-program epg-timeline-{{ $index }}" style="border-right:1px solid;"></div>
+                                @endif
+                                    
+                                
                                 @php $lastShownIndex = $index; @endphp
                             @endif
                         @endif

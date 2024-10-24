@@ -887,6 +887,7 @@ $('#submit_bunny_cdn').click(function(){
                                 <div class="col-sm-6 form-group mt-3">
                                     <label class="">Year:</label>
                                     <input type="text" class="form-control" placeholder="Release Year" name="year" id="year" value="@if(!empty($video->year)){{ $video->year }}@endif">
+                                    <span id="year-error" style="color: red; display: none;">Invalid year.</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -924,7 +925,8 @@ $('#submit_bunny_cdn').click(function(){
                             </div>
                                 </div>
 
-                      </div> <input type="button" name="next" class="next action-button ml-3" value="Next" />
+                      </div> 
+                      <input type="button" id="nextButton"  name="next" class="next action-button ml-3" value="Next" />
                     </fieldset>
                     <fieldset class="Next3">
                         <div class="form-card">
@@ -1535,6 +1537,21 @@ p {
     object-fit: cover
 }
 </style>
+
+<style>
+    .select2-selection--multiple .select2-selection__choice {
+        background-color: #e4e4e4;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        cursor: default;
+        float: left;
+        margin: 12px 5px !important ; /* Custom margin */
+        padding: 5px;
+        font-weight: 500;
+        color: #000;
+    }
+</style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
@@ -2148,6 +2165,24 @@ $(document).ready(function(){
     });
  
  </script>
+<script>
+    function validateYear() {
+        var yearInput = $('#year').val();
+        var currentYear = new Date().getFullYear();
+
+        if (!/^\d+$/.test(yearInput) || yearInput > currentYear) {
+            $('#year-error').show();
+            $('#nextButton').attr('disabled', true);
+        } else {
+            $('#year-error').hide(); 
+            $('#nextButton').attr('disabled', false);
+        }
+    }
+
+    $('#year').on('input', function() {
+        validateYear();
+    });
+</script>
 
  
 {{-- <script>

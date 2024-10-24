@@ -213,6 +213,9 @@ border-radius: 0px 4px 4px 0px;
    display: grid;
    grid-template-columns: repeat(5, calc(100% / 5));
 }
+button[data-plyr="captions"] {
+    display: none !important;
+}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -367,11 +370,21 @@ border-radius: 0px 4px 4px 0px;
                         @if($video->type == 'mp4_url')
                            <video id="videoPlayer"  class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'  type="video/mp4">
                               <source src="<?php if(!empty($video->mp4_url)){   echo $video->mp4_url; }else {  echo $video->trailer; } ?>"  type='video/mp4' label='auto' >
-                           </video>
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
+                              </video>
                            @elseif ($video->type == 'm3u8_url')
                            <video  id="videoPlayer" class="" poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' src="<?php echo $video->trailer; ?>"  type="video/mp4" >
                               <source src="<?php if($video->type == "m3u8_url"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>" type="application/x-mpegURL" label='auto' >
-                           </video>
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
+                              </video>
                            @elseif($video->type == 'embed')
                            <div class="plyr__video-embed" id="player">
                               <iframe
@@ -383,10 +396,12 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                            @elseif ($video->type == '')
                            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-                              <source 
-                                 type="application/x-mpegURL" 
-                                 src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>"
-                                 >
+                              <source type="application/x-mpegURL" src="<?php echo URL::to('/storage/app/public/').'/'.$video->path . '.m3u8'; ?>">
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
                            </video>
                            @elseif ($video->type == 'aws_m3u8') 
                            <video id="video"  controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
@@ -394,6 +409,11 @@ border-radius: 0px 4px 4px 0px;
                                  type="application/x-mpegURL" 
                                  src="<?php if($video->type == "aws_m3u8"){ echo $video->m3u8_url; }else { echo $video->trailer; } ?>"
                                  >
+                                 <?php  if(isset($MoviesSubtitles)){
+                                    foreach ($MoviesSubtitles as $key => $subtitles_file) { ?>
+                                       <track kind="captions" src="<?= $subtitles_file->url ?>" srclang="<?= $subtitles_file->sub_language ?>"
+                                          label="<?= $subtitles_file->shortcode ?>" default>
+                                 <?php } }  ?>
                            </video>
                         @endif
                         </div>
@@ -1121,13 +1141,10 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                         </div>
                   
-                      <div class="row">
+                      <div class="row mb-4">
 
                         <div class="col-7">
                            <h2 class="fs-title">Trailer Upload:</h2>
-                        </div>
-
-                        <div class="col-sm-6">
                            <label class="m-0">Video Trailer Type:</label>
                            <select  class="trailer_type form-control"  style="width: 100%;" class="" name="trailer_type" id="trailer_type">    
                               <option   value="null"> Select the Video Trailer Type </option>
@@ -1140,72 +1157,84 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                      </div>
 
-                        <div class="row trailer_m3u8_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0"> Trailer m3u8 Url :</label>
-                              <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'm3u8_url' ){{ $video->trailer }}@endif">
-                              @if($video->trailer_type !=null && $video->trailer_type == "m3u8_url" )
-                                 <video id="videoPlayer1" width="560" height="315" controls>
-                                    <source src="{{ $video->trailer }}" type="application/x-mpegURL">
-                                 </video>
-                              @endif
+                     <div class="selected-options">
+                           <div class="row trailer_m3u8_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0"> Trailer m3u8 Url :</label>
+                                 <input type="text" class="form-control" name="m3u8_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'm3u8_url' ){{ $video->trailer }}@endif">
+                                 @if($video->trailer_type !=null && $video->trailer_type == "m3u8_url" )
+                                    <video id="videoPlayer1" width="560" height="315" controls>
+                                       <source src="{{ $video->trailer }}" type="application/x-mpegURL">
+                                    </video>
+                                 @endif
 
+                              </div>
                            </div>
-                        </div>
 
-                    
-                        <div class="row trailer_mp4_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0"> Trailer mp4 Url :</label>
-                              <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'mp4_url' ){{ $video->trailer }}@endif">
+                     
+                           <div class="row trailer_mp4_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0"> Trailer mp4 Url :</label>
+                                 <input type="text" class="form-control" name="mp4_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'mp4_url' ){{ $video->trailer }}@endif">
 
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'mp4_url'  )
-                                 <video width="560" height="315" controls>
+                                 @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'mp4_url'  )
+                                    <video width="560" height="315" controls>
+                                       <source src="{{ $video->trailer }}" type="video/mp4" />
+                                    </video>
+                                 @endif
+                              </div>
+                           </div>
+
+                           <div class="row trailer_embed_url">
+                              <div class="col-sm-6 form-group" >
+                                 <label class="m-0">Trailer Embed Code :</label>
+                                 <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'embed_url' ){{ $video->trailer }}@endif">
+
+                                 @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'embed_url' )
+                                    <iframe width="560" height="315"  src="{{ $video->trailer }}" frameborder="0" allowfullscreen></iframe>
+                                 @endif
+
+                              </div>
+                           </div>
+
+
+                        <div class="row trailer_video_upload">
+                              <div class="col-sm-8 form-group">
+                                 <label class="m-0">Upload Trailer :</label><br />
+                                 <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
+                                    <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
+                                    <p style="font-size: 14px !important;">Drop and drag the video file</p>
+                                 </div>
+                                 <!-- <span id="remove" class="danger">Remove</span> -->
+                           </div>
+                           <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
+                                 <span id="remove" class="danger">Remove</span> -->
+                              <div class="col-sm-8 mt-5 form-group">
+                                 <!--<p>Upload Trailer video</p>-->
+                                 @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
+                                 <video width="200" height="200" controls>
                                     <source src="{{ $video->trailer }}" type="video/mp4" />
                                  </video>
-                              @endif
+                                 @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
+                                 <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
+                              <source type="application/x-mpegURL" src="{{ $video->trailer }}">
+                                 </video>
+                                 @endif
                            </div>
                         </div>
-
-                        <div class="row trailer_embed_url">
-                           <div class="col-sm-6 form-group" >
-                              <label class="m-0">Trailer Embed Code :</label>
-                              <input type="text" class="form-control" name="embed_trailer" id="" value="@if(!empty($video->trailer) && $video->trailer_type == 'embed_url' ){{ $video->trailer }}@endif">
-
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'embed_url' )
-                                 <iframe width="560" height="315"  src="{{ $video->trailer }}" frameborder="0" allowfullscreen></iframe>
-                              @endif
-
-                           </div>
-                        </div>
-
-
-                     <div class="row trailer_video_upload">
-                           <div class="col-sm-8 form-group">
-                              <label class="m-0">Upload Trailer :</label><br />
-                              <div class="new-video-file form_video-upload" style="position: relative;" @if(!empty($video->type) && $video->type == 'upload') style="display:none" @else style="display:block" @endif >
-                                  <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
-                                  <p style="font-size: 14px !important;">Drop and drag the video file</p>
-                              </div>
-                              <!-- <span id="remove" class="danger">Remove</span> -->
-                          </div>
-                          <!-- <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" >
-                                <span id="remove" class="danger">Remove</span> -->
-                           <div class="col-sm-8 mt-5 form-group">
-                              <!--<p>Upload Trailer video</p>-->
-                              @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
-                              <video width="200" height="200" controls>
-                                  <source src="{{ $video->trailer }}" type="video/mp4" />
-                              </video>
-                              @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
-                              <video  id="videom3u8"width="50" height="50" controls type="application/x-mpegURL">
-                            <source type="application/x-mpegURL" src="{{ $video->trailer }}">
-                              </video>
-                              @endif
-                          </div>
                      </div>
 
                      <div class="row">
+                        <div class="col-sm-5">
+                           @if(!empty($video->trailer))
+                              <video width="200" height="200" controls style="width: 90%;">
+                                 <source src="<?php echo $video->trailer; ?>" type="video/mp4" />
+                              </video>
+                           @endif
+                        </div>
+                     </div>
+
+                     <div class="row mt-3">
                         <div class="col-sm-8  form-group">
                            <label class="m-0">Trailer Description:</label>
                            <textarea  rows="5" class="form-control mt-2" name="trailer_description" id="trailer-ckeditor"
