@@ -64,6 +64,14 @@ border-radius: 0px 4px 4px 0px;
 } 
     #video_upload .file form{/*border: 2px dashed;*/}
     #video_upload .file form i {display: block; font-size: 50px;}
+
+	.dropzone .dz-preview .dz-progress{height:14px !important;}
+    span#upload-percentage{position: absolute;right: 30%;bottom: -3px;font-weight:800 !important;font-size:10px;}
+    .dropzone .dz-preview .dz-progress .dz-upload{border-radius:5px;}
+    .dropzone .dz-preview .dz-progress {overflow: visible;top: 82%;border: none;}
+    .dz-cancel {color: #FF0000;background: none;border: none;padding: 5px;}
+   .dz-cancel:hover {text-decoration: underline;}
+   .dropzone .dz-preview.dz-complete .dz-progress {opacity: 1;}
 </style>
 <div id="content-page" class="content-page">
     	<div class="d-flex">
@@ -852,6 +860,23 @@ $('#duration').mask('00:00:00');
         // acceptedFiles: "image/*,audio/*",
         acceptedFiles: ".mp3",
     });
+
+	myDropzone.on("uploadprogress", function(file, progress) {
+          var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+          
+          if (progressElement) {
+            progressElement.textContent = Math.round(progress) + '%';
+          }
+
+          if (Math.round(progress) === 100) {
+            var cancelButton = file.previewElement.querySelector('.dz-cancel');
+            if (cancelButton) {
+                  cancelButton.style.opacity = '0';
+            }
+          }
+      });
+
+
     myDropzone.on("sending", function(file, xhr, formData) {
        formData.append("_token", CSRF_TOKEN);
     //   console.log(value)
@@ -895,6 +920,68 @@ $('#duration').mask('00:00:00');
 {{-- image validation --}}
 
 <script>
+	$(document).ready(function(){
+	   
+		$('#image').on('change', function(event) {
+
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				console.log(width);
+				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 1080 }};
+				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1920 }};
+				console.log('validWidth ' + validWidth);
+				console.log(validHeight);
+
+				if (width !== validWidth || height !== validHeight) {
+						document.getElementById('audio_image_error_msg').style.display = 'block';
+						$('.pull-right').prop('disabled', true);
+						document.getElementById('audio_image_error_msg').innerText = 
+						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+					} else {
+						document.getElementById('audio_image_error_msg').style.display = 'none';
+						$('.pull-right').prop('disabled', false);
+					}
+			}
+		});
+		 
+		  $('#player_image').on('change', function(event) {
+	
+			 var file = this.files[0];
+			 var player_Img = new Image();
+	
+			 player_Img.src=window.URL.createObjectURL( file ); 
+			 player_Img.onload = function() {
+			 var width = player_Img.naturalWidth;
+			 var height = player_Img.naturalHeight;
+			 console.log('player width ' + width)
+	
+			 var valid_player_Width = {{ $compress_image_settings->audio_player_img_width ?: 1280 }};
+			 var valid_player_Height = {{ $compress_image_settings->audio_player_img_height ?: 720 }};
+			 console.log(valid_player_Width + 'player width');
+	
+			 if (width !== valid_player_Width || height !== valid_player_Height) {
+				   document.getElementById('audio_player_image_error_msg').style.display = 'block';
+				   $('.pull-right').prop('disabled', true);
+				   document.getElementById('audio_player_image_error_msg').innerText = 
+					  `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+			 } else {
+				   document.getElementById('audio_player_image_error_msg').style.display = 'none';
+				   $('.pull-right').prop('disabled', false);
+			 }
+			 }
+		  });
+	   });
+	
+</script>
+
+
+{{-- <script>
     document.getElementById('image').addEventListener('change', function() {
         var file = this.files[0];
         if (file) {
@@ -952,7 +1039,7 @@ $('#duration').mask('00:00:00');
             img.src = URL.createObjectURL(file);
         }
     });
-</script>
+</script> --}}
 
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
@@ -1050,12 +1137,12 @@ $('#duration').mask('00:00:00');
 
 			image: {
                 required: true,
-                dimention:[1080,1920]
+                // dimention:[1080,1920]
             },
 
             player_image: {
                 required: true,
-                player_dimention:[1280,720]
+                // player_dimention:[1280,720]
             },
 
 			},

@@ -1071,14 +1071,51 @@ window.location = '<?= URL::to('login') ?>';
   }
 
 
-  function next(){
-    if (this.indexAudio <listAudio.length-1) {
-        var oldIndex = this.indexAudio
-        this.indexAudio++;
-        updateStylePlaylist(oldIndex,this.indexAudio)
-        this.loadNewTrack(this.indexAudio);
-    }
+  // function next(){
+  //   if (this.indexAudio <listAudio.length-1) {
+  //     console.log('listAudio: ' + listAudio);
+  //       var oldIndex = this.indexAudio
+  //       this.indexAudio++;
+  //       updateStylePlaylist(oldIndex,this.indexAudio)
+  //       this.loadNewTrack(this.indexAudio);
+  //   }
+  // }
+  this.indexAudio = 0; // Initialize the current audio index
+
+  function next() {
+      if (this.indexAudio < listAudio.length - 1) {
+          var oldIndex = this.indexAudio;
+          this.indexAudio++;
+          
+          console.log('Playing next track. Old Index: ' + oldIndex + ', New Index: ' + this.indexAudio);
+          console.log('Current Track:', listAudio[this.indexAudio]);
+
+          updateStylePlaylist(oldIndex, this.indexAudio);
+          this.loadNewTrack(this.indexAudio); // Load the next track and play it
+      } else {
+          console.log('No more tracks to play.');
+      }
   }
+
+  function loadNewTrack(index) {
+      var audioPlayer = document.getElementById('myAudio');
+      var audioSource = document.getElementById('source-audio');
+
+      // Set the new audio source
+      audioSource.src = listAudio[index].mp3_url;
+      audioPlayer.load();  // Reload the audio with the new source
+
+      // Play the new track automatically
+      audioPlayer.play();
+      
+      console.log('Loaded and playing new track:', listAudio[index].title);
+  }
+
+  function updateStylePlaylist(oldIndex, newIndex) {
+      // Placeholder for updating playlist UI styles
+      console.log('Updating playlist style: from ' + oldIndex + ' to ' + newIndex);
+  }
+
 
   function previous(){
     if (this.indexAudio>0) {
