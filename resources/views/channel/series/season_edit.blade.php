@@ -331,6 +331,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="m-0"> Episode Description </label>
+                            <p class="p1"> Add a description of the Episode below: </p> 
+                            <div class="panel-body">
+                                <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- <div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
 		<div class="panel-title"><label>Episode Source</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 

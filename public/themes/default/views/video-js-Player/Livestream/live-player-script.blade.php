@@ -33,7 +33,8 @@
 
         player.on('userinactive', () => {
           if (playPauseButton && backButton) {
-            playPauseButton.style.display = 'none';
+            // playPauseButton.style.display = 'none';
+            $('.vjs-big-play-button').hide();
             backButton.style.display = 'none';
             titleButton.style.display = 'none';
           }
@@ -41,7 +42,8 @@
 
         player.on('useractive', () => {
           if (playPauseButton && backButton) {
-            playPauseButton.style.display = 'block';
+            // playPauseButton.style.display = 'block';
+            $('.vjs-big-play-button').show();
             backButton.style.display = 'block';
             titleButton.style.display = 'none';
           }
