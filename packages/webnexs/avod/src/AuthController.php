@@ -35,6 +35,7 @@ use App\AdsRedirectionURLCount;
 use App\Video;
 use App\LiveStream;
 use App\Episode;
+use App\PaymentSetting;
 use DatePeriod;
 use Session;
 use Stripe;
@@ -122,6 +123,8 @@ class AuthController extends Controller
     
                     case $data->status == 1:
     
+                        session(['advertiser_id' => $data->id]);
+
                         return $settings->ads_payment_page_status == 1  ? Redirect::route('Advertisement.Payment_details')  : redirect()->intended('/advertiser');
                         break;
     
@@ -146,7 +149,26 @@ class AuthController extends Controller
 
     public function Payment_details(Request $request)
     {
-        return view('avod::payment.index');
+
+        if (empty(session('advertiser_id') ) ) {
+            return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
+        } 
+
+        $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+
+        $Adsplan = Adsplan::where('status',1)->get();
+
+        $Stripe_payment_settings = PaymentSetting::where('payment_type', 'Stripe')->first();
+
+        $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+
+        $data = array(
+            'Adsplan' => $Adsplan ,
+            'Stripe_payment_settings' => $Stripe_payment_settings ,
+            'Advertiser' => $Advertiser,
+        );
+
+        return view('avod::Payment.index',$data);
     }
 
     public function dashboard()
