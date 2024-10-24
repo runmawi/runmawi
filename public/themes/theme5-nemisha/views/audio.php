@@ -264,7 +264,7 @@ ul.share-icon-aud li {display: inline-block; padding: 0 6px;}
    
    <?php  //else: ?> -->
 <?php if($audio): ?>
-<?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
+<?php if (  !Auth::guest() && $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' ) { ?>
 <div id="subscribers_only">
    <a class="text-center btn btn-success" id="paynowbutton"> Pay for View  </a>
 </div>
