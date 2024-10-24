@@ -514,6 +514,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
     <div class="page-container sidebar-collapsed">
 
       <!-- Sidebar-->
+      @if ( Route::currentRouteName()  != "Advertisement.Payment_details")
         <div class="iq-sidebar">
             <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
                 <a href="{{ URL::to('home') }}" class="header-logo">
@@ -579,6 +580,8 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                 </nav>
             </div>
         </div>
+      @endif
+       
 
         <div class="main-content">
 
