@@ -1701,6 +1701,7 @@ class CPPSeriesController extends Controller
         $episodes->ppv_status = $data['ppv_status'];
         $episodes->status = 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
+        $episodes->episode_description =  $data['episode_description'];
         $episodes->save();
 
         return Redirect::to('cpp/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
@@ -1919,6 +1920,15 @@ class CPPSeriesController extends Controller
             $type = $data['type'];
         }
 
+        if (!empty($input['episode_description']))
+        {
+            $episode_description = $input['episode_description'];
+        }
+        else
+        {
+            $episode_description = $episode->episode_description;
+        }
+
         $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
         if ($episode_upload != '' && $request->hasFile('episode_upload'))
@@ -1966,6 +1976,7 @@ class CPPSeriesController extends Controller
         $episode->intro_end_time = $data['intro_end_time'];
         $episode->ppv_price = $ppv_price;
         $episode->player_image = $player_image;
+        $episode->episode_description = $episode_description;
         $episode->ppv_status = $data['ppv_status'];
         $episode->status = 1;
         $episode->slug =  $data['slug'];
