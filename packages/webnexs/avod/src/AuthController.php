@@ -46,40 +46,10 @@ use getID3;
 
 class AuthController extends Controller
 {
-
-    public function index()
-    {
-        $data = ['settings' => Setting::first()];
-        return view('avod::login', $data);
-    }
-
     public function register()
     {
         $data = ['settings' => Setting::first()];
         return view('avod::register', $data);
-    }
-
-    public function postLogin(Request $request)
-    {
-        request()->validate([
-            'email_id' => 'required',
-            'password' => 'required',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        if ($data = Advertiser::where('email_id', $request->email_id)->first()) {
-            $pass = Hash::check($request->password, $data->password);
-            if ($pass && $data->status == 1) {
-                session(['advertiser_id' => $data->id]);
-                return redirect()->intended('/advertiser');
-            } elseif ($pass && $data->status == 0) {
-                return Redirect::to('advertiser/login')->withError('Opps! Your account is under verification.Please wait for admin approval.');
-            } elseif ($pass && $data->status == 2) {
-                return Redirect::to('advertiser/login')->withError('Opps! Admin has disapproved your account.Please contact administrator.');
-            }
-        }
-        return Redirect::to('advertiser/login')->withError('Opps! You have entered invalid credentials');
     }
 
     public function postRegister(Request $request)
@@ -123,6 +93,60 @@ class AuthController extends Controller
         }
 
         return Redirect::to('advertiser/login')->withSuccess('Great! You have Successfully registered');
+    }
+
+    public function index()
+    {
+        $data = ['settings' => Setting::first()];
+        return view('avod::login', $data);
+    }
+
+    public function postLogin(Request $request)
+    {
+        try {
+
+            request()->validate([
+                'email_id' => 'required',
+                'password' => 'required',
+            ]);
+    
+            $settings = Setting::first();
+    
+            $credentials = $request->only('email', 'password');
+    
+            if ($data = Advertiser::where('email_id', $request->email_id)->first()) {
+    
+                $pass = Hash::check($request->password, $data->password);
+    
+                switch ($pass) {
+    
+                    case $data->status == 1:
+    
+                        return $settings->ads_payment_page_status == 1  ? Redirect::route('Advertisement.Payment_details')  : redirect()->intended('/advertiser');
+                        break;
+    
+                    case $data->status == 0:
+                        return Redirect::to('advertiser/login')->withError('Opps! Your account is under verification.Please wait for admin approval.');
+                        break;
+    
+                    case $data->status == 2:
+                        return Redirect::to('advertiser/login')->withError('Opps! Admin has disapproved your account.Please contact administrator.');
+                        break;
+                }
+            }
+    
+            return Redirect::to('advertiser/login')->withError('Opps! You have entered invalid credentials');
+
+        } catch (\Throwable $th) {
+
+            return Redirect::to('advertiser/login')->withError('Opps! You have entered invalid credentials');
+
+        }
+    }
+
+    public function Payment_details(Request $request)
+    {
+        return view('avod::payment.index');
     }
 
     public function dashboard()
