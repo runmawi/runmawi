@@ -254,7 +254,8 @@
                 if(hovered == false && remainingDuration == false){
                     skipForwardButton.style.visibility = 'hidden';
                     skipBackwardButton.style.visibility = 'hidden';
-                    playPauseButton.style.visibility = 'hidden';
+                    // playPauseButton.style.visibility = 'hidden';
+                    $('.vjs-big-play-button').hide();
                     backButton.style.visibility = 'hidden';
                     titleButton.style.visibility = 'hidden';
                 }
@@ -267,7 +268,8 @@
                 if(player.currentTime != player.duration){
                     skipForwardButton.style.visibility = 'visible';
                     skipBackwardButton.style.visibility = 'visible';
-                    playPauseButton.style.visibility = 'visible';
+                    // playPauseButton.style.visibility = 'visible';
+                    $('.vjs-big-play-button').show();
                     backButton.style.visibility = 'visible';
                     titleButton.style.visibility = 'visible';
                 }
