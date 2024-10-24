@@ -1557,6 +1557,13 @@
                         $ModeratorsUser = App\ModeratorsUser::where('email', Auth::User()->email)->first();
                         $Channel = App\Channel::where('email', Auth::User()->email)->first();
                         }
+
+                        if(Auth::guest()){ ?>
+                            <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold;" >
+                                <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
+                            </div>
+                        <?php }
+
                         if(!Auth::guest() && !empty($ModeratorsUser)){ ?>
                                 <div class="iq-search-bar ml-auto" id="hid">
                                     <form method="POST" action="<?php echo URL::to('cpp/home'); ?>" class="mt-4">
@@ -1647,11 +1654,7 @@
                                         <?php endif ; ?>
                                    
                                         </li>
-                                        <li>
-                                        <div class="bg-primary text-right p-1" style="border-radius:10px;" >
-                                            <a href="<?php echo URL::to('radio-station'); ?>"> Radio Station</a>  
-                                        </div>
-                                        </li>
+ 
                                         <li class="nav-item nav-icon">
                                          
                                             <div class="iq-sub-dropdown">
