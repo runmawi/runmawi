@@ -43,5 +43,12 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/Cost-Per-Click-Analysis', 'Webnexs\Avod\AuthController@Cost_Per_Click_Analysis')->name('Advertisement.Cost_Per_Click_Analysis'); 
 		Route::get('/Specific-Ads-Cost-Per-Click-Analysis/{Ads_id}', 'Webnexs\Avod\AuthController@Specific_Ads_Cost_Per_Click_Analysis')->name('Advertisement.Specific_Ads_Cost_Per_Click_Analysis'); 
 		Route::get('/Specific-Ads-Cost-Per-View-Analysis/{Ads_id}', 'Webnexs\Avod\AuthController@Specific_Ads_Cost_Per_View_Analysis')->name('Advertisement.Specific_Ads_Cost_Per_View_Analysis'); 
+
+		// Payment Setting
+
+		Route::get('/payment-details', 'Webnexs\Avod\AuthController@Payment_details')->name('Advertisement.Payment_details'); 
+
+		// Stripe Payment Setting
+
 	});
 });

@@ -28,6 +28,7 @@ $system_settings = App\SystemSetting::find(1);
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js">
   </script>
 <style>
+    body{background: #000 !important;}
     h3 {font-size: 30px!important;}
     .from-control::placeholder{
         color: #7b7b7b!important;

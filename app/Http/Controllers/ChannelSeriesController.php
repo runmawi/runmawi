@@ -1078,6 +1078,7 @@ class ChannelSeriesController extends Controller
 
         $series = new SeriesSeason;
         $series->series_id = $data['series_id'];
+        $series->series_seasons_name = $data['series_seasons_name'];
         $series->image = $data['image'];
         $series->trailer = $data['trailer'];
         $series->trailer_type = $data['trailer_type'];
@@ -1685,6 +1686,7 @@ class ChannelSeriesController extends Controller
         $episodes->ppv_status = $data['ppv_status'];
         $episodes->status = 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
+        $episodes->episode_description =  $data['episode_description'];
         $episodes->save();
 
         return Redirect::to('channel/season/edit/' . $data['series_id'] . '/' . $data['season_id'])->with(array(
@@ -1903,6 +1905,17 @@ class ChannelSeriesController extends Controller
             $type = $data['type'];
         }
 
+
+        if (!empty($input['episode_description']))
+        {
+            $episode_description = $input['episode_description'];
+        }
+        else
+        {
+            $episode_description = $episode->episode_description;
+        }
+
+
         $episode_upload = (isset($data['episode_upload'])) ? $data['episode_upload'] : '';
 
         if ($episode_upload != '' && $request->hasFile('episode_upload'))
@@ -1951,6 +1964,7 @@ class ChannelSeriesController extends Controller
         $episode->ppv_price = $ppv_price;
         $episode->player_image = $player_image;
         $episode->ppv_status = $data['ppv_status'];
+        $episode->episode_description = $episode_description;
         $episode->status = 1;
         $episode->slug =  $data['slug'];
         $episode->save();
