@@ -71,11 +71,16 @@
                             <input type="file" accept="video/mp4,video/x-m4v,video/*" name="trailer" id="trailer" />
                             <!-- <p class="p1">Drop and drag the video file</p> -->
                         </div>
-                        <?php if(!empty($season->trailer)){ ?>
-                        <video width="100%" height="200" controls>
-                            <source src="<?php echo $season->trailer; ?>" type="video/mp4" />
-                        </video>
-                        <?php }else{  } ?>
+
+                        <div class="row">
+                            <div class="col-sm-5">
+                               @if(!empty($season->trailer))
+                                  <video width="200" height="200" controls  style="width: 90%;">
+                                     <source src="<?php echo $season->landing_mp4_url; ?>" type="video/mp4" />
+                                  </video>
+                               @endif
+                            </div>
+                         </div>
                     </div>
 
                     <div class="form-group {{ $errors->has('ppv_access') ? 'has-error' : '' }}">
