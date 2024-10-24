@@ -1588,16 +1588,18 @@
                                 
                                 <?php } ?>
                                 <div class="navbar-right menu-right d-flex">
-
-                                    <?php if(Auth::guest()): ?>
+                                    <ul class="d-flex align-items-center list-inline m-0">
+                                        <?php if(Auth::guest()): ?>
                                         <div class="iq-search-bar ml-auto" id="hid">
                                             <a href="<?php echo URL::to('channel/login') ?>">
-                                                <button class="btn btn-primary " ><?= __('Visit Channel Portal') ?></button>
+                                                <button class="btn btn-primary" ><?= __('Visit Channel Portal') ?></button>
                                             </a>
                                         </div> 
-                                    <?php endif; ?>
-                                
-                                    <ul class="d-flex align-items-center list-inline m-0">
+                                        <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold; margin:0px 10px; " >
+                                        <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
+                                        </div>
+                                        <?php endif ; ?>
+                                        
                                         <li class="nav-item nav-icon">
 
                                             <div class="search-box iq-search-bar d-search">
@@ -1737,11 +1739,6 @@
                                                 </li> -->
                                             <?php endif ; ?>
 
-                                           
-                                            <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold;" >
-                                                <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
-                                            </div>
-                     
 
                                         <?php else: ?>
                                         <li class="nav-item nav-icon">
