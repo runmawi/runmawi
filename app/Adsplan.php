@@ -10,5 +10,11 @@ class Adsplan extends Model
     protected $guarded = array();
     public static $rules = array();
 
-    protected $fillable = array('plan_name','plan_amount','no_of_ads');
+    protected $fillable = array(
+                                'plan_name',
+                                'plan_amount',
+                                'no_of_ads',
+                                'status',
+                                'plan_id'
+                            );
 }
