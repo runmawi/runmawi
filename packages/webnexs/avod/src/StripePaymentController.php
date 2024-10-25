@@ -119,7 +119,7 @@ class StripePaymentController extends Controller
                 'payment_type'          => 'recurring',
                 'payment_status'        =>  1,
                 'payment_gateway'       =>  'Stripe',
-                'upload_count'          =>  Adsplan::where('plan_id',$subscription->plan['id'])->pluck('plan_id')->first(),
+                'ads_upload_count_limit'=>  Adsplan::where('plan_id',$subscription->plan['id'])->pluck('no_of_ads')->first(),
                 'coupon_used'           =>  null ,
             );
 
@@ -146,6 +146,7 @@ class StripePaymentController extends Controller
             'status'   => "false",
             'redirect_url' => URL::to('advertiser/payment'),
             'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
+            'error_msg' => $th->getMessage(),
         );
     }
 

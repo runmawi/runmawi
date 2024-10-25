@@ -15,13 +15,14 @@ class AddPaymentToAdvertisersTable extends Migration
     {
         Schema::table('advertisers', function (Blueprint $table) {
             $table->string('role', 100)->nullable()->after('status');
-            $table->integer('upload_count')->nullable()->after('role');
+            $table->integer('ads_upload_count_limit')->nullable()->after('role');
+            $table->integer('adverister_uploaded_ads_count')->nullable()->after('ads_upload_count_limit');
 
             $table->string('subscription_id')->nullable()->after('role');
             $table->string('payment_status')->nullable()->after('subscription_id');
             $table->string('plan_id')->nullable()->after('payment_status');
 
-            $table->string('subscription_start', 100)->nullable()->after('upload_count');
+            $table->string('subscription_start', 100)->nullable()->after('plan_id');
             $table->string('subscription_ends_at', 100)->nullable()->after('subscription_start');
             $table->string('payment_type', 100)->nullable()->after('subscription_ends_at');
             $table->string('payment_gateway', 100)->nullable()->after('payment_type');

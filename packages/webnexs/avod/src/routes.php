@@ -46,7 +46,8 @@ Route::group(['middleware' => ['web']], function () {
 
 		// Payment Setting
 
-		Route::get('/payment', 'Webnexs\Avod\AuthController@Payment_details')->name('Advertisement.Payment_details'); 
+		Route::get('/payment', 'Webnexs\Avod\PaymentController@Payment_details')->name('Advertisement.Payment_details'); 
+		Route::get('/transaction-details', 'Webnexs\Avod\PaymentController@transaction_details')->name('Advertisement.transaction_details'); 
 
 		// Stripe Payment Setting
 
