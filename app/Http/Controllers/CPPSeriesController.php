@@ -943,97 +943,176 @@ class CPPSeriesController extends Controller
         $package = User::where('id', 1)->first();
         $pack = $package->package;
 
-        if ($trailer != '' && $pack == "Business" && $settings->transcoding_access == 1)
-        {
-
-            $settings = Setting::first();
-            if ($settings->transcoding_resolution != null)
-            {
-                $convertresolution = array();
-                $resolution = explode(",", $settings->transcoding_resolution);
-                foreach ($resolution as $value)
-                {
-                    if ($value == "240p")
-                    {
-                        $r_240p = (new Representation)->setKiloBitrate(150)
-                            ->setResize(426, 240);
-                        array_push($convertresolution, $r_240p);
+        if($settings->transcoding_resolution != null){
+            $convertresolution=array();
+            $resolution = explode(",",$settings->transcoding_resolution);
+                foreach($resolution as $value){
+                    if($value == "240p"){
+                        $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                        array_push($convertresolution,$r_240p);
                     }
-                    if ($value == "360p")
-                    {
-                        $r_360p = (new Representation)->setKiloBitrate(276)
-                            ->setResize(640, 360);
-                        array_push($convertresolution, $r_360p);
+                    if($value == "360p"){
+                        $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                        array_push($convertresolution,$r_360p);
 
                     }
-                    if ($value == "480p")
-                    {
-                        $r_480p = (new Representation)->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_480p);
+                    if($value == "480p"){
+                        $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                        array_push($convertresolution,$r_480p);
 
                     }
-                    if ($value == "720p")
-                    {
-                        $r_720p = (new Representation)->setKiloBitrate(2048)
-                            ->setResize(1280, 720);
-                        array_push($convertresolution, $r_720p);
+                    if($value == "720p"){
+                        $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                        array_push($convertresolution,$r_720p);
 
                     }
-                    if ($value == "1080p")
-                    {
-                        $r_1080p = (new Representation)->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_1080p);
+                    if($value == "1080p"){
+                        $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                        array_push($convertresolution,$r_1080p);
                     }
-                }
-
             }
-            // dd($convertresolution);
-            $trailer = $data['trailer'];
-            $trailer_path = URL::to('public/uploads/season_trailer/');
-            $trailer_Video = time() . '_' . $trailer->getClientOriginalName();
-            $trailer->move(public_path('uploads/season_trailer/') , $trailer_Video);
-            $trailer_video_name = strtok($trailer_Video, '.');
-            $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-            $storepath = URL::to('public/uploads/season_trailer/');
-            $data['trailer'] = $M3u8_save_path;
-            $data['trailer_type'] = 'm3u8_url';
+            
         }
-        else
-        {
+        $StorageSetting = StorageSetting::first();
 
-            $image_path = public_path() . '/uploads/season_images/';
-            $path = public_path() . '/uploads/season_videos/';
+        if($StorageSetting->site_storage == 1){
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
 
-            if ($trailer != '')
-            {
-                //code for remove old file
-                if ($trailer != '' && $trailer != null)
-                {
-                    $file_old = $path . $trailer;
-                    if (file_exists($file_old))
-                    {
+                $trailer = $data['trailer'];
+                $trailer_path  = URL::to('storage/app/season_trailer/');
+                // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, '.');
+                $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                $storepath  = URL::to('storage/app/season_trailer/');
+
+                $data['trailer'] = $M3u8_save_path;
+                $data['trailer_type']  = 'm3u8_url';
+                $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
+
+            }else{
+                if($trailer != '') {   
+                    //code for remove old file
+                    if($trailer != ''  && $trailer != null){
+                        $file_old = $path.$trailer;
+                        if (file_exists($file_old)){
                         unlink($file_old);
+                        }
                     }
-                }
-                //upload new file
-                $randval = Str::random(16);
-                $file = $trailer;
-                $trailer_vid = $randval . '.' . $request->file('trailer')
-                    ->extension();
-                $file->move($path, $trailer_vid);
-                $data['trailer'] = URL::to('/') . '/public/uploads/season_videos/' . $trailer_vid;
-                $data['trailer_type'] = 'mp4_url';
+                    //upload new file
+                    $randval = Str::random(16);
+                    $file = $trailer;
+                    $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                    $file->move($path, $trailer_vid);
+                    $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+                    $data['trailer_type']  = 'mp4_url';
+                    $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
 
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
+                }
             }
-            else
-            {
-                $data['trailer'] = '';
-                $data['trailer_type'] = '';
+        }elseif($StorageSetting->aws_storage == 1){
+
+
+
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
+                $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+                $newfile = explode(".mp4",$name_mp4);
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+                $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $M3u8_save_path = $path.$transcode_path;
+
+                $data['trailer'] = $M3u8_save_path;
+                $data["trailer_type"] = 'm3u8_url';
+                $data['landing_mp4_url'] = $path.$transcode_path_mp4;
+
+            }else{
+                if($trailer != '') {   
+                        //code for remove old file
+                        $file = $request->file('trailer');
+                        $file_folder_name =  $file->getClientOriginalName();
+                        // $name = time() . $file->getClientOriginalName();
+                        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+                        $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                        Storage::disk('s3')->put($filePath, file_get_contents($file));
+                        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                        $trailer = $path.$filePath;
+                        $data["trailer"] = $trailer;
+                        $data["trailer_type"] = 'video_mp4';
+                        $data['landing_mp4_url'] = $path.$filePath;
+
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
+
+                }
+            }
+
+
+        }else{
+
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+                $trailer = $data['trailer'];
+                $trailer_path  = URL::to('storage/app/season_trailer/');
+                // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, '.');
+                $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                $landing_mp4_url_path = $trailer_path.'/'.$trailer_video_name.'.mp4';
+
+                $storepath  = URL::to('storage/app/season_trailer/');
+
+                $data['trailer'] = $M3u8_save_path;
+                $data['trailer_type']  = 'm3u8_url';
+                $data['landing_mp4_url'] = $landing_mp4_url_path;
+
+            }else{
+                if($trailer != '') {   
+                        //code for remove old file
+                        if($trailer != ''  && $trailer != null){
+                            $file_old = $path.$trailer;
+                            if (file_exists($file_old)){
+                            unlink($file_old);
+                            }
+                        }
+                        //upload new file
+                        $randval = Str::random(16);
+                        $file = $trailer;
+                        $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                        $file->move($path, $trailer_vid);
+                        $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+                        $data['trailer_type']  = 'mp4_url';
+                        $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
+                }
             }
 
         }
+
+
         $image_path = public_path() . '/uploads/season_images/';
         $path = public_path() . '/uploads/season_videos/';
 
@@ -1085,6 +1164,13 @@ class CPPSeriesController extends Controller
             $ios_ppv_price = null;
         }
 
+        if(!empty($data['landing_mp4_url'])){
+            $landing_mp4_url = $data['landing_mp4_url'];
+        }else{
+            $landing_mp4_url = $series_season->landing_mp4_url;
+        }
+        // dd($landing_mp4_url);
+
         $user = Session::get('user');
         $user_id = $user->id;
 
@@ -1093,6 +1179,7 @@ class CPPSeriesController extends Controller
         $series->series_seasons_name = $data['series_seasons_name'];
         $series->image = $data['image'];
         $series->trailer = $data['trailer'];
+        $series->landing_mp4_url = $data['landing_mp4_url'];
         $series->trailer_type = $data['trailer_type'];
         $series->access = $access;
         $series->ppv_price = $ppv_price;
@@ -1136,94 +1223,173 @@ class CPPSeriesController extends Controller
         $package = User::where('id', 1)->first();
         $pack = $package->package;
 
-        if ($trailer != '' && $pack == "Business" && $settings->transcoding_access == 1)
-        {
-
-            $settings = Setting::first();
-            if ($settings->transcoding_resolution != null)
-            {
-                $convertresolution = array();
-                $resolution = explode(",", $settings->transcoding_resolution);
-                foreach ($resolution as $value)
-                {
-                    if ($value == "240p")
-                    {
-                        $r_240p = (new Representation)->setKiloBitrate(150)
-                            ->setResize(426, 240);
-                        array_push($convertresolution, $r_240p);
+        if($settings->transcoding_resolution != null){
+            $convertresolution=array();
+            $resolution = explode(",",$settings->transcoding_resolution);
+                foreach($resolution as $value){
+                    if($value == "240p"){
+                        $r_240p  = (new Representation)->setKiloBitrate(150)->setResize(426, 240);
+                        array_push($convertresolution,$r_240p);
                     }
-                    if ($value == "360p")
-                    {
-                        $r_360p = (new Representation)->setKiloBitrate(276)
-                            ->setResize(640, 360);
-                        array_push($convertresolution, $r_360p);
+                    if($value == "360p"){
+                        $r_360p  = (new Representation)->setKiloBitrate(276)->setResize(640, 360);
+                        array_push($convertresolution,$r_360p);
 
                     }
-                    if ($value == "480p")
-                    {
-                        $r_480p = (new Representation)->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_480p);
+                    if($value == "480p"){
+                        $r_480p  = (new Representation)->setKiloBitrate(750)->setResize(854, 480);
+                        array_push($convertresolution,$r_480p);
 
                     }
-                    if ($value == "720p")
-                    {
-                        $r_720p = (new Representation)->setKiloBitrate(2048)
-                            ->setResize(1280, 720);
-                        array_push($convertresolution, $r_720p);
+                    if($value == "720p"){
+                        $r_720p  = (new Representation)->setKiloBitrate(2048)->setResize(1280, 720);
+                        array_push($convertresolution,$r_720p);
 
                     }
-                    if ($value == "1080p")
-                    {
-                        $r_1080p = (new Representation)->setKiloBitrate(750)
-                            ->setResize(854, 480);
-                        array_push($convertresolution, $r_1080p);
+                    if($value == "1080p"){
+                        $r_1080p  = (new Representation)->setKiloBitrate(4096)->setResize(1920, 1080);
+                        array_push($convertresolution,$r_1080p);
                     }
-                }
-
             }
-            // dd($convertresolution);
-            $trailer = $data['trailer'];
-            $trailer_path = URL::to('public/uploads/season_trailer/');
-            $trailer_Video = time() . '_' . $trailer->getClientOriginalName();
-            $trailer->move(public_path('uploads/season_trailer/') , $trailer_Video);
-            $trailer_video_name = strtok($trailer_Video, '.');
-            $M3u8_save_path = $trailer_path . '/' . $trailer_video_name . '.m3u8';
-            $storepath = URL::to('public/uploads/season_trailer/');
-
-            $data['trailer'] = $M3u8_save_path;
-            $data['trailer_type'] = 'm3u8_url';
-
+            
         }
-        else
-        {
-            if ($trailer != '')
-            {
-                //code for remove old file
-                if ($trailer != '' && $trailer != null)
-                {
-                    $file_old = $path . $trailer;
-                    if (file_exists($file_old))
-                    {
+        $StorageSetting = StorageSetting::first();
+
+        if($StorageSetting->site_storage == 1){
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+                $trailer = $data['trailer'];
+                $trailer_path  = URL::to('storage/app/season_trailer/');
+                // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, '.');
+                $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                $storepath  = URL::to('storage/app/season_trailer/');
+
+                $data['trailer'] = $M3u8_save_path;
+                $data['trailer_type']  = 'm3u8_url';
+                $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
+
+            }else{
+                if($trailer != '') {   
+                    //code for remove old file
+                    if($trailer != ''  && $trailer != null){
+                        $file_old = $path.$trailer;
+                        if (file_exists($file_old)){
                         unlink($file_old);
+                        }
                     }
+                    //upload new file
+                    $randval = Str::random(16);
+                    $file = $trailer;
+                    $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                    $file->move($path, $trailer_vid);
+                    $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+                    $data['trailer_type']  = 'mp4_url';
+                    $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
                 }
-                //upload new file
-                $randval = Str::random(16);
-                $file = $trailer;
-                $trailer_vid = $randval . '.' . $request->file('trailer')
-                    ->extension();
-                $file->move($path, $trailer_vid);
-                $data['trailer'] = URL::to('/') . '/public/uploads/season_videos/' . $trailer_vid;
-                $data['trailer_type'] = 'mp4_url';
-
             }
-            else
-            {
-                $data['trailer'] = $series_season->trailer;
-                $data['trailer_type'] = 'mp4_url';
+        }elseif($StorageSetting->aws_storage == 1){
 
+
+
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+
+                $file = $request->file('trailer');
+                $file_folder_name =  $file->getClientOriginalName();
+                $name_mp4 = $file->getClientOriginalName();
+                $name_mp4 = $name_mp4 == null ? str_replace(' ', '_', 'S3'.$name_mp4) : str_replace(' ', '_', 'S3'.$name_mp4) ;        
+                $newfile = explode(".mp4",$name_mp4);
+                $namem3u8 = $newfile[0].'.m3u8';   
+                $name = $namem3u8 == null ? str_replace(' ', '_',$namem3u8) : str_replace(' ', '_',$namem3u8) ;        
+                $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                $transcode_path = @$StorageSetting->aws_transcode_path.'/'. $name;
+                $transcode_path_mp4 = @$StorageSetting->aws_storage_path.'/'. $name_mp4;
+                Storage::disk('s3')->put($transcode_path_mp4, file_get_contents($file));
+                $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                $M3u8_save_path = $path.$transcode_path;
+
+                $data['trailer'] = $M3u8_save_path;
+                $data["trailer_type"] = 'm3u8_url';
+                $data['landing_mp4_url'] = $path.$transcode_path_mp4;
+
+            }else{
+                if($trailer != '') {   
+                        //code for remove old file
+                        $file = $request->file('trailer');
+                        $file_folder_name =  $file->getClientOriginalName();
+                        // $name = time() . $file->getClientOriginalName();
+                        $name = $file->getClientOriginalName() == null ? str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) : str_replace(' ', '_', 'S3'.$file->getClientOriginalName()) ;        
+                        $filePath = $StorageSetting->aws_season_trailer_path.'/'. $name;
+                        Storage::disk('s3')->put($filePath, file_get_contents($file));
+                        $path = 'https://' . env('AWS_BUCKET').'.s3.'. env('AWS_DEFAULT_REGION') . '.amazonaws.com' ;
+                        $trailer = $path.$filePath;
+                        $data["trailer"] = $trailer;
+                        $data["trailer_type"] = 'video_mp4';
+                        $data['landing_mp4_url'] = $path.$filePath;
+
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
+
+                }
             }
+
+
+        }else{
+
+            if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1) {
+
+                $trailer = $data['trailer'];
+                $trailer_path  = URL::to('storage/app/season_trailer/');
+                // $trailer_Video =  time().'_'.$trailer->getClientOriginalName();  
+                $trailer_Videoname =  Str::lower($trailer->getClientOriginalName());
+                $trailer_Video = time() . "_" . str_replace(" ","_",$trailer_Videoname);
+                $trailer->move(storage_path('app/season_trailer/'), $trailer_Video);
+                $trailer_video_name = strtok($trailer_Video, '.');
+                $M3u8_save_path = $trailer_path.'/'.$trailer_video_name.'.m3u8';
+                $landing_mp4_url_path = $trailer_path.'/'.$trailer_video_name.'.mp4';
+
+                $storepath  = URL::to('storage/app/season_trailer/');
+
+                $data['trailer'] = $M3u8_save_path;
+                $data['trailer_type']  = 'm3u8_url';
+                $data['landing_mp4_url'] = $landing_mp4_url_path;
+
+            }else{
+                if($trailer != '') {   
+                        //code for remove old file
+                        if($trailer != ''  && $trailer != null){
+                            $file_old = $path.$trailer;
+                            if (file_exists($file_old)){
+                            unlink($file_old);
+                            }
+                        }
+                        //upload new file
+                        $randval = Str::random(16);
+                        $file = $trailer;
+                        $trailer_vid  = $randval.'.'.$request->file('trailer')->extension();
+                        $file->move($path, $trailer_vid);
+                        $data['trailer']  = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+                        $data['trailer_type']  = 'mp4_url';
+                        $data['landing_mp4_url'] = URL::to('/').'/public/uploads/season_videos/'.$trailer_vid;
+
+                } else {
+                    $data['trailer'] = $series_season->trailer;
+                    $data['trailer_type']  = $series_season->trailer_type;
+                    $data['landing_mp4_url'] = $series_season->landing_mp4_url;
+                }
+            }
+
         }
 
         if ($image != '')
@@ -1282,14 +1448,22 @@ class CPPSeriesController extends Controller
         {
             $ios_ppv_price = $series_season->ios_ppv_price;
         }
+        if(!empty($data['landing_mp4_url'])){
+            $landing_mp4_url = $data['landing_mp4_url'];
+        }else{
+            $landing_mp4_url = $series_season->landing_mp4_url;
+        }
+        // dd($landing_mp4_url);
         $series_season->series_id = $series_season->series_id;
         $series_season->image = $data['image'];
         $series_season->trailer = $data['trailer'];
         $series_season->trailer_type = $data['trailer_type'];
+        $series_season->landing_mp4_url = $data['landing_mp4_url'];
         $series_season->access = $access;
         $series_season->ppv_price = $ppv_price;
         $series_season->ppv_interval = $ppv_interval;
         $series_season->ios_product_id = $ios_ppv_price;
+        $series_season->series_seasons_name = $data['series_seasons_name'];
         $series_season->save();
 
         if ($trailer != '' && $pack == "Business" && $settings->transcoding_access == 1)

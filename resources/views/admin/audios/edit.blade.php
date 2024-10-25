@@ -176,107 +176,116 @@ border-radius: 0px 4px 4px 0px;
 									</div>
 								</div>
 								@if(!empty($audio->created_at))
-
-
-								<div class="col-sm-3">
-									<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-										<div class="panel-title"><label class="mb-1">Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-										<div class="panel-body" style="display: block;"> 
-											<p class="p1">Select Date/Time Below</p> 
-											<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($audio->created_at)){{ $audio->created_at }}@endif" />
-										</div> 
+									<div class="col-sm-3">
+										<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
+											<div class="panel-title"><label class="mb-1">Created Date</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+											<div class="panel-body" style="display: block;"> 
+												<p class="p1">Select Date/Time Below</p> 
+												<input type="text" class="form-control" name="created_at" id="created_at" placeholder="" value="@if(!empty($audio->created_at)){{ $audio->created_at }}@endif" />
+											</div> 
+										</div>
 									</div>
-								</div>
-
 								@endif
 							</div>
 							<div class="row mt-3">
 								<div class="col-md-6">
-								<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title">
-									<label class="mb-1">Audio Image Cover  </label>
-									@php 
-										$width = $compress_image_settings->width_validation_audio;
-										$heigth = $compress_image_settings->height_validation_audio
+									<div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> 
+										<div class="panel-heading"> 
+											<div class="panel-title">
+												<label class="mb-1">Audio Image Cover  </label>
+												@php 
+													$width = $compress_image_settings->width_validation_audio;
+													$heigth = $compress_image_settings->height_validation_audio
 
-									@endphp
-									@if($width !== null && $heigth !== null)
-									<p class="p1">{{ ("Select The Audio Image (".''.$width.' x '.$heigth.'px)')}}:</p> 
-									@else
-										<p class="p1">{{ "Select The Audio Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
-									@endif
-								</div> 
-								<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
-									@if(!empty($audio->image))
-									<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img w-100 mb-1" />
-									@endif
-									<input type="file" multiple="true" class="form-control" name="image" id="image" />
-									<span>
-										<p id="audio_image_error_msg" style="color:red !important; display:none;">
-											* Please upload an image with the correct dimensions.
-										</p>
-									</span> 
-								</div> 
-							</div>
-
+												@endphp
+												@if($width !== null && $heigth !== null)
+													<p class="p1">{{ ("Select The Audio Image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+												@else
+													<p class="p1">{{ "Select The Audio Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+												@endif
+											</div> 
+											<div class="panel-options"> 
+												<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+											</div>
+										</div> 
+										<div class="panel-body" style="display: block;"> 
+											<input type="file" multiple="true" class="form-control" name="image" id="image" />
+											@if(!empty($audio->image))
+												<div class=" p-0 mb-1 mt-2">
+													<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}" class="video-img w-100 " style="height: 200px;object-fit:contain;" />
+												</div>
+											@endif
+											<span>
+												<p id="audio_image_error_msg" style="color:red !important; display:none;">
+													* Please upload an image with the correct dimensions.
+												</p>
+											</span> 
+										</div> 
+									</div>
 								</div>
 								<div class="col-md-6">
-                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title">	
-									<label class="mb-1">Player Audio Thumbnail </label>
-									@php 
-										$player_width = $compress_image_settings->audio_player_img_width;
-										$player_heigth = $compress_image_settings->audio_player_img_height
+                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> 
+										<div class="panel-heading"> 
+											<div class="panel-title">	
+												<label class="mb-1">Player Audio Thumbnail </label>
+												@php 
+													$player_width = $compress_image_settings->audio_player_img_width;
+													$player_heigth = $compress_image_settings->audio_player_img_height
 
-									@endphp
-									@if($player_width !== null && $player_heigth !== null)
-									<p class="p1">{{ ("Select The Audio Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
-									@else
-										<p class="p1">{{ "Select The Audio Image ( 16:9 Ratio or 1280X720px )"}}:</p> 
-									@endif
-								</div> 
-								<div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
-									@if(!empty($audio->player_image))
-										<div class=" p-0 mb-1">
-											<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " />
-										</div>
-									@endif
-                                    <input type="file" name="player_image" id="player_image" >
-									<span>
-										<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
-											* Please upload an image with the correct dimensions.
-										</p>
-									</span> 
-								</div> 
-							</div>
-							
-							</div>
-							
+												@endphp
+												@if($player_width !== null && $player_heigth !== null)
+													<p class="p1">{{ ("Select The Audio Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+												@else
+													<p class="p1">{{ "Select The Audio Image ( 16:9 Ratio or 1280X720px )"}}:</p> 
+												@endif
+											</div> 
+											<div class="panel-options"> 
+												<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+											</div>
+										</div> 
+										<div class="panel-body" style="display: block;"> 
+                                    		<input type="file" name="player_image" id="player_image" >
+											@if(!empty($audio->player_image))
+												<div class=" p-0 mb-1 mt-2">
+													<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " style="height: 150px;object-fit:contain;"/>
+												</div>
+											@endif
+											<span>
+												<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
+													* Please upload an image with the correct dimensions.
+												</p>
+											</span> 
+										</div> 
+									</div>
 								</div>
-
-                            <div class="row container-fluid">
-
-							<div class="col-md-6">
-                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
-								<div class="panel-title">	<label class="mb-1">Upload Audio Lyrics </label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
-								<div class="panel-body" style="display: block;padding-top: 13px;"> 
-									@if(!empty($audio->lyrics))
-								<div class=" p-0 mb-1">
-								<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
-								@endif
-                                    <input type="file" name="lyrics" id="lyrics" >
-									<span class="error-message text-danger"></span>
-								</div> 
-							</div>
 							
-							
-								</div>
-								</div>
-
 							</div>
+
+                            <div class="row container-fluid mt-5">
+								<div class="col-md-6">
+                                    <div class="panel panel-primary col-sm-8 p-0 mt-3" data-collapsed="0"> 
+										<div class="panel-heading"> 
+											<div class="panel-title">	
+												<label class="mb-1">Upload Audio Lyrics </label>
+											</div> 
+											<div class="panel-options"> 
+												<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+											</div>
+										</div> 
+										<span>(Ex:xlsx <a href='{{ URL::to('public/uploads/audiolyrics/SampleLyrics.xlsx') }}' target="_blank">Sample Lyrics File</a>)</span>
+										<div class="panel-body" style="display: block;padding-top: 13px;"> 
+											@if(!empty($audio->lyrics))
+												<div class=" p-0 mb-1">
+													<a href='{{ $audio->lyrics }}' target="_blank">Download Uploaded Lyrics File</a>
+												</div>
+											@endif
+											<input type="file" name="lyrics" id="lyrics" >
+											<span class="error-message text-danger"></span>
+										</div> 
+									</div>
+								</div>
+							</div>
+
 									{{-- for validate --}} 
 							<input type="hidden" id="check_image" name="check_image" value="@if(!empty($audio->image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 							<input type="hidden" id="player_check_image" name="player_check_image" value="@if(!empty($audio->player_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
@@ -595,6 +604,67 @@ border-radius: 0px 4px 4px 0px;
 {{-- image validation --}}
 
 <script>
+	$(document).ready(function(){
+	   
+		$('#image').on('change', function(event) {
+
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				console.log(width);
+				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 1080 }};
+				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1920 }};
+				console.log('validWidth ' + validWidth);
+				console.log(validHeight);
+
+				if (width !== validWidth || height !== validHeight) {
+						document.getElementById('audio_image_error_msg').style.display = 'block';
+						$('.submit_btn').prop('disabled', true);
+						document.getElementById('audio_image_error_msg').innerText = 
+						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+					} else {
+						document.getElementById('audio_image_error_msg').style.display = 'none';
+						$('.submit_btn').prop('disabled', false);
+					}
+			}
+		});
+		 
+		  $('#player_image').on('change', function(event) {
+	
+			 var file = this.files[0];
+			 var player_Img = new Image();
+	
+			 player_Img.src=window.URL.createObjectURL( file ); 
+			 player_Img.onload = function() {
+			 var width = player_Img.naturalWidth;
+			 var height = player_Img.naturalHeight;
+			 console.log('player width ' + width)
+	
+			 var valid_player_Width = {{ $compress_image_settings->audio_player_img_width ?: 1280 }};
+			 var valid_player_Height = {{ $compress_image_settings->audio_player_img_height ?: 720 }};
+			 console.log(valid_player_Width + 'player width');
+	
+			 if (width !== valid_player_Width || height !== valid_player_Height) {
+				   document.getElementById('audio_player_image_error_msg').style.display = 'block';
+				   $('.submit_btn').prop('disabled', true);
+				   document.getElementById('audio_player_image_error_msg').innerText = 
+					  `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+			 } else {
+				   document.getElementById('audio_player_image_error_msg').style.display = 'none';
+				   $('.submit_btn').prop('disabled', false);
+			 }
+			 }
+		  });
+	   });
+	
+</script>
+
+{{-- <script>
     document.getElementById('image').addEventListener('change', function() {
         var file = this.files[0];
         if (file) {
@@ -652,7 +722,7 @@ border-radius: 0px 4px 4px 0px;
             img.src = URL.createObjectURL(file);
         }
     });
-</script>
+</script> --}}
 
 
 	<script type="text/javascript">
@@ -921,12 +991,12 @@ $('#duration').mask('00:00:00');
 
 				image: {
 					required: '#check_image:blank',
-					dimention:[1080,1920]
+					// dimention:[1080,1920]
 				},
 
 				player_image: {
 					required: '#player_check_image:blank',
-					player_dimention:[1280,720]
+					// player_dimention:[1280,720]
 				},
 
 			},

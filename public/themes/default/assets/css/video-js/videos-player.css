@@ -52,7 +52,7 @@
 .vjs-icon-subtitles::before {
     content: "";
     background-image: url(../../../../../images/VideoPlayer-icon/subtitle.svg) !important;
-    width: 62%;
+    width: 60%;
     height: 69%;
     top: 37%;
     left: 51%;
