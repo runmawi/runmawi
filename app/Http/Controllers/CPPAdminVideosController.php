@@ -75,6 +75,7 @@ class CPPAdminVideosController extends Controller
 
     public function __construct()
     {
+        $this->default_image = Setting::pluck('default_video_image')->first();
         $this->enable_moderator_Monetization = SiteTheme::pluck('enable_moderator_Monetization')->first();
 
         $this->client = new Client();
@@ -521,7 +522,7 @@ class CPPAdminVideosController extends Controller
                 $video->draft = 0;
                 $video->user_id = $user->id;
                 $video->uploaded_by = $uploaded_by;
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -582,7 +583,7 @@ class CPPAdminVideosController extends Controller
                 $video->duration = $Video_duration;
                 $video->uploaded_by = $uploaded_by;
                 $video->user_id = $user->id;
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -644,7 +645,7 @@ class CPPAdminVideosController extends Controller
                 $video->user_id = $user->id;
                 $video->uploaded_by = $uploaded_by;
                 $video->duration = $Video_duration;
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -1167,6 +1168,20 @@ class CPPAdminVideosController extends Controller
 
         $compress_image_settings = CompressImage::first();
 
+        $MoviesSubtitles = MoviesSubtitles::where('movie_id', $id)->get();
+
+        $subtitlescount = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                ->where(['movie_id' => $id])
+                ->count();
+            
+            if ($subtitlescount > 0) {
+                $subtitles = Subtitle::join('movies_subtitles', 'movies_subtitles.sub_language', '=', 'subtitles.language')
+                    ->where(['movie_id' => $id])
+                    ->get(["subtitles.*", "movies_subtitles.url", "movies_subtitles.id as movies_subtitles_id"]);
+            } else {
+                $subtitles = Subtitle::all();
+            }
+
         if ((!empty($package) && $package == 'Pro') || (!empty($package) && $package == 'Business')) {
             $settings = Setting::first();
 
@@ -1200,6 +1215,8 @@ class CPPAdminVideosController extends Controller
             $data = [
                 'headline' => '<i class="fa fa-edit"></i> Edit Video',
                 'video' => $video,
+                "MoviesSubtitles" => $MoviesSubtitles ,
+                "subtitlescount"  => $subtitlescount,
                 'post_route' => URL::to('/cpp/videos/update'),
                 'button_text' => 'Update Video',
                 // 'admin_user' => Auth::user(),
@@ -2534,11 +2551,11 @@ class CPPAdminVideosController extends Controller
                 $video->title = $data['mp4_url'];
                 $video->mp4_url = $data['mp4_url'];
                 $video->type = 'mp4_url';
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
                 $video->draft = 0;
                 $video->active = 1;
                 $video->user_id = $user->id;
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -2632,11 +2649,11 @@ class CPPAdminVideosController extends Controller
                 $video->title = $data['m3u8_url'];
                 $video->m3u8_url = $data['m3u8_url'];
                 $video->type = 'm3u8_url';
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
                 $video->draft = 0;
                 $video->active = 1;
                 $video->user_id = $user->id;
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -2735,12 +2752,12 @@ class CPPAdminVideosController extends Controller
                 $video->title = $data['embed'];
                 $video->embed_code = $data['embed'];
                 $video->type = 'embed';
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
                 $video->draft = 0;
                 $video->active = 1;
                 $video->user_id = $user->id;
 
-                $video->image = 'default_image.jpg';
+                $video->image = $this->default_image;
 
                 $PC_image_path = public_path('/uploads/images/default_image.jpg');
 
@@ -2885,7 +2902,7 @@ class CPPAdminVideosController extends Controller
             $video->type = "mp4_url";
             // $video->draft = 0;
             $video->active = 1;
-            $video->image = "default_image.jpg";
+            $video->image = $this->default_image;
 
             $video->user_id = $userid;
             $video->save();
@@ -2928,7 +2945,7 @@ class CPPAdminVideosController extends Controller
             $video->type = "m3u8_url";
             // $video->draft = 0;
             $video->active = 1;
-            $video->image = "default_image.jpg";
+            $video->image = $this->default_image;
 
             $video->user_id = $userid;
             $video->save();
@@ -2973,7 +2990,7 @@ class CPPAdminVideosController extends Controller
             $video->type = "embed";
             $video->draft = 0;
             $video->active = 1;
-            $video->image = "default_image.jpg";
+            $video->image = $this->default_image;
 
             $video->user_id = $userid;
             $video->save();
@@ -3164,7 +3181,7 @@ class CPPAdminVideosController extends Controller
             $video->mp4_url = $storepath;
             $video->type = "mp4_url";
             // $video->draft = 0;
-            $video->image = "default_image.jpg";
+            $video->image = $this->default_image;
             $video->duration = $Video_duration;
             $video->save();
 

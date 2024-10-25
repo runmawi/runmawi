@@ -39,7 +39,7 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-    <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
+    <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
         <!-- <div class="s-bg-1 lazy-bg" data-bg="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}"> -->
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
@@ -100,7 +100,7 @@
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $key => $slider_video)
         <!-- <div class="s-bg-1 lazyloaded"  style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}')">    
+        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}')">    
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -170,7 +170,7 @@
     ?>
 
     <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}');" id="image-container"> -->
-    <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}" id="image-container">    
+    <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}" id="image-container">    
         <div class="container-fluid position-relative h-100" style="padding:0px 100px">
             <div class="slider-inner h-100">
                 <div class="row align-items-center bl h-100">
@@ -277,7 +277,7 @@
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $key => $slider_video)
         <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}')">    
+        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $slider_video->player_image) }}')">    
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -322,7 +322,7 @@
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $live_event_banner)
         <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}')">
+        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -364,7 +364,7 @@
 @if (!empty($VideoCategory_banner) && $VideoCategory_banner->isNotEmpty())
     @forelse ($VideoCategory_banner as $key => $videos)
         <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%), url('{{ URL::to('/public/uploads/images/' . $videos->player_image)}}')">
+        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $videos->player_image)}}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">

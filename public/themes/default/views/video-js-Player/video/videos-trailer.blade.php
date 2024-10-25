@@ -31,6 +31,10 @@
         color: #fff;
         opacity: 1;
     }
+    .vjs-controls-enabled .vjs-control-bar {
+        display: flex !important;
+        opacity: 1 !important;
+    }
     @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}}
     .embed-responsive::before{display: none;}
 </style>
@@ -39,27 +43,20 @@
     <div class="modal-dialog modal-dialog-centered video-js-trailer-modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body video-js-trailer-modal-body">
-
-                <button type="button" class="close video-js-trailer-modal-close" >
+                <button type="button" class="close video-js-trailer-modal-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
                 <div class="embed-responsive embed-responsive-16by9">
-
                     <?php if($videodetail->trailer_type == "embed_url" ) : ?>
-
-                        <iframe width="100%" id="video-js-trailer-player_embed" height="auto" src="<?= $videodetail->trailer_videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
+                        <iframe id="video-js-trailer-player_embed" width="100%" height="auto" src="<?= $videodetail->trailer_videos_url ?>" 
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen>
                         </iframe>
-
                     <?php else: ?>
-
-                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls 
-                        width="auto" height="auto">
-                        <source src="<?= $videodetail->trailer ?>">
-                    </video>      
-
+                        <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" controls width="100%" height="auto">
+                            <source src="<?= $videodetail->trailer ?>" type="video/mp4">
+                        </video>                 
                     <?php endif; ?>
 
                 </div>
@@ -85,48 +82,52 @@
  
 
  
-<script>
+ <script>
+    $(document).ready(function() {
+        <?php if($videodetail->trailer_type != "embed_url" ): ?>
+            var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
+                aspectRatio: '16:9',
+                fluid: true,
+                autoplay: false,
 
-    $(document).ready(function(){
-        $('#video-js-trailer-modal .modal-dialog').on('click', function (e) {
-            e.stopPropagation();
-        });
-    });
+                controlBar: {
+                    volumePanel: {
+                        inline: false
+                    },
 
-    document.addEventListener("DOMContentLoaded", function() {
-
-        var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
-            aspectRatio: '16:9',
-            fluid: true,
-
-            controlBar: {
-                volumePanel: {
-                    inline: false
-                },
-
-                children: {
-                    'playToggle': {},
-                    // 'currentTimeDisplay': {},
-                    'liveDisplay': {},
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-                    'remainingTimeDisplay': {},
-                    'fullscreenToggle': {}, 
+                    children: {
+                        'playToggle': {},
+                        // 'currentTimeDisplay': {},
+                        'liveDisplay': {},
+                        'flexibleWidthSpacer': {},
+                        'progressControl': {},
+                        'remainingTimeDisplay': {},
+                        'fullscreenToggle': {}, 
+                    }
                 }
-            }
-        });
-        
+            });
+        <?php endif; ?>
+    
         $(".video-js-trailer-modal-close").click(function(){
+            <?php if($videodetail->trailer_type != "embed_url" ): ?>
             player.pause();  
+            <?php endif; ?>
+    
+            <?php if($videodetail->trailer_type == "embed_url" ): ?>
+                $('#video-js-trailer-player_embed').attr('src', '');
+            <?php endif; ?>
+    
             $('#video-js-trailer-modal').modal('hide');
         });
+    
+        $('#video-js-trailer-modal').on('hidden.bs.modal', function(){
+            <?php if($videodetail->trailer_type == "embed_url" ): ?>
+                $('#video-js-trailer-player_embed').attr('src', '<?= $videodetail->trailer_videos_url ?>');
+            <?php endif; ?>
+    
+            <?php if($videodetail->trailer_type != "embed_url" ): ?>
+                player.currentTime(0);
+            <?php endif; ?>
+        });
     });
-
-        // iframe video close
-
-    $(".video-js-trailer-modal-close").click(function(){
-        $('#video-js-trailer-player').attr('src'," ");
-        $('#video-js-trailer-modal').modal('hide');
-    });
-
 </script>

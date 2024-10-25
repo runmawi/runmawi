@@ -42,6 +42,7 @@ use App\LikeDislike;
 use Theme;
 use App\ButtonText;
 use App\SiteTheme;
+use App\AdminAccessPermission;
 
 class LiveStreamController extends Controller
 {
@@ -296,7 +297,7 @@ class LiveStreamController extends Controller
                  $current_date = Date("M d , y H:i:s");
                  $date = date_create($current_date);
                  $currentdate = date_format($date, "M d ,y H:i:s");
-                //  "Dec 14 ,22 14:58:00" "Dec 14 ,22 14:58:00" "Dec 14 ,22 15:04:53"
+               
                  if ($currentdate < $new_date)
                  {
 
@@ -435,8 +436,6 @@ class LiveStreamController extends Controller
                             $PPV_exists = true ;
                         }
 
-
-
                               // free PPV access for subscriber status Condition
 
                     //   if( $settings->enable_ppv_rent_live == 1 && Auth::user()->role != 'subscriber' ){
@@ -505,58 +504,102 @@ class LiveStreamController extends Controller
 
                   //  Livestream URL
 
-              switch (true) {
+                switch (true) {
 
-                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                      $item['livestream_URL'] =  $item->mp4_url ;
-                      $item['livestream_player_type'] =  'video/mp4' ;
-                  break;
+                    case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                        $item['livestream_URL'] =  $item->mp4_url ;
+                        $item['livestream_player_type'] =  'video/mp4' ;
+                    break;
 
-                  case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                    case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
                     $item['livestream_URL'] =  $item->mp4_url.$adsvariable_url; ;
                     $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                  break;
+                    break;
 
-                  case $item['url_type'] == "embed":
-                      $item['livestream_URL'] =  $item->embed_url ;
-                      $item['livestream_player_type'] =  'video/mp4' ;
-                  break;
+                    case $item['url_type'] == "embed":
+                        $item['livestream_URL'] =  $item->embed_url ;
+                        $item['livestream_player_type'] =  'video/mp4' ;
+                    break;
 
-                  case $item['url_type'] == "live_stream_video":
-                      $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
-                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                  break;
+                    case $item['url_type'] == "live_stream_video":
+                        $item['livestream_URL'] = $item->live_stream_video.$adsvariable_url; ;
+                        $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                    break;
 
-                  case $item['url_type'] == "m3u_url":
-                      $item['livestream_URL'] =  $item->m3u_url ;
-                      $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                  break;
+                    case $item['url_type'] == "m3u_url":
+                        $item['livestream_URL'] =  $item->m3u_url ;
+                        $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                    break;
 
-                  case $item['url_type'] == "Encode_video":
-                      $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
-                      $item['livestream_player_type'] =  'application/x-mpegURL'  ;
-                  break;
+                    case $item['url_type'] == "Encode_video":
+                        $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
+                        $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                    break;
 
-                  case $item['url_type'] == "acc_audio_url":
+                    case $item['url_type'] == "acc_audio_url":
                     $item['livestream_URL'] =  $item->acc_audio_url ;
                     $item['livestream_player_type'] =  'audio/aac' ;
-                  break;
+                    break;
 
-                  case $item['url_type'] == "acc_audio_file":
-                      $item['livestream_URL'] =  $item->acc_audio_file ;
-                      $item['livestream_player_type'] =  'audio/aac' ;
-                  break;
+                    case $item['url_type'] == "acc_audio_file":
+                        $item['livestream_URL'] =  $item->acc_audio_file ;
+                        $item['livestream_player_type'] =  'audio/aac' ;
+                    break;
 
-                  case $item['url_type'] == "aws_m3u8":
+                    case $item['url_type'] == "aws_m3u8":
                     $item['livestream_URL'] =  $item->hls_url.$adsvariable_url; ;
                     $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                  break;
+                    break;
 
-                  default:
-                      $item['livestream_URL'] =  null ;
-                      $item['livestream_player_type'] =  null ;
-                  break;
-              }
+                    default:
+                        $item['livestream_URL'] =  null ;
+                        $item['livestream_player_type'] =  null ;
+                    break;
+                }
+
+                //   Livestream schedule epg
+
+                switch ($item->publish_type) {
+                    
+                    case 'publish_now':
+
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = null;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
+                    break;
+
+                    case 'publish_later':
+
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = $item->publish_time;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
+                    break;
+                    
+                    case 'recurring':
+
+                        $item['epg_program_title'] = $item->title;
+                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
+                    break;
+
+                    case 'schedule_program':
+
+                        $item['epg_program_title'] = json_decode($item->scheduler_program_title);
+                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                        $item['epg_program_timeloop_parse']   = Carbon::today();
+                        break;
+
+                    default:
+                        $item['epg_program_title']      = null;
+                        $item['epg_program_start_time'] = null;
+                        $item['epg_program_end_time']   = null;
+                        $item['epg_program_timeloop_parse']   = null;
+                        break;
+                }
 
             $item['watchlater_exist'] = Watchlater::where('live_id', $item->id)->where('type', 'live')
                                             ->where(function ($query) use ($geoip) {
@@ -586,6 +629,7 @@ class LiveStreamController extends Controller
                                                 }
                                             })->latest()->first();
 
+                                            
               return $item;
 
             })->first();
@@ -661,7 +705,7 @@ class LiveStreamController extends Controller
                                     </svg>',
                 'paypal_payment_setting' => $PayPalpayment,
                 'paypal_signature' => $paypal_signature,
-
+                'AdminAccessPermission' => AdminAccessPermission::first(),
            );           
 
            if(  $Theme == "default" || $Theme == "theme6" ){
@@ -678,7 +722,7 @@ class LiveStreamController extends Controller
           
         } catch (\Throwable $th) {
 
-        //   return $th->getMessage();
+            //   return $th->getMessage();
             return abort(404);
         }
         }
@@ -1146,4 +1190,75 @@ class LiveStreamController extends Controller
         return response()->json($respond, 200);
 
       }
+
+      public function fetchTimeline(Request $request)
+      
+      {
+        $selectedDay = $request->get('day');
+        $selectedDate = $request->get('date');
+
+        $Livestream_id = $request->get('Livestream_id');
+        $publish_type  = $request->get('publish_type');
+
+        $Livestream_details = LiveStream::where('id', $Livestream_id)
+                                ->where('active', '1')
+                                ->where('status', '1');
+                            
+                            $livestream = $Livestream_details->when($selectedDay && $publish_type == 'schedule_program', function ($query) use ($selectedDay) {
+                                return $query->where('scheduler_program_days', 'LIKE', '%"'.$selectedDay.'"%');
+                            });
+
+                            $livestream = $Livestream_details->when($selectedDate && $publish_type == 'publish_later', function ($query)use ($selectedDate)  {
+                                return $query->where('publish_time','<=',$selectedDate);
+                            })
+
+                            ->get()->map(function ($item) use ($selectedDate) {
+
+                                // Livestream schedule epg
+
+                                switch ($item->publish_type) {
+
+                                    case 'publish_now':
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = null;
+                                        $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
+                                        break;
+                            
+                                    case 'publish_later':
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = $item->publish_time;
+                                        $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
+                                        break;
+                                    
+                                    case 'recurring':
+                                        $item['epg_program_title'] = $item->title;
+                                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
+                                        break;
+                            
+                                    case 'schedule_program':
+                                        $item['epg_program_title'] = json_decode($item->scheduler_program_title);
+                                        $item['epg_program_start_time'] = json_decode($item->scheduler_program_start_time);
+                                        $item['epg_program_end_time'] = json_decode($item->scheduler_program_end_time);
+                                        $item['epg_program_timeloop_parse']   = Str::before($selectedDate, 'T');
+                                        break;
+                            
+                                    default:
+                                        $item['epg_program_title']      = null;
+                                        $item['epg_program_start_time'] = null;
+                                        $item['epg_program_end_time']   = null;
+                                        $item['epg_program_timeloop_parse'] = null;
+                                        break;
+                                }
+                            
+                                return $item;
+                            })->first();
+
+        $data =[ 'Livestream_details' => $livestream ];
+
+        return Theme::load("public/themes/{$this->Theme}/views/livevideo-schedule-epg-partial", $data)->render();
+    }
 }

@@ -271,8 +271,7 @@ class AdminSettingsController extends Controller
         $settings->video = $request->input('video');
         $settings->live = $request->input('live');
         $settings->series = $request->input('series');
-
-
+        $settings->ads_payment_page_status = $request->input('ads_payment_page_status');
 
         $path = storage_path('app/public/');
 

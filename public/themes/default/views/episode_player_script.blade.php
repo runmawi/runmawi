@@ -144,7 +144,8 @@
                 if(hovered == false){
                     skipForwardButton.style.display = 'none';
                     skipBackwardButton.style.display = 'none';
-                    playPauseButton.style.display = 'none';
+                    // playPauseButton.style.display = 'none';
+                    $('.vjs-big-play-button').hide();
                     backButton.style.display = 'none';
                     titleButton.style.display = 'none';
                 }
@@ -156,7 +157,8 @@
         if (skipForwardButton && skipBackwardButton && playPauseButton && backButton) {
             skipForwardButton.style.display = 'block';
             skipBackwardButton.style.display = 'block';
-            playPauseButton.style.display = 'block';
+            // playPauseButton.style.display = 'block';
+            $('.vjs-big-play-button').show();
             backButton.style.display = 'block';
             titleButton.style.display = 'block';
         }

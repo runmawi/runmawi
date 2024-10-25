@@ -193,6 +193,16 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-sm-12">
+                            <label class="m-0"> Episode Description </label>
+                            <p class="p1"> Add a description of the Episode below: </p> 
+                            <div class="panel-body">
+                                <textarea class="form-control" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 <div class="row mb-3">
                     <div class="col-sm-6">
                         <label class="m-0">Episode Source</label>

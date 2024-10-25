@@ -764,7 +764,11 @@
                             <div class="panel-body p2" style="color: black;">
                                 <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                                 <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later <br />
-                                <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
+                               
+                                @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
+                                    <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
+                                @endif
+
                                 @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
                                     <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> {{ __('Schedule Program')}} <br />
                                 @endif

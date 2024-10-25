@@ -285,6 +285,14 @@ class ModeratorsLoginController extends Controller
             $logopath = URL::to('/public/uploads/moderator_albums/');
             $path = public_path() . '/uploads/moderator_albums/';
             $picture = $request['picture'];
+            $thumbnail = $request['thumbnail'];
+            $moderatorsuser->facebook = $request->facebook;
+            $moderatorsuser->instagram = $request->instagram;
+            $moderatorsuser->bank_name = $request->bank_name;
+            $moderatorsuser->branch_name = $request->branch_name;
+            $moderatorsuser->account_number = $request->account_number;
+            $moderatorsuser->IFSC_Code = $request->IFSC_Code;
+
             $intro_video = (isset($request['intro_video'])) ? $request['intro_video'] : '';
 
             if ($picture != '')
@@ -302,6 +310,23 @@ class ModeratorsLoginController extends Controller
                 $file = $picture;
                 $moderatorsuser->picture = $logopath . '/' . $file->getClientOriginalName();
                 $file->move($path, $moderatorsuser->picture);
+            }
+
+            if ($thumbnail != '')
+            {
+                //code for remove old file
+                if ($thumbnail != '' && $thumbnail != null)
+                {
+                    $file_old = $path . $thumbnail;
+                    if (file_exists($file_old))
+                    {
+                        unemail($file_old);
+                    }
+                }
+                //upload new file
+                $file = $thumbnail;
+                $moderatorsuser->thumbnail = $logopath . '/' . $file->getClientOriginalName();
+                $file->move($path, $moderatorsuser->thumbnail);
             }
 
             $logopath = URL::to('/public/uploads/moderator/');

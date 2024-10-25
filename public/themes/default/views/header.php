@@ -445,6 +445,7 @@
       -ms-transform: translateX(26px);
       transform: translateX(26px);
       }
+      li.logout_mobile_view.col-sm-6.myp h6{font-weight:600;}
       /* Rounded sliders */
       .sliderk.round {
          border-radius: 34px;
@@ -458,13 +459,23 @@
       body.dark-theme {
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme i{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
       body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
          background: <?php echo $GetDarkBg; ?>!important;
       }
+      body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      
       body.dark-theme .navbar-collapse{
          background: <?php echo $GetDarkBg; ?>!important;
       }
       body.dark-theme header .navbar ul li.menu-item a{
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme .vpageBanner .content .right , body.dark-theme .vpageBanner .content .right .utilities{
          color: <?php echo $GetDarkText; ?>!important;
       }
       body.dark-theme a, body.dark-theme p{
@@ -483,7 +494,10 @@
       body.dark-theme header#main-header{
          color: <?php echo $GetDarkText; ?>!important;
       }
-      body.dark-theme #home-slider p{
+      body.dark-theme .breadcrumb i {
+         color: <?php echo $GetDarkText; ?>!important;
+      }
+      body.dark-theme #home-slider p, body.dark-theme #home-slider h2{
          color: #fff !important;
       }
       body.dark-theme header .st0, .st2{
@@ -511,7 +525,7 @@
       body.light-theme #home-slider .container-fluid.position-relative.h-100{
          background: linear-gradient(1deg, rgb(255, 255, 255) 0%, transparent 0%), linear-gradient(90deg, rgb(240, 240, 240) 50%, transparent 50%);
       }
-      body.light-theme h4, body.light-theme p {
+      body.light-theme h4, body.light-theme p, body.light-theme span {
       color: <?php echo $GetLightText; ?>;
       }
       body.light-theme header#main-header{
@@ -559,6 +573,9 @@
          color: var(--iq-body-text) !important;
       }
       body.light-theme .searchbox h6, body.light-theme .iq-card-body h6{
+         color: var(--iq-body-text) !important;
+      }
+      body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6{
          color: var(--iq-body-text) !important;
       }
       body.light-theme .media-body h6{
@@ -1139,7 +1156,7 @@
                      </div>
                      <div class="mobile-more-menu">
                         <button class="more-toggle" id="dropdownMenuButton" aria-label="More Option Button" data-toggle="more-toggle" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border: none;">
-                           <i class="ri-more-line"></i>
+                           <i class="ri-search-line"></i>
                         </button>
                         <div class="more-menu" aria-labelledby="dropdownMenuButton">
                            <div class="navbar-right position-relative">

@@ -187,7 +187,7 @@
         @endif
         <div class="container">
             <div class="row mb-4  align-items-center height-self-center">
-                <div class="col-lg-7  col-12">
+                <div class="col-lg-7  col-12 mb-4">
                     <h1 class="km"><?php echo $settings->login_text; ?></h1>
                 </div>
                 <div class="col-lg-5 col-12 col-md-12 align-self-center">
@@ -380,7 +380,7 @@
         <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
 
 <script>
-    $(window).load(function() {
+    $(globalThis).load(function() {
         var email = $('#email').val().trim();
         var password = $('#password').val().trim();
         // alert(email);
@@ -586,7 +586,7 @@
 
                     if( response.status == true ){
 
-                        window.location.href = response.redirection_url;
+                        globalThis.location.href = response.redirection_url;
 
                     }else if ( response.status == false ) {
 

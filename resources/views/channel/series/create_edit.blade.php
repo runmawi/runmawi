@@ -163,7 +163,7 @@ $settings  = App\Setting::first();?>
 					@if($player_width !== null && $player_heigth !== null)
 						<p class="p1">{{ ("Select The Player Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 					@else
-						<p class="p1">{{ "Select The Player Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+						<p class="p1">{{ "Select The Player Image ( 16:9 Ratio or 1280x720px )"}}:</p> 
 					@endif
 					@if(!empty($series->player_image))
 						<img src="{{ URL::to('/') . '/public/uploads/images/' . $series->player_image }}" class="series-img" width="200"/>
@@ -457,6 +457,12 @@ $settings  = App\Setting::first();?>
 						<input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 						<input type="hidden" name="series_id" value="<?= $series->id ?>" />
 
+							<div class="form-group">
+								<label>Season Title:</label>
+								<input type="text" id="series_seasons_name" name="series_seasons_name" value="" placeholder="Enter the Season Title" class="form-control">
+								<p class="text-danger" id="season_title_error" style="display: none;color:red !important;">Please enter the Season Title.</p>
+							</div>
+
 							<div class="form-group" >
 								<label> Season Trailer :</label>
 								<div class="new-video-file form_video-upload" style="position: relative;" >
@@ -472,7 +478,7 @@ $settings  = App\Setting::first();?>
 								@if($player_width !== null && $player_heigth !== null)
 									<p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 								@else
-									<p class="p1">{{ "Select Season Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+									<p class="p1">{{ "Select Season Thumbnail ( 16:9 Ratio or 1280x720px )"}}:</p> 
 								@endif
 								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
 								<input type="file" class="season_image" name="image" id="season_img" >
@@ -536,7 +542,7 @@ $settings  = App\Setting::first();?>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr>
-				<td valign="bottom"><p>Season {{$key+1}}</p></td>
+				<td valign="bottom"><p>{{ $seasons_value->series_seasons_name}} </p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
 				<td>
 					<p>
@@ -566,6 +572,92 @@ $settings  = App\Setting::first();?>
 
 {{-- image validation --}}
 <script>
+	$(document).ready(function(){
+		$('#image').on('change', function(event) {
+
+
+			var file = this.files[0];
+			var tmpImg = new Image();
+
+			tmpImg.src=window.URL.createObjectURL( file ); 
+			tmpImg.onload = function() {
+				width = tmpImg.naturalWidth,
+				height = tmpImg.naturalHeight;
+				console.log('img width: ' + width);
+				var validWidth = {{ $compress_image_settings->width_validation_series ?: 1080 }};
+				var validHeight = {{ $compress_image_settings->height_validation_series ?: 1920 }};
+				console.log('validation widtth:  ' + validWidth);
+
+				if (width !== validWidth || height !== validHeight) {
+						document.getElementById('video_image_error_msg').style.display = 'block';
+						$('.update_series').prop('disabled', true);
+						document.getElementById('video_image_error_msg').innerText = 
+						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+					} else {
+						document.getElementById('video_image_error_msg').style.display = 'none';
+						$('.update_series').prop('disabled', false);
+					}
+			}
+		});
+		 
+		$('#player_image').on('change', function(event) {
+	
+			var file = this.files[0];
+			var player_Img = new Image();
+	
+			player_Img.src=window.URL.createObjectURL( file ); 
+			player_Img.onload = function() {
+			var width = player_Img.naturalWidth;
+			var height = player_Img.naturalHeight;
+			console.log('img width ' + width)
+	
+			var valid_player_Width = {{ $compress_image_settings->series_player_img_width ?: 1280 }};
+			var valid_player_Height = {{ $compress_image_settings->series_player_img_height ?: 720 }};
+			console.log('validation widtth ' + valid_player_Width);
+	
+			if (width !== valid_player_Width || height !== valid_player_Height) {
+				document.getElementById('player_image_error_msg').style.display = 'block';
+				$('.update_series').prop('disabled', true);
+				document.getElementById('player_image_error_msg').innerText = 
+					`* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+			} else {
+				document.getElementById('player_image_error_msg').style.display = 'none';
+				$('.update_series').prop('disabled', false);
+			}
+			}
+		});
+
+		$('#season_img').on('change', function(event) {
+	
+			var file = this.files[0];
+			var player_Img = new Image();
+
+			player_Img.src=window.URL.createObjectURL( file ); 
+			player_Img.onload = function() {
+			var width = player_Img.naturalWidth;
+			var height = player_Img.naturalHeight;
+			console.log('upd img width ' + width)
+
+			var valid_player_Width = {{ $compress_image_settings->width_validation_season ?: 1280 }};
+			var valid_player_Height = {{ $compress_image_settings->height_validation_season ?: 720 }};
+			console.log('validation_player_Width' + valid_player_Width);
+
+			if (width !== valid_player_Width || height !== valid_player_Height) {
+				document.getElementById('season_image_error_msg').style.display = 'block';
+				$('.submit-new-cat').prop('disabled', true);
+				document.getElementById('season_image_error_msg').innerText = 
+					`* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+			} else {
+				document.getElementById('season_image_error_msg').style.display = 'none';
+				$('.submit-new-cat').prop('disabled', false);
+			}
+			}
+		});
+	});
+</script>
+
+{{-- image validation --}}
+{{-- <script>
     document.getElementById('image').addEventListener('change', function() {
         var file = this.files[0];
         if (file) {
@@ -653,7 +745,7 @@ $settings  = App\Setting::first();?>
         }
     });
 
-</script>
+</script> --}}
 
 
 <script type="text/javascript">
@@ -940,7 +1032,7 @@ $('#submit-new-cat').click(function(){
 			rules: {
 				image: {
 					required: '#check_image:blank',
-					dimention:[1080,1920]
+					// dimention:[1080,1920]
 				},
 
 				'language[]': {
@@ -950,7 +1042,7 @@ $('#submit-new-cat').click(function(){
 
 				player_image: {
 					required: '#player_check_image:blank',
-					player_dimention:[1280,720]
+					// player_dimention:[1280,720]
             	},
 			},
 			
@@ -968,7 +1060,7 @@ $('form[id="new-cat-form"]').validate({
 		// trailer: 'required',
 		image: {
 				required:true,
-				season_dimention:[1280,720]
+				// season_dimention:[1280,720]
 			},
 		},
 	messages: {
@@ -1169,7 +1261,18 @@ var tagInput1 = new TagsInput({
 	}
 
 </script>
-
+<script>
+		$(document).ready(function() {
+		$('#submit-new-cat').on('click', function() {
+			const seasonTitle = $('#series_seasons_name').val().trim();
+			if (seasonTitle === '') {
+				$('#season_title_error').show();
+			} else {
+				$('#season_title_error').hide(); 
+			}
+		});
+	});
+</script>
 
 	@stop
 

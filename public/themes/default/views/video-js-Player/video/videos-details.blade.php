@@ -73,6 +73,21 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     transform: translate(-50%, -50%);
 }
 
+    body.dark-theme .navbar-collapse {
+        background: transparent !important;
+    }
+    body.dark-theme .music-play-lists li:hover span {
+        color: <?php echo $GetDarkText; ?>!important;
+    }
+    body.dark-theme .share:hover .share-box a {
+        color: <?php echo $GetDarkText; ?>!important;
+    }
+    body.dark-theme .sectionArtists .artistHeading, body.dark-theme .sectionArtists .listItems .listItem .name{color: <?php echo $GetDarkText; ?>!important;}
+    
+    body.dark-theme .vpageBanner .content .right .circleRating .CircularProgressbar-text {
+        fill: <?php echo $GetDarkText; ?>!important;
+    }
+
     body.light-theme h4, body.light-theme p {
         color: <?php echo GetLightText(); ?>;
     }
@@ -103,13 +118,20 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     body.light-theme .infoItem {
         color: <?php echo GetLightText(); ?> !important;
     }
+    body.light-theme .artistHeading {
+        color: <?php echo GetLightText(); ?> !important;
+    }
     body.light-theme .info {
         color: <?php echo GetLightText(); ?> !important;
     }
     body.dark .modal.show .modal-dialog{background-color: <?php echo $GetLightBg; ?> !important;}
+  
     body.light-theme .vpageBanner .opacity-layer {
         background:none;
     }
+    body.light-theme .share-box a{color: <?php echo $GetLightText; ?> !important;}
+    body.light-theme .share-box span{color: <?php echo $GetLightText; ?> !important;}
+
     #video-purchase-now-modal .modal-footer{
             background: transparent;
             border-top: 1px solid black;
@@ -137,6 +159,12 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
 #guest-qualitys{display:none;}
 .btn-primary:hover{color:#fff;}
+.title {
+    white-space: normal; /* Allows text to wrap onto the next line */
+    overflow-wrap: break-word; /* Break long words if necessary */
+    word-wrap: break-word; /* Ensure long words are wrapped in older browsers */
+}
+.mob_res_show {display:none !important;}
 
 
         .btn-primary {
@@ -150,12 +178,23 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         .btn-primary-light {
             background-color: rgba(var(--btn-primary-color-rgb), 0.2);
         }
-@media (min-width: 1400px) and (max-width: 2565px) {
-    .my-video.vjs-fluid{
-        height: 50vh !important;
-    }
-}
+        @media (min-width: 1400px) and (max-width: 2565px) {
+            .my-video.vjs-fluid{
+                height: 50vh !important;
+            }
+            .row.plays_btn_res.m-0{margin-bottom: 2rem !important;}
+        }
+        @media (max-width:720px){
+            .vpageBanner .content .left .posterImg{width:50% !important;}
+            .mob_res_show{display:flex !important;}
+            .mob_res_hide{display: none;}
+            .vpageBanner .content .right svg{height: 40px !important;}
+            .row.plays_btn_res {justify-content: center;}
+            a.btn.play_button{width: 100%;display: flex;justify-content: center;margin: 1rem 0 0;}
+            body.dark-theme .navbar-collapse {background: <?php echo $GetDarkBg; ?>!important;}
+        }
 
+    .opacity-layer{display: none;}
 </style>
 
 
@@ -184,11 +223,12 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 {{-- Section content --}}
 
     <div class="vpageBanner">
-        <div class="backdrop-img">    {{-- Background image --}}
+         {{-- Background image --}}
+        {{-- <div class="backdrop-img">   
             <span class=" lazy-load-image-background blur lazy-load-image-loaded"  style="color: transparent; display: inline-block;">
                 <img src="{{ optional($videodetail)->player_image_url }}">
             </span>
-        </div>
+        </div> --}}
 
         <div class="opacity-layer"></div>
 
@@ -264,7 +304,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     @endif
 
                     <div class="row">
-                        <div class="col-sm-6 col-md-6 col-xs-12">
+                        <div class="col-sm-6 col-md-6 col-xs-12 d-flex">
                             <ul class="list-inline p-0 share-icons music-play-lists">
                                         <!-- Watchlater -->
                                     <li class="share">
@@ -324,34 +364,46 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     </div>
                                 </li>
                             </ul>
+                            <div class="mob_res_show d-flex">
+
+                                @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
+
+                                <div class="circleRating">  {{-- Rating --}}
+                                    <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
+                                        <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
+                                        <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
+                                        <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row plays_btn_res m-0">
                         @if ( $videodetail->users_video_visibility_status == false )
 
                             @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
-                                <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
+                                        <span class="text pr-2 text-white"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                     </div>
                                 </a>
                             @else
                             
                                 @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
-                                    <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
+                                    <a class="btn play_button" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                            <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                         </div>
                                     </a>
 
                                     @if( Auth::guest() && $videodetail->access == "ppv" && $subscribe_btn == 1 || Auth::check() && Auth::user()->role == "registered" && $videodetail->access == "ppv" && $subscribe_btn == 1)
-                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
+                                        <a class="btn play_button" href="{{ URL::to('/becomesubscriber') }}">
                                             <div class="playbtn" style="gap:5px">
                                                 {!! $play_btn_svg !!}
-                                                <span class="text pr-2"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                                <span class="text pr-2 text-white"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
                                             </div>
                                         </a>
                                     @endif
@@ -390,20 +442,20 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             </div>
                             
                             @else
-                                <a class="btn" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                <a class="btn play_button" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
-                                        <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                        <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                     </div>
                                 </a>
                             @endif
                             
                             @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
                                 @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
-                                    <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                    <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
                                         <div class="playbtn" style="gap:5px">
                                             {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( 'Upgrade Now' ) }} </span>
+                                            <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
                                         </div>
                                     </a>
                                 @endif
@@ -411,9 +463,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             
                         @endif
 
-                            
-                        @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
-                        
+                        <div class="mob_res_hide">
+                            @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
+                        </div>
                        
                         @if( optional($videodetail)->trailer_videos_url )
 
@@ -435,18 +487,19 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                         @endif
                         
-                        
-                        <div class="circleRating">  {{-- Rating --}}
-                            <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
-                                <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
-                                <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
-                                <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
-                            </svg>
+                        <div class="mob_res_hide">
+                            <div class="circleRating">  {{-- Rating --}}
+                                <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar" >
+                                    <path class="CircularProgressbar-trail" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 0px;"></path>
+                                    <path class="CircularProgressbar-path" d="M 50,50m 0,-46a 46,46 0 1 1 0,92a 46,46 0 1 1 0,-92" stroke-width="8" fill-opacity="0" style="stroke: orange; stroke-dasharray: 289.027px, 289.027px; stroke-dashoffset: 101.159px;"></path>
+                                    <text class="CircularProgressbar-text" x="50" y="50"> {{ optional($videodetail)->rating }}  </text>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
                     @if( $setting->show_description == 1 && optional($videodetail)->description )   {{-- Description --}}
-                        <div class="overview">
+                        <div class="overview mt-3">
                             <div class="heading">{{ __('Description') }}</div>
                             <div class="description">
                                 {!!  html_entity_decode( optional($videodetail)->description ) !!}
@@ -564,7 +617,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                 <div class=" container-fluid video-list  overflow-hidden p-0">
 
-                    <h4 class="Continue Watching" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
+                    <h4 class="Continue Watching font-weight-bold" style="color:#fffff;">{{ ucwords( __('recommended videos')) }}</h4> 
 
                     <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "autoplay": false}'>
 
@@ -676,8 +729,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                                         </div>
                                                     </a>
 
-                                                    <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
-                                                        <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/>{{ __('Watch Now') }} 
+                                                    <a class="epi-name mt-2 mb-0 btn text-white" href="{{ URL::to('category') . '/videos/' . $recommended_video->slug }}">
+                                                        <i class="fa fa-play mr-1" ></i>{{ __('Watch Now') }} 
                                                     </a>
                                                 </div>
                                             </div>

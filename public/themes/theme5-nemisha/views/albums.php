@@ -342,17 +342,17 @@
                      <div class="block-images position-relative">
                         <!-- block-images -->
                         <div class="img-box">
-                           <img loading="lazy" data-src="<?= URL::to('/').'/public/uploads/albums/' . $other_album->album ?>" alt="" class="img-fluid loading w-100">
+                           <img loading="lazy" data-src="<?= URL::to('/public/uploads/albums/' . $other_album->album) ?>" alt="<?php echo ucfirst($other_album->albumname);?>" class="img-fluid loading w-100">
                         </div>
                         <div class="block-description">
                            <div class="hover-buttons text-white">
-                  <a class="d-flex" href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
-                  <i class="fa fa-play mr-1" aria-hidden="true"></i> 
-                  <p><?php echo ucfirst($other_album->albumname);?></p>
-                  </a>
-                  </div>
-                  </div>
-                  </div>
+                              <a class="d-flex" href="<?php echo URL('/').'/album/'.$other_album->slug;?>">
+                                 <i class="fa fa-play mr-1" aria-hidden="true"></i> 
+                                 <p><?php echo ucfirst($other_album->albumname);?></p>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
                   </a>
                </li>
                <?php } ?>
