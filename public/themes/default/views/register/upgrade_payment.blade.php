@@ -23,6 +23,8 @@ if (!is_null($PayPalpayment)) {
             $paypalClientId = null;
             break;
     }
+}else{
+    $paypalClientId = null;
 }
 
 @endphp
