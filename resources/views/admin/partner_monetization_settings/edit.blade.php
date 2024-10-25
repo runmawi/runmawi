@@ -76,7 +76,6 @@
                     <div class="clear"></div>
                     <form method="POST" action="{{ URL::to('admin/partner_monetization_settings/update') }}"
                         accept-charset="UTF-8" file="1" enctype="multipart/form-data">
-
                         <div class="row mt-4">
 
                             <div class="col-md-6">
@@ -89,7 +88,7 @@
                                     <div class="panel-body" style="display: block;">
                                         <input type="text" class="form-control" name="viewcount_limit"
                                             id="viewcount_limit"
-                                            value="@if (!empty($partner_monetization_setting->viewcount_limit)) {{ $partner_monetization_setting->admin_commission }} @endif" />
+                                            value="@if (!empty($partner_monetization_settings->viewcount_limit)) {{ $partner_monetization_settings->viewcount_limit }} @endif" />
                                     </div>
                                 </div>
                             </div>
@@ -104,13 +103,13 @@
                                     <div class="panel-body" style="display: block;">
                                         <input type="text" class="form-control" name="views_amount"
                                             id="views_amount"
-                                            value="@if (!empty($partner_monetization_setting->views_amount)) {{ $partner_monetization_setting->views_amount }} @endif" />
+                                            value="@if (!empty($partner_monetization_settings->views_amount)) {{ $partner_monetization_settings->views_amount }} @endif" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                        <input type="hidden" name="id" value="<?= isset($partner_monetization_setting->id) ?>" />
+                        <input type="hidden" name="id" value="<?= isset($partner_monetization_settings->id) ?>" />
                         <div class="panel-body mt-3" style="display: flex; justify-content: flex-end;">
                             <input type="submit" value="Update Partner Monetization Settings"
                                 class="btn btn-primary " />

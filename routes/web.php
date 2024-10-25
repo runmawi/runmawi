@@ -2983,7 +2983,7 @@ Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->n
 // Revenue Settings
 
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
-// Route::post('/revenue_settings/store', 'AdminRevenueSettings@Store');
-// Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
-// Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
+Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
+Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
+Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
