@@ -2979,3 +2979,11 @@ Route::get('admin/ugc_videos_approval/{id}', 'UGCController@UGCVideosApproval');
 Route::get('admin/ugc_videos_reject/{id}', 'UGCController@UGCVideosReject');
 
 Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->name('fetch-timeline');
+
+// Revenue Settings
+
+Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
+Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
+Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
+Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
+Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
