@@ -1857,7 +1857,7 @@ class CPPSeriesController extends Controller
 
         // $episodes->age_restrict =  $data['age_restrict'];
         $episodes->duration = $data['duration'];
-        $episodes->access = $data['access'];
+        // $episodes->access = $data['access'];
         $episodes->active = 0;
         $episodes->search_tags = $searchtags;
         $episodes->player_image = $player_image;
@@ -1872,7 +1872,8 @@ class CPPSeriesController extends Controller
         $episodes->intro_start_time = $data['intro_start_time'];
         $episodes->intro_end_time = $data['intro_end_time'];
         $episodes->ppv_price = $ppv_price;
-        $episodes->ppv_status = $data['ppv_status'];
+        $episodes->active = $data['active'];
+        $episodes->featured = $data['featured'];
         $episodes->status = 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
         $episodes->episode_description =  $data['episode_description'];
