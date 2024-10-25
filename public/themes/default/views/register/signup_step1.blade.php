@@ -259,7 +259,7 @@ i.fa.fa-google-plus {
                 }
             }
         }
-
+        button#profileUpdate:hover{color: #fff;}
 </style>
 
 <section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;background-attachment: fixed;background-color:#000;background-size:cover;height:auto;min-height:100%;">
