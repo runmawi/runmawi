@@ -71,6 +71,7 @@ border-radius: 0px 4px 4px 0px;
 			<th><label>Genre</label></th>
 			<th><label>Slider</label></th>
 			<th><label>Operation</label></th>
+			@if($series->count() > 0)
 			@foreach($series as $key=>$series_value)
 			<tr>
 				<td>{{$key + 1}}</td>
@@ -95,6 +96,11 @@ border-radius: 0px 4px 4px 0px;
 				</td>
 			</tr>
 			@endforeach
+			@else
+			<tr>
+                <td colspan="6">No Data Available</td>
+            </tr>
+			@endif
 	</table>
 
 		<div class="clear"></div>

@@ -461,6 +461,7 @@
 					<div class="col-sm-6">
 						<label class="">PPV Price:</label>
 						<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($video->ppv_price)){{ $video->ppv_price }}@endif">
+						<div id="ppv-price-error" style="color: red; display: none;"></div> 
 					</div>
 
 					<div class="col-sm-6">
@@ -937,6 +938,40 @@ $(document).ready(function(){
 	}
 	});
 
+</script>
+
+<script>
+	$(document).ready(function() {
+    $('#price').on('input', function() {
+        var ppvPrice = $(this).val().trim();
+        if ($('#access').val() == 'ppv') {
+            if (ppvPrice === '') {
+                $('#ppv-price-error').text('Please enter a PPV price.').show();
+            } else if (!/^\d+(\.\d+)?$/.test(ppvPrice)) { 
+                $('#ppv-price-error').text('PPV price must be a numeric value.').show();
+            } else {
+                $('#ppv-price-error').hide();
+            }
+        } else {
+            $('#ppv-price-error').hide(); 
+        }
+    });
+
+    $('#cpp_live_video').submit(function(event) {
+        var ppvPrice = $('#price').val().trim();
+        if ($('#access').val() == 'ppv') {
+            if (ppvPrice === '') {
+                event.preventDefault(); 
+                $('#ppv-price-error').text('Please enter a PPV price.').show();
+            } else if (!/^\d+(\.\d+)?$/.test(ppvPrice)) { 
+                event.preventDefault(); 
+                $('#ppv-price-error').text('PPV price must be a numeric value.').show();
+            } else {
+                $('#ppv-price-error').hide(); 
+            }
+        }
+    });
+});
 </script>
 
 @include('moderator.cpp.livestream.search_tag'); 
