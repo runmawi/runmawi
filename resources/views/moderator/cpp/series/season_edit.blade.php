@@ -495,30 +495,8 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4 mt-3">
-                            <div class="panel panel-primary" data-collapsed="0">
-                                <div class="panel-heading">
-                                    <div class="panel-title"><label>User Access</label></div>
-                                    <div class="panel-options">
-                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <p class="p1">Who is allowed to view this episode?</p>
-                                    <select id="access" class="form-control" name="access">
-                                        <option value="guest" @if(!empty($episodes->access) && $episodes->access == 'guest'){{ 'selected' }}@endif>Guest (everyone)</option>
-                                        <option value="registered" @if(!empty($episodes->access) && $episodes->access == 'registered'){{ 'selected' }}@endif>Registered Users (free registration must be enabled)</option>
-                                        <option value="subscriber" @if(!empty($episodes->access) && $episodes->access == 'subscriber'){{ 'selected' }}@endif>Subscriber (only paid subscription users)</option>
-                                        <?php if($settings->ppv_status == 1){ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
-                                        <?php } else{ ?>
-                                        <!-- <option value="ppv" >PPV Users (Pay per movie)</option>    -->
-                                        <?php } ?>
-                                    </select>
-                                    <div class="clear"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-sm-4"></div>
+
 
                         <div class="col-sm-4">
                             <div class="panel panel-primary" data-collapsed="0">

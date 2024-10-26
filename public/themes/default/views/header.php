@@ -677,6 +677,7 @@
          position: relative;
       }
       .navbar-toggler{border:none;}
+      .pagination a{color:#000 !important;}
 
    </style>
 
