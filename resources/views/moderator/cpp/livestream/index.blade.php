@@ -63,7 +63,7 @@
 		
 			<table class="data-tables table livestream_table " style="width:100%">
 				<thead>
-					<tr>
+					<tr style="text-align: center;">
 						<th><label>Image</label></th>
 						<th><label>Title</label></th>
 						<th><label>User Name</label></th>
@@ -76,7 +76,7 @@
 				</thead>
 				<tbody>
 					@foreach($videos as $video)
-					<tr>
+					<tr style="text-align: center;" >
 						<td><img src="{{ URL::to('/') . '/public/uploads/images/' . $video->image }}" width="50" /></td>
 						<td><?php if(strlen($video->title) > 25){ echo substr($video->title, 0, 25) . '...'; } else { echo $video->title; } ?></td>
 						<td> <?php if(!empty(@$video->cppuser->username)){ echo @$video->cppuser->username; }else{ @$video->usernames->username; }?></td>

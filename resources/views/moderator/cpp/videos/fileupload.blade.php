@@ -920,6 +920,7 @@ $('#submit_bunny_cdn').click(function(){
                         placeholder="Description">@if(!empty($video->description)){{ strip_tags($video->description) }}@endif</textarea>
                         </div>
                         <div class="col-12 form-group">
+                            <h5 class="mb-3">Links &amp; Details:</h5>
                                 <textarea   rows="5" class="form-control mt-2" name="details" id="links-ckeditor"
                             placeholder="Link , and details">@if(!empty($video->details)){{ htmlspecialchars($video->details) }}@endif</textarea>
                             </div>
