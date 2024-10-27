@@ -280,7 +280,31 @@
         }
     });
 });
++
+$(document).ready(function(){
+    $('#picture').on('change', function() {
+        var fileInput = $(this)[0];
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        var file = fileInput.files[0];
+        else if (!allowedExtensions.exec(filePath)) {
+            $('#error_picture').text('Please upload a valid image file (JPG, JPEG, PNG, GIF).').addClass('error-text');
+            $('#picture').val(''); 
+        } else {
+            $('#error_picture').text('');
+        }
+    });
 
+    $('#Moderator_form').click(function() {
+        var filePath = $('#picture').val().trim();
+        
+        if (filePath === "") {
+            $('#error_picture').text('Picture is required.').addClass('error-text');
+            return false; 
+        }
+        return true;
+    });
+});
 
 
 </script>

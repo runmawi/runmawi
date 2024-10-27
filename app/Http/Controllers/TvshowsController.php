@@ -873,7 +873,7 @@ class TvshowsController extends Controller
                 }    
 
                     // dd($ppv_purchase);
-                if($season_access_ppv == "free" && $series->access == 'guest' || Auth::user()->role == "admin"){
+                if($season_access_ppv == "free" && $series->access == 'guest' || Auth::user()->role == "admin" || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'registered' || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'subscriber'){
                     $episode_play_access = 1;
                 }else{
                     if(Auth::guest()){

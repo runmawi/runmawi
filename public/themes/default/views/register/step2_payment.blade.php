@@ -23,6 +23,8 @@
                 $paypalClientId = null;
                 break;
         }
+    }else{
+        $paypalClientId = null;
     }
 
 

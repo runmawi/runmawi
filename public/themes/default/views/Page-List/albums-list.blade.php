@@ -30,17 +30,11 @@
                                            </div>
                                         </div>
                                         <div class="block-description">
-                                           <div class="hover-buttons text-white">
-                                                 <a class="epi-name mt-5 mb-0" href="{{ URL::to('album/'.$album->slug) }}">
-                                                    <i class="ri-play-fill"></i>
-                                                 </a>                         
-                                                 <a href="{{ URL::to('album/'.$album->slug) }}">
-                                                    <p class="epi-name text-left m-0 mt-3">{{ $album->albumname }}</p>
-                                                 </a>
-                                                 <div class="d-flex align-items-center justify-content-between">
-                                                    <span class="text-white"><small>{{ get_audio_artist($album->id) }}</small></span>
-                                                 </div>
-                                           </div>
+                                            <div class="hover-buttons text-white d-flex align-items-center justify-content-center">
+                                                <a class="epi-name mt-5 mb-0" href="{{ URL::to('album/'.$album->slug) }}">
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __($album->albumname) }}
+                                                </a>
+                                            </div>
                                         </div>
                                      </div>
                                 </li>

@@ -545,6 +545,7 @@ data: {
 										<div class="col-sm-6">
 											<label class="p2">PPV Price:</label>
 											<input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="price" value="@if(!empty($audio->ppv_price)){{ $audio->ppv_price }}@endif">
+											<div id="ppv-price-error" style="color: red; display: none;"></div> 
 										</div>
 
 										<div class="col-sm-6">
@@ -681,10 +682,10 @@ $(document).ready(function() {
 
 			}else{
 				$('#ppv_price').hide();		
-				$('#global_ppv_status').hide();				
+				$('#global_ppv_status').hide();
 
 			}
-		});
+			});
 
 			$('#type').change(function(){
 				if($(this).val() == 'file'){
@@ -1143,6 +1144,39 @@ var Token = "<?= csrf_token() ?>";
 	
 	</script>
 
+<script>
+	$(document).ready(function() {
+    $('#price').on('input', function() {
+        var ppvPrice = $(this).val().trim();
+        if ($('#access').val() == 'ppv') {
+            if (ppvPrice === '') {
+                $('#ppv-price-error').text('Please enter a PPV price.').show();
+            } else if (!/^\d+(\.\d+)?$/.test(ppvPrice)) { 
+                $('#ppv-price-error').text('PPV price must be a numeric value.').show();
+            } else {
+                $('#ppv-price-error').hide();
+            }
+        } else {
+            $('#ppv-price-error').hide(); 
+        }
+    });
+
+    $('#cpp_audio_create').submit(function(event) {
+        var ppvPrice = $('#price').val().trim();
+        if ($('#access').val() == 'ppv') {
+            if (ppvPrice === '') {
+                event.preventDefault(); 
+                $('#ppv-price-error').text('Please enter a PPV price.').show();
+            } else if (!/^\d+(\.\d+)?$/.test(ppvPrice)) { 
+                event.preventDefault(); 
+                $('#ppv-price-error').text('PPV price must be a numeric value.').show();
+            } else {
+                $('#ppv-price-error').hide(); 
+            }
+        }
+    });
+});
+</script>
         @stop
 
 @stop

@@ -1004,6 +1004,8 @@ class ThemeAudioController extends Controller{
         //     return Redirect::to('/login');
         // endif;
 
+        return redirect()->to('Albums_list');
+
         $data = array(
             'albums_list' => AudioAlbums::get(),
             'page_name'    => ucwords('albums'),

@@ -460,7 +460,7 @@ $settings  = App\Setting::first();?>
 							<div class="form-group">
 								<label>Season Title:</label>
 								<input type="text" id="series_seasons_name" name="series_seasons_name" value="" placeholder="Enter the Season Title" class="form-control">
-								<p class="text-danger" id="season_title_error" style="display: none;color:red !important;">*Please enter the Season Title.</p>
+								<p class="text-danger" id="season_title_error" style="display: none;color:red !important;">Please enter the Season Title.</p>
 							</div>
 
 							<div class="form-group" >
@@ -1261,7 +1261,18 @@ var tagInput1 = new TagsInput({
 	}
 
 </script>
-
+<script>
+		$(document).ready(function() {
+		$('#submit-new-cat').on('click', function() {
+			const seasonTitle = $('#series_seasons_name').val().trim();
+			if (seasonTitle === '') {
+				$('#season_title_error').show();
+			} else {
+				$('#season_title_error').hide(); 
+			}
+		});
+	});
+</script>
 
 	@stop
 

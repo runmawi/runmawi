@@ -75,20 +75,22 @@ border-radius: 0px 4px 4px 0px;
                                     <td>{{ $video->created_at }}</td>
                                     <td>{{ gmdate('H:i:s', $video->duration) }}</td>    
                                     <td>
-                                    <?php if($video->active == 0){
-                                        echo "Pending"; ?>
-                                    <?php }elseif($video->active == 1){
-                                        echo "Approved"; ?>
-                                    <?php }elseif($video->active == 2){ 
-                                        echo "Rejected";?>
-                                    <?php }?>
+                                       <?php if($video->active == 0){ ?>
+                                          <span class="bg-warning p-2 rounded" >Pending</span>
+                                      <?php } elseif($video->active == 1){ ?>
+                                          <span class="bg-success p-2 rounded" >Approved</span>
+                                      <?php } elseif($video->active == 2){ ?>
+                                          <span class="bg-danger p-2 rounded">Rejected</span>
+                                      <?php } ?>
                                    </td>                                
                                     <td colspan="2">
                                        <div class="flex align-items-center list-user-action">
                                           <a class="iq-bg-warning" 
                                           onclick="return confirm('Are You Approving Video ?')"  href="{{ URL::to('admin/ugc_videos_approval') . '/' . $video->id }}">  <i class="fa fa-check-circle" style="font-size:24px;color:blue"></i></span></a>
+                                          @if($video->active == 0)
                                           <a class="iq-bg-success" 
                                               onclick="return confirm('Are You Rejecting Video ?')" href="{{ URL::to('admin/ugc_videos_reject') . '/' . $video->id }}"> <i class="fa fa-close" style="font-size:24px;color:white;background:red;border-radius:50%"></i></span></a>
+                                          @endif
                                           <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
                                               data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('ugc-delete') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                        </div>
