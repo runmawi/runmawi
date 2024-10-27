@@ -46,9 +46,13 @@ Route::group(['middleware' => ['web']], function () {
 
 		// Payment Setting
 
-		Route::get('/payment-details', 'Webnexs\Avod\AuthController@Payment_details')->name('Advertisement.Payment_details'); 
+		Route::get('/payment', 'Webnexs\Avod\PaymentController@Payment_details')->name('Advertisement.Payment_details'); 
+		Route::get('/transaction-details', 'Webnexs\Avod\PaymentController@transaction_details')->name('Advertisement.transaction_details'); 
 
 		// Stripe Payment Setting
+
+		Route::post('Stripe_authorization_url', 'Webnexs\Avod\StripePaymentController@Stripe_authorization_url')->name('Advertisement.Stripe_authorization_url');
+		Route::get('Stripe_payment_success', 'Webnexs\Avod\StripePaymentController@Stripe_payment_success')->name('Advertisement.Stripe_payment_success');
 
 	});
 });

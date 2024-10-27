@@ -477,11 +477,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
             color: #000 !important;
         }
 
-        #Ads {
-            padding-left: 50px;
-        }
-
-        #his {
+        #Ads,#transcation_details ,#his{
             padding-left: 50px;
         }
 
@@ -558,8 +554,22 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                             </ul>
                         </li>
 
+                        {{-- Transaction Details --}}
 
                         <li>
+                            <a href="#transcation_details" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="{{ URL::to('/assets/img/icon/his.svg') }}" height="40" width="40"><span>Payment Management</span>
+                               <i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                            </a>
+ 
+                             <ul id="transcation_details" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                                 <li><a href="{{ route('Advertisement.Payment_details') }}" class="iq-waves-effect"> {{ ucwords('Payment') }} </a></li>
+                                 <li><a href="{{ route('Advertisement.transaction_details') }}" class="iq-waves-effect"> {{ ucwords('Transaction details') }}</a></li>
+                             </ul>
+                         </li>
+
+                        {{-- History --}}
+
+                        {{-- <li>
                            <a href="#his" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="" src="{{ URL::to('/assets/img/icon/his.svg') }}" height="40" width="40"><span>History </span>
                               <i class="ri-arrow-right-s-line iq-arrow-right"></i>
                            </a>
@@ -568,7 +578,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                                 <li><a href="{{ URL::to('advertiser/featured_ad_history') }}" class="iq-waves-effect">Featured Ad History</a></li>
                                 <li><a href="{{ URL::to('advertiser/plan_history') }}" class="iq-waves-effect"> Plans History</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
 
                         <div class="bod"></div>
                         <li><a href=" {{ route('ads_logout') }}" class="iq-waves-effect"><img  src=" {{ URL::to('/assets/img/icon/logout.svg') }}" height="40" width="40"><span> Logout</span></a></li>

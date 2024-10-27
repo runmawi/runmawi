@@ -570,7 +570,7 @@ class AdminAdvertiserController extends Controller
             $setting = Setting::first();
             if ($setting->ads_on_videos == 1) {
                 $data = [
-                    'ads_plans' => Adsplan::orderBy('created_at', 'desc')->paginate(9),
+                    'ads_plans' => Adsplan::paginate(9),
                 ];
                 return view('admin.ads_management.ads_plans_list', $data);
             } else {
@@ -613,29 +613,39 @@ class AdminAdvertiserController extends Controller
 
         return Redirect::back();
 
-        // return response()->json([ 'success' => true ]);
     }
 
     public function add_ads_plan(Request $request)
     {
         $data = $request->all();
-        $Adsplan = new Adsplan();
-        $Adsplan->plan_name = $request->plan_name;
-        $Adsplan->plan_amount = $request->plan_amount;
-        $Adsplan->no_of_ads = $request->no_of_ads;
-        $Adsplan->save();
+
+        Adsplan::create([
+           'plan_name'   => $request->plan_name,
+           'plan_amount' => $request->plan_amount,
+           'no_of_ads'  => $request->no_of_ads,
+           'status'     => $request->status ,
+           'plan_id'    => $request->plan_id,
+           'description' => $request->description,
+        ]);
+      
         return response()->json(['success' => true]);
     }
 
     public function edit_ads_plan(Request $request)
     {
         $data = $request->all();
+
         $id = $data['id'];
+        
         $Adsplan = Adsplan::find($id);
-        $Adsplan->plan_name = $request->plan_name;
+        $Adsplan->plan_name   = $request->plan_name;
         $Adsplan->plan_amount = $request->plan_amount;
-        $Adsplan->no_of_ads = $request->no_of_ads;
+        $Adsplan->no_of_ads   = $request->no_of_ads;
+        $Adsplan->status      = $request->status;
+        $Adsplan->plan_id     = $request->plan_id;
+        $Adsplan->description = $request->description;
         $Adsplan->save();
+
         return response()->json(['success' => true]);
     }
 
@@ -652,8 +662,6 @@ class AdminAdvertiserController extends Controller
     {
         Adsplan::find($id)->delete();
         return Redirect::back();
-
-        // return response()->json([ 'success' => true ]);
     }
 
     public function ads_revenue()

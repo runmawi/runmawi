@@ -196,7 +196,7 @@ border-radius: 0px 4px 4px 0px;
        this.on("success", function(file, value) {
           
          if(value.video_id == videoid){
-                     swal("Video Update Successfull !");
+                     swal("Video Update Successful !");
                   }
          
         });

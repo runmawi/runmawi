@@ -92,7 +92,7 @@
 
                         <label>Name:</label>
 
-                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name">
+                        <input type="text" id="name" name="name" value="" class="form-control" placeholder="Enter Name" autocomplete="off" >
                         @if ($errors->has('name'))
                             <span class="text-red" role="alert">
                                 <strong>{{ $errors->first('name') }}</strong>
