@@ -4355,7 +4355,7 @@ class ChannelController extends Controller
 
                 if( Auth::guest() && $item->access != "guest" ){
                     $button_text = ButtonText::first();
-
+                    
                     $item['users_video_visibility_status'] = false ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                     $item['users_video_visibility_Rent_button']      = false ;
@@ -4365,7 +4365,7 @@ class ChannelController extends Controller
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
                     $item['users_video_visibility_status_button'] = $item->access == "ppv" ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : ($item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'));
-
+                    
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                         $item['users_video_visibility_status'] = true ;
@@ -4420,7 +4420,7 @@ class ChannelController extends Controller
                             $item['users_video_visibility_status'] = false ;
                             $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now '.$Rent_ppv_price) )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  ($item->access == "subscriber" && Auth::user()->role == "registered" ) ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
                             $item['users_video_visibility_block_button']     = false ;
 
@@ -4879,7 +4879,7 @@ class ChannelController extends Controller
                             $item['users_video_visibility_status'] = false ;
                             $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  ($item->access == "subscriber" && Auth::user()->role == "registered" ) ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
 
                             $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
