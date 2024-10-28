@@ -401,7 +401,16 @@ i.fa.fa-google-plus {
                                     </div>
                                 @endif
                             
-                            
+                                @if(!empty($SignupMenu) && $SignupMenu->gender == 1)
+                                    <div class="col-md-12" style="position:relative; margin-top:10px;">
+                                        <select name="gender" class="form-control">
+                                            <option value="" disabled selected>{{ __('Select Gender') }}</option>
+                                            <option value="male">{{ __('Male') }}</option>
+                                            <option value="female">{{ __('Female') }}</option>
+                                            <option value="other">{{ __('Other') }}</option>
+                                        </select>
+                                    </div>
+                                @endif
                                 @if(!empty($SignupMenu) && $SignupMenu->avatar == 1)
                             <div class="col-md-12" style="postion:relative;">
                                 <input type="file" accept="image/*" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
