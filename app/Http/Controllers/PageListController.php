@@ -476,22 +476,27 @@ class PageListController extends Controller
     public function Watchlater_list()
     {
         try {
-             
+
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
-            
+
             $watchlater_pagelist = $FrontEndQueryController->watchLater();
-            $watchlater_paginate = $this->paginateCollection($watchlater_pagelist, $this->videos_per_page);
+
+            $combined_watchlater = collect($watchlater_pagelist['videos'])
+                ->merge($watchlater_pagelist['episodes'])
+                ->merge($watchlater_pagelist['livestream']);
+
+            $watchlater_paginate = $this->paginateCollection($combined_watchlater, $this->videos_per_page);
 
             $data = array(
-                'current_theme' => $this->current_theme ,
+                'current_theme' => $this->current_theme,
                 'currency'      => CurrencySetting::first(),
                 'watchlater_pagelist' => $watchlater_paginate,
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
             );
-        
+
             return Theme::view('Page-List.watchlater', $data);
 
         } catch (\Throwable $th) {
@@ -506,9 +511,13 @@ class PageListController extends Controller
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
-            
+
             $wishlist_pagelist = $FrontEndQueryController->wishlist();
-            $wishlist_paginate = $this->paginateCollection($wishlist_pagelist, $this->videos_per_page);
+            
+            $combined_wishlist = collect($wishlist_pagelist['videos'])
+                ->merge($wishlist_pagelist['episodes']);
+
+            $wishlist_paginate = $this->paginateCollection($combined_wishlist, $this->videos_per_page);
 
             $data = array(
                 'current_theme' => $this->current_theme ,
