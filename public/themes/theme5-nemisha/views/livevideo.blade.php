@@ -500,6 +500,13 @@ if(empty($new_date)){
                 </div>
                 <?php endif; ?>
 
+                    {{-- Radio-Station --}}
+            @if( (!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1) && ( \Route::currentRouteName() == "Radio_station_play" ) )
+
+                {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg",  ['Livestream_details' => $Livestream_details , 'current_theme' => $current_theme])->content() !!}
+
+            @endif
+
                 <div class="row" style="padding: 0 11px;">
                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos'); ?></h4>
@@ -512,12 +519,7 @@ if(empty($new_date)){
                 </div>
             </div>
 
-                {{-- Radio-Station --}}
-            @if( (!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_radiostation == 1) && ( \Route::currentRouteName() == "Radio_station_play" ) )
-
-                {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg",  ['Livestream_details' => $Livestream_details , 'current_theme' => $current_theme])->content() !!}
-
-            @endif
+            
          
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"

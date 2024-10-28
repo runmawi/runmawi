@@ -2296,6 +2296,8 @@ $(document).ready(function(){
                 showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
             }
 
+            var previousEndTime = null;
+
             $(".program-fields").each(function() {
 
                 var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
@@ -2337,6 +2339,13 @@ $(document).ready(function(){
                     if (isValid) {
                         timeSlots.push({ startTime: startTime, endTime: endTime });
                     }
+
+                    if (previousEndTime && startTime === previousEndTime) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "Start time should not match previous end time.");
+                    }
+
+                    previousEndTime = endTime;
                 }
 
             });
