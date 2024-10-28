@@ -161,7 +161,19 @@
                                 </td>
                             </tbody>      
 
-                           
+                            <tbody>
+                                <td> {{ '11'}} </td>
+                                <td> {{ 'Gender'}} </td>
+                                <td> 
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="gender" class="gender" id="gender" type="checkbox" @if( @$ChannelSignupMenu->gender == "1") checked  @endif >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tbody>   
+
                         </table>
 
                         <div class="col-md-12 form-group" align="right">

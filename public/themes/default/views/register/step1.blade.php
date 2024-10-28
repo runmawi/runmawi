@@ -450,7 +450,15 @@ i.fa.fa-google-plus {
 
                                 </div>
                                 
-                                
+                            <div class="col-md-12" style="position:relative;">
+                                <select name="gender" class="form-control">
+                                    <option value="" disabled selected>{{ __('Select Gender') }}</option>
+                                    <option value="male">{{ __('Male') }}</option>
+                                    <option value="female">{{ __('Female') }}</option>
+                                    <option value="other">{{ __('Other') }}</option>
+                                </select>
+                            </div>
+
                             <div class="col-md-12" style="postion:relative;">
                                 <input type="file" multiple="true" class="form-control" style="padding: 0px;" name="avatar" id="avatar" />
                                 <label id="fileLabel">{{ __('Choose Profile Image') }}</label>
