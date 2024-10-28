@@ -65,18 +65,18 @@
                             @endphp
 
                             @if ($time->between($startTime, $endTime))
-                                @if($time == $startTime)
+                                @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
                                     <div class="epg-program epg-timeline-{{ $index }}" style="border-left:1px solid #fff;">
                                         @if ($title && $index !== $lastShownIndex)
                                             <b style="position:absolute;">{{ "{$title} (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]})" }}</b>
                                         @endif
                                     </div>
                                 @endif
-                                @if($time == $endTime)
+
+                                @if($time->greaterThanOrEqualTo($endTime) && $time->lessThan($endTime->copy()->addMinutes(15)))
                                     <div class="epg-program epg-timeline-{{ $index }}" style="border-right:1px solid;"></div>
                                 @endif
-                                    
-                                
+
                                 @php $lastShownIndex = $index; @endphp
                             @endif
                         @endif
