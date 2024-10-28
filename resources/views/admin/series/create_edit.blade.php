@@ -998,7 +998,7 @@ $('#submit-new-cat').click(function(){
 					document.getElementById('player_image_error_msg').style.display = 'block';
 					$('.update_btn').prop('disabled', true);
 					document.getElementById('player_image_error_msg').innerText = 
-						`* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+						`* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
 				} else {
 					document.getElementById('player_image_error_msg').style.display = 'none';
 					$('.update_btn').prop('disabled', false);
