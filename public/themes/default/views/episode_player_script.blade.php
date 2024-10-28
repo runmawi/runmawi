@@ -94,14 +94,24 @@
             });
         });
 
-        player.on('loadedmetadata', function(){
+        function updateControls() {
             var isMobile = window.innerWidth <= 768;
             var controlBar = player.controlBar;
-            // console.log("controlbar",controlBar);
-            if(!isMobile){
+
+            if (controlBar.getChild('subtitlesButton')) {
+                controlBar.removeChild('subtitlesButton');
+            }
+            if (controlBar.getChild('playbackRateMenuButton')) {
+                controlBar.removeChild('playbackRateMenuButton');
+            }
+            if (controlBar.getChild('settingsMenuButton')) {
+                controlBar.removeChild('settingsMenuButton');
+            }
+
+            if (!isMobile){
                 controlBar.addChild('subtitlesButton');
                 controlBar.addChild('playbackRateMenuButton');
-            }
+            } 
             else{
                 controlBar.addChild('settingsMenuButton', {
                     entries: [
@@ -110,6 +120,14 @@
                     ]
                 });
             }
+        }
+
+        player.on('loadedmetadata', function() {
+            updateControls();
+        });
+
+        window.addEventListener('resize', function() {
+            updateControls();
         });
   
         var hovered = false;
@@ -246,6 +264,164 @@
         //         player.el().appendChild(watermark);
         //     });
         // }
+
+        // Ads Marker
+
+        player.on("loadedmetadata", function() {
+
+            const CheckPreAds  = '<?= $pre_advertisement ?>';
+            const CheckPostAds = '<?= $post_advertisement ?>';
+            const midrollincreaseInterval = Number('<?= $video_js_mid_advertisement_sequence_time ?>');
+            const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
+
+            const markers = [];
+
+            const  total = player.duration();
+
+            if ( total != 'Infinity' ) {
+
+                if( !!CheckPreAds ){
+                    markers.push({ time: 0 });
+                }
+
+                if(!!midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0 ){                    
+                    for (let time = midrollincreaseInterval; time < total; time += midrollincreaseInterval) {
+                        markers.push({ time });                        
+                    }
+                }
+
+                if( !!CheckPostAds ){
+                    markers.push({ time: total });
+                }
+
+                var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);                
+
+                for (var i = 0; i < markers.length; i++) {
+
+                    var left = (markers[i].time / total * 100) + '%';
+
+                    var time = markers[i].time;
+
+                    var el = jQuery('<div class="vjs-marker" style="left:' + left + '" data-time="' + time + '"></div>');                                     
+                    el.click(function() {
+                        player.currentTime($(this).data('time'));                        
+                    });
+
+                    marker_space.append(el);
+                }
+            }
+        });
+
+        // Advertisement
+
+        var vastTagPreroll  = '<?= $pre_advertisement ?>';
+        var vastTagPostroll = '<?= $post_advertisement ?>';
+
+        var prerollTriggered = false;
+        var postrollTriggered = false;
+
+        const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
+        const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
+
+        var midrollRequested = false;
+        var midrollInterval = '<?= $video_js_mid_advertisement_sequence_time ?>';
+        var lastMidrollTime = 0;
+
+        if (!prerollTriggered) {
+
+            player.ima({
+                adTagUrl: vastTagPreroll,
+                showControlsForAds: true,
+                debug: false,
+            });
+        } else {
+            player.ima({
+                adTagUrl: '',
+                showControlsForAds: true,
+                debug: false,
+            });
+        }
+
+        player.ima.initializeAdDisplayContainer();
+
+        function requestMidrollAd(vastTagMidroll) {
+
+            midrollRequested = true;
+
+            player.ima.changeAdTag(vastTagMidroll);
+
+            player.ima.requestAds();
+        }
+
+        var initial_current_time = 0;
+        var timeupdate_counter = 0;
+
+        player.on("timeupdate", function() {
+
+            var currentTime = player.currentTime();
+            var Player_duration = player.duration() ;
+
+            // Mid ads
+
+            var timeSinceLastMidroll = currentTime - lastMidrollTime;
+
+            if (timeSinceLastMidroll >= midrollInterval && !midrollRequested) {
+
+                lastMidrollTime = currentTime;
+                console.log("Midroll triggered");
+
+                const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
+                const vastTagMidroll = vastTagMidrollArray[random_array_index];                
+
+                requestMidrollAd(vastTagMidroll);
+            }
+
+        });
+
+        player.on("ended", function() {
+
+            if (!postrollTriggered) {
+
+                postrollTriggered = true;
+
+                player.ima.requestAds({
+                    adTagUrl: vastTagPostroll,
+                });
+
+                console.log("Postroll ads requested");
+            }
+        });
+
+        player.on("adsready", function() {
+
+            if (midrollRequested) {
+                // console.log("Ads ready - midroll");
+            } else {
+                // console.log("Ads ready - preroll");
+                player.src(video_url);
+            }
+
+        });
+
+        player.on("aderror", function() {
+
+            console.log("Ads aderror");
+            player.play();
+
+        });
+
+        player.on("adend", function() {
+
+            if (lastMidrollTime > 0) {
+                //   console.log("A midroll ad has finished playing.");
+                midrollRequested = false;
+            } else {
+                //   console.log("The preroll ad has finished playing.");
+                prerollTriggered = true;
+            }
+            player.play();
+
+        });
 
     });
 
