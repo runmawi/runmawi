@@ -119,6 +119,17 @@ $system_settings = App\SystemSetting::find(1);
                                 </div>
                             @endif
 
+                            @if(!empty($ChannelSignupMenu) && $ChannelSignupMenu->gender == 1)
+                                <div class="col-md-12" style="position:relative; margin-top:10px;">
+                                    <select name="gender" class="form-control">
+                                        <option value="" disabled selected>{{ __('Select Gender') }}</option>
+                                        <option value="male">{{ __('Male') }}</option>
+                                        <option value="female">{{ __('Female') }}</option>
+                                        <option value="other">{{ __('Other') }}</option>
+                                    </select>
+                                </div>
+                            @endif
+                            
                             @if(!empty(@$ChannelSignupMenu) && @$ChannelSignupMenu->image)
                                 <div class="col-md-12 text-left">
                                     <label for="" style="color: white;">{{ __('Upload Home Page Image') }}  :</label>

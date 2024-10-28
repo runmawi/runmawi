@@ -93,7 +93,17 @@ $system_settings = App\SystemSetting::find(1);
                                 </div>
                             @endif
                                 
-                                
+                            @if(!empty($CPPSignupMenu) && $CPPSignupMenu->gender == 1)
+                                <div class="col-md-12 p-0 text-left" >
+                                    <select name="gender" class="form-control">
+                                        <option value="" disabled selected>{{ __('Select Gender') }}</option>
+                                        <option value="male">{{ __('Male') }}</option>
+                                        <option value="female">{{ __('Female') }}</option>
+                                        <option value="other">{{ __('Other') }}</option>
+                                    </select>
+                                </div>
+                            @endif
+                            
                             @if(!empty(@$CPPSignupMenu) && @$CPPSignupMenu->image == 1)
                                 <div class="col-md-12 p-0 text-left">
                                     <label for="" style="color: white;">{{ __('Upload Picture') }}  :</label>

@@ -292,6 +292,7 @@ class ModeratorsLoginController extends Controller
             $moderatorsuser->branch_name = $request->branch_name;
             $moderatorsuser->account_number = $request->account_number;
             $moderatorsuser->IFSC_Code = $request->IFSC_Code;
+            $moderatorsuser->gender = $request->gender;
 
             $intro_video = (isset($request['intro_video'])) ? $request['intro_video'] : '';
 

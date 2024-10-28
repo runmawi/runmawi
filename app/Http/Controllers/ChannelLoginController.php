@@ -246,6 +246,7 @@ class ChannelLoginController extends Controller
             $channel->branch_name = $request->branch_name;
             $channel->account_number = $request->account_number;
             $channel->IFSC_Code = $request->IFSC_Code;
+            $channel->gender = $request->gender;
             $channel->save();
             
             $user_data = User::where('email', $request->email_id)->first();
