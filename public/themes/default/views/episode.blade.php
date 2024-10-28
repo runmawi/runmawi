@@ -2,7 +2,6 @@
     include public_path('themes/default/views/header.php');
     include public_path('themes/default/views/episode_ads.blade.php');
 
-    $autoplay = $episode_ads == null ? 'autoplay' : '';
     $series = App\series::first();
     $series = App\series::where('id', $episode->series_id)->first();
     $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
