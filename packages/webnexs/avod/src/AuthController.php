@@ -1061,7 +1061,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
 
-            return $th->getmessage();   
+            // return $th->getmessage();   
             
             return abort(404);
         }
