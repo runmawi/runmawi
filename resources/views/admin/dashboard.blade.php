@@ -300,13 +300,13 @@
                                  <div class="iq-cart-text text-center text-capitalize">
                                       <img class="ply" src="<?php echo URL::to('/').'/assets/img/views.webp';  ?>" loading="lazy"> 
                                     <p class="mb-0 mt-3">
-                                       view
+                                      Video view
                                     </p>
                                  </div>
                                  
                               </div>
                               <div class="d-flex align-items-center justify-content-between mt-3">
-                                 <h4 class=" mb-0">{{ $view }}</h4>
+                                 <h4 class=" mb-0">{{ TotalViewcount() }}</h4>
                                  <h6 class="mb-0 text-primary"><span><i class="fa fa-caret-down mr-2"></i></span>35%</h6>
                               </div>
                            </div>
