@@ -281,66 +281,6 @@ class AuthController extends Controller
         return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
-    public function upload_ads_old()
-    {
-        $data = [];
-        $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
-            ->where('status', 'active')
-            ->count();
-        $getdata = Advertiserplanhistory::where('advertiser_id', '=', session('advertiser_id'))
-            ->where('status', 'active')
-            ->first();
-        $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
-
-        if ((!empty(session('advertiser_id')) && $activeplan == 0) || $upload_ads_cnt == 0) {
-            $getdata->status = 'deactive';
-            $getdata->save();
-
-            $plan_name = Adsplan::where('id', $getdata->plan_id)->first()->plan_name;
-            $customerName = Advertiser::find(session('advertiser_id'))->company_name;
-            $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
-            $details = [
-                'title' => 'Dear ' . $customerName,
-                'body' => 'Your ' . $plan_name . ' limit for the plan has been reached, to add more ads please login to your account to upgrade plan.',
-            ];
-
-            try {
-                \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-
-            return Redirect::to('/advertiser')->withError('Opps! Your limit has completed.Please update your plan');
-        } elseif (!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads) {
-            // Ads scheduling
-
-            $now = Carbon::now();
-
-            $data = [
-                'Monday_time' => AdsTimeSlot::where('day', 'Monday')->get(),
-                'Tuesday_time' => AdsTimeSlot::where('day', 'Tuesday')->get(),
-                'Wednesday_time' => AdsTimeSlot::where('day', 'Wednesday')->get(),
-                'Thursday_time' => AdsTimeSlot::where('day', 'Thrusday')->get(),
-                'Friday_time' => AdsTimeSlot::where('day', 'Friday')->get(),
-                'Saturday_time' => AdsTimeSlot::where('day', 'Saturday')->get(),
-                'Sunday_time' => AdsTimeSlot::where('day', 'Sunday')->get(),
-                'Monday' => $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
-                'Tuesday' => $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
-                'Wednesday' => $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
-                'Thrusday' => $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
-                'Friday' => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
-                'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
-                'Sunday' => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
-            ];
-
-            //  End Scheduling
-
-            $data['ads_category'] = Adscategory::all();
-            return view('avod::upload_ads', $data);
-        }
-        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-    }
 
     public function upload_ads(Request $request)
     {
@@ -910,6 +850,8 @@ class AuthController extends Controller
     
             $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
     
+            $activeplan = 1; 
+
             if( $settings->ads_payment_page_status == 1  ){
     
                 $activeplan = 0; 
@@ -1118,6 +1060,8 @@ class AuthController extends Controller
             return Redirect::to('advertiser/ads-list');
 
         } catch (\Throwable $th) {
+
+            return $th->getmessage();   
             
             return abort(404);
         }
