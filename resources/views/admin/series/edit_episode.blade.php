@@ -46,8 +46,117 @@
         font-size: revert;
     }
 
-</style>
+    .progress { position:relative; width:100%; }
+   .bar { background-color: #008000; width:0%; height:20px; }
+   .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
+   [data-tip] {
+   position:relative;
+   }
 
+   #progressbar #useraccess_ppvprice:before {
+   font-family: FontAwesome;
+   content: "\f030"
+   }
+   .progress {height:0.25rem !important;}
+
+   #progressbar li.active {
+   color: #000000!important; font-weight:500;
+   }
+   #progressbar li {
+   list-style-type: none;
+   font-size: 15px;
+   width: 16%;
+   float: left;
+   position: relative;
+   font-weight: 400;
+   background-color: white;
+   padding: 10px;
+       line-height: 19px;
+   }
+   #progressbar #videot:before {
+   font-family: FontAwesome;
+   content: "\f03d"
+   }
+   #progressbar #account:before {
+   font-family: FontAwesome;
+   content: "\f129"
+   } 
+   #progressbar #personal:before {
+   font-family: FontAwesome;
+   content: "\f007"
+   }
+   #progressbar #payment:before {
+   font-family: FontAwesome;
+   content: "\f03e"
+   }
+   #progressbar #confirm:before {
+   font-family: FontAwesome;
+   content: "\f03d"
+   }
+   #progressbar li:before {
+   width: 50px;
+   height: 50px;
+   line-height: 45px;
+   display: block;
+   font-size: 20px;
+   color: #ffffff;
+   background: lightgray;
+   border-radius: 50%;
+   margin: 0 auto 10px auto;
+   padding: 2px;
+       display: none;
+       
+   }
+    #progressbar li img{
+        width: 125px;
+    }
+   #progressbar li:after {
+   content: '';
+   width: 100%;
+   height: 2px;
+   background: lightgray;
+   position: absolute;
+   left: 0;
+   top: 25px;
+   z-index: -1
+   }
+   #progressbar li.active:before, #progressbar li.active:after {
+   background: #48bbe5;
+   }
+
+   #progressbar li img {
+    width: 125px;
+    display: block;
+    margin: 0 auto;
+}
+
+</style>
+{{-- video-js Style --}}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+    <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+    <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+{{-- video-js Script --}}
+
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+    <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 @section('css')
 
@@ -57,7 +166,27 @@ $series = App\Series::where('id',$episodes->series_id)->first()  ;
 $media_url = URL::to('/episode/').'/'.$series->slug.'/'.$episodes->slug;
 $embed_media_url = URL::to('/episode/embed').'/'.$series->slug.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+
+    if($episodes->type == 'm3u8'){
+        $episodeURL =   URL::to('/storage/app/public/').'/'.$episodes->path . '.m3u8'  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif ($episodes->type == 'file' || $episodes->type == 'upload'){
+        $episodeURL =   $episodes->mp4_url  ;
+        $episode_player_type =  'video/mp4' ;
+    }elseif ($episodes->type == 'm3u8_url'){
+        $episodeURL =   $episodes->url  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif($episodes->type == 'bunny_cdn'){
+       $episodeURL =   $episodes->url  ;
+       $episode_player_type =  'application/x-mpegURL' ;
+   }else{
+        $episodeURL =  null ;
+        $episode_player_type =  null ;
+   }
 ?>
+
+    
+
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
@@ -103,11 +232,64 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 $filename = $episodes->path.'.mp4';
                 $path = storage_path('app/public/'.$filename);
             ?>
+
+            @if($episodes->status == 1 && $episodes->status == 1  )
+                <a  style="margin-right: 16%;margin-top: -5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Episode Player Perview</a>
+            @endif   
+
+            <br>
             @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
                 @if (file_exists($path))
                     <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
                 @endif
-            @endif           
+            @endif   
+            
+            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+                <div class="col-sm-12">
+                    Video Transcoding is under Progress
+                    <div class="progress">
+                        <div class="low_bar"></div >
+                    </div>
+                    <div class="low_percent">0%</div >
+                </div>
+
+                <!-- <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+               </div> -->
+               
+            @endif
+
+            <div class="container">                
+                <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Episode Player</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                            width="auto" height="auto" poster="{{ $episodes->player_image }}" playsinline="playsinline"
+                            >
+                            <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                                @foreach($SeriesSubtitle as $subtitles_file)
+                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                @endforeach
+                            @endif
+                        </video>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
             </div>
             <hr />
             <div class="clear"></div>
@@ -650,13 +832,13 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 .catch( error => {
                     console.error( error );
                 } );
+
+
         </script>
 
-        <script> 
-
         <script>
-
-           
+            
+         
             $(document).ready(function ($) {
 
                 $("#duration").mask("00:00:00");
@@ -1420,9 +1602,29 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 console.error(error);
             }
         });
+
+                var page = '{{ $page }}' ;
+                var status = '{{ $episodes->status }}' ;
+
+                if ((page == 'Edit') && (status == 0)) {
+                    setInterval(function(){ 
+                        $.getJSON('<?php echo URL::to("/admin/get_processed_percentage_episode/");?>'+'/'+$('#id').val(), function(data) {
+                            $('.low_bar').width(data.processed_low+'%');
+                            if(data.processed_low == null){
+                            $('.low_percent').html('Transcoding is Queued. Waiting for Server to Respond');
+                            }else{
+                            $('.low_percent').html(data.processed_low+'%');
+                            }
+                        });
+                    }, 3000);
+                }
+                
+        
         </script>
 
+
         @include('admin.series.Ads_episode'); 
+        @include('admin.series.palyer_script'); 
 
         @stop @stop 
     </div>
