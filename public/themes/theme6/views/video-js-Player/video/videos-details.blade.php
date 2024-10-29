@@ -317,12 +317,21 @@
                             @else
                             
                                 @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
-                                    <a class="btn" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
-                                        <div class="playbtn" style="gap:5px">
-                                            {!! $play_btn_svg !!}
-                                            <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
-                                        </div>
-                                    </a>
+                                    @if($videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button)
+                                        <a class="btn" {{ $videodetail->users_video_visibility_becomesubscriber_button ? 'href=' . $videodetail->users_video_visibility_redirect_url : 'data-toggle=modal data-target=#video-purchase-now-modal' }}>
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                            </div>
+                                        </a>
+                                    @else
+                                        <a class="btn" {{ 'href=' . $videodetail->users_video_visibility_redirect_url }}>
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
 
                                     @if( Auth::guest() && $videodetail->access == "ppv" && $subscribe_btn == 1 || Auth::check() && Auth::user()->role == "registered" && $videodetail->access == "ppv" && $subscribe_btn == 1)
                                         <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
@@ -333,6 +342,7 @@
                                         </a>
                                     @endif
 
+                                
                                 @endif
                             @endif
 
