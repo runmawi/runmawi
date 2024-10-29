@@ -111,7 +111,7 @@
    /*padding-top: 7px;
    padding-bottom: 7px;*/
    color: #e9cc95;
-   font-size: 14px;
+   font-size: 11px;
    pointer-events: none;
    }
    .playlist-ctn {
@@ -134,8 +134,7 @@
    padding-bottom: 20px;
    overflow: scroll;
    scroll-behavior: auto;
-   min-height:335px;
-   scrollbar-color: rebeccapurple green!important;
+   height:315px;
    overflow-x: hidden;
    }
    .active-track{
