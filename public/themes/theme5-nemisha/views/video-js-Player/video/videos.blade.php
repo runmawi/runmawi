@@ -64,15 +64,6 @@
                             @endforeach
                         @endif
                 </video>
-                <!-- <div class="swiper-container">
-                    <div class="swiper-wrapper"> -->
-                        <!-- Slides will be added dynamically -->
-                    <!-- </div> -->
-                    <!-- Add Pagination -->
-                    <!-- <div class="swiper-pagination"></div> -->
-                    <!-- <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div> -->
             @endif
 
             <div class="video" id="visibilityMessage" style="color: white; display: none; background: linear-gradient(333deg, rgba(4, 21, 45, 0) 0%, #050505 100.17%), url('{{  $videodetail->player_image_url  }}');background-size: cover; height:100vh;">

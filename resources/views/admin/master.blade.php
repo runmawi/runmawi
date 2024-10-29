@@ -1004,6 +1004,23 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             @endif
          </li>
 
+          {{--Partner Payouts --}}
+          <li>
+               <div class="men" style="">
+                  <p class="lnk" >{{ (__('Partner Payouts')) }}</p>
+               </div>
+
+               <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
+                  <img class="ply" height="40" width="40" src="{{  URL::to('/assets/img/E360_icons/Manage Live stream.svg') }}"> 
+                  <span class="">{{ (__('Partner Payout Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+               </a>
+               
+               <ul id="parnter_monetization_payouts" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                  <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts List')) }}</a></li>
+               </ul>
+         </li>
+
+
            {{--Live Stream  --}}
 
          <li>

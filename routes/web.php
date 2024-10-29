@@ -2985,6 +2985,16 @@ Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->n
 
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
 Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
-Route::get('/revenue_settings/edit/{id}', 'AdminRevenueSettings@Edit');
-Route::get('/revenue_settings/delete/{id}', 'AdminRevenueSettings@Delete');
+Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
+Route::get('admin/partner_monetization_settings//delete/{id}', 'AdminPartnerMonetizationSettings@Delete');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
+
+Route::get('admin/partner_monetization_payouts/index', 'AdminPartnerMonetizationPayouts@index')->name('partner-monetization-payouts');
+
+Route::post('PlayedViews','ChannelController@PlayedViews')->name('PlayedViews');
+Route::post('EpisodePlayedViews','TvshowsController@EpisodePlayedViews')->name('EpisodePlayedViews');
+Route::post('LivestreamPlayedViews', 'AdminLiveStreamController@LivestreamPlayedViews')->name('LivestreamPlayedViews');
+
+
+Route::post('AmountPerView','ChannelController@AmountPerView')->name('AmountPerView');
+Route::post('LiveStreamAmountPerView','AdminLiveStreamController@LiveStreamAmountPerView')->name('LiveStreamAmountPerView');
