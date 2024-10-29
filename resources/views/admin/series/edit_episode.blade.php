@@ -274,11 +274,17 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             width="auto" height="auto" poster="{{ $episodes->player_image }}" playsinline="playsinline"
                             >
                             <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                                @foreach($SeriesSubtitle as $subtitles_file)
+                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                @endforeach
+                            @endif
                         </video>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                     </div>
                 </div>

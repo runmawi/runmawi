@@ -2419,8 +2419,23 @@ class AdminSeriesController extends Controller
 
         $theme_settings = SiteTheme::first();
 
+        $subtitles_name = SeriesSubtitle::select('subtitles.language as language')
+        ->Join('subtitles', 'series_subtitles.shortcode', '=', 'subtitles.short_code')
+        ->where('series_subtitles.episode_id', $id)
+        ->get();
 
-            $post_route =  URL::to('admin/episode/update');
+        if (count($subtitles_name) > 0) {
+        foreach ($subtitles_name as $value) {
+        $subtitlesname[] = $value->language;
+        }
+        $subtitles = implode(', ', $subtitlesname);
+        } else {
+        $subtitles = 'No Subtitles Added';
+        }
+
+        $subtitle = SeriesSubtitle::where('episode_id', '=', $id)->get();
+
+        $post_route =  URL::to('admin/episode/update');
 
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
@@ -2439,6 +2454,8 @@ class AdminSeriesController extends Controller
                 'compress_image_settings' => $compress_image_settings,
                 'theme_settings' => $theme_settings,
                 'page'  => 'Edit',
+                'playerui_settings'  => Playerui::first(),
+                'playerui'  => Playerui::first(),
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
