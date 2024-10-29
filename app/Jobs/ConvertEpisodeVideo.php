@@ -44,7 +44,6 @@ class ConvertEpisodeVideo implements ShouldQueue
             $video = $this->video->path;
             $storepath = $this->storepath;
 
-
             // $BitrateFormat250 = (new X264('aac', 'libx264'))->setKiloBitrate(250);
             // $BitrateFormat360 = (new X264('aac', 'libx264'))->setKiloBitrate(300);
             // $lowBitrateFormat = (new X264('aac', 'libx264'))->setKiloBitrate(500);
@@ -115,6 +114,11 @@ class ConvertEpisodeVideo implements ShouldQueue
             'status' => 1,
             'active' => 1
         ]);
+        $inputs = array(
+            'status' => 1,
+        );
+        Episode::where('id',$this->video->id)->update($inputs);
+
     }
 
     private function getCleanFileName($filename){

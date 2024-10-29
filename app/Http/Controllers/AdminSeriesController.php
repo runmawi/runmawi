@@ -2180,7 +2180,7 @@ class AdminSeriesController extends Controller
             $episodes->responsive_image =  $data['responsive_image'];
             $episodes->responsive_player_image =  $data['responsive_player_image'];
             $episodes->responsive_tv_image =  $data['responsive_tv_image'];
-            $episodes->status =  1;
+            $episodes->status =  $type == 'm3u8' ? 0 : 1;
             
             // {{-- Video.Js Player--}}
 
@@ -2419,8 +2419,23 @@ class AdminSeriesController extends Controller
 
         $theme_settings = SiteTheme::first();
 
+        $subtitles_name = SeriesSubtitle::select('subtitles.language as language')
+        ->Join('subtitles', 'series_subtitles.shortcode', '=', 'subtitles.short_code')
+        ->where('series_subtitles.episode_id', $id)
+        ->get();
 
-            $post_route =  URL::to('admin/episode/update');
+        if (count($subtitles_name) > 0) {
+        foreach ($subtitles_name as $value) {
+        $subtitlesname[] = $value->language;
+        }
+        $subtitles = implode(', ', $subtitlesname);
+        } else {
+        $subtitles = 'No Subtitles Added';
+        }
+
+        $subtitle = SeriesSubtitle::where('episode_id', '=', $id)->get();
+
+        $post_route =  URL::to('admin/episode/update');
 
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
@@ -2438,6 +2453,9 @@ class AdminSeriesController extends Controller
                 "video_js_Advertisements" => $video_js_Advertisements ,
                 'compress_image_settings' => $compress_image_settings,
                 'theme_settings' => $theme_settings,
+                'page'  => 'Edit',
+                'playerui_settings'  => Playerui::first(),
+                'playerui'  => Playerui::first(),
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
@@ -5574,6 +5592,10 @@ class AdminSeriesController extends Controller
         }
     }
 
+    function get_processed_percentage_episode($id)
+    {
+        return Episode::where("id", "=", $id)->first();
+    }
 
 
 }

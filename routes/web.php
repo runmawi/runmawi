@@ -728,6 +728,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
     Route::get('/get_compression_processed_percentage/{id}', 'AdminVideosController@get_compression_processed_percentage');
+    Route::get('/get_processed_percentage_episode/{id}', 'AdminSeriesController@get_processed_percentage_episode');
 
     // Admin Series and Episode
 
