@@ -1,6 +1,8 @@
 <script>
 
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
+    var videoId = "<?php echo $Livestream_details->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
         var player = videojs('live-stream-player', { // Video Js Player 
@@ -50,6 +52,60 @@
 
         // Ads Marker
 
+
+        let viewCountSent = false;
+
+        function LivestreamPlayedViews(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            console.log(currentTime);
+
+            var countview;
+
+            if (currentTime == 5 && !viewCountSent) {
+                viewCountSent = true;
+                countview = 1;
+                console.log('AJAX request will be sent.');
+
+                $.ajax({
+                    url: "<?php echo URL::to('LivestreamPlayedViews');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                    success: function(response) {
+                        console.log('View count incremented:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to increment view count:', error);
+                    }
+                });
+            }
+
+            console.log('currentTime: ' + currentTime);
+            console.log('countview: ' + countview);
+        }
+
+        function LiveStreamAmountPerView(videoId) {
+                $.ajax({
+                    url: "<?php echo URL::to('LiveStreamAmountPerView');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                    },
+                    success: function(response) {
+                        console.log('Success', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed', error);
+                    }
+                });
+            }
+        }
+
         player.on("loadedmetadata", function() {
 
             const CheckPreAds  = '<?= $pre_advertisement ?>'; 
@@ -93,6 +149,28 @@
                     marker_space.append(el);
                 }
             }
+
+            
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                LivestreamPlayedViews(videoId, currentTime);
+                LiveStreamAmountPerView(videoId);                
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                LivestreamPlayedViews(videoId, currentTime);
+                LiveStreamAmountPerView(videoId);                
+
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                LivestreamPlayedViews(videoId, currentTime);
+                LiveStreamAmountPerView(videoId);                
+            });
+
+
         });
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 

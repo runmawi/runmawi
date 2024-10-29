@@ -1,6 +1,8 @@
 <script>
 
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
+    var videoId = "<?php echo $episode_details->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -90,6 +92,44 @@
             }
         });
 
+        let viewCountSent = false;
+
+        function EpisodePlayedViews(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            console.log(currentTime);
+
+            var countview;
+
+            if (currentTime == 5 && !viewCountSent) {
+                viewCountSent = true;
+                countview = 1;
+                console.log('AJAX request will be sent.');
+
+                $.ajax({
+                    url: "<?php echo URL::to('EpisodePlayedViews');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                    success: function(response) {
+                        console.log('View count incremented:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to increment view count:', error);
+                    }
+                });
+            }
+
+            console.log('currentTime: ' + currentTime);
+            console.log('countview: ' + countview);
+        }
+
+
+
+
         // Skip Intro & Skip Recap 
 
         player.on("loadedmetadata", function() {
@@ -137,6 +177,22 @@
                     }
                 });
             }
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                EpisodePlayedViews(videoId, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                EpisodePlayedViews(videoId, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                EpisodePlayedViews(videoId, currentTime);
+            });
+
         });
 
         // Ads Marker
