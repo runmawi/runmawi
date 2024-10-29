@@ -727,38 +727,7 @@
                             </div>
                         </div> -->
 
-                        <div class="col-sm-4">
-                            <div class="panel panel-primary" data-collapsed="0">
-                                <div class="panel-heading">
-                                    <div class="panel-title"><label>Status Settings</label></div>
-                                    <div class="panel-options">
-                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="featured" style="float: left; display: block; margin-right: 10px;">Is this episode Featured:</label>
-                                        <input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="active" style="float: left; display: block; margin-right: 10px;">Is this episode Active:</label>
-                                        <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1"
-                                        id="active" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="banner" style="float: left; display: block; margin-right: 10px;">Is this episode display in Banner:</label>
-                                        <input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="footer" style="float: left; display: block; margin-right: 10px;">Is this episode display in Footer:</label>
-                                        <input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="row align-items-center">
