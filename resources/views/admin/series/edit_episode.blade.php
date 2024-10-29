@@ -234,7 +234,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             ?>
 
             @if($episodes->status == 1 && $episodes->status == 1  )
-                <a  style="margin-right: 16%;margin-top: -5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Episode Player Perview</a>
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Perview Player</a>
             @endif   
 
             <br>
@@ -275,12 +275,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             >
                             <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
 
-                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
-                                @foreach($SeriesSubtitle as $subtitles_file)
-                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
-                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
-                                @endforeach
-                            @endif
+                                @if(isset($SeriesSubtitle))
+                                    @foreach($SeriesSubtitle as $subtitles_file)
+                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                    @endforeach
+                                @endif
                         </video>
                     </div>
                     <div class="modal-footer">
@@ -835,9 +835,48 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
 
         </script>
-
+        
         <script>
-            
+            document.addEventListener("DOMContentLoaded", function() {
+                var player = videojs('my-video', { // Video Js Player
+                    aspectRatio: '16:9',
+                    fill: true,
+                    playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                    fluid: true,
+                    controlBar: {
+                        volumePanel: { inline: false },
+                        children: {
+                            'playToggle': {},
+                            // 'currentTimeDisplay': {},
+                            'liveDisplay': {},
+                            'flexibleWidthSpacer': {},
+                            'progressControl': {},
+                            'remainingTimeDisplay': {},
+                            'fullscreenToggle': {},
+                            // 'audioTrackButton': {},
+                            'subtitlesButton': {},
+                        },
+                        pictureInPictureToggle: true,
+                    },
+                    html5: {
+                        vhs: {
+                            overrideNative: true,
+                        }
+                    }
+                });
+                const text = document.querySelector('.vjs-text-track-cue');
+                console.log("text",text);
+                
+            });
+        </script>
+
+        <style>
+            .vjs-text-track-cue {
+                inset: 583.333px 0px 0px !important;
+            }
+        </style>
+
+        <script>            
          
             $(document).ready(function ($) {
 
