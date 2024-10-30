@@ -2666,4 +2666,25 @@ public function RemoveDisLikeEpisode(Request $request)
         }
     }
  
+    public function EpisodePlayedViews(Request $request)
+    {
+        try {
+            $data = $request->all();
+                    $video_id    = $request->video_id;
+                    $currentTime = $request->currentTime;
+                    $video = Episode::where('id', $video_id)->first();
+                    if ($video) {
+                        $video->played_views += 1;
+                        $video->save();
+                        return response()->json(['message' => 'View count incremented', 'played_view' => $video->played_view], 200);
+                    } else {
+                        return response()->json(['error' => 'Video not found'], 404);
+                    }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 }
