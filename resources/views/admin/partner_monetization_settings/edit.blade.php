@@ -78,10 +78,10 @@
                         accept-charset="UTF-8" file="1" enctype="multipart/form-data">
                         <div class="row mt-4">
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
-                                        <div class="panel-title"><label>Views Count Limit</label></div>
+                                        <div class="panel-title"><label>Monetization View Limit</label></div>
                                         <div class="panel-options"> <a href="#" data-rel="collapse"><i
                                                     class="entypo-down-open"></i></a> </div>
                                     </div>
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
                                         <div class="panel-title"><label>Amount per view</label></div>
@@ -113,7 +113,7 @@
                         <div class="panel-body mt-3" style="display: flex; justify-content: flex-end;">
                             <input type="submit" value="Update Partner Monetization Settings"
                                 class="btn btn-primary " />
-                        </div>
+                        </div>                                                     
                     </form>
                 </div>
             </div>

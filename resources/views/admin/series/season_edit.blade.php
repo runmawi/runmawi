@@ -577,8 +577,7 @@
                               </div>
                            </div>
 
-                           
-                @if( choosen_player() == 1 && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+                        {{-- Ads Management  --}}
 
                     @if ( admin_ads_pre_post_position() == 1 )
 
@@ -658,31 +657,7 @@
                             <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
                             <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time"  >
                         </div>
-
                     </div>
-                
-                        {{-- Ply.io --}}
-                @else    
-                    <div class="row mt-3">
-                        <div class="col-sm-6"  >
-                            <label class="m-0">Choose Ads Position</label>
-                            <select class="form-control" name="ads_position" id="ads_position" >
-                               <option value=" ">Select the Ads Position </option>
-                               <option value="pre"  >  Pre-Ads Position</option>
-                               <option value="mid"  >  Mid-Ads Position</option>
-                               <option value="post" > Post-Ads Position</option>
-                               <option value="all" > All Ads Position</option>
-                            </select>
-                        </div>
-    
-                        <div class="col-sm-6"  >
-                            <label class="">Choose Advertisement </label>
-                            <select class="form-control" name="episode_ads" id="episode_ads" >
-                               <option value=" ">Select the Advertisement </option>
-                            </select>
-                        </div>
-                    </div>
-                @endif
 
                     <div class="clear"></div>
 

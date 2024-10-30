@@ -1367,6 +1367,11 @@ public function ChannelUpdate(Request $request)
         $mobile_number = $channel->mobile_number;
     }  
 
+    if(!empty($data['commission'])){
+        $commission = $data['commission'];
+    }else{
+        $commission = $channel->commission;
+    }  
 
     $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
     // dd($channel_logo);
@@ -1458,6 +1463,7 @@ public function ChannelUpdate(Request $request)
     $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
     $channel->password = Hash::make($request->password);
     $channel->unhased_password = $request->password;
+    $channel->commission = $request->commission;
     $channel->save();
 
     return \Redirect::back()->with('message','Update User Profile');

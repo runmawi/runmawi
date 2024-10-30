@@ -1,81 +1,82 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use FFMpeg\Filters\Video\VideoFilters;
-use FFMpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\Format\Video\X264;
-use \Redirect;
-use App\ContinueWatching;
-use App\PpvPurchase;
-use App\RecentView;
-use App\Watchlater;
-use App\Setting;
-use App\Wishlist;
-use App\PpvVideo;
-use App\Movie;
-use App\Episode;
-use App\LikeDislike;
-use App\VideoCategory;
-use App\RegionView;
-use App\UserLogs;
-use App\Videoartist;
-use App\Artist;
-use App\User ;
-use App\Genre;
-use App\Audio;
-use App\Page ;
-use App\Language;
-use App\Playerui;
-use App\Video;
-use App\PaymentSetting;
-use App\ScheduleVideos;
-use App\MoviesSubtitles;
-use App\CurrencySetting;
-use App\HomeSetting ;
-use App\BlockVideo ;
-use App\CategoryVideo ;
-use App\LanguageVideo;
-use App\AdsVideo;
-use App\ThumbnailSetting;
-use App\Geofencing;
-use App\AgeCategory;
-use App\RelatedVideo;
-use App\LiveCategory;
-use App\SeriesGenre;
-use App\VideoSchedules;
-use App\ModeratorsUser;
-use App\StorageSetting;
-use App\AdminLandingPage;
-use App\CommentSection;
-use App\BlockLiveStream;
-use App\LiveStream;
-use App\TimeZone;
-use App\Channel;
-use App\Series;
-use App\Adsvariables;
-use App\Advertisement;
-use Carbon\Carbon;
 use URL;
 use Auth;
-use View;
 use Hash;
-use Session;
+use View;
 use Theme;
+use Session;
 use DateTime;
-use App\SiteVideoScheduler;
-use App\DefaultSchedulerData;
-use App\EPGSchedulerData;
-use App\ButtonText;
+use \Redirect;
+use App\Audio;
+use App\Genre;
+use App\Movie;
+use App\Page ;
+use App\User ;
+use App\Video;
+use App\Artist;
+use App\Series;
+use App\Channel;
+use App\Episode;
+use App\Setting;
+use App\AdsVideo;
+use App\Language;
+use App\Playerui;
+use App\PpvVideo;
+use App\TimeZone;
+use App\UserLogs;
+use App\Wishlist;
 use App\SiteTheme;
+use Carbon\Carbon;
+use App\ButtonText;
+use App\Geofencing;
+use App\LiveStream;
+use App\RecentView;
+use App\RegionView;
+use App\Watchlater;
+use FFMpeg\FFProbe;
+use App\AgeCategory;
+use App\BlockVideo ;
+use App\LikeDislike;
+use App\PpvPurchase;
+use App\SeriesGenre;
+use App\Videoartist;
+use App\Adsvariables;
+use App\HomeSetting ;
+use App\LiveCategory;
+use App\RelatedVideo;
+use App\Advertisement;
+use App\LanguageVideo;
+use App\VideoCategory;
+use App\CategoryVideo ;
+use App\CommentSection;
+use App\ModeratorsUser;
+use App\PaymentSetting;
+use App\ScheduleVideos;
+use App\StorageSetting;
+use App\VideoSchedules;
+use App\BlockLiveStream;
+use App\CurrencySetting;
+use App\MoviesSubtitles;
+use App\AdminLandingPage;
+use App\ContinueWatching;
+use App\EPGSchedulerData;
+use App\ThumbnailSetting;
+use App\SiteVideoScheduler;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\DefaultSchedulerData;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Coordinate\Dimension;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\PartnerMonetizationSetting;
+use Illuminate\Support\Facades\Cache;
+use FFMpeg\Filters\Video\VideoFilters;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ChannelController extends Controller
 {
@@ -5181,6 +5182,7 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail' => $videodetail ,
+                'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
                 'recomended' => $recomended ,
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
@@ -5890,6 +5892,67 @@ class ChannelController extends Controller
     }
    
    
+    public function PlayedViews(Request $request)
+    {
+        try {
+            $data = $request->all();
+                    $video_id    = $request->video_id;
+                    $video = Video::where('id', $video_id)->first();
+                    if ($video) {
+                        $video->played_views += 1;
+                        $video->save();
+                        return response()->json(['message' => 'View count incremented', 'played_view' => $video->played_view], 200);
+                    } else {
+                        return response()->json(['error' => 'Video not found'], 404);
+                    }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function AmountPerView(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $video_id = $request->video_id;
+    
+            $video = Video::where('id', $video_id)->first();
+    
+            $monetization_view_limit = PartnerMonetizationSetting::get()->first();
+           
+            if ($video) {
+        
+                if ($video->played_views > $monetization_view_limit) {
+
+                    $monetized_views = $video->played_views - $monetization_view_limit->viewcount_limit;
+    
+                    $monetization_amount = $monetized_views * $monetization_view_limit->views_amount; 
+    
+                    $video->monetization_amount = $monetization_amount;
+                    $video->save();
+    
+                    return response()->json([
+                        'message' => 'Monetization updated',
+                        'monetization_amount' => $video->monetization_amount,
+                        'played_views' => $video->played_views
+                    ], 200);
+                }
+    
+                return response()->json([
+                    'message' => 'View count incremented, but monetization not started yet',
+                    'played_views' => $video->played_views
+                ], 200);
+            } else {
+                return response()->json(['error' => 'Video not found'], 404);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
 }
