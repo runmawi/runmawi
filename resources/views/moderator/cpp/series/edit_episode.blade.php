@@ -34,6 +34,7 @@
     font-size: 14px !important;
     color: red !important; 
     }
+    .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
 </style>
 
 @section('css')
@@ -343,25 +344,27 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div>
                 </div>
 
-                <div class="row mt-3">    
+                <div class="row mt-5">    
                     <div class="panel panel-primary" data-collapsed="0"> 
                         <div class="panel-heading"> 
-                            <div class="panel-title col-sm-12"> 
-                                <h3 class="fs-title">
+                            <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                                <h6 class="fs-title">
                                     Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
-                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download Sample .srt</a>
+                                </h6>
+                                <div class="sample-file d-flex align-items-center">
+                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
                                     <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
                                         <i class="las la-exclamation-circle"></i>
                                     </a>
-                                </h3>
+                                </div>
                             </div> 
                             <div class="panel-options"> 
                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                             </div>
                         </div> 
                 
-                        <div class="panel-body" style="display: block;"> 
+                        <div class="panel-body mt-3" style="display: block;"> 
                             @foreach($subtitles as $subtitle)
                                 <div class="col-sm-6 form-group" style="float: left;">
                                     <div class="align-items-center" style="clear:both;">

@@ -129,6 +129,7 @@
     display: block;
     margin: 0 auto;
 }
+.sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
 
 </style>
 {{-- video-js Style --}}
@@ -553,46 +554,59 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         </div>
                     </div>
                 </div>
-                <div class="row">    
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                  <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                  <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
-               <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-               <i class="las la-exclamation-circle"></i>
-               </a>:</h3>
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
-               <div class="panel-body" style="display: block;"> 
-               @foreach($subtitles as $subtitle)
+                
+                <div class="row mt-5">    
+                    <div class="panel panel-primary" data-collapsed="0"> 
+                        <div class="panel-heading"> 
+                            <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                                <h6 class="fs-title">
+                                    Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                </h6>
+                                <div class="sample-file d-flex align-items-center">
+                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
+                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                        <i class="las la-exclamation-circle"></i>
+                                    </a>
+                                </div>
+                            </div> 
+                            <div class="panel-options"> 
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                            </div>
+                        </div> 
+                
+                        <div class="panel-body mt-3" style="display: block;"> 
+                            @foreach($subtitles as $subtitle)
+                                <div class="col-sm-6 form-group" style="float: left;">
+                                    <div class="align-items-center" style="clear:both;">
+                                        <label for="embed_code" style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                        
+                                        @if(@$subtitlescount > 0)
+                                            @foreach($SeriesSubtitle as $movies_subtitles)
+                                                @if(@$movies_subtitles->sub_language == $subtitle->language)
+                                                    Uploaded Subtitle : 
+                                                    <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete" 
+                                                       data-original-title="Delete" 
+                                                       onclick="return confirm('Are you sure?')" 
+                                                       href="{{ URL::to('admin/episode/subtitle/delete') . '/' . $movies_subtitles->id }}">
+                                                       <img class="ply" src="{{ URL::to('/') }}/assets/img/icon/delete.svg">
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                        
+                                        <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                        <input class="mt-1" type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                        <input class="mt-1" type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div> 
+                    </div>
+                </div>
 
-               <div class="col-sm-6 form-group" style="float: left;">
-               <div class="align-items-center" style="clear:both;" >
-               <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-               @if(@$subtitlescount > 0)
-                  @foreach($SeriesSubtitle as $movies_subtitles)
-                     @if(@$movies_subtitles->sub_language == $subtitle->language)
-                     Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
-                     &nbsp;&nbsp;&nbsp;
-                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                        data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/episode/subtitle/delete') . '/' . $movies_subtitles->id }}">
-                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                  @endif
-                  @endforeach
-               @endif
-               <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
-               </div>
-               </div>
-               @endforeach
-               </div> 
-               </div>
-               </div>
                 <div class="row mt-3">
                     <div class="col-sm-4">
                         <label class="m-0">Duration</label>
