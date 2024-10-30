@@ -497,39 +497,33 @@
 
                         <div class="col-sm-4"></div>
 
-
-                        <div class="col-sm-4">
+                        <div class="row mt-5">
                             <div class="panel panel-primary" data-collapsed="0">
-                                <div class="panel-heading">
-                                    <div class="panel-title"><label>Status Settings</label></div>
-                                    <div class="panel-options">
-                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                <div class="panel-heading col-sm-12">
+                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
+                                        <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
+                                        <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a></label>
+                                    </div>
+                                    <div class="panel-options"> 
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                                     </div>
                                 </div>
-                                <div class="panel-body">
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="featured" style="float: left; display: block; margin-right: 10px;">Is this episode Featured:</label>
-                                        <input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="active" style="float: left; display: block; margin-right: 10px;">Is this episode Active:</label>
-                                        <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1"
-                                        id="active" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="banner" style="float: left; display: block; margin-right: 10px;">Is this episode display in Banner:</label>
-                                        <input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="footer" style="float: left; display: block; margin-right: 10px;">Is this episode display in Footer:</label>
-                                        <input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
-                                    </div>
+                                <div class="panel-body" style="display: block;">
+                                    @foreach($subtitles as $subtitle)
+                                        <div class="col-sm-6 form-group" style="float: left;">
+                                            <div class="align-items-center" style="clear:both;" >
+                                                <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                                <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                                <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                                <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
-                        </div>
+                         </div>
+
+                        
                     </div>
 
                     <div class="row align-items-center">
