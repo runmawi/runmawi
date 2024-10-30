@@ -364,7 +364,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             </div>
                         </div> 
                 
-                        <div class="panel-body mt-3" style="display: block;"> 
+                        <div class="panel-body mt-3" style="display:flex;flex-wrap:wrap;"> 
                             @foreach($subtitles as $subtitle)
                                 <div class="col-sm-6 form-group" style="float: left;">
                                     <div class="align-items-center" style="clear:both;">
