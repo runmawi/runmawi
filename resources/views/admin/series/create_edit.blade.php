@@ -195,7 +195,7 @@ $settings  = App\Setting::first();?>
 						</div> 
 
 						<div class="panel-body col-sm-8 p-0" style="display: block;"> 
-							<p class="p1">Select the TV Shows TV image ( 16:9 Ratio or 1920 X 1080 px ):</p> 
+							<p class="p1">{{ "TV image Thumbnail ( 16:9 Ratio or 1280X720px )"}}</p> 
 
 							<input type="file" multiple="true" class="form-group image" name="tv_image" id="tv_image" />
 							
