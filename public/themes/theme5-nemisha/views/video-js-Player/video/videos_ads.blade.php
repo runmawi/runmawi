@@ -35,16 +35,16 @@
                                         })
 
                                         ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
-                                            // return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
+                                            return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
                                         })
 
                                         ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
 
                                             $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
 
-                                            $matchedAgeRange = null;
+                                            $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
 
-                                            $ageRanges  = json_decode('["18-24","25-34"]', true); 
+                                            $matchedAgeRange = null;
 
                                             foreach ($ageRanges as $key => $value) {
 
@@ -95,16 +95,16 @@
                                     })
 
                                     ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
-                                        // return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
+                                        return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
                                     })
 
                                     ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
 
                                         $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
 
-                                        $matchedAgeRange = null;
+                                        $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
 
-                                        $ageRanges  = json_decode('["18-24","25-34"]', true); 
+                                        $matchedAgeRange = null;
 
                                         foreach ($ageRanges as $key => $value) {
 
@@ -125,10 +125,7 @@
                                     ->when(Auth::check() && !is_null(Auth::user()->countryname), function ($query) {
                                         return $query->where('advertisements.location',  Auth::user()->countryname )->orwhereNull('advertisements.location');
                                     })
-                                    
                                     ->pluck('ads_path');
-
-
 
             // Post-advertisement 
 
@@ -143,7 +140,6 @@
                                             }, function ($query) use ($videodetail) {
 
                                             return $query->where('advertisements.id', $videodetail->video_js_post_position_ads);
-
                                         })
 
                                         ->when( $advertisement_plays_24hrs == 0 , function ($query) use ($current_time) {
@@ -154,16 +150,16 @@
                                         })
 
                                         ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
-                                            // return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
+                                            return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');
                                         })
 
                                         ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
 
                                             $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
 
-                                            $matchedAgeRange = null;
+                                            $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
 
-                                            $ageRanges  = json_decode('["18-24","25-34"]', true); 
+                                            $matchedAgeRange = null;
 
                                             foreach ($ageRanges as $key => $value) {
 
@@ -184,7 +180,6 @@
                                         ->when(Auth::check() && !is_null(Auth::user()->countryname), function ($query) {
                                             return $query->where('advertisements.location',  Auth::user()->countryname )->orwhereNull('advertisements.location');
                                         })
-
                                         ->groupBy('advertisements.id')
                                         ->pluck('ads_path')
                                         ->first();
