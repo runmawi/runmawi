@@ -994,6 +994,8 @@ class CPPSeriesController extends Controller
                 $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
             }else{
+                $image_path = public_path().'/uploads/season_images/';
+                    $path = public_path().'/uploads/season_videos/';
                 if($trailer != '') {   
                     //code for remove old file
                     if($trailer != ''  && $trailer != null){
@@ -3446,6 +3448,18 @@ class CPPSeriesController extends Controller
             return $value;
         }
     }
+
+    public function deleteSelected(Request $request)
+        {
+            $ids = $request->input('ids');
+
+            try {
+                Episode::whereIn('id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            }
+        }
 
 }
 

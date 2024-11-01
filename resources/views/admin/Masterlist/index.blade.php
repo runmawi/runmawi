@@ -153,7 +153,7 @@ border-radius: 0px 4px 4px 0px;
                                           @endif
                                     </td>
 
-                                    <td> @if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else Uploaded by Admin @endif </td>
+                                    <td> @if(isset($video->cppuser->username)) Uploaded by {{ $video->cppuser->username }} @else Uploaded by  {{ $video->uploaded_by }} @endif </td>
                                     <td>{{ $video->type }}</td>
                                  
                                     @if ($video->active == 0) 
@@ -325,7 +325,7 @@ border-radius: 0px 4px 4px 0px;
                                           @endif
                                        </td>
       
-                                    <td> @if(isset($Episodes->cppuser->username)) Uploaded by {{ $Episodes->cppuser->username }} @else Uploaded by Admin @endif </td>
+                                    <td> @if(!empty($Episodes->moderator_username)) Uploaded by {{ $Episodes->moderator_username }} @else Uploaded by {{ $Episodes->uploaded_by }} @endif </td>
                                     
                                     @if($Episodes->access == "ppv" )
                                        <td> {{ "Paid" }}</td>

@@ -642,7 +642,7 @@ button[data-plyr="captions"] {
                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                            </div>
                         </div>
-                        <div class="panel-body mt-3" style="display: block;"> 
+                        <div class="panel-body mt-3" style="display:flex;flex-wrap:wrap;"> 
                            @foreach($subtitles as $subtitle)
 
                               <div class="col-sm-6 form-group" style="float: left;">

@@ -775,6 +775,7 @@ img.c-logo {
         font-size: 14px;
     }
     li.slide-item.col-sm-2.col-md-2.col-xs-12{width: 33.333%;}
+    .navbar{flex-wrap: nowrap;}
 }
 @media (max-width: 620px){
     .trending-pills.nav-pills .nav-item a{

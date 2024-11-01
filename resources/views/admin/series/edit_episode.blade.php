@@ -387,7 +387,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
 
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -575,7 +575,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             </div>
                         </div> 
                 
-                        <div class="panel-body mt-3" style="display: block;"> 
+                        <div class="panel-body mt-3" style="display:flex;flex-wrap:wrap;"> 
                             @foreach($subtitles as $subtitle)
                                 <div class="col-sm-6 form-group" style="float: left;">
                                     <div class="align-items-center" style="clear:both;">
@@ -644,117 +644,89 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div> -->
                 </div>
 
-                @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+                        {{-- Ads Management  --}}
 
-                        @if ( admin_ads_pre_post_position() == 1  )
+                @if ( admin_ads_pre_post_position() == 1  )
 
-                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+                    <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
 
-                                <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
-                                
-                                <select class="form-control" name="pre_post_ads" >
-
-                                    <option value=" " > Select the Post / Pre-Position Advertisement </option>
-
-                                    <option value="random_ads" {{  ( $episodes->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                        <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                    @endforeach
-                                
-                                </select>
-                            </div>
-                            
-                        @elseif ( admin_ads_pre_post_position() == 0 )
-
-                            <div class="row mt-3">
-
-                                <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
-                                    <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                                    
-                                    <select class="form-control" name="pre_ads" >
-
-                                        <option value=" " > Select the Pre-Position Advertisement </option>
-        
-                                        <option value="random_ads" {{  ( $episodes->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-        
-                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                        @endforeach
-                                        
-                                    </select>
-                                </div>
-
-                                <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
-                                    <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                                    
-                                    <select class="form-control" name="post_ads" >
-
-                                        <option value=" " > Select the Post-Position Advertisement </option>
-        
-                                        <option value="random_ads" {{  ( $episodes->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-        
-                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                        @endforeach
-                                    
-                                    </select>
-                                </div>
-                            </div>
-
-                        @endif
-
-                        <div class="row">
-                            <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                                <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                                <select class="form-control" name="mid_ads" >
-
-                                    <option value=" " > Select the Mid-Position Advertisement Category </option>
-
-                                    <option value="random_category"  {{  ( $episodes->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-
-                                    @foreach( $ads_category as $ads_category )
-                                    <option value="{{ $ads_category->id }}"  {{  ( $episodes->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-
-                            <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
-                                <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                                <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $episodes->video_js_mid_advertisement_sequence_time }}" >
-                            </div>
-
-                        </div>
+                        <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
                         
-                                {{-- Ply.io --}}
-                @else    
+                        <select class="form-control" name="pre_post_ads" >
+
+                            <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                            <option value="random_ads" {{  ( $episodes->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                            @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                            @endforeach
+                        
+                        </select>
+                    </div>
+                    
+                @elseif ( admin_ads_pre_post_position() == 0 )
 
                     <div class="row mt-3">
-                        <div class="col-sm-6"  >
-                            <label class="m-0">Choose Ads Position</label>
-                            <select class="form-control" name="ads_position" id="ads_position" >
-                            <option value=" ">Select the Ads Position </option>
-                            <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                            <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                            <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                            <option value="all"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'all'){{ 'selected' }}@endif >  All Ads Position</option>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                            <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                            
+                            <select class="form-control" name="pre_ads" >
+
+                                <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $episodes->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                                
                             </select>
                         </div>
 
-                        <div class="col-sm-6"  >
-                            <label class="">Choose Advertisement </label>
-                            <select class="form-control" name="episode_ads" id="episode_ads" >
-                            <option value=" ">Select the Advertisement </option>
-                                @if( $episodes->episode_ads != null)
-                                    @php $ads_name = App\Advertisement::where('id', $episodes->episode_ads )->pluck('ads_name')->first() ;@endphp
-                                    <option value="{{ $episodes->episode_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
-                                @endif
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                            <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="post_ads" >
+
+                                <option value=" " > Select the Post-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $episodes->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
                             </select>
                         </div>
                     </div>
+
                 @endif
 
+                <div class="row">
+                    <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                        <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                        <select class="form-control" name="mid_ads" >
+
+                            <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                            <option value="random_category"  {{  ( $episodes->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+
+                            @foreach( $ads_category as $ads_category )
+                            <option value="{{ $ads_category->id }}"  {{  ( $episodes->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                        <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                        <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $episodes->video_js_mid_advertisement_sequence_time }}" >
+                    </div>
+
+                </div>
+                        
                 <div class="row mt-3">
                     <div class="col-sm-4">
                         <label class="m-0">Status Settings</label>
@@ -958,24 +930,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
-        // image validation
+        {{-- image validation --}}
         <script>
-            document.getElementById('episode_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                        var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+           $(document).ready(function(){
+                $('#episode_image').on('change', function(event) {
+                    var file = this.files[0];
+                    var tmpImg = new Image();
 
-                        if (width !== validWidth || height !== validHeight) {
+                    tmpImg.src=window.URL.createObjectURL( file ); 
+                    tmpImg.onload = function() {
+                    width = tmpImg.naturalWidth,
+                    height = tmpImg.naturalHeight;
+                    console.log('img width: ' + width);
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                    console.log('validation width:  ' + validWidth);
+
+                    if (width !== validWidth || height !== validHeight) {
                             document.getElementById('season_image_error_msg').style.display = 'block';
                             $('.pull-right').prop('disabled', true);
                             document.getElementById('season_image_error_msg').innerText = 
@@ -984,38 +955,35 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             document.getElementById('season_image_error_msg').style.display = 'none';
                             $('.pull-right').prop('disabled', false);
                         }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
-            });
+                    }
+                });
 
-            document.getElementById('player_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                        var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+                $('#player_image').on('change', function(event) {
 
-                        if (width !== validWidth || height !== validHeight) {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                            $('.pull-right').prop('disabled', true);
-                            document.getElementById('season_thum_image_error_msg').innerText = 
-                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                        } else {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                            $('.pull-right').prop('disabled', false);
-                        }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
+                    var file = this.files[0];
+                    var player_Img = new Image();
+
+                    player_Img.src=window.URL.createObjectURL( file ); 
+                    player_Img.onload = function() {
+                    var width = player_Img.naturalWidth;
+                    var height = player_Img.naturalHeight;
+                    console.log('player width ' + width)
+
+                    var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                    var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                    console.log('validation player width:  ' + valid_player_Width);
+
+                    if (width !== valid_player_Width || height !== valid_player_Height) {
+                        $('#player_image_error_msg').show();
+                        $('.update_btn').prop('disabled', true);
+                        document.getElementById('player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                    } else {
+                        $('#player_image_error_msg').hide();
+                        $('.update_btn').prop('disabled', false);
+                    }
+                    }
+                });
             });
         </script>
 
