@@ -838,8 +838,10 @@ class AuthController extends Controller
     public function store_ads(Request $request)
     {
         try {
+
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
            
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
 
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
@@ -848,9 +850,9 @@ class AuthController extends Controller
     
             $settings = Setting::first();
     
-            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
-    
             $activeplan = 1; 
+
+                // Ads Payment Page Check
 
             if( $settings->ads_payment_page_status == 1  ){
     
@@ -865,6 +867,7 @@ class AuthController extends Controller
             }
     
             if ($activeplan == 0 ) {
+
                 return Redirect::to('/advertiser')->withError('Opps! Please update your plan for uploading ads');
             }
             
@@ -879,20 +882,9 @@ class AuthController extends Controller
             $Ads->ads_upload_type   =  $request->ads_upload_type;
             $Ads->household_income  = $request->household_income;
             $Ads->ads_devices       = !empty($request->ads_devices) ? json_encode($request->ads_devices) : null;
-    
-            if ($request->location == 'all_countries' || $request->location == 'India') {
-                $Ads->location = $request->location;
-            } else {
-                $Ads->location = $request->locations;
-            }
-    
-            if (!empty($data['age'])) {
-                $Ads->age = json_encode($data['age']);
-            }
-    
-            if (!empty($data['gender'])) {
-                $Ads->gender = json_encode($data['gender']);
-            }
+            $Ads->age               = !empty($request->age) ? json_encode($request->age) : null;
+            $Ads->gender            = !empty($request->gender) ? json_encode($request->gender) : null;
+            $Ads->location          = ($request->location == 'all_countries' || $request->location == 'India') ? $request->location :  $request->locations;
     
             if ($request->ads_video != null) {
     
@@ -907,11 +899,14 @@ class AuthController extends Controller
                 $Ads->ads_redirection_url =  $request->ads_redirection_url ;
             }
             $Ads->save();
+
+                // Adverister uploaded Ads Count - Check
+
+            $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+            $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
     
-    
-            $Advertiser->update(['adverister_uploaded_ads_count' => $Advertiser->adverister_uploaded_ads_count+1 ]);
-    
-            // Events
+                // Events
 
             $last_ads_id = $Ads->id;
             $last_ads_name = $Ads->ads_name ? $Ads->ads_name : 'Ads';
@@ -1141,7 +1136,10 @@ class AuthController extends Controller
     {
         try {
 
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
@@ -1149,7 +1147,7 @@ class AuthController extends Controller
 
             $data = [
                 'Advertisement' => $Advertisement,
-                'post_route' => route('Ads_update', [$Ads_id]),
+                'post_route'    => route('Ads_update', [$Ads_id]),
                 'ads_category' => Adscategory::all(),
                 'button_text'  => 'update',
                 'AdsEvent'     => AdsEvent::where('ads_id',$Ads_id)->get(['start', 'end', 'day']),
@@ -1167,26 +1165,25 @@ class AuthController extends Controller
     public function Ads_update(Request $request, $advertisement_id)
     {
 
-        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+        $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
             return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
         }
 
         $inputs = [
-            'ads_name' => $request->ads_name,
-            'ads_category' => $request->ads_category,
-            'ads_position' => $request->ads_position,
-            'ads_upload_type' => $request->ads_upload_type,
-            'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
-            'gender' => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
-            'ads_devices' => !empty($request['ads_devices']) ? json_encode($request['ads_devices']) : null,
+            'ads_name'          => $request->ads_name,
+            'ads_category'      => $request->ads_category,
+            'ads_position'      => $request->ads_position,
+            'ads_upload_type'   => $request->ads_upload_type,
+            'age'               => !empty($request->age) ? json_encode($request['age']) : ' ',
+            'gender'            => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
+            'ads_devices'       => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            'location'          => ($request->location == 'all_countries' || $request->location == 'India') ? $request->location :  $request->locations,
             'status' => 0,
         ];
 
-        if ($request->location == 'all_countries' || $request->location == 'India') {
-            $inputs += ['location' => $request->location];
-        } else {
-            $inputs += ['location' => $request->locations];
-        }
 
         if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
          
@@ -1208,8 +1205,12 @@ class AuthController extends Controller
             $inputs += ['ads_path' => $request->ads_path ];
         }
 
-        $Advertisement = Advertisement::find($advertisement_id)->update($inputs);
+          // Adverister uploaded Ads Count - Check
 
+        $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+        $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
+  
         return redirect()->back();
     }
 
@@ -1300,7 +1301,10 @@ class AuthController extends Controller
     {
         try {
 
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
@@ -1319,6 +1323,12 @@ class AuthController extends Controller
             $Advertisement->delete();
 
             AdsEvent::where('id', $Ads_id)->delete();
+
+                // Adverister uploaded Ads Count - Check
+
+            $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+            $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
 
             return redirect()->back();
 
