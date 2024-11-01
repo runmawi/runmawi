@@ -106,7 +106,19 @@
         fill: #FF0000;
     }
 
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
 
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
+    }
+    ol.breadcrumb a, ol.breadcrumb li {
+        color: #000000;
+        font-weight: 500;
+    }
+    .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
 </style>
 @section('css')
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
@@ -115,6 +127,31 @@
 
 {{-- @dd($episodes) --}}
 <div id="content-page" class="content-page">
+
+     <!-- BREADCRUMBS -->
+     <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('cpp/series_list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('cpp/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+                    <li class="breadcrumb-item">{{ __($season_name.' Episodes') }}</li>
+               
+                </ol>
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
@@ -326,7 +363,7 @@
                             
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -499,15 +536,23 @@
 
                         <div class="row mt-5">
                             <div class="panel panel-primary" data-collapsed="0">
-                                <div class="panel-heading col-sm-12">
-                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                                        <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                                        <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a></label>
-                                    </div>
+                                <div class="panel-heading"> 
+                                    <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                                        <h6 class="fs-title">
+                                            Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                        </h6>
+                                        <div class="sample-file d-flex align-items-center">
+                                            <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                            <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
+                                            <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                                <i class="las la-exclamation-circle"></i>
+                                            </a>
+                                        </div>
+                                    </div> 
                                     <div class="panel-options"> 
                                         <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                                     </div>
-                                </div>
+                                </div> 
                                 <div class="panel-body" style="display: block;">
                                     @foreach($subtitles as $subtitle)
                                         <div class="col-sm-6 form-group" style="float: left;">
@@ -573,6 +618,10 @@
                 </form>
             </div>
             <div class="clear"></div>
+
+            <div class="float-right">
+                <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
+            </div>
             <!-- Manage Season -->
             <div class="p-4">
 
@@ -582,33 +631,50 @@
                     <div class="row">
 
                         <table class="table table-bordered iq-card text-center" id="categorytbl">
-                            <tr class="table-header r1">
-                                <th><label>Episode </label></th>
-                                <th><label>Episode Name</label></th>
-                                <th><label>Slider</label></th>
-                                <th><label>Action</label></th>
-                            </tr>
-
-                            @foreach($episodes as $key => $episode)
-                                <tr id="{{ $episode->id }}">
-                                    <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
-                                    <td valign="bottom"><p>{{ $episode->title }}</p></td>
-                                    <td valign="bottom">
-                                        <div class="mt-1">
-                                            <label class="switch">
-                                                <input name="video_status" class="video_status" id="{{ 'video_'.$episode->id }}" type="checkbox" @if( $episode->banner == "1") checked  @endif data-video-id={{ $episode->id }}  data-type="video" onchange="update_episode_banner(this)" >
-                                                <span class="slider round"></span>
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class=" align-items-center">
-                                            <a href="{{ URL::to('cpp/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
-                                            <a href="{{ URL::to('cpp/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
-                                        </div>
-                                    </td>
+                            <thead>
+                                <tr class="table-header r1">
+                                    <th><input type="checkbox" id="select-all"></th>
+                                    <th><label>Episode </label></th>
+                                    <th><label>Episode Name</label></th>
+                                    <th><label>Episode Duration</label></th>
+                                    <th><label>Slider</label></th>
+                                    <th><label>Status</label></th>
+                                    <th><label>Action</label></th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody id="search-episodes">
+                                @foreach($episodes as $key => $episode)
+                                    <input type="hidden" class="seriesid" id="seriesid" value="{{ $episode->series_id }}">
+                                    <input type="hidden" class="season_id" id="season_id" value="{{ $episode->season_id }}">
+                                    <!-- <tr id="{{ $episode->id }}"> -->
+                                        <tr id="episode-{{ $episode->id }}">
+                                        <td><input type="checkbox" class="episode-checkbox" value="{{ $episode->id }}"></td>
+                                        <td valign="bottom"><p> Episode {{ $episode->episode_order }}</p></td>
+                                        <td valign="bottom"><p>{{ $episode->title }}</p></td>
+                                        <td valign="bottom"><p>@if(!empty($episode->duration)){{ gmdate('H:i:s', $episode->duration) }}@endif</p></td>
+                                        <td valign="bottom">
+                                            <div class="mt-1">
+                                                <label class="switch">
+                                                    <input name="video_status" class="video_status" id="{{ 'video_'.$episode->id }}" type="checkbox" @if( $episode->banner == "1") checked  @endif data-video-id={{ $episode->id }}  data-type="video" onchange="update_episode_banner(this)" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+
+                                        <?php if($episode->active == null){ ?>
+                                        <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
+                                                <?php }elseif($episode->active == 1){ ?>
+                                        <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
+                                                <?php } ?>
+                                        <td>
+                                            <div class=" align-items-center">
+                                                <a href="{{ URL::to('cpp/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
+                                                <a href="{{ URL::to('cpp/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
 
                         <div class="clear"></div>
@@ -631,10 +697,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
     <script>
-
-
-
-        
 (function() {
 
     "use strict"
@@ -854,6 +916,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    <script>
+        
+        document.getElementById('select-all').addEventListener('change', function() {
+            let checkboxes = document.querySelectorAll('.episode-checkbox');
+            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+        });
+
+        document.getElementById('delete-selected').addEventListener('click', function() {
+            let selected = [];
+            document.querySelectorAll('.episode-checkbox:checked').forEach(checkbox => {
+                selected.push(checkbox.value);
+            });
+
+            if(selected.length > 0) {
+                if(confirm('Are you sure you want to delete the selected episodes?')) {
+                    fetch("{{ route('cpp.episodes.deleteSelecte') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ids: selected})
+                    }).then(response => response.json())
+                    .then(data => {
+                        if(data.success) {
+                            selected.forEach(id => {
+                                document.getElementById('episode-' + id).remove();
+                            });
+                        } else {
+                            alert('An error occurred while deleting episodes.');
+                        }
+                    });
+                }
+            } else {
+                alert('No episodes selected.');
+            }
+        });
+    </script>
     <script>
 
 $('#episode_uploads').show();
@@ -1123,64 +1224,60 @@ $('#episode_uploads').show();
 
      {{-- image validation --}}
      <script>
-        document.getElementById('episode_image').addEventListener('change', function() {
-            var file = this.files[0];
-            if (file) {
-                var img = new Image();
-                img.onload = function() {
-                    var width = img.width;
-                    var height = img.height;
-                    console.log(width);
-                    console.log(height);
-                    
-                    var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                    var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                    console.log(validWidth);
-                    console.log(validHeight);
+        $(document).ready(function(){
+             $('#image').on('change', function(event) {
+                 var file = this.files[0];
+                 var tmpImg = new Image();
 
-                    if (width !== validWidth || height !== validHeight) {
-                        document.getElementById('season_image_error_msg').style.display = 'block';
-                        $('.pull-right').prop('disabled', true);
-                        document.getElementById('season_image_error_msg').innerText = 
-                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                    } else {
-                        document.getElementById('season_image_error_msg').style.display = 'none';
-                        $('.pull-right').prop('disabled', false);
-                    }
-                };
-                img.src = URL.createObjectURL(file);
-            }
-        });
+                 tmpImg.src=window.URL.createObjectURL( file ); 
+                 tmpImg.onload = function() {
+                 width = tmpImg.naturalWidth,
+                 height = tmpImg.naturalHeight;
+                 console.log('img width: ' + width);
+                 var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                 var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                 console.log('validation width:  ' + validWidth);
 
-        document.getElementById('player_image').addEventListener('change', function() {
-            var file = this.files[0];
-            if (file) {
-                var img = new Image();
-                img.onload = function() {
-                    var width = img.width;
-                    var height = img.height;
-                    console.log(width);
-                    console.log(height);
-                    
-                    var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                    var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                    console.log(validWidth);
-                    console.log(validHeight);
+                 if (width !== validWidth || height !== validHeight) {
+                         document.getElementById('season_image_error_msg').style.display = 'block';
+                         $('.pull-right').prop('disabled', true);
+                         document.getElementById('season_image_error_msg').innerText = 
+                             `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                     } else {
+                         document.getElementById('season_image_error_msg').style.display = 'none';
+                         $('.pull-right').prop('disabled', false);
+                     }
+                 }
+             });
 
-                    if (width !== validWidth || height !== validHeight) {
-                        document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                        $('.pull-right').prop('disabled', true);
-                        document.getElementById('season_thum_image_error_msg').innerText = 
-                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                    } else {
-                        document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                        $('.pull-right').prop('disabled', false);
-                    }
-                };
-                img.src = URL.createObjectURL(file);
-            }
-        });
-    </script>
+             $('#player_image').on('change', function(event) {
+
+                 var file = this.files[0];
+                 var player_Img = new Image();
+
+                 player_Img.src=window.URL.createObjectURL( file ); 
+                 player_Img.onload = function() {
+                 var width = player_Img.naturalWidth;
+                 var height = player_Img.naturalHeight;
+                 console.log('player width ' + width)
+
+                 var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                 var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                 console.log('validation player width:  ' + valid_player_Width);
+
+                 if (width !== valid_player_Width || height !== valid_player_Height) {
+                     $('#player_image_error_msg').show();
+                     $('.update_btn').prop('disabled', true);
+                     document.getElementById('player_image_error_msg').innerText = 
+                     `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                 } else {
+                     $('#player_image_error_msg').hide();
+                     $('.update_btn').prop('disabled', false);
+                 }
+                 }
+             });
+         });
+     </script>
 
     
     <script type="text/javascript">

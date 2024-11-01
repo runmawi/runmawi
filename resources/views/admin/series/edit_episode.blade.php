@@ -387,7 +387,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
 
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -930,24 +930,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
-        // image validation
+        {{-- image validation --}}
         <script>
-            document.getElementById('episode_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                        var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+           $(document).ready(function(){
+                $('#episode_image').on('change', function(event) {
+                    var file = this.files[0];
+                    var tmpImg = new Image();
 
-                        if (width !== validWidth || height !== validHeight) {
+                    tmpImg.src=window.URL.createObjectURL( file ); 
+                    tmpImg.onload = function() {
+                    width = tmpImg.naturalWidth,
+                    height = tmpImg.naturalHeight;
+                    console.log('img width: ' + width);
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                    console.log('validation width:  ' + validWidth);
+
+                    if (width !== validWidth || height !== validHeight) {
                             document.getElementById('season_image_error_msg').style.display = 'block';
                             $('.pull-right').prop('disabled', true);
                             document.getElementById('season_image_error_msg').innerText = 
@@ -956,38 +955,35 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             document.getElementById('season_image_error_msg').style.display = 'none';
                             $('.pull-right').prop('disabled', false);
                         }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
-            });
+                    }
+                });
 
-            document.getElementById('player_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                        var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+                $('#player_image').on('change', function(event) {
 
-                        if (width !== validWidth || height !== validHeight) {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                            $('.pull-right').prop('disabled', true);
-                            document.getElementById('season_thum_image_error_msg').innerText = 
-                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                        } else {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                            $('.pull-right').prop('disabled', false);
-                        }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
+                    var file = this.files[0];
+                    var player_Img = new Image();
+
+                    player_Img.src=window.URL.createObjectURL( file ); 
+                    player_Img.onload = function() {
+                    var width = player_Img.naturalWidth;
+                    var height = player_Img.naturalHeight;
+                    console.log('player width ' + width)
+
+                    var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                    var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                    console.log('validation player width:  ' + valid_player_Width);
+
+                    if (width !== valid_player_Width || height !== valid_player_Height) {
+                        $('#player_image_error_msg').show();
+                        $('.update_btn').prop('disabled', true);
+                        document.getElementById('player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                    } else {
+                        $('#player_image_error_msg').hide();
+                        $('.update_btn').prop('disabled', false);
+                    }
+                    }
+                });
             });
         </script>
 

@@ -3449,5 +3449,17 @@ class CPPSeriesController extends Controller
         }
     }
 
+    public function deleteSelected(Request $request)
+        {
+            $ids = $request->input('ids');
+
+            try {
+                Episode::whereIn('id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            }
+        }
+
 }
 
