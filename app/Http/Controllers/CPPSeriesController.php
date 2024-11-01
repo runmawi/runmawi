@@ -1878,7 +1878,7 @@ class CPPSeriesController extends Controller
         $episodes->ppv_price = $ppv_price;
         $episodes->active = $data['active'];
         $episodes->featured = $data['featured'];
-        $episodes->status = 1;
+        $episodes->status =  $type == 'm3u8' ? 0 : 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
         $episodes->episode_description =  $data['episode_description'];
         $episodes->save();
@@ -2012,6 +2012,7 @@ class CPPSeriesController extends Controller
             "subtitlescount" => $subtitlescount,
             "subtitles" => Subtitle::all(),
             "SeriesSubtitle" => $SeriesSubtitle ,
+            'page'  => 'Edit',
 
         );
 
