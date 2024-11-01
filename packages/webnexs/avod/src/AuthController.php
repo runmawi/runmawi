@@ -1184,7 +1184,6 @@ class AuthController extends Controller
             'status' => 0,
         ];
 
-
         if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
          
             $data = array (
@@ -1204,6 +1203,8 @@ class AuthController extends Controller
             $inputs += ['ads_video' => null ];
             $inputs += ['ads_path' => $request->ads_path ];
         }
+
+        $Advertisement = Advertisement::find($advertisement_id)->update($inputs);
 
           // Adverister uploaded Ads Count - Check
 
