@@ -149,7 +149,7 @@
                                         <option value="pre"  {{ "pre" == $Advertisement->ads_position ? "selected" : null }} >Pre</option>
                                         <option value="mid"  {{ "mid" == $Advertisement->ads_position ? "selected" : null }} >Mid</option>
                                         <option value="post" {{ "post" == $Advertisement->ads_position ? "selected" : null }}>Post</option>
-                                        <option value="all"  {{ "all" == $Advertisement->ads_position ? "selected" : null }}>All Position (Only for Ads Type - Tag URL)</option>
+                                        <option value="all"  {{ "all" == $Advertisement->ads_position ? "selected" : null }}>All Position</option>
                                     </select>
                                 </div>
                             </div>
@@ -196,13 +196,14 @@
                                 <div class="panel-body">
                                     <div class="mt-1">
                                             <label class="checkbox-inline" >
+                                                <input type="checkbox" class="age" name="age[]" value="0-17" {{  !empty(json_decode($Advertisement->age)) &&  in_array('0-17',json_decode($Advertisement->age) ) ? 'checked' : '' }} > 0-17
                                                 <input type="checkbox" class="age" name="age[]" value="18-24" {{  !empty(json_decode($Advertisement->age)) &&  in_array('18-24',json_decode($Advertisement->age) ) ? 'checked' : '' }} > 18-24
                                                 <input type="checkbox" class="age" name="age[]" value="25-34"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('25-34',json_decode($Advertisement->age))) ? 'checked' : '' }}> 25-34
                                                 <input type="checkbox" class="age"  name="age[]" value="35-44"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('35-44',json_decode($Advertisement->age))) ? 'checked' : '' }} /> 35-44
                                                 <input type="checkbox" class="age"  name="age[]" value="45-54"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('45-54',json_decode($Advertisement->age))) ? 'checked' : '' }}/> 45-54
                                                 <input type="checkbox" class="age"  name="age[]" value="45-54"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('45-54',json_decode($Advertisement->age))) ? 'checked' : '' }}/> 55-64
                                                 <input type="checkbox" class="age" name="age[]"  value="65+"    {{ !empty(json_decode($Advertisement->age)) &&  (in_array('65+',json_decode($Advertisement->age))) ? 'checked' : '' }} /> 65+
-                                                <input type="checkbox" class="age"  name="age[]" value="unknown"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('unknown',json_decode($Advertisement->age))) ? 'checked' : '' }} /> unknown
+                                                <input type="checkbox" class="age"  name="age[]" value="unknown"  {{ !empty(json_decode($Advertisement->age)) &&  (in_array('unknown',json_decode($Advertisement->age))) ? 'checked' : '' }} /> All
                                             </label>
                                     </div>
                                 </div>
@@ -214,7 +215,7 @@
                                     <select class="gender form-control" name="gender[]" multiple="multiple" id="gender">
                                         <option value="male"   {{ !empty(json_decode($Advertisement->gender)) && in_array('male', json_decode($Advertisement->gender) ) ? 'selected' : '' }} >Male</option>
                                         <option value="female" {{ !empty(json_decode($Advertisement->gender)) && in_array('female', json_decode($Advertisement->gender) ) ? 'selected' : '' }} >Female</option>
-                                        <option value="kids"   {{ !empty(json_decode($Advertisement->gender)) && in_array('kids', json_decode($Advertisement->gender) ) ? 'selected' : '' }} >kids</option>
+                                        <option value="other"   {{ !empty(json_decode($Advertisement->gender)) && in_array('other', json_decode($Advertisement->gender) ) ? 'selected' : '' }} >other</option>
                                     </select>
                                 </div>
                             </div>
@@ -225,24 +226,24 @@
                                 <label class="m-0">Ads Location:</label>
                                 <div class="panel-body">
 
-                                    <input type="radio"  name="location" value="all_countries" {{ $Advertisement->location == 'all_countries' ? 'checked' : '' }}  />
+                                    <input type="radio"  name="location" value=" " {{ is_null($Advertisement->location) ? 'checked' : '' }}  />
                                     <label class="">{{ ucwords('all countries & territories') }}</label><br>
 
                                     <input type="radio"  name="location" value="India" {{ $Advertisement->location == 'India' ? 'checked' : '' }}  />
                                     <label>India</label><br>
 
-                                    <input type="radio"  name="location"  value="enter_location" {{ $Advertisement->location != 'India' && $Advertisement->location != 'all_countries' ? 'checked' : '' }}  />
+                                    <input type="radio"  name="location"  value="enter_location" {{ !is_null($Advertisement->location) && $Advertisement->location != 'India' ? 'checked' : '' }}  />
                                     <label>{{ ucwords('enter the location') }}</label>
                                 </div>
                             </div>
 
-                           
                             <div class="col-md-6 location_input">
                                 <div class="form-group">
                                     <label>Enter the Location:</label> 
                                     <input type="text" name="locations" class="form-control" placeholder="Enter the Location" value="{{ $Advertisement->location }}" />
                                 </div>
                             </div>
+                            
                         </div>
 
                         <div class="row mt-3">
@@ -259,8 +260,6 @@
         </div>
     </div>
 
-    
-
     @include('avod::ads_footer')
 
     <script src=" {{ URL::to('assets/admin/dashassets/js/jquery.min.js') }} "></script>  <!-- Imported styles on this page -->
@@ -271,7 +270,7 @@
 
             var retrieve_location = "{{ $Advertisement->location }}";
 
-            if(retrieve_location == "India" || retrieve_location == "all_countries" ){
+            if(retrieve_location == "India" || retrieve_location == "" ){
                 $('.location_input').hide();
             }
 

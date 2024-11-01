@@ -1282,7 +1282,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                   <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-list.svg')?>"><span>{{ (__('Ads List')) }}</span></a></li>
 
-                  <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
+                  @if ($settings->ads_payment_page_status == 1 )
+                     <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
+                  @endif
 
                   <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span>{{ (__('Ads Revenue')) }} </span></a></li>
 
