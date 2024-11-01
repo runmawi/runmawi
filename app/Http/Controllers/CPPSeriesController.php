@@ -994,6 +994,8 @@ class CPPSeriesController extends Controller
                 $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
             }else{
+                $image_path = public_path().'/uploads/season_images/';
+                    $path = public_path().'/uploads/season_videos/';
                 if($trailer != '') {   
                     //code for remove old file
                     if($trailer != ''  && $trailer != null){
