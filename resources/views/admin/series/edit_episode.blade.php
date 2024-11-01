@@ -130,6 +130,10 @@
     margin: 0 auto;
 }
 .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
+.top-options a, .top-options button{font-size: 10px;border-radius: 4px;}
+#epi-prev .my-video.vjs-fluid {
+    height: 67vh !important;
+}
 
 </style>
 {{-- video-js Style --}}
@@ -192,6 +196,29 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 @stop @section('content')
 <div id="content-page" class="content-page">
 
+    <div class="container-fluid">
+        @if(!empty($episodes->id))
+                        
+            <div class="top-options row d-flex align-items-center justify-content-end">
+                <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                
+                <?php 
+                    $filename = $episodes->path.'.mp4';
+                    $path = storage_path('app/public/'.$filename);
+                ?>
+                {{-- @if($episodes->status == 1 && $episodes->status == 1  )
+                    <a href="#" class="btn btn-lg btn-primary pull-right ml-2" data-toggle="modal" data-target="#largeModal">Player Perview</a>
+                @endif  --}}
+
+                @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                    @if (file_exists($path))
+                        <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
+                    @endif
+                @endif  
+            </div>
+        @endif
+    </div>
+
     <!-- BREADCRUMBS -->
     <div class="row mr-2">
         <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
@@ -217,48 +244,40 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             </div>
         </div>
     </div>
+
+    <div>
+        @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+            <div class="col-sm-12">
+                Video Transcoding is under Progress
+                <div class="progress">
+                    <div class="low_bar"></div >
+                </div>
+                <div class="low_percent">0%</div >
+            </div>
+        @endif
+    </div>
+    @if($episodes->status == 1 && $episodes->status == 1  )
+        <div id="epi-prev">
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                width="auto" height="auto" poster="{{ URL::to('public/uploads/images/'.$episodes->player_image) }}" playsinline="playsinline"
+                >
+                <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                    @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                    @foreach($SeriesSubtitle as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                    @endforeach
+                @endif
+            </video>
+        </div>
+    @endif
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
             <div class="admin-section-title">
-                @if(!empty($episodes->id))
-                <div class="d-flex justify-content-between">
-                    <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
-                    <div class="pull-right">
-                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
-                    </div>
-                </div>
-                @endif
-            <?php 
-                $filename = $episodes->path.'.mp4';
-                $path = storage_path('app/public/'.$filename);
-            ?>
 
-            @if($episodes->status == 1 && $episodes->status == 1  )
-                <a  style="margin-right: 16%;margin-top: -5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Episode Player Perview</a>
-            @endif   
-
-            <br>
-            @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
-                @if (file_exists($path))
-                    <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
-                @endif
-            @endif   
-            
-            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
-                <div class="col-sm-12">
-                    Video Transcoding is under Progress
-                    <div class="progress">
-                        <div class="low_bar"></div >
-                    </div>
-                    <div class="low_percent">0%</div >
-                </div>
-
-                <!-- <div class="progress">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-               </div> -->
-               
-            @endif
+                
 
             <div class="container">                
                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -728,7 +747,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 </div>
                         
                 <div class="row mt-3">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="m-0">Status Settings</label>
                         <div class="panel-body">
                             <div>

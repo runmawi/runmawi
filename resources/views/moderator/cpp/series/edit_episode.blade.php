@@ -47,7 +47,38 @@
         color: #000000;
         font-weight: 500;
     }
+    .top-options a, .top-options button{font-size: 10px;border-radius: 4px;}
+    #epi-prev .my-video.vjs-fluid {
+        height: 67vh !important;
+    }
 </style>
+
+{{-- video-js Style --}}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+<!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+<link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+<link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+<link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+<link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+<link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+<link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+{{-- video-js Script --}}
+
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+<script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+<script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+<script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 @section('css')
 
@@ -58,10 +89,50 @@ $series = App\Series::where('id',$episodes->series_id)->first()  ;
 $media_url = URL::to('/episode/').'/'.$series->title.'/'.$episodes->slug;
 $embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+
+    if($episodes->type == 'm3u8'){
+        $episodeURL =   URL::to('/storage/app/public/').'/'.$episodes->path . '.m3u8'  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif ($episodes->type == 'file' || $episodes->type == 'upload'){
+        $episodeURL =   $episodes->mp4_url  ;
+        $episode_player_type =  'video/mp4' ;
+    }elseif ($episodes->type == 'm3u8_url'){
+        $episodeURL =   $episodes->url  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif($episodes->type == 'bunny_cdn'){
+       $episodeURL =   $episodes->url  ;
+       $episode_player_type =  'application/x-mpegURL' ;
+   }else{
+        $episodeURL =  null ;
+        $episode_player_type =  null ;
+   }
 ?>
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
+
+    <div class="container-fluid">
+        @if(!empty($episodes->id))
+                        
+            <div class="top-options row d-flex align-items-center justify-content-end">
+                <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                
+                <?php 
+                    $filename = $episodes->path.'.mp4';
+                    $path = storage_path('app/public/'.$filename);
+                ?>
+                {{-- @if($episodes->status == 1 && $episodes->status == 1  )
+                    <a href="#" class="btn btn-lg btn-primary pull-right ml-2" data-toggle="modal" data-target="#largeModal">Player Perview</a>
+                @endif  --}}
+
+                @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                    @if (file_exists($path))
+                        <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
+                    @endif
+                @endif  
+            </div>
+        @endif
+    </div>
 
      <!-- BREADCRUMBS -->
      <div class="row mr-2">
@@ -89,20 +160,26 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         </div>
     </div>
 
+    @if($episodes->status == 1 && $episodes->status == 1  )
+        <div id="epi-prev">
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                width="auto" height="auto" poster="{{ URL::to('public/uploads/images/'.$episodes->player_image) }}" playsinline="playsinline"
+                >
+                <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                    @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                    @foreach($SeriesSubtitle as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                    @endforeach
+                @endif
+            </video>
+        </div>
+    @endif
 
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
-            <div class="admin-section-title">
-                @if(!empty($episodes->id))
-                <div class="d-flex justify-content-between">
-                    <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
-                    <div class="pull-right">
-                        <a href="{{URL::to('cpp/episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
-                    </div>
-                </div>
-                @endif
-            </div>
             
 
             <hr />
@@ -1120,6 +1197,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
              });
          });
      </script>
+
+    @include('moderator.cpp.series.player_script')
         @stop @stop @stop
     </div>
 </div>
