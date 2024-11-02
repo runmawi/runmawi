@@ -34,9 +34,42 @@
                                                 ->whereTime('ads_events.end', '>=', $current_time);
                                         })
 
+                                        ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
+                                            return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
+                                        })
+
+                                        ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
+
+                                            $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
+
+                                            $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
+
+                                            $matchedAgeRange = null;
+
+                                            foreach ($ageRanges as $key => $value) {
+
+                                                list($min, $max) = explode('-', $value);
+
+                                                if ($age >= (int)$min && $age <= (int)$max) {
+
+                                                    $matchedAgeRange = $value;
+                                                    break; 
+                                                }
+                                            }
+
+                                            if ($matchedAgeRange) {
+                                                return $query->where('advertisements.age', 'LIKE', '%' . $matchedAgeRange . '%');
+                                            }
+                                        })
+
+                                        ->when(Auth::check() && !is_null(Auth::user()->countryname), function ($query) {
+                                            return $query->where('advertisements.location',  Auth::user()->countryname )->orwhereNull('advertisements.location');
+                                        })
+
                                         ->groupBy('advertisements.id')
                                         ->pluck('ads_path')
                                         ->first();
+                                        
 
             // Mid-advertisement 
 
@@ -52,18 +85,47 @@
                                         }, function ($query) use ($videodetail) {
 
                                             return $query->where('advertisements.ads_category', $videodetail->video_js_mid_position_ads_category);
+                                    })
 
-                                        })
+                                    ->when( $advertisement_plays_24hrs == 0 , function ($query) use ($current_time) {
 
-                                        ->when( $advertisement_plays_24hrs == 0 , function ($query) use ($current_time) {
+                                        return $query->where('ads_events.status', 1)
+                                            ->whereTime('ads_events.start', '<=', $current_time)
+                                            ->whereTime('ads_events.end', '>=', $current_time);
+                                    })
 
-                                            return $query->where('ads_events.status', 1)
-                                                ->whereTime('ads_events.start', '<=', $current_time)
-                                                ->whereTime('ads_events.end', '>=', $current_time);
-                                            })
-                                    
+                                    ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
+                                        return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');;
+                                    })
+
+                                    ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
+
+                                        $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
+
+                                        $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
+
+                                        $matchedAgeRange = null;
+
+                                        foreach ($ageRanges as $key => $value) {
+
+                                            list($min, $max) = explode('-', $value);
+
+                                            if ($age >= (int)$min && $age <= (int)$max) {
+
+                                                $matchedAgeRange = $value;
+                                                break; 
+                                            }
+                                        }
+
+                                        if ($matchedAgeRange) {
+                                            return $query->where('advertisements.age', 'LIKE', '%' . $matchedAgeRange . '%');
+                                        }
+                                    })
+
+                                    ->when(Auth::check() && !is_null(Auth::user()->countryname), function ($query) {
+                                        return $query->where('advertisements.location',  Auth::user()->countryname )->orwhereNull('advertisements.location');
+                                    })
                                     ->pluck('ads_path');
-
 
             // Post-advertisement 
 
@@ -78,16 +140,46 @@
                                             }, function ($query) use ($videodetail) {
 
                                             return $query->where('advertisements.id', $videodetail->video_js_post_position_ads);
+                                        })
 
-                                            })
-
-                                        ->when( $advertisement_plays_24hrs == 0, function ($query) use ($current_time) {
+                                        ->when( $advertisement_plays_24hrs == 0 , function ($query) use ($current_time) {
 
                                             return $query->where('ads_events.status', 1)
                                                 ->whereTime('ads_events.start', '<=', $current_time)
                                                 ->whereTime('ads_events.end', '>=', $current_time);
-                                            })
+                                        })
 
+                                        ->when(Auth::check() && !is_null(Auth::user()->gender), function ($query) {
+                                            return $query->whereJsonContains('advertisements.gender',  Auth::user()->gender )->orwhereNull('advertisements.gender');
+                                        })
+
+                                        ->when(Auth::check() && !is_null(Auth::user()->DOB), function ($query) {
+
+                                            $age = Carbon\Carbon::parse(Auth::user()->DOB)->age;    
+
+                                            $ageRanges = !empty($query->value('age')) ? json_decode($query->value('age'), true) : [] ; 
+
+                                            $matchedAgeRange = null;
+
+                                            foreach ($ageRanges as $key => $value) {
+
+                                                list($min, $max) = explode('-', $value);
+
+                                                if ($age >= (int)$min && $age <= (int)$max) {
+
+                                                    $matchedAgeRange = $value;
+                                                    break; 
+                                                }
+                                            }
+
+                                            if ($matchedAgeRange) {
+                                                return $query->where('advertisements.age', 'LIKE', '%' . $matchedAgeRange . '%');
+                                            }
+                                        })
+
+                                        ->when(Auth::check() && !is_null(Auth::user()->countryname), function ($query) {
+                                            return $query->where('advertisements.location',  Auth::user()->countryname )->orwhereNull('advertisements.location');
+                                        })
                                         ->groupBy('advertisements.id')
                                         ->pluck('ads_path')
                                         ->first();
@@ -106,28 +198,5 @@
         if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && is_null($post_advertisement) ){
             $post_advertisement = $setting->default_ads_url;
         }
-
-        //             //Pre  Ads Variable
-        // if (!is_null($pre_advertisement)) {
-        //     foreach ($adsvariable as $value) {
-        //         $pre_advertisement = str_replace('${' . $value->name . '}', $value->website, $pre_advertisement);
-        //     }
-        // }
-
-        //             // Mid Ads Variable
-        // if (count($mid_advertisement) > 0 ) {
-        //     foreach ($mid_advertisement as &$url) {
-        //         foreach ($adsvariable as $value) {
-        //             $url = str_replace('${' . $value->name . '}', $value->website, $url);
-        //         }
-        //     }
-        // }
-
-        //             // Post Ads Variable
-        // if (!is_null($post_advertisement)) {
-        //     foreach ($adsvariable as $value) {
-        //         $post_advertisement = str_replace('${' . $value->name . '}', $value->website, $post_advertisement);
-        //     }
-        // }
     }
 ?>
