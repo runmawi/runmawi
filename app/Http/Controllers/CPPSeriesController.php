@@ -1876,7 +1876,7 @@ class CPPSeriesController extends Controller
         $episodes->intro_start_time = $data['intro_start_time'];
         $episodes->intro_end_time = $data['intro_end_time'];
         $episodes->ppv_price = $ppv_price;
-        $episodes->active = $data['active'];
+        $episodes->active = 0;
         $episodes->featured = $data['featured'];
         $episodes->status =  $type == 'm3u8' ? 0 : 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
