@@ -866,11 +866,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
-    
+
+    // Admin User Channel Subscription Plan (Auth user)
+    Route::get('/user-channel-subscription-plan', 'AdminUserChannelSubscriptionPlan@index')->name('admin.user-channel-subscription-plan.index');
+    Route::get('/user-channel-subscription-plan-store', 'AdminUserChannelSubscriptionPlan@store')->name('admin.user-channel-subscription-plan.store');
+    Route::get('/user-channel-subscription-plan-edit/{id}', 'AdminUserChannelSubscriptionPlan@edit')->name('admin.user-channel-subscription-plan.edit');
+    Route::get('/user-channel-subscription-plan-update', 'AdminUserChannelSubscriptionPlan@update')->name('admin.user-channel-subscription-plan.update');
+    Route::get('/user-channel-subscription-plan-delete/{id}', 'AdminUserChannelSubscriptionPlan@delete')->name('admin.user-channel-subscription-plan.delete');
+
     // Multiple channel Subscription Plans
     Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
-
+    // Admin Channel Partner Subscription Plan
     Route::get('/channel-subscription-plans', 'AdminChannelPlansController@subscriptionindex');
     Route::post('/channel-subscription-plans/store', 'AdminChannelPlansController@subscriptionstore');
     Route::get('/channel-subscription-plans/edit/{id}', 'AdminChannelPlansController@subscriptionedit');
