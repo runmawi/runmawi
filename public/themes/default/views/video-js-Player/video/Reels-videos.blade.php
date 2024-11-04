@@ -3,7 +3,7 @@
         foreach($videodetail->Reels_videos as $reel): 
 ?>
     <div class="sectionArtists broadcast">
-        <div class="block-images position-relative" data-toggle="modal" data-target="#Reels" data-name=<?php echo $reel->reels_videos; ?>
+        <div class="block-images position-relative" data-bs-toggle="modal" data-bs-target="#reelsmodal" data-name=<?php echo $reel->reels_videos; ?>
             onclick="addvidoes(this)">
             <div class="listItem">
                 <div class="profileImg">
@@ -22,17 +22,15 @@
 
 <!-- Reels Modal -->
 
-<div class="modal fade" id="Reels" tabindex="-1" role="dialog" aria-labelledby="Reels" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="reelsmodal" tabindex="-1" aria-labelledby="reelsmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body" id="Reels">
+            <div class="modal-body">
+                <button type="button" class="btn-close close video-js-reels-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
                 <video id="Reels_player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls width="auto" height="auto">
                     <!-- <source id="video_source" src="" type="video/mp4"> -->
                 </video>
-                <button type="button" class="close reelsclose video-js-reels-modal-close" >
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
         </div>
     </div>
@@ -109,9 +107,8 @@
             }
         });
 
-        $(".reelsclose").click(function(){
+        $(".btn-close").click(function(){
             player.pause();  
-            $('#video-js-reels-modal').modal('hide');
         });
     });
     $(".video-js-reels-modal-close").click(function(){

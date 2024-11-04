@@ -195,6 +195,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         }
 
     .opacity-layer{display: none;}
+    .trailer-play{display: none;}
+    .trailer-img:hover .img_thum_trailer{opacity: 0.3 !important;}
+    .trailer-img:hover .trailer-play {top: 40%;left:2%;height: 120px;display: block;}
 </style>
 
 
@@ -563,10 +566,13 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                             @if( optional($videodetail)->trailer )
                                 <a>
-                                    <div class="listItem" data-toggle="modal" data-target="#video-js-trailer-modal" >
-                                        <div class="profileImg">
-                                            <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                                <img src="{{ optional($videodetail)->image_url }}">
+                                    <div class="listItem" data-bs-toggle="modal" data-bs-target="#trailermodal" >
+                                        <div class="profileImg trailer-img">
+                                            <span class="lazy-load-image-background blur lazy-load-image-loaded position-relative" style="color: transparent; display: inline-block;">
+                                                <img class="img_thum_trailer" src="{{ optional($videodetail)->image_url }}">
+                                            </span>
+                                            <span class="trailer-play position-absolute">
+                                                <i class="fa fa-play mr-1" ></i>{{ __('Trailer') }} 
                                             </span>
 
                                             @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
