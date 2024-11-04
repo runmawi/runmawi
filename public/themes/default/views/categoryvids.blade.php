@@ -28,6 +28,11 @@
     .nav-div.container-fluid {
         padding: 0;
     }
+    .banner_img{height: 400px;overflow: hidden;}
+    .banner_img img{height: 100%;width: 100%;object-fit: cover;}
+    @media(min-width:1800px){
+        .banner_img{height:800px;}
+    }
 </style>
 
 
@@ -53,7 +58,9 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
                 <div class="col-sm-12 ">
-                   
+                   <div class="banner_img">
+                        <img src="{{ URL::to('public/uploads/videocategory/'.$category_data->banner_image)}}" alt="">
+                   </div>
 
                     <!-- BREADCRUMBS -->
                     <div class=" d-flex">
