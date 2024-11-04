@@ -873,6 +873,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/user-channel-subscription-plan-edit/{id}', 'AdminUserChannelSubscriptionPlan@edit')->name('admin.user-channel-subscription-plan.edit');
     Route::get('/user-channel-subscription-plan-update', 'AdminUserChannelSubscriptionPlan@update')->name('admin.user-channel-subscription-plan.update');
     Route::get('/user-channel-subscription-plan-delete/{id}', 'AdminUserChannelSubscriptionPlan@delete')->name('admin.user-channel-subscription-plan.delete');
+    Route::get('/user-channel-subscription-plan-page-status', 'AdminUserChannelSubscriptionPlan@user_channel_plans_page_status')->name('admin.user-channel-subscription-plan.page-status');
 
     // Multiple channel Subscription Plans
     Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');

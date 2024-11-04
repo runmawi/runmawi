@@ -27,9 +27,27 @@
                      </div>
                   </div>
 
+                  <div class="iq-card-header d-flex justify-content-between">
+                     <div class="iq-header-title">
+                        <div class="row">
+                           <div class="col-sm-12 d-flex">
+                               <label class="m-0">Enable / Disable  Plans Page </label>
+                               <div class="panel-body">
+                                   <div class="mt-1 p-1">
+                                       <label class="switch">
+                                           <input name="user_channel_plans_page_status" class="user_channel_plans_page_status" type="checkbox" {{ ($setting->user_channel_plans_page_status) == "1" ? 'checked' : ''  }}  onchange="user_channel_plans_page_status(this)" >
+                                           <span class="slider round"></span>
+                                       </label>
+                                   </div>
+                               </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
                   <div class="iq-card-body table-responsive">
                      <div class="table-view">
-                        <table class="table table-striped table-bordered table movie_table " style="width:100%">
+                        <table class="table table-striped table-bordered table movie_table" id="Subscription_Plans" style="width:100%">
 
                            <thead>
                               <tr class="r1">
@@ -92,11 +110,19 @@
                            <label for="plan_name">Plan Name</label>
                            <input type="text" name="plan_name" id="plan_name" class="form-control" placeholder="Plan Name" >
                         </div>
-                     
-                        <div class="col-md-12 pb-2">
-                           <label for="plan_id">Plan Id</label>
-                           <input type="text" name="plan_id" id="plan_id" class="form-control" placeholder="Plan Id" >
-                        </div>
+
+
+                        @forelse ($payment_settings as $item)
+
+                           <div class="col-md-12 pb-2">
+                              <label>{{ $item->payment_type }} Plan ID:</label>
+                              <input type="text" id="plan_id" name=" plan_id" value="" class="form-control" placeholder="Plan ID">
+                              <input type="hidden" id="paymentGateway" name="paymentGateway[]" value={{ $item->payment_type}}  class="form-control" placeholder="paymentGateway">
+                              <p>* Get Plan Key From {{ $item->payment_type }}</p>
+                           </div>
+                        @empty
+                            
+                        @endforelse
 
                         <div class="col-md-12 pb-2">
                            <label for="price">Plan Price</label>
@@ -168,7 +194,9 @@
 
          <script>
             $(document).ready(function () {
-             
+
+               $('#Subscription_Plans').DataTable({ });
+
                $('body').on('click', '.create_channel_plan', function (event) {
 
                   event.preventDefault();
@@ -177,7 +205,7 @@
                   $('#edit_modal').modal('show');
 
                   // Clear all form fields within the modal
-                  $('#channel-subscription-plan').find('input, select, textarea').val('');
+                  $('#channel-subscription-plan').find('input:not([type="hidden"]), select, textarea').val('');
                   $('#status').prop('checked', false); 
                   $('#currency_symbol').val('{{ currency_symbol() }}');
                   $('#url').val("{{ route('admin.user-channel-subscription-plan.store') }}");
@@ -239,6 +267,46 @@
                   });
                });
             });
+
+            function user_channel_plans_page_status(ele) {
+
+               var Status = $('.user_channel_plans_page_status').prop("checked");
+
+               var actionText = Status ? "active" : "remove";
+
+               var Subscription_Plan = Status ? '1' : '0';
+
+               var confirmationMessage = "Are you sure you want to " + actionText + " this  Subscription Plan Page?";
+               var check = confirm(confirmationMessage);
+
+               if (check) {
+                  $.ajax({
+                     type: "get",
+                     dataType: "json",
+                     url: "{{ route('admin.user-channel-subscription-plan.page-status') }}",
+                     data: {
+                           _token: "{{csrf_token()}}",
+                           Subscription_Plan: Subscription_Plan,
+                     },
+                     success: function (data) {
+                           if (data.message == 'false') {
+                              swal.fire({
+                                 title: 'Oops',
+                                 text: 'Something went wrong!',
+                                 allowOutsideClick: false,
+                                 icon: 'error',
+                                 title: 'Oops...',
+                              }).then(function () {
+                                 location.href = '{{ URL::to('admin/subscription-plans') }}';
+                              });
+                           }
+                     },
+                  });
+               } else {
+                  $(ele).prop('checked', !Status);
+               }
+            }
+
          </script>
       @stop
 
