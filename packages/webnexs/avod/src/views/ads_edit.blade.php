@@ -1,5 +1,19 @@
 @include('avod::ads_header')
 
+<!-- videojs-contrib-ads CSS and Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/6.6.6/videojs-contrib-ads.min.js"></script>
+
+{{-- video-js Style --}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+<link rel="stylesheet" href="<?= URL::to('/') . '/public/themes/default/assets/css/video-js/videojs.min.css' ?>" />
+
+{{-- video-js Script --}}
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="<?= URL::to('/') . '/assets/js/video-js/video.min.js' ?>"></script>
+<script src="<?= URL::to('/') . '/assets/js/video-js/videojs-http-source-selector.js' ?>"></script>
+<script src="<?= URL::to('/') . '/assets/js/video-js/videojs.ads.min.js' ?>"></script>
+<script src="<?= URL::to('/') . '/assets/js/video-js/videojs.ima.min.js' ?>"></script>
+
 <style>
     .p1 {
         font-size: 15px !important;
@@ -52,6 +66,32 @@
         display: inline-block;
         cursor: pointer;
     }
+    .my-video.video-js .vjs-big-play-button{font-size:3em;line-height:1.5em;height:1.63332em;width:3em;display:inline-block;position:absolute;top:50%;left:50%;padding:0;margin-top:-.81666em;margin-left:-1.5em;cursor:pointer;opacity:1;border:none;background-color:#fff0;border-radius:none;transition:3s;color:#000}
+    .my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before{height:50px;width:50px;left:27%;border-radius:50%;background-color:#fff;display:grid;place-content:center;cursor:pointer}
+    .my-video.video-js .vjs-control-bar{background:linear-gradient(transparent,rgb(0 0 0 / .75));background:var(--plyr-video-controls-background,linear-gradient(transparent,#fff0));transition:opacity 0.4s ease-in-out,transform 0.4s ease-in-out;z-index:3;height:64px}
+    .vjs-icon-play:before,.my-video .video-js .vjs-play-control .vjs-icon-placeholder:before,.my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before{content:"\f101"}
+    .my-video.video-js.vjs-playing .vjs-big-play-button .vjs-icon-placeholder:before{content:"\f103"}
+    .vjs-play-control .vjs-icon-placeholder:before{margin-top:.33em;border-radius:4px;border:0 solid #fff0;font-size:25px}
+    .my-video.video-js button{background:#fff0;border:none;color:#fff;display:inline-block;font-size:13px;text-transform:capitalize;text-decoration:none;appearance:none;font-weight:500}
+    .my-video.video-js .vjs-mute-control{cursor:pointer;flex:none;line-height:3.3em;margin-top:40px;right:12px}
+    .my-video.video-js .vjs-time-control{flex:none;font-size:1.3em;line-height:4.8em;display:block;left:3px}
+    .my-video.video-js .vjs-control.vjs-menu-button{height:50%;border-radius:3px;margin-bottom:22px;margin-top:15px;margin-right:10px}
+    .vjs-menu-button-popup .vjs-menu .vjs-menu-content{position:absolute;width:100%;bottom:.9em;max-height:15em;background-color:#2b333f;border-radius:5px}
+    .vjs-menu li.vjs-menu-item:focus,.vjs-menu li.vjs-menu-item:hover,.js-focus-visible .vjs-menu li.vjs-menu-item:hover{background-color:#095ae5}
+    .vjs-menu-button-popup .vjs-menu{display:none;position:absolute;bottom:0;width:10em;left:-3em;height:0em;margin-bottom:2.5em;border-top-color:rgb(43 51 63 / .7)}
+    .vjs-volume-panel{position:absolute;right:auto;bottom:20px;left:10px;height:150px;width:20px;display:flex;align-items:center;justify-content:center}
+    .vjs-volume-bar{height:100%;width:10px;display:flex;flex-direction:column-reverse;transform-origin:center center}
+    .vjs-volume-bar .vjs-volume-level{width:100%;height:auto}
+    .video-js .vjs-volume-panel .vjs-volume-control{margin-left:-18px!important;margin-top:60px!important}
+    .vjs-volume-bar.vjs-slider-horizontal{height:0.5em!important}
+    .my-video.video-js .vjs-volume-level:before{font-size:1.4em}
+    .vjs-slider-horizontal .vjs-volume-level:before{line-height:0em!important;top: -0.15em !important;}
+    .vjs-volume-bar .vjs-volume-handle{height:10px;width:100%;bottom:auto;left:0;transform:translateX(50%)}
+    .my-video.vjs-theme-city .vjs-progress-control .vjs-progress-holder,.my-video.vjs-theme-city .vjs-progress-control:hover .vjs-progress-holder{font-size:1.5em}
+    .my-video.video-js .vjs-slider{position:relative;cursor:pointer;padding:0;margin:0 .45em 0 .55em;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;background-color:#73859f;font-size:10px;border-radius:3px}
+    .my-video.video-js .vjs-progress-holder{flex:auto;transition:all 0.2s;height:.2em}
+    .video-js .vjs-picture-in-picture-control{right:5px}
+    .vjs-playback-rate .vjs-playback-rate-value{ font-size: 1.4em !important;line-height: 3.15em !important;}
 
 </style>
 
@@ -82,6 +122,7 @@
                             <div> <h4>Edit Advertisement</h4> </div>
                         </div>
                         <hr>
+                        <a  style="margin-top: -6.5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
                     </div>
 
                     @if (Session::has('message'))
@@ -96,6 +137,32 @@
                             </div>
                         @endforeach
                     @endif
+
+                    <div class="container">                
+                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel">Episode Player</h4>
+                                        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <video id="my-video" class="my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                                            width="auto" height="auto" playsinline="playsinline" autoplay>
+                                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
+                                            {{-- <source src={{$Advertisement->ads_video}} type="video/mp4"> --}}
+                                        </video>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="close-btn btn btn-lg btn-primary" data-dismiss="modal">Close Player</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="clear"></div>
 
                     <form action="{{ route('Ads_update', $Advertisement->id) }}" method="POST"  enctype="multipart/form-data" >
@@ -171,7 +238,7 @@
                                 <label class="m-0">Ad Tag Url:</label>
                                 <div class="panel-body">
                                     <input type="text" id="ads_path" name="ads_path"  class="form-control"
-                                        value="{{ $Advertisement->ads_path }}" placeholder="Please! Enter the Ads Tag URL" />
+                                        value="{{ $Advertisement->ads_path }}" placeholder="Enter the Ads Tag URL" />
                                 </div>
                             </div>
 
@@ -259,8 +326,7 @@
         </div>
     </div>
 
-    
-
+    @include('avod::ads_player_script')
     @include('avod::ads_footer')
 
     <script src=" {{ URL::to('assets/admin/dashassets/js/jquery.min.js') }} "></script>  <!-- Imported styles on this page -->

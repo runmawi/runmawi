@@ -235,7 +235,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             ?>
 
             @if($episodes->status == 1 && $episodes->status == 1  )
-                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Perview Player</a>
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
             @endif   
 
             <br>
