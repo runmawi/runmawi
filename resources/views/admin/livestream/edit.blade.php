@@ -1194,7 +1194,7 @@ border-radius: 0px 4px 4px 0px;
                 console.error( error );
             } );
 </script>
-
+{{-- 
 <!-- Empty url validation Live Stream Source -->
 <script>
     $(document).ready(function() {
@@ -1272,7 +1272,7 @@ border-radius: 0px 4px 4px 0px;
 
 
 
-</script>
+</script> --}}
 
 <script type="text/javascript">
    $ = jQuery;

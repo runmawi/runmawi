@@ -607,6 +607,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
     Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
+    Route::post('/episodes/deleteSelecte','CPPSeriesController@deleteSelected')->name('cpp.episodes.deleteSelecte');
 
     // Channel Schedule
     Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
@@ -2989,12 +2990,14 @@ Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMoneti
 Route::get('admin/partner_monetization_settings//delete/{id}', 'AdminPartnerMonetizationSettings@Delete');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
 
+// Partner Monetization Payouts
 Route::get('admin/partner_monetization_payouts/index', 'AdminPartnerMonetizationPayouts@index')->name('partner-monetization-payouts');
+Route::get('admin/partner_monetization_payouts/analytics', 'AdminPartnerMonetizationPayouts@PartnerAnalytics')->name('partner-monetization-analytics');
+Route::get('admin/partner_monetization_payouts/partner_payment/{id}', 'AdminPartnerMonetizationPayouts@Partnerpayment');
+Route::post('admin/partner_monetization_payouts/store', 'AdminPartnerMonetizationPayouts@Store');
+Route::get('admin/partner_monetization_payouts/history', 'AdminPartnerMonetizationPayouts@PartnerPaymentHistory')->name('partner-monetization-history');
+Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData' )->name('get.channel.data');
 
-Route::post('PlayedViews','ChannelController@PlayedViews')->name('PlayedViews');
-Route::post('EpisodePlayedViews','TvshowsController@EpisodePlayedViews')->name('EpisodePlayedViews');
-Route::post('LivestreamPlayedViews', 'AdminLiveStreamController@LivestreamPlayedViews')->name('LivestreamPlayedViews');
-
-
-Route::post('AmountPerView','ChannelController@AmountPerView')->name('AmountPerView');
-Route::post('LiveStreamAmountPerView','AdminLiveStreamController@LiveStreamAmountPerView')->name('LiveStreamAmountPerView');
+Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
+Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
+Route::post('LivestreamPartnerMonetization', 'AdminLiveStreamController@LivestreamPartnerMonetization')->name('LivestreamPartnerMonetization');

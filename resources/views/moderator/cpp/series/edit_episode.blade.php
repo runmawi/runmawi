@@ -35,7 +35,57 @@
     color: red !important; 
     }
     .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
+    .bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+        content: none;
+    }
+
+    body.light-theme ol.breadcrumb {
+        background-color: transparent !important;
+        font-size: revert;
+    }
+    ol.breadcrumb a, ol.breadcrumb li {
+        color: #000000;
+        font-weight: 500;
+    }
+    .top-options a, .top-options button,.top-options .src-btn{font-size: 10px;border-radius: 4px;}
+    #epi-prev .my-video.vjs-fluid {
+        height: 67vh !important;
+    }
+    .source_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 130px;
+        float: right;
+    }
 </style>
+
+{{-- video-js Style --}}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+<!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+<link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+<link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+<link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+<link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+<link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+<link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+{{-- video-js Script --}}
+
+<script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+<script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+<script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+<script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+<script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+<script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 @section('css')
 
@@ -46,23 +96,111 @@ $series = App\Series::where('id',$episodes->series_id)->first()  ;
 $media_url = URL::to('/episode/').'/'.$series->title.'/'.$episodes->slug;
 $embed_media_url = URL::to('/episode/embed').'/'.$series->title.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+
+    if($episodes->type == 'm3u8'){
+        $episodeURL =   URL::to('/storage/app/public/').'/'.$episodes->path . '.m3u8'  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif ($episodes->type == 'file' || $episodes->type == 'upload'){
+        $episodeURL =   $episodes->mp4_url  ;
+        $episode_player_type =  'video/mp4' ;
+    }elseif ($episodes->type == 'm3u8_url'){
+        $episodeURL =   $episodes->url  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif($episodes->type == 'bunny_cdn'){
+       $episodeURL =   $episodes->url  ;
+       $episode_player_type =  'application/x-mpegURL' ;
+   }else{
+        $episodeURL =  null ;
+        $episode_player_type =  null ;
+   }
 ?>
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
+
+    <div class="container-fluid">
+        @if(!empty($episodes->id))
+                        
+            <div class="top-options row d-flex align-items-center justify-content-end">
+                <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                
+                <?php 
+                    $filename = $episodes->path.'.mp4';
+                    $path = storage_path('app/public/'.$filename);
+                ?>
+                {{-- @if($episodes->status == 1 && $episodes->status == 1  )
+                    <a href="#" class="btn btn-lg btn-primary pull-right ml-2" data-toggle="modal" data-target="#largeModal">Player Perview</a>
+                @endif  --}}
+
+                @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                    @if (file_exists($path))
+                        <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
+                    @endif
+                @endif 
+                
+                <span class="btn btn-primary src-btn position-relative ml-2" onclick="sourceDownload()">Download video source</span>
+                
+            </div>
+        @endif
+    </div>
+
+    @php
+        $m3u8_url = URL::to('/storage/app/public/'. $episodes->path .'.m3u8')   ;
+    @endphp
+    
+    <div class="source_list mb-2" style="display: none;padding-right:5px;">
+        <a href="{{ $episodes->mp4_url}}" download="{{$episodes->title.'.mp4'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>MP4</span></a>
+        @if($episodes->type == 'm3u8')
+            <a href="{{ $m3u8_url}}" download="{{$episodes->title.'.m3u8'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>M3U8</span></a>
+        @endif
+    </div>
+
+     <!-- BREADCRUMBS -->
+     <div class="row mr-2">
+        <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="bc-icons-2">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class="black-text"
+                            href="{{ URL::to('cpp/series_list') }}">{{ ucwords(__('Tv Shows List')) }}</a>
+                        <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+
+                    
+                    <li class="breadcrumb-item">
+                        <a class="black-text"
+                            href="{{ URL::to('cpp/series/edit/'.$series->id )  }}"> {{ __($series->title) }}
+                        </a>
+                        
+                    <i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i>
+                    </li>
+
+                    <li class="breadcrumb-item"><a class="black-text" href="{{ URL::to('cpp/season/edit') . '/' . $series->id  . '/' . $episodes->season_id }}">{{ __('Manage Episodes') }} </a><i class="ri-arrow-right-s-line iq-arrow-right" aria-hidden="true"></i></li>
+                    <li class="breadcrumb-item">{{ __($episodes->title) }}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    @if($episodes->status == 1 && $episodes->status == 1  )
+        <div id="epi-prev">
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                width="auto" height="auto" poster="{{ URL::to('public/uploads/images/'.$episodes->player_image) }}" playsinline="playsinline"
+                >
+                <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                    @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                    @foreach($SeriesSubtitle as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                    @endforeach
+                @endif
+            </video>
+        </div>
+    @endif
+
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
-            <div class="admin-section-title">
-                @if(!empty($episodes->id))
-                <div class="d-flex justify-content-between">
-                    <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
-                    <div class="pull-right">
-                        <a href="{{URL::to('cpp/episode') . '/' . @$episodes->series_title->title . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
-                    </div>
-                </div>
-                @endif
-            </div>
             
 
             <hr />
@@ -158,7 +296,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                            
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -398,7 +536,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 
 
                 <div class="row mt-3">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="m-0">Status Settings</label>
                         <div class="panel-body">
                             <div>
@@ -1023,66 +1161,77 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
    }
         </script>
 
-         {{-- image validation --}}
-     <script>
-        document.getElementById('episode_image').addEventListener('change', function() {
-            var file = this.files[0];
-            if (file) {
-                var img = new Image();
-                img.onload = function() {
-                    var width = img.width;
-                    var height = img.height;
-                    console.log(width);
-                    console.log(height);
-                    
-                    var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                    var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                    console.log(validWidth);
-                    console.log(validHeight);
+      
+    {{-- image validation --}}
+    <script>
+        $(document).ready(function(){
+             $('#image').on('change', function(event) {
+                 var file = this.files[0];
+                 var tmpImg = new Image();
 
-                    if (width !== validWidth || height !== validHeight) {
-                        document.getElementById('season_image_error_msg').style.display = 'block';
-                        $('.pull-right').prop('disabled', true);
-                        document.getElementById('season_image_error_msg').innerText = 
-                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                    } else {
-                        document.getElementById('season_image_error_msg').style.display = 'none';
-                        $('.pull-right').prop('disabled', false);
-                    }
-                };
-                img.src = URL.createObjectURL(file);
-            }
-        });
+                 tmpImg.src=window.URL.createObjectURL( file ); 
+                 tmpImg.onload = function() {
+                 width = tmpImg.naturalWidth,
+                 height = tmpImg.naturalHeight;
+                 console.log('img width: ' + width);
+                 var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                 var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                 console.log('validation width:  ' + validWidth);
 
-        document.getElementById('player_image').addEventListener('change', function() {
-            var file = this.files[0];
-            if (file) {
-                var img = new Image();
-                img.onload = function() {
-                    var width = img.width;
-                    var height = img.height;
-                    console.log(width);
-                    console.log(height);
-                    
-                    var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                    var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                    console.log(validWidth);
-                    console.log(validHeight);
+                 if (width !== validWidth || height !== validHeight) {
+                         document.getElementById('season_image_error_msg').style.display = 'block';
+                         $('.pull-right').prop('disabled', true);
+                         document.getElementById('season_image_error_msg').innerText = 
+                             `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                     } else {
+                         document.getElementById('season_image_error_msg').style.display = 'none';
+                         $('.pull-right').prop('disabled', false);
+                     }
+                 }
+             });
 
-                    if (width !== validWidth || height !== validHeight) {
-                        document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                        $('.pull-right').prop('disabled', true);
-                        document.getElementById('season_thum_image_error_msg').innerText = 
-                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                    } else {
-                        document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                        $('.pull-right').prop('disabled', false);
-                    }
-                };
-                img.src = URL.createObjectURL(file);
-            }
-        });
-    </script>
+             $('#player_image').on('change', function(event) {
+
+                 var file = this.files[0];
+                 var player_Img = new Image();
+
+                 player_Img.src=window.URL.createObjectURL( file ); 
+                 player_Img.onload = function() {
+                 var width = player_Img.naturalWidth;
+                 var height = player_Img.naturalHeight;
+                 console.log('player width ' + width)
+
+                 var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                 var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                 console.log('validation player width:  ' + valid_player_Width);
+
+                 if (width !== valid_player_Width || height !== valid_player_Height) {
+                     $('#player_image_error_msg').show();
+                     $('.update_btn').prop('disabled', true);
+                     document.getElementById('player_image_error_msg').innerText = 
+                     `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                 } else {
+                     $('#player_image_error_msg').hide();
+                     $('.update_btn').prop('disabled', false);
+                 }
+                 }
+             });
+         });
+     </script>
+
+<script>
+    function sourceDownload() {
+        $('.source_list').toggle();
+    }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.src-btn, .source_list').length) {
+            $('.source_list').hide();
+        }
+    });
+</script>
+
+    @include('moderator.cpp.series.player_script')
         @stop @stop @stop
     </div>
 </div>

@@ -558,6 +558,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 {{-- password length validation --}}
 <script>
+
+    $(document).ready(function(){
+        $('#password-confirm').prop('disabled', true);
+        $('#password-confirm').css('opacity', '0.5');
+    });
+
     function checkPass() {
         var pass1 = document.getElementById('password');
         var pass2 = document.getElementById('password-confirm');
@@ -574,11 +580,15 @@ input[type=number]::-webkit-outer-spin-button {
             passwordError.innerHTML = "Strong password";
             $('.sign-up-buttons').prop('disabled', false);
             $('#profileUpdate').prop('disabled', false);
+            $('#password-confirm').prop('disabled', false);
+            $('#password-confirm').css('opacity', '1');
         } else {
             pass1.style.backgroundColor = badColor;
             passwordError.style.color = badColor;
             $('.sign-up-buttons').prop('disabled', true);
             $('#profileUpdate').prop('disabled', true);
+            $('#password-confirm').prop('disabled', true);
+            $('#password-confirm').css('opacity', '0.5');
             passwordError.innerHTML = "Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.";
         }
 

@@ -68,6 +68,13 @@
                                                         <div class="col-md-11 "></div>
 
                                                         <div class="row p-1">
+
+                                                            <div class="row  ages ">
+                                                                <label class="checkbox-inline">
+                                                                    <input type="checkbox" class="age"  name="age[]" value="0-17" /> 0-17
+                                                                </label>
+                                                            </div>
+
                                                             <div class="row  ages ">
                                                                 <label class="checkbox-inline">
                                                                     <input type="checkbox" class="age"  name="age[]" value="18-24" /> 18-24
@@ -106,7 +113,7 @@
 
                                                             <div class="row  ages ">
                                                                 <label class="checkbox-inline">
-                                                                    <input type="checkbox" class="age"  name="age[]" value="unknown" /> unknown
+                                                                    <input type="checkbox" class="age"  name="age[]" value="all" /> All 
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -121,7 +128,7 @@
                                                                 name="gender[]" multiple="multiple" id="gender">
                                                                 <option value="male">Male</option>
                                                                 <option value="female">Female</option>
-                                                                <option value="kids">Kids</option>
+                                                                <option value="other">Other</option>
                                                             </select>
                                                         </div>
                                                     </div> <br>
@@ -179,7 +186,7 @@
                                                                     <option value="pre">Pre</option>
                                                                     <option value="mid">Mid</option>
                                                                     <option value="post">Post</option>
-                                                                    <option value="all">All Position (Only for Ads Type - Tag URL)</option>
+                                                                    <option value="all">All Position</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -234,7 +241,7 @@
 
                                                     <div class="row">
                                                         <div class="col-sm-1">
-                                                            <input type="radio" class="location-hide" id="" name="location" value="all_countries" />
+                                                            <input type="radio" class="location-hide" id="" name="location" value=" " />
                                                         </div>
 
                                                         <div class="col-sm-4" style="margin-left:-30px;">

@@ -71,6 +71,8 @@ class AdminAccessPermissionController extends Controller
                     'enable_videoupload_limit_count'            => !empty($request->enable_videoupload_limit_count) ? 1 : 0 ,
                     'enable_videoupload_limit_status'           => !empty($request->enable_videoupload_limit_status) ? 1 : 0 ,
                     'enable_ugc_management'           => !empty($request->enable_ugc_management) ? 1 : 0 ,
+                    'enable_partner_payouts'           => !empty($request->enable_partner_payouts) ? 1 : 0 ,
+                    'slider_trailer'           => !empty($request->slider_trailer) ? 1 : 0 ,
                  ]);
             }else{
                 
@@ -97,6 +99,8 @@ class AdminAccessPermissionController extends Controller
                     'enable_videoupload_limit_count'            => !empty($request->enable_videoupload_limit_count) ? 1 : 0 ,
                     'enable_videoupload_limit_status'           => !empty($request->enable_videoupload_limit_status) ? 1 : 0 ,
                     'enable_ugc_management'           => !empty($request->enable_ugc_management) ? 1 : 0 ,
+                    'enable_partner_payouts'           => !empty($request->enable_partner_payouts) ? 1 : 0 ,
+                    'slider_trailer'           => !empty($request->slider_trailer) ? 1 : 0 ,
                 ]);
             }
 

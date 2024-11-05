@@ -53,486 +53,456 @@
     
                               {{-- Video.Js Player--}}
 
-      {{-- @if( choosen_player() == 1  )    --}}
-
+      <div id="accordionExample" class="accordion">
             
-         <div id="accordionExample" class="accordion">
-             
-                                          {{-- Website --}}
+                                       {{-- Website --}}
 
-            <button type="button" data-toggle="collapse" data-target="#website-ads-div" aria-expanded="true" 
-               class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link website-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('website', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}" >
-               website
-            </button>
-   
-            <div id="website-ads-div" data-parent="#accordionExample" class="row collapse " >
+         <button type="button" data-toggle="collapse" data-target="#website-ads-div" aria-expanded="true" 
+            class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link website-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('website', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}" >
+            website
+         </button>
 
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="Website">
-               </div>
+         <div id="website-ads-div" data-parent="#accordionExample" class="row collapse " >
 
-               <div class="col-md-12 row">
-
-                   <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre & post Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="video_js_pre_position_ads" >
-
-                        <option value=" " > Select the Pre & Post Position Advertisement </option>
-
-                        <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-            
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="video_js_mid_position_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  ( $video->video_js_mid_position_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-                        @foreach( $ads_category as $ads_category )
-                           <option value="{{ $ads_category->id }}"  {{  ( $video->video_js_mid_position_ads_category == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $video->video_js_mid_advertisement_sequence_time }}" >
-                  </div>
-               </div>
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="Website">
             </div>
 
-                                          {{-- Andriod --}}
-               
-            <button type="button" data-toggle="collapse" data-target="#Andriod-ads-div" aria-expanded="false"
-               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Andriod-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('android', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Andriod 
-            </button>
+            <div class="col-md-12 row">
+
+                  <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre & post Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="video_js_pre_position_ads" >
+
+                     <option value=" " > Select the Pre & Post Position Advertisement </option>
+
+                     <option value="random_ads" {{  ( $video->video_js_pre_position_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                     @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  ( $video->video_js_pre_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+         
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="video_js_mid_position_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  ( $video->video_js_mid_position_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+                     @foreach( $ads_category as $ads_category )
+                        <option value="{{ $ads_category->id }}"  {{  ( $video->video_js_mid_position_ads_category == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $video->video_js_mid_advertisement_sequence_time }}" >
+               </div>
+            </div>
+         </div>
+
+                                       {{-- Andriod --}}
+            
+         <button type="button" data-toggle="collapse" data-target="#Andriod-ads-div" aria-expanded="false"
+            class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Andriod-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('android', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Andriod 
+         </button>
+                     
+         <div id="Andriod-ads-div" data-parent="#accordionExample" class="row collapse"  >
+
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="Andriod">
+            </div>
+
+            <div class="col-md-12 row">
+
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="andriod_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"android"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="andriod_vj_post_position_ads" >
+   
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"android"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="andriod_vj_mid_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->andriod_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="andriod_mid_sequence_time"  placeholder="HH:MM:SS"  id="andriod_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->andriod_mid_sequence_time : null }}" >
+               </div>
+            </div>
+         </div>
+            
+                                       {{-- IOS --}}
+
+         <button type="button" data-toggle="collapse" data-target="#IOS-ads-div" aria-expanded="false"
+            aria-controls="collapseThree"
+            class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link IOS-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('IOS', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">IOS
+         </button>
+
+         <div class=" collapse" data-parent="#accordionExample" id="IOS-ads-div"  >
+
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="IOS">
+            </div>
+
+            <div class="col-md-12 row">
+
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="ios_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"IOS"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="ios_vj_post_position_ads" >
+   
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"IOS"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="ios_vj_mid_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="ios_mid_sequence_time"  placeholder="HH:MM:SS"  id="ios_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->ios_mid_sequence_time : null }}" >
+               </div>
+            </div>
+         </div>
+
+                                          {{-- TV --}}
+
+         <button type="button" data-toggle="collapse" data-target="#TV-ads-div" aria-expanded="false"
+            aria-controls="collapseFour"
+            class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link TV-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('TV', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">TV
+         </button>
+
+         <div class="row collapse" data-parent="#accordionExample" id="TV-ads-div"  >
+
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="TV">
+            </div>
+
+            <div class="col-md-12 row">
+
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="tv_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"TV"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="tv_vj_post_position_ads" >
+   
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->tv_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"TV"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="tv_vj_mid_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="tv_mid_sequence_time"  placeholder="HH:MM:SS"  id="tv_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->tv_mid_sequence_time : null }}" >
+               </div>
+            </div>
+         </div>
+
+                                          {{-- Roku --}}
+
+         <button type="button" data-toggle="collapse" data-target="#Roku-ads-div" aria-expanded="false"
+            aria-controls="collapseFive"
+            class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Roku-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('roku', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Roku
+         </button>
+                                 
+         <div class="row collapse" data-parent="#accordionExample" id="Roku-ads-div"  >
+
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="Roku">
+            </div>
+
+            <div class="col-md-12 row">
+
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="roku_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"roku"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="roku_vj_post_position_ads" >
+   
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"roku"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{ !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->roku_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="roku_vj_mid_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="roku_mid_sequence_time"  placeholder="HH:MM:SS"  id="roku_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->roku_mid_sequence_time : null }}" >
+               </div>
+            </div>
+         </div>
+
+                                       {{-- LG --}}
+
+         <button type="button" data-toggle="collapse" data-target="#LG-ads-div" aria-expanded="false"
+            aria-controls="collapseFive"
+            class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link LG-ads-button"
+            style="display: {{ !is_null($admin_videos_ads) && in_array('lg', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">LG
+         </button>
                         
-            <div id="Andriod-ads-div" data-parent="#accordionExample" class="row collapse"  >
+         <div class="row collapse" data-parent="#accordionExample" id="LG-ads-div"  >
 
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="Andriod">
-               </div>
-
-               <div class="col-md-12 row">
-
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="andriod_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="andriod_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['android'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="andriod_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->andriod_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->andriod_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="andriod_mid_sequence_time"  placeholder="HH:MM:SS"  id="andriod_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->andriod_mid_sequence_time : null }}" >
-                  </div>
-               </div>
-            </div>
-              
-                                          {{-- IOS --}}
-
-            <button type="button" data-toggle="collapse" data-target="#IOS-ads-div" aria-expanded="false"
-               aria-controls="collapseThree"
-               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link IOS-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('IOS', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">IOS
-            </button>
-
-            <div class=" collapse" data-parent="#accordionExample" id="IOS-ads-div"  >
-
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="IOS">
-               </div>
-
-               <div class="col-md-12 row">
-
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="ios_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="ios_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['IOS'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->ios_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="ios_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->ios_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="ios_mid_sequence_time"  placeholder="HH:MM:SS"  id="ios_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->ios_mid_sequence_time : null }}" >
-                  </div>
-               </div>
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="LG">
             </div>
 
-                                           {{-- TV --}}
+            <div class="col-md-12 row">
 
-            <button type="button" data-toggle="collapse" data-target="#TV-ads-div" aria-expanded="false"
-               aria-controls="collapseFour"
-               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link TV-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('TV', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">TV
-            </button>
-
-            <div class="row collapse" data-parent="#accordionExample" id="TV-ads-div"  >
-
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="TV">
-               </div>
-
-               <div class="col-md-12 row">
-
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="tv_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="tv_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->tv_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['TV'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="tv_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->tv_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="tv_mid_sequence_time"  placeholder="HH:MM:SS"  id="tv_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->tv_mid_sequence_time : null }}" >
-                  </div>
-               </div>
-            </div>
-
-                                           {{-- Roku --}}
-
-            <button type="button" data-toggle="collapse" data-target="#Roku-ads-div" aria-expanded="false"
-               aria-controls="collapseFive"
-               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Roku-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('roku', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Roku
-            </button>
-                                    
-            <div class="row collapse" data-parent="#accordionExample" id="Roku-ads-div"  >
-
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="Roku">
-               </div>
-
-               <div class="col-md-12 row">
-
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="roku_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="roku_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['roku'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{ !is_null( $admin_videos_ads ) &&  ( $admin_videos_ads->roku_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="roku_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->roku_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="roku_mid_sequence_time"  placeholder="HH:MM:SS"  id="roku_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->roku_mid_sequence_time : null }}" >
-                  </div>
-               </div>
-            </div>
-
-                                          {{-- LG --}}
-
-            <button type="button" data-toggle="collapse" data-target="#LG-ads-div" aria-expanded="false"
-               aria-controls="collapseFive"
-               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link LG-ads-button"
-               style="display: {{ !is_null($admin_videos_ads) && in_array('lg', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">LG
-            </button>
-                           
-            <div class="row collapse" data-parent="#accordionExample" id="LG-ads-div"  >
-
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="LG">
-               </div>
-
-               <div class="col-md-12 row">
-
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="lg_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="lg_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['lg'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-
-               </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="lg_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
-
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="lg_mid_sequence_time"  placeholder="HH:MM:SS"  id="lg_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->lg_mid_sequence_time : null }}" >
-                  </div>
-               </div>
-            </div>
-
-                                          {{-- Samsung --}}
-
-            <button type="button" data-toggle="collapse" data-target="#Samsung-ads-div" aria-expanded="false"
-                  aria-controls="collapseFive"
-                  class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Samsung-ads-button"
-                  style="display: {{ !is_null($admin_videos_ads) && in_array('samsung', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Samsung
-            </button>
-
-            <div class="row collapse" data-parent="#accordionExample" id="Samsung-ads-div"  >
-
-               <div class="col-md-12">
-                  <hr class="hr-text" data-content="Samsung">
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="lg_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"lg"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
                </div>
    
-               <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="lg_vj_post_position_ads" >
    
-                  <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
-                     <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                     <select class="form-control" name="samsung_vj_pre_postion_ads" >
-      
-                        <option value=" " > Select the Pre-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
-                     <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                     <select class="form-control" name="samsung_vj_post_position_ads" >
-      
-                        <option value=" " > Select the Post-Position Advertisement </option>
-                        <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
-      
-                        @foreach ( App\Advertisement::where('status',1)->whereJsonContains('ads_devices',['samsung'])->get() as $video_js_Advertisement)
-                           <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
    
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"lg"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
                </div>
-               
-               <div class="col-md-12 row">
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                     <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                     <select class="form-control" name="samsung_vj_mid_ads_category" >
-      
-                        <option value=" " > Select the Mid-Position Advertisement Category </option>
-                        <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-      
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="lg_vj_mid_ads_category" >
    
-                        @foreach( $advertisements_category as $ads_categories )
-                           <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-      
-                  <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
-                     <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                     <input type="text" class="form-control" name="samsung_mid_sequence_time"  placeholder="HH:MM:SS"  id="samsung_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->samsung_mid_sequence_time : null  }}" >
-                  </div>
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->lg_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="lg_mid_sequence_time"  placeholder="HH:MM:SS"  id="lg_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->lg_mid_sequence_time : null }}" >
                </div>
             </div>
          </div>
 
-         {{-- Plyr.io Player --}}
-      {{-- @else                          
-         <div class="row">
-            <div class="col-sm-6 form-group mt-3">                        
-               <label class="">Choose the Ads Position</label>
-               <select class="form-control" name="tag_url_ads_position" id="tag_url_ads_position">
-                  <option value=" ">Select the Ads Position </option>
-                  <option value="pre"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                  <option value="mid"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                  <option value="post" @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                  <option value="all"  @if(($video->tag_url_ads_position != null ) && $video->tag_url_ads_position == 'all'){{ 'selected' }}@endif >   All Ads Position</option>
-               </select>
+                                       {{-- Samsung --}}
+
+         <button type="button" data-toggle="collapse" data-target="#Samsung-ads-div" aria-expanded="false"
+               aria-controls="collapseFive"
+               class="btn btn-link collapsed text-dark font-weight-bold text-uppercase collapsible-link Samsung-ads-button"
+               style="display: {{ !is_null($admin_videos_ads) && in_array('samsung', json_decode($admin_videos_ads->ads_devices)) ? 'block-inline' : 'none' }}">Samsung
+         </button>
+
+         <div class="row collapse" data-parent="#accordionExample" id="Samsung-ads-div"  >
+
+            <div class="col-md-12">
+               <hr class="hr-text" data-content="Samsung">
             </div>
 
-            <div class="col-sm-6 form-group mt-3" id="ads_tag_url_id_div" >   
-               <label class="">Choose Advertisement</label>
-               <select class="form-control" name="ads_tag_url_id" id="ads_tag_url_id">
-                  @if( $ads_tag_urls != null)
-                     <option id="" value="{{ $ads_tag_urls->id   }} " {{ 'selected' }} > {{ $ads_tag_urls->ads_name  }} </option>
-                  @else
-                     <option value=" ">Select the Advertisement</option>
-                  @endif
-               </select>
+            <div class="col-md-12 row">
+
+               <div class="col-sm-6 form-group mt-3">           {{-- Pre-Advertisement --}}
+                  <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                  <select class="form-control" name="samsung_vj_pre_postion_ads" >
+   
+                     <option value=" " > Select the Pre-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"samsung"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_pre_postion_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Post-Advertisement--}}
+                  <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                  <select class="form-control" name="samsung_vj_post_position_ads" >
+   
+                     <option value=" " > Select the Post-Position Advertisement </option>
+                     <option value="Random" {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == "Random" ) ? 'selected' : '' }} > Random Ads </option>
+   
+                     @foreach ( App\Advertisement::where('status',1)->where('ads_devices','LIKE', '%"samsung"%')->get() as $video_js_Advertisement)
+                        <option value="{{ $video_js_Advertisement->id }}"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_post_position_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+
+            </div>
+            
+            <div class="col-md-12 row">
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                  <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                  <select class="form-control" name="samsung_vj_mid_ads_category" >
+   
+                     <option value=" " > Select the Mid-Position Advertisement Category </option>
+                     <option value="random_category"  {{  !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_mid_ads_category == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+   
+
+                     @foreach( $advertisements_category as $ads_categories )
+                        <option value="{{ $ads_categories->id }}"  {{ !is_null( $admin_videos_ads ) && ( $admin_videos_ads->samsung_vj_mid_ads_category == $ads_categories->id ) ? 'selected' : '' }} > {{ $ads_categories->name }}</option>
+                     @endforeach
+                  </select>
+               </div>
+   
+               <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement sequence time--}}
+                  <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                  <input type="text" class="form-control" name="samsung_mid_sequence_time"  placeholder="HH:MM:SS"  id="samsung_mid_sequence_time" value="{{ !is_null( $admin_videos_ads ) ? $admin_videos_ads->samsung_mid_sequence_time : null  }}" >
+               </div>
             </div>
          </div>
-      @endif --}}
+      </div>
 
       <div class="row">
 
