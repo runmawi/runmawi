@@ -9,7 +9,7 @@
 
     .bootstrap-select>.dropdown-toggle {
         background-color: transparent !important;
-        width: 92% !important;
+        width: 85% !important;
 
     }
 
@@ -30,6 +30,7 @@
     }
     .banner_img{height: 400px;overflow: hidden;}
     .banner_img img{height: 100%;width: 100%;object-fit: cover;}
+    .contents{margin-top: 10rem;}
     @media(min-width:1800px){
         .banner_img{height:800px;}
     }
@@ -53,18 +54,14 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
 
 ?>
 
-<div class="main-content">
+<div class="main-content" style="background:linear-gradient(to top, rgba(0, 0, 0, 50.8)45%, rgba(0, 0, 0, 0) 100%), url('{{ URL::to('/public/uploads/videocategory/'.$category_data->banner_image) }}');background-size: cover;background-position: center;">
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
                 <div class="col-sm-12 ">
-                   <div class="banner_img">
-                        <img src="{{ URL::to('public/uploads/videocategory/'.$category_data->banner_image)}}" alt="">
-                   </div>
-
                     <!-- BREADCRUMBS -->
                     <div class=" d-flex">
-                        <div class="nav nav-tabs nav-fill container-fluid nav-div" id="nav-tab" role="tablist">
+                        <div class="nav nav-tabs nav-fill container-fluid nav-div m-0" id="nav-tab" role="tablist">
                             <div class="bc-icons-2">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a class="black-text"
@@ -83,19 +80,18 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                             </div>
                         </div>
                     </div>
-
-
                     
+                    <div class="contents">
+                        @partial('categoryvids_section_filter')
 
-                    @partial('categoryvids_section_filter')
+                        {{-- Main Content  --}}
+                        <div class="iq-main-header align-items-center d-flex justify-content-between">
+                            <h4 class=""><?php echo __($categoryVideos['category_title']); ?></h4>
+                        </div>
 
-                    {{-- Main Content  --}}
-                    <div class="iq-main-header align-items-center d-flex justify-content-between">
-                        <h4 class=""><?php echo __($categoryVideos['category_title']); ?></h4>
-                    </div>
-
-                    <div class="data">
-                        @partial('categoryvids_section')
+                        <div class="data">
+                            @partial('categoryvids_section')
+                        </div>
                     </div>
                 </div>
             </div>
