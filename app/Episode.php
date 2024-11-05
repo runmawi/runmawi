@@ -12,5 +12,8 @@ class Episode extends Model
     public function series_title(){
 		    return $this->belongsTo('App\Series','series_id','id');
   	}
-    
+
+    public function channeluser(){
+      return $this->belongsTo('App\Channel','user_id','id');
+    }
 }
