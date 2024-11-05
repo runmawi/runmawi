@@ -58,8 +58,8 @@
 
 
 <!-- Modal -->
-    <div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -70,6 +70,10 @@
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen>
                             </iframe>
+                        <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" src="<?= $videodetail->trailer ?>" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                            </video>
                         <?php else: ?>
                             <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" controls width="100%" height="auto">
                                 <source src="<?= $videodetail->trailer ?>" type="video/mp4">
@@ -131,7 +135,6 @@
         });
         $(".btn-close").click(function(){
                 player.pause();  
-                // $('#video-js-trailer-modal').modal('hide');
         });
         
     });

@@ -175,6 +175,9 @@ border-radius: 0px 4px 4px 0px;
                             <a class="list-group-item list-group-item-action list-group-item-light " id="site_setting" href="#!">Site Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="ppv_setting" href="#!">PPV Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="video_setting" href="#!">Video Settings</a>
+                            @if(!empty($adminaccesspermission) && $adminaccesspermission->slider_trailer == 1)
+                                <a class="list-group-item list-group-item-action list-group-item-light " id="slider_settings" href="#!">Slider Settings</a>
+                            @endif
                             <a class="list-group-item list-group-item-action list-group-item-light " id="registration_setting" href="#!">Registration Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="email_setting" href="#!">Email Settings</a>
                             <a class="list-group-item list-group-item-action list-group-item-light " id="social_setting" href="#!">Social Networks Settings</a>
@@ -988,6 +991,40 @@ border-radius: 0px 4px 4px 0px;
                                                             </label>
                                                         </div>
                                                     <div>ON</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slider setting -->
+                        <div class="container-fluid" id="trailer_slider">
+                            <div class="panel panel-primary mt-3" data-collapsed="0">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title mb-4">Slider settings</h5>
+                                    <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+
+                                        <div class="col-sm-10">
+                                            <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                                style="width: ;">
+                                                <div><label class="mt-1">Enable trailer on slider: </label></div>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="pr-2">OFF</div>
+                                                    <div class="mt-1">
+                                                        <label class="switch">
+                                                            <input type="checkbox" @if(!isset($settings->slider_trailer) ||
+                                                            (isset($settings->slider_trailer) && $settings->slider_trailer))checked="checked"
+                                                            value="1"@else value="0"@endif name="slider_trailer" id="slider_trailer" />
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="pl-2">ON</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -2250,6 +2287,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 
 
 	$('#site_setting').click(function(){
@@ -2276,6 +2314,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
     $('#button_text_setting').click(function(){
@@ -2302,6 +2341,7 @@ border-radius: 0px 4px 4px 0px;
 		$('#time_zone_setting').hide();
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#recpatcha_setting').click(function(){
@@ -2329,6 +2369,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
 	$('#ppv_setting').click(function(){
@@ -2356,6 +2397,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#video_setting').click(function(){
@@ -2381,6 +2423,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#registration_setting').click(function(){
@@ -2406,6 +2449,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#email_setting').click(function(){
@@ -2431,6 +2475,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#social_setting').click(function(){
@@ -2457,6 +2502,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#subscription_setting').click(function(){
@@ -2483,6 +2529,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#login_setting').click(function(){
@@ -2510,6 +2557,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#advertisement_setting').click(function(){
@@ -2537,6 +2585,7 @@ border-radius: 0px 4px 4px 0px;
         $('#css_custom_setting').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 
@@ -2566,6 +2615,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
     $('#custom_css_setting').click(function(){
 		$('#site').hide();
@@ -2593,6 +2643,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').show();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
 	$('#app_setting').click(function(){
@@ -2621,6 +2672,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
 	});
 
     $("#default_Image_setting").click(function () {
@@ -2652,6 +2704,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
     $("#transcoding_setting").click(function () {
@@ -2680,6 +2733,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
     $("#series_setting").click(function () {
@@ -2709,6 +2763,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
     $("#rtmp_url_setting").click(function () {
@@ -2739,6 +2794,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
     $("#cpp_payouts_setting").click(function () {
@@ -2769,6 +2825,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
 
@@ -2797,6 +2854,7 @@ border-radius: 0px 4px 4px 0px;
         $('#search_setting_form').hide();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
+        $('#trailer_slider').hide();
     });
 
     $("#search_setting").click(function () {
@@ -2825,9 +2883,36 @@ border-radius: 0px 4px 4px 0px;
         $('#settingupdate').show();
         $('#css_custom_setting').hide();
         $('#button_text').hide();
-
+        $('#trailer_slider').hide();
 
     });
+
+    $('#slider_settings').click(function(){
+        $('#button_text').hide();
+		$('#site').hide();
+		$('#videos_settings').hide();
+		$('#ppv').hide();
+		// $('#videos_settings').hide();
+		$('#registration').hide();
+		$('#email').hide();
+		$('#social').hide();
+		$('#subscription').hide();
+		$('#login').hide();
+		$('#advertisement').hide();
+        $('#script').hide();
+		$('#app').hide();
+        $("#Defaut_image_setting").hide();
+        $("#transcodingsetting").hide();
+        $("#seasonsetting").hide();
+        $("#rtmp_url").hide();
+		$('#settingupdate').show();
+		$('#cpp_payouts').hide();
+		$('#recpatcha_settings').hide();
+		$('#time_zone_setting').hide();
+        $('#search_setting_form').hide();
+        $('#css_custom_setting').hide();
+        $('#trailer_slider').show();
+	});
 
 	});
 </script>

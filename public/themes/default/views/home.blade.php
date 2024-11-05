@@ -25,6 +25,7 @@ $homepage_array_data = [
          'live_event_banners'    => $live_event_banners,
          'Episode_sliders'       => $Episode_sliders,
          'VideoCategory_banner'  => $VideoCategory_banner,
+         'settings'              => $settings,
    );
 
    $continue_watching = array(
@@ -253,11 +254,12 @@ $(".home-search").hide();
 </script>
 
 <style>
-
+.s-bg-1:hover video{display: block;}
+.s-bg-1 video{display: none;}
 .des-more-less-btns{border: none;
-background: transparent;
-cursor: pointer;
-margin-bottom: 10px;}
+                  background: transparent;
+                  cursor: pointer;
+                  margin-bottom: 10px;}
 .video_title_images{width: 50%;}
 @media (min-width:2400px){
    .descp{max-height: 320px !important;}
@@ -326,5 +328,63 @@ var flkty = new Flickity(elem, {
          image.setAttribute('height', renderedHeight);
       });
    });
+
+
+   $('.myvideos').each(function () {
+      const video = $(this).get(0);
+
+      $(this).hover(
+         function () {
+               video.play();
+         },
+         function () {
+               video.pause();
+         }
+      );
+   });
+
+   // Volume toggle code
+   $('.volume-icon').on('click', function () {
+      const video = $(this).closest('.s-bg-1').find('.myvideos').get(0);
+
+      if (video.muted) {
+         video.muted = false;
+         $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
+      } else {
+         video.muted = true;
+         $(this).removeClass('fa-volume-up').addClass('fa-volume-off');
+      }
+   });
+
+
    
 </script>
+
+<style>
+
+   .volume-icon-container {display:none;}
+   .s-bg-1:hover .volume-icon-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+      pointer-events: none;
+      display: block;
+   }
+
+   .volume-icon {
+      pointer-events: auto;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: color 0.3s;
+   }
+
+   .volume-icon:hover {
+      color: #ffcc00;
+   }
+
+
+</style>
