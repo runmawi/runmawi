@@ -53,21 +53,19 @@
         // Ads Marker
 
 
-        let viewCountSent = false;
-
-        function LivestreamPlayedViews(videoId, currentTime) {
+        function LivestreamPartnerMonetization(videoId, currentTime) {
             currentTime = Math.floor(currentTime);
             console.log(currentTime);
 
             var countview;
 
-            if (currentTime == 5 && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
                 viewCountSent = true;
                 countview = 1;
                 console.log('AJAX request will be sent.');
 
                 $.ajax({
-                    url: "<?php echo URL::to('LivestreamPlayedViews');?>",
+                    url: "<?php echo URL::to('LivestreamPartnerMonetization');?>",
                     type: 'POST',
                     data: {
                         _token: '<?= csrf_token() ?>',
@@ -76,7 +74,7 @@
                         countview: countview,
                     },
                     success: function(response) {
-                        console.log('View count incremented:', response);
+                        console.log('View count incremented and monetization updated:', response);
                     },
                     error: function(xhr, status, error) {
                         console.error('Failed to increment view count:', error);
@@ -88,23 +86,22 @@
             console.log('countview: ' + countview);
         }
 
-        function LiveStreamAmountPerView(videoId) {
-                $.ajax({
-                    url: "<?php echo URL::to('LiveStreamAmountPerView');?>",
-                    type: 'POST',
-                    data: {
-                        _token: '<?= csrf_token() ?>',
-                        video_id: videoId,
-                    },
-                    success: function(response) {
-                        console.log('Success', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed', error);
-                    }
-                });
-            }
-        }
+        player.on('timeupdate', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+        });
+
+        player.on('pause', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+
+        });
+
+        window.addEventListener('beforeunload', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+        });
+
 
         player.on("loadedmetadata", function() {
 
@@ -149,28 +146,6 @@
                     marker_space.append(el);
                 }
             }
-
-            
-            player.on('timeupdate', function() {
-                var currentTime = player.currentTime();
-                LivestreamPlayedViews(videoId, currentTime);
-                LiveStreamAmountPerView(videoId);                
-            });
-
-            player.on('pause', function() {
-                var currentTime = player.currentTime();
-                LivestreamPlayedViews(videoId, currentTime);
-                LiveStreamAmountPerView(videoId);                
-
-            });
-
-            window.addEventListener('beforeunload', function() {
-                var currentTime = player.currentTime();
-                LivestreamPlayedViews(videoId, currentTime);
-                LiveStreamAmountPerView(videoId);                
-            });
-
-
         });
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 

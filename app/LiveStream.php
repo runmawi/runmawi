@@ -46,4 +46,8 @@ class LiveStream extends Model
 	public function usernames(){
 		return $this->belongsTo('App\User','user_id','id');
 	}
+
+	public function channeluser(){
+		return $this->belongsTo('App\Channel','user_id','id');
+	}
 }

@@ -1005,6 +1005,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
          </li>
 
           {{--Partner Payouts --}}
+          {{--Partner Payouts --}}
+          @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_partner_payouts == 1)
           <li>
                <div class="men" style="">
                   <p class="lnk" >{{ (__('Partner Payouts')) }}</p>
@@ -1016,9 +1018,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                </a>
                
                <ul id="parnter_monetization_payouts" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                  <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts List')) }}</a></li>
+                  <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts')) }}</a></li>
+                  <li><a href="{{ route('partner-monetization-analytics') }}">{{ (__('Partner Payouts Analytics')) }}</a></li>
+                  <li><a href="{{ route('partner-monetization-history') }}">{{ (__('Partner Payment History')) }}</a></li>
                </ul>
          </li>
+         @endif
 
 
            {{--Live Stream  --}}
