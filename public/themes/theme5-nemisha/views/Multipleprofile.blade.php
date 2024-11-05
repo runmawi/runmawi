@@ -10,12 +10,12 @@
     <style>
         li{list-style:none;}
         body{background: #000;padding: 20px;vertical-align: middle;height: 100%;}
-        .login-success {border: 2px solid black;width: 30%;height: 50px;font-size: 18px;background: #279619;align-items: center;margin-left: auto;display: flex;justify-content: center;}
+        .login-success {border: 2px solid black;width: 20%;height: 50px;font-size: 18px;font-weight: 600;background: #8cff7d;align-items: center;float: inline-end;justify-content: center;box-shadow: 5px 5px #454545;}
     </style>
 </head>
 <div class="message">
-    <div class="login-success d-flex text-white">
-        <span>Logged in successfully</span>
+    <div class="login-success d-flex">
+        <span style="color: #000">Logged in successfully</span>
     </div>
 </div>
 

@@ -296,7 +296,31 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <div class="iq-card">
             <div class="admin-section-title">
 
-                
+            @if($episodes->status == 1 && $episodes->status == 1  )
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
+            @endif   
+
+            <br>
+            @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                @if (file_exists($path))
+                    <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
+                @endif
+            @endif   
+            
+            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+                <div class="col-sm-12">
+                    Video Transcoding is under Progress
+                    <div class="progress">
+                        <div class="low_bar"></div >
+                    </div>
+                    <div class="low_percent">0%</div >
+                </div>
+
+                <!-- <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+               </div> -->
+               
+            @endif
 
             <div class="container">                
                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -314,12 +338,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             >
                             <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
 
-                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
-                                @foreach($SeriesSubtitle as $subtitles_file)
-                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
-                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
-                                @endforeach
-                            @endif
+                                @if(isset($SeriesSubtitle))
+                                    @foreach($SeriesSubtitle as $subtitles_file)
+                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                    @endforeach
+                                @endif
                         </video>
                     </div>
                     <div class="modal-footer">
@@ -859,9 +883,48 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
 
         </script>
-
+        
         <script>
-            
+            document.addEventListener("DOMContentLoaded", function() {
+                var player = videojs('my-video', { // Video Js Player
+                    aspectRatio: '16:9',
+                    fill: true,
+                    playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                    fluid: true,
+                    controlBar: {
+                        volumePanel: { inline: false },
+                        children: {
+                            'playToggle': {},
+                            // 'currentTimeDisplay': {},
+                            'liveDisplay': {},
+                            'flexibleWidthSpacer': {},
+                            'progressControl': {},
+                            'remainingTimeDisplay': {},
+                            'fullscreenToggle': {},
+                            // 'audioTrackButton': {},
+                            'subtitlesButton': {},
+                        },
+                        pictureInPictureToggle: true,
+                    },
+                    html5: {
+                        vhs: {
+                            overrideNative: true,
+                        }
+                    }
+                });
+                const text = document.querySelector('.vjs-text-track-cue');
+                console.log("text",text);
+                
+            });
+        </script>
+
+        <style>
+            .vjs-text-track-cue {
+                inset: 583.333px 0px 0px !important;
+            }
+        </style>
+
+        <script>            
          
             $(document).ready(function ($) {
 
