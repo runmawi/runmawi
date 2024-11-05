@@ -111,12 +111,10 @@
                            <input type="text" name="plan_name" id="plan_name" class="form-control" placeholder="Plan Name" >
                         </div>
 
-
                         @forelse ($payment_settings as $item)
-
                            <div class="col-md-12 pb-2">
                               <label>{{ $item->payment_type }} Plan ID:</label>
-                              <input type="text" id="plan_id" name=" plan_id" value="" class="form-control" placeholder="Plan ID">
+                              <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
                               <input type="hidden" id="paymentGateway" name="paymentGateway[]" value={{ $item->payment_type}}  class="form-control" placeholder="paymentGateway">
                               <p>* Get Plan Key From {{ $item->payment_type }}</p>
                            </div>

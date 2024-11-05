@@ -2357,10 +2357,13 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // CinetPay- Series/Season Rent
     Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
 
-    // Content Partner - Home Page
+    // Content Partner
 
     Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
     Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
+
+    Route::get('channel-partner-payment', 'ChannelPartnerController@channelparnterpayment')->name('channel-partner-payment');
+    Route::get('channel-partner-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
 
     // Live Event For artist
     Route::get('/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
@@ -2509,6 +2512,12 @@ Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
     Route::get('createSubscription', 'RecurlyPaymentController@createSubscription')->name('Recurly.subscription');
     Route::get('subscription-cancel/{subscription_id}', 'RecurlyPaymentController@CancelSubscription')->name('Recurly.Subscription_cancel');
     Route::get('upgrade-subscription', 'RecurlyPaymentController@UpgradeSubscription')->name('Recurly.UpgradeSubscription');
+
+    Route::post('channel-checkout-page', 'RecurlyPaymentChannelController@channel_checkout_page')->name('channel.Recurly.checkout_page');
+    Route::get('channel-createSubscription', 'RecurlyPaymentChannelController@channelcreateSubscription')->name('channel.Recurly.subscription');
+    Route::get('channel-subscription-cancel/{subscription_id}', 'RecurlyPaymentChannelController@channelCancelSubscription')->name('channel.Recurly.Subscription_cancel');
+    Route::get('channel-upgrade-subscription', 'RecurlyPaymentChannelController@channeUpgradeSubscription')->name('channel.Recurly.UpgradeSubscription');
+
 
 });
 
