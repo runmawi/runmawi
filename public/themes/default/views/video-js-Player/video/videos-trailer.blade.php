@@ -71,11 +71,11 @@
                                 allowfullscreen>
                             </iframe>
                         <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
-                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" src="<?= $videodetail->trailer ?>" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
                                 <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
                             </video>
                         <?php else: ?>
-                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" controls width="100%" height="auto">
+                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
                                 <source src="<?= $videodetail->trailer ?>" type="video/mp4">
                             </video>                 
                         <?php endif; ?>

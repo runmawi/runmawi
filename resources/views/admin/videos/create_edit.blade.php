@@ -1217,7 +1217,7 @@ button[data-plyr="captions"] {
                               <div class="col-sm-8 mt-5 form-group">
                                  <!--<p>Upload Trailer video</p>-->
                                  @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
-                                 <video width="200" height="200" controls>
+                                 <video width="500" height="200" controls>
                                     <source src="{{ $video->trailer }}" type="video/mp4" />
                                  </video>
                                  @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
@@ -1229,15 +1229,7 @@ button[data-plyr="captions"] {
                         </div>
                      </div>
 
-                     <div class="row">
-                        <div class="col-sm-5">
-                           @if(!empty($video->trailer))
-                              <video width="200" height="200" controls style="width: 90%;">
-                                 <source src="<?php echo $video->trailer; ?>" type="video/mp4" />
-                              </video>
-                           @endif
-                        </div>
-                     </div>
+                    
 
                      <div class="row mt-3">
                         <div class="col-sm-8  form-group">

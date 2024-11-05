@@ -81,7 +81,7 @@
 										<!-- <td class="text-warning">{{ $log->ip }}</td> -->
 										<td class="text-danger">{{ $log->agent }}</td>
 										<!-- <td>{{ $log->user_id }}</td> -->
-										<td>{{ $log->username->username }}</td>
+										<td>@if(!empty($log->username->username)){{ @$log->username->username }} @else No Name @endif</td>
 										<td>@if(!empty($log->video_title->title)){{ @$log->video_title->title }} @else No Title @endif</td>
 										<td>@if(!empty($log->video_category->name)){{ @$log->video_category->name }} @else No Category @endif</td>
 										<td>@if(!empty($log->video_language->name)){{ @$log->video_language->name }} @else No Language @endif</td>
