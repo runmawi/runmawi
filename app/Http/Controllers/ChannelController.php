@@ -174,6 +174,7 @@ class ChannelController extends Controller
             $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
             $category_id     = VideoCategory::where('slug', $cid)->pluck('id');
             $category_title  = VideoCategory::where('id', $category_id)->pluck('name')->first();
+            $category_data  = VideoCategory::where('id', $category_id)->first();
             $categoryVideo = CategoryVideo::where('category_id',$category_id->first())->groupBy('video_id')->pluck('video_id');
 
             // categoryVideos
@@ -356,6 +357,7 @@ class ChannelController extends Controller
             $data = [
                 'currency'          => CurrencySetting::first(),
                 'category_title'    => $category_title,
+                'category_data'     => $category_data,
                 'categoryVideos'    =>  $categoryVideos,
                 'ppv_gobal_price'   => $ppv_gobal_price,
                 'ThumbnailSetting'  => $ThumbnailSetting,
@@ -367,7 +369,7 @@ class ChannelController extends Controller
                 'video_categories'  => $video_categories ,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
             ];
-            return Theme::view('categoryvids', ['categoryVideos' => $data]);
+            return Theme::view('categoryvids', ['categoryVideos' => $data, 'category_data' => $category_data]);
 
         } catch (\Throwable $th) {
             return $th->getMessage();
