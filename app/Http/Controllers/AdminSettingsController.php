@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\File;
 use App\Jobs\ConvertVideoClip;
 use App\Css;
 use App\ButtonText;
+use App\AdminAccessPermission;
 
 //use Illuminate\Http\Request;
 
@@ -91,7 +92,8 @@ class AdminSettingsController extends Controller
             $css = Css::pluck('custom_css')->first();
             $button_text = ButtonText::first();
             $TimeZone = TimeZone::get();
-            // dd($script);
+            $adminaccesspermission = AdminAccessPermission::first();
+            // dd($adminaccesspermission);
             $data = [
                 'admin_user' => Auth::user(),
                 'app_settings' => $app_settings,
@@ -104,6 +106,7 @@ class AdminSettingsController extends Controller
                 'sitemap' => $sitemap,
                 'css'     => $css,
                 'button_text'  => $button_text,
+                'adminaccesspermission'  => $adminaccesspermission,
             ];
 
             return \View::make('admin.settings.index', $data);
@@ -534,6 +537,7 @@ class AdminSettingsController extends Controller
         $settings->series_networks_status = !empty($request->series_networks_status) ?  "1" : "0" ;
         $settings->videos_expiry_status = !empty($request->videos_expiry_status) ?  "1" : "0" ;
         $settings->epg_status           = !empty($request->epg_status) ?  "1" : "0" ;
+        $settings->slider_trailer           = !empty($request->slider_trailer) ?  "1" : "0" ;
 
         
         // expiry for video

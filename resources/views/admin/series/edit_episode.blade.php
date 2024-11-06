@@ -130,11 +130,17 @@
     margin: 0 auto;
 }
 .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
-.top-options a, .top-options button{font-size: 10px;border-radius: 4px;}
+.top-options a, .top-options button, .top-options .src-btn{font-size: 10px;border-radius: 4px;}
 #epi-prev .my-video.vjs-fluid {
     height: 67vh !important;
 }
-
+.source_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 130px;
+    float: right;
+}
 </style>
 {{-- video-js Style --}}
 
@@ -214,8 +220,21 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     @if (file_exists($path))
                         <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
                     @endif
-                @endif  
+                @endif
+                
+                <span class="btn btn-primary src-btn position-relative ml-2" onclick="sourceDownload()">Download video source</span>
             </div>
+        @endif
+    </div>
+
+    @php
+        $m3u8_url = URL::to('/storage/app/public/'. $episodes->path .'.m3u8')   ;
+    @endphp
+
+    <div class="source_list mb-2" style="display: none;padding-right:5px;">
+        <a href="{{ $episodes->mp4_url}}" download="{{$episodes->title.'.mp4'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>MP4</span></a>
+        @if($episodes->type == 'm3u8')
+            <a href="{{ $m3u8_url}}" download="{{$episodes->title.'.m3u8'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>M3U8</span></a>
         @endif
     </div>
 
@@ -277,7 +296,31 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <div class="iq-card">
             <div class="admin-section-title">
 
-                
+            @if($episodes->status == 1 && $episodes->status == 1  )
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
+            @endif   
+
+            <br>
+            @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                @if (file_exists($path))
+                    <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
+                @endif
+            @endif   
+            
+            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+                <div class="col-sm-12">
+                    Video Transcoding is under Progress
+                    <div class="progress">
+                        <div class="low_bar"></div >
+                    </div>
+                    <div class="low_percent">0%</div >
+                </div>
+
+                <!-- <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+               </div> -->
+               
+            @endif
 
             <div class="container">                
                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
@@ -295,12 +338,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             >
                             <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
 
-                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
-                                @foreach($SeriesSubtitle as $subtitles_file)
-                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
-                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
-                                @endforeach
-                            @endif
+                                @if(isset($SeriesSubtitle))
+                                    @foreach($SeriesSubtitle as $subtitles_file)
+                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                    @endforeach
+                                @endif
                         </video>
                     </div>
                     <div class="modal-footer">
@@ -840,9 +883,48 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
 
         </script>
-
+        
         <script>
-            
+            document.addEventListener("DOMContentLoaded", function() {
+                var player = videojs('my-video', { // Video Js Player
+                    aspectRatio: '16:9',
+                    fill: true,
+                    playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                    fluid: true,
+                    controlBar: {
+                        volumePanel: { inline: false },
+                        children: {
+                            'playToggle': {},
+                            // 'currentTimeDisplay': {},
+                            'liveDisplay': {},
+                            'flexibleWidthSpacer': {},
+                            'progressControl': {},
+                            'remainingTimeDisplay': {},
+                            'fullscreenToggle': {},
+                            // 'audioTrackButton': {},
+                            'subtitlesButton': {},
+                        },
+                        pictureInPictureToggle: true,
+                    },
+                    html5: {
+                        vhs: {
+                            overrideNative: true,
+                        }
+                    }
+                });
+                const text = document.querySelector('.vjs-text-track-cue');
+                console.log("text",text);
+                
+            });
+        </script>
+
+        <style>
+            .vjs-text-track-cue {
+                inset: 583.333px 0px 0px !important;
+            }
+        </style>
+
+        <script>            
          
             $(document).ready(function ($) {
 
@@ -1622,6 +1704,18 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 
         
         </script>
+
+<script>
+    function sourceDownload() {
+        $('.source_list').toggle();
+    }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.src-btn, .source_list').length) {
+            $('.source_list').hide();
+        }
+    });
+</script>
 
 
         @include('admin.series.Ads_episode'); 

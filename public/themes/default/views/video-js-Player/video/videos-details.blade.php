@@ -198,6 +198,50 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     .trailer-play{display: none;}
     .trailer-img:hover .img_thum_trailer{opacity: 0.3 !important;}
     .trailer-img:hover .trailer-play {top: 40%;left:2%;height: 120px;display: block;}
+
+    .video-js-trailer-modal-dialog {
+        /* max-width: 800px; */
+        margin: 30px auto;
+    }
+
+    .video-js-trailer-modal-body {
+        position: relative;
+        padding: 0px;
+    }
+
+    .video-js-trailer-modal-close {
+        position: absolute;
+        right: -30px;
+        top: 0;
+        z-index: 999;
+        font-size: 2rem;
+        font-weight: normal;
+        color: #fff;
+        opacity: 1;
+    }
+    .vjs-controls-enabled .vjs-control-bar {
+        display: flex !important;
+        opacity: 1 !important;
+    }
+    
+    /* @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}} */
+        #trailermodal .my-video.vjs-fluid{height: 68vh !important;}
+    @media screen and (min-width: 1900px){
+        #trailermodal .my-video.vjs-fluid{height: 35vh !important;}
+        .modal-dialog-centered{align-items: unset;top: 15%;}
+        .modal-dialog{max-width: 700px;}
+        .trailer-img:hover .trailer-play{left: 1%;}
+    }
+    @media only screen and (min-height: 2160px){
+        #trailermodal .my-video.vjs-fluid{height: 20vh !important;}
+        .modal-dialog{max-width: 1000px;}
+    }
+    @media (max-width:768px){
+        .video-js-trailer-modal-close{right: 0;}
+        #trailermodal .my-video.vjs-fluid{height: 42vh !important;}
+    }
+    .embed-responsive::before{display: none;}
+    .modal-content{background-color: transparent;}
 </style>
 
 
@@ -213,7 +257,15 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
     {{-- <link href="{{ asset('public/themes/{$current_theme}/assets/css/video-js/videos-player.css') }}" rel="stylesheet" > --}}
 
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+    <link href="<?= asset('public/themes/default/assets/css/video-js/videojs.min.css') ?>" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+    <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet" >
+    <link href="<?= asset('public/themes/default/assets/css/video-js/videos-player.css') ?>" rel="stylesheet" >
+    <link href="<?= asset('public/themes/default/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet" >
+    <link href="<?= URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') ?>" rel="stylesheet" >
+    
 
     <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/video.min.js") }}"></script>
     <script src="{{ asset("public/themes/{$current_theme}/assets/js/video-js/videojs-contrib-quality-levels.js") }}"></script>
@@ -575,14 +627,40 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                                 <i class="fa fa-play mr-1" ></i>{{ __('Trailer') }} 
                                             </span>
 
-                                            @php include public_path("themes/{$current_theme}/views/video-js-Player/video/videos-trailer.blade.php"); @endphp   
-
                                         </div>
                                         
                                         <div class="name titleoverflow"> {{ strlen($videodetail->title) > 20 ? substr($videodetail->title, 0, 21) . '...' : $videodetail->title }}  <span class="traileroverflow"> {{ __('Trailer') }}</span></div>
                                     </div>
                                 </a>
                             @endif
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                                            <div class="embed-responsive embed-responsive-16by9">
+                                                <?php if($videodetail->trailer_type == "embed_url" ) : ?>
+                                                    <iframe id="video-js-trailer-player_embed" width="100%" height="auto" src="<?= $videodetail->trailer_videos_url ?>" 
+                                                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                                                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                        <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                                                    </video>
+                                                <?php else: ?>
+                                                    <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                        <source src="<?= $videodetail->trailer ?>" type="video/mp4">
+                                                    </video>                 
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             @if(  $videodetail->Reels_videos->isNotEmpty() )            {{-- E-Paper --}}
                                                                     
@@ -1008,6 +1086,21 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     </div>
     <script src="https://www.paypal.com/sdk/js?client-id=<?php echo $paypal_signature; ?>"></script>
 
+    <!--  video-js Script  -->
+ 
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script src="<?= asset('assets/js/video-js/video.min.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/videojs-contrib-quality-levels.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/videojs-http-source-selector.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/videojs.ads.min.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/videojs.ima.min.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/videojs-hls-quality-selector.min.js') ?>"></script>
+    <script src="<?= asset('assets/js/video-js/end-card.js') ?>"></script>
+    <script src="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') ?>"></script>
+    <script src="<?= URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') ?>"></script>
+    <script src="<?= URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') ?>"></script>
+    
+
     <script>
 
             function paypal_checkout() {
@@ -1240,6 +1333,35 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         })
 
     </script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize Video.js player
+        var player = videojs('video-js-trailer-player', {
+            aspectRatio: '16:9',
+            fluid: true,
+            controlBar: {
+                volumePanel: { inline: false },
+                children: {
+                    'playToggle': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'fullscreenToggle': {}, 
+                }
+            }
+        });
+
+        // Close button functionality
+        $(".btn-close").click(function() {
+            player.pause();
+            $('#trailermodal').modal('hide');
+        });
+    });
+</script>
+
+
     <style>
         .billingAddress > div {background-color: white !important;border-radius: 6px !important;margin-bottom: 12px !important;border-color: rgb(183, 188, 191) !important;}
         .billingAddress p{font-size: 15px;color: rgb(97 100 101);margin: 15px 15px;}

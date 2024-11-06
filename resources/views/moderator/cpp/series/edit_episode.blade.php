@@ -47,9 +47,16 @@
         color: #000000;
         font-weight: 500;
     }
-    .top-options a, .top-options button{font-size: 10px;border-radius: 4px;}
+    .top-options a, .top-options button,.top-options .src-btn{font-size: 10px;border-radius: 4px;}
     #epi-prev .my-video.vjs-fluid {
         height: 67vh !important;
+    }
+    .source_list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 130px;
+        float: right;
     }
 </style>
 
@@ -129,8 +136,22 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     @if (file_exists($path))
                         <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
                     @endif
-                @endif  
+                @endif 
+                
+                <span class="btn btn-primary src-btn position-relative ml-2" onclick="sourceDownload()">Download video source</span>
+                
             </div>
+        @endif
+    </div>
+
+    @php
+        $m3u8_url = URL::to('/storage/app/public/'. $episodes->path .'.m3u8')   ;
+    @endphp
+    
+    <div class="source_list mb-2" style="display: none;padding-right:5px;">
+        <a href="{{ $episodes->mp4_url}}" download="{{$episodes->title.'.mp4'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>MP4</span></a>
+        @if($episodes->type == 'm3u8')
+            <a href="{{ $m3u8_url}}" download="{{$episodes->title.'.m3u8'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>M3U8</span></a>
         @endif
     </div>
 
@@ -1197,6 +1218,18 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
              });
          });
      </script>
+
+<script>
+    function sourceDownload() {
+        $('.source_list').toggle();
+    }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.src-btn, .source_list').length) {
+            $('.source_list').hide();
+        }
+    });
+</script>
 
     @include('moderator.cpp.series.player_script')
         @stop @stop @stop
