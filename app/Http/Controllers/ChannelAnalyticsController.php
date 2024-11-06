@@ -2,81 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use App\ModeratorsPermission;
+use URL;
+use Auth;
+use File;
+use Hash;
+use Mail;
+use View;
+use Image;
+use Session;
+use App\Artist;
+use App\Region;
+use App\Channel;
+use App\RegionView;
+use App\UserAccess;
+use ffmpeg\FFProbe;
+use App\PpvPurchase;
+use App\Videoartist;
+use App\Menu as Menu;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\Role as Role;
+use App\Seriesartist;
+use App\User as User;
+use App\ChannelPayout;
+use App\EmailTemplate;
+use GuzzleHttp\Client;
+use App\Audio as Audio;
+use App\Genre as Genre;
 use App\ModeratorsRole;
 use App\ModeratorsUser;
-use App\PpvPurchase;
-use App\CurrencySetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use URL;
-use App\UserAccess;
-use Hash;
-use Illuminate\Support\Facades\DB;
+use App\Partnerpayment;
+use App\PlayerAnalytic;
 use App\Video as Video;
-use App\VideoCategory as VideoCategory;
-use Image;
-use App\Menu as Menu;
-use App\Country as Country;
-use App\Slider as Slider;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\VideoLanguage as VideoLanguage;
-use App\Subtitle as Subtitle;
-use App\Setting as Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\SystemSetting as SystemSetting;
-use App\HomeSetting as HomeSetting;
-use Illuminate\Support\Str;
-use App\MobileApp as MobileApp;
-use App\MobileSlider as MobileSlider;
-use App\ThemeSetting as ThemeSetting;
-use App\SiteTheme as SiteTheme;
-use App\Page as Page;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\User as User;
-use Auth;
-use App\Role as Role;
-use App\Playerui as Playerui;
-use App\Plan as Plan;
-use App\PaypalPlan as PaypalPlan;
+use App\CurrencySetting;
+use App\ModeratorPayout;
 use App\Coupon as Coupon;
 use App\Series as Series;
-use App\Genre as Genre;
+use App\Slider as Slider;
+use App\Country as Country;
 use App\Episode as Episode;
-use App\SeriesSeason as SeriesSeason;
-use App\Artist;
-use App\Seriesartist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ffmpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
+use App\Language as Language;
+use App\ModeratorsPermission;
+use App\Playerui as Playerui;
+use App\Subtitle as Subtitle;
 use FFMpeg\Format\Video\X264;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use App\Videoartist;
-use App\AudioCategory as AudioCategory;
-use App\AudioAlbums as AudioAlbums;
-use Illuminate\Support\Facades\Cache;
-use App\Audio as Audio;
-use File;
-use App\VideoCommission as VideoCommission;
-use Mail;
-use App\EmailTemplate;
-use App\PlayerAnalytic;
-use App\ModeratorPayout;
-use App\ChannelPayout;
-use App\Channel;
-use App\Region;
-use App\RegionView;
-use Session;
-use View;
-use GuzzleHttp\Client;
+use App\MobileApp as MobileApp;
+use App\SiteTheme as SiteTheme;
+use FFMpeg\Coordinate\Dimension;
 use GuzzleHttp\Message\Response;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use Illuminate\Support\Facades\DB;
+use App\AudioAlbums as AudioAlbums;
+use App\HomeSetting as HomeSetting;
+use App\LiveCategory as LiveCategory;
+use App\MobileSlider as MobileSlider;
+use App\SeriesSeason as SeriesSeason;
+use App\ThemeSetting as ThemeSetting;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\SystemSetting as SystemSetting;
+use App\VideoCategory as VideoCategory;
+use App\VideoLanguage as VideoLanguage;
+use App\Http\Requests\StoreVideoRequest;
+use App\PaymentSetting as PaymentSetting;
+use App\VideosSubtitle as VideosSubtitle;
+use Illuminate\Support\Facades\Validator;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\VideoCommission as VideoCommission;
+use App\VideoResolution as VideoResolution;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
 
 class ChannelAnalyticsController extends Controller
 {
@@ -966,5 +968,65 @@ class ChannelAnalyticsController extends Controller
             echo json_encode($data);
         }
     }
+
+    public function ChannelPartnerMonetization(){
+
+        $user = Session::get('channel');
+        $user_id = $user->id;
+
+        $users = PartnerMonetization::where('user_id',  $user_id)
+        ->paginate(9);
+
+        $data = [
+            "users" => $users,
+        ];
+        return view("channel.partner_monetization.partner_monetization_analytics",$data);
+
+    }
+
+
+    public function ChannelPartnerMonetizationHistory(Request $request)
+{
+    $user = Session::get('channel');
+    $user_id = $user->id;
+
+    $selectedMonth = $request->input('month');
+
+    $monetizationSummaryQuery = PartnerMonetization::where('user_id', $user_id);
+
+    if ($selectedMonth) {
+        $monetizationSummaryQuery->whereMonth('payment_date', $selectedMonth);
+    }
+    $monetizationSummary = $monetizationSummaryQuery
+        ->selectRaw('SUM(total_views) as total_views_sum, SUM(partner_commission) as partner_commission_sum')
+        ->first();
+    
+    $paymentDetailsQuery = Partnerpayment::where('user_id', $user_id);
+
+    if ($selectedMonth) {
+        $paymentDetailsQuery->whereMonth('payment_date', $selectedMonth);
+    }
+
+    $payment_details = $paymentDetailsQuery->orderByDesc('created_at')->paginate(5);
+
+    $totalAmountPaid = $payment_details->getCollection()->sum('paid_amount');
+    $latestPayment = $payment_details->first();
+
+    $data = [
+        "monetizationSummary" => $monetizationSummary,
+        "totalAmountPaid" => $totalAmountPaid,
+        "payment_details" => $latestPayment,
+        "payment_histories" => $payment_details,
+    ];
+
+    if ($request->ajax()) {
+        return response()->json([
+            'totalAmountPaid' => $totalAmountPaid,
+            'paymentBalanceAmount' => $latestPayment ? $latestPayment->balance_amount : 0,
+        ]);
+    }
+
+    return view("channel.partner_monetization.partner_monetization_history", $data);
+}
 
 }

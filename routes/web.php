@@ -1938,6 +1938,10 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::get('/regionvideos', 'ChannelAnalyticsController@ChannelRegionVideos');
     Route::get('/Allregionvideos', 'ChannelAnalyticsController@ChannelAllRegionVideos');
 
+
+    Route::get('/partner_monetization_analytics', 'ChannelAnalyticsController@ChannelPartnerMonetization');
+    Route::get('/partner_monetization_history', 'ChannelAnalyticsController@ChannelPartnerMonetizationHistory')->name('channel.partner.monetization.history');
+
     Route::get('/dashboard', 'ChannelLoginController@IndexDashboard');
     Route::get('/logout', 'ChannelLoginController@logout');
     //  Channel Video Management
@@ -2987,7 +2991,6 @@ Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->n
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
 Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
 Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
-Route::get('admin/partner_monetization_settings//delete/{id}', 'AdminPartnerMonetizationSettings@Delete');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
 
 // Partner Monetization Payouts
@@ -2997,6 +3000,7 @@ Route::get('admin/partner_monetization_payouts/partner_payment/{id}', 'AdminPart
 Route::post('admin/partner_monetization_payouts/store', 'AdminPartnerMonetizationPayouts@Store');
 Route::get('admin/partner_monetization_payouts/history', 'AdminPartnerMonetizationPayouts@PartnerPaymentHistory')->name('partner-monetization-history');
 Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData' )->name('get.channel.data');
+Route::get('/admin/get-user-details/{id}', 'AdminPartnerMonetizationPayouts@getUserDetails')->name('get.user.details');
 
 Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
 Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
