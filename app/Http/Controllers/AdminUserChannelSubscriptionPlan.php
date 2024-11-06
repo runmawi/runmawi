@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\AdminUserChannelSubscriptionPlans;
 use App\PaymentSetting;
 use App\Setting;
+use App\Channel;
 use \Redirect;
 use Auth;
 
@@ -18,6 +19,7 @@ class AdminUserChannelSubscriptionPlan extends Controller
         try {
          
             $data = [
+                'Channel' => Channel::where('status',1)->get(),
                 'Channel_Subscription_Plans' => AdminUserChannelSubscriptionPlans::groupBY('plan_name')->paginate(9),
                 'payment_settings' => PaymentSetting::where('status', 1)->get(),
                 'setting' => setting::first(),
@@ -46,12 +48,13 @@ class AdminUserChannelSubscriptionPlan extends Controller
                     'billing_interval' => $request->billing_interval,
                     'billing_type'     => $request->billing_type,
                     'payment_type'     => 'Recurring',
-                    'paymentGateway'    => $request->paymentGateway[$key], 
+                    'paymentGateway'   => $request->paymentGateway[$key], 
                     'days'             => $request->days,
                     'price'            => $request->price,
                     'status'           => empty($request->status) ? 0 : 1,
                     'ios_product_id'   => $request->ios_product_id,
                     'ios_plan_price'   => $request->ios_plan_price,
+                    'channel_id'       => !empty($request->channel_id) ? json_encode($request->channel_id) : [] ,
                 );
 
                 AdminUserChannelSubscriptionPlans::create($inputs);
@@ -64,9 +67,13 @@ class AdminUserChannelSubscriptionPlan extends Controller
 
     public function edit($id)
     {
+        $plan = AdminUserChannelSubscriptionPlans::find($id);
+        $plan->channel_id = json_decode($plan->channel_id); 
+    
         return response()->json([
-            'data' => AdminUserChannelSubscriptionPlans::find($id),
+            'data' => $plan,
         ]);
+    
 
     }
 
@@ -78,13 +85,14 @@ class AdminUserChannelSubscriptionPlan extends Controller
             'plan_content'     => $request->plan_content,
             'billing_interval' => $request->billing_interval,
             'billing_type'     => $request->billing_type,
-            'payment_type'     => $request->payment_type,
+            'payment_type'     => 'Recurring',
             'paymentGateway'   => $request->paymentGateway,
             'days'             => $request->days,
             'price'            => $request->price,
             'status'           => empty($request->status) ? 0 : 1,
             'ios_product_id'   => $request->ios_product_id,
             'ios_plan_price'   => $request->ios_plan_price,
+            'channel_id'       => !empty($request->channel_id) ? json_encode($request->channel_id) : [] ,
         );
 
         $Adsplan = AdminUserChannelSubscriptionPlans::find($request->id)->update( $inputs );
