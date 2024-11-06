@@ -70,7 +70,7 @@
 
                 redirectTimeout = setTimeout(() => {
                     window.location.href = next_episode_slug;
-                }, 500000);
+                }, 5000);
             });
         }
 
