@@ -288,7 +288,7 @@ class TvshowsController extends Controller
         } else {
             $auth_user_id = Auth::user()->id;
         }
-    
+
         $episodess = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
@@ -960,6 +960,21 @@ class TvshowsController extends Controller
                         break;
                 }
             }
+            $next_episode = Episode::select('title', 'slug')
+                                    ->where('season_id', $episode_details->season_id)
+                                    ->where('episode_order', '>', $episode_details->episode_order)
+                                    ->orderBy('episode_order', 'asc')
+                                    ->first();
+
+            if(Auth::check()){
+                $user_role = Auth::user()->role;
+            }
+            else{
+                $user_role = "guest";
+            }
+            
+            // dd($next_episode);
+
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -999,7 +1014,7 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'           => $episode_details ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => !Auth::guest() ?? Auth::user()->role,
+                    'user_role'               => $user_role,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1010,6 +1025,7 @@ class TvshowsController extends Controller
                     'paypal_signature' => $paypal_signature,
                     'purchase_btn'             => $purchase_btn,
                     'subscribe_btn'            => $subscribe_btn,
+                    'next_episode'             => $next_episode,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1063,6 +1079,7 @@ class TvshowsController extends Controller
                     'paypal_payment_setting' => $PayPalpayment,
                     'purchase_btn'             => $purchase_btn,
                     'subscribe_btn'            => $subscribe_btn,
+                    'next_episode'             => $next_episode,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {
