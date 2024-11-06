@@ -64,6 +64,7 @@ use App\EPGSchedulerData;
 use App\ThumbnailSetting;
 use App\SiteVideoScheduler;
 use Illuminate\Support\Str;
+use App\PartnerMonetization;
 use Illuminate\Http\Request;
 use App\DefaultSchedulerData;
 use FFMpeg\Format\Video\X264;
@@ -174,6 +175,7 @@ class ChannelController extends Controller
             $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
             $category_id     = VideoCategory::where('slug', $cid)->pluck('id');
             $category_title  = VideoCategory::where('id', $category_id)->pluck('name')->first();
+            $category_data  = VideoCategory::where('id', $category_id)->first();
             $categoryVideo = CategoryVideo::where('category_id',$category_id->first())->groupBy('video_id')->pluck('video_id');
 
             // categoryVideos
@@ -356,6 +358,7 @@ class ChannelController extends Controller
             $data = [
                 'currency'          => CurrencySetting::first(),
                 'category_title'    => $category_title,
+                'category_data'     => $category_data,
                 'categoryVideos'    =>  $categoryVideos,
                 'ppv_gobal_price'   => $ppv_gobal_price,
                 'ThumbnailSetting'  => $ThumbnailSetting,
@@ -367,7 +370,7 @@ class ChannelController extends Controller
                 'video_categories'  => $video_categories ,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
             ];
-            return Theme::view('categoryvids', ['categoryVideos' => $data]);
+            return Theme::view('categoryvids', ['categoryVideos' => $data, 'category_data' => $category_data]);
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -5183,6 +5186,7 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
                 'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                'user_role' => Auth::user()->role,
                 'recomended' => $recomended ,
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
@@ -5891,59 +5895,59 @@ class ChannelController extends Controller
         }
     }
    
-   
-    public function PlayedViews(Request $request)
+    public function PartnerMonetization(Request $request)
     {
         try {
-            $data = $request->all();
-                    $video_id    = $request->video_id;
-                    $video = Video::where('id', $video_id)->first();
-                    if ($video) {
-                        $video->played_views += 1;
-                        $video->save();
-                        return response()->json(['message' => 'View count incremented', 'played_view' => $video->played_view], 200);
-                    } else {
-                        return response()->json(['error' => 'Video not found'], 404);
-                    }
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
-    public function AmountPerView(Request $request)
-    {
-        try {
-            $data = $request->all();
             $video_id = $request->video_id;
-    
             $video = Video::where('id', $video_id)->first();
-    
-            $monetization_view_limit = PartnerMonetizationSetting::get()->first();
-           
             if ($video) {
-        
-                if ($video->played_views > $monetization_view_limit) {
+                $video->played_views += 1;
+                $video->save(); 
 
-                    $monetized_views = $video->played_views - $monetization_view_limit->viewcount_limit;
-    
-                    $monetization_amount = $monetized_views * $monetization_view_limit->views_amount; 
-    
-                    $video->monetization_amount = $monetization_amount;
-                    $video->save();
-    
-                    return response()->json([
-                        'message' => 'Monetization updated',
-                        'monetization_amount' => $video->monetization_amount,
-                        'played_views' => $video->played_views
-                    ], 200);
+                if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
+
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save(); 
+
+        
+                        $channeluser_commission = (float) $video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+                        
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'video')->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'video',
+                            ]));
+                        }
+                    }
                 }
-    
-                return response()->json([
-                    'message' => 'View count incremented, but monetization not started yet',
-                    'played_views' => $video->played_views
-                ], 200);
+            }
+                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
             } else {
                 return response()->json(['error' => 'Video not found'], 404);
             }
@@ -5954,5 +5958,5 @@ class ChannelController extends Controller
         }
     }
 
-
+    
 }

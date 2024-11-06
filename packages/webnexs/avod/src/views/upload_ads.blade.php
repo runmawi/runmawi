@@ -12,6 +12,9 @@
     #progressbar li img{
         width: 50px !important;
     }
+    #msform .action-button{
+        padding: 0px !important;
+    }
 </style>
 
 <div id="main-admin-content">
@@ -164,7 +167,7 @@
                                                                     <label>Ads Name:</label>
                                                                     <p class="error-message ml-1"   style="color: red;font-size:10px;">(This Field    is required)</p>
                                                                 </div>
-                                                                <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Please! Enter the Ads Name" />
+                                                                <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Enter the Ads Name" />
                                                             </div>
 
                                                             <div class="form-group">
@@ -206,7 +209,7 @@
                                                             <div class="form-group tag_url">
                                                                 <label> Ad Tag Url:</label>
                                                                 <input type="text" id="ads_path" name="ads_path" 
-                                                                    class="form-control" placeholder="Please! Enter the Ads Tag URL" />
+                                                                    class="form-control" placeholder="Enter the Ads Tag URL" />
                                                             </div>
 
                                                             <div class="form-group ads_video_upload">

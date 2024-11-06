@@ -130,7 +130,17 @@
     margin: 0 auto;
 }
 .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
-
+.top-options a, .top-options button, .top-options .src-btn{font-size: 10px;border-radius: 4px;}
+#epi-prev .my-video.vjs-fluid {
+    height: 67vh !important;
+}
+.source_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 130px;
+    float: right;
+}
 </style>
 {{-- video-js Style --}}
 
@@ -192,6 +202,42 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 @stop @section('content')
 <div id="content-page" class="content-page">
 
+    <div class="container-fluid">
+        @if(!empty($episodes->id))
+                        
+            <div class="top-options row d-flex align-items-center justify-content-end">
+                <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                
+                <?php 
+                    $filename = $episodes->path.'.mp4';
+                    $path = storage_path('app/public/'.$filename);
+                ?>
+                {{-- @if($episodes->status == 1 && $episodes->status == 1  )
+                    <a href="#" class="btn btn-lg btn-primary pull-right ml-2" data-toggle="modal" data-target="#largeModal">Player Perview</a>
+                @endif  --}}
+
+                @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                    @if (file_exists($path))
+                        <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
+                    @endif
+                @endif
+                
+                <span class="btn btn-primary src-btn position-relative ml-2" onclick="sourceDownload()">Download video source</span>
+            </div>
+        @endif
+    </div>
+
+    @php
+        $m3u8_url = URL::to('/storage/app/public/'. $episodes->path .'.m3u8')   ;
+    @endphp
+
+    <div class="source_list mb-2" style="display: none;padding-right:5px;">
+        <a href="{{ $episodes->mp4_url}}" download="{{$episodes->title.'.mp4'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>MP4</span></a>
+        @if($episodes->type == 'm3u8')
+            <a href="{{ $m3u8_url}}" download="{{$episodes->title.'.m3u8'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>M3U8</span></a>
+        @endif
+    </div>
+
     <!-- BREADCRUMBS -->
     <div class="row mr-2">
         <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
@@ -217,25 +263,41 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             </div>
         </div>
     </div>
+
+    <div>
+        @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+            <div class="col-sm-12">
+                Video Transcoding is under Progress
+                <div class="progress">
+                    <div class="low_bar"></div >
+                </div>
+                <div class="low_percent">0%</div >
+            </div>
+        @endif
+    </div>
+    @if($episodes->status == 1 && $episodes->status == 1  )
+        <div id="epi-prev">
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                width="auto" height="auto" poster="{{ URL::to('public/uploads/images/'.$episodes->player_image) }}" playsinline="playsinline"
+                >
+                <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                    @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                    @foreach($SeriesSubtitle as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                    @endforeach
+                @endif
+            </video>
+        </div>
+    @endif
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
             <div class="admin-section-title">
-                @if(!empty($episodes->id))
-                <div class="d-flex justify-content-between">
-                    <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
-                    <div class="pull-right">
-                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
-                    </div>
-                </div>
-                @endif
-            <?php 
-                $filename = $episodes->path.'.mp4';
-                $path = storage_path('app/public/'.$filename);
-            ?>
 
             @if($episodes->status == 1 && $episodes->status == 1  )
-                <a  style="margin-right: 16%;margin-top: -5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Episode Player Perview</a>
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
             @endif   
 
             <br>
@@ -276,12 +338,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             >
                             <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
 
-                                @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
-                                @foreach($SeriesSubtitle as $subtitles_file)
-                                    <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
-                                        label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
-                                @endforeach
-                            @endif
+                                @if(isset($SeriesSubtitle))
+                                    @foreach($SeriesSubtitle as $subtitles_file)
+                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                    @endforeach
+                                @endif
                         </video>
                     </div>
                     <div class="modal-footer">
@@ -387,7 +449,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
 
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -728,7 +790,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 </div>
                         
                 <div class="row mt-3">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="m-0">Status Settings</label>
                         <div class="panel-body">
                             <div>
@@ -821,9 +883,48 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
 
 
         </script>
-
+        
         <script>
-            
+            document.addEventListener("DOMContentLoaded", function() {
+                var player = videojs('my-video', { // Video Js Player
+                    aspectRatio: '16:9',
+                    fill: true,
+                    playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                    fluid: true,
+                    controlBar: {
+                        volumePanel: { inline: false },
+                        children: {
+                            'playToggle': {},
+                            // 'currentTimeDisplay': {},
+                            'liveDisplay': {},
+                            'flexibleWidthSpacer': {},
+                            'progressControl': {},
+                            'remainingTimeDisplay': {},
+                            'fullscreenToggle': {},
+                            // 'audioTrackButton': {},
+                            'subtitlesButton': {},
+                        },
+                        pictureInPictureToggle: true,
+                    },
+                    html5: {
+                        vhs: {
+                            overrideNative: true,
+                        }
+                    }
+                });
+                const text = document.querySelector('.vjs-text-track-cue');
+                console.log("text",text);
+                
+            });
+        </script>
+
+        <style>
+            .vjs-text-track-cue {
+                inset: 583.333px 0px 0px !important;
+            }
+        </style>
+
+        <script>            
          
             $(document).ready(function ($) {
 
@@ -930,24 +1031,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
-        // image validation
+        {{-- image validation --}}
         <script>
-            document.getElementById('episode_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                        var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+           $(document).ready(function(){
+                $('#episode_image').on('change', function(event) {
+                    var file = this.files[0];
+                    var tmpImg = new Image();
 
-                        if (width !== validWidth || height !== validHeight) {
+                    tmpImg.src=window.URL.createObjectURL( file ); 
+                    tmpImg.onload = function() {
+                    width = tmpImg.naturalWidth,
+                    height = tmpImg.naturalHeight;
+                    console.log('img width: ' + width);
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                    console.log('validation width:  ' + validWidth);
+
+                    if (width !== validWidth || height !== validHeight) {
                             document.getElementById('season_image_error_msg').style.display = 'block';
                             $('.pull-right').prop('disabled', true);
                             document.getElementById('season_image_error_msg').innerText = 
@@ -956,38 +1056,35 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             document.getElementById('season_image_error_msg').style.display = 'none';
                             $('.pull-right').prop('disabled', false);
                         }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
-            });
+                    }
+                });
 
-            document.getElementById('player_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                        var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+                $('#player_image').on('change', function(event) {
 
-                        if (width !== validWidth || height !== validHeight) {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                            $('.pull-right').prop('disabled', true);
-                            document.getElementById('season_thum_image_error_msg').innerText = 
-                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                        } else {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                            $('.pull-right').prop('disabled', false);
-                        }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
+                    var file = this.files[0];
+                    var player_Img = new Image();
+
+                    player_Img.src=window.URL.createObjectURL( file ); 
+                    player_Img.onload = function() {
+                    var width = player_Img.naturalWidth;
+                    var height = player_Img.naturalHeight;
+                    console.log('player width ' + width)
+
+                    var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                    var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                    console.log('validation player width:  ' + valid_player_Width);
+
+                    if (width !== valid_player_Width || height !== valid_player_Height) {
+                        $('#player_image_error_msg').show();
+                        $('.update_btn').prop('disabled', true);
+                        document.getElementById('player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                    } else {
+                        $('#player_image_error_msg').hide();
+                        $('.update_btn').prop('disabled', false);
+                    }
+                    }
+                });
             });
         </script>
 
@@ -1607,6 +1704,18 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 
         
         </script>
+
+<script>
+    function sourceDownload() {
+        $('.source_list').toggle();
+    }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.src-btn, .source_list').length) {
+            $('.source_list').hide();
+        }
+    });
+</script>
 
 
         @include('admin.series.Ads_episode'); 

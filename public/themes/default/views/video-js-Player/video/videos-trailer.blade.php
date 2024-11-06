@@ -35,35 +35,56 @@
         display: flex !important;
         opacity: 1 !important;
     }
-    @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}}
+    
+    /* @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}} */
+        #trailermodal .my-video.vjs-fluid{height: 68vh !important;}
+    @media screen and (min-width: 1900px){
+        #trailermodal .my-video.vjs-fluid{height: 35vh !important;}
+        .modal-dialog-centered{align-items: unset;top: 15%;}
+        .modal-dialog{max-width: 700px;}
+        .trailer-img:hover .trailer-play{left: 1%;}
+    }
+    @media only screen and (min-height: 2160px){
+        #trailermodal .my-video.vjs-fluid{height: 20vh !important;}
+        .modal-dialog{max-width: 1000px;}
+    }
+    @media (max-width:768px){
+        .video-js-trailer-modal-close{right: 0;}
+        #trailermodal .my-video.vjs-fluid{height: 42vh !important;}
+    }
     .embed-responsive::before{display: none;}
+    .modal-content{background-color: transparent;}
 </style>
 
-<div class="modal fade" id="video-js-trailer-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="video-js-trailer-modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered video-js-trailer-modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body video-js-trailer-modal-body">
-                <button type="button" class="close video-js-trailer-modal-close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
 
-                <div class="embed-responsive embed-responsive-16by9">
-                    <?php if($videodetail->trailer_type == "embed_url" ) : ?>
-                        <iframe id="video-js-trailer-player_embed" width="100%" height="auto" src="<?= $videodetail->trailer_videos_url ?>" 
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    <?php else: ?>
-                        <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" controls width="100%" height="auto">
-                            <source src="<?= $videodetail->trailer ?>" type="video/mp4">
-                        </video>                 
-                    <?php endif; ?>
+<!-- Modal -->
+<div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <?php if($videodetail->trailer_type == "embed_url" ) : ?>
+                            <iframe id="video-js-trailer-player_embed" width="100%" height="auto" src="<?= $videodetail->trailer_videos_url ?>" 
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+                        <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                            </video>
+                        <?php else: ?>
+                            <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                <source src="<?= $videodetail->trailer ?>" type="video/mp4">
+                            </video>                 
+                        <?php endif; ?>
+    
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
  
  <!--  video-js Script  -->
@@ -82,52 +103,40 @@
  
 
  
- <script>
-    $(document).ready(function() {
-        <?php if($videodetail->trailer_type != "embed_url" ): ?>
-            var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
-                aspectRatio: '16:9',
-                fluid: true,
-                autoplay: false,
+<script>
 
-                controlBar: {
-                    volumePanel: {
-                        inline: false
-                    },
-
-                    children: {
-                        'playToggle': {},
-                        // 'currentTimeDisplay': {},
-                        'liveDisplay': {},
-                        'flexibleWidthSpacer': {},
-                        'progressControl': {},
-                        'remainingTimeDisplay': {},
-                        'fullscreenToggle': {}, 
-                    }
-                }
-            });
-        <?php endif; ?>
-    
-        $(".video-js-trailer-modal-close").click(function(){
-            <?php if($videodetail->trailer_type != "embed_url" ): ?>
-            player.pause();  
-            <?php endif; ?>
-    
-            <?php if($videodetail->trailer_type == "embed_url" ): ?>
-                $('#video-js-trailer-player_embed').attr('src', '');
-            <?php endif; ?>
-    
-            $('#video-js-trailer-modal').modal('hide');
-        });
-    
-        $('#video-js-trailer-modal').on('hidden.bs.modal', function(){
-            <?php if($videodetail->trailer_type == "embed_url" ): ?>
-                $('#video-js-trailer-player_embed').attr('src', '<?= $videodetail->trailer_videos_url ?>');
-            <?php endif; ?>
-    
-            <?php if($videodetail->trailer_type != "embed_url" ): ?>
-                player.currentTime(0);
-            <?php endif; ?>
+    $(document).ready(function(){
+        $('#video-js-trailer-modal .modal-dialog').on('click', function (e) {
+            e.stopPropagation();
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
+            aspectRatio: '16:9',
+            fluid: true,
+
+            controlBar: {
+                volumePanel: {
+                    inline: false
+                },
+
+                children: {
+                    'playToggle': {},
+                    // 'currentTimeDisplay': {},
+                    'liveDisplay': {},
+                    'flexibleWidthSpacer': {},
+                    'progressControl': {},
+                    'remainingTimeDisplay': {},
+                    'fullscreenToggle': {}, 
+                }
+            }
+        });
+        $(".btn-close").click(function(){
+                player.pause();  
+        });
+        
+    });
+
 </script>

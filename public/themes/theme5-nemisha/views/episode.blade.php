@@ -454,7 +454,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                                 </div>
                             </li>
                             <li>
-                                <a href="#"onclick="EmbedCopy();" class="share-ico"><span><i
+                                <a href="#"onclick="Copy();" class="share-ico"><span><i
                                             class="ri-links-fill mt-1"></i></span></a>
                             </li>
 

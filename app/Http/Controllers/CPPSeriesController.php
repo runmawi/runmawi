@@ -994,6 +994,8 @@ class CPPSeriesController extends Controller
                 $data['landing_mp4_url'] = $trailer_path.'/'.$trailer_video_name.'.mp4';
 
             }else{
+                $image_path = public_path().'/uploads/season_images/';
+                    $path = public_path().'/uploads/season_videos/';
                 if($trailer != '') {   
                     //code for remove old file
                     if($trailer != ''  && $trailer != null){
@@ -1876,7 +1878,7 @@ class CPPSeriesController extends Controller
         $episodes->ppv_price = $ppv_price;
         $episodes->active = $data['active'];
         $episodes->featured = $data['featured'];
-        $episodes->status = 1;
+        $episodes->status =  $type == 'm3u8' ? 0 : 1;
         $episodes->episode_order = $episode = Episode::where('season_id', $data['season_id'])->max('episode_order') + 1;
         $episodes->episode_description =  $data['episode_description'];
         $episodes->save();
@@ -2010,6 +2012,7 @@ class CPPSeriesController extends Controller
             "subtitlescount" => $subtitlescount,
             "subtitles" => Subtitle::all(),
             "SeriesSubtitle" => $SeriesSubtitle ,
+            'page'  => 'Edit',
 
         );
 
@@ -3446,6 +3449,18 @@ class CPPSeriesController extends Controller
             return $value;
         }
     }
+
+    public function deleteSelected(Request $request)
+        {
+            $ids = $request->input('ids');
+
+            try {
+                Episode::whereIn('id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            }
+        }
 
 }
 
