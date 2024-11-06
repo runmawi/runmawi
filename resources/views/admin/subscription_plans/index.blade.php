@@ -138,8 +138,7 @@
 
                                         <div class="form-group">
                                             <label>Payment Type:</label><br>
-                                            <input type="radio" name="payment_type" value="one_time" checked='checked'> One Time Payment
-                                            <input type="radio" name="payment_type" value="recurring"> Recurring
+                                            <input type="radio" name="payment_type" value="recurring" checked='checked'> Recurring
                                         </div>
 
                                         <div class="form-group">
