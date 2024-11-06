@@ -122,14 +122,16 @@ c<script>
         });
 
         player.on("timeupdate", function() {
-            const currentTime = player.currentTime();
             const duration = player.duration();
-            if (!postrollTriggered && duration - currentTime < 2) {
-                console.log("Postroll Ads requested");
-                player.ima.initializeAdDisplayContainer();
-                player.ima.changeAdTag(vastTagPostroll);
-                player.ima.requestAds();
-                postrollTriggered = true;
+            if ( duration != "Infinity" ) {
+                const currentTime = player.currentTime();
+                if (!postrollTriggered && duration - currentTime < 2) {
+                    console.log("Postroll Ads requested");
+                    player.ima.initializeAdDisplayContainer();
+                    player.ima.changeAdTag(vastTagPostroll);
+                    player.ima.requestAds();
+                    postrollTriggered = true;
+                }
             }
         });
 
