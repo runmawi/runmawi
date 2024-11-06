@@ -999,7 +999,7 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'           => $episode_details ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::user()->role,
+                    'user_role' => !Auth::guest() ?? Auth::user()->role,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1079,7 +1079,7 @@ class TvshowsController extends Controller
     
         } catch (\Throwable $th) {
     
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
