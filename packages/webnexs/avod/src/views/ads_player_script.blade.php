@@ -1,8 +1,8 @@
-<script>
+c<script>
     var ads_position = "<?php echo $Advertisement->ads_position ?>";
     var ads_path = "<?php echo $Advertisement->ads_path ?>";
     var ads_video = "<?php echo $Advertisement->ads_video ?>";
-    console.log("ads_path", ads_path);
+    // console.log("ads_path", ads_path);
 
     let users_video_visibility_free_duration_status = 1; 
     const modal = document.getElementById('largeModal');
@@ -122,14 +122,16 @@
         });
 
         player.on("timeupdate", function() {
-            const currentTime = player.currentTime();
             const duration = player.duration();
-            if (!postrollTriggered && duration - currentTime < 2) {
-                console.log("Postroll Ads requested");
-                player.ima.initializeAdDisplayContainer();
-                player.ima.changeAdTag(vastTagPostroll);
-                player.ima.requestAds();
-                postrollTriggered = true;
+            if ( duration != "Infinity" ) {
+                const currentTime = player.currentTime();
+                if (!postrollTriggered && duration - currentTime < 2) {
+                    console.log("Postroll Ads requested");
+                    player.ima.initializeAdDisplayContainer();
+                    player.ima.changeAdTag(vastTagPostroll);
+                    player.ima.requestAds();
+                    postrollTriggered = true;
+                }
             }
         });
 

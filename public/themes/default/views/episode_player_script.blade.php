@@ -428,17 +428,24 @@
 
         });
 
-        player.on("ended", function() {
+        
+        player.on("timeupdate", function() {
+            
+            const duration = player.duration();
 
-            if (!postrollTriggered) {
+            if ( duration != "Infinity" ) {
 
-                postrollTriggered = true;
+                const currentTime = player.currentTime();
 
-                player.ima.requestAds({
-                    adTagUrl: vastTagPostroll,
-                });
+                if (!postrollTriggered && duration - currentTime < 2) {
 
-                console.log("Postroll ads requested");
+                    console.log("Postroll Ads requested");
+
+                    player.ima.initializeAdDisplayContainer();
+                    player.ima.changeAdTag(vastTagPostroll);
+                    player.ima.requestAds();
+                    postrollTriggered = true;
+                }
             }
         });
 

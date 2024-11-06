@@ -4280,7 +4280,23 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
-    $response = array(
+    $payperview_series_season = PpvPurchase::select('series_id','season_id')->where('ppv_purchases.series_id', '!=', 0)->where('ppv_purchases.season_id', '!=', 0)->where('user_id', $user_id)->get();
+
+    if ($payperview_series_season->count() > 0) {
+      $series_ids = $payperview_series_season->pluck('series_id')->toArray();
+      $season_ids = $payperview_series_season->pluck('season_id')->toArray();
+  
+      $payperview_episodes = Episode::whereIn('series_id', $series_ids)
+          ->whereIn('season_id', $season_ids)
+          ->get()->map(function ($item) {
+            $item['ppv_episodes_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
+    } else {
+        $payperview_episodes = [];
+    }
+      $response = array(
       'status' => 'true',
       'payperview_video' => $payperview_video,
       'payperview_episodes' => $payperview_episodes

@@ -1190,6 +1190,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/subscription-plans') }}">{{ (__('Manage Subscription plans')) }}</a></li>
                         <li><a href="{{ route('inapp_purchase') }}">{{ (__('Manage In App Purchase Plans')) }}</a></li>
                         <li><a href="{{ route('Life-time-subscription-index') }}">{{ (__('Life time subscription')) }}  </a></li>
+                        <li><a href="{{ route('admin.user-channel-subscription-plan.index') }}">{{ (__('User Channel Subscription Plan')) }}  </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}">{{ (__('Devices')) }}</a></li>
                      </ul>
