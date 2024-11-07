@@ -14,6 +14,15 @@
 
     var episodeId = "<?php echo $episode_details->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
+    <?php if (!empty($next_episode) && is_object($next_episode)): ?>
+        var next_episode = "<?php echo $next_episode->slug; ?>";
+        var next_episode_slug = "<?php echo URL::to('episode/' . $series->slug . '/' . $next_episode->slug); ?>";
+        console.log('Next episode slug: ' + next_episode_slug);
+    <?php else: ?>
+        var next_episode = "";
+        var next_episode_slug = "";
+        console.log('No next episode');
+    <?php endif; ?>
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -40,16 +49,48 @@
             }
         });
 
+
+        if (next_episode_slug) {
+
+            player.on('ended', function() {
+                // $('#episode-player').css('opacity', '0.1');
+                $('.vjs-tech').css('opacity', '0.1');
+                $('.vjs-big-play-button').css('opacity', '0.1');
+                $('.vjs-control-bar').css('opacity', '0.1');
+                $('.custom-skip-backward-button').css('opacity', '0.1');
+                $('.custom-skip-forward-button').css('opacity', '0.1');
+                $('.cancel_card').show();
+                $('.next-episode').hide();
+
+                $('.next-epi-cancel').on('click', function(event) {
+                    $('.cancel_card').hide();
+                    $('#episode-player').css('opacity', '1');
+                    next_episode_slug = '';
+                });
+
+                redirectTimeout = setTimeout(() => {
+                    window.location.href = next_episode_slug;
+                }, 5000);
+            });
+        }
+
+
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const backButton = document.querySelector('.staticback-btn');
         const titleButton = document.querySelector('.vjs-title-bar');
+        const nextEpisodeButton = document.querySelector('.next-episode');
+        const cancelCard = document.querySelector('.cancel_card');
+
+        $(nextEpisodeButton).hide();
 
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
         player.el().appendChild(titleButton);
         player.el().appendChild(backButton); 
+        player.el().appendChild(nextEpisodeButton); 
+        player.el().appendChild(cancelCard); 
         
         // Continue watching script
         function EpisodeContinueWatching(episodeId, duration, currentTime) {
@@ -78,6 +119,15 @@
             player.on('timeupdate', function() {
                 var currentTime = player.currentTime();
                 var duration = player.duration();
+
+                if (duration - currentTime <= 20) {
+                   $(nextEpisodeButton).show();
+                //    console.log('true');
+                } else {
+                    $(nextEpisodeButton).hide();
+                    // console.log('false');
+                }
+
                 EpisodeContinueWatching(episodeId, duration, currentTime);
             });
 
