@@ -31,9 +31,9 @@ c<script>
 
         // Ads Marker
         player.on("loadedmetadata", function () {
-            var CheckPreAds = ads_position === 'pre' ? ads_path : null;
-            var CheckPostAds = ads_position === 'post' ? ads_path : null;
-            var checkMidrollAds_array = ads_position === 'mid' ? 1 : 0;
+            var CheckPreAds = ads_position === 'pre' || ads_position === 'all' ? ads_path : null;
+            var CheckPostAds = ads_position === 'post' || ads_position === 'all' ? ads_path : null;
+            var checkMidrollAds_array = ads_position === 'mid' || ads_position === 'all' ? 1 : 0;
             const midrollincreaseInterval = 300;
 
             const markers = [];
@@ -60,15 +60,15 @@ c<script>
         });
 
         // Advertisement
-        var vastTagPreroll = ads_position === 'pre' ? ads_path : null;
-        var vastTagPostroll = ads_position === 'post' ? ads_path : null;
+        var vastTagPreroll = ads_position === 'pre' || ads_position === 'all' ? ads_path : null;
+        var vastTagPostroll = ads_position === 'post' || ads_position === 'all' ? ads_path : null;
         console.log("vastTagPostroll",vastTagPostroll);
 
         var prerollTriggered = false;
         var postrollTriggered = false;
 
         var vastTagMidrollArray = null;
-        if (ads_position === 'mid') {
+        if (ads_position === 'mid' || ads_position === 'all') {
             try {
                 vastTagMidrollArray = JSON.parse(ads_path);
                 if (!Array.isArray(vastTagMidrollArray)) { vastTagMidrollArray = [ads_path]; }
@@ -160,18 +160,11 @@ c<script>
             player.play();
         });
 
-        // const playPauseButton = document.querySelector('.vjs-big-play-button');
         player.on('userinactive', () => {
-            if (playPauseButton) { 
-                // playPauseButton.style.visibility = 'hidden'; 
-                $('.vjs-big-play-button').hide();
-            }
+            $('.vjs-big-play-button').hide();
         });
         player.on('useractive', () => {
-            if (playPauseButton) { 
-                // playPauseButton.style.visibility = 'visible'; 
-                $('.vjs-big-play-button').show();
-            }
+            $('.vjs-big-play-button').show();
         });
 
         function togglePlayPause(e) {
