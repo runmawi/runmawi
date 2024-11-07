@@ -125,6 +125,11 @@
    @endif
 </div>
 
+<!-- Loader -->
+<div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
+   <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 100px; height: 100px;">
+</div>
+
 <!-- back-to-top -->
 <div id="back-to-top">
    <a class="top" href="#top" id="top" aria-label="Back to Top">
@@ -202,10 +207,13 @@
    @media screen and (max-height: 450px) {
       .sidenav {padding-top: 15px;}
    }
+   .hidden-loader {
+      display: none !important;
+   }
 </style>
 
 <script>
-      window.onload = function() {
+   window.onload = function() {
       const sidenav = document.querySelector('.sidenav');
       const rightnav = document.querySelector('.rightnav');
       const headerTopImg = document.querySelector('.header_top_position_img');
@@ -242,22 +250,24 @@
          console.log("scrolled");
 
          if (page_url != null && !isFetching) {
-               isFetching = true; 
-               $.ajax({
-                  url: page_url,
-                  // beforeSend: function () {
-                  //    $('.auto-load').show();
-                  // },
-                  success: function (data) {
+            isFetching = true;
+            $("#loader").removeClass("hidden-loader");
+            
+            $.ajax({
+               url: page_url,
+               success: function (data) {
+                  if (data.view) {
                      $("#home_sections").append(data.view);
                      $("#home_sections").attr('next-page-url', data.url);
-                  },
-                  // complete: function () {
-                  //    isFetching = false; 
-                  //    $('.theme4-slider').hide();
-                  //    $('.auto-load').hide();
-                  // }
-               });
+                  } else {
+                     $("#home_sections").removeAttr('next-page-url');
+                  }
+               },
+               complete: function () {
+                  isFetching = false;
+                  $("#loader").addClass("hidden-loader");
+               }
+            });
          }
       }, 100);
    });
