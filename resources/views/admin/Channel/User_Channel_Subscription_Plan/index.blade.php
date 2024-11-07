@@ -5,6 +5,7 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
 @section('content')
 
@@ -166,6 +167,15 @@
                         </div>
 
                         <div class="col-md-12 pb-2">
+                           <label>Channel : </label>
+                              <select class="form-control js-example-basic-multiple" id="channel_id" name="channel_id[]" style="width: 100%;" multiple="multiple" >
+                                 @foreach( $Channel as $item)
+                                    <option value="{{ $item->id }}" >{{ $item->channel_name }}</option>
+                                 @endforeach
+                             </select>
+                        </div>
+
+                        <div class="col-md-12 pb-2">
                            <label>Status</label>
                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                               <div style="color:red;">Disable</div>
@@ -193,6 +203,8 @@
          <script>
             $(document).ready(function () {
 
+            	$('.js-example-basic-multiple').select2();
+
                $('#Subscription_Plans').DataTable({ });
 
                $('body').on('click', '.create_channel_plan', function (event) {
@@ -217,7 +229,7 @@
                  
                   const requiredFields = [
                      '#plan_name', '#plan_id', '#plan_content', '#billing_interval',
-                     '#billing_type','#days','#price', '#ios_product_id', '#ios_plan_price'
+                     '#billing_type','#days','#price', '#ios_product_id', '#ios_plan_price',
                   ];
 
                   requiredFields.forEach(function (field) {
@@ -256,6 +268,8 @@
                      $.each(data.data, function (key, value) {
                         if (key === 'status') {
                            $('#status').prop('checked', value == 1); 
+                        } else if (key === 'channel_id') {
+                           $('#channel_id').val(value).trigger('change'); 
                         } else {
                            $('#' + key).val(value); 
                         }

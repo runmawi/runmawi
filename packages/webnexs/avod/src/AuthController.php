@@ -298,11 +298,10 @@ class AuthController extends Controller
 
                 $activeplan = 0; 
 
-                if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && 
-                    $Advertiser->subscription_ends_at >= $carbon_now && 
-                    !is_null($Advertiser->ads_upload_count_limit) &&  
-                    ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
-
+               
+                if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && $Advertiser->subscription_ends_at >= $carbon_now && 
+                    !is_null($Advertiser->ads_upload_count_limit) &&  ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
+    
                     $activeplan = 1; 
                 }
             }
@@ -859,7 +858,7 @@ class AuthController extends Controller
                 $activeplan = 0; 
     
                 if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && $Advertiser->subscription_ends_at >= $carbon_now && 
-                    !is_null($Advertiser->ads_upload_count_limit) &&  !is_null($Advertiser->adverister_uploaded_ads_count) &&  
+                    !is_null($Advertiser->ads_upload_count_limit) &&  
                     ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
     
                     $activeplan = 1; 
