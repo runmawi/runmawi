@@ -113,6 +113,21 @@
             // console.log('watch_percentage: ' + watch_percentage);
         }
 
+        function updateNextEpisodeButtonOpacity(duration, currentTime) {
+            const timeRemaining = duration - currentTime;
+            
+            // Check if we are within the last 10 seconds
+            if (timeRemaining <= 10) {
+                $(nextEpisodeButton).show();
+
+                // Calculate opacity based on time remaining
+                const opacity = 0.5 + (1 - (timeRemaining / 10)) * 0.5;
+                nextEpisodeButton.style.opacity = opacity;
+            } else {
+                $(nextEpisodeButton).hide();
+            }
+        }
+
         player.on('loadedmetadata', function() {
             console.log('Video metadata loaded');
 
@@ -120,13 +135,7 @@
                 var currentTime = player.currentTime();
                 var duration = player.duration();
 
-                if (duration - currentTime <= 20) {
-                   $(nextEpisodeButton).show();
-                //    console.log('true');
-                } else {
-                    $(nextEpisodeButton).hide();
-                    // console.log('false');
-                }
+                updateNextEpisodeButtonOpacity(duration, currentTime);
 
                 EpisodeContinueWatching(episodeId, duration, currentTime);
             });
