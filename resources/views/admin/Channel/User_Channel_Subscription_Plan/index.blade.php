@@ -73,10 +73,10 @@
                                     <td>{{ $plan->status == 1 ? "ON" : "OFF" }}</td>
                                     <td>
                                        <a class="iq-bg-success edit-ads-plans" data-toggle="tooltip" data-placement="top" title=""
-                                          data-original-title="Edit" data-toggle="modal" data-target='#edit_modal' data-id="{{ $plan->id }}"><img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
+                                          data-original-title="Edit" data-toggle="modal" data-target='#edit_modal'  data-id="{{ $plan->id }}" data-random-key-id="{{ $plan->random_key }}"><img class="ply" src="{{ URL::to('/assets/img/icon/edit.svg') }}">
                                        </a>
 
-                                       <a onclick="return confirm('Are you sure?')" href="{{ route('admin.user-channel-subscription-plan.delete',[$plan->id]) }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                                       <a onclick="return confirm('Are you sure?')" href="{{ route('admin.user-channel-subscription-plan.delete',[$plan->random_key]) }}" class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
                                           <img class="ply" src="{{ URL::to('/assets/img/icon/delete.svg') }}">
                                        </a>
                                     </td>
@@ -100,9 +100,9 @@
             <form id="channel-subscription-plan">
 
                <div class="modal-content">
-                  <input type="hidden" id="id" name="id" value="">
-                  <input type="hidden" id="token" value="{{csrf_token()}}">
+
                   <input type="hidden" id="url" name="url" value="">
+                  <input type="hidden" id="random_key" name="random_key" value="">
                   
                   <div class="modal-body">
                      <div class="row d-flex p-0">
@@ -113,9 +113,9 @@
                         </div>
 
                         @forelse ($payment_settings as $item)
-                           <div class="col-md-12 pb-2">
+                           <div class="col-md-12 pb-2" >
                               <label>{{ $item->payment_type }} Plan ID:</label>
-                              <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control" placeholder="Plan ID">
+                              <input type="text" id="plan_id" name="plan_id[]" value="" class="form-control plan-id-input" placeholder="Plan ID">
                               <input type="hidden" id="paymentGateway" name="paymentGateway[]" value={{ $item->payment_type}}  class="form-control" placeholder="paymentGateway">
                               <p>* Get Plan Key From {{ $item->payment_type }}</p>
                            </div>
@@ -210,8 +210,7 @@
                $('body').on('click', '.create_channel_plan', function (event) {
 
                   event.preventDefault();
-                  $('#user-channel-sub-plan-modal').html("Add Plan");
-                  $('#submit').val("Add Plan");
+
                   $('#edit_modal').modal('show');
 
                   // Clear all form fields within the modal
@@ -250,7 +249,7 @@
                         success: function () {
                            $('#channel-subscription-plan').trigger("reset");
                            $('#edit_modal').modal('hide');
-                           window.location.reload(true);
+                           // window.location.reload(true);
                         }
                      });
                   }
@@ -258,23 +257,34 @@
       
                $('body').on('click', '.edit-ads-plans', function (event) {
                   event.preventDefault();
-                  var id = $(this).data('id');
-      
+                  var id = $(this).data('random-key-id');
+
                   $.get("{{ route('admin.user-channel-subscription-plan.edit', '') }}/" + id, function (data) {
-                     $('#user-channel-sub-plan-modal').html("Edit Plan");
-                     $('#submit').val("Edit Plan");
+                     
                      $('#edit_modal').modal('show');
-      
-                     $.each(data.data, function (key, value) {
-                        if (key === 'status') {
-                           $('#status').prop('checked', value == 1); 
-                        } else if (key === 'channel_id') {
-                           $('#channel_id').val(value).trigger('change'); 
-                        } else {
-                           $('#' + key).val(value); 
-                        }
-                     });
-      
+
+                     $('.plan-id-input').val(''); 
+
+                     if (data.data.length > 0) {
+                           
+                           var firstPlan = data.data[0];
+
+                           $.each(firstPlan, function (key, value) {
+
+                              if (key === 'status') {
+                                 $('#status').prop('checked', value == 1); 
+                              } else if (key === 'channel_id') {
+                                 $('#channel_id').val(value).trigger('change'); 
+                              } else if (key !== 'plan_id') { 
+                                 $('#' + key).val(value); 
+                              }
+                           });
+
+                           data.data.forEach(function (plan, index) {
+                              $('.plan-id-input').eq(index).val(plan.plan_id); 
+                           });
+                     }
+
                      $('#url').val("{{ route('admin.user-channel-subscription-plan.update', ':id') }}".replace(':id', id));
                   });
                });

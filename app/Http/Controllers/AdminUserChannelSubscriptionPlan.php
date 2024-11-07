@@ -11,7 +11,6 @@ use App\Channel;
 use \Redirect;
 use Auth;
 
-
 class AdminUserChannelSubscriptionPlan extends Controller
 {
     public function index(Request $request)
@@ -35,8 +34,9 @@ class AdminUserChannelSubscriptionPlan extends Controller
 
     public function store(Request $request)
     {
-
         if (!empty($request->plan_id)) {
+
+            $random_key = time().str_random(5);
             
             foreach ($request->plan_id as $key => $plan_id) {
 
@@ -55,6 +55,7 @@ class AdminUserChannelSubscriptionPlan extends Controller
                     'ios_product_id'   => $request->ios_product_id,
                     'ios_plan_price'   => $request->ios_plan_price,
                     'channel_id'       => !empty($request->channel_id) ? json_encode($request->channel_id) : [] ,
+                    'random_key'       => $random_key,
                 );
 
                 AdminUserChannelSubscriptionPlans::create($inputs);
@@ -62,49 +63,59 @@ class AdminUserChannelSubscriptionPlan extends Controller
         }
     
         return response()->json(['success' => true]);
-        
     }
 
-    public function edit($id)
+    public function edit($random_key)
     {
-        $plan = AdminUserChannelSubscriptionPlans::find($id);
-        $plan->channel_id = json_decode($plan->channel_id); 
-    
-        return response()->json([
-            'data' => $plan,
-        ]);
-    
-
+        $plan = AdminUserChannelSubscriptionPlans::where('random_key', $random_key)->get()->map(function ($item) {
+            $item['channel_id'] = json_decode($item->channel_id); 
+            return $item;
+        });
+        
+        return response()->json(['data' => $plan]);
     }
 
     public function update(Request $request)
     {
-        $inputs = array(
-            'plan_name' => $request->plan_name,
-            'plan_id'   => $request->plan_id,
-            'plan_content'     => $request->plan_content,
-            'billing_interval' => $request->billing_interval,
-            'billing_type'     => $request->billing_type,
-            'payment_type'     => 'Recurring',
-            'paymentGateway'   => $request->paymentGateway,
-            'days'             => $request->days,
-            'price'            => $request->price,
-            'status'           => empty($request->status) ? 0 : 1,
-            'ios_product_id'   => $request->ios_product_id,
-            'ios_plan_price'   => $request->ios_plan_price,
-            'channel_id'       => !empty($request->channel_id) ? json_encode($request->channel_id) : [] ,
-        );
+        if (!empty($request->plan_id)) {
 
-        $Adsplan = AdminUserChannelSubscriptionPlans::find($request->id)->update( $inputs );
+            AdminUserChannelSubscriptionPlans::where('random_key', $request->random_key)->delete();
+        
+            $random_key = time().str_random(5);
 
-        return response()->json(['success' => true]);
+            foreach ($request->plan_id as $key => $plan_id) {
+                
+                $inputs = array(
+                    'user_id'   => Auth::user()->id,
+                    'plan_name' => $request->plan_name,
+                    'plan_id'   => $plan_id,
+                    'plan_content'     => $request->plan_content,
+                    'billing_interval' => $request->billing_interval,
+                    'billing_type'     => $request->billing_type,
+                    'payment_type'     => 'Recurring',
+                    'paymentGateway'   => $request->paymentGateway[$key], 
+                    'days'             => $request->days,
+                    'price'            => $request->price,
+                    'status'           => empty($request->status) ? 0 : 1,
+                    'ios_product_id'   => $request->ios_product_id,
+                    'ios_plan_price'   => $request->ios_plan_price,
+                    'channel_id'       => !empty($request->channel_id) ? json_encode($request->channel_id) : [] ,
+                    'random_key'       => $random_key,
+                );
+
+                AdminUserChannelSubscriptionPlans::create($inputs);
+            }
+
+            return response()->json(['success' => true]);
+        }
     }
 
-    public function delete($id)
+    public function delete($random_key)
     {
         try {
 
-            AdminUserChannelSubscriptionPlans::find($id)->delete();
+            AdminUserChannelSubscriptionPlans::where('random_key', $random_key)->delete();
+             
             return Redirect::back();
 
         } catch (\Throwable $th) {
@@ -117,16 +128,13 @@ class AdminUserChannelSubscriptionPlan extends Controller
     {
         try {
 
-            Setting::first()->update([
-                "user_channel_plans_page_status" => $request->user_channel_plans_page_status,
-            ]);
+            Setting::first()->update(["user_channel_plans_page_status" => $request->user_channel_plans_page_status]);
 
             return response()->json(["message" => "true"]);
 
         } catch (\Throwable $th) {
 
             return response()->json(["message" => "false"]);
-
         }
     }
 }
