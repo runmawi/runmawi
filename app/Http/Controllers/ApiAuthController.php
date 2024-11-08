@@ -13029,23 +13029,23 @@ $cpanel->end();
             '24/7'                           => $epg,
         ];
         
-        if ( count($latest_videos) > 0) {
-          $dataToCheck += array('movies'  =>  $latest_videos  );
-        }
+        // if ( count($latest_videos) > 0) {
+        //   $dataToCheck += array('movies'  =>  $latest_videos  );
+        // }
 
-        if ( count($featured_videos) > 0) {
-          $dataToCheck += array('featured_videos'  =>  $featured_videos  );
-        }
+        // if ( count($featured_videos) > 0) {
+        //   $dataToCheck += array('featured_videos'  =>  $featured_videos  );
+        // }
 
-        if ( count($livestreams_sort) > 0) {
-            $dataToCheck += array('live_videos'  =>  $livestreams_sort  );
-        }
+        // if ( count($livestreams_sort) > 0) {
+        //     $dataToCheck += array('live_videos'  =>  $livestreams_sort  );
+        // }
 
-        foreach ($dataToCheck as $key => $value) {
-            if ($value !== null  ) {
-                $response[$key] = $value;
-            }
-        }
+        // foreach ($dataToCheck as $key => $value) {
+        //     if ($value !== null  ) {
+        //         $response[$key] = $value;
+        //     }
+        // }
 
 
       } catch (\Throwable $th) {
