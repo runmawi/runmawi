@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Recurly\Client as RecurlyClient ;
 use Carbon\Carbon;
+use App\UserChannelSubscription;
 use App\PaymentSetting;
 use App\SubscriptionPlan;
 use App\Subscription;
@@ -50,13 +51,11 @@ class RecurlyPaymentChannelController extends Controller
 
     public function channel_checkout_page(Request $request)
     {
-        // try {
+        try {
             
             $plan_name = $request->recurly_plan_id;
 
             $plan_details =  $this->client->getPlan("code-$plan_name");
-
-            dd( $plan_details );
 
             // users details
 
@@ -73,28 +72,25 @@ class RecurlyPaymentChannelController extends Controller
 
             return Theme::view('Recurly-Channel.checkout_page', $data);
 
-        // } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
 
-        //     $respond = array(
-        //         'status'   => "false",
-        //         'current_theme' => $this->HomeSetting->theme_choosen,
-        //         'redirect_url' => URL::to('/channel-partner-payment'),
-        //         'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
-        //     );
+            $respond = array(
+                'status'   => "false",
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'redirect_url' => URL::to('/channel-payment'),
+                'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
+            );
 
-        //     return Theme::view('Recurly-Channel.message',compact('respond'),$respond);
-        // }
+            return Theme::view('Recurly-Channel.message',compact('respond'),$respond);
+        }
     }
 
     public function channelcreateSubscription(Request $request)
     {
-
         try {
 
-            // users details
-                
             $user_details = Auth::User();
-            
+
             // Purchase create array
 
             $purchase_create = [
@@ -135,42 +131,41 @@ class RecurlyPaymentChannelController extends Controller
             $Sub_Startday  = Carbon::parse($subscription->getcurrentperiodstartedat())->format('Y-m-d H:i:s');
             $Sub_Endday    = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
             $trial_ends_at = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
-
-            Subscription::create([
-                'user_id'        =>  $user_details->id,
-                'name'           =>  $subscription->getplan()->getcode(),
-                'price'          =>  $subscription->getunitamount(), 
-                'stripe_id'      =>  $subscription_id,
-                'stripe_status'  =>  $subscription->getState(),
-                'stripe_plan'    =>  $subscription->getplan()->getcode(),
-                'quantity'       =>  $subscription->getQuantity(),
-                'countryname'    =>  $request->country,
-                'regionname'     =>  Region_name(),
-                'cityname'       =>  city_name(),
-                'PaymentGateway' =>  'Recurly',
-                'trial_ends_at'  =>  $trial_ends_at,
-                'ends_at'        =>  $trial_ends_at,
-                'coupon_used'    =>  null,
-                'platform'       => 'WebSite',
+           
+            UserChannelSubscription::create([
+                'user_id'         => $user_details->id,
+                'channel_id'      => 1,
+                'platform'        => 'Recurly',
+                'PaymentGateway'  => 'Recurly',
+                'subscription_id' => $subscription_id,
+                'status'          => $subscription->getState(),
+                'plan_name'       => $subscription->getplan()->getcode(),
+                'plan_price'      => $subscription->getunitamount(),
+                'plan_id'         => $subscription->getplan()->getcode(),
+                'quantity'        => $subscription->getQuantity(),
+                'payment_type'    => 'recurring',
+                'subscription_start'   => $Sub_Startday,
+                'subscription_ends_at' => $Sub_Endday,
+                'countryname'    => $request->country,
+                'regionname'     => Region_name(),
+                'cityname'       => city_name(),
             ]);
 
             $user_data = array(
-                'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subscription_id,
-                'subscription_start'    =>  $Sub_Startday,
-                'subscription_ends_at'  =>  $Sub_Endday,
-                'payment_type'          =>  'recurring',
-                'payment_status'        =>  $subscription->getState(),
-                'payment_gateway'       =>  'Recurly',
-                'coupon_used'           =>   null ,
+                'channel_role'                 =>  'subscriber',
+                'channel_subscription_id'      =>  $subscription_id,
+                'channel_subscription_start'   =>  $Sub_Startday,
+                'channel_subscription_ends_at' =>  $Sub_Endday,
+                'channel_payment_status'       =>  $subscription->getState(),
+                'channel_payment_gateway'      =>  'Recurly',
             );
 
             User::where('id',$user_details->id)->update( $user_data );
-    
+
             $respond = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'  => 'true',
-                'redirect_url' => URL::to('/home'),
+                'redirect_url' => route('channel.all_Channel_home'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
 
@@ -179,7 +174,7 @@ class RecurlyPaymentChannelController extends Controller
             $respond = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'   => "false",
-                'redirect_url' => URL::to('/channel-partner-payment'),
+                'redirect_url' => URL::to('/channel-payment'),
                 'message'  => $th->getMessage(),
             );
         }
@@ -191,7 +186,7 @@ class RecurlyPaymentChannelController extends Controller
     {
         try {
 
-            $subscription_id = Auth::user()->stripe_id;
+            $subscription_id = Auth::user()->channel_subscription_id;
             
             $change_create = [
                 "plan_code" => $request->plan_code,
@@ -208,42 +203,40 @@ class RecurlyPaymentChannelController extends Controller
             $Sub_Endday    = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
             $trial_ends_at = Carbon::parse($subscription->getcurrentperiodendsat())->format('Y-m-d H:i:s');
 
-            Subscription::create([
-                'user_id'        =>  $user_details->id,
-                'name'           =>  $subscription->getplan()->getcode(),
-                'price'          =>  $subscription->getunitamount(), 
-                'stripe_id'      =>  $subscription_id,
-                'stripe_status'  =>  $subscription->getState(),
-                'stripe_plan'    =>  $subscription->getplan()->getcode(),
-                'quantity'       =>  $subscription->getQuantity(),
-                'countryname'    =>  $request->country,
-                'regionname'     =>  Region_name(),
-                'cityname'       =>  city_name(),
-                'PaymentGateway' =>  'Recurly',
-                'trial_ends_at'  =>  $trial_ends_at,
-                'ends_at'        =>  $trial_ends_at,
-                'coupon_used'    =>  null,
-                'platform'       => 'WebSite',
+            UserChannelSubscription::create([
+                'user_id'         => $user_details->id,
+                'channel_id'      => 1,
+                'platform'        => 'Recurly',
+                'PaymentGateway'  => 'Recurly',
+                'subscription_id' => $subscription_id,
+                'status'          => $subscription->getState(),
+                'plan_name'       => $subscription->getplan()->getcode(),
+                'plan_price'      => $subscription->getunitamount(),
+                'plan_id'         => $subscription->getplan()->getcode(),
+                'quantity'        => $subscription->getQuantity(),
+                'payment_type'    => 'recurring',
+                'subscription_start'   => $Sub_Startday,
+                'subscription_ends_at' => $Sub_Endday,
+                'countryname'    => $request->country,
+                'regionname'     => Region_name(),
+                'cityname'       => city_name(),
             ]);
 
             $user_data = array(
-                'role'                  =>  'subscriber',
-                'stripe_id'             =>  $subscription_id,
-                'subscription_start'    =>  $Sub_Startday,
-                'subscription_ends_at'  =>  $Sub_Endday,
-                'payment_type'          =>  'recurring',
-                'payment_status'        =>  $subscription->getState(),
-                'payment_gateway'       =>  'Recurly',
-                'coupon_used'           =>   null ,
+                'channel_role'                 =>  'subscriber',
+                'channel_subscription_id'      =>  $subscription_id,
+                'channel_subscription_start'   =>  $Sub_Startday,
+                'channel_subscription_ends_at' =>  $Sub_Endday,
+                'channel_payment_status'       =>  $subscription->getState(),
+                'channel_payment_gateway'      =>  'Recurly',
             );
 
             User::where('id',$user_details->id)->update( $user_data );  
             
-            
             $respond = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'  => 'true',
-                'redirect_url' => URL::to('/home'),
+                'redirect_url' => route('channel.all_Channel_home'),
                 'message'   => 'Your Subscriber Payment done Successfully' ,
             );
         } catch (\Throwable $th) {
@@ -251,7 +244,7 @@ class RecurlyPaymentChannelController extends Controller
             $respond = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'   => "false",
-                'redirect_url' => URL::to('/upgrade-subscriber'),
+                'redirect_url' => URL::to('/channel-payment'),
                 'message'  => $th->getMessage(),
             );
         }
@@ -265,17 +258,17 @@ class RecurlyPaymentChannelController extends Controller
       
             $subscription = $this->client->cancelSubscription($subscription_id);
 
-            $subscriptionId = User::where('id',Auth::user()->id)->where('payment_gateway','Recurly')->pluck('stripe_id')->first();
+            $subscriptionId = User::where('id',Auth::user()->id)->where('channel_payment_gateway','Recurly')->pluck('channel_subscription_id')->first();
 
-            Subscription::where('stripe_id',$subscriptionId)->update([
-                'stripe_status' =>  'Cancelled',
+            Subscription::where('channel_subscription_id',$subscriptionId)->update([
+                'channel_payment_status' =>  'Cancelled',
             ]);
 
             User::where('id',Auth::user()->id )->update([
-                'payment_gateway' =>  null ,
-                'role'            => 'registered',
-                'stripe_id'       =>  null ,  
-                'payment_status'  =>   'Cancel' ,
+                'channel_role'                 =>  null,
+                'channel_subscription_id'      =>  null,
+                'channel_payment_status'       =>  'Cancel' ,
+                'channel_payment_gateway'      =>  'Recurly',
             ]);
 
             $msg = 'Subscription Cancelled Successfully' ;

@@ -249,7 +249,7 @@
                         success: function () {
                            $('#channel-subscription-plan').trigger("reset");
                            $('#edit_modal').modal('hide');
-                           // window.location.reload(true);
+                           window.location.reload(true);
                         }
                      });
                   }

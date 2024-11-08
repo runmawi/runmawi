@@ -67,11 +67,12 @@ class AdminUserChannelSubscriptionPlan extends Controller
 
     public function edit($random_key)
     {
+        
         $plan = AdminUserChannelSubscriptionPlans::where('random_key', $random_key)->get()->map(function ($item) {
             $item['channel_id'] = json_decode($item->channel_id); 
             return $item;
         });
-        
+
         return response()->json(['data' => $plan]);
     }
 
