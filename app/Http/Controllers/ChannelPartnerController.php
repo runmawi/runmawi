@@ -46,6 +46,11 @@ class ChannelPartnerController extends Controller
         }
     }
 
+    public function all_Channel_home(Request $request)
+    {
+        # code...
+    }
+
     public function channelparnterpayment(Request $request)
     {
 
