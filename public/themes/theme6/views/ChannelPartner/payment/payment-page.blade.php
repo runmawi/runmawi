@@ -574,7 +574,7 @@
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
-                                        <label class=" ml-2"> <p>{{ ucwords(@$Stripe_payment_settings->stripe_lable ?? "Pay vai Stripe") }} </p> </label>
+                                        <label class=" ml-2"> <p>{{ ( $Stripe_payment_settings->stripe_lable  ? $Stripe_payment_settings->stripe_lable : "Pay vai Stripe") }} </p> </label>
                                     </div>
                                 @endif
 
@@ -582,7 +582,7 @@
                                 @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
-                                        <label class=" ml-2"> <p>{{ ucwords( @$recurly_payment_settings->recurly_label ?? "Pay vai Recurly") }} </p></label> 
+                                        <label class=" ml-2"> <p>{{ ucwords( $recurly_payment_settings->recurly_label ? $recurly_payment_settings->recurly_label : "Pay vai Recurly") }} </p></label> 
                                     </div>
                                 @endif
                             </div>

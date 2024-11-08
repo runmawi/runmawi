@@ -26,7 +26,7 @@
     </header>
 
     <section class="container d-flex justify-content-around mt-5">
-        <form class="mb-5" id='my-form' action="{{ $payment_current_route_uri == "upgrade-subscriber" ? route('Recurly.UpgradeSubscription') : route('Recurly.subscription') }}">
+        <form class="mb-5" id='my-form' action="{{ route('channel.Recurly.subscription') }}">
             <div class="form-group">
                 <h5 class="mt-1 mb-2" for="email">Contact Information</h5>
                 <label class="form-label">Email <span class="text-red-500">&nbsp;*</span> </label>
