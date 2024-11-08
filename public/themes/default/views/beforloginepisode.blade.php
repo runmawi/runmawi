@@ -233,12 +233,12 @@
                         <div class="container-fluid 1">
                            <div class="col-12 p-0">
                               <h2 class=""><?php echo $episode->title; ?></h2>
-                              <div class="d-flex">
+                              <div class="d-flex align-items-center">
                                  <p class="mt-3 text-white mr-3" style="opacity:0.7;";>{{ $SeriesSeason->series_seasons_name }}</p>
                                  <i class="fa fa-circle" aria-hidden="true" style="color: #fff !important;opacity:0.7; font-size:8px;"></i>
                                  <p class="mt-3 text-white ml-3" style="opacity:0.7;";>{{ 'Episode ' . $episode->episode_order }}</p>
                               </div>
-                              <p class="mt-3 text-white" style="opacity:0.7;";>{{ \Illuminate\Support\Str::limit($episode->episode_description,280) }}</p>
+                              <p class="mt-3 text-white col-lg-6 col-md-6 col-12 pl-0" style="opacity:0.7;";>{{ \Illuminate\Support\Str::limit($episode->episode_description,180) }}</p>
                            </div>
                            <div class="col-6"></div>
                               <div class="clear"></div>
