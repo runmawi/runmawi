@@ -220,7 +220,6 @@
       const bottomNav = document.querySelector('.bottom-nav');
       const main = document.querySelector('.main');
 
-      // Check if elements exist before modifying styles
       if (sidenav) {
          sidenav.style.display = 'block';
       }
@@ -279,8 +278,8 @@
       var images = document.querySelectorAll('.flickity-lazyloaded');
       
       images.forEach(function(image) {
-         var renderedWidth = image.clientWidth;
-         var renderedHeight = image.clientHeight;
+         var renderedWidth = image.naturalWidth;
+         var renderedHeight = image.naturalHeight;
 
          image.setAttribute('width', renderedWidth);
          image.setAttribute('height', renderedHeight);
