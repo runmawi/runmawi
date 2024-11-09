@@ -117,7 +117,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
+                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}" loading="lazy">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
