@@ -108,8 +108,13 @@
       </video> -->
    </div>
 
-            {{-- End Ads banners --}}
+   
+   <!-- Loader -->
+   <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
+      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;">
+   </div>
 
+   {{-- End Ads banners --}}
    @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
 
       @if (optional($admin_advertistment_banners)->bottom_image_url )
@@ -123,11 +128,6 @@
       @endif
          
    @endif
-</div>
-
-<!-- Loader -->
-<div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
-   <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;">
 </div>
 
 <!-- back-to-top -->
@@ -220,7 +220,6 @@
       const bottomNav = document.querySelector('.bottom-nav');
       const main = document.querySelector('.main');
 
-      // Check if elements exist before modifying styles
       if (sidenav) {
          sidenav.style.display = 'block';
       }
@@ -279,8 +278,8 @@
       var images = document.querySelectorAll('.flickity-lazyloaded');
       
       images.forEach(function(image) {
-         var renderedWidth = image.clientWidth;
-         var renderedHeight = image.clientHeight;
+         var renderedWidth = image.naturalWidth;
+         var renderedHeight = image.naturalHeight;
 
          image.setAttribute('width', renderedWidth);
          image.setAttribute('height', renderedHeight);
