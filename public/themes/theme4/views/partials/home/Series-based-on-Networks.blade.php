@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" loading="lazy">
+                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -51,9 +51,9 @@
                                                     <img class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200" src="{{ $series->player_image ? URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                                 {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
-                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" loading="lazy">
+                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}">
                                                 @else
-                                                    <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200" loading="lazy">
+                                                    <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                                 @endif
                                             </div>
 
@@ -63,7 +63,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos" loading="lazy">
+                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -122,9 +122,9 @@
                                                     <img alt="latest_series" src="{{ $episode->player_image ? URL::to('public/uploads/images/'.$episode->player_image) : $default_horizontal_image_url }}"
                                                         srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
                                                                 {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
-                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}" loading="lazy">
+                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}">
                                                 @else
-                                                    <img src="{{ URL::to('public/uploads/images/'. $episode->player_image)  }}" alt="Videos" loading="lazy">
+                                                    <img src="{{ URL::to('public/uploads/images/'. $episode->player_image)  }}" alt="Videos">
                                                 @endif
                                             </div>
                                             <div class="col-lg-6">
