@@ -38,7 +38,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200" loading="lazy">
+                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
                                         </div>
                                     </div>
                                 @endforeach
@@ -63,7 +63,7 @@
                                         
 
                                         <div class="thumbnail" data-index="{{ $key }}">
-                                            <img src="{{ $series_networks->banner_image_url}}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" loading="lazy">
+                                            <img src="{{ $series_networks->banner_image_url}}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
                                         </div>
 
                                         <div id="{{ 'trending-slider-nav' }}" class="{{ 'network-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
@@ -72,7 +72,7 @@
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos" loading="lazy">                                                                                <div class="controls">
+                                                            <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
                                                                 
                                                                 <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                     <button class="playBTN"> <i class="fas fa-play"></i></button>
