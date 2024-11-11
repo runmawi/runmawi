@@ -38,7 +38,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
+                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
                                     </div>
                                 @endforeach
@@ -63,7 +63,7 @@
                                         
 
                                         <div class="thumbnail" data-index="{{ $key }}">
-                                            <img src="{{ $series_networks->banner_image_url}}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                            <img src="{{ $series_networks->banner_image_url}}" class="flickity-lazyloaded" alt="latest_series" >
                                         </div>
 
                                         <div id="{{ 'trending-slider-nav' }}" class="{{ 'network-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
