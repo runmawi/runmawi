@@ -12555,7 +12555,7 @@ $cpanel->end();
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                       ->where('active', '=', '1')
-                                      ->limit(15)
+                                      // ->limit(15)
                                       ->get()
                                       ->map(function ($item) {
                                         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -12649,8 +12649,7 @@ $cpanel->end();
               }
   
               return $livestream->publish_type;
-          })
-            ->values();
+          })->values();
 
         }
         else{
