@@ -16,9 +16,9 @@
                 @if (($latest_series_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline p-0 mb-0 category-page-slider">
                             @forelse($latest_series_pagelist as $key => $latest_series)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <li class="slide-item">
                                     <a href="{{ URL::to('play_series/'.$latest_series->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">

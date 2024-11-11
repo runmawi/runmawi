@@ -17,9 +17,9 @@
                 @if (($category_videos_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline p-0 mb-0 category-page-slider">
                             @forelse($category_videos_pagelist as $key => $videoCategories)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <li class="slide-item">
                                     <a href="{{ url('/category/' . $videoCategories->slug) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
