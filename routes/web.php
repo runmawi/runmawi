@@ -766,6 +766,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
     Route::post('/videos/VideoCipherFileUpload', ['before' => 'demo', 'uses' => 'AdminVideosController@VideoCipherFileUpload']);
+    Route::get('/transcoding-management', 'AdminVideosController@TranscodingManagement');
 
 
     // Music Genre Routes

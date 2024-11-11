@@ -84,4 +84,9 @@ class ConvertSerieTrailer implements ShouldQueue
         return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
 
     }
+
+    public function getSeries()
+    {
+        return $this->video;
+    }
 }

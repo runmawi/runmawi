@@ -158,6 +158,12 @@ class ConvertVideoForStreaming implements ShouldQueue
 
     }
   
+    public function getVideo()
+    {
+        return $this->video;
+    }
+
+
     private function getCleanFileName($filename){
         return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
     }
