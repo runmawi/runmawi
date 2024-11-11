@@ -916,6 +916,11 @@ public function RentPaypal(Request $request)
     public function BecomeSubscriber()
     {
 
+      if (!auth()->check()) {
+          session(['url.intended' => url()->current()]);
+          return redirect()->route('login');
+      }
+      
       $signup_checkout = SiteTheme::pluck('signup_theme')->first();
 
 

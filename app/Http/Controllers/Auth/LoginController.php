@@ -37,6 +37,11 @@ class LoginController extends Controller
     protected $redirectTo;
 
     public function redirectTo() {
+
+        if (session()->has('url.intended')) {
+            return session()->pull('url.intended', '/home');
+        }
+
         switch(Auth::user()->role){
             case 'registered':
                 return '/register2';

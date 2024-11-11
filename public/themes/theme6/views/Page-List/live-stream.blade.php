@@ -17,9 +17,9 @@
                 @if (($live_list_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline p-0 mb-0 category-page-slider">
                             @forelse($live_list_pagelist as $key => $livestream_videos)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <li class="slide-item">
                                     <div class="block-images position-relative">
                                         <a href="{{ URL::to('live/'.$livestream_videos->slug ) }}">
 
