@@ -13029,30 +13029,18 @@ $cpanel->end();
             '24/7'                           => $epg,
         ];
         
-        // if ( count($latest_videos) > 0) {
-        //   $dataToCheck += array('movies'  =>  $latest_videos  );
-        // }
-
-        // if ( count($featured_videos) > 0) {
-        //   $dataToCheck += array('featured_videos'  =>  $featured_videos  );
-        // }
-
-        // if ( count($livestreams_sort) > 0) {
-        //     $dataToCheck += array('live_videos'  =>  $livestreams_sort  );
-        // }
-
-        
-        if (is_countable($latest_videos) && count($latest_videos) > 0) {
+        if ( !is_null( $latest_videos) &&  count($latest_videos) > 0) {
           $dataToCheck += ['movies' => $latest_videos];
         }
 
-        if (is_countable($featured_videos) && count($featured_videos) > 0) {
+        if ( !is_null($featured_videos) && count($featured_videos) > 0) {
           $dataToCheck += ['featured_videos' => $featured_videos];
         }
 
-        if (is_countable($livestreams_sort) && count($livestreams_sort) > 0) {
+        if ( !is_null($livestreams_sort) && count($livestreams_sort) > 0) {
           $dataToCheck += ['live_videos' => $livestreams_sort];
         }
+
         foreach ($dataToCheck as $key => $value) {
           if ($value !== null) {
               $response[$key] = $value;
