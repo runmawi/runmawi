@@ -1603,4 +1603,13 @@ public function GetCity(Request $request)
             return response()->json($response);
             
         }   
+
+        public function checkMobile(Request $request)
+        {
+            $mobile = $request->input('mobile');
+            $exists = User::where('mobile', $mobile)->exists();
+
+            return response()->json(['exists' => $exists]);
+        }
+
 }
