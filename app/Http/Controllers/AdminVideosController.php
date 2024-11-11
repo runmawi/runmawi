@@ -13831,10 +13831,10 @@ class AdminVideosController extends Controller
             // Process queued jobs
             foreach ($jobs as $job) {
                 $payload = json_decode($job->payload);
-
+    
                 if (isset($payload->data->command)) {
                     $command = unserialize($payload->data->command);
-
+    
                     // Separate based on the command class
                     if ($command instanceof ConvertVideoForStreaming) {
                         $videoCommands[] = $command;
@@ -13849,11 +13849,11 @@ class AdminVideosController extends Controller
             // Process failed jobs
             foreach ($failedJobs as $failedJob) {
                 $payload = json_decode($failedJob->payload);
-
+    
                 if (isset($payload->data->command)) {
                     $command = unserialize($payload->data->command);
-
-                    // Separate based on the command class
+    
+                    // Separate based on the command class and store for display
                     if ($command instanceof ConvertVideoForStreaming) {
                         $failedVideoCommands[] = $command;
                     }  elseif ($command instanceof ConvertEpisodeVideo) {
@@ -13861,6 +13861,9 @@ class AdminVideosController extends Controller
                     } elseif ($command instanceof ConvertSerieTrailer) {
                         $failedSerieTrailerCommands[] = $command;
                     }
+    
+                    // Re-dispatch the failed command to restart transcoding
+                    dispatch($command);
                 }
             }
 
@@ -13879,7 +13882,7 @@ class AdminVideosController extends Controller
             return $th->getMessage();
             return abort(404) ;
         }
-}
+    }
 
 }
     

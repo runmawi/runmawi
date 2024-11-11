@@ -35,7 +35,7 @@
                     <h4 class="text-primary page-title">{{ "Transcoding Management" }}</h4>
                 </div>
                 <div class="content-of-page mt-4">
-                    @if((!empty($video)) && (!empty($episode)) && (!empty($failed_serieTrailer)))
+                    @if((!empty($video)) || (!empty($episode)) || (!empty($serieTrailer)) || (!empty($failed_video)) || (!empty($failed_episode)) || (!empty($failed_serieTrailer)))
                         <div class="row translatedataheading align-items-center">
                             <div class="col-1 d-flex justify-content-center align-items-center"><h6>{{ "Type" }}</h6></div>
                             <div class="col-2 d-flex justify-content-center align-items-center"><h6>{{ "Image" }}</h6></div>
@@ -43,7 +43,7 @@
                             <div class="col-2 d-flex justify-content-center align-items-center"><h6>{{ "Percentage" }}</h6></div>
                             <div class="col-1 d-flex justify-content-center align-items-center"><h6>{{ "Duration" }}</h6></div>
                         </div>
-                    
+                    <!-- Video transcoding -->
                         @foreach($video as $data)
                             <div class="row transdatas">
                                 <div class="col-1 d-flex justify-content-center align-items-center"><p>{{ "Video" }}</p></div>
@@ -61,6 +61,27 @@
                                 </div>
                             </div>
                         @endforeach
+
+                        <!-- Failed Video transcoding -->
+                        @foreach($failed_video as $data)
+                            <div class="row transdatas">
+                                <div class="col-1 d-flex justify-content-center align-items-center"><p>{{ "Video" }}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><img src="{{ URL::to('public/uploads/images/'.$data->getVideo()->player_image) }}" alt="{{ $data->getVideo()->title ?? 'N/A' }}"></div>
+                                <div class="col-6 d-flex justify-content-center align-items-center"><p>{{ $data->getVideo()->title ?? 'N/A' }}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><p>@if(!empty($data->getVideo()->processed_low)){{ $data->getVideo()->processed_low.'%' }}@else{{ "Not started yet" }} @endif</p></div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    @php
+                                        $durationInSeconds = $data->getVideo()->duration;
+                                        $hours = str_pad(floor($durationInSeconds / 3600), 2, '0', STR_PAD_LEFT);
+                                        $minutes = str_pad(floor(($durationInSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT);
+                                        $seconds = str_pad($durationInSeconds % 60, 2, '0', STR_PAD_LEFT);
+                                    @endphp
+                                    <p>{{ $hours }}:{{ $minutes }}:{{ $seconds }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <!-- Episode transcoding -->
                         @foreach($episode as $data)
                             <div class="row transdatas">
                                 <div class="col-1 d-flex justify-content-center align-items-center"><p>{{"Episode"}}</p></div>
@@ -78,9 +99,43 @@
                                 </div>
                             </div>
                         @endforeach
+
+                        <!-- Failed Episode transcoding -->
+                        @foreach($failed_episode as $data)
+                            <div class="row transdatas">
+                                <div class="col-1 d-flex justify-content-center align-items-center"><p>{{"Episode"}}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><img src="{{ URL::to('public/uploads/images/'.$data->getEpisode()->player_image) }}" alt="{{ $data->getEpisode()->title }}"></div>
+                                <div class="col-6 d-flex justify-content-center align-items-center"><p>{{ $data->getEpisode()->title ?? 'N/A' }}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><p>@if(!empty($data->getEpisode()->processed_low)){{ $data->getEpisode()->processed_low.'%' }}@else{{ "Not started yet" }} @endif</p></div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    @php
+                                        $durationInSeconds = $data->getEpisode()->duration;
+                                        $hours = str_pad(floor($durationInSeconds / 3600), 2, '0', STR_PAD_LEFT);
+                                        $minutes = str_pad(floor(($durationInSeconds % 3600) / 60), 2, '0', STR_PAD_LEFT);
+                                        $seconds = str_pad($durationInSeconds % 60, 2, '0', STR_PAD_LEFT);
+                                    @endphp
+                                    <p>{{ $hours }}:{{ $minutes }}:{{ $seconds }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <!-- Season trailer transcoding -->
+                        @foreach($serieTrailer as $data)
+                            <div class="row transdatas">
+                                <div class="col-1 d-flex justify-content-center align-items-center"><p>{{"Season Trailer"}}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><img src="{{ $data->getSeries()->image }}" alt="{{ $data->getSeries()->series_seasons_name }}"></div>
+                                <div class="col-6 d-flex justify-content-center align-items-center"><p>{{ $data->getSeries()->series_seasons_name ?? 'N/A' }}</p></div>
+                                <div class="col-2 d-flex justify-content-center align-items-center"><p style="color:red !important;">Failed</p></div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    <p>00:07:04</p>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <!-- Failed season trailer transcoding -->
                         @foreach($failed_serieTrailer as $data)
                             <div class="row transdatas">
-                                <div class="col-1 d-flex justify-content-center align-items-center"><p>{{"Series Trailer"}}</p></div>
+                                <div class="col-1 d-flex justify-content-center align-items-center"><p>{{"Season Trailer"}}</p></div>
                                 <div class="col-2 d-flex justify-content-center align-items-center"><img src="{{ $data->getSeries()->image }}" alt="{{ $data->getSeries()->series_seasons_name }}"></div>
                                 <div class="col-6 d-flex justify-content-center align-items-center"><p>{{ $data->getSeries()->series_seasons_name ?? 'N/A' }}</p></div>
                                 <div class="col-2 d-flex justify-content-center align-items-center"><p style="color:red !important;">Failed</p></div>
