@@ -244,9 +244,9 @@
             margin-left: 36%;
         }
 
-        .container {
+        /* .container {
             margin-top: 70px;
-        }
+        } */
 
         .panel-heading {
             margin-bottom: 1rem;
@@ -535,6 +535,7 @@
         body.light-theme .text-white{
             color: <?php echo GetLightText(); ?> !important;
         }
+        button.back-to-home svg.text-primary{height: 40px;width:40px;}
         /* p{color: #fff !important;}  */
 
     </style>
@@ -568,13 +569,13 @@
 
     <section class="flick p-4">
 
-        <div class="col-sm-12">
-            <button href="" onclick="history.back()" style="background: transparent;border:none;cursor: pointer;">
-                <svg style="{{ 'color:'. front_End_text_color() }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
-            </button>
-        </div>
-
         <div class="container">
+
+            <div class="col-sm-12">
+                <button class="back-to-home" href="" onclick="history.back()" style="background: transparent;border:none;cursor: pointer;">
+                    <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="currentColor"><path d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20ZM12 11H16V13H12V16L8 12L12 8V11Z"></path></svg>
+                </button>
+            </div>
 
             <div align="center"></div>
             <div class="row justify-content-center">

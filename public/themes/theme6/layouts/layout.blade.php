@@ -11,6 +11,24 @@
 
 
 <style>
+
+    :root {
+    --iq-primary: {{ button_bg_color() . '!important' }};
+    --iq-primary-hover: {{ button_bg_color() . '!important' }};
+    --iq-light-primary: #d7d3f8;
+    --iq-secondary: #6c757d;
+    --iq-white: #ffffff;
+    --iq-black: #000000;
+    --iq-title-text: #23203c;
+    --iq-body-text: #D1D0CF;
+    --iq-body-bg: #141414;
+    --iq-bg1: #191919;
+    --iq-body-border: #393750;
+    --iq-gold: #E6C75F;
+    --iq-black: #000000;
+    }
+
+
     .text-primary {
         color: {{ button_bg_color() . '!important' }};
     }
