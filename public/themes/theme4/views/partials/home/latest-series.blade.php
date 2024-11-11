@@ -32,7 +32,7 @@
                                 @foreach ($data as $key => $latest_series)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series">
+                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" loading="lazy">
                                         </div>
                                     </div>
                                 @endforeach
@@ -57,7 +57,7 @@
                                     </div>
 
                                     <div class="thumbnail" data-index="{{ $key }}">
-                                        <img src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : $default_horizontal_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                        <img src="{{ $latest_series->player_image ?  URL::to('public/uploads/images/'.$latest_series->player_image) : $default_horizontal_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" loading="lazy">
                                     </div>
 
                                     <div id="{{ 'trending-slider-nav' }}" class="{{ 'series-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
@@ -66,7 +66,7 @@
                                                 <div class="depend-items">
                                                 <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                     <div class=" position-relative">
-                                                        <img src="{{ $episode_details->image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                        <img src="{{ $episode_details->image_url }}" class="img-fluid" alt="Videos" loading="lazy">                                                                                <div class="controls">
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -108,7 +108,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="series">
+                                                <img class="lazy" src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="series" loading="lazy">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">

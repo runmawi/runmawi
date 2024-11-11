@@ -108,8 +108,13 @@
       </video> -->
    </div>
 
-            {{-- End Ads banners --}}
+   
+   <!-- Loader -->
+   <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
+      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;">
+   </div>
 
+   {{-- End Ads banners --}}
    @if ( optional($admin_advertistment_banners)->bottom_banner_status == 1 )
 
       @if (optional($admin_advertistment_banners)->bottom_image_url )
@@ -202,17 +207,19 @@
    @media screen and (max-height: 450px) {
       .sidenav {padding-top: 15px;}
    }
+   .hidden-loader {
+      display: none !important;
+   }
 </style>
 
 <script>
-      window.onload = function() {
+   window.onload = function() {
       const sidenav = document.querySelector('.sidenav');
       const rightnav = document.querySelector('.rightnav');
       const headerTopImg = document.querySelector('.header_top_position_img');
       const bottomNav = document.querySelector('.bottom-nav');
       const main = document.querySelector('.main');
 
-      // Check if elements exist before modifying styles
       if (sidenav) {
          sidenav.style.display = 'block';
       }
@@ -242,24 +249,41 @@
          console.log("scrolled");
 
          if (page_url != null && !isFetching) {
-               isFetching = true; 
-               $.ajax({
-                  url: page_url,
-                  // beforeSend: function () {
-                  //    $('.auto-load').show();
-                  // },
-                  success: function (data) {
+            isFetching = true;
+            $("#loader").removeClass("hidden-loader");
+
+            $.ajax({
+               url: page_url,
+               success: function (data) {
+                  if (data.view) {
                      $("#home_sections").append(data.view);
                      $("#home_sections").attr('next-page-url', data.url);
-                  },
-                  // complete: function () {
-                  //    isFetching = false; 
-                  //    $('.theme4-slider').hide();
-                  //    $('.auto-load').hide();
-                  // }
-               });
+                  } else {
+                     $("#home_sections").removeAttr('next-page-url');
+                  }
+               },
+               complete: function () {
+                  isFetching = false;
+                  if ($("#home_sections").attr('next-page-url') == null) {
+                     $("#loader").addClass("hidden-loader");
+                  }
+               }
+            });
          }
-      }, 100);
+      }, 10);
+   });
+
+   // width and height set dynamically
+   document.addEventListener('DOMContentLoaded', function() {
+      var images = document.querySelectorAll('.flickity-lazyloaded');
+      
+      images.forEach(function(image) {
+         var renderedWidth = image.clientWidth;
+         var renderedHeight = image.clientHeight;
+
+         image.setAttribute('width', renderedWidth);
+         image.setAttribute('height', renderedHeight);
+      });
    });
 
 </script>

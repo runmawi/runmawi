@@ -766,6 +766,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
     Route::post('/videos/VideoCipherFileUpload', ['before' => 'demo', 'uses' => 'AdminVideosController@VideoCipherFileUpload']);
+    Route::get('/transcoding-management', 'AdminVideosController@TranscodingManagement');
 
 
     // Music Genre Routes
@@ -871,9 +872,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     // Admin User Channel Subscription Plan (Auth user)
     Route::get('/user-channel-subscription-plan', 'AdminUserChannelSubscriptionPlan@index')->name('admin.user-channel-subscription-plan.index');
     Route::get('/user-channel-subscription-plan-store', 'AdminUserChannelSubscriptionPlan@store')->name('admin.user-channel-subscription-plan.store');
-    Route::get('/user-channel-subscription-plan-edit/{id}', 'AdminUserChannelSubscriptionPlan@edit')->name('admin.user-channel-subscription-plan.edit');
+    Route::get('/user-channel-subscription-plan-edit/{random_key}', 'AdminUserChannelSubscriptionPlan@edit')->name('admin.user-channel-subscription-plan.edit');
     Route::get('/user-channel-subscription-plan-update', 'AdminUserChannelSubscriptionPlan@update')->name('admin.user-channel-subscription-plan.update');
-    Route::get('/user-channel-subscription-plan-delete/{id}', 'AdminUserChannelSubscriptionPlan@delete')->name('admin.user-channel-subscription-plan.delete');
+    Route::get('/user-channel-subscription-plan-delete/{random_key}', 'AdminUserChannelSubscriptionPlan@delete')->name('admin.user-channel-subscription-plan.delete');
     Route::get('/user-channel-subscription-plan-page-status', 'AdminUserChannelSubscriptionPlan@user_channel_plans_page_status')->name('admin.user-channel-subscription-plan.page-status');
 
     // Multiple channel Subscription Plans
@@ -2367,8 +2368,9 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
     Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
 
-    Route::get('channel-partner-payment', 'ChannelPartnerController@channelparnterpayment')->name('channel-partner-payment');
-    Route::get('channel-partner-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
+    Route::get('channel-home', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
+    Route::get('channel-payment', 'ChannelPartnerController@channelparnterpayment')->name('channel.payment');
+    Route::get('channel-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
 
     // Live Event For artist
     Route::get('/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
@@ -2522,8 +2524,6 @@ Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
     Route::get('channel-createSubscription', 'RecurlyPaymentChannelController@channelcreateSubscription')->name('channel.Recurly.subscription');
     Route::get('channel-subscription-cancel/{subscription_id}', 'RecurlyPaymentChannelController@channelCancelSubscription')->name('channel.Recurly.Subscription_cancel');
     Route::get('channel-upgrade-subscription', 'RecurlyPaymentChannelController@channeUpgradeSubscription')->name('channel.Recurly.UpgradeSubscription');
-
-
 });
 
 // Reset Password

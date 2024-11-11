@@ -16,9 +16,9 @@
                 @if (($featured_episodes_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline p-0 mb-0 category-page-slider">
                             @forelse($featured_episodes_pagelist as $key => $episode_details)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <li class="slide-item">
                                     <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
