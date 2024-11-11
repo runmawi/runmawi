@@ -1512,9 +1512,19 @@ class AdminLiveStreamController extends Controller
         }
 
         if (isset($request->free_duration)) {
-            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $request->free_duration);
+            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+        
+            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
             $video->free_duration = $time_seconds;
         }
+        
+
+        
+        // if (isset($request->free_duration)) {
+        //     $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+        //     $video->free_duration = $time_seconds;
+        // }
 
         $video->rating = $rating;
         $video->banner = $banner;
@@ -1565,7 +1575,20 @@ class AdminLiveStreamController extends Controller
                 $video->pre_post_ads =  null ;
             }
 
-            $video->video_js_mid_advertisement_sequence_time   =  $request->video_js_mid_advertisement_sequence_time;
+            if (!empty($request->video_js_mid_advertisement_sequence_time)) {
+                $time = $request->video_js_mid_advertisement_sequence_time;
+                sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
+        
+                // Default missing values to 0
+                $hours = $hours ?? 0;
+                $minutes = $minutes ?? 0;
+                $seconds = $seconds ?? 0;
+        
+                // Format to HH:MM:SS
+                $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                $video->video_js_mid_advertisement_sequence_time = $formattedTime;
+            }
+            // $video->video_js_mid_advertisement_sequence_time   =  $request->video_js_mid_advertisement_sequence_time;
         }
         else{
             $video->ads_position = $request->ads_position;

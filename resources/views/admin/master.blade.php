@@ -945,6 +945,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->music_genre_checkout == 1)
                            <li><a href="{{ URL::to('admin/Music/Genre') }}" class="iq-waves-effect">{{ (__('Manage Music Genre')) }}</a></li>
                         @endif 
+                        <li><a href="{{ URL::to('admin/transcoding-management') }}" class="iq-waves-effect">{{ (__('Transcoding Management')) }}</a></li>
+
 
                     
           </ul></li>
