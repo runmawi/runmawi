@@ -103,7 +103,7 @@
                                         @endif
 
                                         <div class="d-flex align-items-center p-0 mt-3">
-                                            <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%" loading="lazy"> 
+                                            <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%" > 
                                         </div>
 
                                         <div class="trending-dec">{{ html_entity_decode(strip_tags($livestream_videos->description), ENT_QUOTES) }}</div>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="thumbnail" data-index="{{ $key }}">
-                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" loading="lazy">
+                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" >
                                     </div>
                                 @endforeach
                             </div>
