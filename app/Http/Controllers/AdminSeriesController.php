@@ -2180,32 +2180,26 @@ class AdminSeriesController extends Controller
             $episodes->responsive_image =  $data['responsive_image'];
             $episodes->responsive_player_image =  $data['responsive_player_image'];
             $episodes->responsive_tv_image =  $data['responsive_tv_image'];
-            $episodes->status =  1;
+            $episodes->status =  $type == 'm3u8' ? 0 : 1;
             
-            // {{-- Video.Js Player--}}
+            // {{-- Ads Video.Js Player--}}
 
-            if( choosen_player() == 1  && ads_theme_status() == 1){
 
-                if( admin_ads_pre_post_position() == 1){
-                    
-                    $episodes->pre_post_ads =  $data['pre_post_ads'];
-                    $episodes->post_ads     =  $data['pre_post_ads'];
-                    $episodes->pre_ads      =  $data['pre_post_ads'];
-                }
-                else{
-                    
-                    $episodes->pre_ads      =  $data['pre_ads'];
-                    $episodes->post_ads     =  $data['post_ads'];
-                    $episodes->pre_post_ads =  null ;
-                }
-
-                $episodes->mid_ads  =  $data['mid_ads'];
-                $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            if( admin_ads_pre_post_position() == 1){
+                
+                $episodes->pre_post_ads =  $data['pre_post_ads'];
+                $episodes->post_ads     =  $data['pre_post_ads'];
+                $episodes->pre_ads      =  $data['pre_post_ads'];
             }
             else{
-                $episodes->ads_position =  $data['ads_position'];
-                $episodes->episode_ads  =  $data['episode_ads'];
+                
+                $episodes->pre_ads      =  $data['pre_ads'];
+                $episodes->post_ads     =  $data['post_ads'];
+                $episodes->pre_post_ads =  null ;
             }
+
+            $episodes->mid_ads  =  $data['mid_ads'];
+            $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
 
             $episodes->save();
 
@@ -2419,8 +2413,23 @@ class AdminSeriesController extends Controller
 
         $theme_settings = SiteTheme::first();
 
+        $subtitles_name = SeriesSubtitle::select('subtitles.language as language')
+        ->Join('subtitles', 'series_subtitles.shortcode', '=', 'subtitles.short_code')
+        ->where('series_subtitles.episode_id', $id)
+        ->get();
 
-            $post_route =  URL::to('admin/episode/update');
+        if (count($subtitles_name) > 0) {
+        foreach ($subtitles_name as $value) {
+        $subtitlesname[] = $value->language;
+        }
+        $subtitles = implode(', ', $subtitlesname);
+        } else {
+        $subtitles = 'No Subtitles Added';
+        }
+
+        $subtitle = SeriesSubtitle::where('episode_id', '=', $id)->get();
+
+        $post_route =  URL::to('admin/episode/update');
 
         $data = array(
                 'headline' => '<i class="fa fa-edit"></i> Edit Episode '.$episodes->title,
@@ -2438,6 +2447,9 @@ class AdminSeriesController extends Controller
                 "video_js_Advertisements" => $video_js_Advertisements ,
                 'compress_image_settings' => $compress_image_settings,
                 'theme_settings' => $theme_settings,
+                'page'  => 'Edit',
+                'playerui_settings'  => Playerui::first(),
+                'playerui'  => Playerui::first(),
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
@@ -2774,31 +2786,25 @@ class AdminSeriesController extends Controller
         $episode->episode_id_1080p =( !empty($data["episode_id_1080p"])) ? $data["episode_id_1080p"] : null;
         $episode->status =  1;
 
+        // {{--Ads Video.Js Player--}}
 
-            // {{-- Video.Js Player--}}
 
-        if( choosen_player() == 1  && ads_theme_status() == 1 ){
+        if( admin_ads_pre_post_position() == 1){
 
-            if( admin_ads_pre_post_position() == 1){
-
-                $episode->pre_post_ads =  $data['pre_post_ads'];
-                $episode->post_ads     =  $data['pre_post_ads'];
-                $episode->pre_ads      =  $data['pre_post_ads'];
-            }
-            else{
-                
-                $episode->pre_ads      =  $data['pre_ads'];
-                $episode->post_ads     =  $data['post_ads'];
-                $episode->pre_post_ads =  null ;
-            }
-            
-            $episode->mid_ads  =  $data['mid_ads'];
-            $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            $episode->pre_post_ads =  $data['pre_post_ads'];
+            $episode->post_ads     =  $data['pre_post_ads'];
+            $episode->pre_ads      =  $data['pre_post_ads'];
         }
         else{
-            $episode->ads_position =  $data['ads_position'];
-            $episode->episode_ads  =  $data['episode_ads'];
+            
+            $episode->pre_ads      =  $data['pre_ads'];
+            $episode->post_ads     =  $data['post_ads'];
+            $episode->pre_post_ads =  null ;
         }
+        
+        $episode->mid_ads  =  $data['mid_ads'];
+        $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+
 
         $episode->save();
 
@@ -5209,30 +5215,24 @@ class AdminSeriesController extends Controller
             $episodes->episode_id_1080p =  $data['episode_id_1080p'];
             $episodes->status =  1;
             
-            // {{-- Video.Js Player--}}
+            // {{-- Ads Video.Js Player--}}
 
-            if( choosen_player() == 1  && ads_theme_status() == 1){
-
-                if( admin_ads_pre_post_position() == 1){
-                    
-                    $episodes->pre_post_ads =  $data['pre_post_ads'];
-                    $episodes->post_ads     =  $data['pre_post_ads'];
-                    $episodes->pre_ads      =  $data['pre_post_ads'];
-                }
-                else{
-                    
-                    $episodes->pre_ads      =  $data['pre_ads'];
-                    $episodes->post_ads     =  $data['post_ads'];
-                    $episodes->pre_post_ads =  null ;
-                }
-
-                $episodes->mid_ads  =  $data['mid_ads'];
-                $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            if( admin_ads_pre_post_position() == 1){
+                
+                $episodes->pre_post_ads =  $data['pre_post_ads'];
+                $episodes->post_ads     =  $data['pre_post_ads'];
+                $episodes->pre_ads      =  $data['pre_post_ads'];
             }
             else{
-                $episodes->ads_position =  $data['ads_position'];
-                $episodes->episode_ads  =  $data['episode_ads'];
+                
+                $episodes->pre_ads      =  $data['pre_ads'];
+                $episodes->post_ads     =  $data['post_ads'];
+                $episodes->pre_post_ads =  null ;
             }
+
+            $episodes->mid_ads  =  $data['mid_ads'];
+            $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            
 
             $episodes->save();
 
@@ -5574,6 +5574,10 @@ class AdminSeriesController extends Controller
         }
     }
 
+    function get_processed_percentage_episode($id)
+    {
+        return Episode::where("id", "=", $id)->first();
+    }
 
 
 }

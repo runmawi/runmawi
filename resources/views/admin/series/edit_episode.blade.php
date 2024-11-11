@@ -46,8 +46,128 @@
         font-size: revert;
     }
 
-</style>
+    .progress { position:relative; width:100%; }
+   .bar { background-color: #008000; width:0%; height:20px; }
+   .percent { position:absolute; display:inline-block; left:50%; color: #7F98B2;}
+   [data-tip] {
+   position:relative;
+   }
 
+   #progressbar #useraccess_ppvprice:before {
+   font-family: FontAwesome;
+   content: "\f030"
+   }
+   .progress {height:0.25rem !important;}
+
+   #progressbar li.active {
+   color: #000000!important; font-weight:500;
+   }
+   #progressbar li {
+   list-style-type: none;
+   font-size: 15px;
+   width: 16%;
+   float: left;
+   position: relative;
+   font-weight: 400;
+   background-color: white;
+   padding: 10px;
+       line-height: 19px;
+   }
+   #progressbar #videot:before {
+   font-family: FontAwesome;
+   content: "\f03d"
+   }
+   #progressbar #account:before {
+   font-family: FontAwesome;
+   content: "\f129"
+   } 
+   #progressbar #personal:before {
+   font-family: FontAwesome;
+   content: "\f007"
+   }
+   #progressbar #payment:before {
+   font-family: FontAwesome;
+   content: "\f03e"
+   }
+   #progressbar #confirm:before {
+   font-family: FontAwesome;
+   content: "\f03d"
+   }
+   #progressbar li:before {
+   width: 50px;
+   height: 50px;
+   line-height: 45px;
+   display: block;
+   font-size: 20px;
+   color: #ffffff;
+   background: lightgray;
+   border-radius: 50%;
+   margin: 0 auto 10px auto;
+   padding: 2px;
+       display: none;
+       
+   }
+    #progressbar li img{
+        width: 125px;
+    }
+   #progressbar li:after {
+   content: '';
+   width: 100%;
+   height: 2px;
+   background: lightgray;
+   position: absolute;
+   left: 0;
+   top: 25px;
+   z-index: -1
+   }
+   #progressbar li.active:before, #progressbar li.active:after {
+   background: #48bbe5;
+   }
+
+   #progressbar li img {
+    width: 125px;
+    display: block;
+    margin: 0 auto;
+}
+.sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
+.top-options a, .top-options button, .top-options .src-btn{font-size: 10px;border-radius: 4px;}
+#epi-prev .my-video.vjs-fluid {
+    height: 67vh !important;
+}
+.source_list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 130px;
+    float: right;
+}
+</style>
+{{-- video-js Style --}}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" /> -->
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+    <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+    <link href="{{ asset('public/themes/default/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+    <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+{{-- video-js Script --}}
+
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script src="{{ asset('assets/js/video-js/video.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-contrib-quality-levels.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-http-source-selector.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ads.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs.ima.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/videojs-hls-quality-selector.min.js') }}"></script>
+    <script src="{{ asset('assets/js/video-js/end-card.js') }}"></script>
+    <script src="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@filmgardi/videojs-skip-button/dist/videojs-skip-button.min.js') }}"></script>
+    <script src="{{ URL::to('node_modules/@videojs/plugin-concat/dist/videojs-plugin-concat.min.js') }}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 @section('css')
 
@@ -57,10 +177,66 @@ $series = App\Series::where('id',$episodes->series_id)->first()  ;
 $media_url = URL::to('/episode/').'/'.$series->slug.'/'.$episodes->slug;
 $embed_media_url = URL::to('/episode/embed').'/'.$series->slug.'/'.$episodes->slug;
 $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowfullscreen></iframe>';
+
+    if($episodes->type == 'm3u8'){
+        $episodeURL =   URL::to('/storage/app/public/').'/'.$episodes->path . '.m3u8'  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif ($episodes->type == 'file' || $episodes->type == 'upload'){
+        $episodeURL =   $episodes->mp4_url  ;
+        $episode_player_type =  'video/mp4' ;
+    }elseif ($episodes->type == 'm3u8_url'){
+        $episodeURL =   $episodes->url  ;
+        $episode_player_type =  'application/x-mpegURL' ;
+    }elseif($episodes->type == 'bunny_cdn'){
+       $episodeURL =   $episodes->url  ;
+       $episode_player_type =  'application/x-mpegURL' ;
+   }else{
+        $episodeURL =  null ;
+        $episode_player_type =  null ;
+   }
 ?>
+
+    
+
 <link rel="stylesheet" href="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.css') }}" />
 @stop @section('content')
 <div id="content-page" class="content-page">
+
+    <div class="container-fluid">
+        @if(!empty($episodes->id))
+                        
+            <div class="top-options row d-flex align-items-center justify-content-end">
+                <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
+                
+                <?php 
+                    $filename = $episodes->path.'.mp4';
+                    $path = storage_path('app/public/'.$filename);
+                ?>
+                {{-- @if($episodes->status == 1 && $episodes->status == 1  )
+                    <a href="#" class="btn btn-lg btn-primary pull-right ml-2" data-toggle="modal" data-target="#largeModal">Player Perview</a>
+                @endif  --}}
+
+                @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
+                    @if (file_exists($path))
+                        <a class="iq-bg-warning ml-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}"><button class="btn btn-danger" > Delete Original File</button></a>
+                    @endif
+                @endif
+                
+                <span class="btn btn-primary src-btn position-relative ml-2" onclick="sourceDownload()">Download video source</span>
+            </div>
+        @endif
+    </div>
+
+    @php
+        $m3u8_url = URL::to('/storage/app/public/'. $episodes->path .'.m3u8')   ;
+    @endphp
+
+    <div class="source_list mb-2" style="display: none;padding-right:5px;">
+        <a href="{{ $episodes->mp4_url}}" download="{{$episodes->title.'.mp4'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>MP4</span></a>
+        @if($episodes->type == 'm3u8')
+            <a href="{{ $m3u8_url}}" download="{{$episodes->title.'.m3u8'}}" style="color:#000000;font-size:12px;"><span><i class="fa fa-download pr-2" aria-hidden="true"></i>M3U8</span></a>
+        @endif
+    </div>
 
     <!-- BREADCRUMBS -->
     <div class="row mr-2">
@@ -87,27 +263,96 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
             </div>
         </div>
     </div>
+
+    <div>
+        @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+            <div class="col-sm-12">
+                Video Transcoding is under Progress
+                <div class="progress">
+                    <div class="low_bar"></div >
+                </div>
+                <div class="low_percent">0%</div >
+            </div>
+        @endif
+    </div>
+    @if($episodes->status == 1 && $episodes->status == 1  )
+        <div id="epi-prev">
+            <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                width="auto" height="auto" poster="{{ URL::to('public/uploads/images/'.$episodes->player_image) }}" playsinline="playsinline"
+                >
+                <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                    @if(isset($playerui_settings['subtitle']) && $playerui_settings['subtitle'] == 1 && isset($SeriesSubtitle) && count($SeriesSubtitle) > 0)
+                    @foreach($SeriesSubtitle as $subtitles_file)
+                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                    @endforeach
+                @endif
+            </video>
+        </div>
+    @endif
     <div class="container-fluid">
         <!-- This is where -->
         <div class="iq-card">
             <div class="admin-section-title">
-                @if(!empty($episodes->id))
-                <div class="d-flex justify-content-between">
-                    <div><h1 class="card-title">{{ $episodes->title }}</h1></div>
-                    <div class="pull-right">
-                        <a href="{{URL::to('episode') . '/' . @$episodes->series_title->slug . '/' . $episodes->slug }}" target="_blank" class="btn btn-primary"> <i class="fa fa-eye"></i> Preview <i class="fa fa-external-link"></i> </a>
-                    </div>
-                </div>
-                @endif
-            <?php 
-                $filename = $episodes->path.'.mp4';
-                $path = storage_path('app/public/'.$filename);
-            ?>
+
+           <!--  @if($episodes->status == 1 && $episodes->status == 1  )
+                <a  style="margin-right: 16%;margin-top: -4%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
+            @endif   -->
+
+            <br>
             @if($episodes->processed_low >= 100 && $episodes->type == "m3u8")
                 @if (file_exists($path))
                     <a class="iq-bg-warning mt-2"  href="{{ URL::to('admin/episode/filedelete') . '/' . $episodes->id }}" style="margin-left: 65%;"><button class="btn btn-secondary" > Delete Original File</button></a>
                 @endif
-            @endif           
+            @endif   
+            
+            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
+                <div class="col-sm-12">
+                    Video Transcoding is under Progress
+                    <div class="progress">
+                        <div class="low_bar"></div >
+                    </div>
+                    <div class="low_percent">0%</div >
+                </div>
+
+                <!-- <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+               </div> -->
+               
+            @endif
+
+            <div class="container">                
+                <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Episode Player</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                            width="auto" height="auto" poster="{{ $episodes->player_image }}" playsinline="playsinline"
+                            >
+                            <source src="{{ $episodeURL }}" type="{{ $episode_player_type }}">
+
+                                @if(isset($SeriesSubtitle))
+                                    @foreach($SeriesSubtitle as $subtitles_file)
+                                        <track kind="subtitles" src="{{ $subtitles_file->url }}" srclang="{{ $subtitles_file->sub_language }}"
+                                            label="{{ $subtitles_file->shortcode }}" @if($loop->first) default @endif >
+                                    @endforeach
+                                @endif
+                        </video>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
             </div>
             <hr />
             <div class="clear"></div>
@@ -204,7 +449,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
 
                             <span>
-                                <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
+                                <p id="player_image_error_msg" style="color:red !important; display:none;">
                                     * Please upload an image with the correct dimensions.
                                 </p>
                             </span>
@@ -371,46 +616,59 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         </div>
                     </div>
                 </div>
-                <div class="row">    
-               <div class="panel panel-primary" data-collapsed="0"> 
-               <div class="panel-heading"> 
-               <div class="panel-title col-sm-12"> <h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                  <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                  <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
-               <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-               <i class="las la-exclamation-circle"></i>
-               </a>:</h3>
-               </div> 
-               <div class="panel-options"> 
-               <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
-               </div>
-               </div> 
-               <div class="panel-body" style="display: block;"> 
-               @foreach($subtitles as $subtitle)
+                
+                <div class="row mt-5">    
+                    <div class="panel panel-primary" data-collapsed="0"> 
+                        <div class="panel-heading"> 
+                            <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                                <h6 class="fs-title">
+                                    Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                </h6>
+                                <div class="sample-file d-flex align-items-center">
+                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
+                                    <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                        <i class="las la-exclamation-circle"></i>
+                                    </a>
+                                </div>
+                            </div> 
+                            <div class="panel-options"> 
+                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                            </div>
+                        </div> 
+                
+                        <div class="panel-body mt-3" style="display:flex;flex-wrap:wrap;"> 
+                            @foreach($subtitles as $subtitle)
+                                <div class="col-sm-6 form-group" style="float: left;">
+                                    <div class="align-items-center" style="clear:both;">
+                                        <label for="embed_code" style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
+                                        
+                                        @if(@$subtitlescount > 0)
+                                            @foreach($SeriesSubtitle as $movies_subtitles)
+                                                @if(@$movies_subtitles->sub_language == $subtitle->language)
+                                                    Uploaded Subtitle : 
+                                                    <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="Delete" 
+                                                       data-original-title="Delete" 
+                                                       onclick="return confirm('Are you sure?')" 
+                                                       href="{{ URL::to('admin/episode/subtitle/delete') . '/' . $movies_subtitles->id }}">
+                                                       <img class="ply" src="{{ URL::to('/') }}/assets/img/icon/delete.svg">
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                        
+                                        <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
+                                        <input class="mt-1" type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
+                                        <input class="mt-1" type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div> 
+                    </div>
+                </div>
 
-               <div class="col-sm-6 form-group" style="float: left;">
-               <div class="align-items-center" style="clear:both;" >
-               <label for="embed_code"  style="display:block;">Upload Subtitle {{ $subtitle->language }}</label>
-               @if(@$subtitlescount > 0)
-                  @foreach($SeriesSubtitle as $movies_subtitles)
-                     @if(@$movies_subtitles->sub_language == $subtitle->language)
-                     Uploaded Subtitle : <a href="{{ @$movies_subtitles->url }}" download="{{ @$movies_subtitles->sub_language }}">{{ @$movies_subtitles->sub_language }}</a>
-                     &nbsp;&nbsp;&nbsp;
-                     <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title=""
-                        data-original-title="Delete" onclick="return confirm('Are you sure?')" href="{{ URL::to('admin/episode/subtitle/delete') . '/' . $movies_subtitles->id }}">
-                        <img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
-                  @endif
-                  @endforeach
-               @endif
-               <input class="mt-1" type="file" name="subtitle_upload[]" id="subtitle_upload_{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="short_code[]" value="{{ $subtitle->short_code }}">
-               <input class="mt-1"  type="hidden" name="sub_language[]" value="{{ $subtitle->language }}">
-               </div>
-               </div>
-               @endforeach
-               </div> 
-               </div>
-               </div>
                 <div class="row mt-3">
                     <div class="col-sm-4">
                         <label class="m-0">Duration</label>
@@ -448,119 +706,91 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     </div> -->
                 </div>
 
-                @if( choosen_player() == 1  && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+                        {{-- Ads Management  --}}
 
-                        @if ( admin_ads_pre_post_position() == 1  )
+                @if ( admin_ads_pre_post_position() == 1  )
 
-                            <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
+                    <div class="col-sm-6 form-group mt-3">                        {{-- Pre/Post-Advertisement--}}
 
-                                <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
-                                
-                                <select class="form-control" name="pre_post_ads" >
-
-                                    <option value=" " > Select the Post / Pre-Position Advertisement </option>
-
-                                    <option value="random_ads" {{  ( $episodes->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-
-                                    @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                        <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                    @endforeach
-                                
-                                </select>
-                            </div>
-                            
-                        @elseif ( admin_ads_pre_post_position() == 0 )
-
-                            <div class="row mt-3">
-
-                                <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
-                                    <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
-                                    
-                                    <select class="form-control" name="pre_ads" >
-
-                                        <option value=" " > Select the Pre-Position Advertisement </option>
-        
-                                        <option value="random_ads" {{  ( $episodes->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-        
-                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                        @endforeach
-                                        
-                                    </select>
-                                </div>
-
-                                <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
-                                    <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
-                                    
-                                    <select class="form-control" name="post_ads" >
-
-                                        <option value=" " > Select the Post-Position Advertisement </option>
-        
-                                        <option value="random_ads" {{  ( $episodes->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
-        
-                                        @foreach ($video_js_Advertisements as $video_js_Advertisement)
-                                            <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
-                                        @endforeach
-                                    
-                                    </select>
-                                </div>
-                            </div>
-
-                        @endif
-
-                        <div class="row">
-                            <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
-                                <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
-                                <select class="form-control" name="mid_ads" >
-
-                                    <option value=" " > Select the Mid-Position Advertisement Category </option>
-
-                                    <option value="random_category"  {{  ( $episodes->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
-
-                                    @foreach( $ads_category as $ads_category )
-                                    <option value="{{ $ads_category->id }}"  {{  ( $episodes->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-
-                            <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
-                                <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
-                                <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $episodes->video_js_mid_advertisement_sequence_time }}" >
-                            </div>
-
-                        </div>
+                        <label> {{ ucwords( 'Choose the Pre / Post-Position Advertisement' ) }}    </label>
                         
-                                {{-- Ply.io --}}
-                @else    
+                        <select class="form-control" name="pre_post_ads" >
+
+                            <option value=" " > Select the Post / Pre-Position Advertisement </option>
+
+                            <option value="random_ads" {{  ( $episodes->pre_post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                            @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                            @endforeach
+                        
+                        </select>
+                    </div>
+                    
+                @elseif ( admin_ads_pre_post_position() == 0 )
 
                     <div class="row mt-3">
-                        <div class="col-sm-6"  >
-                            <label class="m-0">Choose Ads Position</label>
-                            <select class="form-control" name="ads_position" id="ads_position" >
-                            <option value=" ">Select the Ads Position </option>
-                            <option value="pre"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'pre'){{ 'selected' }}@endif >  Pre-Ads Position</option>
-                            <option value="mid"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'mid'){{ 'selected' }}@endif >  Mid-Ads Position</option>
-                            <option value="post" @if(($episodes->ads_position != null ) && $episodes->ads_position == 'post'){{ 'selected' }}@endif > Post-Ads Position</option>
-                            <option value="all"  @if(($episodes->ads_position != null ) && $episodes->ads_position == 'all'){{ 'selected' }}@endif >  All Ads Position</option>
+
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Pre-Advertisement --}}
+                            <label> {{ ucwords( 'Choose the Pre-Position Advertisement' ) }}  </label>
+                            
+                            <select class="form-control" name="pre_ads" >
+
+                                <option value=" " > Select the Pre-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $episodes->pre_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->pre_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                                
                             </select>
                         </div>
 
-                        <div class="col-sm-6"  >
-                            <label class="">Choose Advertisement </label>
-                            <select class="form-control" name="episode_ads" id="episode_ads" >
-                            <option value=" ">Select the Advertisement </option>
-                                @if( $episodes->episode_ads != null)
-                                    @php $ads_name = App\Advertisement::where('id', $episodes->episode_ads )->pluck('ads_name')->first() ;@endphp
-                                    <option value="{{ $episodes->episode_ads }}" {{ 'selected' }}> {{ $ads_name }} </option>
-                                @endif
+                        <div class="col-sm-6 form-group mt-3">                        {{-- Post-Advertisement--}}
+                            <label> {{ ucwords( 'Choose the Post-Position Advertisement' ) }}    </label>
+                            
+                            <select class="form-control" name="post_ads" >
+
+                                <option value=" " > Select the Post-Position Advertisement </option>
+
+                                <option value="random_ads" {{  ( $episodes->post_ads == "random_ads" ) ? 'selected' : '' }} > Random Ads </option>
+
+                                @foreach ($video_js_Advertisements as $video_js_Advertisement)
+                                    <option value="{{ $video_js_Advertisement->id }}"  {{  ( $episodes->post_ads == $video_js_Advertisement->id ) ? 'selected' : '' }} > {{ $video_js_Advertisement->ads_name }}</option>
+                                @endforeach
+                            
                             </select>
                         </div>
                     </div>
+
                 @endif
 
+                <div class="row">
+                    <div class="col-sm-6 form-group mt-3">            {{-- Mid-Advertisement--}}
+                        <label> {{ ucwords( 'choose the Mid-Position Advertisement Category' ) }}  </label>
+                        <select class="form-control" name="mid_ads" >
+
+                            <option value=" " > Select the Mid-Position Advertisement Category </option>
+
+                            <option value="random_category"  {{  ( $episodes->mid_ads == "random_category" ) ? 'selected' : '' }} > Random Category </option>
+
+                            @foreach( $ads_category as $ads_category )
+                            <option value="{{ $ads_category->id }}"  {{  ( $episodes->mid_ads == $ads_category->id ) ? 'selected' : '' }} > {{ $ads_category->name }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+
+                    <div class="col-sm-6 form-group mt-3">                        {{-- Mid-Advertisement sequence time--}}
+                        <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
+                        <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time" value="{{ $episodes->video_js_mid_advertisement_sequence_time }}" >
+                    </div>
+
+                </div>
+                        
                 <div class="row mt-3">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <label class="m-0">Status Settings</label>
                         <div class="panel-body">
                             <div>
@@ -650,13 +880,52 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 .catch( error => {
                     console.error( error );
                 } );
+
+
+        </script>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var player = videojs('my-video', { // Video Js Player
+                    aspectRatio: '16:9',
+                    fill: true,
+                    playbackRates: [0.5, 1, 1.5, 2, 3, 4],
+                    fluid: true,
+                    controlBar: {
+                        volumePanel: { inline: false },
+                        children: {
+                            'playToggle': {},
+                            // 'currentTimeDisplay': {},
+                            'liveDisplay': {},
+                            'flexibleWidthSpacer': {},
+                            'progressControl': {},
+                            'remainingTimeDisplay': {},
+                            'fullscreenToggle': {},
+                            // 'audioTrackButton': {},
+                            'subtitlesButton': {},
+                        },
+                        pictureInPictureToggle: true,
+                    },
+                    html5: {
+                        vhs: {
+                            overrideNative: true,
+                        }
+                    }
+                });
+                const text = document.querySelector('.vjs-text-track-cue');
+                console.log("text",text);
+                
+            });
         </script>
 
-        <script> 
+        <style>
+            .vjs-text-track-cue {
+                inset: 583.333px 0px 0px !important;
+            }
+        </style>
 
-        <script>
-
-           
+        <script>            
+         
             $(document).ready(function ($) {
 
                 $("#duration").mask("00:00:00");
@@ -762,24 +1031,23 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
         <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
-        // image validation
+        {{-- image validation --}}
         <script>
-            document.getElementById('episode_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                        var validHeight = {{ $compress_image_settings->height_validation_episode }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+           $(document).ready(function(){
+                $('#episode_image').on('change', function(event) {
+                    var file = this.files[0];
+                    var tmpImg = new Image();
 
-                        if (width !== validWidth || height !== validHeight) {
+                    tmpImg.src=window.URL.createObjectURL( file ); 
+                    tmpImg.onload = function() {
+                    width = tmpImg.naturalWidth,
+                    height = tmpImg.naturalHeight;
+                    console.log('img width: ' + width);
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                    console.log('validation width:  ' + validWidth);
+
+                    if (width !== validWidth || height !== validHeight) {
                             document.getElementById('season_image_error_msg').style.display = 'block';
                             $('.pull-right').prop('disabled', true);
                             document.getElementById('season_image_error_msg').innerText = 
@@ -788,38 +1056,35 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             document.getElementById('season_image_error_msg').style.display = 'none';
                             $('.pull-right').prop('disabled', false);
                         }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
-            });
+                    }
+                });
 
-            document.getElementById('player_image').addEventListener('change', function() {
-                var file = this.files[0];
-                if (file) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var width = img.width;
-                        var height = img.height;
-                        console.log(width);
-                        console.log(height);
-                        
-                        var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                        var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                        console.log(validWidth);
-                        console.log(validHeight);
+                $('#player_image').on('change', function(event) {
 
-                        if (width !== validWidth || height !== validHeight) {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'block';
-                            $('.pull-right').prop('disabled', true);
-                            document.getElementById('season_thum_image_error_msg').innerText = 
-                                `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
-                        } else {
-                            document.getElementById('season_thum_image_error_msg').style.display = 'none';
-                            $('.pull-right').prop('disabled', false);
-                        }
-                    };
-                    img.src = URL.createObjectURL(file);
-                }
+                    var file = this.files[0];
+                    var player_Img = new Image();
+
+                    player_Img.src=window.URL.createObjectURL( file ); 
+                    player_Img.onload = function() {
+                    var width = player_Img.naturalWidth;
+                    var height = player_Img.naturalHeight;
+                    console.log('player width ' + width)
+
+                    var valid_player_Width = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                    var valid_player_Height = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
+                    console.log('validation player width:  ' + valid_player_Width);
+
+                    if (width !== valid_player_Width || height !== valid_player_Height) {
+                        $('#player_image_error_msg').show();
+                        $('.update_btn').prop('disabled', true);
+                        document.getElementById('player_image_error_msg').innerText = 
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
+                    } else {
+                        $('#player_image_error_msg').hide();
+                        $('.update_btn').prop('disabled', false);
+                    }
+                    }
+                });
             });
         </script>
 
@@ -1420,9 +1685,41 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 console.error(error);
             }
         });
+
+                var page = '{{ $page }}' ;
+                var status = '{{ $episodes->status }}' ;
+
+                if ((page == 'Edit') && (status == 0)) {
+                    setInterval(function(){ 
+                        $.getJSON('<?php echo URL::to("/admin/get_processed_percentage_episode/");?>'+'/'+$('#id').val(), function(data) {
+                            $('.low_bar').width(data.processed_low+'%');
+                            if(data.processed_low == null){
+                            $('.low_percent').html('Transcoding is Queued. Waiting for Server to Respond');
+                            }else{
+                            $('.low_percent').html(data.processed_low+'%');
+                            }
+                        });
+                    }, 3000);
+                }
+                
+        
         </script>
 
+<script>
+    function sourceDownload() {
+        $('.source_list').toggle();
+    }
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.src-btn, .source_list').length) {
+            $('.source_list').hide();
+        }
+    });
+</script>
+
+
         @include('admin.series.Ads_episode'); 
+        @include('admin.series.palyer_script'); 
 
         @stop @stop 
     </div>

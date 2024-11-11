@@ -246,6 +246,7 @@ class ChannelLoginController extends Controller
             $channel->branch_name = $request->branch_name;
             $channel->account_number = $request->account_number;
             $channel->IFSC_Code = $request->IFSC_Code;
+            $channel->gender = $request->gender;
             $channel->save();
             
             $user_data = User::where('email', $request->email_id)->first();
@@ -1366,6 +1367,11 @@ public function ChannelUpdate(Request $request)
         $mobile_number = $channel->mobile_number;
     }  
 
+    if(!empty($data['commission'])){
+        $commission = $data['commission'];
+    }else{
+        $commission = $channel->commission;
+    }  
 
     $channel_logo = (isset($data['channel_logo'])) ? $data['channel_logo'] : '';
     // dd($channel_logo);
@@ -1457,6 +1463,7 @@ public function ChannelUpdate(Request $request)
     $channel->parent_channel_id       = !empty($request->parent_channel_id) ? $request->parent_channel_id : null;
     $channel->password = Hash::make($request->password);
     $channel->unhased_password = $request->password;
+    $channel->commission = $request->commission;
     $channel->save();
 
     return \Redirect::back()->with('message','Update User Profile');

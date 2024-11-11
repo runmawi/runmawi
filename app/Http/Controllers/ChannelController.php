@@ -1,81 +1,83 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
-use FFMpeg\Filters\Video\VideoFilters;
-use FFMpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\Format\Video\X264;
-use \Redirect;
-use App\ContinueWatching;
-use App\PpvPurchase;
-use App\RecentView;
-use App\Watchlater;
-use App\Setting;
-use App\Wishlist;
-use App\PpvVideo;
-use App\Movie;
-use App\Episode;
-use App\LikeDislike;
-use App\VideoCategory;
-use App\RegionView;
-use App\UserLogs;
-use App\Videoartist;
-use App\Artist;
-use App\User ;
-use App\Genre;
-use App\Audio;
-use App\Page ;
-use App\Language;
-use App\Playerui;
-use App\Video;
-use App\PaymentSetting;
-use App\ScheduleVideos;
-use App\MoviesSubtitles;
-use App\CurrencySetting;
-use App\HomeSetting ;
-use App\BlockVideo ;
-use App\CategoryVideo ;
-use App\LanguageVideo;
-use App\AdsVideo;
-use App\ThumbnailSetting;
-use App\Geofencing;
-use App\AgeCategory;
-use App\RelatedVideo;
-use App\LiveCategory;
-use App\SeriesGenre;
-use App\VideoSchedules;
-use App\ModeratorsUser;
-use App\StorageSetting;
-use App\AdminLandingPage;
-use App\CommentSection;
-use App\BlockLiveStream;
-use App\LiveStream;
-use App\TimeZone;
-use App\Channel;
-use App\Series;
-use App\Adsvariables;
-use App\Advertisement;
-use Carbon\Carbon;
 use URL;
 use Auth;
-use View;
 use Hash;
-use Session;
+use View;
 use Theme;
+use Session;
 use DateTime;
-use App\SiteVideoScheduler;
-use App\DefaultSchedulerData;
-use App\EPGSchedulerData;
-use App\ButtonText;
+use \Redirect;
+use App\Audio;
+use App\Genre;
+use App\Movie;
+use App\Page ;
+use App\User ;
+use App\Video;
+use App\Artist;
+use App\Series;
+use App\Channel;
+use App\Episode;
+use App\Setting;
+use App\AdsVideo;
+use App\Language;
+use App\Playerui;
+use App\PpvVideo;
+use App\TimeZone;
+use App\UserLogs;
+use App\Wishlist;
 use App\SiteTheme;
+use Carbon\Carbon;
+use App\ButtonText;
+use App\Geofencing;
+use App\LiveStream;
+use App\RecentView;
+use App\RegionView;
+use App\Watchlater;
+use FFMpeg\FFProbe;
+use App\AgeCategory;
+use App\BlockVideo ;
+use App\LikeDislike;
+use App\PpvPurchase;
+use App\SeriesGenre;
+use App\Videoartist;
+use App\Adsvariables;
+use App\HomeSetting ;
+use App\LiveCategory;
+use App\RelatedVideo;
+use App\Advertisement;
+use App\LanguageVideo;
+use App\VideoCategory;
+use App\CategoryVideo ;
+use App\CommentSection;
+use App\ModeratorsUser;
+use App\PaymentSetting;
+use App\ScheduleVideos;
+use App\StorageSetting;
+use App\VideoSchedules;
+use App\BlockLiveStream;
+use App\CurrencySetting;
+use App\MoviesSubtitles;
+use App\AdminLandingPage;
+use App\ContinueWatching;
+use App\EPGSchedulerData;
+use App\ThumbnailSetting;
+use App\SiteVideoScheduler;
+use Illuminate\Support\Str;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
+use App\DefaultSchedulerData;
+use FFMpeg\Format\Video\X264;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Coordinate\Dimension;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\PartnerMonetizationSetting;
+use Illuminate\Support\Facades\Cache;
+use FFMpeg\Filters\Video\VideoFilters;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ChannelController extends Controller
 {
@@ -173,6 +175,7 @@ class ChannelController extends Controller
             $ppv_gobal_price = !empty($PPV_settings) ? $PPV_settings->ppv_price : null ;
             $category_id     = VideoCategory::where('slug', $cid)->pluck('id');
             $category_title  = VideoCategory::where('id', $category_id)->pluck('name')->first();
+            $category_data  = VideoCategory::where('id', $category_id)->first();
             $categoryVideo = CategoryVideo::where('category_id',$category_id->first())->groupBy('video_id')->pluck('video_id');
 
             // categoryVideos
@@ -355,6 +358,7 @@ class ChannelController extends Controller
             $data = [
                 'currency'          => CurrencySetting::first(),
                 'category_title'    => $category_title,
+                'category_data'     => $category_data,
                 'categoryVideos'    =>  $categoryVideos,
                 'ppv_gobal_price'   => $ppv_gobal_price,
                 'ThumbnailSetting'  => $ThumbnailSetting,
@@ -366,7 +370,7 @@ class ChannelController extends Controller
                 'video_categories'  => $video_categories ,
                 'current_theme'     => $this->HomeSetting->theme_choosen,
             ];
-            return Theme::view('categoryvids', ['categoryVideos' => $data]);
+            return Theme::view('categoryvids', ['categoryVideos' => $data, 'category_data' => $category_data]);
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -4355,7 +4359,7 @@ class ChannelController extends Controller
 
                 if( Auth::guest() && $item->access != "guest" ){
                     $button_text = ButtonText::first();
-
+                    
                     $item['users_video_visibility_status'] = false ;
                     $item['users_video_visibility_redirect_url'] =  URL::to('/login')  ;
                     $item['users_video_visibility_Rent_button']      = false ;
@@ -4365,7 +4369,7 @@ class ChannelController extends Controller
 
                     $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
                     $item['users_video_visibility_status_button'] = $item->access == "ppv" ? (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now for '.$Rent_ppv_price) : ($item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->registered_text) ? $button_text->registered_text : 'Register Now'));
-
+                    
                         // Free duration
                     if(  $item->free_duration_status ==  1 && !is_null($item->free_duration) ){
                         $item['users_video_visibility_status'] = true ;
@@ -4420,7 +4424,7 @@ class ChannelController extends Controller
                             $item['users_video_visibility_status'] = false ;
                             $item['users_video_visibility_status_button']    =  ( $item->access == "subscriber" ? (!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now') : (!empty($button_text->purchase_text) ? ($button_text->purchase_text. ' ' .$Rent_ppv_price) : ' Purchase Now '.$Rent_ppv_price) )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  ($item->access == "subscriber" && Auth::user()->role == "registered" ) ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
                             $item['users_video_visibility_block_button']     = false ;
 
@@ -4879,7 +4883,7 @@ class ChannelController extends Controller
                             $item['users_video_visibility_status'] = false ;
                             $item['users_video_visibility_status_message'] = Str::title( 'this video only for '. ( $item->access == "subscriber" ? "subscribe" : "PPV " )  .' users' )  ;
                             $item['users_video_visibility_Rent_button']      =  $item->access == "ppv" ? true : false ;
-                            $item['users_video_visibility_becomesubscriber_button'] =  Auth::user()->role == "registered" ? true : false ;
+                            $item['users_video_visibility_becomesubscriber_button'] =  ($item->access == "subscriber" && Auth::user()->role == "registered" ) ? true : false ;
                             $item['users_video_visibility_register_button']  = false ;
 
                             $Rent_ppv_price = ($item->access == "ppv" && $currency->enable_multi_currency == 1) ? Currency_Convert($item->ppv_price) : currency_symbol().$item->ppv_price;
@@ -5181,6 +5185,8 @@ class ChannelController extends Controller
 
             $data = array(
                 'videodetail' => $videodetail ,
+                'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                'user_role' => Auth::user()->role,
                 'recomended' => $recomended ,
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
@@ -5889,7 +5895,68 @@ class ChannelController extends Controller
         }
     }
    
-   
+    public function PartnerMonetization(Request $request)
+    {
+        try {
+            $video_id = $request->video_id;
+            $video = Video::where('id', $video_id)->first();
+            if ($video) {
+                $video->played_views += 1;
+                $video->save(); 
 
+                if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
 
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save(); 
+
+        
+                        $channeluser_commission = (float) $video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+                        
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'video')->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'video',
+                            ]));
+                        }
+                    }
+                }
+            }
+                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
+            } else {
+                return response()->json(['error' => 'Video not found'], 404);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    
 }

@@ -17,9 +17,9 @@
                 @if (($latest_videos_pagelist)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="category-page list-inline p-0 mb-0 category-page-slider">
                             @forelse($latest_videos_pagelist as $key => $latest_video)
-                                <li class="slide-item col-sm-2 col-md-2 col-xs-12">
+                                <li class="slide-item">
                                     <div class="block-images position-relative">
                                         
                                         <a href="{{ URL::to('category/videos/'.$latest_video->slug ) }}">

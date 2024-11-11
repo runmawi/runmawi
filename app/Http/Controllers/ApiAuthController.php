@@ -4280,7 +4280,23 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
-    $response = array(
+    $payperview_series_season = PpvPurchase::select('series_id','season_id')->where('ppv_purchases.series_id', '!=', 0)->where('ppv_purchases.season_id', '!=', 0)->where('user_id', $user_id)->get();
+
+    if ($payperview_series_season->count() > 0) {
+      $series_ids = $payperview_series_season->pluck('series_id')->toArray();
+      $season_ids = $payperview_series_season->pluck('season_id')->toArray();
+  
+      $payperview_episodes = Episode::whereIn('series_id', $series_ids)
+          ->whereIn('season_id', $season_ids)
+          ->get()->map(function ($item) {
+            $item['ppv_episodes_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
+            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+            return $item;
+          });
+    } else {
+        $payperview_episodes = [];
+    }
+      $response = array(
       'status' => 'true',
       'payperview_video' => $payperview_video,
       'payperview_episodes' => $payperview_episodes
@@ -12344,6 +12360,7 @@ $cpanel->end();
             $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$videocategoryid) ->where('active','=',1)
               ->where('status','=',1)->where('draft','=',1)->orderBy('videos.created_at', 'desc')
+              ->limit(15)
               ->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
 
@@ -12396,10 +12413,13 @@ $cpanel->end();
         if($HomeSetting->featured_videos == 1){
 
           $featured_videos = Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')
-              ->where('draft', '=', '1')->orderBy('created_at', 'DESC')->get();
+              ->where('draft', '=', '1')->orderBy('created_at', 'DESC')
+              ->limit(15)->get();
 
           $featured_videos =  Video::where('active', '=', '1')->where('featured', '=', '1')->where('status', '=', '1')
-             ->where('draft', '=', '1')->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+             ->where('draft', '=', '1')->orderBy('created_at', 'DESC')
+             ->limit(15)
+             ->get()->map(function ($item) {
                 $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                 $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                 $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
@@ -12428,7 +12448,7 @@ $cpanel->end();
         if($HomeSetting->latest_videos == 1){
 
           $latest_videos =  Video::where('status', '=', '1')->take(10)->where('active', '=', '1')->where('draft', '=', '1')
-          ->orderBy('created_at', 'DESC')->get()->map(function ($item) {
+          ->orderBy('created_at', 'DESC')->limit(15)->get()->map(function ($item) {
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
@@ -12468,7 +12488,7 @@ $cpanel->end();
 
             $videos= Video::Join('categoryvideos','categoryvideos.video_id','=','videos.id')
               ->where('categoryvideos.category_id',$videocategoryid)->where('active','=',1)->where('status','=',1)->where('draft','=',1)
-              ->orderBy('videos.created_at', 'desc')->get()->map(function ($item) {
+              ->orderBy('videos.created_at', 'desc')->limit(15)->get()->map(function ($item) {
 
                 $item['video_url'] = URL::to('/').'/storage/app/public/';
                 $item['category_name'] = VideoCategory::where('id',$item->category_id)->pluck('slug')->first();
@@ -12535,6 +12555,7 @@ $cpanel->end();
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                       ->where('active', '=', '1')
+                                      // ->limit(15)
                                       ->get()
                                       ->map(function ($item) {
                                         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -12628,8 +12649,7 @@ $cpanel->end();
               }
   
               return $livestream->publish_type;
-          })
-            ->values();
+          })->values();
 
         }
         else{
@@ -12638,12 +12658,13 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->get()->map(function ($item) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
             unset($item['player_image']);
             unset($item['tv_image']);
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
+                                    ->limit(15)
                                     ->get()
                                     ->map(function ($season) {
                                         $episodes = Episode::where('season_id', $season->id)
@@ -12708,6 +12729,7 @@ $cpanel->end();
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                       ->where('in_home', 1)
                                                       ->orderBy('order')
+                                                      ->limit(15)
                                                       ->get()
                                                       ->map(function ($item) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
@@ -12793,7 +12815,7 @@ $cpanel->end();
               'homepage_default_horizontal_image_url' => default_horizontal_image_url(),
             );
 
-            $epg = AdminEPGChannel::where('status', 1)->get()->map(function ($item) use ($homepage_default_image_url, $carbon_now, $carbon_today, $current_timezone) {
+            $epg = AdminEPGChannel::where('status', 1)->limit(15)->get()->map(function ($item) use ($homepage_default_image_url, $carbon_now, $carbon_today, $current_timezone) {
 
               $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/' . $item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'];
               $item['Player_image_url'] = $item->player_image != null ? URL::to('public/uploads/EPG-Channel/' . $item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
@@ -12810,6 +12832,7 @@ $cpanel->end();
                                   'player_image_url' => $item['Player_image_url'],
                                   'episodes' => array_values(ChannelVideoScheduler::where('channe_id', $item->id)
                                                                                     ->where('choosed_date', $carbon_today)
+                                                                                    ->limit(15)
                                                                                     ->get()
                                                                                     ->map(function ($episode) use ($carbon_now, $current_timezone) {
                                                             
@@ -12864,7 +12887,7 @@ $cpanel->end();
 
         if($HomeSetting->audios == 1){
 
-          $audios = Audio::orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $audios = Audio::orderBy('created_at', 'desc')->limit(15)->get()->map(function ($item) {
             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $details = html_entity_decode($item->description);
@@ -12881,7 +12904,7 @@ $cpanel->end();
 
         if($HomeSetting->albums == 1){
 
-          $albums = AudioAlbums::orderBy('created_at', 'desc')->get()->map(function ($item) {
+          $albums = AudioAlbums::orderBy('created_at', 'desc')->limit(15)->get()->map(function ($item) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
             return $item;
           });
@@ -12904,7 +12927,7 @@ $cpanel->end();
             $live_category= LiveStream::Join('livecategories','livecategories.live_id','=','live_streams.id')
                           ->where('livecategories.category_id',$livecategoryid)
                           ->where('active','=',1)->where('status','=',1)
-                          ->orderBy('live_streams.created_at', 'desc')->get()->map(function ($item) {
+                          ->orderBy('live_streams.created_at', 'desc')->limit(15)->get()->map(function ($item) {
 
                             $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
@@ -12948,7 +12971,7 @@ $cpanel->end();
           $LiveCategory = [];
         }
 
-        $Alllanguage   = Language::latest('created_at')->get()->map(function ($item) {
+        $Alllanguage   = Language::latest('created_at')->limit(15)->get()->map(function ($item) {
             $item['player_image_url'] =$item->language_image ?  URL::to('/').'/public/uploads/Language/'.$item->language_image : null ;
             return $item;
         });
@@ -12999,22 +13022,30 @@ $cpanel->end();
         );
 
         $dataToCheck = [
-            'movies'                        => $latest_videos,
-            'featured_videos'               => $featured_videos,
             'category_videos'               => $myData,
-            'live_videos'                   => $livestreams_sort,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
             '24/7'                           => $epg,
         ];
-
-        foreach ($dataToCheck as $key => $value) {
-            if ($value !== null) {
-                $response[$key] = $value;
-            }
+        
+        if ( !is_null( $latest_videos) &&  count($latest_videos) > 0) {
+          $dataToCheck += ['movies' => $latest_videos];
         }
 
+        if ( !is_null($featured_videos) && count($featured_videos) > 0) {
+          $dataToCheck += ['featured_videos' => $featured_videos];
+        }
 
+        if ( !is_null($livestreams_sort) && count($livestreams_sort) > 0) {
+          $dataToCheck += ['live_videos' => $livestreams_sort];
+        }
+
+        foreach ($dataToCheck as $key => $value) {
+          if ($value !== null) {
+              $response[$key] = $value;
+          }
+        }
+        
       } catch (\Throwable $th) {
         $response = array(
           'status'=>'false',

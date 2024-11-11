@@ -103,6 +103,8 @@ use App\DefaultSchedulerData;
 use App\CompressImage;
 use App\EPGSchedulerData;
 use App\Jobs\VideoCompression;
+use App\Jobs\ConvertEpisodeVideo;
+use App\Jobs\ConvertSerieTrailer;
 
 class AdminVideosController extends Controller
 {
@@ -5130,6 +5132,7 @@ class AdminVideosController extends Controller
             $video->old_path_mp4 = $path;
             $video->title = $file_folder_name;
             $video->mp4_url = $storepath;
+            $video->processed_low = 0;
             //  $video->draft = 0;
             $video->type = "";
             //  $video->image = 'default_image.jpg';
@@ -13811,6 +13814,72 @@ class AdminVideosController extends Controller
             return Redirect::to("/blocked");
         }
     }
+
+    public function TranscodingManagement()
+    {
+        try{
+            $jobs = DB::table('jobs')->get();
+            $failedJobs = DB::table('failed_jobs')->get();
+
+            $videoCommands = [];
+            $episodeCommands = [];
+            $serieTrailerCommands = [];
+            $failedVideoCommands = [];
+            $failedEpisodeCommands = [];
+            $failedSerieTrailerCommands = [];
+
+            // Process queued jobs
+            foreach ($jobs as $job) {
+                $payload = json_decode($job->payload);
+
+                if (isset($payload->data->command)) {
+                    $command = unserialize($payload->data->command);
+
+                    // Separate based on the command class
+                    if ($command instanceof ConvertVideoForStreaming) {
+                        $videoCommands[] = $command;
+                    }  elseif ($command instanceof ConvertEpisodeVideo) {
+                        $episodeCommands[] = $command;
+                    } elseif ($command instanceof ConvertSerieTrailer) {
+                        $serieTrailerCommands[] = $command;
+                    }
+                }
+            }
+
+            // Process failed jobs
+            foreach ($failedJobs as $failedJob) {
+                $payload = json_decode($failedJob->payload);
+
+                if (isset($payload->data->command)) {
+                    $command = unserialize($payload->data->command);
+
+                    // Separate based on the command class
+                    if ($command instanceof ConvertVideoForStreaming) {
+                        $failedVideoCommands[] = $command;
+                    }  elseif ($command instanceof ConvertEpisodeVideo) {
+                        $failedEpisodeCommands[] = $command;
+                    } elseif ($command instanceof ConvertSerieTrailer) {
+                        $failedSerieTrailerCommands[] = $command;
+                    }
+                }
+            }
+
+            $data = [
+                'video'              => $videoCommands,
+                'episode'            => $episodeCommands,
+                'serieTrailer'       => $serieTrailerCommands,
+                'failed_video'       => $failedVideoCommands,
+                'failed_episode'     => $failedEpisodeCommands,
+                'failed_serieTrailer'=> $failedSerieTrailerCommands,
+            ];
+                // dd($data);
+            return View("admin.videos.Transcoding-management", $data);
+        }
+        catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404) ;
+        }
+}
 
 }
     

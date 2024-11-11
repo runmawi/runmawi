@@ -216,6 +216,7 @@ border-radius: 0px 4px 4px 0px;
 button[data-plyr="captions"] {
     display: none !important;
 }
+.sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
 </style>
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 <!-- <link rel="stylesheet" href="<?= URL::to('/'). '/assets/css/style.css';?>" /> -->
@@ -732,19 +733,23 @@ button[data-plyr="captions"] {
                <div class="row">    
                   <div class="panel panel-primary" data-collapsed="0"> 
                      <div class="panel-heading"> 
-                        <div class="panel-title col-sm-12"> 
-                           <h3 class="fs-title"> Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                           <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                           <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a>
-                           <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
-                              <i class="las la-exclamation-circle"></i>
-                           </a>:
+                        <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                            <h6 class="fs-title">
+                                Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                            </h6>
+                            <div class="sample-file d-flex align-items-center">
+                                <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
+                                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                    <i class="las la-exclamation-circle"></i>
+                                </a>
+                            </div>
                         </div> 
                         <div class="panel-options"> 
-                           <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                         </div>
-                     </div> 
-                     <div class="panel-body" style="display: block;"> 
+                     </div>
+                     <div class="panel-body mt-3" style="display:flex;flex-wrap:wrap;"> 
                         @foreach($subtitles as $subtitle)
 
                            <div class="col-sm-6 form-group" style="float: left;">
@@ -1212,7 +1217,7 @@ button[data-plyr="captions"] {
                               <div class="col-sm-8 mt-5 form-group">
                                  <!--<p>Upload Trailer video</p>-->
                                  @if(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'video_mp4' )
-                                 <video width="200" height="200" controls>
+                                 <video width="500" height="200" controls>
                                     <source src="{{ $video->trailer }}" type="video/mp4" />
                                  </video>
                                  @elseif(!empty($video->trailer) && $video->trailer != '' && $video->trailer_type != null &&  $video->trailer_type == 'm3u8' )
@@ -1224,15 +1229,7 @@ button[data-plyr="captions"] {
                         </div>
                      </div>
 
-                     <div class="row">
-                        <div class="col-sm-5">
-                           @if(!empty($video->trailer))
-                              <video width="200" height="200" controls style="width: 90%;">
-                                 <source src="<?php echo $video->trailer; ?>" type="video/mp4" />
-                              </video>
-                           @endif
-                        </div>
-                     </div>
+                    
 
                      <div class="row mt-3">
                         <div class="col-sm-8  form-group">

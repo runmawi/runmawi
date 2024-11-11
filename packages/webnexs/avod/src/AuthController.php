@@ -281,66 +281,6 @@ class AuthController extends Controller
         return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
     }
 
-    public function upload_ads_old()
-    {
-        $data = [];
-        $data['settings'] = Setting::first();
-        $activeplan = Advertiserplanhistory::where('advertiser_id', session('advertiser_id'))
-            ->where('status', 'active')
-            ->count();
-        $getdata = Advertiserplanhistory::where('advertiser_id', '=', session('advertiser_id'))
-            ->where('status', 'active')
-            ->first();
-        $upload_ads_cnt = $getdata->ads_limit - $getdata->no_of_uploads;
-
-        if ((!empty(session('advertiser_id')) && $activeplan == 0) || $upload_ads_cnt == 0) {
-            $getdata->status = 'deactive';
-            $getdata->save();
-
-            $plan_name = Adsplan::where('id', $getdata->plan_id)->first()->plan_name;
-            $customerName = Advertiser::find(session('advertiser_id'))->company_name;
-            $advertiser_emailid = Advertiser::find(session('advertiser_id'))->email_id;
-            $details = [
-                'title' => 'Dear ' . $customerName,
-                'body' => 'Your ' . $plan_name . ' limit for the plan has been reached, to add more ads please login to your account to upgrade plan.',
-            ];
-
-            try {
-                \Mail::to($advertiser_emailid)->send(new \App\Mail\MyTestMail($details));
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-
-            return Redirect::to('/advertiser')->withError('Opps! Your limit has completed.Please update your plan');
-        } elseif (!empty(session('advertiser_id')) && $activeplan > 0 && $getdata->ads_limit > $getdata->no_of_uploads) {
-            // Ads scheduling
-
-            $now = Carbon::now();
-
-            $data = [
-                'Monday_time' => AdsTimeSlot::where('day', 'Monday')->get(),
-                'Tuesday_time' => AdsTimeSlot::where('day', 'Tuesday')->get(),
-                'Wednesday_time' => AdsTimeSlot::where('day', 'Wednesday')->get(),
-                'Thursday_time' => AdsTimeSlot::where('day', 'Thrusday')->get(),
-                'Friday_time' => AdsTimeSlot::where('day', 'Friday')->get(),
-                'Saturday_time' => AdsTimeSlot::where('day', 'Saturday')->get(),
-                'Sunday_time' => AdsTimeSlot::where('day', 'Sunday')->get(),
-                'Monday' => $now->startOfWeek(Carbon::MONDAY)->format('Y-m-d'),
-                'Tuesday' => $now->endOfWeek(Carbon::TUESDAY)->format('Y-m-d'),
-                'Wednesday' => $now->endOfWeek(Carbon::WEDNESDAY)->format('Y-m-d'),
-                'Thrusday' => $now->endOfWeek(Carbon::THURSDAY)->format('Y-m-d'),
-                'Friday' => $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d'),
-                'Saturday' => $now->endOfWeek(Carbon::SATURDAY)->format('Y-m-d'),
-                'Sunday' => $now->endOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
-            ];
-
-            //  End Scheduling
-
-            $data['ads_category'] = Adscategory::all();
-            return view('avod::upload_ads', $data);
-        }
-        return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
-    }
 
     public function upload_ads(Request $request)
     {
@@ -358,11 +298,10 @@ class AuthController extends Controller
 
                 $activeplan = 0; 
 
-                if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && 
-                    $Advertiser->subscription_ends_at >= $carbon_now && 
-                    !is_null($Advertiser->ads_upload_count_limit) &&  
-                    ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
-
+               
+                if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && $Advertiser->subscription_ends_at >= $carbon_now && 
+                    !is_null($Advertiser->ads_upload_count_limit) &&  ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
+    
                     $activeplan = 1; 
                 }
             }
@@ -898,8 +837,10 @@ class AuthController extends Controller
     public function store_ads(Request $request)
     {
         try {
+
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
            
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
 
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
@@ -908,14 +849,16 @@ class AuthController extends Controller
     
             $settings = Setting::first();
     
-            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
-    
+            $activeplan = 1; 
+
+                // Ads Payment Page Check
+
             if( $settings->ads_payment_page_status == 1  ){
     
                 $activeplan = 0; 
     
                 if ( $Advertiser->role == "subscriber" && $Advertiser->payment_status == 1 && $Advertiser->subscription_ends_at >= $carbon_now && 
-                    !is_null($Advertiser->ads_upload_count_limit) &&  !is_null($Advertiser->adverister_uploaded_ads_count) &&  
+                    !is_null($Advertiser->ads_upload_count_limit) &&  
                     ($Advertiser->ads_upload_count_limit > $Advertiser->adverister_uploaded_ads_count)) {
     
                     $activeplan = 1; 
@@ -923,6 +866,7 @@ class AuthController extends Controller
             }
     
             if ($activeplan == 0 ) {
+
                 return Redirect::to('/advertiser')->withError('Opps! Please update your plan for uploading ads');
             }
             
@@ -937,20 +881,9 @@ class AuthController extends Controller
             $Ads->ads_upload_type   =  $request->ads_upload_type;
             $Ads->household_income  = $request->household_income;
             $Ads->ads_devices       = !empty($request->ads_devices) ? json_encode($request->ads_devices) : null;
-    
-            if ($request->location == 'all_countries' || $request->location == 'India') {
-                $Ads->location = $request->location;
-            } else {
-                $Ads->location = $request->locations;
-            }
-    
-            if (!empty($data['age'])) {
-                $Ads->age = json_encode($data['age']);
-            }
-    
-            if (!empty($data['gender'])) {
-                $Ads->gender = json_encode($data['gender']);
-            }
+            $Ads->age               = !empty($request->age) ? json_encode($request->age) : null;
+            $Ads->gender            = !empty($request->gender) ? json_encode($request->gender) : null;
+            $Ads->location          = ($request->location == 'all_countries' || $request->location == 'India') ? $request->location :  $request->locations;
     
             if ($request->ads_video != null) {
     
@@ -965,11 +898,14 @@ class AuthController extends Controller
                 $Ads->ads_redirection_url =  $request->ads_redirection_url ;
             }
             $Ads->save();
+
+                // Adverister uploaded Ads Count - Check
+
+            $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+            $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
     
-    
-            $Advertiser->update(['adverister_uploaded_ads_count' => $Advertiser->adverister_uploaded_ads_count+1 ]);
-    
-            // Events
+                // Events
 
             $last_ads_id = $Ads->id;
             $last_ads_name = $Ads->ads_name ? $Ads->ads_name : 'Ads';
@@ -1118,6 +1054,8 @@ class AuthController extends Controller
             return Redirect::to('advertiser/ads-list');
 
         } catch (\Throwable $th) {
+
+            // return $th->getmessage();   
             
             return abort(404);
         }
@@ -1197,7 +1135,10 @@ class AuthController extends Controller
     {
         try {
 
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
@@ -1205,7 +1146,7 @@ class AuthController extends Controller
 
             $data = [
                 'Advertisement' => $Advertisement,
-                'post_route' => route('Ads_update', [$Ads_id]),
+                'post_route'    => route('Ads_update', [$Ads_id]),
                 'ads_category' => Adscategory::all(),
                 'button_text'  => 'update',
                 'AdsEvent'     => AdsEvent::where('ads_id',$Ads_id)->get(['start', 'end', 'day']),
@@ -1223,26 +1164,24 @@ class AuthController extends Controller
     public function Ads_update(Request $request, $advertisement_id)
     {
 
-        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+        $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+        if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
             return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
         }
 
         $inputs = [
-            'ads_name' => $request->ads_name,
-            'ads_category' => $request->ads_category,
-            'ads_position' => $request->ads_position,
-            'ads_upload_type' => $request->ads_upload_type,
-            'age' => !empty($request->age) ? json_encode($request['age']) : ' ',
-            'gender' => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
-            'ads_devices' => !empty($request['ads_devices']) ? json_encode($request['ads_devices']) : null,
+            'ads_name'          => $request->ads_name,
+            'ads_category'      => $request->ads_category,
+            'ads_position'      => $request->ads_position,
+            'ads_upload_type'   => $request->ads_upload_type,
+            'age'               => !empty($request->age) ? json_encode($request['age']) : ' ',
+            'gender'            => !empty($request['gender']) ? json_encode($request['gender']) :  null ,
+            'ads_devices'       => !empty($request->ads_devices) ? json_encode($request->ads_devices) : null,
+            'location'          => ($request->location == 'all_countries' || $request->location == 'India') ? $request->location :  $request->locations,
             'status' => 0,
         ];
-
-        if ($request->location == 'all_countries' || $request->location == 'India') {
-            $inputs += ['location' => $request->location];
-        } else {
-            $inputs += ['location' => $request->locations];
-        }
 
         if ( $request->ads_video != null && $request->ads_upload_type == "ads_video_upload" ) {
          
@@ -1266,6 +1205,12 @@ class AuthController extends Controller
 
         $Advertisement = Advertisement::find($advertisement_id)->update($inputs);
 
+          // Adverister uploaded Ads Count - Check
+
+        $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+        $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
+  
         return redirect()->back();
     }
 
@@ -1356,7 +1301,10 @@ class AuthController extends Controller
     {
         try {
 
-            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' ) ){
+            $Advertiser = Advertiser::where('id', session('advertiser_id'))->where('status', 1)->first();
+           
+            if( empty(session('advertiser_id') ||  session('advertiser_id') == 'null' || is_null($Advertiser) ) ){
+
                 return Redirect::to('advertiser/login')->withError('Opps! You do not have access');
             }
 
@@ -1375,6 +1323,12 @@ class AuthController extends Controller
             $Advertisement->delete();
 
             AdsEvent::where('id', $Ads_id)->delete();
+
+                // Adverister uploaded Ads Count - Check
+
+            $adverister_uploaded_ads_count = Advertisement::where('advertiser_id',$Advertiser->id)->count();
+
+            $Advertiser->update(['adverister_uploaded_ads_count' => $adverister_uploaded_ads_count ]);
 
             return redirect()->back();
 

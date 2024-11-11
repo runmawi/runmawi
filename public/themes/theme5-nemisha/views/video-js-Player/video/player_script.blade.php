@@ -3,6 +3,13 @@
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
+    var videoId = "<?php echo $videodetail->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
+    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var user_role = "<?php echo $user_role; ?>";
+    var played_views = "<?php echo $videodetail->played_views; ?>";
+
+
 
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
@@ -39,7 +46,8 @@
 
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
-        player.el().appendChild(backButton);        
+        player.el().appendChild(backButton);    
+        
 
         player.on('loadedmetadata', function(){
             var isMobile = window.innerWidth <= 768;
@@ -56,6 +64,59 @@
                 });
             }
         });
+
+
+        let viewCountSent = false;
+
+        function PartnerMonetization(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            console.log(currentTime);
+
+            var countview;
+
+            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
+                viewCountSent = true;
+                countview = 1;
+                console.log('AJAX request will be sent.');
+
+                $.ajax({
+                    url: "<?php echo URL::to('PartnerMonetization');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                    success: function(response) {
+                        console.log('View count incremented and monetization updated:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to increment view count:', error);
+                    }
+                });
+            }
+
+            console.log('currentTime: ' + currentTime);
+            console.log('countview: ' + countview);
+        }
+
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            });
+
 
         // Hls Quality Selector - M3U8 
         player.hlsQualitySelector({ 
@@ -100,7 +161,7 @@
                     skipBackwardButton.style.visibility = 'hidden';
                     playPauseButton.style.visibility = 'hidden';
                     backButton.style.visibility = 'hidden';
-                    titleButton.style.visibility = 'hidden';
+                    // titleButton.style.visibility = 'hidden';
                 }
             }
         });
@@ -113,7 +174,7 @@
                     skipBackwardButton.style.visibility = 'visible';
                     playPauseButton.style.visibility = 'visible';
                     backButton.style.visibility = 'visible';
-                    titleButton.style.visibility = 'visible';
+                    // titleButton.style.visibility = 'visible';
                 }
             }
         });

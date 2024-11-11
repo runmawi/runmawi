@@ -92,7 +92,7 @@ class Convert4kEpisodeVideo implements ShouldQueue
         $this->video->update([
             'path' =>  $vid_name,
             'status' => 1,
-            'active' => 1
+            'active' => 0
         ]);
     }
 

@@ -577,8 +577,7 @@
                               </div>
                            </div>
 
-                           
-                @if( choosen_player() == 1 && ads_theme_status() == 1)    {{-- Video.Js Player--}}
+                        {{-- Ads Management  --}}
 
                     @if ( admin_ads_pre_post_position() == 1 )
 
@@ -658,31 +657,7 @@
                             <label> {{ ucwords( 'Mid-Advertisement Sequence Time' ) }}   </label>
                             <input type="text" class="form-control" name="video_js_mid_advertisement_sequence_time"  placeholder="HH:MM:SS"  id="video_js_mid_advertisement_sequence_time"  >
                         </div>
-
                     </div>
-                
-                        {{-- Ply.io --}}
-                @else    
-                    <div class="row mt-3">
-                        <div class="col-sm-6"  >
-                            <label class="m-0">Choose Ads Position</label>
-                            <select class="form-control" name="ads_position" id="ads_position" >
-                               <option value=" ">Select the Ads Position </option>
-                               <option value="pre"  >  Pre-Ads Position</option>
-                               <option value="mid"  >  Mid-Ads Position</option>
-                               <option value="post" > Post-Ads Position</option>
-                               <option value="all" > All Ads Position</option>
-                            </select>
-                        </div>
-    
-                        <div class="col-sm-6"  >
-                            <label class="">Choose Advertisement </label>
-                            <select class="form-control" name="episode_ads" id="episode_ads" >
-                               <option value=" ">Select the Advertisement </option>
-                            </select>
-                        </div>
-                    </div>
-                @endif
 
                     <div class="clear"></div>
 
@@ -727,38 +702,7 @@
                             </div>
                         </div> -->
 
-                        <div class="col-sm-4">
-                            <div class="panel panel-primary" data-collapsed="0">
-                                <div class="panel-heading">
-                                    <div class="panel-title"><label>Status Settings</label></div>
-                                    <div class="panel-options">
-                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="featured" style="float: left; display: block; margin-right: 10px;">Is this episode Featured:</label>
-                                        <input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="active" style="float: left; display: block; margin-right: 10px;">Is this episode Active:</label>
-                                        <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@elseif(!isset($episodes->active)){{ 'checked="checked"' }}@endif name="active" value="1"
-                                        id="active" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="banner" style="float: left; display: block; margin-right: 10px;">Is this episode display in Banner:</label>
-                                        <input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div style="display: flex; justify-content: start; align-items: baseline;">
-                                        <label for="footer" style="float: left; display: block; margin-right: 10px;">Is this episode display in Footer:</label>
-                                        <input type="checkbox" @if(!empty($episodes->footer) && $episodes->footer == 1){{ 'checked="checked"' }}@endif name="footer" value="1" id="footer" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="row align-items-center">
@@ -864,10 +808,10 @@
                                     <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
                                              <?php } ?>
                                     <td>
-                                        <div class=" align-items-center">
-                                            <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span>Edit Video</a>
-                                            <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
-                                            <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Video"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                            <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Meta"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                            <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="iq-bg-danger delete" onclick="return confirm('Are you sure?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Episode"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                         </div>
                                     </td>
                                 </tr>

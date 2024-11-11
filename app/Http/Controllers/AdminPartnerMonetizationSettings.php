@@ -55,9 +55,9 @@ class AdminPartnerMonetizationSettings extends Controller
 
             return View::make('admin.expired_storage', $data);
         } else {
-            // $revenue_settings = PartnerMonetizationSetting::get();
+            // $partner_monetization_settings = PartnerMonetizationSetting::get();
             // $data = array(
-            //             'revenue_settings' => $revenue_settings  ,
+            //             'partner_monetization_settings' => $partner_monetization_settings  ,
             // );
             // return view('admin.revenuesettings.index',$data);
             $partner_monetization_settings = PartnerMonetizationSetting::where('id', '=', 1)->first();
@@ -71,11 +71,11 @@ class AdminPartnerMonetizationSettings extends Controller
     public function Store(Request $request)
     {
         $input = $request->all();
-        $revenue_settings = new PartnerMonetizationSetting;
-        $revenue_settings->viewcount_limit = $input['viewcount_limit'];
-        $revenue_settings->views_amount = $input['views_amount'];
-        $revenue_settings->user_id = Auth::User()->id;
-        $revenue_settings->save();
+        $partner_monetization_settings = new PartnerMonetizationSetting;
+        $partner_monetization_settings->viewcount_limit = $input['viewcount_limit'];
+        $partner_monetization_settings->views_amount = $input['views_amount'];
+        $partner_monetization_settings->user_id = Auth::User()->id;
+        $partner_monetization_settings->save();
         return Redirect::back();
     }
 

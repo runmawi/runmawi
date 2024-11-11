@@ -752,7 +752,7 @@ border-radius: 0px 4px 4px 0px;
                     <label class="m-0">Duration</label>
                     <p class="p1">Enter the {{  $inputs_details_array['text_main_name'] }} duration in (HH : MM : SS)</p>
                     <div class="panel-body">
-                        <input class="form-control" name="duration" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
+                        <input class="form-control" name="duration" id="duration" placeholder="HH:MM:SS" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
                 </div>
                 
@@ -1194,7 +1194,7 @@ border-radius: 0px 4px 4px 0px;
                 console.error( error );
             } );
 </script>
-
+{{-- 
 <!-- Empty url validation Live Stream Source -->
 <script>
     $(document).ready(function() {
@@ -1272,7 +1272,7 @@ border-radius: 0px 4px 4px 0px;
 
 
 
-</script>
+</script> --}}
 
 <script type="text/javascript">
    $ = jQuery;
@@ -2360,4 +2360,5 @@ $(document).ready(function(){
         var $error = $("<span>").addClass("error-message text-danger").text(message);
         $input.addClass("is-invalid").after($error);
     }
+    
 </script>

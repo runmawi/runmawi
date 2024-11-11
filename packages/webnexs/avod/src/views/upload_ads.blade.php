@@ -12,6 +12,9 @@
     #progressbar li img{
         width: 50px !important;
     }
+    #msform .action-button{
+        padding: 0px !important;
+    }
 </style>
 
 <div id="main-admin-content">
@@ -65,6 +68,13 @@
                                                         <div class="col-md-11 "></div>
 
                                                         <div class="row p-1">
+
+                                                            <div class="row  ages ">
+                                                                <label class="checkbox-inline">
+                                                                    <input type="checkbox" class="age"  name="age[]" value="0-17" /> 0-17
+                                                                </label>
+                                                            </div>
+
                                                             <div class="row  ages ">
                                                                 <label class="checkbox-inline">
                                                                     <input type="checkbox" class="age"  name="age[]" value="18-24" /> 18-24
@@ -103,7 +113,7 @@
 
                                                             <div class="row  ages ">
                                                                 <label class="checkbox-inline">
-                                                                    <input type="checkbox" class="age"  name="age[]" value="unknown" /> unknown
+                                                                    <input type="checkbox" class="age"  name="age[]" value="all" /> All 
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -118,7 +128,7 @@
                                                                 name="gender[]" multiple="multiple" id="gender">
                                                                 <option value="male">Male</option>
                                                                 <option value="female">Female</option>
-                                                                <option value="kids">Kids</option>
+                                                                <option value="other">Other</option>
                                                             </select>
                                                         </div>
                                                     </div> <br>
@@ -157,7 +167,7 @@
                                                                     <label>Ads Name:</label>
                                                                     <p class="error-message ml-1"   style="color: red;font-size:10px;">(This Field    is required)</p>
                                                                 </div>
-                                                                <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Please! Enter the Ads Name" />
+                                                                <input type="text" id="ads_name" name="ads_name" required class="from-control" placeholder="Enter the Ads Name" />
                                                             </div>
 
                                                             <div class="form-group">
@@ -176,7 +186,7 @@
                                                                     <option value="pre">Pre</option>
                                                                     <option value="mid">Mid</option>
                                                                     <option value="post">Post</option>
-                                                                    <option value="all">All Position (Only for Ads Type - Tag URL)</option>
+                                                                    <option value="all">All Position</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -199,7 +209,7 @@
                                                             <div class="form-group tag_url">
                                                                 <label> Ad Tag Url:</label>
                                                                 <input type="text" id="ads_path" name="ads_path" 
-                                                                    class="form-control" placeholder="Please! Enter the Ads Tag URL" />
+                                                                    class="form-control" placeholder="Enter the Ads Tag URL" />
                                                             </div>
 
                                                             <div class="form-group ads_video_upload">
@@ -231,7 +241,7 @@
 
                                                     <div class="row">
                                                         <div class="col-sm-1">
-                                                            <input type="radio" class="location-hide" id="" name="location" value="all_countries" />
+                                                            <input type="radio" class="location-hide" id="" name="location" value=" " />
                                                         </div>
 
                                                         <div class="col-sm-4" style="margin-left:-30px;">

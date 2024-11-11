@@ -269,10 +269,12 @@
         
         if(theme_change === 'dark'){
             $(".sign-in-page").css("background", "#000");
+            $("body").css("background", "#000");
             $(".km").css("color", "#fff");
         }
         else if(theme_change === 'light'){
             $(".sign-in-page").css("background", "#fff");
+            $("body").css("background", "#fff");
             $(".km").css("color", "#000");
         }
     });

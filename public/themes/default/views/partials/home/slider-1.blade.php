@@ -40,8 +40,38 @@
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
     <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}')">
-        <!-- <div class="s-bg-1 lazy-bg" data-bg="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}"> -->
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
+                @if($settings->slider_trailer == 1)
+                    <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?>
+                        <video class="myvideos" loop autoplay muted onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" src="<?php echo $videos->trailer; ?>" width="100%"
+                            height="auto" alt="" style="transform: scale(1.27);object-fit:cover;cursor: pointer;"></video>
+                        <div class="volume-icon-container">
+                            <i class="fa fa-volume-off volume-icon" aria-hidden="true"></i>
+                        </div>
+                    <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8')):
+                        $url = $videos->trailer;
+
+                        $pathInfo = pathinfo($url);
+
+                        $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
+
+                        ?>
+
+                        <input type="hidden" class="trailer_type" value="<?= $videos->trailer_type ?>">
+                        <video class="myvideos" loop autoplay muted onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" src="<?php echo $newUrl; ?>" width="100%" height="auto" alt=""
+                            style="transform: scale(1.27);object-fit:cover;cursor: pointer;"></video>
+                            <div class="volume-icon-container">
+                                <i class="fa fa-volume-off volume-icon" aria-hidden="true"></i>
+                            </div>
+
+
+                        <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer; ?>" width="100%" height="auto" alt="" style="transform: scale(1.27);"></video> -->
+                    <?php else: ?>
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>"
+                            alt="Banner Image" style="width: 100%; height: auto;">
+                    <?php endif; ?>
+                @endif
+
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-4 col-lg-12 col-md-12 bgc" >

@@ -1933,6 +1933,7 @@ class HomeController extends Controller
                 $new_user->state = $request->get('state');
                 $new_user->city = $request->get('city');
                 $new_user->support_username = $request->get('support_username');
+                $new_user->gender = $request->get('gender');
                 $new_user->save();
                 $settings = Setting::first();
 
@@ -2034,6 +2035,7 @@ class HomeController extends Controller
                 $new_user->city = $request->get('city');
                 $new_user->support_username = $request->get('support_username');
                 $new_user->DOB = $DOB;
+                $new_user->gender = $request->get('gender');
                 $new_user->save();
 
                  // welcome Email

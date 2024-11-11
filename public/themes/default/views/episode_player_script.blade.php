@@ -14,6 +14,15 @@
 
     var episodeId = "<?php echo $episode_details->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
+    <?php if (!empty($next_episode) && is_object($next_episode)): ?>
+        var next_episode = "<?php echo $next_episode->slug; ?>";
+        var next_episode_slug = "<?php echo URL::to('episode/' . $series->slug . '/' . $next_episode->slug); ?>";
+        console.log('Next episode slug: ' + next_episode_slug);
+    <?php else: ?>
+        var next_episode = "";
+        var next_episode_slug = "";
+        console.log('No next episode');
+    <?php endif; ?>
 
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -40,16 +49,48 @@
             }
         });
 
+
+        if (next_episode_slug) {
+
+            player.on('ended', function() {
+                // $('#episode-player').css('opacity', '0.1');
+                $('.vjs-tech').css('opacity', '0.1');
+                $('.vjs-big-play-button').css('opacity', '0.1');
+                $('.vjs-control-bar').css('opacity', '0.1');
+                $('.custom-skip-backward-button').css('opacity', '0.1');
+                $('.custom-skip-forward-button').css('opacity', '0.1');
+                $('.cancel_card').show();
+                $('.next-episode').hide();
+
+                $('.next-epi-cancel').on('click', function(event) {
+                    $('.cancel_card').hide();
+                    $('#episode-player').css('opacity', '1');
+                    next_episode_slug = '';
+                });
+
+                redirectTimeout = setTimeout(() => {
+                    window.location.href = next_episode_slug;
+                }, 5000);
+            });
+        }
+
+
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const backButton = document.querySelector('.staticback-btn');
         const titleButton = document.querySelector('.vjs-title-bar');
+        const nextEpisodeButton = document.querySelector('.next-episode');
+        const cancelCard = document.querySelector('.cancel_card');
+
+        $(nextEpisodeButton).hide();
 
         player.el().appendChild(skipForwardButton);
         player.el().appendChild(skipBackwardButton);
         player.el().appendChild(titleButton);
         player.el().appendChild(backButton); 
+        player.el().appendChild(nextEpisodeButton); 
+        player.el().appendChild(cancelCard); 
         
         // Continue watching script
         function EpisodeContinueWatching(episodeId, duration, currentTime) {
@@ -72,12 +113,30 @@
             // console.log('watch_percentage: ' + watch_percentage);
         }
 
+        function updateNextEpisodeButtonOpacity(duration, currentTime) {
+            const timeRemaining = duration - currentTime;
+            
+            // Check if we are within the last 10 seconds
+            if (timeRemaining <= 10) {
+                $(nextEpisodeButton).show();
+
+                // Calculate opacity based on time remaining
+                const opacity = 0.5 + (1 - (timeRemaining / 10)) * 0.5;
+                nextEpisodeButton.style.opacity = opacity;
+            } else {
+                $(nextEpisodeButton).hide();
+            }
+        }
+
         player.on('loadedmetadata', function() {
             console.log('Video metadata loaded');
 
             player.on('timeupdate', function() {
                 var currentTime = player.currentTime();
                 var duration = player.duration();
+
+                updateNextEpisodeButtonOpacity(duration, currentTime);
+
                 EpisodeContinueWatching(episodeId, duration, currentTime);
             });
 
@@ -378,17 +437,24 @@
 
         });
 
-        player.on("ended", function() {
+        
+        player.on("timeupdate", function() {
+            
+            const duration = player.duration();
 
-            if (!postrollTriggered) {
+            if ( duration != "Infinity" ) {
 
-                postrollTriggered = true;
+                const currentTime = player.currentTime();
 
-                player.ima.requestAds({
-                    adTagUrl: vastTagPostroll,
-                });
+                if (!postrollTriggered && duration - currentTime < 2) {
 
-                console.log("Postroll ads requested");
+                    console.log("Postroll Ads requested");
+
+                    player.ima.initializeAdDisplayContainer();
+                    player.ima.changeAdTag(vastTagPostroll);
+                    player.ima.requestAds();
+                    postrollTriggered = true;
+                }
             }
         });
 

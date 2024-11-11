@@ -1,64 +1,66 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User as User;
-use \Redirect as Redirect;
-//use Request;
-use App\Setting as Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\Slider as Slider;
-use App\PpvVideo as PpvVideo;
-use App\PpvCategory as PpvCategory;
-use App\VerifyNumber as VerifyNumber;
-use App\Subscription as Subscription;
-use App\PaypalPlan as PaypalPlan;
-use App\ContinueWatching as ContinueWatching;
-use App\PpvPurchase as PpvPurchase;
-use App\Watchlater as Watchlater;
-use App\Wishlist as Wishlist;
-use App\Page as Page;
-use App\Episode;
-use App\Series;
-use App\SeriesSeason;
-use App\LikeDislike as Likedislike;
-use App\Genre;
 use URL;
 use Auth;
-use View;
+//use Request;
 use Hash;
 use Mail;
+use View;
 use Nexmo;
-use App\Menu as Menu;
-use Illuminate\Support\Facades\Cache;
-//use Image;
-use Intervention\Image\ImageManagerStatic as Image;
-use http\Env\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Notifications\Messages\NexmoMessage;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Auth\Authenticatable;
-use GeoIPLocation;
-use Stevebauman\Location\Facades\Location;
-use Carbon\Carbon;
-use Session;
-use App\RecentView as RecentView;
-use App\CurrencySetting as CurrencySetting;
-use App\Playerui as Playerui;
-use App\HomeSetting;
 use Theme;
+use Session;
+use App\Genre;
+use App\Series;
 use App\Channel;
-use App\ModeratorsUser;
-use App\SeriesGenre;
-use App\SeriesSubtitle as SeriesSubtitle;
-use App\SeriesNetwork;
-use App\CompressImage;
-use App\ThumbnailSetting;
-use App\OrderHomeSetting;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use App\Episode;
+use Carbon\Carbon;
+use GeoIPLocation;
 use App\ButtonText;
+use App\HomeSetting;
+use App\SeriesGenre;
+use App\Menu as Menu;
+use App\Page as Page;
+use App\SeriesSeason;
+use App\User as User;
+use App\CompressImage;
+use App\SeriesNetwork;
+use http\Env\Response;
+use App\ModeratorsUser;
+use App\OrderHomeSetting;
+use App\Slider as Slider;
+use App\ThumbnailSetting;
+//use Image;
+use \Redirect as Redirect;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
+use App\Playerui as Playerui;
+use App\PpvVideo as PpvVideo;
+use App\Wishlist as Wishlist;
 use App\SiteTheme as SiteTheme;
+use App\PaypalPlan as PaypalPlan;
+use App\RecentView as RecentView;
+use App\Watchlater as Watchlater;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\LikeDislike as Likedislike;
+use App\PartnerMonetizationSetting;
+use App\PpvCategory as PpvCategory;
+use App\PpvPurchase as PpvPurchase;
+use App\Subscription as Subscription;
+use App\VerifyNumber as VerifyNumber;
+use Illuminate\Support\Facades\Cache;
+use App\PaymentSetting as PaymentSetting;
+use App\SeriesSubtitle as SeriesSubtitle;
+use Stevebauman\Location\Facades\Location;
+use App\CurrencySetting as CurrencySetting;
+use App\ContinueWatching as ContinueWatching;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Notifications\Messages\NexmoMessage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class TvshowsController extends Controller
@@ -286,7 +288,7 @@ class TvshowsController extends Controller
         } else {
             $auth_user_id = Auth::user()->id;
         }
-    
+
         $episodess = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
@@ -958,6 +960,21 @@ class TvshowsController extends Controller
                         break;
                 }
             }
+            $next_episode = Episode::select('title', 'slug')
+                                    ->where('season_id', $episode_details->season_id)
+                                    ->where('episode_order', '>', $episode_details->episode_order)
+                                    ->orderBy('episode_order', 'asc')
+                                    ->first();
+
+            if(Auth::check()){
+                $user_role = Auth::user()->role;
+            }
+            else{
+                $user_role = "guest";
+            }
+            
+            // dd($next_episode);
+
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -996,6 +1013,8 @@ class TvshowsController extends Controller
                     'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                     'category_name'             => $category_name ,
                     'episode_details'           => $episode_details ,
+                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'               => $user_role,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1006,6 +1025,7 @@ class TvshowsController extends Controller
                     'paypal_signature' => $paypal_signature,
                     'purchase_btn'             => $purchase_btn,
                     'subscribe_btn'            => $subscribe_btn,
+                    'next_episode'             => $next_episode,
                 ];
 
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1046,6 +1066,8 @@ class TvshowsController extends Controller
                     'episodesubtitles' =>   $subtitle ,
                     'category_name'             => $category_name ,
                     'episode_details'  => $episode_details ,
+                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role' => Auth::user()->role,
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1057,6 +1079,7 @@ class TvshowsController extends Controller
                     'paypal_payment_setting' => $PayPalpayment,
                     'purchase_btn'             => $purchase_btn,
                     'subscribe_btn'            => $subscribe_btn,
+                    'next_episode'             => $next_episode,
                 ];
     
                 if (Auth::guest() && $settings->access_free == 1) {
@@ -1073,7 +1096,7 @@ class TvshowsController extends Controller
     
         } catch (\Throwable $th) {
     
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -2666,4 +2689,65 @@ public function RemoveDisLikeEpisode(Request $request)
         }
     }
  
+    public function EpisodePartnerMonetization(Request $request)
+    {
+        try {
+            $video_id = $request->video_id;
+            $video = Episode::where('id', $video_id)->first();
+            if ($video) {
+                $video->played_views += 1;
+                $video->save(); 
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
+
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save(); 
+
+        
+                        $channeluser_commission = (float) $video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+                        
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'episode')->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'episode',
+                            ]));
+                        }
+                    }
+                }
+
+                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
+            } else {
+                return response()->json(['error' => 'Video not found'], 404);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 }

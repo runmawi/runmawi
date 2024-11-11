@@ -607,6 +607,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
     Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
+    Route::post('/episodes/deleteSelecte','CPPSeriesController@deleteSelected')->name('cpp.episodes.deleteSelecte');
 
     // Channel Schedule
     Route::get('/channel/index', 'AdminEPGChannelController@index')->name('admin.Channel.index');
@@ -728,6 +729,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/get_processed_percentage/{id}', 'AdminVideosController@get_processed_percentage');
     Route::get('/get_compression_processed_percentage/{id}', 'AdminVideosController@get_compression_processed_percentage');
+    Route::get('/get_processed_percentage_episode/{id}', 'AdminSeriesController@get_processed_percentage_episode');
 
     // Admin Series and Episode
 
@@ -764,6 +766,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminVideosController@subtitledestroy']);
     Route::post('/videos/extractedimage', 'AdminVideosController@ExtractedImage');
     Route::post('/videos/VideoCipherFileUpload', ['before' => 'demo', 'uses' => 'AdminVideosController@VideoCipherFileUpload']);
+    Route::get('/transcoding-management', 'AdminVideosController@TranscodingManagement');
 
 
     // Music Genre Routes
@@ -865,11 +868,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/subscription-plans/edit/{id}', 'AdminPlansController@subscriptionedit');
     Route::get('/subscription-plans/delete/{id}', 'AdminPlansController@subscriptiondelete');
     Route::post('/subscription-plans/update', 'AdminPlansController@subscriptionupdate');
-    
+
+    // Admin User Channel Subscription Plan (Auth user)
+    Route::get('/user-channel-subscription-plan', 'AdminUserChannelSubscriptionPlan@index')->name('admin.user-channel-subscription-plan.index');
+    Route::get('/user-channel-subscription-plan-store', 'AdminUserChannelSubscriptionPlan@store')->name('admin.user-channel-subscription-plan.store');
+    Route::get('/user-channel-subscription-plan-edit/{random_key}', 'AdminUserChannelSubscriptionPlan@edit')->name('admin.user-channel-subscription-plan.edit');
+    Route::get('/user-channel-subscription-plan-update', 'AdminUserChannelSubscriptionPlan@update')->name('admin.user-channel-subscription-plan.update');
+    Route::get('/user-channel-subscription-plan-delete/{random_key}', 'AdminUserChannelSubscriptionPlan@delete')->name('admin.user-channel-subscription-plan.delete');
+    Route::get('/user-channel-subscription-plan-page-status', 'AdminUserChannelSubscriptionPlan@user_channel_plans_page_status')->name('admin.user-channel-subscription-plan.page-status');
+
     // Multiple channel Subscription Plans
     Route::post('Update-Multiple-Subscription-Plans', 'AdminPlansController@Update_Multiple_Subscription_Plans')->name('Update_Multiple_Subscription_Plans');
 
-
+    // Admin Channel Partner Subscription Plan
     Route::get('/channel-subscription-plans', 'AdminChannelPlansController@subscriptionindex');
     Route::post('/channel-subscription-plans/store', 'AdminChannelPlansController@subscriptionstore');
     Route::get('/channel-subscription-plans/edit/{id}', 'AdminChannelPlansController@subscriptionedit');
@@ -2348,10 +2359,14 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     // CinetPay- Series/Season Rent
     Route::post('/CinetPay-series_season-rent', 'PaymentController@CinetPay_series_season_Rent_Payment')->name('CinetPay_series_season_Rent_Payment');
 
-    // Content Partner - Home Page
+    // Content Partner
 
     Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
     Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
+
+    Route::get('channel-home', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
+    Route::get('channel-payment', 'ChannelPartnerController@channelparnterpayment')->name('channel.payment');
+    Route::get('channel-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
 
     // Live Event For artist
     Route::get('/live-artists-event', 'LiveEventArtistStream@index')->name('LiveEventArtistStream_index');
@@ -2501,6 +2516,10 @@ Route::group(['prefix' => 'recurly', 'middleware' => []], function () {
     Route::get('subscription-cancel/{subscription_id}', 'RecurlyPaymentController@CancelSubscription')->name('Recurly.Subscription_cancel');
     Route::get('upgrade-subscription', 'RecurlyPaymentController@UpgradeSubscription')->name('Recurly.UpgradeSubscription');
 
+    Route::post('channel-checkout-page', 'RecurlyPaymentChannelController@channel_checkout_page')->name('channel.Recurly.checkout_page');
+    Route::get('channel-createSubscription', 'RecurlyPaymentChannelController@channelcreateSubscription')->name('channel.Recurly.subscription');
+    Route::get('channel-subscription-cancel/{subscription_id}', 'RecurlyPaymentChannelController@channelCancelSubscription')->name('channel.Recurly.Subscription_cancel');
+    Route::get('channel-upgrade-subscription', 'RecurlyPaymentChannelController@channeUpgradeSubscription')->name('channel.Recurly.UpgradeSubscription');
 });
 
 // Reset Password
@@ -2996,3 +3015,20 @@ Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSe
     Route::get('/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
     Route::get('/logout', 'ProducerController@logout')->name('producer.logout');
 });
+Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
+Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
+Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
+Route::get('admin/partner_monetization_settings//delete/{id}', 'AdminPartnerMonetizationSettings@Delete');
+Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
+
+// Partner Monetization Payouts
+Route::get('admin/partner_monetization_payouts/index', 'AdminPartnerMonetizationPayouts@index')->name('partner-monetization-payouts');
+Route::get('admin/partner_monetization_payouts/analytics', 'AdminPartnerMonetizationPayouts@PartnerAnalytics')->name('partner-monetization-analytics');
+Route::get('admin/partner_monetization_payouts/partner_payment/{id}', 'AdminPartnerMonetizationPayouts@Partnerpayment');
+Route::post('admin/partner_monetization_payouts/store', 'AdminPartnerMonetizationPayouts@Store');
+Route::get('admin/partner_monetization_payouts/history', 'AdminPartnerMonetizationPayouts@PartnerPaymentHistory')->name('partner-monetization-history');
+Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData' )->name('get.channel.data');
+
+Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
+Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
+Route::post('LivestreamPartnerMonetization', 'AdminLiveStreamController@LivestreamPartnerMonetization')->name('LivestreamPartnerMonetization');

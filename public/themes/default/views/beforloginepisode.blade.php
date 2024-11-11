@@ -48,6 +48,51 @@
       
    #series_container .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
    .vjs-icon-hd:before{display:none;}
+
+   div.next-episode{
+        position: absolute;
+        bottom: 19%;
+        right: 0;
+        z-index: 9;
+        background-color: #fff !important;
+        color: #000 !important;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .cancel_card{
+        position: absolute;
+        /* top: 30%; */
+        /* left: 30%; */
+        z-index: 999;
+        height: 100%;
+        /* background-color: #f5f5f5; */
+    }
+    .cancel_card .d-flex{height: 70%;flex-direction: column;gap: 2rem;}
+    .cancel_card h5{color: red !important;}
+    button.next-epi-cancel{
+        width: 20%;
+        align-items: center;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin-top: 1em;
+        z-index: 999;
+        cursor: pointer;
+    }
+    a.epi-name.mt-3.mb-0.btn i{color: #fff !important;}
+    #subscribers_only{
+      height: calc(100vh - 55px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #subscribers_only h2{font-size: 30px;font-weight: 900;color: #fff !important;}
+    #subscribers_only h6{font-size: 20px;font-weight: 500;color: #fff !important;}
 </style>
 
 <?php
@@ -65,6 +110,14 @@
    {
        echo "0";
    } ?>">
+
+@if(!empty($next_episode))
+   @php
+      $next_episode_slug = URL::to('episode/'.$series->slug.'/'.$next_episode->slug)
+   @endphp
+@endif
+
+
 <input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
 <div id="series_bg">
    <div class="">
@@ -89,6 +142,21 @@
                            <button class="custom-skip-backward-button">
                                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                            </button>
+
+                           @if(!empty($next_episode))
+                              <div class="next-episode" onclick="window.location.href = ' {{ $next_episode_slug }}' " style="display:none;">
+                                 Next Episode
+                              </div>
+
+                              <div class="card cancel_card container-fluid" style="display: none;">
+                                 <div class="d-flex align-items-center justify-content-center">
+                                       <h5 style="color: red !important;">{{ "Next Episode" }}</h5>
+                                       <h2 class="text-white" style="color: #fff !important;">{{ $next_episode->title }}</h2>
+                                       {{-- <button class="next-epi-cancel">Cancel</button> --}}
+                                 </div>
+                                 
+                              </div>
+                           @endif
 
                            <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                               controls preload="auto" width="auto" height="auto" playsinline="playsinline"
@@ -117,7 +185,7 @@
                      </div>
                      <!-- Intro Skip and Recap Skip -->
                      <?php else: ?>
-                     <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                     <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover;">
                         <div class="container-fluid">
                            <h4 class=""><?php echo $episode->title ; ?></h4>
                            <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
@@ -161,20 +229,18 @@
                               label="<?= $episodesubtitles_file->shortcode ?>" default>
                            <?php } } } ?>
                      </video> -->
-                  <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-                        <div class="container-fluid">
-                           <div class="col-12 col-md-6 col-sm-6 p-0">
-                              <h4 class=""><?php echo $episode->title; ?></h4>
-                              <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+                  <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover;">
+                        <div class="container-fluid 1">
+                           <div class="col-12 p-0">
+                              <h2 class=""><?php echo $episode->title; ?></h2>
+                              <div class="d-flex align-items-center">
+                                 <p class="mt-3 text-white mr-3" style="opacity:0.7;";>{{ $SeriesSeason->series_seasons_name }}</p>
+                                 <i class="fa fa-circle" aria-hidden="true" style="color: #fff !important;opacity:0.7; font-size:8px;"></i>
+                                 <p class="mt-3 text-white ml-3" style="opacity:0.7;";>{{ 'Episode ' . $episode->episode_order }}</p>
+                              </div>
+                              <p class="mt-3 text-white col-lg-6 col-md-6 col-12 pl-0" style="opacity:0.7;";>{{ \Illuminate\Support\Str::limit($episode->episode_description,180) }}</p>
                            </div>
                            <div class="col-6"></div>
-                              <h4 class="">
-                                 <?php if ($series->access == 'subscriber'): ?>
-                                    <?php echo __('Become a Subscriber to Watch This Episode!'); ?>
-                                    <?php elseif($series->access == 'registered'): ?>
-                                       <?php echo __('Purchase to view Video'); ?>
-                                 <?php endif; ?>
-                              </h4>
                               <div class="clear"></div>
                            </div>
                            <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
@@ -183,20 +249,20 @@
                               <!-- <button type="button"
                                  class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
                               <form method="get" action="<?= URL::to('/signup') ?>">
-                                    <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
+                                    <button class="btn btn-primary" id="button"><?php echo __('▶ Purchase Now to Watch This Episode!'); ?></button>
                               </form>
                            </div>
                            <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
                            <div class="container-fluid mt-3">
                            <form method="get" action="<?= URL::to('/signup') ?>">
-                                    <button class="btn btn-primary" id="button"><?php echo __('Become a Subscriber to Watch This Episode!'); ?></button>
+                                    <button class="btn btn-primary" id="button"><?php echo __('▶ Become a Subscriber to Watch This Episode!'); ?></button>
                               </form>
                            </div>
                            <?php else: ?>
                            <div class="container-fluid mt-3">
                               <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                                    <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
-                                       <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                                    <button id="button" class="btn bd"> <?php if($series->access == 'subscriber'): ?><?php echo __('▶ Become a Subscriber to Watch This Episode!'); ?>
+                                       <?php elseif($series->access == 'registered'): ?><?php echo __('▶ Become a Register to Watch This Episode!'); ?><?php endif; ?></button>
                               </form>
                            </div>
                            <?php endif; ?>
@@ -276,8 +342,8 @@
             <br>
             <br>
             <div class="col-md-6">
-               <span class="text-white" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span> 
-               <p class="mb-0" style=";font-size: 80%;color: white;"><?php 
+               <span class="your_watching" style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span> 
+               <p class="mb-0" style=";font-size: 80%;"><?php 
                 $seasons = App\SeriesSeason::where('series_id','=',$SeriesSeason->series_id)->with('episodes')->get();
                 foreach($seasons as $key=>$seasons_value){ ?>
                                <?php
@@ -289,21 +355,9 @@
                   } ?>
                   <?php } ?>
                </p>
-               <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
+               <p class="" style=";font-size: 100%;font-weight: 700;"><?=$episode->title
                   ?></p>
                <p class="desc"><?php echo $episode->episode_description;?></p>
-            </div>
-            <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
-               ?>
-               </h3>-->
-            <div class="col-md-2 text-center text-white">
-               <span class="view-count  " style="float:right;">
-               <i class="fa fa-eye"></i> 
-               <?php if (isset($view_increment) && $view_increment == true): ?><?=$episode->views + 1 ?>
-               <?php
-                  else: ?><?=$episode->views ?><?php
-                  endif; ?> <?php echo __('Views'); ?> 
-               </span>
             </div>
             
             <div class="col-md-12">
@@ -422,56 +476,18 @@
          </div>
       <?php endif; ?>
 
-      <?php
-         include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
-         include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
-      ?>
+      @if(count($season) > 0)
+         @php
+               include public_path('themes/default/views/partials/Episode/Other_episodes_list.blade.php');
+         @endphp
+      @endif
+      @if(count($series_lists) > 0)
+         @php
+               include public_path('themes/default/views/partials/Episode/Recommend_series_episode_page.blade.php');
+         @endphp
+      @endif
       
-      <div class="iq-main-header ">
-         <h4 class="main-title"><?php echo __('Season'); ?></h4>
-      </div>
 
-      <div class="col-sm-12 overflow-hidden p-0">
-         <div class="favorites-contens ml-2">
-            <ul class="favorites-slider list-inline row mb-0" >
-               <?php  
-                  foreach($season as $key => $seasons):
-                     foreach($seasons->episodes as $key => $episodes):
-                  	   if($episodes->id != $episode->id): ?>
-                              <li class="slide-item">
-                                 <a href="<?= ($settings->enable_https) ? secure_url('episodes') : URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">
-                                    <div class="block-images position-relative">
-                                       <div class="img-box">
-                                          <img src="<?php echo URL::to('/').'/public/uploads/images/'.$episodes->image;  ?>" class="w-100">
-                                       </div>
-                                       <div class="block-description">
-                                          <h6><?= $episodes->title; ?> </h6>
-                                          <p class="date" style="color:#fff;font-size:14px;"><?= date("F jS, Y", strtotime($episodes->created_at)); ?>
-                                             <?php if($episodes->access == 'guest'): ?>
-                                             <span class="label label-info">Free</span>
-                                             <?php elseif($episodes->access == 'subscriber'): ?>
-                                             <span class="label label-success">Subscribers Only</span>
-                                             <?php elseif($episodes->access == 'registered'): ?>
-                                             <span class="label label-warning">Registered Users</span>
-                                             <?php endif; ?>
-                                          </p>
-                                          <div class="hover-buttons">
-                                             <a  href="<?php echo URL::to('episode').'/'.@$episodes->series_title->slug.'/'.$episodes->slug; ?>">	
-                                                <span class="text-white"> <i class="fa fa-play mr-1" aria-hidden="true"></i> <?php echo __('Play Now'); ?> </span>
-                                             </a>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </a>
-                              </li>
-                                  <?php
-                        endif;
-                     endforeach; 
-                  endforeach
-               ?>
-            </ul>
-         </div>
-      </div>
    </div>
 </div>
 

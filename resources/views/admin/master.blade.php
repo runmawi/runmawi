@@ -945,6 +945,8 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->music_genre_checkout == 1)
                            <li><a href="{{ URL::to('admin/Music/Genre') }}" class="iq-waves-effect">{{ (__('Manage Music Genre')) }}</a></li>
                         @endif 
+                        <li><a href="{{ URL::to('admin/transcoding-management') }}" class="iq-waves-effect">{{ (__('Transcoding Management')) }}</a></li>
+
 
                     
           </ul></li>
@@ -1003,6 +1005,28 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                </ul>
             @endif
          </li>
+
+          {{--Partner Payouts --}}
+          {{--Partner Payouts --}}
+          @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_partner_payouts == 1)
+          <li>
+               <div class="men" style="">
+                  <p class="lnk" >{{ (__('Partner Payouts')) }}</p>
+               </div>
+
+               <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
+                  <img class="ply" height="40" width="40" src="{{  URL::to('/assets/img/E360_icons/Manage Live stream.svg') }}"> 
+                  <span class="">{{ (__('Partner Payout Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+               </a>
+               
+               <ul id="parnter_monetization_payouts" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                  <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts')) }}</a></li>
+                  <li><a href="{{ route('partner-monetization-analytics') }}">{{ (__('Partner Payouts Analytics')) }}</a></li>
+                  <li><a href="{{ route('partner-monetization-history') }}">{{ (__('Partner Payment History')) }}</a></li>
+               </ul>
+         </li>
+         @endif
+
 
            {{--Live Stream  --}}
 
@@ -1168,6 +1192,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <li><a href="{{ URL::to('admin/subscription-plans') }}">{{ (__('Manage Subscription plans')) }}</a></li>
                         <li><a href="{{ route('inapp_purchase') }}">{{ (__('Manage In App Purchase Plans')) }}</a></li>
                         <li><a href="{{ route('Life-time-subscription-index') }}">{{ (__('Life time subscription')) }}  </a></li>
+                        <li><a href="{{ route('admin.user-channel-subscription-plan.index') }}">{{ (__('User Channel Subscription Plan')) }}  </a></li>
                          <!-- <li><a href="{{ URL::to('admin/coupons') }}"><i class="las la-eye"></i>Manage Stripe Coupons</a></li> -->
                          <li><a href="{{ URL::to('admin/devices') }}">{{ (__('Devices')) }}</a></li>
                      </ul>
@@ -1265,7 +1290,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
 
                   <li><a href="{{ URL::to('admin/ads_list') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-list.svg')?>"><span>{{ (__('Ads List')) }}</span></a></li>
 
-                  <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
+                  @if ($settings->ads_payment_page_status == 1 )
+                     <li><a href="{{ URL::to('admin/ads_plans') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-plan.svg')?>"><span>{{ (__('Ads Plans')) }} </span></a></li>
+                  @endif
 
                   <li><a href="{{ URL::to('admin/ads_revenue') }}" class="iq-waves-effect"><img  height="40" width="40" class="" src="<?php echo  URL::to('/assets/img/icon/ads-rev.svg')?>"><span>{{ (__('Ads Revenue')) }} </span></a></li>
 

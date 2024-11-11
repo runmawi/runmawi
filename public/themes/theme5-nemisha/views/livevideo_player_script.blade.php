@@ -1,6 +1,8 @@
 <script>
 
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
+    var videoId = "<?php echo $Livestream_details->id; ?>";
+    var userId = "<?php echo auth()->id(); ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
         var player = videojs('live-stream-player', { // Video Js Player 
@@ -49,6 +51,57 @@
         liveControl.insertBefore(span, liveControl.firstChild);
 
         // Ads Marker
+
+
+        function LivestreamPartnerMonetization(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            console.log(currentTime);
+
+            var countview;
+
+            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
+                viewCountSent = true;
+                countview = 1;
+                console.log('AJAX request will be sent.');
+
+                $.ajax({
+                    url: "<?php echo URL::to('LivestreamPartnerMonetization');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                    success: function(response) {
+                        console.log('View count incremented and monetization updated:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to increment view count:', error);
+                    }
+                });
+            }
+
+            console.log('currentTime: ' + currentTime);
+            console.log('countview: ' + countview);
+        }
+
+        player.on('timeupdate', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+        });
+
+        player.on('pause', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+
+        });
+
+        window.addEventListener('beforeunload', function() {
+            var currentTime = player.currentTime();
+            LivestreamPartnerMonetization(videoId, currentTime);  
+        });
+
 
         player.on("loadedmetadata", function() {
 

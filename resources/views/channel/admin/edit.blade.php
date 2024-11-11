@@ -168,6 +168,13 @@
                             @endif
                         </div>
 
+                        <div class="col-md-6" >
+
+                            <div class="form-group row">
+                            <label for="commission" class=" col-form-label text-md-right">{{ __('Commision Percentage') }}</label>
+                                <input id="commission" type="text" class="form-control" name="commission" value ="{{ $Channel->commission }}" autocomplete="commission">
+                                </div>
+                        </div>
 
 
                     <br>

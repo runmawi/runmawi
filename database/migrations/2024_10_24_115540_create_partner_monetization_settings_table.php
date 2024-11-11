@@ -18,6 +18,7 @@ class CreatePartnerMonetizationSettingsTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('viewcount_limit')->nullable();
             $table->string('views_amount')->nullable();
+            $table->string('partner_commission')->nullable();
             $table->timestamps();
         });
     }
