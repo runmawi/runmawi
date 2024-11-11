@@ -121,6 +121,11 @@ class ConvertEpisodeVideo implements ShouldQueue
 
     }
 
+    public function getEpisode()
+    {
+        return $this->video;
+    }
+
     private function getCleanFileName($filename){
 
         return preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename) . '.m3u8';
