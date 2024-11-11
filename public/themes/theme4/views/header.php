@@ -1028,7 +1028,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                      <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
                         <link rel="preload" href="<?= $admin_advertistment_banners->top_image_url ?>" as="image">
                         <div class="col-sm-9 mx-auto header_top_position_img">
-                           <img class="img-fluid logo lazy" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" style="width:1397px;height:53px;" /> 
+                           <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" /> 
                         </div>
                      <?php endif ;?>
                      
