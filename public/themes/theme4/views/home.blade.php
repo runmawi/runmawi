@@ -278,8 +278,8 @@
       var images = document.querySelectorAll('.flickity-lazyloaded');
       
       images.forEach(function(image) {
-         var renderedWidth = image.naturalWidth;
-         var renderedHeight = image.naturalHeight;
+         var renderedWidth = image.clientWidth;
+         var renderedHeight = image.clientHeight;
 
          image.setAttribute('width', renderedWidth);
          image.setAttribute('height', renderedHeight);
