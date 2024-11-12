@@ -254,18 +254,19 @@ $(".home-search").hide();
 </script>
 
 <style>
-.s-bg-1:hover video{display: block;}
-.s-bg-1:hover .video-js{display: block;width: 100%;height: 100%;}
-.s-bg-1 video{display: none;}
-.s-bg-1 .video-js{display: none;}
-.des-more-less-btns{border: none;
-                  background: transparent;
-                  cursor: pointer;
-                  margin-bottom: 10px;}
-.video_title_images{width: 50%;}
-@media (min-width:2400px){
-   .descp{max-height: 320px !important;}
-}
+   .myvideos{position: absolute;opacity: 1; }
+   .s-bg-1.is-selected:hover .myvideos{display: block;}
+   .s-bg-1:hover .video-js{display: block;width: 100%;height: 100%;}
+   .myvideos{display: none;}
+   .s-bg-1 .video-js{display: none;}
+   .des-more-less-btns{border: none;
+                     background: transparent;
+                     cursor: pointer;
+                     margin-bottom: 10px;}
+   .video_title_images{width: 50%;}
+   @media (min-width:2400px){
+      .descp{max-height: 320px !important;}
+   }
 </style>
 
 <!-- flickity -->
@@ -343,6 +344,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
                     hasPlayedOnce = true;
                 }
                 player.play();
+                $('.slider-inner').css('pointer-events','none');
             },
             function () {
                 player.pause();
@@ -363,6 +365,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
          $(this).hover(
                function () {
                   video.play();
+                  $('.slider-inner').css('pointer-events','none');
                },
                function () {
                   video.pause();
