@@ -188,7 +188,7 @@ i.fa.fa-google-plus {
     }
 </style>
 
-<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;background-color:#000;">
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -275,7 +275,8 @@ i.fa.fa-google-plus {
                             </div>
 
                             <div class="col-md-7 col-sm-8">
-                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control @error('email') is-invalid @enderror" name="mobile" placeholder="{{ __('Enter Mobile Number') }}" value="{{ old('mobile') }}" required autocomplete="off" autofocus> 
+                                <input id="mobile" type="text" maxlength="10" minlength="10" class="form-control" name="mobile" placeholder="Enter Mobile Number" value="{{ old('mobile') }}" required autocomplete="off" autofocus>
+                                <span id="mobile-error" class="invalid-feedback" role="alert" style="display: none;"></span>
                                 <span class="verify-error"></span>
                                 
                                  @error('mobile')
@@ -308,47 +309,43 @@ i.fa.fa-google-plus {
                                  @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" required autocomplete="new-password">
-                                         </div>
-                                         <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                         </div>
-                                        <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>{{ __('Password Not matching') }}.</strong>
-                                        </span>
-                                     
-                                         </div>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password_confirm == 1)
-                            <div class="col-md-12">
-                                <div class="row">
-                                     <div class="col-md-12">
-                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                                    <div >
-                              <span class="input-group-btn" id="eyeSlash1">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                    </div>
-                                </div>
-                                <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="confirm-password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash1">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow1" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
      
-                            </div>            
+                                    </div>            
                                 @endif
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->country == 1)
@@ -467,9 +464,9 @@ i.fa.fa-google-plus {
     
       <!-- Modal content-->
       <div class="modal-content" >
-        <div class="modal-header" style="border:none;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+        <div class="modal-header align-items-center" style="border:none;">
+            <h4 class="modal-title" style="color: white;"><?php echo __('Terms and Conditions');?></h4>
+            <button type="button" class="close m-0" data-dismiss="modal" style="color: #fff; opacity:1;">&times;</button>
         </div>
         <div class="modal-body" style='color: white;' >
             <?php
@@ -896,6 +893,53 @@ function format(item, state) {
         
     </script>
 
+    
+{{-- password length validation --}}
+<script>
+    function checkPass() {
+        var pass1 = document.getElementById('password');
+        var pass2 = document.getElementById('password-confirm');
+        var passwordError = document.getElementById('password-error');
+        var confirmPasswordError = document.getElementById('confirm-password-error');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+
+        // Regular expression to test the password strength
+        var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+
+        // Test the password against the regex
+        if (strongRegex.test(pass1.value)) {
+            pass1.style.backgroundColor = goodColor;
+            passwordError.style.color = goodColor;
+            passwordError.innerHTML = "Strong password";
+            $('#password-confirm').prop('disabled', false);
+            $('#profileUpdate').prop('disabled', false);
+        } else {
+            pass1.style.backgroundColor = badColor;
+            passwordError.style.color = badColor;
+            $('#password-confirm').prop('disabled', true);
+            $('#profileUpdate').prop('disabled', true);
+            passwordError.innerHTML = "Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.";
+        }
+
+        // Check if the password and confirm password match only if confirm password is not empty
+        if (pass2.value !== "") {
+            if (pass1.value == pass2.value) {
+                pass2.style.backgroundColor = goodColor;
+                confirmPasswordError.style.color = goodColor;
+                confirmPasswordError.innerHTML = "Password created successfully";
+            } else {
+                pass2.style.backgroundColor = badColor;
+                confirmPasswordError.style.color = badColor;
+                confirmPasswordError.innerHTML = "Passwords did not match";
+            }
+        } else {
+            // Clear the message if confirm password is empty
+            confirmPasswordError.innerHTML = "";
+        }
+    }
+</script>
+
 {{-- Validation --}}
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
@@ -1078,6 +1122,32 @@ function format(item, state) {
       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
 
 
-
+      <script>
+        $(document).ready(function () {
+            $('#mobile').on('blur', function () {
+                let mobile = $(this).val();
+                
+                if (mobile.length === 10) {
+                    $.ajax({
+                        url: "<?php echo URL::to('SignupCheckMobile'); ?>",
+                        type: "POST",
+                        data: {
+                            mobile: mobile,
+                            _token: "<?= csrf_token() ?>"
+                        },
+                        success: function (response) {
+                            if (response.exists) {
+                                $('#mobile').addClass('is-invalid');
+                                $('#mobile-error').text('This mobile number is already in use.').show();
+                            } else {
+                                $('#mobile').removeClass('is-invalid');
+                                $('#mobile-error').hide();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 @endsection 
