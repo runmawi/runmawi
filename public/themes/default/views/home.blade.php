@@ -255,7 +255,9 @@ $(".home-search").hide();
 
 <style>
 .s-bg-1:hover video{display: block;}
+.s-bg-1:hover .video-js{display: block;width: 100%;height: 100%;}
 .s-bg-1 video{display: none;}
+.s-bg-1 .video-js{display: none;}
 .des-more-less-btns{border: none;
                   background: transparent;
                   cursor: pointer;
@@ -302,24 +304,86 @@ setTimeout(function() {
 var scheduler_content = '<?= Session::forget('scheduler_content'); ?>';
 var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 
-}
+};
 
-// banner slider
-var elem = document.querySelector('.home-sliders');
-var flkty = new Flickity(elem, {
- cellAlign: 'left',
- contain: true,
- groupCells: true,
- pageDots: false,
- draggable: true,
- freeScroll: true,
- imagesLoaded: true,
- lazyload:true,
-});
+   document.addEventListener("DOMContentLoaded", function () {
+    // Initialize Flickity slider
+    var elem = document.querySelector('.home-sliders');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload: true,
+    });
 
-   // width and height set dynamically
-   document.addEventListener('DOMContentLoaded', function() {
-      var images = document.querySelectorAll('.flickity-lazyloaded');
+    // Video trailer slider
+    $('.myvideos').each(function () {
+      const video = $(this).get(0);
+      const trailerType = $(this).siblings('.trailer_type').val();
+      let hasPlayedOnce = false;
+
+      if (trailerType === 'm3u8' || trailerType === 'm3u8_url') {
+         var player = videojs(video.id, {
+               autoplay: false,
+               muted: true,
+               loop: true,
+               controlBar: false,
+         });
+
+         player.pause();
+
+         $(this).hover(
+            function () {
+                if (!hasPlayedOnce) {
+                    player.currentTime(0);
+                    hasPlayedOnce = true;
+                }
+                player.play();
+            },
+            function () {
+                player.pause();
+            }
+        );
+
+         $(this).closest('.s-bg-1').find('.volume-icon').on('click', function () {
+               if (player.muted()) {
+                  player.muted(false);
+                  $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
+               } else {
+                  player.muted(true);
+                  $(this).removeClass('fa-volume-up').addClass('fa-volume-off');
+               }
+         });
+
+      } else {
+         $(this).hover(
+               function () {
+                  video.play();
+               },
+               function () {
+                  video.pause();
+               }
+         );
+
+         $(this).closest('.s-bg-1').find('.volume-icon').on('click', function () {
+               if (video.muted) {
+                  video.muted = false;
+                  $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
+               } else {
+                  video.muted = true;
+                  $(this).removeClass('fa-volume-up').addClass('fa-volume-off');
+               }
+         });
+      }
+   });
+
+
+   //  width and height set dynamically
+    var images = document.querySelectorAll('.flickity-lazyloaded');
       images.forEach(function(image) {
          var renderedWidth = image.clientWidth;
          var renderedHeight = image.clientHeight;
@@ -327,37 +391,8 @@ var flkty = new Flickity(elem, {
          image.setAttribute('width', renderedWidth);
          image.setAttribute('height', renderedHeight);
       });
-   });
+});
 
-
-   $('.myvideos').each(function () {
-      const video = $(this).get(0);
-
-      $(this).hover(
-         function () {
-               video.play();
-         },
-         function () {
-               video.pause();
-         }
-      );
-   });
-
-   // Volume toggle code
-   $('.volume-icon').on('click', function () {
-      const video = $(this).closest('.s-bg-1').find('.myvideos').get(0);
-
-      if (video.muted) {
-         video.muted = false;
-         $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
-      } else {
-         video.muted = true;
-         $(this).removeClass('fa-volume-up').addClass('fa-volume-off');
-      }
-   });
-
-
-   
 </script>
 
 <style>
