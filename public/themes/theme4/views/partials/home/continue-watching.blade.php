@@ -7,8 +7,8 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title mar-left"><a href="#">{{ ucwords('continue watching') }}</a></h4>
-                        <h4 class="main-title"><a href="#">{{ ucwords('view all') }}</a></h4>
+                        <h4 class="main-title mar-left"><a href="{{ URL::to('/continue-watching-list')}}">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title"><a href="{{ URL::to('/continue-watching-list')}}">{{ ('View all') }}</a></h4>
                     </div>
 
                     <div class="channels-list">
