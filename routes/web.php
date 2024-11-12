@@ -241,6 +241,10 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
+// mobile number exists while signup
+Route::post('/SignupCheckMobile', 'SignupController@checkMobile')->name('SignupCheckMobile');
+
+
 
 
 // CheckAuthTheme5 & restrictIp Middleware

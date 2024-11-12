@@ -130,7 +130,7 @@
                         @endforeach
                     @endif
 
-                    @if(count($channelwatchlater) == 0 && count($episode_videos) == 0)
+                    @if( (is_countable($channelwatchlater) && count($channelwatchlater) == 0) && (is_countable($episode_videos) && count($episode_videos) == 0) )
                         <div class="col-md-12 text-center mt-4">
                             <img class="w-50" style="width: 50%!important;" src="{{ URL::to('/assets/img/sub.png') }}">
                         </div>
