@@ -113,7 +113,7 @@
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
-                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlist') }}</span>
+                                                <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">{{ __('Add To Watchlater') }}</span>
                                             </div>
                                         </div>
                                     </li>
