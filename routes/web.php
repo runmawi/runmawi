@@ -1950,6 +1950,9 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
 
     Route::get('/partner_monetization_analytics', 'ChannelAnalyticsController@ChannelPartnerMonetization');
     Route::get('/partner_monetization_history', 'ChannelAnalyticsController@ChannelPartnerMonetizationHistory')->name('channel.partner.monetization.history');
+    Route::post('/PartnerAnalyticsCSV', 'ChannelAnalyticsController@PartnerAnalyticsCSV');
+    Route::post('/PartnerHistoryCSV', 'ChannelAnalyticsController@PartnerHistoryCSV');
+    Route::post('/partner-invoice/{id}', 'ChannelAnalyticsController@PartnerInvoice')->name('partner.invoice');
 
     Route::get('/dashboard', 'ChannelLoginController@IndexDashboard');
     Route::get('/logout', 'ChannelLoginController@logout');
@@ -3007,7 +3010,7 @@ Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->n
 
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
 Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
-Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
+Route::get('admin/partner_monetization_settings/edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
 
 // Partner Monetization Payouts

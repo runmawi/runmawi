@@ -48,12 +48,12 @@
                                             <tr>
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $user->channeluser->channel_name }}</td>
-                                                <td>{{ $user->content->title }}</td>
+                                                <td>{{ $user->title }}</td>
                                                 <td>{{ $user->type }}</td>
                                                 <td>{{ $user->total_views }}</td>
-                                                <td>{{ $user->monetization_amount }}</td>
-                                                <td>{{ $user->admin_commission }}</td>
-                                                <td>{{ $user->partner_commission }}</td>
+                                                <td>{{ $user->monetization_amount }} {{ $currencySymbol }}</td>
+                                                <td>{{ $user->admin_commission }} {{ $currencySymbol }}</td>
+                                                <td>{{ $user->partner_commission }} {{ $currencySymbol }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

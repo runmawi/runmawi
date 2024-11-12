@@ -96,8 +96,8 @@
                             const detailsContent = data.map(payment => `
                                 <tr style="text-align: center;">
                                     <td>${payment.payment_date}</td>
-                                    <td>${payment.paid_amount ?? 0}</td>
-                                    <td>${payment.balance_amount ?? 0}</td>
+                                    <td>${payment.paid_amount ?? 0} ${payment.currencySymbol}</td>
+                                    <td>${payment.balance_amount ?? 0} ${payment.currencySymbol}</td>
                                     <td>${payment.transaction_id ?? 0}</td>
                                     <td>${payment.payment_method}</td>
                                 </tr>

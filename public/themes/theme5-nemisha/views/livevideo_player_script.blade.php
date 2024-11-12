@@ -3,6 +3,9 @@
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
     var videoId = "<?php echo $Livestream_details->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
+    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var played_views = "<?php echo $Livestream_details->played_views; ?>";
+    var user_role = "<?php echo $user_role; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
         var player = videojs('live-stream-player', { // Video Js Player 
@@ -55,15 +58,12 @@
 
         function LivestreamPartnerMonetization(videoId, currentTime) {
             currentTime = Math.floor(currentTime);
-            console.log(currentTime);
-
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && currentTime == monetization_view_limit && !viewCountSent) {
                 viewCountSent = true;
                 countview = 1;
-                console.log('AJAX request will be sent.');
-
+            
                 $.ajax({
                     url: "<?php echo URL::to('LivestreamPartnerMonetization');?>",
                     type: 'POST',
@@ -73,33 +73,27 @@
                         currentTime: currentTime,
                         countview: countview,
                     },
-                    success: function(response) {
-                        console.log('View count incremented and monetization updated:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to increment view count:', error);
-                    }
                 });
             }
-
-            console.log('currentTime: ' + currentTime);
-            console.log('countview: ' + countview);
         }
 
-        player.on('timeupdate', function() {
-            var currentTime = player.currentTime();
-            LivestreamPartnerMonetization(videoId, currentTime);  
-        });
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            });
 
-        player.on('pause', function() {
-            var currentTime = player.currentTime();
-            LivestreamPartnerMonetization(videoId, currentTime);  
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            });
+        }
 
-        });
-
-        window.addEventListener('beforeunload', function() {
-            var currentTime = player.currentTime();
-            LivestreamPartnerMonetization(videoId, currentTime);  
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            }
         });
 
 

@@ -79,6 +79,8 @@ use App\VideoCommission as VideoCommission;
 use App\VideoResolution as VideoResolution;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ChannelAnalyticsController extends Controller
 {
@@ -979,6 +981,7 @@ class ChannelAnalyticsController extends Controller
 
         $data = [
             "users" => $users,
+            "currencySymbol" => currency_symbol(),
         ];
         return view("channel.partner_monetization.partner_monetization_analytics",$data);
 
@@ -986,47 +989,234 @@ class ChannelAnalyticsController extends Controller
 
 
     public function ChannelPartnerMonetizationHistory(Request $request)
-{
-    $user = Session::get('channel');
-    $user_id = $user->id;
+    {
+        $user = Session::get('channel');
+        $user_id = $user->id;
 
-    $selectedMonth = $request->input('month');
+        $selectedMonth = $request->input('month');
 
-    $monetizationSummaryQuery = PartnerMonetization::where('user_id', $user_id);
+        $monetizationSummaryQuery = PartnerMonetization::where('user_id', $user_id);
 
-    if ($selectedMonth) {
-        $monetizationSummaryQuery->whereMonth('payment_date', $selectedMonth);
+        if ($selectedMonth) {
+            $monetizationSummaryQuery->whereMonth('payment_date', $selectedMonth);
+        }
+        $monetizationSummary = $monetizationSummaryQuery
+            ->selectRaw('SUM(total_views) as total_views_sum, SUM(partner_commission) as partner_commission_sum')
+            ->first();
+        
+        $paymentDetailsQuery = Partnerpayment::where('user_id', $user_id);
+
+        if ($selectedMonth) {
+            $paymentDetailsQuery->whereMonth('payment_date', $selectedMonth);
+        }
+
+        $payment_details = $paymentDetailsQuery->orderByDesc('created_at')->paginate(5);
+
+        $totalAmountPaid = $payment_details->getCollection()->sum('paid_amount');
+        $latestPayment = $payment_details->first();
+
+        $data = [
+            "monetizationSummary" => $monetizationSummary,
+            "totalAmountPaid" => $totalAmountPaid,
+            "payment_details" => $latestPayment,
+            "payment_histories" => $payment_details,
+            "currencySymbol" => currency_symbol(),
+        ];
+
+        if ($request->ajax()) {
+            return response()->json([
+                'totalAmountPaid' => $totalAmountPaid,
+                'paymentBalanceAmount' => $latestPayment ? $latestPayment->balance_amount : 0,
+            ]);
+        }
+
+        return view("channel.partner_monetization.partner_monetization_history", $data);
     }
-    $monetizationSummary = $monetizationSummaryQuery
-        ->selectRaw('SUM(total_views) as total_views_sum, SUM(partner_commission) as partner_commission_sum')
-        ->first();
+
     
-    $paymentDetailsQuery = Partnerpayment::where('user_id', $user_id);
 
-    if ($selectedMonth) {
-        $paymentDetailsQuery->whereMonth('payment_date', $selectedMonth);
+    public function PartnerAnalyticsCSV(Request $request)
+    {
+        $user_package = User::where("id", 1)->first(); 
+        $package = $user_package->package;
+        
+        if ((!empty($package) && $package == "Pro") || (!empty($package) && $package == "Business")) {
+            $user = Session::get("channel");
+            $user_id = $user->id;
+            $data = $request->all();
+    
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+           
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = PartnerMonetization::whereDate("created_at", ">=", $start_time)
+                    ->where("user_id", $user_id)
+                    ->get();
+            } elseif (!empty($start_time) && !empty($end_time)) {
+                $total_content = PartnerMonetization::whereBetween("created_at", [$start_time, $end_time])
+                    ->where("user_id", $user_id)
+                    ->get();
+            } else {
+                $total_content = PartnerMonetization::where("user_id", $user_id)
+                    ->get();
+            }
+    
+            $file = "PartnerMonetizationPayouts.csv";
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+    
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+    
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            $currencySymbol = currency_symbol();
+            fputcsv($handle, [
+                "Content Title",
+                "Content Type",
+                "Views",
+                "Monetized Amount",
+                "Admin Commission",
+                "Partner Commission"
+            ]);
+    
+            foreach ($total_content as $record) {
+                fputcsv($handle, [
+                    $record->title,
+                    $record->type,
+                    $record->total_views,
+                    $record->monetization_amount . $currencySymbol,
+                    $record->admin_commission . $currencySymbol,
+                    $record->partner_commission . $currencySymbol,
+                  
+                ]);
+            }
+    
+            fclose($handle);
+    
+            \Response::download($filename, "download.csv", $headers);
+    
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
     }
 
-    $payment_details = $paymentDetailsQuery->orderByDesc('created_at')->paginate(5);
 
-    $totalAmountPaid = $payment_details->getCollection()->sum('paid_amount');
-    $latestPayment = $payment_details->first();
 
-    $data = [
-        "monetizationSummary" => $monetizationSummary,
-        "totalAmountPaid" => $totalAmountPaid,
-        "payment_details" => $latestPayment,
-        "payment_histories" => $payment_details,
-    ];
+    public function PartnerHistoryCSV(Request $request)
+    {
+        $user_package = User::where("id", 1)->first(); 
+        $package = $user_package->package;
+        
+        if ((!empty($package) && $package == "Pro") || (!empty($package) && $package == "Business")) {
+            $user = Session::get("channel");
+            $user_id = $user->id;
+            $data = $request->all();
+    
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+           
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = Partnerpayment::whereDate("payment_date", ">=", $start_time)
+                    ->where("user_id", $user_id)
+                    ->get();
+            } elseif (!empty($start_time) && !empty($end_time)) {
+                $total_content = Partnerpayment::whereBetween("payment_date", [$start_time, $end_time])
+                    ->where("user_id", $user_id)
+                    ->get();
+            } else {
+                $total_content = Partnerpayment::where("user_id", $user_id)
+                    ->get();
+            }
+    
+            $file = "PartnerMonetizationPayouts.csv";
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+    
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+    
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            $currencySymbol = currency_symbol();
 
-    if ($request->ajax()) {
-        return response()->json([
-            'totalAmountPaid' => $totalAmountPaid,
-            'paymentBalanceAmount' => $latestPayment ? $latestPayment->balance_amount : 0,
-        ]);
+            fputcsv($handle, [
+                "Month/Year",
+                "Paid Amount",
+                "Balance Amount",
+                "Transaction ID",
+                "Payment Method",
+            ]);
+    
+            foreach ($total_content as $record) {
+                fputcsv($handle, [
+                    $record->payment_date,                  
+                    $record->paid_amount . $currencySymbol,                  
+                    $record->balance_amount . $currencySymbol,                  
+                    $record->transaction_id,                  
+                    $record->payment_method == 0 ? 'Manual Payment' : 'Payment Gateway'                  
+                ]);
+            }
+    
+            fclose($handle);
+    
+            \Response::download($filename, "download.csv", $headers);
+    
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
     }
 
-    return view("channel.partner_monetization.partner_monetization_history", $data);
-}
+    public function PartnerInvoice($id)
+    {
+        $partnerpayment = Partnerpayment::find($id);
+        if (!$partnerpayment) {
+            return response()->json(['error' => 'Payment not found'], 404);
+        }
+        $settings = Setting::first();
+
+        $currencySymbol = currency_symbol();
+
+        $logoPath = public_path('uploads/settings/' . $settings->logo);
+        if (file_exists($logoPath)) {
+            $logoData = base64_encode(file_get_contents($logoPath));
+            $logoSrc = 'data:image/' . pathinfo($logoPath, PATHINFO_EXTENSION) . ';base64,' . $logoData;
+        } else {
+            $logoSrc = ''; // Fallback if logo file does not exist
+        }
+
+
+        $html = view('channel.partner_monetization.partner_monetization_invoice', compact('partnerpayment','settings','logoSrc','currencySymbol'))->render();
+    
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+  
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        $pdfContent = $dompdf->output();
+   
+        $base64pdf = base64_encode($pdfContent);
+        return response($base64pdf, 200)
+               ->header('Content-Type', 'text/plain')
+               ->header('Content-Disposition', 'attachment; filename="partnerpayment_' . date('d-m-y') . '.pdf"');
+    }
 
 }

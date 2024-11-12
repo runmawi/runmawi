@@ -56,6 +56,7 @@ class AdminPartnerMonetizationPayouts extends Controller
 
             $data = [
                 "users" => $users,
+                "currencySymbol" => currency_symbol(),
             ];
 
             return view('admin.partner_monetization_payouts.index', $data);
@@ -99,6 +100,7 @@ class AdminPartnerMonetizationPayouts extends Controller
                 ->paginate(9);
             $data = [
                 "users" => $users,
+                "currencySymbol" => currency_symbol(),
             ];
 
             return view('admin.partner_monetization_payouts.analytics', $data);
@@ -120,6 +122,7 @@ class AdminPartnerMonetizationPayouts extends Controller
             'payment_details' => $payment_details,
             'totalCommission' => $totalCommission,
             'totalAmountPaid' => $totalAmountPaid,
+            "currencySymbol" => currency_symbol(),
         );
 
         return view('admin.partner_monetization_payouts.partner_payment', $data);
@@ -168,16 +171,18 @@ class AdminPartnerMonetizationPayouts extends Controller
     public function getChannelData($id)
     {
         $payments = Partnerpayment::where('user_id', $id)->orderByDesc('created_at')->get();
-
+      
         if ($payments->isNotEmpty()) {
             $data = $payments->map(function ($payment) {
-                $formattedDate = Carbon::parse($payment->payment_date)->format('F,Y');
+                $formattedDate = Carbon::parse($payment->payment_date)->format('d F,Y');
+              
                 return [
                     'paid_amount' => $payment->paid_amount,
                     'balance_amount' => $payment->balance_amount,
                     'payment_date' => $formattedDate,
                     'transaction_id' => $payment->transaction_id ? $payment->transaction_id : '-',
                     'payment_method' => $payment->payment_type == 0 ? 'Manual Payment' : 'Payment Gateway',
+                    'currencySymbol' =>   currency_symbol(),
                 ];
             })->toArray();
 
@@ -194,7 +199,6 @@ class AdminPartnerMonetizationPayouts extends Controller
 
             $paymentDetails = Partnerpayment::where('user_id', $id)->get();
 
-
             $totalPaid = $paymentDetails->sum('paid_amount');
             $totalBalance = $paymentDetails->sum('balance_amount');
             $latestPaymentDate = $paymentDetails->max('payment_date');
@@ -208,7 +212,8 @@ class AdminPartnerMonetizationPayouts extends Controller
                 'latest_payment_date' => $latestPaymentDate ? \Carbon\Carbon::parse($latestPaymentDate)->format('d-M-Y') : '-',
                 'latest_payment_datetime' => $latestPaymentDate ? \Carbon\Carbon::parse($latestPaymentDate)->format('d-M-Y h:i A') : '-',
                 'latest_balance_amount' => $latestBalanceAmount,
-                'latest_paid_amount' => $latestPaidAmount
+                'latest_paid_amount' => $latestPaidAmount,
+                "currencySymbol" => currency_symbol(),
             ]);
         } else {
             return response()->json(['error' => 'User not found'], 404);

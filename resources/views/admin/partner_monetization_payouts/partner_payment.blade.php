@@ -140,7 +140,7 @@
                                                 <p class="mb-0">Overall Amount</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $totalCommission ?? 0 }}</p>
+                                                <p class="mb-0">{{ $totalCommission ?? 0 }} {{ $currencySymbol }}</p>
                                             </div>
                                         </div>
 
@@ -149,7 +149,7 @@
                                                 <p class="mb-0">Total Amount Paid</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $totalAmountPaid ?? 0 }}</p>
+                                                <p class="mb-0">{{ $totalAmountPaid ?? 0 }} {{ $currencySymbol }}</p>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mt-2 pt-2">
@@ -157,7 +157,7 @@
                                                 <p class="mb-0">Balance Amount Payable</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $payment_details->balance_amount ?? 0 }}</p>
+                                                <p class="mb-0">{{ $payment_details->balance_amount ?? 0 }} {{ $currencySymbol }} </p>
                                             </div>
                                         </div>
                                     </div>

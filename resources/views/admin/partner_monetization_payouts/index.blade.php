@@ -45,7 +45,7 @@
                                                 <td>{{ $i++ }}</td>
                                                 <td>{{ $user->channeluser->channel_name }}</td>
                                                 <td>{{ $user->total_views_sum }}</td>
-                                                <td>{{ $user->total_commission_sum }}</td>
+                                                <td>{{ $user->total_commission_sum }} {{ $currencySymbol }} </td>
                                                 <td colspan="2">
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top"
                                                         style="cursor: pointer;" data-original-title="View" id="viewButton"
@@ -56,12 +56,13 @@
                                                     <a class="iq-bg-success" data-placement="top"
                                                         href="{{ URL::to('admin/partner_monetization_payouts/partner_payment') . '/' . $user->channeluser->id }}"><img
                                                             class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/edit.svg'; ?>"></a>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                            </table>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -70,49 +71,6 @@
         </div>
     </div>
     </div>
-
-    {{-- <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="viewModalLabel">Channel ID : {{$user->channeluser->id}} </h5>
-                 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-               <h5 >Payouts</h5>
-               
-               <div>
-                  <table class="table">
-                      <thead>
-                          <tr style="text-align: center;">
-                              <th>Month / Year</th>
-                              <th>Paid Amount</th>
-                              <th>Balance Amount</th>
-                              <th>Transaction ID</th>
-                              <th>Payment Method</th>
-                          </tr>
-                      </thead>
-                      <tbody id="detailsContent">
-                        <tr style="text-align: center;">
-                           <td>1</td>
-                           <td>2</td>
-                           <td>2</td>
-                           <td>3</td>
-                           <td>4</td>
-                       </tr>
-                      </tbody>
-                  </table>
-              </div>
-
-
-              </div>
-          </div>
-      </div>
-  </div> --}}
-
 
     <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel"
         aria-hidden="true">
@@ -137,8 +95,8 @@
                         <tbody id="modalContent"></tbody>
                     </table>
                     <div class="py-2">
-                     <h6 id="summary"></h6>
-                     </div>
+                        <h6 id="summary"></h6>
+                    </div>
                 </div>
             </div>
         </div>
@@ -187,21 +145,21 @@
                 method: 'GET',
                 success: function(data) {
 
-                  
-                  $('#viewModalLabel').html(`  
+
+                    $('#viewModalLabel').html(`  
                      Channel ID : ${data.user_id}
                   `);
                     $('#modalContent').html(`
                   <tr style="text-align: center;">
                                     <td> 1. </td>
                                     <td> ${data.latest_payment_date}</td>
-                                    <td> ${data.latest_paid_amount}</td>
+                                    <td> ${data.latest_paid_amount} ${data.currencySymbol} </td>
                                     <td> ${data.latest_payment_datetime}</td>
                   </tr>
                `);
-                  $('#summary').html(`
-                        <div style="padding:10px 0px;" >Total Amount Paid      :${data.total_paid}</div>
-                        <div style="padding:10px 0px;" >Balance Amount Payable   :${data.latest_balance_amount} </div>
+                    $('#summary').html(`
+                        <div style="padding:10px 0px;" >Total Amount Paid      :${data.total_paid} ${data.currencySymbol}</div>
+                        <div style="padding:10px 0px;" >Balance Amount Payable   :${data.latest_balance_amount} ${data.currencySymbol}</div>
                         <div style="padding:10px 0px;" >Last Payment Was on   : ${data.latest_payment_date}</div>
                   `);
                 },
