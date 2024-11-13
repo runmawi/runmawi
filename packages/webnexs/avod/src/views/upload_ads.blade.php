@@ -12,9 +12,6 @@
     #progressbar li img{
         width: 50px !important;
     }
-    #msform .action-button{
-        padding: 0px !important;
-    }
 </style>
 
 <div id="main-admin-content">

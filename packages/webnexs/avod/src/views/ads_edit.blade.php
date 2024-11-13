@@ -82,7 +82,7 @@
     .vjs-volume-panel{position:absolute;right:auto;bottom:20px;left:10px;height:150px;width:20px;display:flex;align-items:center;justify-content:center}
     .vjs-volume-bar{height:100%;width:10px;display:flex;flex-direction:column-reverse;transform-origin:center center}
     .vjs-volume-bar .vjs-volume-level{width:100%;height:auto}
-    .video-js .vjs-volume-panel .vjs-volume-control{margin-left:-18px!important;margin-top:60px!important}
+    .video-js .vjs-volume-panel .vjs-volume-control{margin-left:-18px!important;margin-top:40px!important}
     .vjs-volume-bar.vjs-slider-horizontal{height:0.5em!important}
     .my-video.video-js .vjs-volume-level:before{font-size:1.4em}
     .vjs-slider-horizontal .vjs-volume-level:before{line-height:0em!important;top: -0.15em !important;}
