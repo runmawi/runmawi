@@ -312,7 +312,8 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
                      <li><a href="{{ URL::to('/channel/video-analytics') }}">Video Analytics </a></li>
                      <li><a href="{{ URL::to('/channel/view_by_region') }}">Video View BY Region</a></li>
                      <li><a href="{{ URL::to('/channel/payouts') }}">Payouts</a></li>
-
+                     <li><a href="{{ URL::to('/channel/partner_monetization_analytics') }}">Partner Payout Monetization</a></li>
+                     <li><a href="{{ URL::to('/channel/partner_monetization_history') }}">Partner Payout History</a></li>
                   </ul>
                   </li>
 

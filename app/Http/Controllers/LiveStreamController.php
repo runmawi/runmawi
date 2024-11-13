@@ -1,48 +1,50 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
-use Intervention\Image\ImageManagerStatic as Image;
-use Jenssegers\Agent\Agent;
-use Carbon\Carbon;
+use DB;
 use URL;
 use Auth;
-use View;
 use Hash;
-use DB;
-use Session;
-use \Redirect ;
-use App\User ;
-use App\Setting;
-use App\LiveStream;
-use App\LivePurchase;
-use App\Watchlater;
-use App\Wishlist;
-use App\Genre;
-use App\LiveCategory;
-use App\CategoryLive;
-use App\Language;
-use App\PaymentSetting;
-use App\CurrencySetting;
-use App\HomeSetting;
-use App\ThumbnailSetting;
-use App\RecentView;
-use App\SystemSetting;
-use App\Channel;
-use App\ModeratorsUser;
-use App\M3UFileParser;
-use App\AdminLandingPage;
-use App\BlockLiveStream;
-use App\TimeZone;
-use App\Geofencing;
-use App\Adsvariables;
-use App\LikeDislike;
+use View;
 use Theme;
-use App\ButtonText;
+use Session;
+use App\Genre;
+use App\User ;
+use \Redirect ;
+use App\Channel;
+use App\Setting;
+use App\Language;
+use App\TimeZone;
+use App\Wishlist;
 use App\SiteTheme;
+use Carbon\Carbon;
+use App\ButtonText;
+use App\Geofencing;
+use App\LiveStream;
+use App\RecentView;
+use App\Watchlater;
+use App\HomeSetting;
+use App\LikeDislike;
+use App\Adsvariables;
+use App\CategoryLive;
+use App\LiveCategory;
+use App\LivePurchase;
+use App\M3UFileParser;
+use App\SystemSetting;
+use App\ModeratorsUser;
+use App\PaymentSetting;
+use App\BlockLiveStream;
+use App\CurrencySetting;
+use App\AdminLandingPage;
+use App\ThumbnailSetting;
+use Illuminate\Support\Str;
+use Jenssegers\Agent\Agent;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
 use App\AdminAccessPermission;
+use App\PartnerMonetizationSetting;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class LiveStreamController extends Controller
 {
@@ -691,6 +693,8 @@ class LiveStreamController extends Controller
                  'live_purchase_status' => $live_purchase_status ,
                  'free_duration_condition' => $free_duration_condition ,
                  'Livestream_details'      => $Livestream_details ,
+                 'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                 'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                  'setting'                => $settings,
                  'current_theme'          => $this->Theme,
                  'enable_ppv_rent_live'  => $enable_ppv_rent_live,
@@ -1261,4 +1265,72 @@ class LiveStreamController extends Controller
 
         return Theme::load("public/themes/{$this->Theme}/views/livevideo-schedule-epg-partial", $data)->render();
     }
+
+
+    public function LivestreamPartnerMonetization(Request $request)
+    {
+        try {
+            $video_id = $request->video_id;
+            $video = LiveStream::where('id', $video_id)->first();
+            if ($video) {
+                $video->played_views += 1;
+                $video->save(); 
+
+                if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
+
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save(); 
+
+        
+                        $channeluser_commission = (float) $video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+                        
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'livestream')->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'title' => $video->title,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'livestream',
+                            ]));
+                        }
+                    }
+                }
+            }
+                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
+            } else {
+                return response()->json(['error' => 'Video not found'], 404);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
+
 }
