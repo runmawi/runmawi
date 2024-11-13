@@ -119,9 +119,9 @@
 
                                           <td>
                                              <div class="d-flex align-items-center list-user-action">
-                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/user/edit/'{$user->id}) }}"><img class="ply" src="{{ URL::to('assets/img/icon/edit.svg') }}" ></a>
-                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/user/delete/'{$user->id})  }}"><img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}" onclick="return confirm('Are you sure?')" ></a>
-                                                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ URL::to('admin/user/view/'{$user->id})  }}"><img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ route('admin.users.edit',$user->id)  }}"><img class="ply" src="{{ URL::to('assets/img/icon/edit.svg') }}" ></a>
+                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ route('admin.users.destroy',$user->id)   }}"><img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}" onclick="return confirm('Are you sure?')" ></a>
+                                                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ route('admin.users.view',$user->id)   }}"><img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
                                              </div>
                                           </td>
 
@@ -164,10 +164,8 @@
                   }).then(response => response.json())
                   .then(data => {
                      if(data.success) {
-                           selected.forEach(id => {
-                              document.getElementById('user-' + id).remove();
-                           });
                            alert('Deleted Successfully.');
+                           location.reload();
                      } else {
                            alert('An error occurred while deleting users.');
                      }
@@ -184,7 +182,25 @@
 		$ = jQuery;
 		$(document).ready(function(){
 
-        $('#users_table').DataTable();
+         $('#users_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+               url: '{{ route("admin.users-pagination") }}', 
+               type: 'GET'
+            },
+            columns: [
+               { data: 'select',},
+               { data: 'profile',},
+               { data: 'name' },
+               { data: 'mobile' },
+               { data: 'email' },
+               { data: 'role' },
+               { data: 'status' },
+               { data: 'action',}
+            ],
+            pageLength: 10            
+         });
 
 			$('.delete').click(function(e){
 				e.preventDefault();
