@@ -53,9 +53,9 @@ class OTPController extends Controller
             return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin', 'error_note' => "Some Error in OTP Config, Pls connect admin" ]);
         }
 
-        if ($request->mobile == "0987654321") {
+        if ($request->mobile == "9436144626") {
 
-            $user = User::where('mobile','0987654321')->first();
+            $user = User::where('mobile','9436144626')->first();
 
             if ( !is_null($user) && $user->role == "admin") {
                 return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
@@ -159,9 +159,9 @@ class OTPController extends Controller
 
             $otp = $request->input('otp_1') . $request->input('otp_2') . $request->input('otp_3') . $request->input('otp_4');
 
-            if ($request->mobile == "0987654321") {
+            if ($request->mobile == "9436144626") {
 
-                $user = User::where('mobile','0987654321')->where('otp',$otp)->first();
+                $user = User::where('mobile','9436144626')->where('otp',$otp)->first();
     
                 if ( !is_null($user) && $user->role == "admin") {
 
