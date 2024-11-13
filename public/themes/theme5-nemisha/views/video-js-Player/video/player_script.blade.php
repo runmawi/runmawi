@@ -9,8 +9,6 @@
     var user_role = "<?php echo $user_role; ?>";
     var played_views = "<?php echo $videodetail->played_views; ?>";
 
-
-
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
     var remainingDuration = false;
@@ -70,15 +68,14 @@
 
         function PartnerMonetization(videoId, currentTime) {
             currentTime = Math.floor(currentTime);
-            console.log(currentTime);
+            // console.log(currentTime);
 
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && currentTime == monetization_view_limit && !viewCountSent) {
                 viewCountSent = true;
                 countview = 1;
-                console.log('AJAX request will be sent.');
-
+              
                 $.ajax({
                     url: "<?php echo URL::to('PartnerMonetization');?>",
                     type: 'POST',
@@ -88,20 +85,15 @@
                         currentTime: currentTime,
                         countview: countview,
                     },
-                    success: function(response) {
-                        console.log('View count incremented and monetization updated:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to increment view count:', error);
-                    }
                 });
             }
 
-            console.log('currentTime: ' + currentTime);
-            console.log('countview: ' + countview);
+            // console.log('currentTime: ' + currentTime);
+            // console.log('countview: ' + countview);
         }
 
 
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
             player.on('timeupdate', function() {
                 var currentTime = player.currentTime();
                 PartnerMonetization(videoId, currentTime);
@@ -111,11 +103,14 @@
                 var currentTime = player.currentTime();
                 PartnerMonetization(videoId, currentTime);
             });
+        }
 
-            window.addEventListener('beforeunload', function() {
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
                 var currentTime = player.currentTime();
                 PartnerMonetization(videoId, currentTime);
-            });
+            }
+        });
 
 
         // Hls Quality Selector - M3U8 

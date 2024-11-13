@@ -149,14 +149,17 @@
 
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor
+            .create( document.querySelector( '#summary-ckeditor' ) )
+            .catch( error => {
+                console.error( error );
+            });
+
+        </script>
 
         <script>
-
-            CKEDITOR.replace( 'summary-ckeditor', {
-                filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-                filebrowserUploadMethod: 'form'
-            });
 
             $('form[id="Channels_form"]').validate({
                 rules: {

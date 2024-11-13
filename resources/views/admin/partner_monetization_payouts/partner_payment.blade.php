@@ -78,6 +78,33 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-12">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <div class="panel-heading">
+                                            <div class="panel-title"><label>Transaction ID</label></div>
+                                            <div class="panel-options">
+                                                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body" style="display: block;">
+                                            <input type="text" class="form-control" name="transaction_id" id="transaction_id" required />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="panel panel-primary" data-collapsed="0">
+                                        <div class="form-group">
+                                            <label for="payment_method">Payment Method</label>
+                                            <select name="payment_method" id="payment_method" class="form-control">
+                                                <option value="0">Manual Payment</option>
+                                                <option value="1">Payment Gateway</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="panel panel-primary" data-collapsed="0">
                                         <div class="panel-heading">
@@ -113,7 +140,7 @@
                                                 <p class="mb-0">Overall Amount</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $totalCommission ?? 0 }}</p>
+                                                <p class="mb-0">{{ $totalCommission ?? 0 }} {{ $currencySymbol }}</p>
                                             </div>
                                         </div>
 
@@ -122,7 +149,7 @@
                                                 <p class="mb-0">Total Amount Paid</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $totalAmountPaid ?? 0 }}</p>
+                                                <p class="mb-0">{{ $totalAmountPaid ?? 0 }} {{ $currencySymbol }}</p>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-between mt-2 pt-2">
@@ -130,7 +157,7 @@
                                                 <p class="mb-0">Balance Amount Payable</p>
                                             </div>
                                             <div class="font-weight-bold">
-                                                <p class="mb-0">{{ $payment_details->balance_amount ?? 0 }}</p>
+                                                <p class="mb-0">{{ $payment_details->balance_amount ?? 0 }} {{ $currencySymbol }} </p>
                                             </div>
                                         </div>
                                     </div>
@@ -170,4 +197,16 @@
         }
         return true; 
     }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#payment_method').on('change', function() {
+            const paymentmethod = $(this).val();
+            if (paymentmethod == '1') {  
+                window.location.href = '{{ route("partner-monetization-payouts") }}';
+            }
+        });
+    });
 </script>

@@ -1,14 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
-use View;
 use App\Channel;
-use Carbon\Carbon;
-use \App\User as User;
+use App\PartnerMonetization;
 use App\Partnerpayment;
 use App\Setting as Setting;
-use App\PartnerMonetization;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use View;
+use \App\User as User;
 
 class AdminPartnerMonetizationPayouts extends Controller
 {
@@ -53,11 +53,10 @@ class AdminPartnerMonetizationPayouts extends Controller
                 ->groupBy('user_id')
                 ->paginate(9);
 
-            // $users = Channel::orderBy("created_at", "DESC")
-            //     ->paginate(9);
 
             $data = [
                 "users" => $users,
+                "currencySymbol" => currency_symbol(),
             ];
 
             return view('admin.partner_monetization_payouts.index', $data);
@@ -101,6 +100,7 @@ class AdminPartnerMonetizationPayouts extends Controller
                 ->paginate(9);
             $data = [
                 "users" => $users,
+                "currencySymbol" => currency_symbol(),
             ];
 
             return view('admin.partner_monetization_payouts.analytics', $data);
@@ -122,6 +122,7 @@ class AdminPartnerMonetizationPayouts extends Controller
             'payment_details' => $payment_details,
             'totalCommission' => $totalCommission,
             'totalAmountPaid' => $totalAmountPaid,
+            "currencySymbol" => currency_symbol(),
         );
 
         return view('admin.partner_monetization_payouts.partner_payment', $data);
@@ -150,7 +151,8 @@ class AdminPartnerMonetizationPayouts extends Controller
         $partnerpayment->notes = $input['notes'];
         $partnerpayment->paid_amount = $input['amount'];
         $partnerpayment->balance_amount = $remainingAmount - $input['amount'];
-        $partnerpayment->payment_method = 'Manual';
+        $partnerpayment->transaction_id = $input['transaction_id'];
+        $partnerpayment->payment_method = $input['payment_method'];
         $partnerpayment->save();
 
         return redirect()->back()->with('success', 'Payment recorded successfully!');
@@ -168,24 +170,53 @@ class AdminPartnerMonetizationPayouts extends Controller
 
     public function getChannelData($id)
     {
-        $payments = Partnerpayment::where('user_id', $id)->get();
-
+        $payments = Partnerpayment::where('user_id', $id)->orderByDesc('created_at')->get();
+      
         if ($payments->isNotEmpty()) {
-         
             $data = $payments->map(function ($payment) {
-                $formattedDate = Carbon::parse($payment->payment_date)->format('F,Y'); 
+                $formattedDate = Carbon::parse($payment->payment_date)->format('d F,Y');
+              
                 return [
                     'paid_amount' => $payment->paid_amount,
                     'balance_amount' => $payment->balance_amount,
                     'payment_date' => $formattedDate,
-                    'payment_method' => $payment->payment_method,
-
+                    'transaction_id' => $payment->transaction_id ? $payment->transaction_id : '-',
+                    'payment_method' => $payment->payment_type == 0 ? 'Manual Payment' : 'Payment Gateway',
+                    'currencySymbol' =>   currency_symbol(),
                 ];
-            })->toArray(); 
+            })->toArray();
 
             return response()->json($data);
         } else {
-            return response()->json([]); 
+            return response()->json([]);
+        }
+    }
+
+    public function getUserDetails($id)
+    {
+        $user = Channel::find($id);
+        if ($user) {
+
+            $paymentDetails = Partnerpayment::where('user_id', $id)->get();
+
+            $totalPaid = $paymentDetails->sum('paid_amount');
+            $totalBalance = $paymentDetails->sum('balance_amount');
+            $latestPaymentDate = $paymentDetails->max('payment_date');
+            $latestBalanceAmount = $paymentDetails->sortByDesc('payment_date')->first()->balance_amount ?? 0;
+            $latestPaidAmount = $paymentDetails->sortByDesc('payment_date')->first()->paid_amount ?? 0;
+
+            return response()->json([
+                'user_id' => $user->id,
+                'total_paid' => $totalPaid,
+                'total_balance' => $totalBalance,
+                'latest_payment_date' => $latestPaymentDate ? \Carbon\Carbon::parse($latestPaymentDate)->format('d-M-Y') : '-',
+                'latest_payment_datetime' => $latestPaymentDate ? \Carbon\Carbon::parse($latestPaymentDate)->format('d-M-Y h:i A') : '-',
+                'latest_balance_amount' => $latestBalanceAmount,
+                'latest_paid_amount' => $latestPaidAmount,
+                "currencySymbol" => currency_symbol(),
+            ]);
+        } else {
+            return response()->json(['error' => 'User not found'], 404);
         }
     }
 
