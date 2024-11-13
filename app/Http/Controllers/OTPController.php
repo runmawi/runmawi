@@ -49,25 +49,21 @@ class OTPController extends Controller
 
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
+            // Check Admin OTP Credentials
         if(is_null($AdminOTPCredentials)){
             return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Pls connect admin', 'error_note' => "Some Error in OTP Config, Pls connect admin" ]);
         }
 
-        if ($request->mobile == "0987654321") {
-
-            $user = User::where('mobile','0987654321')->first();
-
-            if ( !is_null($user) && $user->role == "admin") {
-                return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
-            }else{
-                return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config Pls connect admin']);
-            }
-        }
-
         $user = User::where('mobile', $request->mobile)->first();
 
+            // Check user exists
         if(is_null($user)){
             return response()->json(['exists' => false, 'message_note' => 'Invalid User, Please check this Mobile Number','error_note' => "Invalid User"]);
+        }
+
+            // Check Admin exists
+        if ( !is_null($user) && $user->role == "admin") {
+            return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
         }
 
         try {
@@ -159,23 +155,18 @@ class OTPController extends Controller
 
             $otp = $request->input('otp_1') . $request->input('otp_2') . $request->input('otp_3') . $request->input('otp_4');
 
-            if ($request->mobile == "0987654321") {
-
-                $user = User::where('mobile','0987654321')->where('otp',$otp)->first();
-    
-                if ( !is_null($user) && $user->role == "admin") {
-
-                    Auth::loginUsingId($user->id);
-
-                    $redirection_url = session()->get('url.intended', URL::to('/choose-profile') );
-
-                    return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
-                }
-
-                return response()->json( [ 'status' => false , 'message_note' => 'Please, Enter the Valid OTP !' ] );
-            }
-
             $user_verify = User::where('mobile',$request->mobile)->where('otp',$otp)->first();
+
+            // Login for admin 
+            
+            if ( !is_null($user_verify) && $user_verify->role == "admin") {
+
+                Auth::loginUsingId($user_verify->id);
+
+                $redirection_url = session()->get('url.intended', URL::to('/choose-profile') );
+
+                return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
+            }
 
             if( !is_null($user_verify) ){
                         
