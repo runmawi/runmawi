@@ -256,7 +256,7 @@ class TvshowsController extends Controller
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
-            // return abort(404);
+            return abort(404);
             return Theme::view('tv-home-empty-data');
         }
     }
@@ -966,15 +966,7 @@ class TvshowsController extends Controller
                                     ->orderBy('episode_order', 'asc')
                                     ->first();
 
-            if(Auth::check()){
-                $user_role = Auth::user()->role;
-            }
-            else{
-                $user_role = "guest";
-            }
-            
-            // dd($next_episode);
-
+        
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -1014,7 +1006,7 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'           => $episode_details ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role'               => $user_role,
+                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1067,7 +1059,7 @@ class TvshowsController extends Controller
                     'category_name'             => $category_name ,
                     'episode_details'  => $episode_details ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::user()->role,
+                   'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                     'episode_PpvPurchase'  => $episode_PpvPurchase,
                     'episode_play_access'  => $episode_play_access,
                     'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -2722,6 +2714,7 @@ public function RemoveDisLikeEpisode(Request $request)
 
                         $monetization_data = [
                             'total_views' => $video->played_views,
+                            'title' => $video->title,
                             'monetization_amount' => $video->monetization_amount,
                             'admin_commission' => $video->monetization_amount - $channel_commission,
                             'partner_commission' => $channel_commission,

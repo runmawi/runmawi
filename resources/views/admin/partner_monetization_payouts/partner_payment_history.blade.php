@@ -60,6 +60,7 @@
                                     <th>Month / Year</th>
                                     <th>Paid Amount</th>
                                     <th>Balance Amount</th>
+                                    <th>Transaction ID</th>
                                     <th>Payment Method</th>
                                 </tr>
                             </thead>
@@ -82,7 +83,7 @@
     $(document).ready(function() {
         $('#channelSelect').on('change', function() {
             const userId = $(this).val();
-            console.log('User ID selected:', userId); // Debugging output
+            console.log('User ID selected:', userId);
 
             if (userId) {
                 $.ajax({
@@ -90,15 +91,14 @@
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        console.log('Data received:', data); // Check what data looks like
-
-                        // Ensure we are dealing with an array
+                        console.log('Data received:', data);
                         if (Array.isArray(data)) {
                             const detailsContent = data.map(payment => `
                                 <tr style="text-align: center;">
                                     <td>${payment.payment_date}</td>
-                                    <td>${payment.paid_amount ?? 0}</td>
-                                    <td>${payment.balance_amount ?? 0}</td>
+                                    <td>${payment.paid_amount ?? 0} ${payment.currencySymbol}</td>
+                                    <td>${payment.balance_amount ?? 0} ${payment.currencySymbol}</td>
+                                    <td>${payment.transaction_id ?? 0}</td>
                                     <td>${payment.payment_method}</td>
                                 </tr>
                             `).join('');
@@ -106,7 +106,6 @@
                             $('#detailsContent').html(detailsContent);
                             $('#channelDetails').show();
                         } else {
-                            // Handle the case where data is not an array
                             console.error('Expected an array but got:', data);
                             alert('No payment records found or an error occurred.');
                         }
@@ -117,7 +116,7 @@
                     }
                 });
             } else {
-                $('#channelDetails').hide(); // Hide details if no channel is selected
+                $('#channelDetails').hide();
             }
         });
     });
