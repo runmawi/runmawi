@@ -75,7 +75,7 @@
     height: 100%;
 }
    
-.modal-content {
+#schedule_program_modal .modal-content {
     position: absolute;
     background-color: #fff;
     border-radius: 10px;

@@ -7,8 +7,8 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title mar-left"><a href="#">{{ ucwords('continue watching') }}</a></h4>
-                        <h4 class="main-title"><a href="#">{{ ucwords('view all') }}</a></h4>
+                        <h4 class="main-title mar-left"><a href="{{ URL::to('/continue_watching_list')}}">{{ ucwords('continue watching') }}</a></h4>
+                        <h4 class="main-title"><a href="{{ URL::to('/continue_watching_list')}}">{{ ('View all') }}</a></h4>
                     </div>
 
                     <div class="channels-list">
@@ -18,14 +18,7 @@
                                 @foreach ($Video_cnt as $key => $video_details)
                                     <div class="item" data-index="video-{{ $key }}">
                                         <div>
-                                            @if ($multiple_compress_image == 1)
-                                                <img class="flickity-lazyloaded" alt="{{ $video_details->title }}" src="{{ $video_details->image ? URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url }}"
-                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$video_details->responsive_image.' 860w') }},
-                                                    {{ URL::to('public/uploads/Tabletimages/'.$video_details->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$video_details->responsive_image.' 420w') }}" >
-                                            @else
                                                 <img data-original="{{ $video_details->image ? URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url }}" src="{{ $video_details->image ? URL::to('public/uploads/images/'.$video_details->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{ $video_details->title }}" width="300" height="200">
-                                            @endif 
                     
                                             @if ($videos_expiry_date_status == 1 && optional($video_details)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
@@ -37,14 +30,7 @@
                                 @foreach ($episode_cnt as $episode_key => $latest_view_episode)
                                     <div class="item" data-index="episode-{{ $episode_key }}">
                                         <div>
-                                            @if ($multiple_compress_image == 1)
-                                                <img class="flickity-lazyloaded" alt="{{ $latest_view_episode->title }}" src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}"
-                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$latest_view_episode->responsive_image.' 860w') }},
-                                                    {{ URL::to('public/uploads/Tabletimages/'.$latest_view_episode->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$latest_view_episode->responsive_image.' 420w') }}" >
-                                            @else
                                                 <img src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_view_episode">
-                                            @endif 
                                         </div>
                                     </div>
                                 @endforeach
@@ -82,7 +68,7 @@
                                     <div class="caption" data-index="episode-{{ $episode_key }}">
                                         <h2 class="caption-h2">{{ optional($latest_view_episode)->title }}</h2>
                                         <div class="d-flex align-items-center text-white text-detail">
-                                            {{ App\SeriesSeason::where('id',$latest_view_episode->season_id)->pluck('series_seasons_name')->first() . " - Season" }}  
+                                            {{ "Season: ". App\SeriesSeason::where('id',$latest_view_episode->season_id)->pluck('series_seasons_name')->first() }}  
                                         </div>
                                         @if (optional($latest_view_episode)->episode_description)
                                             <div class="trending-dec">{!! html_entity_decode(optional($latest_view_episode)->episode_description) !!}</div>

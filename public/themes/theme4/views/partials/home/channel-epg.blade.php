@@ -295,7 +295,10 @@ var elem = document.querySelector('.channel-epg-video');
         contain: true,
         groupCells: true,
         pageDots: false,
-        adaptiveHeight: true,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.channel-epg-video .item').forEach(function(item) {
         item.addEventListener('click', function() {

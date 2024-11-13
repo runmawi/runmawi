@@ -241,6 +241,10 @@ Route::get('/verify-request-sent', 'HomeController@VerifyRequestNotsent');
 Route::get('verify/{activation_code}', 'SignupController@Verify');
 Route::post('/saveSubscription', 'PaymentController@saveSubscription');
 
+// mobile number exists while signup
+Route::post('/SignupCheckMobile', 'SignupController@checkMobile')->name('SignupCheckMobile');
+
+
 
 
 // CheckAuthTheme5 & restrictIp Middleware
@@ -313,6 +317,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // Page List
     Route::get('Latest_videos', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
+    Route::get('continue_watching_list', 'PageListController@ContinueWatchingList')->name('pagelist.ContinueWatchingList');
     Route::get('Movies', 'PageListController@AllMovies')->name('pagelist.AllMovies');
     Route::get('channel/latest-videos/{slug}', 'PageListController@Latest_videos')->name('pagelist.Latest-videos');
     Route::get('Featured_videos', 'PageListController@Featured_videos')->name('pagelist.Featured-videos');
@@ -1947,6 +1952,13 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::get('/regionvideos', 'ChannelAnalyticsController@ChannelRegionVideos');
     Route::get('/Allregionvideos', 'ChannelAnalyticsController@ChannelAllRegionVideos');
 
+
+    Route::get('/partner_monetization_analytics', 'ChannelAnalyticsController@ChannelPartnerMonetization');
+    Route::get('/partner_monetization_history', 'ChannelAnalyticsController@ChannelPartnerMonetizationHistory')->name('channel.partner.monetization.history');
+    Route::post('/PartnerAnalyticsCSV', 'ChannelAnalyticsController@PartnerAnalyticsCSV');
+    Route::post('/PartnerHistoryCSV', 'ChannelAnalyticsController@PartnerHistoryCSV');
+    Route::post('/partner-invoice/{id}', 'ChannelAnalyticsController@PartnerInvoice')->name('partner.invoice');
+
     Route::get('/dashboard', 'ChannelLoginController@IndexDashboard');
     Route::get('/logout', 'ChannelLoginController@logout');
     //  Channel Video Management
@@ -3003,8 +3015,7 @@ Route::get('/fetch-timeline', [LiveStreamController::class, 'fetchTimeline'])->n
 
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
 Route::post('admin/partner_monetization_settings/store', 'AdminPartnerMonetizationSettings@Store');
-Route::get('admin/partner_monetization_settings//edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
-Route::get('admin/partner_monetization_settings//delete/{id}', 'AdminPartnerMonetizationSettings@Delete');
+Route::get('admin/partner_monetization_settings/edit/{id}', 'AdminPartnerMonetizationSettings@Edit');
 Route::post('admin/partner_monetization_settings/update', 'AdminPartnerMonetizationSettings@Update');
 
 // Partner Monetization Payouts
@@ -3014,6 +3025,7 @@ Route::get('admin/partner_monetization_payouts/partner_payment/{id}', 'AdminPart
 Route::post('admin/partner_monetization_payouts/store', 'AdminPartnerMonetizationPayouts@Store');
 Route::get('admin/partner_monetization_payouts/history', 'AdminPartnerMonetizationPayouts@PartnerPaymentHistory')->name('partner-monetization-history');
 Route::get('/get-channel-data/{id}', 'AdminPartnerMonetizationPayouts@getChannelData' )->name('get.channel.data');
+Route::get('/admin/get-user-details/{id}', 'AdminPartnerMonetizationPayouts@getUserDetails')->name('get.user.details');
 
 Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
 Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');

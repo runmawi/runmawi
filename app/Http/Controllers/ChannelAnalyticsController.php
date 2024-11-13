@@ -2,81 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\ModeratorsPermission;
+use URL;
+use Auth;
+use File;
+use Hash;
+use Mail;
+use View;
+use Image;
+use Session;
+use App\Artist;
+use App\Region;
+use App\Channel;
+use App\RegionView;
+use App\UserAccess;
+use ffmpeg\FFProbe;
+use App\PpvPurchase;
+use App\Videoartist;
+use App\Menu as Menu;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\Role as Role;
+use App\Seriesartist;
+use App\User as User;
+use App\ChannelPayout;
+use App\EmailTemplate;
+use GuzzleHttp\Client;
+use App\Audio as Audio;
+use App\Genre as Genre;
 use App\ModeratorsRole;
 use App\ModeratorsUser;
-use App\PpvPurchase;
-use App\CurrencySetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use URL;
-use App\UserAccess;
-use Hash;
-use Illuminate\Support\Facades\DB;
+use App\Partnerpayment;
+use App\PlayerAnalytic;
 use App\Video as Video;
-use App\VideoCategory as VideoCategory;
-use Image;
-use App\Menu as Menu;
-use App\Country as Country;
-use App\Slider as Slider;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\VideoLanguage as VideoLanguage;
-use App\Subtitle as Subtitle;
-use App\Setting as Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\SystemSetting as SystemSetting;
-use App\HomeSetting as HomeSetting;
-use Illuminate\Support\Str;
-use App\MobileApp as MobileApp;
-use App\MobileSlider as MobileSlider;
-use App\ThemeSetting as ThemeSetting;
-use App\SiteTheme as SiteTheme;
-use App\Page as Page;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\User as User;
-use Auth;
-use App\Role as Role;
-use App\Playerui as Playerui;
-use App\Plan as Plan;
-use App\PaypalPlan as PaypalPlan;
+use App\CurrencySetting;
+use App\ModeratorPayout;
 use App\Coupon as Coupon;
 use App\Series as Series;
-use App\Genre as Genre;
+use App\Slider as Slider;
+use App\Country as Country;
 use App\Episode as Episode;
-use App\SeriesSeason as SeriesSeason;
-use App\Artist;
-use App\Seriesartist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ffmpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
+use App\Language as Language;
+use App\ModeratorsPermission;
+use App\Playerui as Playerui;
+use App\Subtitle as Subtitle;
 use FFMpeg\Format\Video\X264;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use App\Videoartist;
-use App\AudioCategory as AudioCategory;
-use App\AudioAlbums as AudioAlbums;
-use Illuminate\Support\Facades\Cache;
-use App\Audio as Audio;
-use File;
-use App\VideoCommission as VideoCommission;
-use Mail;
-use App\EmailTemplate;
-use App\PlayerAnalytic;
-use App\ModeratorPayout;
-use App\ChannelPayout;
-use App\Channel;
-use App\Region;
-use App\RegionView;
-use Session;
-use View;
-use GuzzleHttp\Client;
+use App\MobileApp as MobileApp;
+use App\SiteTheme as SiteTheme;
+use FFMpeg\Coordinate\Dimension;
 use GuzzleHttp\Message\Response;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use Illuminate\Support\Facades\DB;
+use App\AudioAlbums as AudioAlbums;
+use App\HomeSetting as HomeSetting;
+use App\LiveCategory as LiveCategory;
+use App\MobileSlider as MobileSlider;
+use App\SeriesSeason as SeriesSeason;
+use App\ThemeSetting as ThemeSetting;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\SystemSetting as SystemSetting;
+use App\VideoCategory as VideoCategory;
+use App\VideoLanguage as VideoLanguage;
+use App\Http\Requests\StoreVideoRequest;
+use App\PaymentSetting as PaymentSetting;
+use App\VideosSubtitle as VideosSubtitle;
+use Illuminate\Support\Facades\Validator;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\VideoCommission as VideoCommission;
+use App\VideoResolution as VideoResolution;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ChannelAnalyticsController extends Controller
 {
@@ -965,6 +969,254 @@ class ChannelAnalyticsController extends Controller
 
             echo json_encode($data);
         }
+    }
+
+    public function ChannelPartnerMonetization(){
+
+        $user = Session::get('channel');
+        $user_id = $user->id;
+
+        $users = PartnerMonetization::where('user_id',  $user_id)
+        ->paginate(9);
+
+        $data = [
+            "users" => $users,
+            "currencySymbol" => currency_symbol(),
+        ];
+        return view("channel.partner_monetization.partner_monetization_analytics",$data);
+
+    }
+
+
+    public function ChannelPartnerMonetizationHistory(Request $request)
+    {
+        $user = Session::get('channel');
+        $user_id = $user->id;
+
+        $selectedMonth = $request->input('month');
+
+        $monetizationSummaryQuery = PartnerMonetization::where('user_id', $user_id);
+
+        if ($selectedMonth) {
+            $monetizationSummaryQuery->whereMonth('payment_date', $selectedMonth);
+        }
+        $monetizationSummary = $monetizationSummaryQuery
+            ->selectRaw('SUM(total_views) as total_views_sum, SUM(partner_commission) as partner_commission_sum')
+            ->first();
+        
+        $paymentDetailsQuery = Partnerpayment::where('user_id', $user_id);
+
+        if ($selectedMonth) {
+            $paymentDetailsQuery->whereMonth('payment_date', $selectedMonth);
+        }
+
+        $payment_details = $paymentDetailsQuery->orderByDesc('created_at')->paginate(5);
+
+        $totalAmountPaid = $payment_details->getCollection()->sum('paid_amount');
+        $latestPayment = $payment_details->first();
+
+        $data = [
+            "monetizationSummary" => $monetizationSummary,
+            "totalAmountPaid" => $totalAmountPaid,
+            "payment_details" => $latestPayment,
+            "payment_histories" => $payment_details,
+            "currencySymbol" => currency_symbol(),
+        ];
+
+        if ($request->ajax()) {
+            return response()->json([
+                'totalAmountPaid' => $totalAmountPaid,
+                'paymentBalanceAmount' => $latestPayment ? $latestPayment->balance_amount : 0,
+            ]);
+        }
+
+        return view("channel.partner_monetization.partner_monetization_history", $data);
+    }
+
+    
+
+    public function PartnerAnalyticsCSV(Request $request)
+    {
+        $user_package = User::where("id", 1)->first(); 
+        $package = $user_package->package;
+        
+        if ((!empty($package) && $package == "Pro") || (!empty($package) && $package == "Business")) {
+            $user = Session::get("channel");
+            $user_id = $user->id;
+            $data = $request->all();
+    
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+           
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = PartnerMonetization::whereDate("created_at", ">=", $start_time)
+                    ->where("user_id", $user_id)
+                    ->get();
+            } elseif (!empty($start_time) && !empty($end_time)) {
+                $total_content = PartnerMonetization::whereBetween("created_at", [$start_time, $end_time])
+                    ->where("user_id", $user_id)
+                    ->get();
+            } else {
+                $total_content = PartnerMonetization::where("user_id", $user_id)
+                    ->get();
+            }
+    
+            $file = "PartnerMonetizationPayouts.csv";
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+    
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+    
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            $currencySymbol = currency_symbol();
+            fputcsv($handle, [
+                "Content Title",
+                "Content Type",
+                "Views",
+                "Monetized Amount",
+                "Admin Commission",
+                "Partner Commission"
+            ]);
+    
+            foreach ($total_content as $record) {
+                fputcsv($handle, [
+                    $record->title,
+                    $record->type,
+                    $record->total_views,
+                    $record->monetization_amount . $currencySymbol,
+                    $record->admin_commission . $currencySymbol,
+                    $record->partner_commission . $currencySymbol,
+                  
+                ]);
+            }
+    
+            fclose($handle);
+    
+            \Response::download($filename, "download.csv", $headers);
+    
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+
+
+    public function PartnerHistoryCSV(Request $request)
+    {
+        $user_package = User::where("id", 1)->first(); 
+        $package = $user_package->package;
+        
+        if ((!empty($package) && $package == "Pro") || (!empty($package) && $package == "Business")) {
+            $user = Session::get("channel");
+            $user_id = $user->id;
+            $data = $request->all();
+    
+            $start_time = $data["start_time"];
+            $end_time = $data["end_time"];
+           
+            if (!empty($start_time) && empty($end_time)) {
+                $total_content = Partnerpayment::whereDate("payment_date", ">=", $start_time)
+                    ->where("user_id", $user_id)
+                    ->get();
+            } elseif (!empty($start_time) && !empty($end_time)) {
+                $total_content = Partnerpayment::whereBetween("payment_date", [$start_time, $end_time])
+                    ->where("user_id", $user_id)
+                    ->get();
+            } else {
+                $total_content = Partnerpayment::where("user_id", $user_id)
+                    ->get();
+            }
+    
+            $file = "PartnerMonetizationPayouts.csv";
+            $headers = [
+                "Content-Type" => "application/vnd.ms-excel; charset=utf-8",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Content-Disposition" => "attachment; filename=download.csv",
+                "Expires" => "0",
+                "Pragma" => "public",
+            ];
+    
+            if (!File::exists(public_path() . "/uploads/csv")) {
+                File::makeDirectory(public_path() . "/uploads/csv");
+            }
+    
+            $filename = public_path("/uploads/csv/" . $file);
+            $handle = fopen($filename, "w");
+            $currencySymbol = currency_symbol();
+
+            fputcsv($handle, [
+                "Month/Year",
+                "Paid Amount",
+                "Balance Amount",
+                "Transaction ID",
+                "Payment Method",
+            ]);
+    
+            foreach ($total_content as $record) {
+                fputcsv($handle, [
+                    $record->payment_date,                  
+                    $record->paid_amount . $currencySymbol,                  
+                    $record->balance_amount . $currencySymbol,                  
+                    $record->transaction_id,                  
+                    $record->payment_method == 0 ? 'Manual Payment' : 'Payment Gateway'                  
+                ]);
+            }
+    
+            fclose($handle);
+    
+            \Response::download($filename, "download.csv", $headers);
+    
+            return $file;
+        } else {
+            return Redirect::to("/blocked");
+        }
+    }
+
+    public function PartnerInvoice($id)
+    {
+        $partnerpayment = Partnerpayment::find($id);
+        if (!$partnerpayment) {
+            return response()->json(['error' => 'Payment not found'], 404);
+        }
+        $settings = Setting::first();
+
+        $currencySymbol = currency_symbol();
+
+        $logoPath = public_path('uploads/settings/' . $settings->logo);
+        if (file_exists($logoPath)) {
+            $logoData = base64_encode(file_get_contents($logoPath));
+            $logoSrc = 'data:image/' . pathinfo($logoPath, PATHINFO_EXTENSION) . ';base64,' . $logoData;
+        } else {
+            $logoSrc = ''; // Fallback if logo file does not exist
+        }
+
+
+        $html = view('channel.partner_monetization.partner_monetization_invoice', compact('partnerpayment','settings','logoSrc','currencySymbol'))->render();
+    
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+  
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+    
+        $pdfContent = $dompdf->output();
+   
+        $base64pdf = base64_encode($pdfContent);
+        return response($base64pdf, 200)
+               ->header('Content-Type', 'text/plain')
+               ->header('Content-Disposition', 'attachment; filename="partnerpayment_' . date('d-m-y') . '.pdf"');
     }
 
 }

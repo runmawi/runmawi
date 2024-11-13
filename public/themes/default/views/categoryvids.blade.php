@@ -30,7 +30,14 @@
     }
     .banner_img{height: 400px;overflow: hidden;}
     .banner_img img{height: 100%;width: 100%;object-fit: cover;}
-    .contents{margin-top: 10rem;}
+    .title-cates{position: absolute;top: 20%;left: 5%;}
+    /* .contents{margin-top: 10rem;} */
+    .main-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        height: calc(100vh - 40px);
+    }
     @media(min-width:1800px){
         .banner_img{height:800px;}
     }
@@ -55,6 +62,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
 ?>
 
 <div class="main-content" style="background:linear-gradient(to top, rgba(0, 0, 0, 50.8)45%, rgba(0, 0, 0, 0) 100%), url('{{ URL::to('/public/uploads/videocategory/'.$category_data->banner_image) }}');background-size: cover;background-position: center;">
+        <h2 class="title-cates">{{ $categoryVideos['category_title'] }}</h2>
     <section id="iq-favorites">
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
@@ -85,9 +93,9 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                         @partial('categoryvids_section_filter')
 
                         {{-- Main Content  --}}
-                        <div class="iq-main-header align-items-center d-flex justify-content-between">
+                        {{-- <div class="iq-main-header align-items-center d-flex justify-content-between">
                             <h4 class=""><?php echo __($categoryVideos['category_title']); ?></h4>
-                        </div>
+                        </div> --}}
 
                         <div class="data">
                             @partial('categoryvids_section')

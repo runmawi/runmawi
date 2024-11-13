@@ -48,6 +48,8 @@ Route::group(
         Route::post('series_image_details', 'ApiAuthController@series_image_details');
 
         Route::get('home_page', 'ApiAuthController@PageHome');
+        Route::get('PageHome_Livestream', 'ApiAuthController@PageHome_Livestream');
+        
         Route::post('login', 'ApiAuthController@login');
         Route::post('signup', 'ApiAuthController@signup');
         Route::post('verify-activation-code', 'ApiAuthController@verify_activation_code');

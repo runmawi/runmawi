@@ -5,7 +5,8 @@
     var userId = "<?php echo auth()->id(); ?>";
     var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
     var played_views = "<?php echo $episode_details->played_views; ?>";
-
+    var user_role = "<?php echo $user_role; ?>";
+    
     document.addEventListener("DOMContentLoaded", function() {
 
         var player = videojs('episode-player', { // Video Js Player 
@@ -99,15 +100,11 @@
 
         function EpisodePartnerMonetization(videoId, currentTime) {
             currentTime = Math.floor(currentTime);
-            console.log(currentTime);
-
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber') && currentTime == monetization_view_limit && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && currentTime == monetization_view_limit && !viewCountSent) {
                 viewCountSent = true;
                 countview = 1;
-                console.log('AJAX request will be sent.');
-
                 $.ajax({
                     url: "<?php echo URL::to('EpisodePartnerMonetization');?>",
                     type: 'POST',
@@ -117,19 +114,12 @@
                         currentTime: currentTime,
                         countview: countview,
                     },
-                    success: function(response) {
-                        console.log('View count incremented and monetization updated:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to increment view count:', error);
-                    }
                 });
             }
-
-            console.log('currentTime: ' + currentTime);
-            console.log('countview: ' + countview);
         }
 
+        
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
             player.on('timeupdate', function() {
                 var currentTime = player.currentTime();
                 EpisodePartnerMonetization(videoId, currentTime);
@@ -139,11 +129,15 @@
                 var currentTime = player.currentTime();
                 EpisodePartnerMonetization(videoId, currentTime);
             });
+        }
 
-            window.addEventListener('beforeunload', function() {
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
                 var currentTime = player.currentTime();
                 EpisodePartnerMonetization(videoId, currentTime);
-            });
+            }
+        });
+
     
 
         // Skip Intro & Skip Recap 
