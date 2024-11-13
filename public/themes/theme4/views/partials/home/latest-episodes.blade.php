@@ -11,81 +11,62 @@
                         </h4>                   
                     </div>
 
-                    <div class="trending-contens">
-                        <ul id="trending-slider-nav" class="Latest-Episode-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @foreach ($data as $episode_details)
-                                <li class="slick-slide">
-                                    <a href="javascript:;">
-                                        <div class="movie-slick position-relative">
-                                            @if ( $multiple_compress_image == 1)
-                                                <img class="img-fluid position-relative" alt="{{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}"
+                    <div class="channels-list">
+                        <div class="channel-row">
+                            <div id="trending-slider-nav" class="video-list latest-episodes">
+                                @foreach ($data as $key => $episode_details)
+                                    <div class="item" data-index="{{ $key }}">
+                                        <div>
+                                            @if ($multiple_compress_image == 1)
+                                                <img class="flickity-lazyloaded" {{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}"
                                                     srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w') }},
                                                     {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') }}" loading="lazy" >
+                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') }}"  width="300" height="200">
                                             @else
-                                                <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="episode_details" loading="lazy">
+                                                <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{ $episode_details->title }}"  width="300" height="200">
                                             @endif
                                         </div>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
-                        <ul id="trending-slider Latest-Episode-slider" class="list-inline p-0 m-0 align-items-center Latest-Episode-slider theme4-slider" style="display:none;">
-                            @foreach ($data as $key => $episode_details )
-                                <li class="slick-slide">
-                                    <div class="tranding-block position-relative trending-thumbnail-image">
-                                        <button class="drp-close">×</button>
+                        <div id="videoInfo" class="latest-episodes-dropdown" style="display:none;">
+                            <button class="drp-close">×</button>
+                            <div class="vib" style="display:flex;">
+                                @foreach ($data as $key => $episode_details )
+                                    <div class="caption" data-index="{{ $key }}">
+                                        <h2 class="caption-h2">{{ optional($episode_details)->title }}</h2>
 
-                                        <div class="trending-custom-tab">
-                                            <div class="trending-content">
-                                                <div id="" class="overview-tab tab-pane fade active show h-100">
-                                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
+                                        @php
+                                            $series_seasons_name = App\SeriesSeason::where('id',$episode_details->season_id)->pluck('series_seasons_name')->first() ;
+                                        @endphp
 
-                                                        <div class="caption pl-4">
+                                        @if (!is_null($series_seasons_name))
+                                            <div class="d-flex align-items-center text-white text-detail">
+                                                {{ "Season - ". $series_seasons_name  }}  
+                                            </div>
+                                        @endif
 
-                                                            <h2 class="caption-h2">{{ optional($episode_details)->title }}</h2>
+                                        @if (optional($episode_details)->episode_description)
+                                            <div class="trending-dec">{{ \Illuminate\Support\Str::limit(strip_tags(html_entity_decode(optional($episode_details)->episode_description)), 500) }}</div>
+                                        @endif
 
-                                                            @php
-                                                                $series_seasons_name = App\SeriesSeason::where('id',$episode_details->season_id)->pluck('series_seasons_name')->first() ;
-                                                            @endphp
-
-                                                            @if (!is_null($series_seasons_name))
-                                                                <div class="d-flex align-items-center text-white text-detail">
-                                                                    {{ "Season - ". $series_seasons_name  }}  
-                                                                </div>
-                                                            @endif
-
-                                                            @if (optional($episode_details)->episode_description)
-                                                                <div class="trending-dec">{!! html_entity_decode( optional($episode_details)->episode_description) !!}</div>
-                                                            @endif
-
-                                                            <div class="p-btns">
-                                                                <div class="d-flex align-items-center p-0">
-                                                                    <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                    <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-episodes-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="dropdown_thumbnail">
-                                                            @if ( $multiple_compress_image == 1)
-                                                                <img  alt="latest_series" src="{{$episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}"
-                                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_player_image.' 860w') }},
-                                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_player_image.' 640w') }},
-                                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_player_image.' 420w') }}"  loading="lazy">
-                                                            @else
-                                                                <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="episode_details" loading="lazy">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="p-btns">
+                                            <div class="d-flex align-items-center p-0">
+                                                <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                <a href="#" class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Latest-episodes-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                    <div class="thumbnail" data-index="{{ $key }}">
+                                        <img src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        
                     </div>
                 </div>
             </div>
@@ -101,7 +82,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="episode_details" loading="lazy">
+                                            <img  src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="episode_details">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -117,8 +98,8 @@
                                             </div>
                                             
 
-                                            @if (optional($episode_details)->description)
-                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode_details)->description) !!}</div>
+                                            @if (optional($episode_details)->episode_description)
+                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($episode_details)->episode_description) !!}</div>
                                             @endif
 
                                             <a href="{{ URL::to('episode/'. $episode_details->series_title->slug.'/'.$episode_details->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
@@ -137,65 +118,50 @@
     </section>
 @endif
 
+
 <script>
-    
-    $( window ).on("load", function() {
-        $('.Latest-Episode-slider').hide();
+
+    var elem = document.querySelector('.latest-episodes');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+    document.querySelectorAll('.latest-episodes .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.latest-episodes .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.latest-episodes-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.latest-episodes-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.latest-episodes-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.latest-episodes-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('latest-episodes-dropdown')[0].style.display = 'flex';
+        });
     });
 
-    $(document).ready(function() {
 
-        $('.Latest-Episode-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            draggable: false,
-            asNavFor: '.Latest-Episode-slider-nav',
-        });
-
-        $('.Latest-Episode-slider-nav').slick({
-            slidesToShow: 6,
-            slidesToScroll: 6,
-            asNavFor: '.Latest-Episode-slider',
-            dots: false,
-            arrows: true,
-            prevArrow: '<a href="#" class="slick-arrow slick-prev" aria-label="Previous" type="button">Previous</a>',
-            nextArrow: '<a href="#" class="slick-arrow slick-next" aria-label="Next" type="button">Next</a>',
-            infinite: false,
-            focusOnSelect: true,
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 6,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 5,
-                        slidesToScroll: 1,
-                    },
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1,
-                    },
-                },
-            ],
-        });
-
-        $('.Latest-Episode-slider-nav').on('click', function() {
-            $( ".drp-close" ).trigger( "click" );
-            $('.Latest-Episode-slider').show();
-        });
-
-        $('body').on('click', '.drp-close', function() {
-            $('.Latest-Episode-slider').hide();
-        });
+    $('body').on('click', '.drp-close', function() {
+        $('.latest-episodes-dropdown').hide();
     });
 </script>

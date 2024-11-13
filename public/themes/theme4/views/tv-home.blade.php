@@ -47,7 +47,7 @@
     @endphp
 
 
-    @foreach ($sections as $section)
+    <!-- @foreach ($sections as $section)
         <section id="iq-favorites">
             <div class="container-fluid overflow-hidden pl-0">
                 <div class="row">
@@ -61,7 +61,11 @@
                 </div>
             </div>
         </section>
-    @endforeach
+    @endforeach -->
+
+    <div>
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-episodes", array_merge(['data' => $latest_episodes, 'multiple_compress_image' => $multiple_compress_image]) )->content() !!}
+    </div>
 
     @foreach ($order_settings as $key => $value)
         @if ( ($value->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1) || ($value->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1))
@@ -69,6 +73,14 @@
                 <div class="container-fluid overflow-hidden pl-0">
                     <div class="row">
                         <div class="col-sm-12">
+
+                            @if( $value->video_name == 'Series_Networks')      {{-- Series Networks --}} 
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
+                            @endif
+                            
+                            @if( $value->video_name == 'Series_based_on_Networks')
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data , ['data' => $Series_based_on_Networks ]) )->content() !!}
+                            @endif
 
                             @if ($value->video_name == 'Series_Genre')
                                 {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], ])->content() !!}
