@@ -2099,37 +2099,33 @@ class HomeController extends Controller
             $videos = Video::select('videos.*', 'categoryvideos.category_id', 'categoryvideos.video_id', 'video_categories.id', 'video_categories.name as category_name')
                             ->leftJoin('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
                             ->leftJoin('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-
-                                ->when($settings->search_tags_status, function ($query) use ($request) {
-                                    return $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->country . '%');
-                                })
-
-                                ->when($settings->search_title_status, function ($query) use ($request) {
-                                    return $query->orWhere('videos.title', 'LIKE', '%' . $request->country . '%');
-                                })
-
-                                ->when($settings->search_category_status, function ($query) use ($request) {
-                                    return $query->orWhere('video_categories.name', 'LIKE', '%' . $request->country . '%');
-                                })
-
-                                ->when($settings->search_description_status, function ($query) use ($request) {
-                                    return $query->orWhere('videos.description', 'LIKE', '%' . $request->country . '%');
-                                })
-
-                                ->when($settings->search_details_status, function ($query) use ($request) {
-                                    return $query->orWhere('videos.details', 'LIKE', '%' . $request->country . '%');
-                                })
-
-                            ->where('active', 1)->where('status', 1)->where('draft', 1)
-                            ->orderBy('created_at', 'desc')->groupBy('videos.id')
-                            ->limit(10)
-
+                            ->where('videos.active', 1)
+                            ->where('videos.status', 1) 
+                            ->where(function ($query) use ($settings, $request) {
+                                // search filters start
+                                if ($settings->search_tags_status) {
+                                    $query->orWhere('videos.search_tags', 'LIKE', '%' . $request->country . '%');
+                                }
+                                if ($settings->search_title_status) {
+                                    $query->orWhere('videos.title', 'LIKE', '%' . $request->country . '%');
+                                }
+                                if ($settings->search_category_status) {
+                                    $query->orWhere('video_categories.name', 'LIKE', '%' . $request->country . '%');
+                                }
+                                if ($settings->search_description_status) {
+                                    $query->orWhere('videos.description', 'LIKE', '%' . $request->country . '%');
+                                }
+                                if ($settings->search_details_status) {
+                                    $query->orWhere('videos.details', 'LIKE', '%' . $request->country . '%');
+                                }
+                            })
                             ->when(Geofencing() != null && Geofencing()->geofencing == 'ON', function ($query) {
                                 return $query->whereNotIn('videos.id', Block_videos());
                             })
-
+                            ->orderBy('created_at', 'desc')
+                            ->groupBy('videos.id')
+                            ->limit(10)
                             ->get();
-
 
             $livestream = LiveStream::Select('live_streams.*','livecategories.live_id','live_categories.name','livecategories.category_id','live_categories.id')
                             ->leftJoin('livecategories','livecategories.live_id','=','live_streams.id')
