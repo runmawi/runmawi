@@ -256,7 +256,7 @@ class TvshowsController extends Controller
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
-            // return abort(404);
+            return abort(404);
             return Theme::view('tv-home-empty-data');
         }
     }
