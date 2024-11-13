@@ -32,26 +32,4 @@ class PartnerMonetization extends Model
         return $this->belongsTo('App\LiveStream', 'type_id', 'id');
     }
 
-    public function content()
-    {
-        switch ($this->type) {
-            case 'video':
-                return $this->video();
-                break;
-            case 'episode':
-                return $this->episode();
-                break;
-
-            case 'livestream':
-                return $this->livestream();
-                break;
-
-            default:
-                return null;
-                break;
-        }
-
-        return null;
-    }
-
 }

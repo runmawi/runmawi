@@ -1179,7 +1179,7 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if( $request->mobile != "0987654321"){
+      if( $request->mobile != "9436144626 "){
 
         user::find(Auth::user()->id)->update([
           'otp' => null ,
@@ -12435,7 +12435,7 @@ $cpanel->end();
               return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
           });
     
-          $livestreams_sort = $livestreams_filter->take(15)->sortBy(function ($livestream) {
+          $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
           
               if ($livestream->publish_type === 'publish_now') {
 
@@ -12451,7 +12451,7 @@ $cpanel->end();
               }
 
               return $livestream->publish_type;
-          })->values();
+          })->values()->take(15);
 
         }
 
@@ -13007,7 +13007,6 @@ $cpanel->end();
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
                                       ->where('active', '=', '1')
-                                      // ->limit(15)
                                       ->get()
                                       ->map(function ($item) {
                                         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -13085,7 +13084,7 @@ $cpanel->end();
               return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
           });
     
-          $livestreams_sort = $livestreams_filter->take(15)->sortBy(function ($livestream) {
+          $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
           
               if ($livestream->publish_type === 'publish_now') {
   
@@ -13101,7 +13100,7 @@ $cpanel->end();
               }
   
               return $livestream->publish_type;
-          })->values();
+          })->values()->take(15);
 
         }
         else{
@@ -27386,7 +27385,7 @@ public function TV_login(Request $request)
         $Mobile_number   = $ccode.$mobile ;
 
         // Only for Play Store Testing 
-        if( $mobile == "0987654321"){
+        if( $mobile == "9436144626 "){
 
           $user = User::Where('id',$user_id)->where('mobile',$mobile)
                         ->update([
@@ -27532,7 +27531,7 @@ public function TV_login(Request $request)
         }
 
         // Only for Play Store Testing 
-        if( $request->mobile_number == "0987654321"){
+        if( $request->mobile_number == "9436144626 "){
 
           $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
                         ->update([
