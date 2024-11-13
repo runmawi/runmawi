@@ -10,21 +10,31 @@ use App\ModeratorsUser;
 use App\PaymentSetting;
 use App\CurrencySetting;
 use App\SiteTheme;
+use App\Channel;
+use App\Video;
+use App\VideoCategory;
+use App\OrderHomeSetting;
+use App\Setting;
+use App\Geofencing;
+use URL;
 use Theme;
 
 class ChannelPartnerController extends Controller
 {
+
+    protected $settings;
     public function __construct()
     {
         $this->HomeSetting = HomeSetting::first();
         Theme::uses($this->HomeSetting->theme_choosen);
+        $this->settings = Setting::first();$this->settings = Setting::first();$this->settings = Setting::first();
     }
 
     public function channelparnter(Request $request)
     {
-       $channel_partner = array(
+        $channel_partner = array(
             'channel_partner_list' => ModeratorsUser::where('status',1)->get() ,
-       );
+        );
        return Theme::view('ChannelPartner.Channelpartners',$channel_partner);
     }
 
@@ -48,7 +58,24 @@ class ChannelPartnerController extends Controller
 
     public function all_Channel_home(Request $request)
     {
-        # code...
+        $currency = CurrencySetting::first();
+        $FrontEndQueryController = new FrontEndQueryController();
+
+        $channel = Channel::where('status', 1)->get()->map(function ($item) {
+            $videos = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'description', 'player_image', 'expiry_date', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'user_id', 'uploaded_by')
+                        ->where('active', 1)->where('status', 1)->where('draft', 1)
+                        ->where('uploaded_by', 'Channel')->where('user_id', $item->id)->get();
+        
+            $item->videos = $videos;
+            return $item;
+        });
+
+        $data = array(
+            'channel' => $channel
+        );
+        // dd($data);
+        
+        // return Theme::view('ChannelHomeList', $data);
     }
 
     public function channelparnterpayment(Request $request)
