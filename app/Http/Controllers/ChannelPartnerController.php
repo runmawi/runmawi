@@ -29,7 +29,7 @@ class ChannelPartnerController extends Controller
     {
         $this->HomeSetting = HomeSetting::first();
         Theme::uses($this->HomeSetting->theme_choosen);
-        $this->settings = Setting::first();$this->settings = Setting::first();$this->settings = Setting::first();
+        $this->settings = Setting::first();
     }
 
     public function channelparnter(Request $request)
@@ -60,10 +60,12 @@ class ChannelPartnerController extends Controller
 
     public function all_Channel_home(Request $request)
     {
+        try {
+         
         $currency = CurrencySetting::first();
         $FrontEndQueryController = new FrontEndQueryController();
 
-        $channel = Channel::where('status', 1)->get()->map(function ($item) {
+        $channel_data = Channel::where('status', 1)->get()->map(function ($item) {
             $videos = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'description', 'player_image', 'expiry_date', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'user_id', 'uploaded_by')
                         ->where('active', 1)->where('status', 1)->where('draft', 1)
                         ->where('uploaded_by', 'Channel')->where('user_id', $item->id)->get();
@@ -89,8 +91,7 @@ class ChannelPartnerController extends Controller
         $data = array(
             'settings' => $this->settings,
             'current_theme' => $this->HomeSetting->theme_choosen,
-            'channel' => $channel,
-
+            'channel_data' => $channel_data,
             'order_settings' => $order_settings,
             'order_settings_list' => OrderHomeSetting::get(),
             'ThumbnailSetting'      => $FrontEndQueryController->ThumbnailSetting() ,
@@ -100,10 +101,16 @@ class ChannelPartnerController extends Controller
             'default_horizontal_image_url'  => default_horizontal_image_url(),
             'home_settings' => $this->HomeSetting,
             'getfeching' => Geofencing::first(),
+            'current_theme'     => $this->HomeSetting->theme_choosen,
         );
-        // dd($data);
+
         
         return Theme::view('ChannelHomeList', $data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function channelparnterpayment(Request $request)

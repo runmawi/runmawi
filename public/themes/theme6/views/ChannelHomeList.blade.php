@@ -1,10 +1,4 @@
-<?php
-include public_path('themes/theme6/views/header.php');
-
-$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
-$order_settings_list = App\OrderHomeSetting::get();
-$continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
-?>
+<?php include public_path("themes/{$current_theme}/views/header.php"); ?>
 
 <style>
     .flickity-slider .items{width:14.444%;padding:10px 5px}
@@ -39,24 +33,20 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
     .flickity-rtl .flickity-page-dots{direction:rtl}.flickity-page-dots .dot{display:inline-block;width:10px;height:10px;margin:0 8px;background:#333;border-radius:50%;opacity:.25;cursor:pointer}.flickity-page-dots .dot.is-selected{opacity:1}
 </style>
 
-<link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
+<link rel="shortcut icon" href="{{ URL::to('public/uploads/settings/' . $settings->favicon) }}" />
 <link rel="stylesheet" href="<?= URL::to('/') . 'assets/css/variable-boots-flick.css' ?>">
 <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <section id="iq-favorites">
-    {{-- <h4 class="text-center mb-4 mt-4">Channel List</h4> --}}
-    
-    @foreach ($channel as $ch)
-        @if($ch->all_data->isNotEmpty())
+    @forelse ($channel_data as $channels)
+        @if($channels->all_data->isNotEmpty())
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12 overflow-hidden">
                         <div class="d-flex mt-5 mb-2 justify-content-between">
                             <div class="channel_heading">
-                                <h4>{{ $ch->channel_name }}</h4>
+                                <h4>{{ $channels->channel_name }}</h4>
                             </div>
                             <div class="subscribe">
                                 <a class="btn btn-primary" href="">
@@ -67,7 +57,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                         
                         <div class="favorites-contens"> 
                             <div class="channel-videos home-sec list-inline row p-0 mb-0">
-                                @foreach ($ch->all_data as $media)
+                                @foreach ($channels->all_data as $media)
                                     @if ($media instanceof App\Video)
                                     
                                         <div class="items">
@@ -83,10 +73,6 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                                                         <span> {{ strlen($media->title) > 17 ? substr($media->title, 0, 18) . '...' : $media->title }}
                                                         </span>
                                                         <div class="movie-time d-flex align-items-center my-2" style="font-weight: 600">
-        
-                                                            <!-- <div class="badge badge-secondary p-1 mr-2">
-                                                                {{ optional($media)->age_restrict.'+' }}
-                                                            </div> -->
         
                                                             <span class="text-white">
                                                                 @if($media->duration != null)
@@ -195,8 +181,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
                 </div>
             </div>
         @endif
-    @endforeach
-
+    @empty
+        <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+            <p ><h4 class="text-center">Sorry! There are no contents under this Channel at this moment.</h4>
+        </div>
+    @endforelse
 </section>
 
 <script>
@@ -212,3 +201,5 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         lazyload: true,
     });
  </script>
+
+@php include(public_path("themes/{$current_theme}/views/footer.blade.php"));@endphp
