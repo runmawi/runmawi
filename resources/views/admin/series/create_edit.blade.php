@@ -129,9 +129,9 @@ $settings  = App\Setting::first();?>
 							@if($width !== null && $heigth !== null)
 								<p class="p1">{{ ("Select the TV Shows image1 (".''.$width.' x '.$heigth.'px)')}}:</p> 
 							@else
-								<p class="p1">{{ "Select the TV Shows image ( 9:16 Ratio or 1080X1920px)"}}:</p> 
+								<p class="p1">{{ "Select the TV Shows image (720X1280px)"}}:</p> 
 							@endif
-							<input type="file" multiple="true" class="form-group image series_image" name="image" id="series_image" />
+							<input type="file" multiple="true" class="form-group image series_image" name="image" id="series_image" accept="image/png, image/gif, image/jpeg"/>
 
 							<span>
 								<p id="video_image_error_msg" style="color:red !important; display:none;">
@@ -163,9 +163,9 @@ $settings  = App\Setting::first();?>
 							@if($player_width !== null && $player_heigth !== null)
 								<p class="p1">{{ ("Select The Player Image2 (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 							@else
-								<p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px ): )"}}</p> 
+								<p class="p1">{{ "Player Thumbnail ( 1280X720px)"}}</p> 
 							@endif
-							<input type="file" multiple="true" class="form-group" name="player_image" id="series_player_image" />
+							<input type="file" multiple="true" class="form-group" name="player_image" id="series_player_image" accept="image/png, image/gif, image/jpeg"/>
 
 							<span>
 								<p id="player_image_error_msg" style="color:red !important; display:none;">
@@ -550,7 +550,7 @@ $settings  = App\Setting::first();?>
 								@if($player_width !== null && $player_heigth !== null)
 									<p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 								@else
-									<p class="p1">{{ "Select Season Thumbnail ( 16:9 Ratio or 1280x720px )"}}:</p> 
+									<p class="p1">{{ "Select Season Thumbnail ( 1280x720px )"}}:</p> 
 								@endif
 								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
 								<input type="file" class="season_image" name="image" id="season_img" accept="image/png, image/webp, image/jpeg">
@@ -962,8 +962,8 @@ $('#submit-new-cat').click(function(){
 				   height = tmpImg.naturalHeight;
 				   image_validation_status = "{{  image_validation_series() }}" ;
 				   console.log('img width: ' + width);
-				   var validWidth = {{ $compress_image_settings->width_validation_series ?: 1080 }};
-				   var validHeight = {{ $compress_image_settings->height_validation_series ?: 1920 }};
+				   var validWidth = {{ $compress_image_settings->width_validation_series ?: 720 }};
+				   var validHeight = {{ $compress_image_settings->height_validation_series ?: 1280 }};
 				   console.log('validation widtth:  ' + validWidth);
 	
 				   if (width !== validWidth || height !== validHeight) {

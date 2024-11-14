@@ -206,11 +206,11 @@
                                             @if($width !== null && $heigth !== null)
                                                 <p class="p1">{{ ("Select the {$inputs_details_array['text_main_name'] } image (".''.$width.' x '.$heigth.'px)')}}:</p> 
                                             @else
-                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 720 x 1280px )"}}:</p> 
                                             @endif
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/*"/>
+                                                <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
                                                 <span>
                                                     <p id="live_image_error_msg" style="color:red !important; display:none;">
                                                         * Please upload an image with the correct dimensions.
@@ -239,11 +239,11 @@
                                             @if($player_width !== null && $player_heigth !== null)
                                                 <p class="p1">{{ ("Select the {$inputs_details_array['text_main_name'] } image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                                             @else
-                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                                <p class="p1">{{ "Select the {$inputs_details_array['text_main_name'] } image ( 1280 x 720px )"}}:</p> 
                                             @endif
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/*"/>
+                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
                                                 <span>
                                                     <p id="live_player_image_error_msg" style="color:red !important; display:none;">
                                                         * Please upload an image with the correct dimensions.
@@ -1125,8 +1125,8 @@
                 console.log(width);
                 console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_live }};
-                var validHeight = {{ $compress_image_settings->height_validation_live }};
+                var validWidth = {{ $compress_image_settings->width_validation_live ?: 720 }};
+                var validHeight = {{ $compress_image_settings->height_validation_live ?: 1280 }};
                 console.log(validWidth);
                 console.log(validHeight);
 
@@ -1154,16 +1154,16 @@
                 console.log(width);
                 console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->live_player_img_width }};
-                var validHeight = {{ $compress_image_settings->live_player_img_height }};
-                console.log(validWidth);
-                console.log(validHeight);
+                var validWidthPlayer = {{ $compress_image_settings->live_player_img_width ?: 1280 }};
+                var validHeightPlayer = {{ $compress_image_settings->live_player_img_height ?: 720 }};
+                console.log(validWidthPlayer);
+                console.log(validHeightPlayer);
 
-                if (width !== validWidth || height !== validHeight) {
+                if (width !== validWidthPlayer || height !== validHeightPlayer) {
                     document.getElementById('live_player_image_error_msg').style.display = 'block';
                     $('.add_video_btn').prop('disabled', true);
                     document.getElementById('live_player_image_error_msg').innerText = 
-                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                        `* Please upload an image with the correct dimensions (${validWidthPlayer}x${validHeightPlayer}px).`;
                 } else {
                     document.getElementById('live_player_image_error_msg').style.display = 'none';
                     $('.add_video_btn').prop('disabled', false);
