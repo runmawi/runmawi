@@ -356,9 +356,7 @@ data: {
 														</div>
 														 <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 														<div class="panel-body" style="display: block;"> 
-															@if(!empty($audio->image))
-															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
-															@endif
+															
 															@php 
 																$width = $compress_image_settings->width_validation_audio;
 																$heigth = $compress_image_settings->height_validation_audio
@@ -367,14 +365,17 @@ data: {
 															@if($width !== null && $heigth !== null)
 															<p class="p1">{{ ("Select The Audio Image (".''.$width.' x '.$heigth.'px)')}}:</p> 
 															@else
-																<p class="p1">{{ "Select The Audio Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+																<p class="p1">{{ "Select The Audio Image ( 720 x 1280px )"}}:</p> 
 															@endif
-															<input type="file" multiple="true" class="form-control" name="image" id="image" />
+															<input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
 															<span>
 																<p id="audio_image_error_msg" style="color:red !important; display:none;">
 																	* Please upload an image with the correct dimensions.
 																</p>
 															</span>
+															@if(!empty($audio->image))
+																<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->image }}" class="audio-img" width="200"/>
+															@endif
 														</div> 
 													</div>
 							</div>
@@ -382,9 +383,7 @@ data: {
 							<div class="panel panel-primary  p-0 mt-3" data-collapsed="0"> <div class="panel-heading"> 
 														<div class="panel-title"><label>Player Image Cover</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 														<div class="panel-body" style="display: block;"> 
-															@if(!empty($audio->player_image))
-															<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->player_image }}" class="audio-img" width="200"/>
-															@endif
+															
 															@php 
 																$player_width = $compress_image_settings->audio_player_img_width;
 																$player_heigth = $compress_image_settings->audio_player_img_height
@@ -393,14 +392,17 @@ data: {
 															@if($player_width !== null && $player_heigth !== null)
 															<p class="p1">{{ ("Select The Audio Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 															@else
-																<p class="p1">{{ "Select The Audio Image ( 16:9 Ratio or 1280X720px )"}}:</p> 
+																<p class="p1">{{ "Select The Audio Image ( 1280 X 720px )"}}:</p> 
 															@endif
-															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" />
+															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
 															<span>
 																<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
 																	* Please upload an image with the correct dimensions.
 																</p>
 															</span>
+															@if(!empty($audio->player_image))
+																<img src="{{ URL::to('/'). '/public/uploads/images/' . $audio->player_image }}" class="audio-img" width="200"/>
+															@endif
 														</div> 
 													</div>
 							</div>
@@ -933,8 +935,8 @@ $('#duration').mask('00:00:00');
 				width = tmpImg.naturalWidth,
 				height = tmpImg.naturalHeight;
 				console.log(width);
-				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 1080 }};
-				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1920 }};
+				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 720 }};
+				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1280 }};
 				console.log('validWidth ' + validWidth);
 				console.log(validHeight);
 
