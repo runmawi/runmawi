@@ -116,7 +116,7 @@ class AdminVideosController extends Controller
     public function __construct()
     {
         $this->client = new Client();
-        $this->apiKey = '9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE'; 
+        $this->apiKey = 'pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt'; 
 
         $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
         $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
@@ -11745,7 +11745,7 @@ class AdminVideosController extends Controller
                 // CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                 // CURLOPT_CUSTOMREQUEST => "PUT",
                 // CURLOPT_HTTPHEADER => array(
-                //     "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE"
+                //     "Authorization: Apisecret pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt"
                 // ),
                 // ));
 
@@ -11791,7 +11791,7 @@ class AdminVideosController extends Controller
 
 
                 $videoId = "597244970fe8487ab2b6d026719397ac"; 
-                $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+                $apiKey = "pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt";
 
                 $curl = curl_init();
 
@@ -11849,7 +11849,7 @@ class AdminVideosController extends Controller
                 // ]),
                 // CURLOPT_HTTPHEADER => array(
                 //     "Accept: application/json",
-                //     "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE",
+                //     "Authorization: Apisecret pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt",
                 //     "Content-Type: application/json"
                 // ),
                 // ));
@@ -11879,7 +11879,7 @@ class AdminVideosController extends Controller
             //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             //     CURLOPT_CUSTOMREQUEST => "PUT",
             //     CURLOPT_HTTPHEADER => array(
-            //         "Authorization: Apisecret 9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE"
+            //         "Authorization: Apisecret pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt"
             //     ),
             //     ));
 
@@ -11900,7 +11900,7 @@ class AdminVideosController extends Controller
         public function videocihperplayer(){
 
             $videoId = "b69110c2cfc54e09b015aa07739311a4"; 
-            $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+            $apiKey = "pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt";
 
             $curl = curl_init();
 

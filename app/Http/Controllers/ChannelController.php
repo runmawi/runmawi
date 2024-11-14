@@ -5627,7 +5627,7 @@ class ChannelController extends Controller
                }
                
                 $videoId = $item['videos_url']; 
-                $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+                $apiKey = "pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt";
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
