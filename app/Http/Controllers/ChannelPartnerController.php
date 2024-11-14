@@ -103,7 +103,7 @@ class ChannelPartnerController extends Controller
         );
         // dd($data);
         
-        // return Theme::view('ChannelHomeList', $data);
+        return Theme::view('ChannelHomeList', $data);
     }
 
     public function channelparnterpayment(Request $request)
