@@ -210,7 +210,7 @@ border-radius: 0px 4px 4px 0px;
                         <h4><i class="entypo-monitor"></i> Checkout Theme Setting</h4> <br>
                     </div> 
 
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
 
                         <div class="col-md-6">
                             <label>{{ ucfirst(trans('Enable signup page theme')) }}</label>
@@ -246,7 +246,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('signup Agree Message')) }}</label>
                            <input type="text" placeholder="Signup Agree Message" name="signup_payment_content" class="form-control signup_payment_content" id="signup_payment_content" value="@if(!empty($settings->signup_payment_content)){{ $settings->signup_payment_content }}@endif">
-                       </div>site_themes
+                       </div>
 
                                     {{-- Sign up - Step 2 Title  --}}
                         <div class="col-sm-6">
@@ -340,7 +340,7 @@ border-radius: 0px 4px 4px 0px;
 
                 <div class="panel-heading mt-3"> 
 
-                    <div class="row d-flex" >
+                    <div class="row d-flex mb-3" >
 
                         
 
@@ -375,7 +375,7 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
                     <br>
 
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
                         <div class="col-md-6">
                             <label>{{ ucfirst(trans(' Enable Developer Tools')) }}</label>
 
@@ -394,7 +394,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-sm-6">
                             <label>{{ ucfirst(trans('Enable Profile Page')) }}</label>
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
                                 <div style="color:#006AFF;"> Profile Page 1  </div>
                                 <div class="mt-1">
                                     <label class="switch">
@@ -408,7 +408,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>  
                     <br>
 
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Enable SignIn / SignUp Link')) }} <span> ( Header )</span></label>
 
@@ -442,7 +442,7 @@ border-radius: 0px 4px 4px 0px;
                     </div> 
                     <br>
 
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
                         
 
                         <div class="col-md-6">
@@ -463,7 +463,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Admin Ads Pre/Post Position')) }} </label>
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:60%;">
+                            <div class="d-flex justify-content-around align-items-center" style="width:85%;">
                                 <div style="color:#006AFF;"> Individual  <span> (Default)</span>  </div>
                                 <div class="mt-1">
                                     <label class="switch">
@@ -477,7 +477,7 @@ border-radius: 0px 4px 4px 0px;
 
                     </div>
 
-                    <div class="row d-flex">
+                    <div class="row d-flex mb-3">
                         @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Content_Partner_Page_checkout == 1)
                             <div class="col-md-6">
                                 <label>{{ ucfirst(('Enable Content Partner Page')) }} </label>
@@ -497,13 +497,13 @@ border-radius: 0px 4px 4px 0px;
                     </div>
 
                     
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
                     @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Header_Top_Position_checkout == 1)
 
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Header Top Position')) }} </label>
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div class="d-flex justify-content-around align-items-center" style="width:65%;">
                                 <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
@@ -521,7 +521,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Header Side Position')) }} </label>
 
-                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                            <div class="d-flex justify-content-around align-items-center" style="width:65%;">
                                 <div style="color:red;">Disable</div>
                                 <div class="mt-1">
                                     <label class="switch">
@@ -536,7 +536,7 @@ border-radius: 0px 4px 4px 0px;
             
                     </div>
                     
-                    <div class="row d-flex"> 
+                    <div class="row d-flex mb-3"> 
                         @if(!empty($AdminAccessPermission) && $AdminAccessPermission->Extract_Images_checkout == 1)
                         <div class="col-md-6">
                             <label>{{ ucfirst(('Enable Extract Images')) }} </label>
@@ -569,7 +569,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex"> 
+                <div class="row d-flex mb-3"> 
                 
                     <div class="col-md-6">
                             <label>{{ (__('Enable Tv Activation Code')) }} </label>
@@ -602,9 +602,9 @@ border-radius: 0px 4px 4px 0px;
                     </div>
 
 
-                <div class="row d-flex"> 
+                <div class="row d-flex mb-3"> 
                     @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_moderator_payment == 1)
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable Moderator Payment')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -621,7 +621,7 @@ border-radius: 0px 4px 4px 0px;
                     @endif 
 
                     @if(!empty($AdminAccessPermission) && $AdminAccessPermission->enable_channel_payment == 1)
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable Channel Payment')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -636,7 +636,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
                     @endif 
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable Moderator Monetization')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -650,7 +650,7 @@ border-radius: 0px 4px 4px 0px;
                                 <div style="color:green;">On</div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable Channel Monetization')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -665,7 +665,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable Logged User Monetization')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -680,7 +680,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable EPG Default TimeZone')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -696,7 +696,7 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable 4K Resolution Conversion')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -711,7 +711,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                         <label>{{ ucfirst(('Enable PPV Plans')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -728,8 +728,8 @@ border-radius: 0px 4px 4px 0px;
                         </div>
 
 
-                        <div class="col-md-6">
-                        <label>{{ ucfirst(('Enable Video Cipher Uplaod')) }} </label>
+                        <div class="col-md-6 mb-3">
+                        <label>{{ ucfirst(('Enable Video Cipher Upload')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                 <div style="color:red;">Off</div>
@@ -744,7 +744,7 @@ border-radius: 0px 4px 4px 0px;
                         
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label>{{ ucfirst(('Enable Video Compression')) }} </label>
 
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
@@ -760,7 +760,7 @@ border-radius: 0px 4px 4px 0px;
                         
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label>{{ ucfirst(('Enable Purchase button')) }} </label>
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                 <div style="color:red;">Off</div>
@@ -774,7 +774,7 @@ border-radius: 0px 4px 4px 0px;
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label>{{ ucfirst(('Enable Subscribe button')) }} </label>
                             <div class="d-flex justify-content-around align-items-center" style="width:50%;">
                                 <div style="color:red;">Off</div>
@@ -825,7 +825,7 @@ border-radius: 0px 4px 4px 0px;
                 
                 </div>
                 
-                <div class="panel-body mt-4" style="display: flex; justify-content: flex-end;">
+                <div class="panel-body mt-4 mb-4 mr-4" style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn btn-primary " name="submit" id="save_settings"> Save Settings</button>
                 </div>
 </form>

@@ -779,6 +779,48 @@ class PageListController extends Controller
         }
     }
 
+    public function ContinueWatchingList(Request $request)
+    {
+        try {
+
+            if($this->settings->enable_landing_page == 1 && Auth::guest()){
+
+                $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
+    
+                return redirect()->route('landing_page', $landing_page_slug );
+            }
+
+            
+            $this->current_theme = $this->HomeSetting->theme_choosen ;
+            $current_theme = $this->current_theme;
+
+                $OrderHomeSetting = OrderHomeSetting::get(); 
+
+                $FrontEndQueryController = new FrontEndQueryController();
+
+
+                // $Video_cnt         = $FrontEndQueryController->VideoJsContinueWatching();
+                // $Video_cnt_paginate = $this->paginateCollection($Video_cnt, $this->videos_per_page);
+
+                // $episode_cnt         = $FrontEndQueryController->VideoJsEpisodeContinueWatching();
+                // $episode_cnt_paginate = $this->paginateCollection($episode_cnt, $this->videos_per_page);
+                // dd($episode_cnt_paginate);
+
+            $data = array(
+                'Video_cnt'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                'episode_cnt'           => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                'current_theme'         => $current_theme,
+            );
+            // dd($Video_cnt);
+            return Theme::view('Page-List.Continue-watching', $data);
+            // return Theme::view('All-Videos.ContinueWatchingList', $respond_data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     public function Artist_list()
     {
         try {

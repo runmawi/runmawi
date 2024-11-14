@@ -1512,9 +1512,19 @@ class AdminLiveStreamController extends Controller
         }
 
         if (isset($request->free_duration)) {
-            $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $request->free_duration);
+            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+        
+            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
             $video->free_duration = $time_seconds;
         }
+        
+
+        
+        // if (isset($request->free_duration)) {
+        //     $time_seconds = Carbon::createFromFormat('H:i:s', $request->free_duration)->diffInSeconds(Carbon::createFromTime(0, 0, 0));
+        //     $video->free_duration = $time_seconds;
+        // }
 
         $video->rating = $rating;
         $video->banner = $banner;
@@ -1565,7 +1575,20 @@ class AdminLiveStreamController extends Controller
                 $video->pre_post_ads =  null ;
             }
 
-            $video->video_js_mid_advertisement_sequence_time   =  $request->video_js_mid_advertisement_sequence_time;
+            if (!empty($request->video_js_mid_advertisement_sequence_time)) {
+                $time = $request->video_js_mid_advertisement_sequence_time;
+                sscanf($time, "%d:%d:%d", $hours, $minutes, $seconds);
+        
+                // Default missing values to 0
+                $hours = $hours ?? 0;
+                $minutes = $minutes ?? 0;
+                $seconds = $seconds ?? 0;
+        
+                // Format to HH:MM:SS
+                $formattedTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                $video->video_js_mid_advertisement_sequence_time = $formattedTime;
+            }
+            // $video->video_js_mid_advertisement_sequence_time   =  $request->video_js_mid_advertisement_sequence_time;
         }
         else{
             $video->ads_position = $request->ads_position;
@@ -3180,69 +3203,5 @@ class AdminLiveStreamController extends Controller
 
         return View('admin.livestream.calendar',$data);
     }
-
-    public function LivestreamPartnerMonetization(Request $request)
-    {
-        try {
-            $video_id = $request->video_id;
-            $video = LiveStream::where('id', $video_id)->first();
-            if ($video) {
-                $video->played_views += 1;
-                $video->save(); 
-
-                if ($video->uploaded_by === 'Channel') {
-                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
-                $monetization_view_limit = $monetizationSettings->viewcount_limit;
-                $monetization_view_amount = $monetizationSettings->views_amount;
-
-                if ($video->played_views > $monetization_view_limit) {
-                    $previously_monetized_views = $video->monetized_views ?? 0;
-                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
-
-                    if ($new_monetizable_views > 0) {
-                        
-                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
-                        $video->monetization_amount += $additional_amount;
-                        $video->monetized_views += $new_monetizable_views;
-                        $video->save(); 
-
-        
-                        $channeluser_commission = (float) $video->channeluser->commission;
-                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
-                        
-                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
-                            ->where('type_id', $video->id)
-                            ->where('type', 'livestream')->first();
-
-                        $monetization_data = [
-                            'total_views' => $video->played_views,
-                            'monetization_amount' => $video->monetization_amount,
-                            'admin_commission' => $video->monetization_amount - $channel_commission,
-                            'partner_commission' => $channel_commission,
-                        ];
-
-                        if ($partner_monetization) {
-                            $partner_monetization->update($monetization_data);
-                        } else {
-                            PartnerMonetization::create(array_merge($monetization_data, [
-                                'user_id' => $video->user_id,
-                                'type_id' => $video->id,
-                                'type' => 'livestream',
-                            ]));
-                        }
-                    }
-                }
-            }
-                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-            } else {
-                return response()->json(['error' => 'Video not found'], 404);
-            }
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
 
 }

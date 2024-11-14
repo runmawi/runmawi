@@ -205,7 +205,8 @@
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style">
    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
 <!-- JavaScript -->
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
+   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
    <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
@@ -215,6 +216,9 @@
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
+    <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" as="style" 
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
     <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
@@ -223,7 +227,7 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin="anonymous">
-    <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin="anonymous"> -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
     <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
     
@@ -254,7 +258,7 @@
 
    <!-- Remixicon -->
    <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       
    <!-- Ply.io -->
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" as="style"/>
@@ -1022,8 +1026,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                         
                   <?php if( optional($admin_advertistment_banners)->top_banner_status == 1 ): ?>
                      <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
+                        <link rel="preload" href="<?= $admin_advertistment_banners->top_image_url ?>" as="image">
                         <div class="col-sm-9 mx-auto header_top_position_img">
-                           <img class="img-fluid logo lazy" loading="lazy" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="1536" height="58" style="width:1397px;height:53px;" /> 
+                           <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" /> 
                         </div>
                      <?php endif ;?>
                      
@@ -1052,7 +1057,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <!-- <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button> -->
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo" alt="logo" src="<?= front_end_logo() ?>"width="100" height="100"/> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= front_end_logo() ?>" /> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -2063,7 +2068,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
 
-                                                      <div class="toggle mt-2 text-left">
+                                                      <!-- <div class="toggle mt-2 text-left">
                                                          <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
@@ -2071,7 +2076,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                <span class="sliderk round"></span>
                                                             </label>
                                                          <i class="fas fa-sun"></i>
-                                                      </div>
+                                                      </div> -->
 
                                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -2346,10 +2351,14 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    </script>
 
      <!-- search validation -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>"></script>
 
 
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>"></script>
+
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>"></script>
 
    <script>
@@ -2369,8 +2378,11 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
       });
    </script>
    
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+   <link rel="preload" href="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" as="script" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+   <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" as="script" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 
    <style>
       .dropdown-toggle::after{

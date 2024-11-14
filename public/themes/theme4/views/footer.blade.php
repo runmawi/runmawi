@@ -128,29 +128,40 @@
 
    <!-- jQuery, Popper JS -->
    <!-- <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script> -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
    
    <!-- Bootstrap JS -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
    
    
    <!-- Slick JS -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
 
    <!-- owl carousel Js -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
    
    <!-- select2 Js -->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>"></script>
    
    <!-- Magnific Popup-->
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>"></script>
    
    <!-- Slick Animation-->
-    <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
+   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>" as="script">
+   <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
    
 
     <!-- Custom JS-->
+    <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/custom.js') ?>" as="script">
+   <link rel="preload" href="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>" as="script">
+   <link rel="preload" href="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>" as="script">
+
     <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
     <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
@@ -240,10 +251,15 @@
 ?>
 
 <!-- JavaScript -->
+<link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
+<link rel="preload" href="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>" as="script">
+<link rel="preload" href="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>" as="script">
+{{-- <link rel="preload" href="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>" as="script"> --}}
+
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
-<script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>
+{{-- <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script> --}}
 <!-- <script src="<?= URL::to('/') . '/assets/js/hls.min.js' ?>"></script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/0.14.5/hls.min.js" async></script> -->
 

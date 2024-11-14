@@ -121,7 +121,7 @@
                                 @foreach ($data as $key => $epg_channel_data)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $epg_channel_data->image_url }}" class="flickity-lazyloaded" alt="latest_series"  width="300" height="200">
+                                            <img src="{{ $epg_channel_data->image_url }}" class="flickity-lazyloaded" alt="{{ ($epg_channel_data)->name }}" width="233" height="133">
                                             @if (videos_expiry_date_status() == 1 && optional($epg_channel_data)->expiry_date)
                                                 <span style="background: {{ button_bg_color() . '!important' }}; text-align: center; font-size: inherit; position: absolute; width:100%; bottom: 0;">{{ 'Leaving Soon' }}</span>
                                             @endif
@@ -144,7 +144,7 @@
 
                                         @if ( !is_null($epg_channel_data->ChannelVideoScheduler_current_video_details) )
                                             <div class="d-flex align-items-center p-0">
-                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="epg_channel_data" style="height: 30%; width:30%"><br>
+                                                <img src="{{ $epg_channel_data->ChannelVideoScheduler_current_video_details->video_image_url }}" alt="epg_channel_data" ><br>
                                                 
                                                 <ul>
                                                     <p> {{ $epg_channel_data->ChannelVideoScheduler_current_video_details->socure_title }}  </p> 
@@ -295,7 +295,10 @@ var elem = document.querySelector('.channel-epg-video');
         contain: true,
         groupCells: true,
         pageDots: false,
-        adaptiveHeight: true,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
     });
     document.querySelectorAll('.channel-epg-video .item').forEach(function(item) {
         item.addEventListener('click', function() {

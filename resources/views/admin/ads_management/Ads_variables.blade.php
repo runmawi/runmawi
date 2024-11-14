@@ -15,7 +15,7 @@
                     <div class="iq-card">
                         <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
-                                <h4 class="card-title">{{ _('Ads Variable')}}</h4>
+                                <h4 class="card-title">{{ __('Ads Variable') }}</h4>
                             </div>
                             <div class="iq-card-header-toolbar d-flex align-items-center">
                                 <a data-toggle="modal" data-target='#edit_modal'

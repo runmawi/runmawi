@@ -16,7 +16,7 @@
                                 @foreach ($data as $key => $livestream_videos)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200" loading="lazy">
+                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                                 <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                             @elseif( $livestream_videos->recurring_program_live_animation  == true )
@@ -103,7 +103,7 @@
                                         @endif
 
                                         <div class="d-flex align-items-center p-0 mt-3">
-                                            <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%" loading="lazy"> 
+                                            <img  src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%" > 
                                         </div>
 
                                         <div class="trending-dec">{{ html_entity_decode(strip_tags($livestream_videos->description), ENT_QUOTES) }}</div>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="thumbnail" data-index="{{ $key }}">
-                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" loading="lazy">
+                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" >
                                     </div>
                                 @endforeach
                             </div>
@@ -136,7 +136,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal" loading="lazy">
+                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
