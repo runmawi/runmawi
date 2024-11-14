@@ -657,14 +657,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/users-package-update', 'SuperAdminPackageController@users_package_update')->name('admin.users-package-update');
 
     Route::get('/users', 'AdminUsersController@index')->name('users');
+    Route::get('/users/fetch/pagination', 'AdminUsersController@users_pagination')->name('admin.users-pagination');
     Route::post('/users/deleteSelected','AdminUsersController@deleteSelected')->name('admin.users.deleteSelected');
     Route::get('/user/create', 'AdminUsersController@create');
     Route::post('/user/store', 'AdminUsersController@store');
-    Route::get('/user/edit/{id}', 'AdminUsersController@edit');
+    Route::get('/user/edit/{id}', 'AdminUsersController@edit')->name('admin.users.edit');
     Route::post('/user/update', ['before' => 'demo', 'uses' => 'AdminUsersController@update']);
-    Route::get('/user/delete/{id}', ['before' => 'demo', 'uses' => 'AdminUsersController@destroy']);
+    Route::get('/user/delete/{id}', ['before' => 'demo', 'uses' => 'AdminUsersController@destroy'])->name('admin.users.destroy');
     Route::post('/export', 'AdminUsersController@export');
-    Route::get('/user/view/{id}', 'AdminUsersController@view');
+    Route::get('/user/view/{id}', 'AdminUsersController@view')->name('admin.users.view');
     Route::post('/profile/update', 'AdminUsersController@myprofileupdate');
     Route::post('/profileupdate', 'AdminUsersController@ProfileImage');
     Route::get('/email_exitsvalidation', 'AdminUsersController@email_exitsvalidation')->name('email_exitsvalidation');

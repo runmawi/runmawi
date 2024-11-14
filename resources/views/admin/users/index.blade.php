@@ -1,31 +1,30 @@
 @extends('admin.master')
+
 <style>
-    .form-control{
-        background: #fff!important;
-    }
+    .form-control{background: #fff!important;}
     .btn-danger:hover, .btn-danger.focus, .btn-danger:focus {background-color: var(--iq-danger) !important;border-color: var(--iq-danger) !important;}
 </style>
-@section('content')
-<?php //dd(URL::to('/') . '/public/uploads/avatars/thumb-2.jpg'); ?>
-<script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
-		<script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
 
-    <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+@section('content')
+
+   <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
+   <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+   <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+   <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
   <div id="content-page" class="content-page">
-            <div class="container-fluid">
-               <div class="row ">
-               <div class="col-sm-4 mb-4 col-xs-6 text-center">
-                   <div class="iq-card" >
-				<div class="tile-stats tile-red">
-					<div class="icon"><i class="entypo-users"></i></div>
-					<div class="num" data-start="0" data-end="{{ $total_subscription }}" data-postfix="" data-duration="1500" data-delay="0">{{ $total_subscription }}</div>
-					<h4>Total Subscribers</h4>
-					<p class="p1">The total amount of subscribers on your site.</p>
-				</div>
-                       </div>
-			</div><!-- column -->
+      <div class="container-fluid">
+         <div class="row ">
+            <div class="col-sm-4 mb-4 col-xs-6 text-center">
+               <div class="iq-card" >
+                  <div class="tile-stats tile-red">
+                     <div class="icon"><i class="entypo-users"></i></div>
+                        <div class="num" data-start="0" data-end="{{ $total_subscription }}" data-postfix="" data-duration="1500" data-delay="0">{{ $total_subscription }}</div>
+                        <h4>Total Subscribers</h4>
+                        <p class="p1">The total amount of subscribers on your site.</p>
+                  </div>
+               </div>
+            </div><!-- column -->
 		
 			<div class="col-sm-4 col-xs-6 mb-4 text-center">
                  <div class="iq-card" >
@@ -74,12 +73,10 @@
                   <div class="col-sm-12 mt-4">
                      <div class="">
                         <div class="iq-card-header d-flex justify-content-between">
-                           <div class="iq-header-title">
-                            
-                           </div>
+                           <div class="iq-header-title"></div>
                            <button id="delete-selected" style="padding:6px 10px; border-radius:9px;" class="btn btn-danger">Delete Selected</button>
-
                         </div>
+
                         <div class="iq-card-body">
                            <div class="table-view">
                               <table id="users_table" class="table movie_table text-center table-bordered" style="width:100%">
@@ -95,41 +92,47 @@
                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                  </thead>
+
                                  <tbody>
-                                 @foreach($users as $user)
-                                    <tr id="user-{{ $user->id }}">
-                                       <td><input type="checkbox" class="user-checkbox" value="{{ $user->id }}"></td>
-                                       <td>
-                                       <img src="{{ $user->avatar ? URL::to('public/uploads/avatars/' . $user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png') }}"
-                                       class="img-fluid avatar-50" alt="author-profile">
-                                       </td>
-                                       <td>@if(!empty($user->username)){{$user->username}} @else {{$user->name}} @endif</td>
-                                       <td>{{$user->mobile}}</td>
-                                       <td>{{$user->email}}</td>
-                                       <td>{{$user->role}}</td>
-                                       <td>
-                                       @if($user->active)
-                                       <span class="badge iq-bg-success">Active</span>
-                                       @else
-                                       <span class="badge iq-bg-danger">Deactive</span>
-                                       @endif
-                                       
-                                       </td>
-                                       <td>
-                                          <div class="d-flex align-items-center list-user-action">
-                                             <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ URL::to('admin/user/edit') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
-                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ URL::to('admin/user/delete') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>" onclick="return confirm('Are you sure?')" ></a>
-                                                   <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ URL::to('admin/user/view') . '/' . $user->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-                                                </div>
-                                             </td>
-                                          </tr>
-                                        @endforeach
-                                             </tbody>
-                                          </table>
-                                       </div>
-                                    </div>
-                                                         </div>
-                                                      </div>
+
+                                    @foreach($users as $user)
+                                       <tr id="user-{{ $user->id }}">
+                                          <td><input type="checkbox" class="user-checkbox" value="{{ $user->id }}"></td>
+
+                                          <td>
+                                             <img src="{{ $user->avatar ? URL::to('public/uploads/avatars/' . $user->avatar) : URL::to('public/uploads/avatars/default_profile_image.png') }}"
+                                             class="img-fluid avatar-50" alt="author-profile">
+                                          </td>
+
+                                          <td> {{ !empty($user->username) ? $user->username : $user->name }} </td>
+                                          <td>{{ @$user->mobile}}</td>
+                                          <td>{{ @$user->email}}</td>
+                                          <td>{{ @$user->role}}</td>
+
+                                          <td>
+                                             @if($user->active)
+                                                <span class="badge iq-bg-success">Active</span>
+                                             @else
+                                                <span class="badge iq-bg-danger">Deactive</span>
+                                             @endif
+                                          </td>
+
+                                          <td>
+                                             <div class="d-flex align-items-center list-user-action">
+                                                <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="{{ route('admin.users.edit',$user->id)  }}"><img class="ply" src="{{ URL::to('assets/img/icon/edit.svg') }}" ></a>
+                                                <a class="iq-bg-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" href="{{ route('admin.users.destroy',$user->id)   }}"><img class="ply" src="{{ URL::to('assets/img/icon/delete.svg') }}" onclick="return confirm('Are you sure?')" ></a>
+                                                <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{ route('admin.users.view',$user->id)   }}"><img class="ply" src="{{ URL::to('assets/img/icon/view.svg') }}"></a>
+                                             </div>
+                                          </td>
+
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                                                    </div>
                                                 </div>
                                              </div>
@@ -161,10 +164,8 @@
                   }).then(response => response.json())
                   .then(data => {
                      if(data.success) {
-                           selected.forEach(id => {
-                              document.getElementById('user-' + id).remove();
-                           });
                            alert('Deleted Successfully.');
+                           location.reload();
                      } else {
                            alert('An error occurred while deleting users.');
                      }
@@ -181,7 +182,25 @@
 		$ = jQuery;
 		$(document).ready(function(){
 
-        $('#users_table').DataTable();
+         $('#users_table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+               url: '{{ route("admin.users-pagination") }}', 
+               type: 'GET'
+            },
+            columns: [
+               { data: 'select',},
+               { data: 'profile',},
+               { data: 'name' },
+               { data: 'mobile' },
+               { data: 'email' },
+               { data: 'role' },
+               { data: 'status' },
+               { data: 'action',}
+            ],
+            pageLength: 10            
+         });
 
 			$('.delete').click(function(e){
 				e.preventDefault();

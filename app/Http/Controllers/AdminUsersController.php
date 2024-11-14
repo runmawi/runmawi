@@ -13,9 +13,16 @@ use Flash;
 use Image;
 use Theme;
 use Session;
-use App\City;
+use Illuminate\Support\Facades\Cache;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
 use Response;
+use \Redirect ;
+use App\City;
 use App\State;
 use App\Region;
 use App\Devices;
@@ -32,36 +39,32 @@ use App\PpvPurchase;
 use App\TVLoginCode;
 use App\LoggedDevice;
 use App\Multiprofile;
-use \App\User as User;
+use App\User ;
 use App\EmailTemplate;
 use App\WelcomeScreen;
 use GuzzleHttp\Client;
 use App\TVSplashScreen;
-use \App\Video as Video;
+use App\Video;
 use App\CurrencySetting;
 use App\ContinueWatching;
 use App\SubscriptionPlan;
-use \Redirect as Redirect;
 use App\ApprovalMailDevice;
-use App\Setting as Setting;
+use App\Setting;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
-use \App\PpvVideo as PpvVideo;
-use \App\MobileApp as MobileApp;
-use App\RecentView as RecentView;
-use \App\CountryCode as CountryCode;
-use App\Http\Controllers\Controller;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Subscription as Subscription;
-use Illuminate\Support\Facades\Cache;
-use \App\MobileSlider as MobileSlider;
-use App\SystemSetting as SystemSetting;
-use App\VideoCategory as VideoCategory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use \App\PpvVideo ;
+use \App\MobileApp;
+use App\RecentView ;
+use \App\CountryCode;
+
+use App\Subscription;
+use \App\MobileSlider;
+use App\SystemSetting;
+use App\VideoCategory;
+
 
 class AdminUsersController extends Controller
 {
@@ -127,19 +130,9 @@ class AdminUsersController extends Controller
         //    $total_revenew = Subscription::all();
         $total_revenew = Subscription::sum('price');
 
-        $search_value = '';
-
-        if (!empty($search_value)):
-            $users = User::where('username', 'LIKE', '%' . $search_value . '%')->orWhere('email', 'LIKE', '%' . $search_value . '%')->orderBy('created_at', 'desc')
-                ->take(9000)
-                ->get();
-        else:
-            $allUsers = User::latest()->take(99999)->get();
-            // $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
-            // $allUsers = User::orderBy('created_at', 'desc')->get();
-
-        endif;
-      
+        // Note - users_pagination function used for pagination 
+        $allUsers = User::orderBy('created_at', 'desc')->paginate(10);
+          
         $data = array(
             'users' => $allUsers,
             'total_subscription' => $total_subscription,
@@ -150,6 +143,51 @@ class AdminUsersController extends Controller
         );
         return \View::make('admin.users.index', $data);
     }
+    }
+
+    public function users_pagination(Request $request)
+    {
+        try {
+
+            $query = User::query();
+
+            return DataTables::of($query)
+                ->addColumn('select', function ($user) {
+                    return '<input type="checkbox" class="user-checkbox" value="' . $user->id . '">';
+                })
+                ->addColumn('profile', function ($user) {
+                    $avatarPath = $user->avatar ? "public/uploads/avatars/{$user->avatar}" : "public/uploads/avatars/default_profile_image.png";
+                    return '<img src="' . asset($avatarPath) . '" class="img-fluid avatar-50" alt="author-profile">';
+                })
+                ->addColumn('status', function ($user) {
+                    return $user->active
+                        ? '<span class="badge iq-bg-success">Active</span>'
+                        : '<span class="badge iq-bg-danger">Deactive</span>';
+                })
+                ->addColumn('action', function ($user) {
+                    $editUrl = route('admin.users.edit', $user->id);
+                    $deleteUrl = route('admin.users.destroy', $user->id);
+                    $viewUrl = route('admin.users.view', $user->id);
+
+                    return '
+                        <div class="d-flex align-items-center list-user-action">
+                            <a class="iq-bg-warning" href="' . $viewUrl . '" data-toggle="tooltip" title="View">
+                                <img src="' . asset('assets/img/icon/view.svg') . '" class="ply">
+                            </a>
+                            <a class="iq-bg-success" href="' . $editUrl . '" data-toggle="tooltip" title="Edit">
+                                <img src="' . asset('assets/img/icon/edit.svg') . '" class="ply">
+                            </a>
+                            <a class="iq-bg-danger" href="' . $deleteUrl . '" data-toggle="tooltip" title="Delete" onclick="return confirm(\'Are you sure?\')">
+                                <img src="' . asset('assets/img/icon/delete.svg') . '" class="ply">
+                            </a>
+                           
+                        </div>';
+                })
+                ->rawColumns(['select', 'profile', 'status', 'action'])
+                ->make(true);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     public function Usersearch(Request $request)
