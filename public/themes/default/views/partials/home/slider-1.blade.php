@@ -48,27 +48,26 @@
                         <div class="volume-icon-container">
                             <i class="fa fa-volume-off volume-icon" aria-hidden="true"></i>
                         </div>
-                    <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8')):
-                        $url = $videos->trailer;
-
-                        $pathInfo = pathinfo($url);
-
-                        $newUrl = str_replace($pathInfo['extension'], 'mp4', $url);
-
-                        ?>
-
+                    <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8')): ?>
                         <input type="hidden" class="trailer_type" value="<?= $videos->trailer_type ?>">
-                        <video class="myvideos" loop autoplay muted onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" src="<?php echo $newUrl; ?>" width="100%" height="auto" alt=""
-                            style="transform: scale(1.27);object-fit:cover;cursor: pointer;"></video>
+                        <video id="video-js-trailer-player-{{ $key }}" class="video-js myvideos" loop autoplay muted
+                            onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'"
+                            width="100%" height="auto" style="transform: scale(1.27);object-fit:cover;cursor: pointer;">
+                            <source src="<?php echo $videos->trailer; ?>" type="application/x-mpegURL">
+                        </video>
+                        <div class="volume-icon-container">
+                            <i class="fa fa-volume-off volume-icon" aria-hidden="true"></i>
+                        </div>
+                        <?php elseif (!empty($videos->trailer) && ($videos->trailer_type == 'm3u8_url')): ?>
+                            <input type="hidden" class="trailer_type" value="<?= $videos->trailer_type ?>">
+                            <video id="video-js-trailer-player-{{ $key }}" class="video-js myvideos" loop autoplay muted
+                                onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'"
+                                width="100%" height="auto" style="transform: scale(1.27);object-fit:cover;cursor: pointer;">
+                                <source src="<?php echo $videos->trailer; ?>" type="application/x-mpegURL">
+                            </video>
                             <div class="volume-icon-container">
                                 <i class="fa fa-volume-off volume-icon" aria-hidden="true"></i>
                             </div>
-
-
-                        <!-- <video class="myvideos" controls loop autoplay muted src="<?php echo $videos->trailer; ?>" width="100%" height="auto" alt="" style="transform: scale(1.27);"></video> -->
-                    <?php else: ?>
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $videos->player_image; ?>"
-                            alt="Banner Image" style="width: 100%; height: auto;">
                     <?php endif; ?>
                 @endif
 
@@ -511,3 +510,11 @@
         z-index: 0;
     }
 </style>
+
+ <!--  video-js Script  -->
+ <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet">
+ <script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+ 
+ <!-- Video.js HTTP Streaming for HLS -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-http-streaming/2.10.2/videojs-http-streaming.min.js"></script>
+ 

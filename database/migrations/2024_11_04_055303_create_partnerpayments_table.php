@@ -20,7 +20,8 @@ class CreatePartnerpaymentsTable extends Migration
             $table->string('paid_amount')->nullable(); 
             $table->string('balance_amount')->nullable(); 
             $table->dateTime('payment_date')->nullable(); 
-            $table->string('payment_method')->nullable();
+            $table->tinyInteger('payment_method')->default(0);
+            $table->string('transaction_id')->nullable();
             $table->text('notes')->nullable(); 
             $table->timestamps();
         });

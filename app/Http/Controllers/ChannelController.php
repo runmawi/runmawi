@@ -5186,7 +5186,7 @@ class ChannelController extends Controller
             $data = array(
                 'videodetail' => $videodetail ,
                 'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                'user_role' => Auth::user()->role,
+                'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                 'recomended' => $recomended ,
                 'videoURl' => $videoURl ,
                 'subtitles_name' => $subtitles ,
@@ -5930,6 +5930,7 @@ class ChannelController extends Controller
 
                         $monetization_data = [
                             'total_views' => $video->played_views,
+                            'title' => $video->title,
                             'monetization_amount' => $video->monetization_amount,
                             'admin_commission' => $video->monetization_amount - $channel_commission,
                             'partner_commission' => $channel_commission,

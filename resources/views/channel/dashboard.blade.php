@@ -35,12 +35,41 @@
 ?>
 
 
+<?php
+    
+    $total_monetized_labels = [];
+    $total_monetized_data = [];
+    
+    $total_earned_data = [];
+    
+    for ($i = 14; $i >= 0; $i--) {
+        $date = Carbon\Carbon::now()->subDays($i)->toDateString();
+    
+      //   $count = App\PartnerMonetization::where('user_id', @$channel->id)->whereDate('created_at', $date)->count();
+    
+        $count = App\PartnerMonetization::where('user_id', @$channel->id)->whereDate('created_at', $date)->sum('partner_commission');
+        $amount = App\Partnerpayment::where('user_id', @$channel->id)->whereDate('created_at', $date)->sum('paid_amount');
+    
+        $total_monetized_labels[] = $date;
+        $total_monetized_data[] = $count;
+        $total_earned_data[] = $amount;
+    }
+    
+    $total_monetized_labels = json_encode($total_monetized_labels);
+    $total_monetized_data = json_encode($total_monetized_data);
+    $total_earned_data = json_encode($total_earned_data);
+?>
+
+
+
+
       <div id="content-page" class="content-page">
          <div class="container-fluid">
             <div class="row">
                <div class="col-lg-8">
                   <div class="row">
-                     <div class="col-sm-6 col-lg-6 col-xl-3">
+
+                     {{-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1" >
                               <div class="d-flex align-items-center justify-content-between">
@@ -59,7 +88,7 @@
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> --}}
                      <!-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card0 iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
@@ -100,7 +129,7 @@
                            </div>
                         </div>
                      </div> -->
-                     <div class="col-sm-6 col-lg-6 col-xl-3">
+                     {{-- <div class="col-sm-6 col-lg-6 col-xl-3">
                         <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
                            <div class="iq-card-body1">
                               <div class="d-flex align-items-center justify-content-between">
@@ -119,9 +148,28 @@
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> --}}
                   </div>
-                  <div class="iq-card">
+
+                  <div class="row">
+                  <div class="col-lg-6">
+                     <p class="center light">
+                       Total Monetized Amount
+                        <br><br>
+                        <canvas id="total_monetized_count" width="100%" height="100"></canvas>
+                     </p>
+                  </div>
+
+                  <div class="col-lg-6">
+                     <p class="center light">
+                        Total Earned Amount
+                        <br><br>
+                        <canvas id="earned_amount_count" width="100%" height="100"></canvas>
+                     </p>
+                  </div>
+                  </div>
+
+                  <div class="iq-card">                  
                   <div class="iq-header-title">
                            <h4 class="card-title">Top Category</h4>
                         </div>
@@ -304,6 +352,62 @@
       <script>
 
  
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+   $(document).ready(function() {
+
+       $('.modal').modal();
+
+       var ctx1 = document.getElementById('total_monetized_count').getContext('2d');
+       var total_monetized_count = new Chart(ctx1, {
+           type: 'line',
+           data: {
+               labels: <?php echo $total_monetized_labels; ?>, // Labels (dates)
+               datasets: [{
+                   label: 'Monetized Amount',
+                   data: <?php echo $total_monetized_data; ?>,
+
+                   borderColor: 'rgb(54, 162, 235)',
+                   backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+                   borderWidth: 1,
+                   fill: true,
+                   tension: 0.1,
+               }]
+           },
+           options: {
+               scales: {
+                   y: {
+                       beginAtZero: true
+                   }
+               }
+           }
+       });
+
+       var ctx2 = document.getElementById('earned_amount_count').getContext('2d');
+         var earned_amount_count = new Chart(ctx2, {
+               type: 'bar',
+               data: {
+                  labels: <?php echo $total_monetized_labels; ?>,
+                  datasets: [{
+                     label: 'Earnings (Rs)',
+                     data: <?php echo $total_earned_data; ?>, // Total purchase amounts
+
+                     borderColor: 'rgb(255, 99, 132)',
+                     backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+                     borderWidth: 1,
+                     fill: true,
+                     tension: 0.1,
+                  }]
+               },
+         });
+
+
+     
+   });
 </script>
 
 

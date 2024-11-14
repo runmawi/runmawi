@@ -2068,7 +2068,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
 
-                                                      <div class="toggle mt-2 text-left">
+                                                      <!-- <div class="toggle mt-2 text-left">
                                                          <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?> 
@@ -2076,7 +2076,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                <span class="sliderk round"></span>
                                                             </label>
                                                          <i class="fas fa-sun"></i>
-                                                      </div>
+                                                      </div> -->
 
                                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
