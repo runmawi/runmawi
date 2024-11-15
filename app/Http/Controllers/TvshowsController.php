@@ -2439,7 +2439,7 @@ public function RemoveDisLikeEpisode(Request $request)
                
                $videoId = $item['Episode_url']; 
             //    dd($videoId);
-               $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+               $apiKey = videocipher_Key();
                $curl = curl_init();
                
                curl_setopt_array($curl, array(
@@ -2476,12 +2476,14 @@ public function RemoveDisLikeEpisode(Request $request)
 
                    $responseObj = json_decode($response, true);
 
-                   if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
+                   if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters" || !empty($responseObj['message']) && $responseObj['message'] == "video not found"){
                        $item['otp'] = null;
                        $item['playbackInfo'] = null;
+                       $item['playbackmessage'] = $responseObj['message'];
                    }else{
                        $item['otp'] = $responseObj['otp'];
                        $item['playbackInfo'] = $responseObj['playbackInfo'];
+                       $item['playbackmessage'] = null;
                    }
 
                   

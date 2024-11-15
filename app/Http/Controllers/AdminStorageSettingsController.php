@@ -85,6 +85,7 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->aws_storage = $request->has('aws_storage') ? 1 : 0 ?? 0; ;
         $storage_settings->bunny_cdn_storage = $request->has('bunny_cdn_storage') ? 1 : 0 ?? 0; ;
         $storage_settings->flussonic_storage = $request->has('flussonic_storage') ? 1 : 0 ?? 0; 
+        $storage_settings->videocipher_storage = $request->has('videocipher_storage') ? 1 : 0 ?? 0; 
         $storage_settings->aws_access_key = $request->aws_access_key;
         $storage_settings->aws_secret_key = $request->aws_secret_key;
         $storage_settings->aws_region = $request->aws_region;
@@ -111,6 +112,7 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->flussonic_storage_password = $request->flussonic_storage_password;
         $storage_settings->flussonic_storage_tag = $request->flussonic_storage_tag;
         $storage_settings->flussonic_storage_Auth_Key = base64_encode($request->flussonic_storage_username . ':' . $request->flussonic_storage_password);
+        $storage_settings->videocipher_ApiKey = $request->videocipher_ApiKey;
 
         $storage_settings->save();
         

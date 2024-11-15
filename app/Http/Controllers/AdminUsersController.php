@@ -3265,6 +3265,13 @@ class AdminUsersController extends Controller
 
             $user_genrated_content_videos = UGCVideo::where('active', '=', '1')->whereIn('id', $user_genrated_content_array)->paginate(9);            
 
+            if ($user_role == 'subscriber')
+            {
+                $subscriptions_created_at = Subscription::where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')->pluck('created_at')->first();
+            }else{
+                $subscriptions_created_at = null;
+            }
+            
             $data = array(
                 'recent_videos' => $video,
                 'videocategory' => $videocategory,
@@ -3288,6 +3295,7 @@ class AdminUsersController extends Controller
                 'video_quality'  => $video_quality,
                 'payment_package' => User::where('id',Auth::user()->id)->first() ,
                 'LoggedusersCode' => TVLoginCode::where('email',Auth::User()->email)->orderBy('created_at', 'DESC')->get() ,
+                'subscriptions_created_at'  => $subscriptions_created_at,
             );
 
             if(!empty($SiteTheme) && $SiteTheme->my_profile_theme == 0 || $SiteTheme->my_profile_theme ==  null){
