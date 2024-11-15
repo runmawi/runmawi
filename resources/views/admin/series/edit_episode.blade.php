@@ -413,12 +413,12 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             $heigth = $compress_image_settings->height_validation_episode
                         @endphp
                         @if($width !== null && $heigth !== null)
-                            <p class="p1">{{ ("Select the episodes image (".''.$width.' x '.$heigth.'px)')}}:</p> 
+                            <p class="p1">{{ ("Select the episodes image with (".''.$width.' x '.$heigth.'px)')}}:</p> 
                         @else
-                            <p class="p1">{{ "Select the episodes image ( 9:16 Ratio or 1080X1920px)"}}:</p> 
+                            <p class="p1">{{ "Select the episodes image with ( 720x1280px )"}}:</p> 
                         @endif
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="image" id="episode_image" />
+                            <input type="file" multiple="true" class="form-group" name="image" id="episode_image" accept="image/png, image/gif, image/jpeg"/>
 
                             <span>
                                 <p id="season_image_error_msg" style="color:red !important; display:none;">
@@ -439,14 +439,14 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             $player_heigth = $compress_image_settings->episode_player_img_height;
                         @endphp
                         @if($player_width !== null && $player_heigth !== null)
-                            <p class="p1">{{ ("Select the episodes image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+                            <p class="p1">{{ ("Select the episodes image with (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                         @else
-                            <p class="p1">{{ "Select the episodes image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                            <p class="p1">{{ "Select the episodes image with ( 1280x720px )"}}:</p> 
                         @endif
                         {{-- <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p> --}}
 
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
 
                             <span>
                                 <p id="player_image_error_msg" style="color:red !important; display:none;">
@@ -472,7 +472,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080  px)</p>
 
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" />
+                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" accept="image/png, image/gif, image/jpeg"/>
                             @if(!empty($episodes->tv_image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->tv_image }}" class="episodes-img" width="200" />
                             @endif
@@ -1043,8 +1043,8 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                     width = tmpImg.naturalWidth,
                     height = tmpImg.naturalHeight;
                     console.log('img width: ' + width);
-                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 1080 }};
-                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1920 }};
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 720 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1280 }};
                     console.log('validation width:  ' + validWidth);
 
                     if (width !== validWidth || height !== validHeight) {

@@ -67,6 +67,7 @@ use App\SiteTheme;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 use App\CompressImage;
+use App\CountryCode;
 
 
 class AdminSeriesController extends Controller
@@ -216,7 +217,8 @@ class AdminSeriesController extends Controller
                 'InappPurchase' => InappPurchase::all(),
                 'SeriesNetwork' => SeriesNetwork::all(),
                 'Header_name' => "Edit TV Shows ",
-                'compress_image_settings' =>  $compress_image_settings
+                'compress_image_settings' =>  $compress_image_settings,
+                "countries"      => CountryCode::all(),
             );
 
            return View::make('admin.series.create_edit', $data);
@@ -238,6 +240,15 @@ class AdminSeriesController extends Controller
         
          /*Slug*/
         $data = $request->all();
+
+        $countryNames = isset($data['country']) ? $data['country'] : [];
+
+        $countryIds = [];
+        if (!empty($countryNames)) {
+            $countryIds = CountryCode::whereIn('country_name', $countryNames)->pluck('id')->toArray();
+        }
+        $countryIds = CountryCode::whereIn('country_name', $countryNames)->pluck('id')->toArray();
+        // dd($countryIds);
 
         if(!empty($data['artists'])){
             $artistsdata = $data['artists'];
@@ -444,6 +455,7 @@ class AdminSeriesController extends Controller
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
+        $series->blocked_countries = json_encode($countryIds);
         $series->save();  
 
 
@@ -531,6 +543,11 @@ class AdminSeriesController extends Controller
 
             $compress_image_settings = CompressImage::first();
 
+            $blockedCountries = json_decode($series->blocked_countries, true);
+            $blcok_CountryName = CountryCode::whereIn('id', $blockedCountries)->pluck('country_name')->toArray();
+
+            // dd($blcok_CountryName);
+
             //$episode = Episode::all();
             $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
@@ -556,6 +573,8 @@ class AdminSeriesController extends Controller
             'Header_name' => "Edit TV Shows ",
             'compress_image_settings' => $compress_image_settings,
             'theme_settings' => SiteTheme::first(),
+            "countries"      => CountryCode::all(),
+            "blcok_CountryName" => $blcok_CountryName,
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -574,6 +593,15 @@ class AdminSeriesController extends Controller
         $series = Series::findOrFail($id);
 
         $data = $input;
+
+        $countryNames = isset($data['country']) ? $data['country'] : [];
+
+        $countryIds = [];
+        if (!empty($countryNames)) {
+            $countryIds = CountryCode::whereIn('country_name', $countryNames)->pluck('id')->toArray();
+        }
+        $countryIds = CountryCode::whereIn('country_name', $countryNames)->pluck('id')->toArray();
+        // dd($countryIds);
 
         if(isset($data['duration'])){
                 //$str_time = $data
@@ -744,6 +772,7 @@ class AdminSeriesController extends Controller
         $series->ppv_status = $ppv_status;
         $series->details =($data['details']);
         $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
+        $series->blocked_countries = json_encode($countryIds);
         $series->save();
 
         if(!empty($data['artists'])){
@@ -5192,7 +5221,7 @@ class AdminSeriesController extends Controller
 
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
-            $episodes->access =  $data['access'];
+            $episodes->access =  (!empty($data['access']) ? $data['access'] : null );
             $episodes->active =  $active;
             $episodes->search_tags =  $searchtags;
             $episodes->player_image =  $player_image;
@@ -5219,19 +5248,19 @@ class AdminSeriesController extends Controller
 
             if( admin_ads_pre_post_position() == 1){
                 
-                $episodes->pre_post_ads =  $data['pre_post_ads'];
-                $episodes->post_ads     =  $data['pre_post_ads'];
-                $episodes->pre_ads      =  $data['pre_post_ads'];
+                $episodes->pre_post_ads =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+                $episodes->post_ads     =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+                $episodes->pre_ads      =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
             }
             else{
                 
-                $episodes->pre_ads      =  $data['pre_ads'];
-                $episodes->post_ads     =  $data['post_ads'];
+                $episodes->pre_ads      =  (!empty($data['pre_ads']) ? $data['pre_ads'] : null );
+                $episodes->post_ads     =  (!empty($data['post_ads']) ? $data['post_ads'] : null );
                 $episodes->pre_post_ads =  null ;
             }
 
-            $episodes->mid_ads  =  $data['mid_ads'];
-            $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            $episodes->mid_ads  =  (!empty($data['mid_ads']) ? $data['mid_ads'] : null );
+            $episodes->video_js_mid_advertisement_sequence_time   =  (!empty($data['video_js_mid_advertisement_sequence_time']) ? $data['video_js_mid_advertisement_sequence_time'] : null );
             
 
             $episodes->save();
