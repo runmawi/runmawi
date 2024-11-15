@@ -344,6 +344,7 @@ class PaydunyaPaymentController extends Controller
                 'payment_gateway' =>  null ,
                 'role'            => 'registered',
                 'stripe_id'       => null ,  
+                'role'            =>  'registered',
             ]);
 
             $msg = 'Subscription Cancelled Successfully' ;

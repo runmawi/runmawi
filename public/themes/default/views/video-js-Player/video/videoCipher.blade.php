@@ -6,15 +6,22 @@
         </button>
 
         <div class="vjs-title-bar">{{$videodetail->title}}</div>
-
-        <iframe
-        src="https://player.vdocipher.com/v2/?otp={{ $videodetail->otp }}&playbackInfo={{ $videodetail->playbackInfo }}&primaryColor=4245EF"
-        frameborder="0"
-        allow="encrypted-media"
-        style="border:0;width:100%;height:100vh"
-        allowfullscreen
-        ></iframe>
-
+        @if(!empty($videodetail->otp) && !empty($videodetail->playbackInfo))
+            <iframe
+            src="https://player.vdocipher.com/v2/?otp={{ $videodetail->otp }}&playbackInfo={{ $videodetail->playbackInfo }}&primaryColor=4245EF"
+            frameborder="0"
+            allow="encrypted-media"
+            style="border:0;width:100%;height:100vh"
+            allowfullscreen
+            ></iframe>
+        @else
+        <div class="fallback-message" style="color: white; text-align: center; margin-top: 20px;">
+            <p style='position: absolute;margin-left: 32%;margin-top: 4%;'>Video is not available at the moment. Please try again later.</p>
+            <div class="col-md-12 text-center mt-4">
+                   <img class="w-50" src="{{ url('/assets/img/sub.png') }}">
+               </div>
+        </div>
+    @endif
     </div>
 
     <style>

@@ -5627,7 +5627,7 @@ class ChannelController extends Controller
                }
                
                 $videoId = $item['videos_url']; 
-                $apiKey = "pkoggl2lej1EvXFpi3E5D8NbYHcWs2JypAuTmWdJl2XSVC49w00gIjRVicnZmXTt";
+                $apiKey = videocipher_Key();
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
@@ -5664,7 +5664,7 @@ class ChannelController extends Controller
 
                     $responseObj = json_decode($response, true);
 
-                    if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters"){
+                    if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters" || !empty($responseObj['message']) && $responseObj['message'] == "video not found"){
                         $item['otp'] = null;
                         $item['playbackInfo'] = null;
                     }else{
@@ -5678,9 +5678,9 @@ class ChannelController extends Controller
                return $item;
            })->first();
 
-           if(!empty($videodetail) && $videodetail->otp == null && $videodetail->playbackInfo  == null || !Auth::guest() && Auth::User()->role != 'admin' && $videodetail->PPV_Plan == 0 && $videodetail->otp == null && $videodetail->playbackInfo  == null ){
-                return Redirect::to('/category/videos'.'/'.$slug);
-            }
+        //    if(!empty($videodetail) && $videodetail->otp == null && $videodetail->playbackInfo  == null || !Auth::guest() && Auth::User()->role != 'admin' && $videodetail->PPV_Plan == 0 && $videodetail->otp == null && $videodetail->playbackInfo  == null ){
+        //         return Redirect::to('/category/videos'.'/'.$slug)->with('message', 'Video Not Found..');
+        //     }
 
 
            $videoURl = [];
