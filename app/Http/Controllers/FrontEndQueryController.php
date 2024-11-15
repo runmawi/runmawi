@@ -46,6 +46,7 @@ use Illuminate\Support\Facades\File;
 use App\CategoryVideo;
 use App\Videoartist;
 use App\ContinueWatching;
+use App\CountryCode;
 
 class FrontEndQueryController extends Controller
 {
@@ -251,10 +252,35 @@ class FrontEndQueryController extends Controller
 
     public function latest_Series()
     {
-        $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id')
-            ->where('active', '1')->latest()->get();
+        $countryList = CountryCode::pluck('country_name', 'id')->toArray();
+        // dd($country);
 
-        return $latest_series ;
+            $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 
+                                             'duration', 'image', 'featured', 'tv_image', 'player_image', 
+                                             'details', 'description', 'uploaded_by', 'user_id', 
+                                             'available_countries', 'blocked_countries')
+                ->where('active', '1')
+                ->latest()
+                ->get()
+                ->map(function ($series) use ($countryList) {
+                    $blockedCountries = json_decode($series->blocked_countries, true);
+            
+                    // Replace IDs with country names
+                    $series->blocked_countries_names = array_map(function ($id) use ($countryList) {
+                        return $countryList[$id] ?? null;
+                    }, $blockedCountries ?: []);
+            
+                    return $series;
+                });
+                // dd($latest_series);
+            return $latest_series;
+        
+            
+
+            // $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id','available_countries','blocked_countries')
+            //     ->where('active', '1')->latest()->get();
+    
+            // return $latest_series ;
     }
 
     public function Series_based_on_category()

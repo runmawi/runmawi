@@ -62,9 +62,9 @@
                                                       @elseif($latest_serie->access == 'registered')
                                                           <p class="p-tag">{{ __('Register Now') }}</p>
                                                       @elseif(!empty($latest_serie->ppv_status))
-                                                          <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_price }}</p>
+                                                          <p class="p-tag">{{ $currency->symbol . ' ' . $settings->ppv_price }}</p>
                                                       @elseif(!empty($latest_serie->ppv_status) || (!empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null))
-                                                          <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_status }}</p>
+                                                          <p class="p-tag">{{ $currency->symbol . ' ' . $settings->ppv_status }}</p>
                                                       @elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null)
                                                           <p class="p-tag">{{ __('Free') }}</p>
                                                       @endif
@@ -79,9 +79,9 @@
                                                       @elseif($latest_serie->access == 'registered')
                                                           <p class="p-tag">{{ __('Register Now') }}</p>
                                                       @elseif(!empty($latest_serie->ppv_status))
-                                                          <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_price }}</p>
+                                                          <p class="p-tag">{{ $currency->symbol . ' ' . $settings->ppv_price }}</p>
                                                       @elseif(!empty($latest_serie->ppv_status) || (!empty($latest_serie->ppv_status) && $latest_serie->ppv_status == null))
-                                                          <p class="p-tag1">{{ $currency->symbol . ' ' . $settings->ppv_status }}</p>
+                                                          <p class="p-tag">{{ $currency->symbol . ' ' . $settings->ppv_status }}</p>
                                                       @elseif($latest_serie->ppv_status == null && $latest_serie->ppv_price == null)
                                                           <p class="p-tag">{{ __('Free') }}</p>
                                                       @endif
@@ -150,7 +150,13 @@
 @endif
 
 <script>
-    var elem = document.querySelector('.latest-series-video');
+
+    $(document).ready(function(){
+        $('.flickity-lazyloaded').css('opacity','0');
+        $('.block-description').hide();
+        $('.p-tag').hide();
+
+        var elem = document.querySelector('.latest-series-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
@@ -161,4 +167,35 @@
         imagesLoaded: true,
         lazyload: true,
     });
- </script>
+
+    var countryIpCheckUrl = "<?= config('services.country_ip_check') ?>";
+
+    fetch(countryIpCheckUrl)
+        .then(response => response.json())
+        .then(data => {
+            var { country, country_code, country_code3 } = data;
+            // console.log("Current Country:", country);
+
+            @foreach($data as $latest_serie)
+                var blockedCountries = @json($latest_serie->blocked_countries_names);
+                
+                if (blockedCountries.includes(country)) {
+                    document.querySelectorAll('.items').forEach(function(item) {
+                        if (item.querySelector('a').getAttribute('href') === "{{ URL::to('/play_series/' . $latest_serie->slug) }}") {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            @endforeach
+
+            flkty.reloadCells();
+            $('.flickity-lazyloaded').css('opacity','1');
+            $('.block-description').show();
+            $('.p-tag').show();
+        })
+        .catch(error => console.error('Error fetching geolocation data:', error));
+
+    });
+</script>
+
+
