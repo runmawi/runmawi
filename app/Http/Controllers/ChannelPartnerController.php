@@ -20,6 +20,8 @@ use App\Setting;
 use App\Geofencing;
 use URL;
 use Theme;
+use Razorpay\Api\Api;
+
 
 class ChannelPartnerController extends Controller
 {
@@ -113,39 +115,49 @@ class ChannelPartnerController extends Controller
         }
     }
 
-    public function channelparnterpayment(Request $request)
+    public function channelparnterpayment(Request $request, $channel_id)
     {
+        // try {
 
-        $SiteTheme = SiteTheme::first();
+            $SiteTheme = SiteTheme::first();
 
-        $Stripe_payment_settings = PaymentSetting::where('payment_type', 'Stripe')->where('stripe_status',1)->first();
-        $recurly_payment_settings = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+            $Stripe_payment_settings = PaymentSetting::where('payment_type', 'Stripe')->where('stripe_status',1)->first();
+            $recurly_payment_settings = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
+    
+            $plans_data = AdminUserChannelSubscriptionPlans::where('paymentGateway','Stripe')->where('status',1)->get();
+    
+            $CurrencySetting = CurrencySetting::pluck('enable_multi_currency')->first();
+    
+            $data = array(
+                'current_theme'  => $this->HomeSetting->theme_choosen,
+                'Stripe_payment_settings'  => $Stripe_payment_settings ,
+                'recurly_payment_settings' => $recurly_payment_settings,
+                'plans_data' => $plans_data ,
+                'SiteTheme'  => $SiteTheme ,
+                'channel_id' => $channel_id,
+            );
+    
+            return Theme::view('ChannelPartner.payment.payment-page',$data);
 
-        $plans_data = AdminUserChannelSubscriptionPlans::where('paymentGateway','Stripe')->where('status',1)->get();
-
-        $CurrencySetting = CurrencySetting::pluck('enable_multi_currency')->first();
-
-        $data = array(
-            'current_theme'  => $this->HomeSetting->theme_choosen,
-            'Stripe_payment_settings'  => $Stripe_payment_settings ,
-            'recurly_payment_settings' => $recurly_payment_settings,
-            'plans_data' => $plans_data ,
-            'SiteTheme'  => $SiteTheme ,
-        );
-
-        return Theme::view('ChannelPartner.payment.payment-page',$data);
+        // } catch (\Throwable $th) {
+        //     return abort(404);
+        // }
     }
 
     public function payment_gateway_depends_plans( Request $request)
     {
       try {
 
-        $plans_data = AdminUserChannelSubscriptionPlans::where('paymentGateway',$request->payment_gateway)
-                        ->where('status',1)->get()
-                        ->map(function ($item){
-                            $item['plan_content'] = $item->plan_content != null ? $item->plan_content : "Plan Description";
-                            return $item;
-                        });
+        $api = new Api('rzp_test_RLu9H6fu7tlNhI', 'PERL7eet6k3eBfoNCBvHNyNf' );
+        $subscription = $api->subscription->fetch('sub_PLBdklt5j82OrP');
+
+
+        dd( $subscription );
+
+        $plans_data = AdminUserChannelSubscriptionPlans::where('status', 1)
+        ->where('paymentGateway', $request->payment_gateway)
+        // ->whereJsonContains('channel_id', $request->channel_id)
+        ->get();
 
         $response = array(
           'status'     => true ,

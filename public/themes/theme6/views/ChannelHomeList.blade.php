@@ -49,7 +49,7 @@
                                 <h4>{{ $channels->channel_name }}</h4>
                             </div>
                             <div class="subscribe">
-                                <a class="btn btn-primary" href="">
+                                <a class="btn btn-primary" href="{{ route('channel.payment',$channels->id) }}">
                                     <span>Subscribe</span>
                                 </a>
                             </div>

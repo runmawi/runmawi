@@ -731,7 +731,8 @@
                 type: "get",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    payment_gateway: payment_gateway
+                    payment_gateway: payment_gateway,
+                    channel_id: '{{ $channel_id }}'
                 },
                 success: function(response) {
                     const plansData = response.data.plans_data;

@@ -57,41 +57,6 @@ class AdminLiveStreamController extends Controller
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $this->userIp = $geoip->getip();
     }
-    
-
-   
-
-    public function design(Request $request)
-    {
-        $current_timezone = current_timezone();
-        $carbon_now = Carbon::now($current_timezone);
-        $selectedDay = $request->input('day', $carbon_now->dayOfWeek);
-
-        $stations = LiveStream::where('stream_upload_via', 'radio_station')
-            ->latest()
-            ->get();
-    
-        $endOfDay = Carbon::today()->endOfDay();
-        $timeslots = [];
-        $startTime = $carbon_now->copy()->startOfHour();
-        while ($startTime <= $endOfDay) {
-            $timeslots[] = $startTime->format('H:00');
-            $startTime->addHour();
-        }
-    
-        if ($request->ajax()) {
-            return response()->json([
-                'day' => \Carbon\Carbon::create()->startOfWeek()->addDays($selectedDay)->format('l'),
-                'programs' => $programs,
-            ]);
-        }
-
-        return view('admin.livestream.radiostation.design', [
-            'timeslots' => $timeslots,
-            'programs' => $programs,
-            'selectedDay' => $selectedDay,
-        ]);
-    }
 
     public function index()
     {
