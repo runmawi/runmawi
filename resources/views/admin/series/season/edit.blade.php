@@ -47,13 +47,13 @@
                         @if($player_width !== null && $player_heigth !== null)
                             <p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                         @else
-                            <p class="p1">{{ "Select Season Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                            <p class="p1">{{ "Select Season Thumbnail ( 1280x720px )"}}:</p> 
                         @endif
                         {{-- <p class="p1">(16:9 Ratio or 1080 X 1920px)</p> --}}
                         @if(!empty($season->image))
                             <img src="{{  $season->image }}" class="movie-img" width="200" />
                         @endif
-                        <input type="file" multiple="true" class="form-control" name="image" id="season_image" />
+                        <input type="file" multiple="true" class="form-control" name="image" id="season_image" accept="image/png, image/gif, image/jpeg"/>
                         <span>
                             <p id="season_image_error_msg" style="color:red !important; display:none;">
                                 * Please upload an image with the correct dimensions.
@@ -387,8 +387,8 @@
                 console.log(width);
                 console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_season }};
-                var validHeight = {{ $compress_image_settings->height_validation_season }};
+                var validWidth = {{ $compress_image_settings->width_validation_season ?: 1280 }};
+                var validHeight = {{ $compress_image_settings->height_validation_season ?: 720 }};
                 console.log(validWidth);
                 console.log(validHeight);
 
