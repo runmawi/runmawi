@@ -544,9 +544,10 @@ class AdminSeriesController extends Controller
             $compress_image_settings = CompressImage::first();
 
             $blockedCountries = json_decode($series->blocked_countries, true);
-            $blcok_CountryName = CountryCode::whereIn('id', $blockedCountries)->pluck('country_name')->toArray();
 
-            // dd($blcok_CountryName);
+            $blcok_CountryName = CountryCode::whereIn('id', (!empty($blockedCountries) ? $blockedCountries : []))->pluck('country_name')->toArray();
+
+            // dd($blockedCountries);
 
             //$episode = Episode::all();
             $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
