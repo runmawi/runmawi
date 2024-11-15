@@ -212,6 +212,8 @@
 
     <div id="series_bg">
         <div class="">
+
+
             @if(!Auth::guest())
                 @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo)|| $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
                     @if($free_episode > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo) || $SeasonSeriesPpvPurchaseCount > 0 && !empty($episode_details->otp) && !empty($episode_details->playbackInfo))
@@ -229,15 +231,24 @@
                                 <button class="custom-skip-backward-button">
                                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
                                 </button> -->
+                                @if(!empty($episode_details->otp) && !empty($episode_details->playbackInfo))
 
-                                <iframe
-                                src="https://player.vdocipher.com/v2/?otp={{ @$episode_details->otp }}&playbackInfo={{ @$episode_details->playbackInfo }}&primaryColor=4245EF"
-                                frameborder="0"
-                                allow="encrypted-media"
-                                style="border:0;width:100%;height:100vh"
-                                allowfullscreen
-                                ></iframe>
-                            </div>
+                                    <iframe
+                                    src="https://player.vdocipher.com/v2/?otp={{ @$episode_details->otp }}&playbackInfo={{ @$episode_details->playbackInfo }}&primaryColor=4245EF"
+                                    frameborder="0"
+                                    allow="encrypted-media"
+                                    style="border:0;width:100%;height:100vh"
+                                    allowfullscreen
+                                    ></iframe>
+                                </div>
+                                @else
+                                    <div class="fallback-message" style="color: white; text-align: center; margin-top: 20px;">
+                                        <p style='position: absolute;margin-left: 32%;margin-top: 4%;'>Video is not available at the moment. Please try again later.</p>
+                                        <div class="col-md-12 text-center mt-4">
+                                            <img class="w-50" src="{{ url('/assets/img/sub.png') }}">
+                                        </div>
+                                    </div>
+                                @endif
                         <!-- @endif -->
                         <!-- <div class="logo_player"> </div> -->
                         <!-- Intro Skip and Recap Skip -->
@@ -269,7 +280,14 @@
                                 </h4>
                                 <div class="clear"></div>
                             </div>
-                            @if(!Auth::guest() && $SeriesSeason->access == 'ppv')
+                            @if(!Auth::guest() && !empty($episode_details->playbackmessage))
+                                <div class="fallback-message" style="color: white; text-align: center; margin-top: 20px;">
+                                    <p style='position: absolute;margin-left: 32%;margin-top: -15%;'>Video is not available at the moment. Please try again later.</p>
+                                    <div class="col-md-12 text-center mt-4">
+                                        <img class="w-50" src="{{ url('/assets/img/sub.png') }}" style='margin-top: -18%;'>
+                                    </div>
+                                </div>
+                            @elseif(!Auth::guest() && $SeriesSeason->access == 'ppv')
                                 <div class="container-fluid mt-3">
                                     <div class="d-flex">
 
@@ -335,43 +353,9 @@
                             @endif
                         </div>
                     @endif
-                <!-- @elseif(@$checkseasonppv_exits == 0 && $free_episode > 0) -->
-                    <!-- {{--  -->
-                    <!-- <div id="series_container">
-                        <video id="videoPlayer" muted autoplay class="video-js vjs-default-skin" controls preload="auto"
-                                poster="{{ url('/public/uploads/images/' . $episode->player_image) }}" data-setup="{}"
-                                width="100%" style="width:100%;" data-authenticated="{{ !Auth::guest() }}">
-                                <source src="{{ $season[0]->trailer }}" type='video/mp4' label='auto'>
-
-                                @if(@$playerui_settings['subtitle'] == 1 && isset($episodesubtitles))
-                                    @foreach($episodesubtitles as $episodesubtitles_file)
-                                        <track kind="captions" src="{{ $episodesubtitles_file->url }}"
-                                            srclang="{{ $episodesubtitles_file->sub_language }}"
-                                            label="{{ $episodesubtitles_file->shortcode }}" default>
-                                    @endforeach
-                                @endif
-                        </video>
-
-                        <div style="background: url({{ url('/public/uploads/images/' . $episode->player_image) }}); background-repeat: no-repeat; background-size: cover; height: 400px; margin-top: 20px;">
-                            <div id="ppv">
-                                <h2>Purchase to Watch the Episodes
-                                    @if($episode->access == 'subscriber')
-                                        Subscribers
-                                    @elseif($episode->access == 'registered')
-                                        Registered Users
-                                    @endif
-                                </h2>
-                                <div class="clear"></div>
-                                @if(!Auth::guest())
-                                    <form method="get" action="{{ url('/') }}/user/{{ Auth::user()->username }}/upgrade_subscription">
-                                        <button id="button">Purchase to Watch {{ $currency->symbol . ' ' . $episode->ppv_price }}</button>
-                                    </form>
-                                @endif
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- --}} -->
+       
                 @else
+                
                     <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                         <div class="container-fluid">
                             <div class="col-12 col-md-6 col-sm-6 p-0">
@@ -420,6 +404,7 @@
                         @endif
                     </div>
             @endif
+            
         </div>
     </div>
 
