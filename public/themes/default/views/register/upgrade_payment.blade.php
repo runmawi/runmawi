@@ -546,6 +546,14 @@ if (!is_null($PayPalpayment)) {
             padding: 10px;
         }
 
+        body.dark-theme .blk p{color: <?php echo GetLightText(); ?> !important}
+        body.dark-theme .dgk h4{color: <?php echo GetLightText(); ?> !important}
+        body.dark-theme .dgk p{color: <?php echo GetLightText(); ?> !important}
+
+        body.light-theme .blk p{color: <?php echo $GetDarkText; ?>!important;}
+        body.light-theme .dgk h4{color: <?php echo $GetDarkText; ?>!important;}
+        body.light-theme .dgk p{color: <?php echo $GetDarkText; ?>!important;}
+
         body.dark-theme .ambk {
             background: <?php echo $GetDarkText; ?>!important;
             color: <?php echo $GetDarkBg; ?>!important;
