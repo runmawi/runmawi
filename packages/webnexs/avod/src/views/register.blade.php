@@ -253,7 +253,7 @@ i.fa.fa-google-plus {
                             
                             <div class="sign-up-buttons col-md-12" align="right">
                                   
-                                  <button class="btn btn-hover ab btn-lg btn-block" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
+                                  <button class="btn btn-hover btn-lg btn-block" style="display: block;" type="submit" name="create-account">{{ __('Sign Up Today') }}</button>
                                 </div>
                         </div>
                       

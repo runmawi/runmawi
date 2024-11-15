@@ -106,17 +106,17 @@ $system_settings = App\SystemSetting::find(1);
                                     </span>
                                     @enderror
                                     <div class="form-group">  
-                                        <input id="email_id" type="email" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus>
+                                        <input id="email_id" type="email" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus style="width: 91%;">
                                     </div>
-                                    <div class="form-group" style="  margin-top: 30px;"> 
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" >
+                                    <div class="form-group"> 
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" style="width: 91%">
                                     </div>
 
                                     <div class="sign-info">
-                                        <button type="submit" class="btn btn-hover ab" style="width:100%;color:#fff!important;">SIGN IN</button>
+                                        <button type="submit" class="btn btn-hover" style="width:100%;color:#fff!important;margin: 0 20px;">SIGN IN</button>
 
                                     </div> 
-<div class="mt-2 d-flex justify-content-end  links">
+                            <div class="mt-2 d-flex justify-content-end  links" style="width: 92%">
                                 <a href="{{ url('advertiser/forget-password') }}" class="text-primary ml-2">Reset Password </a>
                             </div>
                                     <hr style="color:#1e1e1e;">

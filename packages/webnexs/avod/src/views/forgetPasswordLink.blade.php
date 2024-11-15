@@ -95,21 +95,21 @@ $system_settings = App\SystemSetting::find(1);
                                       <input type="hidden" name="token" value="{{ $token }}">
 
                                       <div class="form-group row">
-                                            <input type="text" id="email_address" class="form-control" name="email_id" required autofocus placeholder="Enter Email Id">
+                                            <input type="text" id="email_address" class="form-control" name="email_id" required autofocus placeholder="Enter Email Id" style="margin: 0 20px;">
                                               @if ($errors->has('email_id'))
                                               <span class="text-danger">{{ $errors->first('email_id') }}</span>
                                               @endif
                                       </div>
 
                                       <div class="form-group row">
-                                              <input type="password" id="password" class="form-control" name="password" required autofocus placeholder="Password">
+                                              <input type="password" id="password" class="form-control" name="password" required autofocus placeholder="Password" style="margin: 0 20px;">
                                               @if ($errors->has('password'))
                                               <span class="text-danger">{{ $errors->first('password') }}</span>
                                               @endif
                                       </div>
 
                                       <div class="form-group row">
-                                              <input type="password" id="password-confirm" class="form-control" name="password_confirmation" required autofocus placeholder="Confirm Password">
+                                              <input type="password" id="password-confirm" class="form-control" name="password_confirmation" required autofocus placeholder="Confirm Password" style="margin: 0 20px;">
                                               @if ($errors->has('password_confirmation'))
                                               <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
                                               @endif
