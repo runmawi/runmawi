@@ -83,6 +83,8 @@
     body.dark input{color: <?php echo GetAdminDarkText(); ?>;}
 	body.dark input{background-color: <?php echo GetAdminDarkBg(); ?>;}
 	body.light input{color: <?php echo GetAdminLightText(); ?>;}
+    .sample-file.d-flex a{font-size: 12px;margin-right: 5px;}
+
 
 </style>
 <style>
@@ -353,9 +355,9 @@
                                     @if($width !== null && $heigth !== null)
                                         <p class="p1">{{ ("Select the episodes image (".''.$width.' x '.$heigth.'px)')}}:</p> 
                                     @else
-                                        <p class="p1">{{ "Select the episodes image (1080 X 1920px or 9:16 ratio)"}}:</p> 
+                                        <p class="p1">{{ "Select the episodes image (720 X 1280px )"}}:</p> 
                                     @endif
-                                    <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                                    <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
                                     <span>
                                         <p id="season_image_error_msg" style="color:red !important; display:none;">
                                             * Please upload an image with the correct dimensions.
@@ -377,14 +379,14 @@
                             @if($player_width !== null && $player_heigth !== null)
                                 <p class="p1">{{ ("Select the player image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                             @else
-                                <p class="p1">{{ "Select the player image ( 1280 X 720px or 16:9 Ratio )"}}:</p> 
+                                <p class="p1">{{ "Select the player image ( 1280 X 720px )"}}</p> 
                             @endif
 
                             <div class="panel-body">
                                 @if(!empty($episodes->player_image))
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
                                 @endif
-                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" />
+                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
                                 <span>
                                     <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
                                         * Please upload an image with the correct dimensions.
@@ -553,15 +555,23 @@
                     </div>
                     <div class="row mt-5">
                               <div class="panel panel-primary" data-collapsed="0">
-                                 <div class="panel-heading col-sm-12">
-                                    <div class="panel-title" style="color: #000;"> <label class="m-0"><h3 class="fs-title">Subtitles (WebVTT (.vtt) or SubRip (.srt)) :</h3>
-                                    <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .vtt</a>
-                                    <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.vtt" class="btn btn-primary">Download Sample .srt</a></label>
-                                    </div>
+                                <div class="panel-heading"> 
+                                    <div class="panel-title col-sm-12 d-flex justify-content-between aign-items-center"> 
+                                        <h6 class="fs-title">
+                                            Subtitles (WebVTT (.vtt) or SubRip (.srt)) :
+                                        </h6>
+                                        <div class="sample-file d-flex align-items-center">
+                                            <a href="{{ URL::to('/ExampleSubfile.vtt') }}" download="sample.vtt" class="btn btn-primary">Download sample .vtt</a>
+                                            <a href="{{ URL::to('/Examplefile.srt') }}" download="sample.srt" class="btn btn-primary">Download sample .srt</a>
+                                            <a class="iq-bg-warning" data-toggle="tooltip" data-placement="top" title="Upload Subtitles" data-original-title="Upload Subtitles" href="#">
+                                                <i class="las la-exclamation-circle"></i>
+                                            </a>
+                                        </div>
+                                    </div> 
                                     <div class="panel-options"> 
-                                       <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+                                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
                                     </div>
-                                 </div>
+                                </div> 
                                  <div class="panel-body" style="display: block;">
                                     @foreach($subtitles as $subtitle)
                                     <div class="col-sm-6 form-group" style="float: left;">
@@ -808,9 +818,9 @@
                                     <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
                                              <?php } ?>
                                     <td>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Video"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                        <div class="d-flex justify-content-between align-items-center" style="gap:5px;">
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Meta"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                            <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Video"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                             <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="iq-bg-danger delete" onclick="return confirm('Are you sure?')" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete Episode"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                         </div>
                                     </td>
@@ -853,7 +863,7 @@
 
      {{-- image validation --}}
     <script>
-        document.getElementById('episode_image').addEventListener('change', function() {
+        document.getElementById('image').addEventListener('change', function() {
             var file = this.files[0];
             if (file) {
                 var img = new Image();
@@ -863,8 +873,8 @@
                     console.log(width);
                     console.log(height);
                     
-                    var validWidth = {{ $compress_image_settings->width_validation_episode }};
-                    var validHeight = {{ $compress_image_settings->height_validation_episode }};
+                    var validWidth = {{ $compress_image_settings->width_validation_episode ?: 720 }};
+                    var validHeight = {{ $compress_image_settings->height_validation_episode ?: 1280 }};
                     console.log(validWidth);
                     console.log(validHeight);
 
@@ -889,19 +899,15 @@
                 img.onload = function() {
                     var width = img.width;
                     var height = img.height;
-                    console.log(width);
-                    console.log(height);
                     
-                    var validWidth = {{ $compress_image_settings->episode_player_img_width }};
-                    var validHeight = {{ $compress_image_settings->episode_player_img_height }};
-                    console.log(validWidth);
-                    console.log(validHeight);
+                    var validWidthPlayer = {{ $compress_image_settings->episode_player_img_width ?: 1280 }};
+                    var validHeightPlayer = {{ $compress_image_settings->episode_player_img_height ?: 720 }};
 
-                    if (width !== validWidth || height !== validHeight) {
+                    if (width !== validWidthPlayer || height !== validHeightPlayer) {
                         document.getElementById('season_thum_image_error_msg').style.display = 'block';
                         $('.pull-right').prop('disabled', true);
                         document.getElementById('season_thum_image_error_msg').innerText = 
-                            `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                            `* Please upload an image with the correct dimensions (${validWidthPlayer}x${validHeightPlayer}px).`;
                     } else {
                         document.getElementById('season_thum_image_error_msg').style.display = 'none';
                         $('.pull-right').prop('disabled', false);

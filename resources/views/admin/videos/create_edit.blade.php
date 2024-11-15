@@ -1063,9 +1063,9 @@ button[data-plyr="captions"] {
                               @if($width !== null && $heigth !== null)
                                  <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
                               @else
-                                 <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                 <p class="p1">{{ "Video Thumbnail ( 720X1280px )"}}:</p> 
                               @endif
-                              <input type="file" name="image" id="image" />
+                              <input type="file" name="image" id="image" accept="image/png, image/webp, image/jpeg"/>
                               <span>
                                   <p id="video_image_error_msg" style="color:red !important; display:none;">
                                       * Please upload an image with the correct dimensions.
@@ -1087,10 +1087,10 @@ button[data-plyr="captions"] {
                               @if($player_width !== null && $player_heigth !== null)
                                  <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                               @else
-                                 <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
+                                 <p class="p1">{{ "Player Thumbnail ( 1280X720px )"}}:</p> 
                               @endif
                               <div class="panel-body">
-                                 <input type="file" name="player_image" id="player_image" />
+                                 <input type="file" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg"/>
                                  <span>
                                     <p id="player_image_error_msg" style="color:red !important; display:none;">
                                        * Please upload an image with the correct dimensions.
@@ -2803,8 +2803,8 @@ $(document).ready(function(){
                height = tmpImg.naturalHeight;
                image_validation_status = "{{  image_validation_videos() }}" ;
                console.log(width);
-               var validWidth = {{ $compress_image_settings->width_validation_videos ?: 1080 }};
-               var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1920 }};
+               var validWidth = {{ $compress_image_settings->width_validation_videos ?: 720 }};
+               var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1280 }};
                console.log('validWidth ' + validWidth);
                console.log(validHeight);
 
@@ -2840,7 +2840,7 @@ $(document).ready(function(){
                document.getElementById('player_image_error_msg').style.display = 'block';
                $('.update_upload_img').prop('disabled', true);
                document.getElementById('player_image_error_msg').innerText = 
-                  `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                  `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
          } else {
                document.getElementById('player_image_error_msg').style.display = 'none';
                $('.update_upload_img').prop('disabled', false);
