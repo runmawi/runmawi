@@ -211,7 +211,7 @@ $settings  = App\Setting::first();?>
 
 			</div>
 
-			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
+			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading">
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> 
                 <div class="panel-heading"> 
@@ -350,6 +350,25 @@ $settings  = App\Setting::first();?>
 										@endif 
 									@endforeach
 								</select>
+							</div> 
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="panel panel-primary" data-collapsed="0"> 
+							<div class="panel-heading"> 
+								<div class="panel-title font-weight-bold"><label class="m-0">Block Countries</label></div> 
+							</div> 
+							<div class="panel-body  p-0" style="display: block;"> 
+								<p class="p1">Select A block countires below:</p>
+								<select  name="country[]" class="js-example-basic-multiple" style="width: 100%;" multiple="multiple">
+									@foreach($countries as $country)
+										@if(isset($blcok_CountryName) && in_array($country->country_name, $blcok_CountryName))
+											<option value="{{ $country->country_name }}" selected>{{ $country->country_name }}</option>
+										@else
+											<option value="{{ $country->country_name }}">{{ $country->country_name }}</option>
+										@endif
+										@endforeach
+								 </select>
 							</div> 
 						</div>
 					</div>

@@ -93,7 +93,7 @@ class FrontEndQueryController extends Controller
         }
                     
         $this->check_Kidmode = !Auth::guest() && $this->Mode['user_type'] != null && $this->Mode['user_type'] == "Kids" ? 1 : 0 ;
-
+        
     }
 
     public function Latest_videos()
