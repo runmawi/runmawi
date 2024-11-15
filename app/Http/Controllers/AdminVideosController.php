@@ -116,7 +116,7 @@ class AdminVideosController extends Controller
     public function __construct()
     {
         $this->client = new Client();
-        $this->apiKey = '9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE'; 
+        $this->apiKey = videocipher_Key(); 
 
         $this->Enable_Flussonic_Upload = Enable_Flussonic_Upload();
         $this->Enable_Flussonic_Upload_Details = Enable_Flussonic_Upload_Details();
@@ -11791,7 +11791,7 @@ class AdminVideosController extends Controller
 
 
                 $videoId = "597244970fe8487ab2b6d026719397ac"; 
-                $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+                $apiKey = videocipher_Key();
 
                 $curl = curl_init();
 
@@ -11900,7 +11900,7 @@ class AdminVideosController extends Controller
         public function videocihperplayer(){
 
             $videoId = "b69110c2cfc54e09b015aa07739311a4"; 
-            $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+            $apiKey = videocipher_Key();
 
             $curl = curl_init();
 
