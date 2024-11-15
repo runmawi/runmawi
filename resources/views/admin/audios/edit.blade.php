@@ -201,7 +201,7 @@ border-radius: 0px 4px 4px 0px;
 												@if($width !== null && $heigth !== null)
 													<p class="p1">{{ ("Select The Audio Image (".''.$width.' x '.$heigth.'px)')}}:</p> 
 												@else
-													<p class="p1">{{ "Select The Audio Image ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+													<p class="p1">{{ "Select The Audio Image ( 720 x 1280px )"}}:</p> 
 												@endif
 											</div> 
 											<div class="panel-options"> 
@@ -209,17 +209,18 @@ border-radius: 0px 4px 4px 0px;
 											</div>
 										</div> 
 										<div class="panel-body" style="display: block;"> 
-											<input type="file" multiple="true" class="form-control" name="image" id="image" />
-											@if(!empty($audio->image))
-												<div class=" p-0 mb-1 mt-2">
-													<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}" class="video-img w-100 " style="height: 200px;object-fit:contain;" />
-												</div>
-											@endif
+											<input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
 											<span>
 												<p id="audio_image_error_msg" style="color:red !important; display:none;">
 													* Please upload an image with the correct dimensions.
 												</p>
 											</span> 
+											@if(!empty($audio->image))
+												<div class=" p-0 mb-1 mt-2">
+													<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->image }}" class="video-img w-100 " style="height: 200px;object-fit:contain;" />
+												</div>
+											@endif
+											
 										</div> 
 									</div>
 								</div>
@@ -236,7 +237,7 @@ border-radius: 0px 4px 4px 0px;
 												@if($player_width !== null && $player_heigth !== null)
 													<p class="p1">{{ ("Select The Audio Image (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
 												@else
-													<p class="p1">{{ "Select The Audio Image ( 16:9 Ratio or 1280X720px )"}}:</p> 
+													<p class="p1">{{ "Select The Audio Image ( 1280X720px )"}}:</p> 
 												@endif
 											</div> 
 											<div class="panel-options"> 
@@ -244,17 +245,18 @@ border-radius: 0px 4px 4px 0px;
 											</div>
 										</div> 
 										<div class="panel-body" style="display: block;"> 
-                                    		<input type="file" name="player_image" id="player_image" >
+                                    		<input type="file" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg">
+											<span>
+												<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
+													* Please upload an image with the correct dimensions.
+												</p>
+											</span>
 											@if(!empty($audio->player_image))
 												<div class=" p-0 mb-1 mt-2">
 													<img src="{{ URL::to('/') . '/public/uploads/images/' . $audio->player_image }}" class="video-img w-100 " style="height: 150px;object-fit:contain;"/>
 												</div>
 											@endif
-											<span>
-												<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
-													* Please upload an image with the correct dimensions.
-												</p>
-											</span> 
+											 
 										</div> 
 									</div>
 								</div>
@@ -617,8 +619,8 @@ border-radius: 0px 4px 4px 0px;
 				width = tmpImg.naturalWidth,
 				height = tmpImg.naturalHeight;
 				console.log(width);
-				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 1080 }};
-				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1920 }};
+				var validWidth = {{ $compress_image_settings->width_validation_audio ?: 720 }};
+				var validHeight = {{ $compress_image_settings->height_validation_audio ?: 1280 }};
 				console.log('validWidth ' + validWidth);
 				console.log(validHeight);
 
