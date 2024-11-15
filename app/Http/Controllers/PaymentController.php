@@ -645,14 +645,18 @@ public function RentPaypal(Request $request)
                       // Subscription Cancel
               try {
                     $user = Auth::user();
-                    $stripe_plan = Subscription::where('user_id',$user->id)->latest()->pluck('stripe_id')->first();
+
+                    $stripe_plan = User::where('id',Auth::user()->id)->where('payment_gateway','Stripe')->pluck('stripe_id')->first();
                     $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
                     $stripe->subscriptions->cancel( $stripe_plan,[] );
 
-                    $user = User::find(Auth::user()->id);
-                    $user->payment_status = 'Cancel';
-                    $user->role = 'registered';
-                    $user->save();
+
+                    User::where('id',Auth::user()->id )->update([
+                      'payment_gateway' =>  null ,
+                      'role'            => 'registered',
+                      'stripe_id'       =>  null ,  
+                      'payment_status'  =>   'Cancel' ,
+                  ]);
 
                     Subscription::where('stripe_id',$stripe_plan)->update([
                       'stripe_status' =>  'Cancelled',

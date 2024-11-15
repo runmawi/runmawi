@@ -68,6 +68,7 @@ class RecurlyPaymentChannelController extends Controller
                 'user_details'  => $user_details ,
                 'plan_details'  => $plan_details,
                 'Country_code'  => Country_Code(),
+                'channel_id'    => $request->channel_id,
             );
 
             return Theme::view('Recurly-Channel.checkout_page', $data);
@@ -77,7 +78,7 @@ class RecurlyPaymentChannelController extends Controller
             $respond = array(
                 'status'   => "false",
                 'current_theme' => $this->HomeSetting->theme_choosen,
-                'redirect_url' => URL::to('/channel-payment'),
+                'redirect_url' => route('channel.payment',$request->channel_id),
                 'message'  => "Some errors occurred while subscribing. Please connect, Admin!",
             );
 
@@ -89,7 +90,7 @@ class RecurlyPaymentChannelController extends Controller
     {
         try {
 
-            $user_details = Auth::User();
+             $user_details = Auth::User();
 
             // Purchase create array
 
@@ -134,7 +135,7 @@ class RecurlyPaymentChannelController extends Controller
            
             UserChannelSubscription::create([
                 'user_id'         => $user_details->id,
-                'channel_id'      => 1,
+                'channel_id'      => $request->channel_id,
                 'platform'        => 'Recurly',
                 'PaymentGateway'  => 'Recurly',
                 'subscription_id' => $subscription_id,
@@ -174,7 +175,7 @@ class RecurlyPaymentChannelController extends Controller
             $respond = array(
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'status'   => "false",
-                'redirect_url' => URL::to('/channel-payment'),
+                'redirect_url' => route('channel.payment',$request->channel_id),
                 'message'  => $th->getMessage(),
             );
         }
@@ -205,7 +206,7 @@ class RecurlyPaymentChannelController extends Controller
 
             UserChannelSubscription::create([
                 'user_id'         => $user_details->id,
-                'channel_id'      => 1,
+                'channel_id'      => $request->channel_id,
                 'platform'        => 'Recurly',
                 'PaymentGateway'  => 'Recurly',
                 'subscription_id' => $subscription_id,

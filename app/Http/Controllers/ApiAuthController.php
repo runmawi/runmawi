@@ -4917,6 +4917,7 @@ public function verifyandupdatepassword(Request $request)
           ->join('video_categories', 'categoryvideos.category_id', '=', 'video_categories.id')
           ->whereIn('categoryvideos.category_id', $category_id)
           ->where('videos.id', '!=', $videoid) 
+          ->where('videos.active',1)->where('videos.status', 1)->where('videos.draft',1)
           ->groupBy('videos.id')  
           ->latest()
           ->limit(30)
@@ -4925,7 +4926,7 @@ public function verifyandupdatepassword(Request $request)
               $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
               $item['video_publish_status'] = ($item->publish_type == "publish_now" || ($item->publish_type == "publish_later" && Carbon::today()->now()->greaterThanOrEqualTo($item->publish_time)))
                   ? "Published"
-                  : ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);  // Calculate the publish status
+                  : ($item->publish_type == "publish_later" ? Carbon::parse($item->publish_time)->isoFormat('Do MMMM YYYY') : null);  
               return $item;
           });
   
@@ -27517,7 +27518,7 @@ public function TV_login(Request $request)
            
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
-          'ccode' => 'required',
+          'ccode'         => ['required', 'regex:/^\+[\d]+$/'], // Ensure ccode starts with + followed by numbers
           'user_id' => 'required|numeric',
           'otp' => 'required|numeric',
         ]);
@@ -27546,8 +27547,7 @@ public function TV_login(Request $request)
 
         }
 
-        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
-                      ->where('otp',$request->otp)->first();
+        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
 
