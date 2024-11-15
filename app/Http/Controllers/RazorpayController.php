@@ -95,6 +95,7 @@ class RazorpayController extends Controller
     public function RazorpayIntegration(Request $request,$Plan_Id)
     {
 
+
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
