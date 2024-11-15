@@ -2050,7 +2050,7 @@ public function verifyandupdatepassword(Request $request)
       if($ppv_exists_check_query == 1 || $userrole == "admin" || !empty($item['videos_url'])){
 
               $videoId = $item['videos_url']; 
-              $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+              $apiKey = videocipher_Key();
               $curl = curl_init();
 
               curl_setopt_array($curl, array(
@@ -7278,7 +7278,7 @@ return response()->json($response, 200);
          if($ppv_exists_check_query > 0 || $userrole == "admin"){
          
          $videoId = $item['Episode_url']; 
-         $apiKey = "9HPQ8xwdeSLL4ATNAIbqNk8ynOSsxMMoeWpE1p268Y5wuMYkBpNMGjrbAN0AdEnE";
+         $apiKey = videocipher_Key();
          $curl = curl_init();
 
          curl_setopt_array($curl, array(
