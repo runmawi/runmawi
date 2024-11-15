@@ -145,6 +145,23 @@ border-radius: 0px 4px 4px 0px;
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-primary" data-collapsed="0">
+                                <div class="panel-heading"> <div class="panel-title"><label>VideoCipher Storage</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+                                <div class="panel-body row"> 
+                                    <div class="form-group col-md-6">  
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                            <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                <input name="videocipher_storage" class="videocipher_storage" id="videocipher_storage" type="checkbox" @if( $storage_settings->videocipher_storage == "1") checked  @endif >
+                                                <span class="slider round"></span>
+                                                </label>
+                                            <div class="ml-2">ON</div>
+                                        </div>                              
+                                    </div>                               
+                                </div>
+                            </div>
+                        </div>
                     </div>
                       <!-- Site Env Details -->
                       <div class="row" id="site_details">
@@ -346,6 +363,16 @@ border-radius: 0px 4px 4px 0px;
 
                     </div>
 
+            <!-- VideoCipher Details -->
+                <div class="row" id="videocipher_details">
+                    <div class="col-sm-6">
+                        <label class="">VideoCipher ApiKey  </label>
+                        <div class="panel-body" style="display: block;">
+                        <input type="text" class="form-control" name="videocipher_ApiKey" id="videocipher_ApiKey" value="@if(!empty($storage_settings->videocipher_ApiKey)){{ $storage_settings->videocipher_ApiKey }}  @endif" />
+                    </div>
+                    </div>
+                </div>
+                    
                 </div>
                 <input type="hidden" name="_token" value="{{ csrf_token() }} " />
 
@@ -381,6 +408,7 @@ border-radius: 0px 4px 4px 0px;
         $('#aws_details').hide(); 
         $('#bunny_cdn_details').hide(); 
         $('#flussonic_details').hide(); 
+        $('#videocipher_details').hide(); 
 
         var aws_storage = "{{ $storage_settings->aws_storage }}";
         if(aws_storage == 1){
@@ -388,6 +416,7 @@ border-radius: 0px 4px 4px 0px;
             $('#site_details').hide(); 
             $('#bunny_cdn_details').hide(); 
             $('#flussonic_details').hide(); 
+            $('#videocipher_details').hide(); 
         }
 
         var bunny_cdn_storage = "{{ $storage_settings->bunny_cdn_storage }}";
@@ -396,6 +425,7 @@ border-radius: 0px 4px 4px 0px;
             $('#site_details').hide(); 
             $('#bunny_cdn_details').show(); 
             $('#flussonic_details').hide(); 
+            $('#videocipher_details').hide(); 
         }
 
         var flussonic_storage = "{{ $storage_settings->flussonic_storage }}";
@@ -405,7 +435,44 @@ border-radius: 0px 4px 4px 0px;
             $('#site_details').hide(); 
             $('#bunny_cdn_details').hide(); 
             $('#flussonic_details').show(); 
+            $('#videocipher_details').hide(); 
         }
+
+
+        var videocipher_storage = "{{ $storage_settings->videocipher_storage }}";
+
+            if(videocipher_storage == 1){
+                $('#aws_details').hide(); 
+                $('#site_details').hide(); 
+                $('#bunny_cdn_details').hide(); 
+                $('#flussonic_details').hide(); 
+                $('#videocipher_details').show(); 
+            }
+
+            $('.videocipher_storage').on('change', function(event) {
+            var videocipher_storage = $("#videocipher_storage").prop("checked");
+            // Unchecks it
+                if(videocipher_storage == true){
+                    $('#site_storage').prop('checked', false);
+                    $('#aws_storage').prop('checked', false);
+                    $('#bunny_cdn_storage').prop('checked', false);
+                    $('#flussonic_storage').prop('checked', false);
+
+                    $('#aws_details').hide(); 
+                    $('#site_details').hide(); 
+                    $('#bunny_cdn_details').hide(); 
+                    $('#flussonic_details').hide(); 
+                    $('#videocipher_details').show(); 
+
+                    Swal.fire({
+                        title: 'VideoCipher - Storage',
+                        imageWidth: 320,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                    })
+                }
+        });
+
 
         $('.flussonic_storage').on('change', function(event) {
             var flussonic_storage = $("#flussonic_storage").prop("checked");
@@ -414,11 +481,13 @@ border-radius: 0px 4px 4px 0px;
                     $('#site_storage').prop('checked', false);
                     $('#aws_storage').prop('checked', false);
                     $('#bunny_cdn_storage').prop('checked', false);
+                    $('#videocipher_storage').prop('checked', false);
 
                     $('#aws_details').hide(); 
                     $('#site_details').hide(); 
                     $('#bunny_cdn_details').hide(); 
                     $('#flussonic_details').show(); 
+                    $('#videocipher_details').hide(); 
 
                     Swal.fire({
                         title: 'Flussonic - Storage',
@@ -437,11 +506,13 @@ border-radius: 0px 4px 4px 0px;
                     $('#site_storage').prop('checked', false);
                     $('#aws_storage').prop('checked', false);
                     $('#flussonic_storage').prop('checked', false);
+                    $('#videocipher_storage').prop('checked', false);
 
                     $('#aws_details').hide(); 
                     $('#site_details').hide(); 
                     $('#bunny_cdn_details').show(); 
                     $('#flussonic_details').hide(); 
+                    $('#videocipher_details').hide();   
 
                     Swal.fire({
                         title: 'Bunny CDN - Storage',
@@ -459,10 +530,13 @@ border-radius: 0px 4px 4px 0px;
                     $('#site_storage').prop('checked', false);
                     $('#bunny_cdn_storage').prop('checked', false);
                     $('#flussonic_storage').prop('checked', false);
+                    $('#videocipher_storage').prop('checked', false);
+
                     $('#aws_details').show(); 
                     $('#site_details').hide(); 
                     $('#bunny_cdn_details').hide(); 
                     $('#flussonic_details').hide(); 
+                    $('#videocipher_details').hide(); 
 
                     Swal.fire({
                         title: 'Aws - Storage',
