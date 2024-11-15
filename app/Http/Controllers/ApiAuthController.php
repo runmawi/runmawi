@@ -27518,7 +27518,7 @@ public function TV_login(Request $request)
            
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
-          'ccode' => 'required',
+          'ccode'         => ['required', 'regex:/^\+[\d]+$/'], // Ensure ccode starts with + followed by numbers
           'user_id' => 'required|numeric',
           'otp' => 'required|numeric',
         ]);
@@ -27547,8 +27547,7 @@ public function TV_login(Request $request)
 
         }
 
-        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
-                      ->where('otp',$request->otp)->first();
+        $user = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('otp',$request->otp)->first();
 
         if(!is_null($user)  ){
 
