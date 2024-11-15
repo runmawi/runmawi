@@ -88,8 +88,20 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         fill: <?php echo $GetDarkText; ?>!important;
     }
 
-    body.light-theme h4, body.light-theme p {
-        color: <?php echo GetLightText(); ?>;
+    body.light-theme h4, body.light-theme p, body.light-theme h3 {
+        color: <?php echo GetLightText(); ?>!important;
+    }
+    body.light-theme .movie-rent h3.title-popup,body.light-theme .movie-rent h5{
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme #price-display {
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme .bg-dark {
+        background-color: <?php echo GetLightBg(); ?>!important;
     }
     body.light-theme .vpageBanner .content .right .utilities {
         color: <?php echo GetLightText(); ?>;
@@ -105,9 +117,6 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     }
     body.light-theme .artistHeading {
         color: <?php echo GetLightText(); ?>;
-    }
-    body.light-theme label.text-white {
-        color: <?php echo GetLightText(); ?> !important;
     }
     body.light-theme .genre {
         color: <?php echo GetLightText(); ?> !important;
@@ -841,7 +850,13 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     <div class="modal-header align-items-center">
                         <div class="row">
                             <div class="col-12">
-                                <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                                <?php if($theme_mode == "light" && !empty($theme->light_mode_logo)){ ?>
+                                    <img src="<?= URL::to('/public/uploads/settings/'. $theme->light_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+                                 <?php } elseif($theme_mode != "light" && !empty($theme->dark_mode_logo)){ ?>
+                                    <img src="<?= URL::to('/public/uploads/settings/'. $theme->dark_mode_logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+                                 <?php } else { ?>
+                                    <img src="<?= URL::to('/public/uploads/settings/'. $settings->logo) ?>" class="c-logo" alt="<?= $settings->website_name ?>">
+                                 <?php } ?>
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-end">
