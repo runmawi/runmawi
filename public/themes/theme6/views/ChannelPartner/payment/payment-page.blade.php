@@ -640,7 +640,7 @@
                                 </div>
                                 <p class=" mt-3 dp"></p>
                             </div>
-                            
+
                                 {{-- Stripe --}}
                             <div class="col-md-12 stripe_payment">
                                 <button id="stripe-payment-button" data-plan-id="" class="stripe_button btn1 btn-lg btn-block font-weight-bold mt-3 processing_alert" style="background-color: #f5f5f5;">
@@ -653,6 +653,7 @@
                                 <form action="{{ route('channel.Recurly.checkout_page') }}" method="post">
                                     @csrf
                                     <input type="hidden" id="recurly_plan_id" name="recurly_plan_id" value="">
+                                    <input type="hidden" name="channel_id" value="{{ $channel_id }}">
                                     <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
                                         {{ __('Pay Now') }}
                                     </button>

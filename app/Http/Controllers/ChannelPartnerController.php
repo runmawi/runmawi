@@ -117,7 +117,7 @@ class ChannelPartnerController extends Controller
 
     public function channelparnterpayment(Request $request, $channel_id)
     {
-        // try {
+        try {
 
             $SiteTheme = SiteTheme::first();
 
@@ -139,20 +139,14 @@ class ChannelPartnerController extends Controller
     
             return Theme::view('ChannelPartner.payment.payment-page',$data);
 
-        // } catch (\Throwable $th) {
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function payment_gateway_depends_plans( Request $request)
     {
       try {
-
-        $api = new Api('rzp_test_RLu9H6fu7tlNhI', 'PERL7eet6k3eBfoNCBvHNyNf' );
-        $subscription = $api->subscription->fetch('sub_PLBdklt5j82OrP');
-
-
-        dd( $subscription );
 
         $plans_data = AdminUserChannelSubscriptionPlans::where('status', 1)
         ->where('paymentGateway', $request->payment_gateway)
