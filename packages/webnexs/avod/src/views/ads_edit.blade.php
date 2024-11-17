@@ -122,7 +122,6 @@
                             <div> <h4>Edit Advertisement</h4> </div>
                         </div>
                         <hr>
-                        <a  style="margin-top: -6.5%;" href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#largeModal">Preview Player</a>
                     </div>
 
                     @if (Session::has('message'))
@@ -137,31 +136,6 @@
                             </div>
                         @endforeach
                     @endif
-
-                    <div class="container">                
-                        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel">Episode Player</h4>
-                                        <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <video id="my-video" class="my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                            width="auto" height="auto" playsinline="playsinline" autoplay>
-                                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
-                                            {{-- <source src={{$Advertisement->ads_video}} type="video/mp4"> --}}
-                                        </video>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="close-btn btn btn-lg btn-primary" data-dismiss="modal">Close Player</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="clear"></div>
 
@@ -310,7 +284,16 @@
                                     <input type="text" name="locations" class="form-control" placeholder="Enter the Location" value="{{ $Advertisement->location }}" />
                                 </div>
                             </div>
-                            
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="container">                
+                                <video id="my-video" class="my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
+                                    width="auto" height="auto" playsinline="playsinline" autoplay>
+                                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
+                                    {{-- <source src={{$Advertisement->ads_video}} type="video/mp4"> --}}
+                                </video>
+                            </div>
                         </div>
 
                         <div class="row mt-3">
