@@ -1768,7 +1768,7 @@
                                        <?php
                                        if(Auth::User()->role == "admin"){
                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){ ?>
-                                       <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
+                                       <!-- <a href="<?php echo URL::to('admin/subscription-plans') ?>"  class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">
                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1788,7 +1788,7 @@
                                                 <h6 class="mb-0 "><?php echo (__('Pricing Plan'));?> </h6>
                                              </div>
                                           </div>
-                                       </a>
+                                       </a> -->
                                        <a href="<?php echo URL::to('admin') ?>" class="iq-sub-card setting-dropdown">
                                           <div class="media align-items-center">
                                              <div class="right-icon">

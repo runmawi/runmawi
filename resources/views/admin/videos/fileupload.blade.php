@@ -1373,9 +1373,9 @@ border-radius: 0px 4px 4px 0px;
                                  @if($width !== null && $heigth !== null)
                                     <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
                                  @else
-                                    <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                    <p class="p1">{{ "Video Thumbnail ( 720X1280px )"}}:</p> 
                                  @endif
-                                  <input type="file" name="image" id="image" >
+                                  <input type="file" name="image" id="image" accept="image/png, image/webp, image/jpeg">
                                  <span>
                                     <p id="video_image_error_msg" style="color:red !important; display:none;">
                                        * Please upload an image with the correct dimensions.
@@ -1395,9 +1395,9 @@ border-radius: 0px 4px 4px 0px;
                                  @if($player_width !== null && $player_heigth !== null)
                                     <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                                  @else
-                                    <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
+                                    <p class="p1">{{ "Player Thumbnail ( 1280X720px )"}}:</p> 
                                  @endif
-                                 <input type="file" name="player_image" id="player_image" >
+                                 <input type="file" accept="image/png, image/webp, image/jpeg" name="player_image" id="player_image" >
                                  <span>
                                     <p id="player_image_error_msg" style="color:red !important; display:none;">
                                        * Please upload an image with the correct dimensions.
@@ -3192,10 +3192,10 @@ if(this.textContent === 'destroy') {
             height = tmpImg.naturalHeight;
             image_validation_status = "{{  image_validation_videos() }}" ;
             console.log(width);
-            var validWidth = {{ $compress_image_settings->width_validation_videos ?: 1080 }};
-            var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1920 }};
+            var validWidth = {{ $compress_image_settings->width_validation_videos ?: 720 }};
+            var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1280 }};
             console.log('validWidth ' + validWidth);
-            console.log(validHeight);
+            console.log('uploading img width: ' + validHeight);
 
             if (width !== validWidth || height !== validHeight) {
                      document.getElementById('video_image_error_msg').style.display = 'block';
@@ -3224,13 +3224,13 @@ if(this.textContent === 'destroy') {
       
                var valid_player_Width = {{ $compress_image_settings->width_validation_player_img ?: 1280 }};
                var valid_player_Height = {{ $compress_image_settings->height_validation_player_img ?: 720 }};
-               console.log(valid_player_Width + 'player width');
+               console.log('player width' + valid_player_Width );
       
                if (width !== valid_player_Width || height !== valid_player_Height) {
                      document.getElementById('player_image_error_msg').style.display = 'block';
                      $('#next_input').prop('disabled', true);
                      document.getElementById('player_image_error_msg').innerText = 
-                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
                } else {
                      document.getElementById('player_image_error_msg').style.display = 'none';
                      $('#next_input').prop('disabled', false);

@@ -2098,3 +2098,9 @@ function Enable_Video_Compression()
     $enable_video_compression = App\SiteTheme::pluck('enable_video_compression')->first();
     return $enable_video_compression ;
 }
+
+
+function videocipher_Key(){
+    $videocipher_ApiKey = App\StorageSetting::pluck('videocipher_ApiKey')->first();
+    return  $videocipher_ApiKey; 
+}
