@@ -4348,7 +4348,7 @@ class ChannelController extends Controller
            
                 // Check Channel Purchase 
 
-            if ( $settings->user_channel_plans_page_status == 1) {
+            if ( $setting->user_channel_plans_page_status == 1) {
 
                 $UserChannelSubscription = null ;
 
@@ -4358,6 +4358,8 @@ class ChannelController extends Controller
     
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                     ->where('channel_id',$channel_id)->where('status','active')
+                                                    ->where('subscription_start', '<=', Carbon::now())
+                                                    ->where('subscription_ends_at', '>=', Carbon::now())
                                                     ->latest()->first();
 
                     if (Auth::user()->role == "admin") {
@@ -4865,6 +4867,8 @@ class ChannelController extends Controller
 
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                     ->where('channel_id',$channel_id)->where('status','active')
+                                                    ->where('subscription_start', '<=', Carbon::now())
+                                                    ->where('subscription_ends_at', '>=', Carbon::now())
                                                     ->latest()->first();
 
                     if (Auth::user()->role == "admin") {
