@@ -2746,4 +2746,16 @@ public function RemoveDisLikeEpisode(Request $request)
         }
     }
 
+    public function AllSeries_category(){
+        try{
+            return Theme::view('SeriesBasedCategories');
+
+        }
+        catch (\Throwable $th) {
+
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
 }

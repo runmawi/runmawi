@@ -258,6 +258,8 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('category/{cid}', 'ChannelController@channelVideos')->name('video_categories');
     Route::get('category/{cid}/channel/{slug}', 'ChannelController@channelVideos')->name('video_categories_channel');
     Route::get('/category/videos/{vid}', 'ChannelController@play_videos')->name('play_videos');
+    Route::get('/AllMovies_category', 'ChannelController@AllMovies_category')->name('AllMovies_category');
+    Route::get('/AllSeries_category', 'TvshowsController@AllSeries_category')->name('AllSeries_category');
 
     //theme 3 full Player
     Route::get('/category/videos/play/{vid}', 'ChannelController@fullplayer_videos')->name('fullplayer_videos');
