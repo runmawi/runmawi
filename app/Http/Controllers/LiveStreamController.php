@@ -43,6 +43,7 @@ use App\PartnerMonetization;
 use Illuminate\Http\Request;
 use App\AdminAccessPermission;
 use App\PartnerMonetizationSetting;
+use App\UserChannelSubscription;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -186,6 +187,7 @@ class LiveStreamController extends Controller
 
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
+
       $ThumbnailSetting = ThumbnailSetting::first();
       $button_text = ButtonText::first();
 
@@ -196,10 +198,37 @@ class LiveStreamController extends Controller
       $enable_ppv_rent_live = Setting::pluck('enable_ppv_rent_live')->first();
       $ppv_live_description = Setting::pluck('live')->first();
 
+      $settings = Setting::first();
+
       $data = session()->all();
 
       $categoryVideos = LiveStream::where('slug',$vid)->first();
       $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
+
+       // Check Channel Purchase 
+       
+       if ( $settings->user_channel_plans_page_status == 1) {
+
+            $UserChannelSubscription = null ;
+
+            $channel_id = LiveStream::where('id',$source_id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+            if (!Auth::guest() ) {
+
+                $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                ->where('channel_id',$channel_id)->where('status','active')
+                                                ->latest()->first();
+
+                if (Auth::user()->role == "admin") {
+                    $UserChannelSubscription = true ;
+                }
+            }
+
+            if (is_null($UserChannelSubscription)) {
+                session()->flash('error', 'Channel Subscription not found.');
+                return back();
+            }
+        }
 
          // Channel Livestream videos
 
@@ -245,7 +274,7 @@ class LiveStreamController extends Controller
         $user_id = Auth::user()->id;
       }
 
-           $settings = Setting::first();
+        
 
           if(!Auth::guest()){
               $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
