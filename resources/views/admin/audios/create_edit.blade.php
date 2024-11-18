@@ -367,7 +367,7 @@ data: {
 															@else
 																<p class="p1">{{ "Select The Audio Image ( 720 x 1280px )"}}:</p> 
 															@endif
-															<input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
+															<input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/webp, image/jpeg"/>
 															<span>
 																<p id="audio_image_error_msg" style="color:red !important; display:none;">
 																	* Please upload an image with the correct dimensions.
@@ -394,7 +394,7 @@ data: {
 															@else
 																<p class="p1">{{ "Select The Audio Image ( 1280 X 720px )"}}:</p> 
 															@endif
-															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
+															<input type="file" multiple="true" class="form-control" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg"/>
 															<span>
 																<p id="audio_player_image_error_msg" style="color:red !important; display:none;">
 																	* Please upload an image with the correct dimensions.
