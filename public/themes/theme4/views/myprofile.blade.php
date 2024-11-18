@@ -237,7 +237,7 @@ $settings = App\Setting::first();
                                  <div class="d-flex align-items-baseline justify-content-between">
                                     <div><span style="font-size: 18px" class="mb-2 pb-3 ">{{ __('Personal Details') }}</span></div>
                                     <div>
-                                       <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
+                                       <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white" data-toggle="modal" data-target="#add-profile"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                                     </div>
                                  </div>
                               </div>
@@ -617,16 +617,21 @@ $settings = App\Setting::first();
       
    </div>
       
-   {{-- </div>
+   </div>
    </div>  
-   </div> --}}
+   </div>
    <!--</div>-->
         
 
-   {{-- </div> --}}
+   </div>
   
    <?php $settings = App\Setting::first(); ?>
 
+   <script>
+      $('#add-profile').on('hidden.bs.modal', function () {         
+         $('.modal-backdrop').remove(); // Remove lingering backdrop
+      });
+   </script>
   
    <script>
       $(document).ready(function () {
@@ -713,7 +718,7 @@ $settings = App\Setting::first();
    </script>-->
 
 </body>
-{{-- </html> --}}
+</html>
 
 <?php 
    if (isset($page) && $page =='admin-dashboard') {

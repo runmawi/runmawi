@@ -241,8 +241,8 @@
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
 
    <!-- Style -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
+   <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
       
    <!-- Responsive -->
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
