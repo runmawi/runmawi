@@ -64,6 +64,8 @@
                                 if (!Auth::guest()) {
                                     $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
                                                                     ->where('channel_id',$channels->id)->where('status','active')
+                                                                    ->where('subscription_start', '<=', Carbon::now())
+                                                                    ->where('subscription_ends_at', '>=', Carbon::now())
                                                                     ->latest()->first();
                                                                     
                                 }
