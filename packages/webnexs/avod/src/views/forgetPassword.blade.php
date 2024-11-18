@@ -91,14 +91,14 @@ $system_settings = App\SystemSetting::find(1);
                                   <div class="cotainer justify-content-center">
                                     <form action="{{ url('advertiser/forget-password') }}" method="POST">
                                       @csrf
-                                      <div class="form-group row">
-                                              <input type="text" id="email_address" class="form-control" name="email_id" required autofocus placeholder="Enter Email Id">
+                                      <div class="form-group row mt-5">
+                                              <input type="text" id="email_address" class="form-control" name="email_id" required autofocus placeholder="Enter Email Id" style="margin: 0 20px;">
                                               @if ($errors->has('email_id'))
-                                              <span class="text-danger">{{ $errors->first('email_id') }}</span>
+                                              <span class="text-danger ml-4"> * {{ $errors->first('email_id') }}</span>
                                               @endif
                                       </div>
                                       <div class="form-group row text-center">
-                                          <button type="submit" class="btn btn-hover ab btn-lg btn-block">
+                                          <button type="submit" class="btn btn-hover btn-lg btn-block" style="margin: 0 20px;">
                                               Send Password Reset Link
                                           </button>
                                       </div>

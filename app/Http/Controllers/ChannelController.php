@@ -63,6 +63,7 @@ use App\ContinueWatching;
 use App\EPGSchedulerData;
 use App\ThumbnailSetting;
 use App\SiteVideoScheduler;
+use App\UserChannelSubscription;
 use Illuminate\Support\Str;
 use App\PartnerMonetization;
 use Illuminate\Http\Request;
@@ -373,7 +374,7 @@ class ChannelController extends Controller
             return Theme::view('categoryvids', ['categoryVideos' => $data, 'category_data' => $category_data]);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -3854,7 +3855,7 @@ class ChannelController extends Controller
 
         } catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
 
             return abort(404);
         }
@@ -4331,7 +4332,7 @@ class ChannelController extends Controller
 
     public function videos_details_jsplayer( $slug )
     {
-        // try {
+        try {
 
             $setting = Setting::first();
             $currency = CurrencySetting::first();
@@ -4342,9 +4343,34 @@ class ChannelController extends Controller
             $button_sub_pur_status = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
             $purchase_btn = $button_sub_pur_status->purchase_btn;
             $subscribe_btn = $button_sub_pur_status->subscribe_btn;
-
             
             $video_id = Video::where('slug',$slug)->pluck('id')->first();
+           
+                // Check Channel Purchase 
+
+            if ( $settings->user_channel_plans_page_status == 1) {
+
+                $UserChannelSubscription = null ;
+
+                $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
+    
+                if (!Auth::guest() ) {
+    
+                    $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                    ->where('channel_id',$channel_id)->where('status','active')
+                                                    ->latest()->first();
+
+                    if (Auth::user()->role == "admin") {
+                        $UserChannelSubscription = true ;
+                    }
+                }
+    
+                if (is_null($UserChannelSubscription)) {
+                    session()->flash('error', 'Channel Subscription not found.');
+                    return back();
+                }
+            }
+
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
@@ -4785,27 +4811,26 @@ class ChannelController extends Controller
 
             return Theme::view('video-js-Player.video.videos-details', $data);
 
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
-
-        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
-            return $this->VideoCipher_fullplayer($slug,$plan);
-        }
-
         try {
 
-                        // Adsvariables
-            $settings = Setting::first();
+            $currency = CurrencySetting::first();
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $getfeching = Geofencing::first();
+            $setting = Setting::first();
+
+                    // Adsvariables
 
             $adsvariable_url = '';
 
-            if ($settings->ads_variable_status == 1) {
+            if ($setting->ads_variable_status == 1) {
 
                 $adsvariables = Adsvariables::whereNotNull('website')->get();
 
@@ -4826,12 +4851,39 @@ class ChannelController extends Controller
                                             ."&ads.network_name=".$categoryVideos->title;
             }
 
-            $setting = Setting::first();
-            $currency = CurrencySetting::first();
-            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
-            $getfeching = Geofencing::first();
-
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
+
+            // Check Channel Purchase 
+
+            if ($setting->user_channel_plans_page_status == 1) {
+
+                $UserChannelSubscription = null ;
+
+                $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+                if (!Auth::guest() ) {
+
+                    $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                    ->where('channel_id',$channel_id)->where('status','active')
+                                                    ->latest()->first();
+
+                    if (Auth::user()->role == "admin") {
+                        $UserChannelSubscription = true ;
+                    }
+                }
+
+                if (is_null($UserChannelSubscription)) {
+                    session()->flash('error', 'Channel Subscription not found.');
+                    return back();
+                }
+
+            }
+
+                // Enable videoCipher Upload
+
+            if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+                return $this->VideoCipher_fullplayer($slug,$plan);
+            }
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url)  {
@@ -5828,7 +5880,7 @@ class ChannelController extends Controller
 
        } catch (\Throwable $th) {
 
-           return $th->getMessage();
+        //    return $th->getMessage();
            return abort(404);
        }
    }

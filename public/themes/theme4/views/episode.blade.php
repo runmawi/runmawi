@@ -1163,7 +1163,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     
     ?>
 
-     <!-- Watchlater & wishlist -->
+    //  <!-- Watchlater & wishlist -->
 
     <script>
         function episodewatchlater(ele) {
@@ -1193,7 +1193,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         $(id).find($(".fa")).toggleClass('fa fa-plus-circle').toggleClass('fa fa-minus-circle');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1205,7 +1205,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode removed from watchlater</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1245,7 +1245,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         $(id).find($(".ri-heart-line")).removeClass('ri-heart-line').addClass('ri-heart-fill');
 
                         $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
+                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode added to wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.add_watch').slideUp('fast');
@@ -1257,7 +1257,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         $(id).find($(".ri-heart-fill")).removeClass('ri-heart-fill').addClass('ri-heart-line');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Episode removed from wishlist</div>'
                         );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1272,14 +1272,8 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
         function episodelike(ele) {
             var episode_id = $(ele).attr('data-video-id');
             var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
+            var url = key_value !== "remove" ? '<?= URL::to('/like-episode') ?>' : '<?= URL::to('/remove_like-episode') ?>';
 
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/like-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_like-episode') ?>';
-            }
             $.ajax({
                 url: url,
                 type: 'post',
@@ -1288,50 +1282,31 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                     _token: '<?= csrf_token() ?>'
                 },
                 success: function(data) {
+                    if (data.message === "Added to Like Episode" || data.message === "Added to Like Episode, Dislike Removed if existed") {
+                        // Toggle Like button to filled
+                        $(ele).find('i').removeClass('ri-thumb-up-line').addClass('ri-thumb-up-fill');
+                        $(ele).attr('data-list', 'remove');
 
-                    if (data.message == "Removed from Liked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-fill').toggleClass('ri-thumb-up-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from Liked Episode</div>'
-                        );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to Like Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-up-line').toggleClass('fri-thumb-up-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to Like Episode</div>'
-                        );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
+                        // Reset Dislike button to outlined if it was filled
+                        var dislikeButton = $('#episode_dislike_' + episode_id);
+                        if (dislikeButton.length) {
+                            dislikeButton.find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                            dislikeButton.attr('data-list', episode_id);
+                        }
+                    } else if (data.message === "Removed from Like Episode") {
+                        // Toggle Like button back to outlined
+                        $(ele).find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                        $(ele).attr('data-list', episode_id);
                     }
                 }
-            })
+            });
         }
 
         function episodedislike(ele) {
             var episode_id = $(ele).attr('data-video-id');
             var key_value = $(ele).attr('data-list');
-            var id = '#episode_like_dislike_' + key_value;
-            var my_value = $(id).data('myval');
+            var url = key_value !== "remove" ? '<?= URL::to('/dislike-episode') ?>' : '<?= URL::to('/remove_dislike-episode') ?>';
 
-            if (key_value != "remove") {
-                var url = '<?= URL::to('/dislike-episode') ?>';
-            } else if (key_value == "remove") {
-                var url = '<?= URL::to('/remove_dislike-episode') ?>';
-            }
             $.ajax({
                 url: url,
                 type: 'post',
@@ -1340,39 +1315,24 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                     _token: '<?= csrf_token() ?>'
                 },
                 success: function(data) {
+                    if (data.message === "Added to Dislike Episode" || data.message === "Added to Dislike Episode, Like Removed if existed") {
+                        // Toggle Dislike button to filled
+                        $(ele).find('i').removeClass('ri-thumb-down-line').addClass('ri-thumb-down-fill');
+                        $(ele).attr('data-list', 'remove');
 
-                    if (data.message == "Removed from DisLiked Episode") {
-
-                        $(id).data('myval');
-                        $(id).data('myval', 'remove');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-fill').toggleClass(
-                            'ri-thumb-down-line');
-
-
-                        $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Removed from DisLiked Episode</div>'
-                        );
-                        setTimeout(function() {
-                            $('.remove_watch').slideUp('fast');
-                        }, 3000);
-
-                    } else if (data.message == "Added to DisLike Episode") {
-                        $(id).data('myval');
-                        $(id).data('myval', 'add');
-                        $(id).find($(".fa")).toggleClass('ri-thumb-down-line').toggleClass(
-                            'fri-thumb-down-fill');
-
-                        $("body").append(
-                            '<div class="add_watch" style="z-index: 100; position: fixed; top: 66px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Added to DisLike Episode</div>'
-                        );
-                        setTimeout(function() {
-                            $('.add_watch').slideUp('fast');
-                        }, 3000);
-                    } else if (data.message == "guest") {
-                        window.location.replace('<?php echo URL::to('/login'); ?>');
+                        // Reset Like button to outlined if it was filled
+                        var likeButton = $('#episode_like_' + episode_id);
+                        if (likeButton.length) {
+                            likeButton.find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
+                            likeButton.attr('data-list', episode_id);
+                        }
+                    } else if (data.message === "Removed from Dislike Episode") {
+                        // Toggle Dislike button back to outlined
+                        $(ele).find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
+                        $(ele).attr('data-list', episode_id);
                     }
                 }
-            })
+            });
         }
 
         function Copy() {
