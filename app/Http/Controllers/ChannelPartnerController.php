@@ -21,7 +21,7 @@ use App\Geofencing;
 use URL;
 use Theme;
 use Razorpay\Api\Api;
-
+use Auth;
 
 class ChannelPartnerController extends Controller
 {
@@ -119,12 +119,17 @@ class ChannelPartnerController extends Controller
     {
         try {
 
+            if ( Auth::guest() || Auth::user()->role == "admin") {
+                session()->flash('error', 'Prohibited');
+                return redirect()->route('channel.all_Channel_home');
+            }
+
             $SiteTheme = SiteTheme::first();
 
             $Stripe_payment_settings = PaymentSetting::where('payment_type', 'Stripe')->where('stripe_status',1)->first();
             $recurly_payment_settings = PaymentSetting::where('payment_type','Recurly')->where('recurly_status',1)->first();
     
-            $plans_data = AdminUserChannelSubscriptionPlans::where('paymentGateway','Stripe')->where('status',1)->get();
+            $plans_data = [];
     
             $CurrencySetting = CurrencySetting::pluck('enable_multi_currency')->first();
     
@@ -140,6 +145,7 @@ class ChannelPartnerController extends Controller
             return Theme::view('ChannelPartner.payment.payment-page',$data);
 
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -150,7 +156,7 @@ class ChannelPartnerController extends Controller
 
         $plans_data = AdminUserChannelSubscriptionPlans::where('status', 1)
         ->where('paymentGateway', $request->payment_gateway)
-        // ->whereJsonContains('channel_id', $request->channel_id)
+        ->whereJsonContains('channel_id', $request->channel_id)
         ->get();
 
         $response = array(

@@ -573,7 +573,7 @@
                                 <!-- Stripe -->
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                         <label class=" ml-2"> <p>{{ ( $Stripe_payment_settings->stripe_lable  ? $Stripe_payment_settings->stripe_lable : "Pay vai Stripe") }} </p> </label>
                                     </div>
                                 @endif
@@ -665,14 +665,14 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <div class="col-md-12 text-center">
                     <p class="mt-3 text-white">OR</p>
                     <div class="mt-4 sign-up-buttons">
                         <a type="button" href="#" class="btn btn-secondary">{{ __('Skip') }}</a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
@@ -714,6 +714,8 @@
          var payment_images = $('#payment_image').val();
 
         $(".payment_gateway").click(function() {
+
+            $('.stripe_payment,.Recurly_payment').hide();
 
             let payment_gateway = $('input[name="payment_gateway"]:checked').val();
             let currency_symbol = "{{ currency_symbol() }}"; 
