@@ -550,7 +550,7 @@ if (!is_null($PayPalpayment)) {
         body.dark-theme .dgk h4{color: <?php echo GetLightText(); ?> !important}
         body.dark-theme .dgk p{color: <?php echo GetLightText(); ?> !important}
 
-        body.light-theme .blk p{color: <?php echo $GetDarkText; ?>!important;}
+        body.light-theme .blk p{color: <?php echo $GetLightText; ?>!important;}
         body.light-theme .dgk h4{color: <?php echo $GetDarkText; ?>!important;}
         body.light-theme .dgk p{color: <?php echo $GetDarkText; ?>!important;}
 
@@ -559,7 +559,7 @@ if (!is_null($PayPalpayment)) {
             color: <?php echo $GetDarkBg; ?>!important;
             padding: 10px !important;
         }
-        body.dark-theme .ambk h6{
+        body.dark-theme .ambk h6, body.dark-theme .ambk p{
             color: <?php echo $GetDarkBg; ?>!important;
         }
 

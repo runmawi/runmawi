@@ -6015,5 +6015,17 @@ class ChannelController extends Controller
         }
     }
 
+    public function AllMovies_category(){
+        try{
+            return Theme::view('VideoBasedCategories');
+
+        }
+        catch (\Throwable $th) {
+
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
     
 }
