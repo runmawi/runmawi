@@ -442,7 +442,7 @@ class ApiAuthController extends Controller
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Razorpay',
-                    'payment_status'       => 'Razorpay',
+                    'payment_status'       => !empty($request->device_type) && $request->device_type == 'android' ? 'Razorpay' : 'Inapp',
                 ]);
 
                   return $response = array('status'=>'true',
@@ -523,7 +523,7 @@ class ApiAuthController extends Controller
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Paystack',
-                    'payment_status'       => 'Paystack',
+                    'payment_status'       => !empty($request->device_type) && $request->device_type == 'android' ? 'Paystack' : 'Inapp',
                 ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -576,7 +576,7 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'CinetPay',
-                      'payment_status'       => 'CinetPay',
+                      'payment_status'       => !empty($request->device_type) && $request->device_type == 'android' ? 'CinetPay' : 'Inapp',
                     ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -629,7 +629,7 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'PayPal',
-                      'payment_status'       => 'PayPal',
+                      'payment_status'       => !empty($request->device_type) && $request->device_type == 'android' ? 'PayPal' : 'Inapp',
                   ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -734,8 +734,8 @@ class ApiAuthController extends Controller
                       'subscription_ends_at'  =>  $Sub_Endday,
                       'payment_type'          => 'recurring',
                       'payment_status'        => $subscription['status'],
-                      'payment_gateway'       =>  'Stripe',
                       'coupon_used'           =>  !is_null($subscription['discount']) ?  $subscription['discount']->promotion_code : null ,
+                      'payment_status'       => !empty($request->device_type) && $request->device_type == 'android' ? 'Stripe' : 'Inapp',
                   );
       
                   if( subscription_trails_status()  == 1 ){
@@ -818,6 +818,7 @@ class ApiAuthController extends Controller
                               $user->role = 'subscriber';
                               $user->payment_type = 'recurring';
                               $user->card_type = 'stripe';
+                              $user->payment_status = !empty($request->device_type) && $request->device_type == 'android' ? 'Stripe' : 'Inapp';
                               $user->save();
                               $email = $input['email'];
                               $uname = $input['username'];
@@ -28019,7 +28020,7 @@ public function SendVideoPushNotification(Request $request)
     public function cancelsubscription(Request $request)
     {
       $user_id = $request->user_id;
-   
+      $device_type = $request->device_type;
       $Razorpay = User::where('users.id',$user_id)
       ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
       ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
@@ -28031,6 +28032,16 @@ public function SendVideoPushNotification(Request $request)
       else{
                   // Subscription Cancel
           try {
+
+            if($device_type == 'IOS'){
+                  User::where('id',$user_id )->update([
+                    'payment_gateway' =>  null ,
+                    'role'            => 'registered',
+                    'stripe_id'       =>  null ,  
+                    'payment_status'  =>   'Cancel' ,
+                ]);
+            }else{
+
                 $user = User::where('id',$user_id)->first();
 
                 $stripe_plan = User::where('id',$user_id)->where('payment_gateway','Stripe')->pluck('stripe_id')->first();
@@ -28048,6 +28059,7 @@ public function SendVideoPushNotification(Request $request)
                 Subscription::where('stripe_id',$stripe_plan)->update([
                   'stripe_status' =>  'Cancelled',
               ]);
+          }
                 
           } catch (\Throwable $th) {
 
