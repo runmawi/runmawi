@@ -319,8 +319,10 @@
                                  icon: 'error',
                                  title: 'Oops...',
                               }).then(function () {
-                                 location.href = '{{ URL::to('admin/subscription-plans') }}';
+                                 location.href = "{{ URL::to('admin/user-channel-subscription-plan') }}";
                               });
+                           }else{
+                              location.href = "{{ URL::to('admin/user-channel-subscription-plan') }}";
                            }
                      },
                   });

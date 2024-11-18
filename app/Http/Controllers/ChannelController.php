@@ -4348,7 +4348,7 @@ class ChannelController extends Controller
            
                 // Check Channel Purchase 
 
-            if ( $settings->user_channel_plans_page_status == 1) {
+            if ( $setting->user_channel_plans_page_status == 1) {
 
                 $UserChannelSubscription = null ;
 
