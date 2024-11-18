@@ -573,7 +573,7 @@
                                 <!-- Stripe -->
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" checked>
+                                        <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe" >
                                         <label class=" ml-2"> <p>{{ ( $Stripe_payment_settings->stripe_lable  ? $Stripe_payment_settings->stripe_lable : "Pay vai Stripe") }} </p> </label>
                                     </div>
                                 @endif
@@ -640,7 +640,7 @@
                                 </div>
                                 <p class=" mt-3 dp"></p>
                             </div>
-                            
+
                                 {{-- Stripe --}}
                             <div class="col-md-12 stripe_payment">
                                 <button id="stripe-payment-button" data-plan-id="" class="stripe_button btn1 btn-lg btn-block font-weight-bold mt-3 processing_alert" style="background-color: #f5f5f5;">
@@ -653,6 +653,7 @@
                                 <form action="{{ route('channel.Recurly.checkout_page') }}" method="post">
                                     @csrf
                                     <input type="hidden" id="recurly_plan_id" name="recurly_plan_id" value="">
+                                    <input type="hidden" name="channel_id" value="{{ $channel_id }}">
                                     <button type="submit" class="btn bd btn1 btn-lg btn-block font-weight-bold text-white mt-3 processing_alert">
                                         {{ __('Pay Now') }}
                                     </button>
@@ -664,14 +665,14 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <div class="col-md-12 text-center">
                     <p class="mt-3 text-white">OR</p>
                     <div class="mt-4 sign-up-buttons">
                         <a type="button" href="#" class="btn btn-secondary">{{ __('Skip') }}</a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
@@ -714,6 +715,8 @@
 
         $(".payment_gateway").click(function() {
 
+            $('.stripe_payment,.Recurly_payment').hide();
+
             let payment_gateway = $('input[name="payment_gateway"]:checked').val();
             let currency_symbol = "{{ currency_symbol() }}"; 
             
@@ -731,7 +734,8 @@
                 type: "get",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    payment_gateway: payment_gateway
+                    payment_gateway: payment_gateway,
+                    channel_id: '{{ $channel_id }}'
                 },
                 success: function(response) {
                     const plansData = response.data.plans_data;

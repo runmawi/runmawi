@@ -317,6 +317,7 @@
 
             <input type="hidden" name="plan_code"  value="{{ $plan_details->getcode() }}">
             <input type="hidden" name="getCurrencies"  value="{{ $plan_details->getCurrencies()[0]->getcurrency() }}">
+            <input type="hidden" name="channel_id"  value="{{ $channel_id }}">
             
             <button type="submit" class="btn-block mt-5">Pay now</button>
         </form>
