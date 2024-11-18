@@ -721,6 +721,7 @@ if (!is_null($PayPalpayment)) {
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
+                                                            <span class='mb-0'> {{ $plan->days }} Days Membership</span>
                                                         </div>
                                                     </div>
 
