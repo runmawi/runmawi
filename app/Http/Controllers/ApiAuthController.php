@@ -442,7 +442,7 @@ class ApiAuthController extends Controller
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Razorpay',
-                    'payment_status'       => 'active',
+                    'payment_status'       => 'Razorpay',
                 ]);
 
                   return $response = array('status'=>'true',
@@ -523,7 +523,7 @@ class ApiAuthController extends Controller
                     'subscription_start'    =>  $Sub_Startday,
                     'subscription_ends_at'  =>  $Sub_Endday,
                     'payment_gateway'       =>  'Paystack',
-                    'payment_status'       => 'active',
+                    'payment_status'       => 'Paystack',
                 ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -576,8 +576,8 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'CinetPay',
-                      'payment_status'       => 'active',
-                  ]);
+                      'payment_status'       => 'CinetPay',
+                    ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
                 
@@ -629,7 +629,7 @@ class ApiAuthController extends Controller
                       'subscription_start'   =>  Carbon::now(),
                       'subscription_ends_at' =>  $ends_at,
                       'payment_gateway'      =>  'PayPal',
-                      'payment_status'       => 'active',
+                      'payment_status'       => 'PayPal',
                   ]);
 
                 return $response = array('status'=>'true', 'message' => 'Registered Successfully.');
@@ -4401,7 +4401,7 @@ public function verifyandupdatepassword(Request $request)
                 return response()->json(['success'=>'Your plan has been changed.']);
         }
 
-  public function cancelsubscription(Request $request)
+  public function cancelsubscriptionOld(Request $request)
   {
     $user_id = $request->user_id;
     $user = User::find($user_id);
@@ -28012,4 +28012,103 @@ public function SendVideoPushNotification(Request $request)
 
       return response()->json($response, $response['status_code']);
     }
+
+
+
+
+    public function cancelsubscription(Request $request)
+    {
+      $user_id = $request->user_id;
+   
+      $Razorpay = User::where('users.id',$user_id)
+      ->Join("subscriptions", "subscriptions.user_id", "=", "users.id")
+      ->whereColumn('users.stripe_id', '=', 'subscriptions.stripe_id')
+      ->first();
+
+      if($Razorpay != null && $Razorpay->PaymentGateway  ==  "Razorpay"){
+        return redirect::to('RazorpayCancelSubscriptions');
+      }
+      else{
+                  // Subscription Cancel
+          try {
+                $user = User::where('id',$user_id)->first();
+
+                $stripe_plan = User::where('id',$user_id)->where('payment_gateway','Stripe')->pluck('stripe_id')->first();
+                $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
+                $stripe->subscriptions->cancel( $stripe_plan,[] );
+
+
+                User::where('id',$user_id )->update([
+                  'payment_gateway' =>  null ,
+                  'role'            => 'registered',
+                  'stripe_id'       =>  null ,  
+                  'payment_status'  =>   'Cancel' ,
+              ]);
+
+                Subscription::where('stripe_id',$stripe_plan)->update([
+                  'stripe_status' =>  'Cancelled',
+              ]);
+                
+          } catch (\Throwable $th) {
+
+            $response = array(
+              'status'  => 'false',
+              'status_code'  => 501,
+              'message' => 'There was a failure to terminate the subscription !' ."\r\n". $th->getMessage() ,
+            );
+
+
+          }
+                // Email 
+
+        $plan_name =  CurrentSubPlanName($user_id);
+        $start_date =  SubStartDate($user_id);
+        $ends_at =  SubEndDate($user_id);
+        $template = EmailTemplate::where('id','=', 27)->first(); 
+        $heading = $template->heading;
+
+        try {
+            \Mail::send('emails.cancelsubscription', array(
+              'name' => $user->username,
+              'plan_name' => $plan_name,
+              'start_date' => $start_date,
+              'ends_at' => $ends_at,
+          
+          ), function($message) use ($user,$heading,$plan_name){
+              $message->from(AdminMail(),GetWebsiteName());
+              $message->to($user->email, $user->username)->subject(str_replace('Name', $plan_name, $heading));
+          });
+         
+            $email_log      = 'Mail Sent Successfully from cancel subscription';
+            $email_template = "27";
+            $user_id = Auth::user()->id;
+
+            Email_sent_log($user_id,$email_log,$email_template);
+
+        }
+         catch (\Throwable $th) {
+
+            $email_log      = $th->getMessage();
+            $email_template = "27";
+            $user_id = Auth::user()->id;
+
+            Email_notsent_log($user_id,$email_log,$email_template);
+        }
+        
+      
+
+        Subscription::where('stripe_id',$stripe_plan)->update([
+          'stripe_status' =>  'Cancel',
+          'updated_at'    =>  Carbon::now()->toDateTimeString(),
+        ]);
+
+        $response = array(
+          'status'  => 'true',
+          'status_code'  => 201,
+          'message' => 'Your subscription was successfully terminated!',
+        );
+      }
+   }
+
+
 }
