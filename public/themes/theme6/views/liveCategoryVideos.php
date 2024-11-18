@@ -8,7 +8,7 @@ $currency = App\CurrencySetting::first();
                    ?>
                    <div class="main-content">
     <section id="iq-continue">
-        <div class="container-fluid">
+        <div class="container">
            <div class="row">
               <div class="col-sm-12 overflow-hidden">
               <?php
