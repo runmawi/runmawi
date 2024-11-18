@@ -10,6 +10,7 @@ use App\Setting;
 use App\Channel;
 use \Redirect;
 use Auth;
+use DB;
 
 class AdminUserChannelSubscriptionPlan extends Controller
 {
@@ -129,7 +130,7 @@ class AdminUserChannelSubscriptionPlan extends Controller
     {
         try {
 
-            Setting::first()->update(["user_channel_plans_page_status" => $request->user_channel_plans_page_status]);
+            DB::table('settings')->update(['user_channel_plans_page_status' => $request->Subscription_Plan]);
 
             return response()->json(["message" => "true"]);
 
