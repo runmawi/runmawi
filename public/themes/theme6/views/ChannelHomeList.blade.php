@@ -39,6 +39,15 @@
 <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 
 <section id="iq-favorites">
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                toastr.error('{{ session('error') }}', 'Error Message');
+            });
+        </script>
+    @endif
+
     @forelse ($channel_data as $channels)
         @if($channels->all_data->isNotEmpty())
             <div class="container">
@@ -48,11 +57,29 @@
                             <div class="channel_heading">
                                 <h4>{{ $channels->channel_name }}</h4>
                             </div>
-                            <div class="subscribe">
-                                <a class="btn btn-primary" href="{{ route('channel.payment',$channels->id) }}">
-                                    <span>Subscribe</span>
-                                </a>
-                            </div>
+
+                            @php
+                                $UserChannelSubscription = null ;
+
+                                if (!Auth::guest()) {
+                                    $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                                    ->where('channel_id',$channels->id)->where('status','active')
+                                                                    ->latest()->first();
+                                                                    
+                                }
+                            @endphp
+
+                            @if ( $settings->user_channel_plans_page_status == 1 )
+                                <div class="subscribe">
+                                    @if (!Auth::guest() && Auth::user()->role == "admin")
+                                        
+                                    @else
+                                        <a class="btn btn-primary" href="{{ !Auth::guest() ? route('channel.payment',$channels->id) : route('login') }}">
+                                            <span> {{ is_null($UserChannelSubscription) ? "Subscribe"  : "Upgrade" }} </span>
+                                        </a>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                         
                         <div class="favorites-contens"> 
@@ -188,6 +215,9 @@
     @endforelse
 </section>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
+
 <script>
     var elem = document.querySelector('.channel-videos');
     var flkty = new Flickity(elem, {
@@ -200,6 +230,6 @@
         imagesLoaded: true,
         lazyload: true,
     });
- </script>
+</script>
 
 @php include(public_path("themes/{$current_theme}/views/footer.blade.php"));@endphp
