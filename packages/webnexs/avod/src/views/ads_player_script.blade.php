@@ -13,6 +13,7 @@ c<script>
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            volumePanel: false,
             controlBar: {
                 children: {
                     'playToggle': {},
@@ -21,13 +22,19 @@ c<script>
                     'progressControl': {},
                     'remainingTimeDisplay': {},
                     'playbackRateMenuButton': {},
-                    'pictureInPictureToggle': {},
-                    "volumePanel": {},
+                    // 'pictureInPictureToggle': {},
+                    // "volumePanel": {},
                     'fullscreenToggle': {},
                 },
             }
         });
 
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+        var controlBar = player.getChild('controlBar');
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
 
         // Ads Marker
         player.on("loadedmetadata", function () {
@@ -162,9 +169,13 @@ c<script>
 
         player.on('userinactive', () => {
             $('.vjs-big-play-button').hide();
+            skipForwardButton.style.display = "none";
+            skipBackwardButton.style.display = "none";
         });
         player.on('useractive', () => {
             $('.vjs-big-play-button').show();
+            skipForwardButton.style.display = "block";
+            skipBackwardButton.style.display = "block";
         });
 
         function togglePlayPause(e) {

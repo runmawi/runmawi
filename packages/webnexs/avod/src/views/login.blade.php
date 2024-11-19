@@ -89,8 +89,9 @@ $system_settings = App\SystemSetting::find(1);
                         <div class="sign-in-page-data">
                             <div class="sign-in-from  m-auto" align="center">
                                 <div align="center">
-                                  <img class="" src="{{  URL::to('/public/uploads/settings/'.$settings->logo ) }}" style="margin-bottom:1rem;" width="200px" height="100px">       <h3 class="mb-3 text-center">Advertiser Sign In</h3>
-                              </div>
+                                  <img class="" src="{{ $settings->logo ? URL::to('/public/uploads/settings/'.$settings->logo ) : URL::to('/public/uploads/settings/'.$settings->default_video_image) }}" style="margin-bottom:1rem;" width="200px" height="100px">       
+                                  <h3 class="mb-3 text-center">Advertiser Sign In</h3>
+                                </div>
                                 <form method="POST" action="{{ url('advertiser/post-login') }}" class="mt-4" autocomplete="off">
                                     @csrf
                                     <input type="hidden" name="previous" value="{{ url()->previous() }}">
@@ -106,10 +107,10 @@ $system_settings = App\SystemSetting::find(1);
                                     </span>
                                     @enderror
                                     <div class="form-group">  
-                                        <input id="email_id" type="email" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus style="width: 91%;">
+                                        <input id="email_id" type="text" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus style="width: 90% !important;">
                                     </div>
                                     <div class="form-group"> 
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" style="width: 91%">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" style="width: 90% !important;">
                                     </div>
 
                                     <div class="sign-info">

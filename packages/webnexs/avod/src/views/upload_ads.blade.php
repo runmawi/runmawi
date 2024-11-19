@@ -11,6 +11,10 @@
     }
     #progressbar li img{
         width: 50px !important;
+        cursor: not-allowed;
+    }
+    #progressbar li {
+        cursor: text;
     }
 </style>
 
@@ -669,7 +673,7 @@
                                                     <input type="button" name="previous"
                                                         class="previous action-button-previous" value="Previous" />
                                                     <input type="submit" class="btn btn-primary action-button"
-                                                        id="submit-update-cat" value="Save" />
+                                                        id="submit-update-cat" value="Save" style="padding: 10px 5px !important;" />
 
                                                 </div>
                                             </fieldset>
