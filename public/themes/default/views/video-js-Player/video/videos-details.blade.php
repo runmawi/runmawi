@@ -106,6 +106,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     body.light-theme .vpageBanner .content .right .utilities {
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme .CircularProgressbar-text {
+        fill: <?php echo GetLightText(); ?>!important;
+    }
     body.light-theme .artistHeading {
         color: <?php echo GetLightText(); ?>;
     }
@@ -385,7 +388,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <!-- Watchlater -->
                                     <li class="share">
                                         <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
-                                            <i class="video-watchlater {{ !empty($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
+                                            <i class="video-watchlater {{ $videodetail->watchlater_exist ? 'fal fa-minus' : 'fal fa-plus' }}"></i>
+
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
@@ -1391,12 +1395,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         });
     });
 
-    window.addEventListener('pageshow', function (event) {
-        if (event.persisted) {
-            console.log('reloaded');
-            window.location.reload();
-        }
-    });
+    
 </script>
 
 
