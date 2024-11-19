@@ -2380,7 +2380,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
     Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
 
-    Route::get('channel-home', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
+    Route::get('channel-addons', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
     Route::get('channel-payment/{channel_id}', 'ChannelPartnerController@channelparnterpayment')->name('channel.payment');
     Route::get('channel-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
 

@@ -17,6 +17,7 @@ use App\Episode;
 use App\VideoCategory;
 use App\OrderHomeSetting;
 use App\Setting;
+use App\Series;
 use App\Geofencing;
 use URL;
 use Theme;
@@ -64,50 +65,135 @@ class ChannelPartnerController extends Controller
     {
         try {
          
-        $currency = CurrencySetting::first();
-        $FrontEndQueryController = new FrontEndQueryController();
+            $currency = CurrencySetting::first();
+            $FrontEndQueryController = new FrontEndQueryController();
 
-        $channel_data = Channel::where('status', 1)->get()->map(function ($item) {
-            $videos = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'description', 'player_image', 'expiry_date', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'user_id', 'uploaded_by')
-                        ->where('active', 1)->where('status', 1)->where('draft', 1)
-                        ->where('uploaded_by', 'Channel')->where('user_id', $item->id)->get();
-            $livestream = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price','duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                 'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time','recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                            ->where('active', 1)->where('status', 1)->where('uploaded_by', 'Channel')->where('user_id', $item->id)->get();
-            $episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','duration','rating','image','featured','tv_image','player_image')
-                            ->where('active', '1')->where('status', 1)->where('uploaded_by', 'Channel')->where('user_id', $item->id)->get();
+            $all_channels = Channel::where('status', 1)->get();
 
-            $all_data = $videos->merge($livestream)->merge($episode);
-            $all_data = $all_data->take(15);
+            $channel_data = $all_channels->map(function ($item) use ($FrontEndQueryController) {
 
-            $item->all_data = $all_data;
-            return $item;
-        });
+                $channel_partner = $item->id;
 
-        $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value) {
-            return $value === '1' || $value === 1;
-        })->keys()->toArray();
+                $videos = $FrontEndQueryController->latest_videos()->filter(function ($videos)  use ($channel_partner) {
+                    if ( $videos->user_id == $channel_partner && $videos->uploaded_by == "channel" ) {
+                        return $videos;
+                    }
+                });
 
-        $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name', $home_settings_on_value)->orderBy('order_id', 'asc')->get();
+                $livestream = $FrontEndQueryController->livestreams()->filter(function ($livestream)  use ($channel_partner) {
+                    if ( $livestream->user_id == $channel_partner && $livestream->uploaded_by == "channel" ) {
+                        return $livetream;
+                    }
+                });
 
-        $data = array(
-            'settings' => $this->settings,
-            'current_theme' => $this->HomeSetting->theme_choosen,
-            'channel_data' => $channel_data,
-            'order_settings' => $order_settings,
-            'order_settings_list' => OrderHomeSetting::get(),
-            'ThumbnailSetting'      => $FrontEndQueryController->ThumbnailSetting() ,
-            'multiple_compress_image'  => $FrontEndQueryController->multiple_compress_image() , 
-            'videos_expiry_date_status'     => videos_expiry_date_status(),
-            'default_vertical_image_url'    => default_vertical_image_url(),
-            'default_horizontal_image_url'  => default_horizontal_image_url(),
-            'home_settings' => $this->HomeSetting,
-            'getfeching' => Geofencing::first(),
-            'current_theme'     => $this->HomeSetting->theme_choosen,
-        );
+                $episode = $FrontEndQueryController->latest_episodes()->filter(function ($episode)  use ($channel_partner) {
+                    if ( $episode->user_id == $channel_partner && $episode->uploaded_by == "channel" ) {
+                        return $episode;
+                    }
+                });
 
-        
-        return Theme::view('ChannelHomeList', $data);
+                $latest_series = $FrontEndQueryController->latest_Series()->filter(function ($latest_Series)  use ($channel_partner) {
+                    if ( $latest_Series->user_id == $channel_partner && $latest_Series->uploaded_by == "channel" ) {
+                        return $latest_Series;
+                    }
+                });
+
+                $all_data = $videos->merge($livestream)->merge($episode);
+                $all_data = $all_data->take(15);
+
+                $item->all_data = $all_data;
+                return $item;
+
+            });
+
+            // Sliders
+
+            $channel_slider = $all_channels->map(function ($item) use ($FrontEndQueryController) {
+
+                $channel_partner = $item->id;
+
+                $default_vertical_image_url = default_vertical_image_url() ;
+                $default_horizontal_image_url = default_horizontal_image_url() ;
+
+                $video_banners = $FrontEndQueryController->video_banners()->filter(function ($video_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $video_banners->user_id == $channel_partner && $video_banners->uploaded_by == "channel" ) {
+
+                        $video_banners['source_name']        = $video_banners->title;
+                        $video_banners['source_description'] = $video_banners->description;
+                        $video_banners['source_image_url']          =  $video_banners->image != null ?  URL::to('/public/uploads/images/'.$video_banners->image) : $default_vertical_image_url ;
+                        $video_banners['source_Player_image_url']   =  $video_banners->player_image != null ?  URL::to('public/uploads/images/'.$video_banners->player_image) : $default_horizontal_image_url ;  
+                        $video_banners['source_button_name']        =  "Play Now" ;  
+                        $video_banners['source_redirection_url']    =  " " ;  
+
+                        return $video_banners;
+                    }
+                });
+
+                $live_banners = $FrontEndQueryController->live_banners()->filter(function ($live_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $live_banners->user_id == $channel_partner && $live_banners->uploaded_by == "channel" ) {
+
+                        $live_banners['source_name']        = $live_banners->title;
+                        $live_banners['source_description'] = $live_banners->description;
+                        $live_banners['source_image_url']          =  $live_banners->image != null ?  URL::to('/public/uploads/images/'.$live_banners->image) : $default_vertical_image_url ;
+                        $live_banners['source_Player_image_url']   =  $live_banners->player_image != null ?  URL::to('public/uploads/images/'.$live_banners->player_image) :  $default_horizontal_image_url ;
+                        $live_banners['source_button_name']        =  "Play Now" ;  
+                        $live_banners['source_redirection_url']    =  " " ;  
+
+                        return $live_banners;
+                    }
+                });
+
+                $series_sliders = $FrontEndQueryController->series_sliders()->filter(function ($series_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $series_sliders->user_id == $channel_partner && $series_sliders->uploaded_by == "channel" ) {
+
+                        $series_sliders['source_name']        = $series_sliders->title;
+                        $series_sliders['source_description'] = $series_sliders->description;
+                        $series_sliders['source_image_url']          =  $series_sliders->image != null ?  URL::to('/public/uploads/images/'.$series_sliders->image) :  $default_vertical_image_url ;
+                        $series_sliders['source_Player_image_url']   =  $series_sliders->player_image != null ?  URL::to('public/uploads/images/'.$series_sliders->player_image) :  $default_horizontal_image_url ;
+                        $series_sliders['source_button_name']        =  "Play Now" ;  
+                        $series_sliders['source_redirection_url']    =  " " ;  
+
+                        return $series_sliders;
+                    }
+                });
+
+                $Episode_sliders = $FrontEndQueryController->Episode_sliders()->filter(function ($Episode_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $Episode_sliders->user_id == $channel_partner && $Episode_sliders->uploaded_by == "channel" ) {
+
+                        $Episode_sliders['source_name']        = $Episode_sliders->title;
+                        $Episode_sliders['source_description'] = $Episode_sliders->description;
+                        $Episode_sliders['source_image_url']          =  $Episode_sliders->image != null ?  URL::to('/public/uploads/images/'.$Episode_sliders->image) :  $default_vertical_image_url ;
+                        $Episode_sliders['source_Player_image_url']   =  $Episode_sliders->player_image != null ?  URL::to('public/uploads/images/'.$Episode_sliders->player_image) :  $default_horizontal_image_url ;
+                        $Episode_sliders['source_button_name']        =  "Play Now" ;  
+                        $Episode_sliders['source_redirection_url']    =  " " ;  
+
+                        return $Episode_sliders;
+                    }
+                });
+
+                $all_data = $video_banners->merge($live_banners)->merge($Episode_sliders);
+                $item->all_data = $all_data->take(15);
+
+                return $item;
+            });
+
+            $data = array(
+                'settings' => $this->settings,
+                'current_theme' => $this->HomeSetting->theme_choosen,
+                'all_channels'     => $all_channels,
+                'channel_data'     => $channel_data,
+                'channel_slider'   => $channel_slider,
+                'ThumbnailSetting'      => $FrontEndQueryController->ThumbnailSetting() ,
+                'multiple_compress_image'  => $FrontEndQueryController->multiple_compress_image() , 
+                'videos_expiry_date_status'     => videos_expiry_date_status(),
+                'default_vertical_image_url'    => default_vertical_image_url(),
+                'default_horizontal_image_url'  => default_horizontal_image_url(),
+                'home_settings' => $this->HomeSetting,
+                'getfeching'    => Geofencing::first(),
+                'current_theme' => $this->HomeSetting->theme_choosen,
+            );
+            
+            return Theme::view('ChannelHomeList', $data);
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
