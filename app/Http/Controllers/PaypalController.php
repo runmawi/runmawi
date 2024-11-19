@@ -29,6 +29,11 @@ use App\ModeratorsUser;
 use App\VideoCommission;
 use App\Channel;
 use App\PpvPurchase;
+use \App\User as User;
+use App\SubscriptionPlan;
+use App\Subscription;
+use Carbon\Carbon;
+use auth;
 
 class PaypalController extends Controller
 {
@@ -212,32 +217,43 @@ class PaypalController extends Controller
         $user = User::where('email',$user_email)->first();
         $paymentMethod = $request->get('py_id');
         $subscriptionID = $request->get('subscriptionID');
-        $plan = $request->get('plan');
+        $plan = $request->get('plans_id');
         $plandetail = SubscriptionPlan::where('plan_id','=',$plan)->first();
         $payment_type = $plandetail->payment_type;
 
         // update user subscriber
-        $user->role = 'subscriber';
-        $user->payment_type = 'on_time';
-        $user->card_type = 'paypal';
-        $user->active = 1;
-        $user->paypal_agreement_id = $subscriptionID;
-        $user->subscription_start = Carbon::now(); 
-        $user->save();
+
+        User::where('id',$request->userId )->update([
+            'payment_status'        =>  'PayPal' ,
+            'role'                  =>  'subscriber',
+            'card_type'             =>  'paypal',
+            'payment_gateway'             =>  'Paypal',
+            'active'                =>  1,
+            'paypal_agreement_id'   =>  $subscriptionID,
+            'subscription_start'    =>  Carbon::now(),
+        ]);
 
         // adding subscription data 
-
+        $user = User::where('id',$request->userId)->first();
+        
         $next_date = $plandetail->days;
         $date = Carbon::parse($current_date)->addDays($next_date);
+        $plan_detail = SubscriptionPlan::where('plan_id','=',$request->plans_id)->first();
+
         // $subscription = Subscription::where('user_id',$user->id)->first();
-        $purchase = new Subscription;
-        $subscription->price = $plandetail->price;
+        $subscription = new Subscription;
+        $subscription->user_id = $request->userId;
+        $subscription->stripe_id = $plan_detail->plan_id;
+        $subscription->stripe_plan = $plan_detail->plan_id;
+        $subscription->price = $plan_detail->price;
+        $subscription->days = $plan_detail->days;
         $subscription->name = $user->username;
-        $subscription->days = $plandetail->days;
         $subscription->regionname = $regionName;
         $subscription->countryname = $countryName;
         $subscription->cityname = $cityName;
         $subscription->ends_at = $date;
+        $subscription->trial_ends_at = $date;
+        $subscription->PaymentGateway = 'PayPal';
         $subscription->platform = 'WebSite';
         $subscription->save();
 
@@ -307,5 +323,15 @@ class PaypalController extends Controller
         }
     }
 
+    public function PayPalcancelSubscription(Request $request)
+    {
+
+        User::where('id',Auth::user()->id )->update([
+            'payment_gateway' =>  null ,
+            'role'            => 'registered',
+            'stripe_id'       =>  null ,  
+            'payment_status'  =>   'Cancel' ,
+        ]);
+    }
 
 }

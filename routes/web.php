@@ -421,6 +421,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/register3', 'SignupController@PostcreateStep3');
 
     Route::post('/paypal-subscription', 'PaypalController@PayPalSubscription');
+    Route::get('/PayPalcancelSubscription', 'PaypalController@PayPalcancelSubscription');
 
     Route::post('/submitpaypal', 'SignupController@submitpaypal');
     Route::post('/subscribepaypal', 'SignupController@subscribepaypal');

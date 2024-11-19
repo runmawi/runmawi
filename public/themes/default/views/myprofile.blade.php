@@ -468,6 +468,10 @@ $settings = App\Setting::first();
                            
                            @elseif( $payment_package != null  && $payment_package->payment_gateway == "Stripe")
                               <a  href="{{ URL::to('/cancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
+                           
+                           @elseif( $payment_package != null  && $payment_package->payment_gateway == "PayPal")
+                              <a  href="{{ URL::to('/PayPalcancelSubscription') }}" class="btn btn-primary editbtn text-white" >{{ __('Cancel Membership') }}</a>
+                           
                            @endif
                         @endif
 

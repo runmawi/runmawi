@@ -952,7 +952,7 @@ if (!is_null($PayPalpayment)) {
                     },
                     onApprove: function(data, actions) {
                         // alert(data.subscriptionID); // You can add optional success message for the subscriber here
-                        if (!empty(data.subscriptionID)) {
+                        if (data.subscriptionID) {
                             $.post(base_url + '/paypal-subscription', {
                                     payment_type: payment_type,
                                     amount: final_payment,
@@ -960,7 +960,8 @@ if (!is_null($PayPalpayment)) {
                                     plans_id: plans_id,
                                     subscriptionID: data.subscriptionID,
                                     coupon_code: final_coupon_code_stripe,
-                                    _token: '<?= csrf_token() ?>'
+                                    _token: '<?= csrf_token() ?>',
+                                    userId: '{{ Auth::user()->id }}',
                                 },
 
                                 function(data) {
