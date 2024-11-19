@@ -295,6 +295,8 @@ class TvshowsController extends Controller
 
                 $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                 ->where('channel_id',$channel_id)->where('status','active')
+                                                ->where('subscription_start', '<=', Carbon::now())
+                                                ->where('subscription_ends_at', '>=', Carbon::now())
                                                 ->latest()->first();
 
                 if (Auth::user()->role == "admin") {
@@ -2763,6 +2765,18 @@ public function RemoveDisLikeEpisode(Request $request)
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function AllSeries_category(){
+        try{
+            return Theme::view('SeriesBasedCategories');
+
+        }
+        catch (\Throwable $th) {
+
+            return $th->getMessage();
+            return abort(404);
         }
     }
 

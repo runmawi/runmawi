@@ -550,7 +550,7 @@ if (!is_null($PayPalpayment)) {
         body.dark-theme .dgk h4{color: <?php echo GetLightText(); ?> !important}
         body.dark-theme .dgk p{color: <?php echo GetLightText(); ?> !important}
 
-        body.light-theme .blk p{color: <?php echo $GetDarkText; ?>!important;}
+        body.light-theme .blk p{color: <?php echo $GetLightText; ?>!important;}
         body.light-theme .dgk h4{color: <?php echo $GetDarkText; ?>!important;}
         body.light-theme .dgk p{color: <?php echo $GetDarkText; ?>!important;}
 
@@ -559,7 +559,7 @@ if (!is_null($PayPalpayment)) {
             color: <?php echo $GetDarkBg; ?>!important;
             padding: 10px !important;
         }
-        body.dark-theme .ambk h6{
+        body.dark-theme .ambk h6, body.dark-theme .ambk p{
             color: <?php echo $GetDarkBg; ?>!important;
         }
 
@@ -721,6 +721,7 @@ if (!is_null($PayPalpayment)) {
                                                         <div>
                                                             <h6 class=" font-weight-bold"> {{ $plan->plans_name }} </h6>
                                                             <p class="text-white mb-0"> {{ $CurrencySetting == 1 ? Currency_Convert(($plan->price) ) : currency_symbol(). round($plan->price,2) }} Membership</p>
+                                                            <span class='mb-0'> {{ $plan->days }} Days Membership</span>
                                                         </div>
                                                     </div>
 

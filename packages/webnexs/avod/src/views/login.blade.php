@@ -108,9 +108,20 @@ $system_settings = App\SystemSetting::find(1);
                                     <div class="form-group">  
                                         <input id="email_id" type="email" class="form-control @error('email_id') is-invalid @enderror" name="email_id" placeholder="{{ __('E-Mail') }}" value="{{ old('email_id') }}" required autocomplete="email_id" autofocus style="width: 91%;">
                                     </div>
-                                    <div class="form-group"> 
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" style="width: 91%">
+                                    <div class="form-group">
+                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" name="password" required autocomplete="current-password" style="width: 91%; display: inline-block;">
+                                        <div class="position-relative">
+                                            <button 
+                                                class="btn btn-default reveal" 
+                                                onclick="visibility1()" 
+                                                type="button" 
+                                                style="position: absolute;background: none; border: none; padding: 0;color:#fff;bottom:32px;right:33px;box-shadow:none;"
+                                            >
+                                                <i id="toggleIcon" class="fa fa-eye-slash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
                                     </div>
+                                    
 
                                     <div class="sign-info">
                                         <button type="submit" class="btn btn-hover" style="width:100%;color:#fff!important;margin: 0 20px;">SIGN IN</button>
@@ -141,12 +152,31 @@ $system_settings = App\SystemSetting::find(1);
     <script src="jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function(){
-// $('#message').fadeOut(120);
-setTimeout(function() {
-    $('#successMessage').fadeOut('fast');
-}, 3000);
-})
-</script>
+            // $('#message').fadeOut(120);
+            setTimeout(function() {
+                $('#successMessage').fadeOut('fast');
+            }, 3000);
+
+        });
+    </script>
+
+
+    <script>
+        function visibility1() {
+            var passwordInput = document.getElementById('password');
+            var toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
 </body>
 @php
     include('packages/webnexs/avod/src/views/ads_footer.blade.php')

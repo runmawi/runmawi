@@ -48,10 +48,83 @@
         </script>
     @endif
 
-    @forelse ($channel_data as $channels)
-        @if($channels->all_data->isNotEmpty())
-            <div class="container">
-                <div class="row">
+    <div class="container">
+        <div class="row">
+
+            {{-- All Channels --}}
+            
+            <div class="col-sm-12 overflow-hidden">
+                <div class="d-flex mt-5 mb-2 justify-content-between">
+                    <div class="channel_heading">
+                        <h4>{{ "Channels" }}</h4>
+                    </div>
+                </div>
+                
+                <div class="favorites-contens"> 
+                    <div class="channel-videos home-sec list-inline row p-0 mb-0">
+                        
+                        @foreach ($all_channels as $media)
+
+                            @php
+                                $UserChannelSubscription = null ;
+
+                                if (!Auth::guest()) {
+                                    $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                                    ->where('channel_id',$media->id)->where('status','active')
+                                                                    ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                                    ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
+                                                                    ->latest()->first();
+                                                                    
+                                }
+                            @endphp
+
+                            <div class="items">
+                                <div class="block-images position-relative">
+
+                                        @if ($settings->user_channel_plans_page_status == 1)
+                                            @if (!Auth::guest() && Auth::user()->role != "admin")
+                                                <a href="{{ is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
+                                            @else
+                                                <a href="{{ route('login') }}" style="color:white;font-weight:600">
+                                            @endif
+                                        @else
+                                            <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
+                                        @endif
+
+
+                                        <div class="img-box">
+                                            <img src="{{ $media->channel_image ?  URL::to('public/uploads/images/'.$media->channel_image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                        </div>
+
+                                        <div class="block-description" style="background: #8080803d;">
+                                            <span> {{ strlen($media->channel_name) > 17 ? substr($media->channel_name, 0, 18) . '...' : $media->channel_name }}</span>
+                                            
+                                            <div class="hover-buttons">
+                                                <span class="btn btn-hover">
+                                                    @if ($settings->user_channel_plans_page_status == 1)
+                                                        @if (!Auth::guest() && Auth::user()->role != "admin")
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                            {{ is_null($UserChannelSubscription) ? "subscribe" : "Play Now" }}
+                                                        @else
+                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Login') }}
+                                                        @endif
+                                                    @else
+                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Play Now') }}
+                                                    @endif
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+                                    </a>            
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            @foreach ($channel_data as $channels)
+                @if($channels->all_data->isNotEmpty())
                     <div class="col-sm-12 overflow-hidden">
                         <div class="d-flex mt-5 mb-2 justify-content-between">
                             <div class="channel_heading">
@@ -64,26 +137,30 @@
                                 if (!Auth::guest()) {
                                     $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
                                                                     ->where('channel_id',$channels->id)->where('status','active')
+                                                                    ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                                    ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
                                                                     ->latest()->first();
                                                                     
                                 }
                             @endphp
 
                             @if ( $settings->user_channel_plans_page_status == 1 )
-                                <div class="subscribe">
-                                    @if (!Auth::guest() && Auth::user()->role == "admin")
-                                        
-                                    @else
-                                        <a class="btn btn-primary" href="{{ !Auth::guest() ? route('channel.payment',$channels->id) : route('login') }}">
-                                            <span> {{ is_null($UserChannelSubscription) ? "Subscribe"  : "Upgrade" }} </span>
-                                        </a>
-                                    @endif
-                                </div>
+
+                                @if ( !Auth::guest() && Auth::user()->role != "admin" && is_null($UserChannelSubscription) )
+                                    <div class="subscribe">
+                                        <a class="btn btn-primary" href="{{ route('channel.payment',$channels->id)  }}"><span> {{ "Subscribe" }} </span></a>
+                                    </div>
+                                @elseif(Auth::guest())
+                                    <div class="subscribe">
+                                        <a class="btn btn-primary" href="{{ route('login')  }}"><span> {{ "Subscribe" }} </span></a>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                         
                         <div class="favorites-contens"> 
                             <div class="channel-videos home-sec list-inline row p-0 mb-0">
+                                
                                 @foreach ($channels->all_data as $media)
                                     @if ($media instanceof App\Video)
                                     
@@ -199,20 +276,11 @@
                                 @endforeach
                             </div>
                         </div>
-                        {{-- @else
-                            
-                            <div class="col-md-12 text-center mt-4 mb-5" style="padding-top:80px;padding-bottom:80px;">
-                                <p class="main-title mb-4 mt-2">No media available for this channel.</p>
-                            </div> --}}
                     </div>
-                </div>
-            </div>
-        @endif
-    @empty
-        <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-            <p ><h4 class="text-center">Sorry! There are no contents under this Channel at this moment.</h4>
+                @endif
+            @endforeach
         </div>
-    @endforelse
+    </div>
 </section>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
