@@ -106,21 +106,92 @@ class ChannelPartnerController extends Controller
 
             });
 
+            // Sliders
+
+            $channel_slider = $all_channels->map(function ($item) use ($FrontEndQueryController) {
+
+                $channel_partner = $item->id;
+
+                $default_vertical_image_url = default_vertical_image_url() ;
+                $default_horizontal_image_url = default_horizontal_image_url() ;
+
+                $video_banners = $FrontEndQueryController->video_banners()->filter(function ($video_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $video_banners->user_id == $channel_partner && $video_banners->uploaded_by == "channel" ) {
+
+                        $video_banners['source_name']        = $video_banners->title;
+                        $video_banners['source_description'] = $video_banners->description;
+                        $video_banners['source_image_url']          =  $video_banners->image != null ?  URL::to('/public/uploads/images/'.$video_banners->image) : $default_vertical_image_url ;
+                        $video_banners['source_Player_image_url']   =  $video_banners->player_image != null ?  URL::to('public/uploads/images/'.$video_banners->player_image) : $default_horizontal_image_url ;  
+                        $video_banners['source_button_name']        =  "Play Now" ;  
+                        $video_banners['source_redirection_url']    =  " " ;  
+
+                        return $video_banners;
+                    }
+                });
+
+                $live_banners = $FrontEndQueryController->live_banners()->filter(function ($live_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $live_banners->user_id == $channel_partner && $live_banners->uploaded_by == "channel" ) {
+
+                        $live_banners['source_name']        = $live_banners->title;
+                        $live_banners['source_description'] = $live_banners->description;
+                        $live_banners['source_image_url']          =  $live_banners->image != null ?  URL::to('/public/uploads/images/'.$live_banners->image) : $default_vertical_image_url ;
+                        $live_banners['source_Player_image_url']   =  $live_banners->player_image != null ?  URL::to('public/uploads/images/'.$live_banners->player_image) :  $default_horizontal_image_url ;
+                        $live_banners['source_button_name']        =  "Play Now" ;  
+                        $live_banners['source_redirection_url']    =  " " ;  
+
+                        return $live_banners;
+                    }
+                });
+
+                $series_sliders = $FrontEndQueryController->series_sliders()->filter(function ($series_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $series_sliders->user_id == $channel_partner && $series_sliders->uploaded_by == "channel" ) {
+
+                        $series_sliders['source_name']        = $series_sliders->title;
+                        $series_sliders['source_description'] = $series_sliders->description;
+                        $series_sliders['source_image_url']          =  $series_sliders->image != null ?  URL::to('/public/uploads/images/'.$series_sliders->image) :  $default_vertical_image_url ;
+                        $series_sliders['source_Player_image_url']   =  $series_sliders->player_image != null ?  URL::to('public/uploads/images/'.$series_sliders->player_image) :  $default_horizontal_image_url ;
+                        $series_sliders['source_button_name']        =  "Play Now" ;  
+                        $series_sliders['source_redirection_url']    =  " " ;  
+
+                        return $series_sliders;
+                    }
+                });
+
+                $Episode_sliders = $FrontEndQueryController->Episode_sliders()->filter(function ($Episode_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                    if ( $Episode_sliders->user_id == $channel_partner && $Episode_sliders->uploaded_by == "channel" ) {
+
+                        $Episode_sliders['source_name']        = $Episode_sliders->title;
+                        $Episode_sliders['source_description'] = $Episode_sliders->description;
+                        $Episode_sliders['source_image_url']          =  $Episode_sliders->image != null ?  URL::to('/public/uploads/images/'.$Episode_sliders->image) :  $default_vertical_image_url ;
+                        $Episode_sliders['source_Player_image_url']   =  $Episode_sliders->player_image != null ?  URL::to('public/uploads/images/'.$Episode_sliders->player_image) :  $default_horizontal_image_url ;
+                        $Episode_sliders['source_button_name']        =  "Play Now" ;  
+                        $Episode_sliders['source_redirection_url']    =  " " ;  
+
+                        return $Episode_sliders;
+                    }
+                });
+
+                $all_data = $video_banners->merge($live_banners)->merge($Episode_sliders);
+                $item->all_data = $all_data->take(15);
+
+                return $item;
+            });
+
             $data = array(
                 'settings' => $this->settings,
                 'current_theme' => $this->HomeSetting->theme_choosen,
                 'all_channels'     => $all_channels,
-                'channel_data' => $channel_data,
+                'channel_data'     => $channel_data,
+                'channel_slider'   => $channel_slider,
                 'ThumbnailSetting'      => $FrontEndQueryController->ThumbnailSetting() ,
                 'multiple_compress_image'  => $FrontEndQueryController->multiple_compress_image() , 
                 'videos_expiry_date_status'     => videos_expiry_date_status(),
                 'default_vertical_image_url'    => default_vertical_image_url(),
                 'default_horizontal_image_url'  => default_horizontal_image_url(),
                 'home_settings' => $this->HomeSetting,
-                'getfeching' => Geofencing::first(),
-                'current_theme'     => $this->HomeSetting->theme_choosen,
+                'getfeching'    => Geofencing::first(),
+                'current_theme' => $this->HomeSetting->theme_choosen,
             );
-
             
             return Theme::view('ChannelHomeList', $data);
 
