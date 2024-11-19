@@ -1363,5 +1363,26 @@ class LiveStreamController extends Controller
     }
 
 
+    public function RadioStationList(){
+        try{
+
+            $currency = CurrencySetting::first();
+            $ThumbnailSetting = ThumbnailSetting::first();
+            $station = LiveStream::where('stream_upload_via','radio_station')->get();
+
+            $data=[
+                "station"             => $station,
+                "currency"            => $currency,
+                "ThumbnailSetting"    => $ThumbnailSetting,
+            ];
+
+            return Theme::view('RadioStationList',$data);
+
+        }catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }   
+    }
+
 
 }
