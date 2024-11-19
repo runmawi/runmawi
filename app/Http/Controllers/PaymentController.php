@@ -686,7 +686,7 @@ public function RentPaypal(Request $request)
               
               ), function($message) use ($user,$heading,$plan_name){
                   $message->from(AdminMail(),GetWebsiteName());
-                  $message->to($user->email, $user->username)->subject($plan_name.' '.$heading);
+                  $message->to($user->email, $user->username)->subject(str_replace('Name', $plan_name, $heading));
               });
              
                 $email_log      = 'Mail Sent Successfully from cancel subscription';

@@ -410,15 +410,15 @@ $settings = App\Setting::first();
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
                            <?php } ?>
                     <h4 class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                      <h4 class="mb-3 text-white"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($user->created_at)): ?><?= $user->created_at ?><?php endif; ?></h4>
+                      <h4 class="mb-3 text-white"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($subscriptions_created_at)): ?><?= $subscriptions_created_at ?><?php endif; ?></h4>
                       <h4 class="mb-3"></h4>
                     
       <div class="text-center">
                    <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .'(Free)'; ?> {{ __('Subscription') }}</h6>                                       
+                          <h6><?php echo 'Registered'." " .__('Free'); ?> {{ __('Subscription') }}</h6>                                       
                           <h6></h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
-                          <h6><?php echo $role_plan." " .'__(Paid User)'; ?></h6>
+                          <h6><?php echo $role_plan." " .__('Paid User'); ?></h6>
                           <br>       
                        <h4 class="card-title mb-0 text-white">{{ __('Available Specification') }} :</h4><br>
                        <h6> {{ __('Video Quality') }} : <p class="text-white"> <?php if($plans != null || !empty($plans)) {  echo $plans->video_quality ; } else { ' ';} ?></p></h6>  
