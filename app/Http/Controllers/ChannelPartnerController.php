@@ -211,6 +211,7 @@ class ChannelPartnerController extends Controller
                         $Episode_sliders['source_description'] = $Episode_sliders->description;
                         $Episode_sliders['source_image_url']          =  $Episode_sliders->image != null ?  URL::to('/public/uploads/images/'.$Episode_sliders->image) :  $default_vertical_image_url ;
                         $Episode_sliders['source_Player_image_url']   =  $Episode_sliders->player_image != null ?  URL::to('public/uploads/images/'.$Episode_sliders->player_image) :  $default_horizontal_image_url ;
+                        
                         if ($settings->user_channel_plans_page_status == 1) {
                             if (!Auth::guest() && Auth::user()->role != "admin"){
                                 $Episode_sliders['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : 'Series'  ;  
