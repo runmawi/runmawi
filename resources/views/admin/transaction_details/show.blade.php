@@ -29,7 +29,7 @@
                     <h5 class="text-secondary border-bottom pb-2 mb-3">Transaction Information</h5>
                     <p><strong>ID :</strong> {{ $transaction->id }}</p>
                     <p><strong>Transaction ID:</strong>
-                        {{ $isSubscription ? $transaction->stripe_id ?? 'N/A' : $transaction->payment_id ?? 'N/A' }}
+                        {{  $transaction->payment_id ?? 'N/A' }}
                     </p>
                     <p><strong>Transaction Type:</strong> {{ $transaction->transaction_type }}</p>
                     <p><strong>Payment Gateway:</strong>
@@ -45,6 +45,12 @@
 
                     @if ($isSubscription)
                         <p><strong>Days:</strong> {{ $transaction->days ?? '-' }}</p>
+                        @if ($transaction->user)
+                        <p><strong>Start Date:</strong> {{ $transaction->user->subscription_start ?? '-' }}</p>
+                        @endif
+                        @if ($transaction->user)
+                        <p><strong>End date:</strong> {{ $transaction->subscription_ends_at ?? '-' }}</p>
+                        @endif
                     @endif
                     @if (!$isSubscription)
                         <p><strong>Video:</strong> {{ $transaction->video->title ?? '-' }}</p>

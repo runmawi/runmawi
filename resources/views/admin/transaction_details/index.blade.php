@@ -50,11 +50,9 @@
                                                 @else
                                                 <td>-</td>
                                                 @endif
-                                                @if ($transaction->transaction_type == 'Subscription')
-                                                    <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
-                                                @else
-                                                    <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
-                                                @endif
+                                               
+                                                <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
+                                               
                                                 @if ($transaction->transaction_type == 'Subscription')
                                                     <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
                                                 @else
@@ -66,8 +64,10 @@
                                                     <a class="iq-bg-warning pt-1" data-toggle="tooltip" data-placement="top" title=""
                                                     data-original-title="View" href="{{ route('admin.transaction-details.show', $transaction->unique_id) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
 
+                                                    @if($transaction->created_at == $transaction->updated_at)
                                                     <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                                     data-original-title="Edit"  href="{{ route('admin.transaction-details.edit', $transaction->unique_id) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @else

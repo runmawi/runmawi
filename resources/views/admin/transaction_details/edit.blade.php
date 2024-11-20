@@ -53,8 +53,8 @@
                             <!-- Payment Gateway -->
                             <div class="form-group">
                                 <label for="transaction_id">Transaction ID</label>
-                                <input type="text" class="form-control" id="transaction_id" name="{{ $isSubscription ? 'stripe_id' : 'payment_id' }}"
-                                    value="{{ $isSubscription ? $transaction->stripe_id :  $transaction->payment_id }}">
+                                <input type="text" class="form-control" id="transaction_id" name="payment_id"
+                                    value="{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}">
                             </div>
 
 
