@@ -113,7 +113,6 @@ class RazorpayController extends Controller
         }
 
         $plan_Id =Crypt::decryptString($Plan_Id);
-        
         $api    = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $planId = $api->plan->fetch($plan_Id);
 
@@ -156,8 +155,8 @@ class RazorpayController extends Controller
         if($SignatureStatus == true){
             $userId = $request->user_id;
             $RazorpaySubscription = $request->razorpay_subscription_id;
-          
-            return Redirect::route('RazorpaySubscriptionStore',['RazorpaySubscription' => $RazorpaySubscription,'userId' => $userId]);
+            $RazorpayPayment_ID = $request->razorpay_payment_id;
+            return Redirect::route('RazorpaySubscriptionStore',['RazorpaySubscription' => $RazorpaySubscription,'userId' => $userId, 'RazorpayPayment_ID' => $RazorpayPayment_ID, ]);     
         }
         else{
             echo 'fails';
@@ -180,6 +179,7 @@ class RazorpayController extends Controller
     public function RazorpaySubscriptionStore(Request $request){
 
         $razorpay_subscription_id = $request->RazorpaySubscription;
+        $razorpaypayment_id = $request->RazorpayPayment_ID;
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
         $subscription = $api->subscription->fetch($razorpay_subscription_id);
@@ -205,6 +205,7 @@ class RazorpayController extends Controller
             'trial_ends_at'  =>  $trial_ends_at,
             'ends_at'        =>  $trial_ends_at,
             'platform'       => 'WebSite',
+            'payment_id'     =>  $razorpaypayment_id,
         ]);
 
         User::where('id',$request->userId)->update([
@@ -413,6 +414,8 @@ class RazorpayController extends Controller
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
+            $purchase->payment_id = $request->rzp_paymentid;
+            $purchase->payment_gateway= 'Razorpay';
             $purchase->save();
 
             $respond=array(
@@ -526,6 +529,8 @@ class RazorpayController extends Controller
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
+            $purchase->payment_id = $request->rzp_paymentid;
+            $purchase->payment_gateway= 'Razorpay';
             $purchase->save();
 
 
@@ -938,6 +943,8 @@ class RazorpayController extends Controller
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
+            $purchase->payment_id = $request->rzp_paymentid;
+            $purchase->payment_gateway= 'Razorpay';
             $purchase->save();
 
             $respond=array(

@@ -207,7 +207,7 @@ class LiveStreamController extends Controller
 
        // Check Channel Purchase 
        
-       if ( $settings->user_channel_plans_page_status == 1) {
+       if ( $settings->user_channel_plans_page_status == 1 && $this->Theme == "theme6") {
 
             $UserChannelSubscription = null ;
 
@@ -227,7 +227,7 @@ class LiveStreamController extends Controller
             }
 
             if (is_null($UserChannelSubscription)) {
-                session()->flash('error', 'Channel Subscription not found.');
+                session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                 return back();
             }
         }

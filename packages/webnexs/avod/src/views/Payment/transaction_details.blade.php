@@ -4,7 +4,7 @@
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div style="padding-right: 15px;">
                     <div class="iq-card">
                         <div class="justify-content-between d-flex">
                            <h2 class=" mb-3">Transaction Details</h2>
@@ -44,9 +44,9 @@
                                             <td>{{ $item->subscription_ends_at  }}</td>
                                         </tr>
                                     @empty
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="12">No Transcation found.</td>
-                                        </tr>
+                                        </tr> --}}
                                     @endforelse
                                 </tbody>
                             </table>
@@ -67,6 +67,23 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
+    <style>
+        select{
+            height: 30px !important;
+            width: 50px !important;
+        }
+        label{
+            margin-left: 5px;
+            text-transform: capitalize;
+        }
+        table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after, table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:before, table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:after, table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:before, table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:after, table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:before, table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:after, table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:before, table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after{
+            line-height: 11px !important;
+        }
+        table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+            text-align: left !important;
+        }
+    </style>
 
     <script>
         $(document).ready( function () {

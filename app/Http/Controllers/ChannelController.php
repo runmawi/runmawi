@@ -4348,7 +4348,7 @@ class ChannelController extends Controller
            
                 // Check Channel Purchase 
 
-            if ( $setting->user_channel_plans_page_status == 1) {
+            if ( $setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
 
                 $UserChannelSubscription = null ;
 
@@ -4368,7 +4368,7 @@ class ChannelController extends Controller
                 }
     
                 if (is_null($UserChannelSubscription)) {
-                    session()->flash('error', 'Channel Subscription not found.');
+                    session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }
             }
@@ -4857,7 +4857,7 @@ class ChannelController extends Controller
 
             // Check Channel Purchase 
 
-            if ($setting->user_channel_plans_page_status == 1) {
+            if ($setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
 
                 $UserChannelSubscription = null ;
 
@@ -4877,7 +4877,7 @@ class ChannelController extends Controller
                 }
 
                 if (is_null($UserChannelSubscription)) {
-                    session()->flash('error', 'Channel Subscription not found.');
+                    session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }
 
