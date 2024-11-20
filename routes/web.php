@@ -3040,4 +3040,3 @@ Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetail
 Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
 Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
 
-// test
