@@ -132,7 +132,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href=" {{ $item->source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    <a href="{{ $item->source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                                     aria-hidden="true"></i>{{ __($item->source_button_name)}}</a>
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
                                                 </div>
                     
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ $source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    <a href="{{ $item->source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                                     aria-hidden="true"></i>{{ ($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
@@ -187,7 +187,7 @@
                                                     <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ $source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    <a href="{{ $item->source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                                     aria-hidden="true"></i>{{ __($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
@@ -216,7 +216,7 @@
                                                     <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ $source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    <a href="{{ $item->source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
                                                     aria-hidden="true"></i>{{ __($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
