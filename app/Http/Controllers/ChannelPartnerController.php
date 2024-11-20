@@ -16,12 +16,14 @@ use App\LiveStream;
 use App\Episode;
 use App\VideoCategory;
 use App\OrderHomeSetting;
+use App\UserChannelSubscription;
 use App\Setting;
 use App\Series;
 use App\Geofencing;
 use URL;
 use Theme;
 use Razorpay\Api\Api;
+use Carbon\Carbon;
 use Auth;
 
 class ChannelPartnerController extends Controller
@@ -70,6 +72,8 @@ class ChannelPartnerController extends Controller
 
             $all_channels = Channel::where('status', 1)->get();
 
+            $settings = $this->settings;
+
             $channel_data = $all_channels->map(function ($item) use ($FrontEndQueryController) {
 
                 $channel_partner = $item->id;
@@ -108,64 +112,119 @@ class ChannelPartnerController extends Controller
 
             // Sliders
 
-            $channel_slider = $all_channels->map(function ($item) use ($FrontEndQueryController) {
+            $channel_slider = $all_channels->map(function ($item) use ($FrontEndQueryController,$settings) {
 
                 $channel_partner = $item->id;
 
                 $default_vertical_image_url = default_vertical_image_url() ;
                 $default_horizontal_image_url = default_horizontal_image_url() ;
 
-                $video_banners = $FrontEndQueryController->video_banners()->filter(function ($video_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                $video_banners = $FrontEndQueryController->video_banners()->filter(function ($video_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url,$settings) {
                     if ( $video_banners->user_id == $channel_partner && $video_banners->uploaded_by == "channel" ) {
+
+                        $UserChannelSubscription = null ;
+
+                        if (!Auth::guest() ) {
+                            $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                            ->where('channel_id',$channel_partner)->where('status','active')
+                                                            ->where('subscription_start', '<=', Carbon::now())
+                                                            ->where('subscription_ends_at', '>=', Carbon::now())
+                                                            ->latest()->first();
+                                                            
+                        }
 
                         $video_banners['source_name']        = $video_banners->title;
                         $video_banners['source_description'] = $video_banners->description;
                         $video_banners['source_image_url']          =  $video_banners->image != null ?  URL::to('/public/uploads/images/'.$video_banners->image) : $default_vertical_image_url ;
                         $video_banners['source_Player_image_url']   =  $video_banners->player_image != null ?  URL::to('public/uploads/images/'.$video_banners->player_image) : $default_horizontal_image_url ;  
-                        $video_banners['source_button_name']        =  "Play Now" ;  
-                        $video_banners['source_redirection_url']    =  " " ;  
+
+                        if ($settings->user_channel_plans_page_status == 1) {
+                            if (!Auth::guest() && Auth::user()->role != "admin"){
+                                $video_banners['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : 'videos'  ;  
+                                $video_banners['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now'  ;  
+                            }else{
+                                $video_banners['source_redirection_url']  =  route('login')   ;  
+                                $video_banners['source_button_name']  =  'Play Now'   ;  
+                            }
+                        }else{
+                            $video_banners['source_redirection_url']  =  route('videos')   ;  
+                            $video_banners['source_button_name']  =  'Play Now'   ;  
+                        }
 
                         return $video_banners;
                     }
                 });
 
-                $live_banners = $FrontEndQueryController->live_banners()->filter(function ($live_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                $live_banners = $FrontEndQueryController->live_banners()->filter(function ($live_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url,$settings) {
                     if ( $live_banners->user_id == $channel_partner && $live_banners->uploaded_by == "channel" ) {
 
                         $live_banners['source_name']        = $live_banners->title;
                         $live_banners['source_description'] = $live_banners->description;
                         $live_banners['source_image_url']          =  $live_banners->image != null ?  URL::to('/public/uploads/images/'.$live_banners->image) : $default_vertical_image_url ;
                         $live_banners['source_Player_image_url']   =  $live_banners->player_image != null ?  URL::to('public/uploads/images/'.$live_banners->player_image) :  $default_horizontal_image_url ;
-                        $live_banners['source_button_name']        =  "Play Now" ;  
-                        $live_banners['source_redirection_url']    =  " " ;  
+                        
+                        if ($settings->user_channel_plans_page_status == 1) {
+                            if (!Auth::guest() && Auth::user()->role != "admin"){
+                                $live_banners['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : 'live'  ;  
+                                $live_banners['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now'  ;  
+                            }else{
+                                $live_banners['source_redirection_url']  =  route('login')   ;  
+                                $live_banners['source_button_name']  =  'Play Now'   ;  
+                            }
+                        }else{
+                            $live_banners['source_redirection_url']  =  route('Live')   ;  
+                            $live_banners['source_button_name']  =  'Play Now'   ;  
+                        }
 
                         return $live_banners;
                     }
                 });
 
-                $series_sliders = $FrontEndQueryController->series_sliders()->filter(function ($series_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                $series_sliders = $FrontEndQueryController->series_sliders()->filter(function ($series_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url,$settings) {
                     if ( $series_sliders->user_id == $channel_partner && $series_sliders->uploaded_by == "channel" ) {
 
                         $series_sliders['source_name']        = $series_sliders->title;
                         $series_sliders['source_description'] = $series_sliders->description;
                         $series_sliders['source_image_url']          =  $series_sliders->image != null ?  URL::to('/public/uploads/images/'.$series_sliders->image) :  $default_vertical_image_url ;
                         $series_sliders['source_Player_image_url']   =  $series_sliders->player_image != null ?  URL::to('public/uploads/images/'.$series_sliders->player_image) :  $default_horizontal_image_url ;
-                        $series_sliders['source_button_name']        =  "Play Now" ;  
-                        $series_sliders['source_redirection_url']    =  " " ;  
+
+                        if ($settings->user_channel_plans_page_status == 1) {
+                            if (!Auth::guest() && Auth::user()->role != "admin"){
+                                $series_sliders['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : 'Series'  ;  
+                                $series_sliders['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now'  ;  
+                            }else{
+                                $series_sliders['source_redirection_url']  =  route('login')   ;  
+                                $series_sliders['source_button_name']  =  'Play Now'   ;  
+                            }
+                        }else{
+                            $series_sliders['source_redirection_url']  =  route('Series')   ;  
+                            $series_sliders['source_button_name']  =  'Play Now'   ;  
+                        }
 
                         return $series_sliders;
                     }
                 });
 
-                $Episode_sliders = $FrontEndQueryController->Episode_sliders()->filter(function ($Episode_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url) {
+                $Episode_sliders = $FrontEndQueryController->Episode_sliders()->filter(function ($Episode_sliders)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url,$settings) {
                     if ( $Episode_sliders->user_id == $channel_partner && $Episode_sliders->uploaded_by == "channel" ) {
 
                         $Episode_sliders['source_name']        = $Episode_sliders->title;
                         $Episode_sliders['source_description'] = $Episode_sliders->description;
                         $Episode_sliders['source_image_url']          =  $Episode_sliders->image != null ?  URL::to('/public/uploads/images/'.$Episode_sliders->image) :  $default_vertical_image_url ;
                         $Episode_sliders['source_Player_image_url']   =  $Episode_sliders->player_image != null ?  URL::to('public/uploads/images/'.$Episode_sliders->player_image) :  $default_horizontal_image_url ;
-                        $Episode_sliders['source_button_name']        =  "Play Now" ;  
-                        $Episode_sliders['source_redirection_url']    =  " " ;  
+                        
+                        if ($settings->user_channel_plans_page_status == 1) {
+                            if (!Auth::guest() && Auth::user()->role != "admin"){
+                                $Episode_sliders['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : 'Series'  ;  
+                                $Episode_sliders['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now'  ;  
+                            }else{
+                                $Episode_sliders['source_redirection_url']  =  route('login')   ;  
+                                $Episode_sliders['source_button_name']  =  'Play Now'   ;  
+                            }
+                        }else{
+                            $Episode_sliders['source_redirection_url']  =  route('Episode')   ;  
+                            $Episode_sliders['source_button_name']  =  'Play Now'   ;  
+                        }
 
                         return $Episode_sliders;
                     }

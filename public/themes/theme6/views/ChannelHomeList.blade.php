@@ -192,12 +192,15 @@
 
                             <div class="items">
                                 <div class="block-images position-relative">
-
                                         @if ($settings->user_channel_plans_page_status == 1)
                                             @if (!Auth::guest() && Auth::user()->role != "admin")
+
                                                 <a href="{{ is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
+                                            @elseif(!Auth::guest() && Auth::user()->role == "admin")
+                                            
+                                                <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
                                             @else
-                                                <a href="{{ route('login') }}" style="color:white;font-weight:600">
+                                                <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
                                             @endif
                                         @else
                                             <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
