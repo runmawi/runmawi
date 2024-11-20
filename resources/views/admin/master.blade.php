@@ -466,7 +466,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                        <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                       {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Transaction Details</span></a></li> --}}
                    <!-- <li><a href="{{ URL::to('/client') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>File Manager</span></a></li> -->
                    <!-- <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
@@ -699,7 +698,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Transaction Details</span></a></li> --}}
 
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Content Partners</span><i
@@ -1009,7 +1007,23 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             @endif
          </li>
 
-          {{--Partner Payouts --}}
+         {{-- @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_transaction_details == 1) --}}
+         <li>
+               <div class="men" style="">
+                  <p class="lnk" >{{ (__('Transaction Details')) }}</p>
+               </div>
+
+               <a href="#transaction_details" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
+                  <img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/E360_icons/Payment Management.svg')?>"> 
+                  <span class="">{{ (__('Transaction Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+               </a>
+               
+               <ul id="transaction_details" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                  <li><a href="{{ route('admin.transaction-details.index') }}">{{ (__('All Transactions')) }}</a></li>
+               </ul>
+         </li>
+         {{-- @endif --}}
+         
           {{--Partner Payouts --}}
           @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_partner_payouts == 1)
           <li>
@@ -1143,7 +1157,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >{{ (__('Site')) }}</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Players UI.svg')?>"><span>{{ (__('Player UI')) }}</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>{{ (__('Transaction Details')) }}</span></a></li> --}}
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/E360_icons/Content Partner.svg')?>"><span>{{ (__('Content Partners')) }}</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
@@ -1497,7 +1510,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>{{ (__('Transaction Details')) }}</span></a></li> --}}
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/cpl.svg')?>"><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>

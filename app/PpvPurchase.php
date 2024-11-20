@@ -2,10 +2,11 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Audio;
 use App\Video;
 use App\Series;
-use App\Audio;
+use Illuminate\Database\Eloquent\Model;
 
 class PpvPurchase extends Model
 {
@@ -25,6 +26,11 @@ class PpvPurchase extends Model
 
     public function series() {
         return $this->belongsTo(Series::class, 'series_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

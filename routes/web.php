@@ -3034,3 +3034,10 @@ Route::get('/admin/get-user-details/{id}', 'AdminPartnerMonetizationPayouts@getU
 Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
 Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
 Route::post('LivestreamPartnerMonetization', 'AdminLiveStreamController@LivestreamPartnerMonetization')->name('LivestreamPartnerMonetization');
+
+Route::get('admin/transaction_details', 'AdminTransactionDetailsController@index')->name('admin.transaction-details.index');
+Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetailsController@edit')->name('admin.transaction-details.edit');
+Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
+Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
+
+// test
