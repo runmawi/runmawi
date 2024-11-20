@@ -335,21 +335,25 @@ $('#cpp_user_videos').change(function(){
                         video_id: join_selected_values, 
                      },
                      success: function(data) {
-
+                        // console.log(JSON.stringify(data));
                         if(data.message == 'true'){
-
-                           location.reload();
-
-                        }else if(data.message == 'false'){
-
                            swal.fire({
-                           title: 'Oops', 
-                           text: 'Something went wrong!', 
-                           allowOutsideClick:false,
-                           icon: 'error',
-                           title: 'Oops...',
+                                 title: 'Success',
+                                 text: 'The selected videos have been deleted successfully.!',
+                                 allowOutsideClick: false,
+                                 icon: 'success',
                            }).then(function() {
-                              location.href = '{{ URL::to('admin/videos') }}';
+                              location.reload();
+                           });
+                        } else if(data.message == 'false') {
+                           
+                           swal.fire({
+                                 title: 'Success',
+                                 text: 'The selected videos have been deleted successfully.!',
+                                 allowOutsideClick: false,
+                                 icon: 'success',
+                           }).then(function() {
+                                 location.href = '{{ URL::to('admin/videos') }}';
                            });
                         }
                      },

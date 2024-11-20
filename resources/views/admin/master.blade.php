@@ -466,7 +466,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                        <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                       {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Transaction Details</span></a></li> --}}
                    <!-- <li><a href="{{ URL::to('/client') }}" class="iq-waves-effect"><i class="la la-file-video-o"></i><span>File Manager</span></a></li> -->
                    <!-- <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i
@@ -699,7 +698,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Transaction Details</span></a></li> --}}
 
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/mod.svg')?>"><span>Content Partners</span><i
@@ -1009,27 +1007,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             @endif
          </li>
 
-          {{--Partner Payouts --}}
-          {{--Partner Payouts --}}
-          @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_partner_payouts == 1)
-          <li>
-               <div class="men" style="">
-                  <p class="lnk" >{{ (__('Partner Payouts')) }}</p>
-               </div>
-
-               <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
-                  <img class="ply" height="40" width="40" src="{{  URL::to('/assets/img/E360_icons/Manage Live stream.svg') }}"> 
-                  <span class="">{{ (__('Partner Payout Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
-               </a>
-               
-               <ul id="parnter_monetization_payouts" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                  <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts')) }}</a></li>
-                  <li><a href="{{ route('partner-monetization-analytics') }}">{{ (__('Partner Payouts Analytics')) }}</a></li>
-                  <li><a href="{{ route('partner-monetization-history') }}">{{ (__('Partner Payment History')) }}</a></li>
-               </ul>
-         </li>
-         @endif
-
 
            {{--Live Stream  --}}
 
@@ -1117,6 +1094,35 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <li><a href="{{ route('channelsignupindex') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/E360_icons/Signup.svg')?>"heigth="40" width="40"><span>{{ (__('Channel Signup Menu')) }}</span></a></li>
                    <!--<li><a href="{{ URL::to('/admin/filemanager') }}" class="iq-waves-effect"><img class="" src="<?php echo  URL::to('/assets/img/icon/file.svg')?>" heigth="40" width="40"><span>Filemanager</span></a></li>-->
 
+                     <li>
+                        <div class="men" style="">
+                           <p class="lnk" >{{ (__('Transaction Details')) }}</p>
+                        </div>
+
+                        <a href="#transaction_details" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
+                           <img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/E360_icons/Payment Management.svg')?>"> 
+                           <span class="">{{ (__('Transaction Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                        </a>
+                        
+                        <ul id="transaction_details" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{ route('admin.transaction-details.index') }}">{{ (__('All Transactions')) }}</a></li>
+                           <li><a href="{{ URL::to('admin/payment/total_revenue') }}">{{ (__('Total Revenues')) }}</a></li>
+                           <li><a href="{{ URL::to('admin/payment/subscription') }}">{{ (__('Subscription Payments')) }}</a></li>
+                            <li><a href="{{ URL::to('admin/payment/PayPerView') }}">{{ (__('PayPerView Payments')) }}</a></li>
+                        </ul>
+
+                        <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
+                           <img class="ply" height="40" width="40" src="{{  URL::to('/assets/img/E360_icons/Manage Live stream.svg') }}"> 
+                           <span class="">{{ (__('Partner Payout Management')) }} </span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
+                        </a>
+                        
+                        <ul id="parnter_monetization_payouts" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                           <li><a href="{{ route('partner-monetization-payouts') }}">{{ (__('Partner Payouts')) }}</a></li>
+                           <li><a href="{{ route('partner-monetization-analytics') }}">{{ (__('Partner Payouts Analytics')) }}</a></li>
+                           <li><a href="{{ route('partner-monetization-history') }}">{{ (__('Partner Payment History')) }}</a></li>
+                        </ul>
+                     </li>
+               
                     <div >
                 
                    <p class="lnk" >{{ (__('Language')) }}</p>
@@ -1143,7 +1149,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >{{ (__('Site')) }}</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Players UI.svg')?>"><span>{{ (__('Player UI')) }}</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>{{ (__('Transaction Details')) }}</span></a></li> --}}
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/E360_icons/Content Partner.svg')?>"><span>{{ (__('Content Partners')) }}</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
@@ -1202,16 +1207,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </ul>
                   </li>
 
-                  <li>
-                     <a href="#payment_managements" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Payment Management.svg')?>"><span>{{ (__('Payment Management')) }}</span><i
-                        class="ri-arrow-right-s-line iq-arrow-right"></i>
-                     </a>
-                     <ul id="payment_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li><a href="{{ URL::to('admin/payment/total_revenue') }}">{{ (__('Total Revenues')) }}</a></li>
-                        <li><a href="{{ URL::to('admin/payment/subscription') }}">{{ (__('Subscription Payments')) }}</a></li>
-                         <li><a href="{{ URL::to('admin/payment/PayPerView') }}">{{ (__('PayPerView Payments')) }}</a></li>
-                     </ul>
-                  </li>
                   <div >
                   <!-- <p class="" style="color:#0993D2!important;padding-left:30px;font-weight: 600;">Analytics</p></div> -->
                     <li>
@@ -1497,7 +1492,6 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                    <p class="lnk" >Site</p>
                        </div>
                    <li><a href="{{ URL::to('admin/players') }}" class="iq-waves-effect"><img class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>Player UI</span></a></li>
-                   {{-- <li><a href="{{ URL::to('admin/transaction_details') }}" class="iq-waves-effect"><img height="40" width="40" class="ply" src="<?php echo  URL::to('/assets/img/icon/ply.svg')?>"><span>{{ (__('Transaction Details')) }}</span></a></li> --}}
                    <li>
                      <a href="#moderators" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><img class="ply" height="40" width="40" src="<?php echo  URL::to('/assets/img/icon/cpl.svg')?>"><span>Content Partners</span><i
                         class="ri-arrow-right-s-line iq-arrow-right"></i>

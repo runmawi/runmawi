@@ -572,7 +572,6 @@ class AdminUsersController extends Controller
             'id' => 'required|max:255', 
             'username' => 'required|max:255', 
         ]);
-
         $id = $request['id'];
         $user = User::find($id);
         $input = $request->all();
@@ -633,10 +632,10 @@ class AdminUsersController extends Controller
                 'terms'     => $input['terms'],
                 'avatar'    => $avatar_image,
                 'stripe_active' => $input['stripe_active'],
+                'payment_status'  =>   !empty($input['role']) && $input['role'] == 'subscriber' ? SubscriptionPlan::where('plan_id',$input['plan'])->pluck('type')->first() : null,
             ]);
 
         $User = User::where('id',$id)->first();
-
 
         if($input['role'] == 'subscriber' && !empty($input['plan']) && !empty($id)){
 
@@ -691,7 +690,7 @@ class AdminUsersController extends Controller
             ));
             return Redirect::to('admin/users')->with(array('message' => 'Need to Select Plan ID','note_type' => 'success'));
         }
-
+        
 
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User','note_type' => 'success'));
     }
@@ -3269,7 +3268,7 @@ class AdminUsersController extends Controller
             {
                 $subscriptions_created_at = Subscription::where('subscriptions.user_id', $user_id)->orderBy('created_at', 'DESC')->pluck('created_at')->first();
             }else{
-                $subscriptions_created_at = null;
+                $subscriptions_created_at = User::where('id', $user_id)->pluck('created_at')->first();
             }
             
             $data = array(

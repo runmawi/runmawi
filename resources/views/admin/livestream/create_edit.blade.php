@@ -210,7 +210,7 @@
                                             @endif
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/png, image/gif, image/jpeg"/>
+                                                <input type="file" multiple="true" class="form-group" name="image" id="image" accept="image/png, image/webp, image/jpeg"/>
                                                 <span>
                                                     <p id="live_image_error_msg" style="color:red !important; display:none;">
                                                         * Please upload an image with the correct dimensions.
@@ -243,7 +243,7 @@
                                             @endif
 
                                             <div class="panel-body">
-                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/gif, image/jpeg"/>
+                                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg"/>
                                                 <span>
                                                     <p id="live_player_image_error_msg" style="color:red !important; display:none;">
                                                         * Please upload an image with the correct dimensions.
