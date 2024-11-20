@@ -41,9 +41,16 @@
 <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 
-
-
 <section id="home" class="iq-main-slider p-0">
+
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                toastr.error('{{ session('error') }}', 'Error Message');
+            });
+        </script>
+    @endif
+
     <div id="home-slider" class="slider m-0 p-0">
         @foreach ($channel_slider as $slider)
             @if (!empty($slider))
@@ -123,26 +130,14 @@
                                                             @endforeach
                                                         </div>
                                                     @endif
-                    
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>{{ __('Play Now')}}</a>
-                                                    {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
+                                                    <a href=" {{ $item->source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    aria-hidden="true"></i>{{ __($item->source_button_name)}}</a>
                                                 </div>
                                             </div>
                                         </div>
                     
-                                            {{-- Trailer --}}
-                                        {{-- @if ( optional($item)->trailer)
-                                            <div class="trailor-video">
-                                                <a href="{{ $item->trailer_link }}" class="playbtn">
-                                                    {!! html_entity_decode( $play_button_svg ) !!}
-                                                    <span class="w-trailor">Watch Trailer</span>
-                                                </a>
-                                            </div>
-                    
-                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
@@ -165,9 +160,8 @@
                                                 </div>
                     
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ URL::to('live'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>Play Now</a>
-                                                    {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
+                                                    <a href="{{ $source_redirection_url }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    aria-hidden="true"></i>{{ ($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,26 +187,17 @@
                                                     <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>{{ __('Play Now')}}</a>
-                                                    {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
+                                                    <a href="{{ $source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    aria-hidden="true"></i>{{ __($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
                                         </div>
                     
-                                            {{-- Trailer --}}
-                                        {{-- @if ( optional($item)->trailer)
-                                            <div class="trailor-video">
-                                                <a href="{{ $item->trailer_link }}" class="playbtn">
-                                                    {!! html_entity_decode( $play_button_svg ) !!}
-                                                    <span class="w-trailor">Watch Trailer</span>
-                                                </a>
-                                            </div>
-                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
                         @elseif ($item instanceof App\Episode)
+                            @php $series_slug = $item->series->slug; @endphp
                             <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
                                 <div class="container position-relative h-100">
                                     <div class="slider-inner h-100">
@@ -231,22 +216,11 @@
                                                     <p data-animation-in="fadeInUp" data-delay-in="1.2"> {!! html_entity_decode( optional($item)->details) !!} </p>
                                                 </div>
                                                 <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
-                                                    <a href="{{ URL::to('play_series/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>{{ __('Play Now')}}</a>
-                                                    {{-- <a href="show-details.html" class="btn btn-link">More details</a> --}}
+                                                    <a href="{{ $source_redirection_url  }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                                    aria-hidden="true"></i>{{ __($item->source_button_name) }}</a>
                                                 </div>
                                             </div>
                                         </div>
-                    
-                                            {{-- Trailer --}}
-                                        {{-- @if ( optional($item)->trailer)
-                                            <div class="trailor-video">
-                                                <a href="{{ $item->trailer_link }}" class="playbtn">
-                                                    {!! html_entity_decode( $play_button_svg ) !!}
-                                                    <span class="w-trailor">Watch Trailer</span>
-                                                </a>
-                                            </div>
-                                        @endif --}}
                                     </div>
                                 </div>
                             </div>
@@ -259,14 +233,6 @@
 </section>
 
 <section id="iq-favorites">
-
-    @if (session('error'))
-        <script>
-            $(document).ready(function() {
-                toastr.error('{{ session('error') }}', 'Error Message');
-            });
-        </script>
-    @endif
 
     <div class="container">
         <div class="row">
@@ -316,7 +282,7 @@
 
 
                                         <div class="img-box">
-                                            <img src="{{ $media->channel_image ?  URL::to('public/uploads/images/'.$media->channel_image) : default_vertical_image_url() }}" class="img-fluid" alt="">
+                                            <img src="{{ $media->channel_image && $media->channel_image != "default_image.jpg" ? $media->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="">
                                         </div>
 
                                         <div class="block-description" style="background: #8080803d;">
