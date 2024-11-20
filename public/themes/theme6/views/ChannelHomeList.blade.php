@@ -31,12 +31,124 @@
     .flickity-prev-next-button.previous{left:10px}.flickity-prev-next-button.next{right:10px}.flickity-rtl .flickity-prev-next-button.previous{left:auto;right:10px}
     .flickity-rtl .flickity-prev-next-button.next{right:auto;left:10px}.flickity-prev-next-button .flickity-button-icon{position:absolute;left:20%;top:0%;width:60%;height:60%}.flickity-page-dots{position:absolute;width:100%;bottom:-25px;padding:0;margin:0;list-style:none;text-align:center;line-height:1}
     .flickity-rtl .flickity-page-dots{direction:rtl}.flickity-page-dots .dot{display:inline-block;width:10px;height:10px;margin:0 8px;background:#333;border-radius:50%;opacity:.25;cursor:pointer}.flickity-page-dots .dot.is-selected{opacity:1}
+    #home-slider .s-bg-1 {width: 100%;background-size: contain !important;background-position: right !important;background-repeat: no-repeat !important;position: relative;z-index: 1;}
+    #home-slider .s-bg-1::before {background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%);}
+    .s-bg-1::before {content: "";position: absolute;top: 0;left: 0;width: 100%;height: 100%;background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24 24 24 / 52%) 46%, transparent 50%);z-index: 0;}
 </style>
 
 <link rel="shortcut icon" href="{{ URL::to('public/uploads/settings/' . $settings->favicon) }}" />
 <link rel="stylesheet" href="<?= URL::to('/') . 'assets/css/variable-boots-flick.css' ?>">
 <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+
+{{-- @dd($channel_slider->all_data); --}}
+{{-- <section id="home" class="iq-main-slider p-0">
+    <div id="home-slider" class="slider m-0 p-0">
+
+        @if (!empty($channel_slider))
+            <div id="message-note" ></div>
+
+            <?php 
+                $play_button_svg = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1" />
+                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
+                </svg>';
+            ?>
+
+            @foreach ($channel_slider as $item)
+            @dd($item);
+            
+                <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
+                    <div class="container position-relative h-100">
+                        <div class="slider-inner h-100">
+                            <div class="row align-items-center  h-100">
+                                <div class="col-xl-9 col-lg-12 col-md-12">
+                                        <div class="channel-logo" data-delay-in="0.5">
+                                            <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                        </div>
+                                    <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
+
+                                    <div class="d-flex align-items-center mb-2" data-animation-in="fadeInUp" data-delay-in="1">
+                                        <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                            <span class="">
+                                                <ul class="ratting-start p-0 m-0 list-inline text-primary d-flex align-items-center justify-content-left">
+                                                    @php $rating = ($item->rating / 2) ; @endphp
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($rating >= $i)
+                                                            <li><i class="fa fa-star" aria-hidden="true"></i></a></li>
+                                                        @elseif ($rating + 0.5 == $i)
+                                                            <li><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
+                                                        @else
+                                                            <li><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                                                        @endif
+                                                    @endfor
+                                                </ul>
+                                            </span>
+                                            <span class="ml-2 mr-5"> {{ $item->rating ? ( $item->rating / 2 ) : " "  }} </span>
+                                        </div>
+                                        @if(!($item->age_restrict == 0))
+                                            <span class="badge badge-secondary p-2"> {{ optional($item)->age_restrict }} </span>
+                                        @endif
+                                        <span class="ml-3">
+                                            @if($item->duration != null)
+                                                @php
+                                                    $duration = Carbon\CarbonInterval::seconds($item->duration)->cascade();
+                                                    $hours = $duration->totalHours > 0 ? $duration->format('%hhrs:') : '';
+                                                    $minutes = $duration->format('%imin');
+                                                @endphp
+                                                {{ $hours }}{{ $minutes }}
+                                            @else
+                                                null
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="descript">
+                                        {!! html_entity_decode( optional($item)->description) !!}
+                                    </div>
+                                    <div class="cate-sections mb-3">
+                                        @if(!empty($item->artists))
+                                            <div class="d-flex">
+                                                <span class="text-primary pr-2">{{ "Staring:"}}</span>
+                                                @foreach ( $item->artists as $cast)
+                                                    <span class="pr-1">{{ $cast->artist_name}},</span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                        @if (!empty($item->categories))
+                                            <div class="d-flex">
+                                                <span class="text-primary pr-2">{{ "Tag:"}}</span>
+                                                @foreach ( $item->categories as $cate)
+                                                    <span class="pr-1">{{ $cate->name}},</span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+
+                                    </div>
+                                    <div class="d-flex align-items-center r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2" style="opacity: 1 !important; animation-delay: 1.2s;">
+                                        <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover"><i class="fa fa-play mr-2"
+                                        aria-hidden="true"></i>{{ __('Play Now')}}</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                            @if ( optional($item)->trailer)
+                                <div class="trailor-video">
+                                    <a href="{{ $item->trailer_link }}" class="playbtn">
+                                        {!! html_entity_decode( $play_button_svg ) !!}
+                                        <span class="w-trailor">Watch Trailer</span>
+                                    </a>
+                                </div>
+
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+    </div>
+</section> --}}
+
 
 <section id="iq-favorites">
 
@@ -287,16 +399,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
 
 <script>
-    var elem = document.querySelector('.channel-videos');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload: true,
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.channel-videos');
+        elems.forEach(function (elem) {
+            new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: true,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: true,
+            });
+        });
     });
 </script>
 
