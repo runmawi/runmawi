@@ -483,11 +483,13 @@ border-radius: 0px 4px 4px 0px;
                   </div>     
                @endif
 
-               </div> <input type="button" name="next" id="next2" class="next action-button" value="Next" /><input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               <button type="submit" style = "float: right;
-    margin: 10px 5px 10px 0px;
-    vertical-align: middle;" class="btn btn-primary" value="{{ $button_text }}">{{ $button_text }}</button>
-               
+               </div> 
+
+               <div class="row d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary" value="{{ $button_text }}" style="margin: 10px 0px;">{{ $button_text }}</button>
+                  <input type="button" name="next" id="next2" class="next action-button" value="Next" />
+                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+               </div>
                </fieldset>
                <fieldset class="Next3" id="videocategory_data">
                <div class="form-card">
@@ -1010,10 +1012,11 @@ border-radius: 0px 4px 4px 0px;
                    </div>
                 </div> 
 
-                            <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
-                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                            <button type="submit" class="btn btn-primary "style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
-  
+                  <div class="row justify-content-end">
+                     <button type="submit" class="btn btn-primary " value="{{ $button_text }}" style="margin: 10px 0;">{{ $button_text }}</button>
+                     <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
+                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                  </div>
                </fieldset>
 
                <fieldset id="upload_datas">
@@ -1035,7 +1038,7 @@ border-radius: 0px 4px 4px 0px;
                               @if($width !== null && $heigth !== null)
                                  <p class="p1">{{ ("Video Thumbnail (".''.$width.' x '.$heigth.'px)')}}:</p> 
                               @else
-                                 <p class="p1">{{ "Video Thumbnail ( 9:16 Ratio or 1080X1920px )"}}:</p> 
+                                 <p class="p1">{{ "Video Thumbnail ( 720X1280px )"}}:</p> 
                               @endif
                               <input type="file" name="image" id="image" />
                               <span>
@@ -1059,7 +1062,7 @@ border-radius: 0px 4px 4px 0px;
                               @if($player_width !== null && $player_heigth !== null)
                                  <p class="p1">{{ ("Player Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
                               @else
-                                 <p class="p1">{{ "Player Thumbnail ( 16:9 Ratio or 1280X720px )"}}:</p> 
+                                 <p class="p1">{{ "Player Thumbnail ( 1280X720px )"}}:</p> 
                               @endif
                               <div class="panel-body">
                                  <input type="file" name="player_image" id="player_image" />
@@ -1212,10 +1215,13 @@ border-radius: 0px 4px 4px 0px;
                      </div>
 
                   </div>
-                  <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
-                  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                  <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
-              </fieldset>
+                  <div class="row d-flex justify-content-end">
+                     <button type="submit" class="btn btn-primary update_upload_img" value="{{ $button_text }}" style="margin: 10px 0;">{{ $button_text }}</button>
+                     <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
+                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                  </div>
+              
+               </fieldset>
               
                            {{-- ADS Management --}}
                   @include('admin.videos.create_edit_ads_fieldset'); 
@@ -1290,7 +1296,7 @@ border-radius: 0px 4px 4px 0px;
    border-radius: 4px;
    cursor: pointer;
    padding: 7px 5px;
-   margin: 10px 0px 10px 5px;
+   margin: 10px 5px;
    float: right;
    }
    #msform .action-button:hover,
@@ -2693,8 +2699,8 @@ else if(trailer_type == 'null' ){
                 console.log(width);
                 console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_videos }};
-                var validHeight = {{ $compress_image_settings->height_validation_videos }};
+               var validWidth = {{ $compress_image_settings->width_validation_videos ?: 720 }};
+               var validHeight = {{ $compress_image_settings->height_validation_videos ?: 1280 }};
                 console.log(validWidth);
                 console.log(validHeight);
 
@@ -2722,16 +2728,16 @@ else if(trailer_type == 'null' ){
                 console.log(width);
                 console.log(height);
                 
-                var validWidth = {{ $compress_image_settings->width_validation_player_img }};
-                var validHeight = {{ $compress_image_settings->height_validation_player_img }};
+               var valid_player_Width = {{ $compress_image_settings->width_validation_player_img ?: 1280 }};
+               var valid_player_Height = {{ $compress_image_settings->height_validation_player_img ?: 720 }};
                 console.log(validWidth);
                 console.log(validHeight);
                 
-                if (width !== validWidth || height !== validHeight) {
+                if (width !== valid_player_Width || height !== valid_player_Height) {
                     document.getElementById('player_image_error_msg').style.display = 'block';
                     $('#useraccess_ppvprice').prop('disabled', true);
                     document.getElementById('player_image_error_msg').innerText = 
-                        `* Please upload an image with the correct dimensions (${validWidth}x${validHeight}px).`;
+                        `* Please upload an image with the correct dimensions (${valid_player_Width}x${valid_player_Height}px).`;
                 } else {
                     document.getElementById('player_image_error_msg').style.display = 'none';
                     $('.update_upload_img').prop('disabled', false);

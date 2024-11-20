@@ -57,6 +57,7 @@ use App\SeriesSubtitle as SeriesSubtitle;
 use Stevebauman\Location\Facades\Location;
 use App\CurrencySetting as CurrencySetting;
 use App\ContinueWatching as ContinueWatching;
+use App\UserChannelSubscription;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Notifications\Messages\NexmoMessage;
@@ -264,11 +265,6 @@ class TvshowsController extends Controller
 
     public function play_episode($series_name, $episode_name,$plan = null)
     {
-
-        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
-            return $this->VideoCipher_Episode($series_name, $episode_name,$plan);
-        }
-
         try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -276,27 +272,53 @@ class TvshowsController extends Controller
 
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
+
         $settings = Setting::first();
 
         $buttons_pay = SiteTheme::select('purchase_btn', 'subscribe_btn')->first();
         $purchase_btn = $buttons_pay->purchase_btn;
         $subscribe_btn = $buttons_pay->subscribe_btn;
+
+        $episodess = Episode::where('slug', $episode_name)->orderBy('id', 'DESC')->first();
     
-        $auth_user = Auth::user();
-    
-        if ($auth_user == null) {
-            $auth_user_id = null;
-        } else {
-            $auth_user_id = Auth::user()->id;
+        $source_id = Episode::where('slug', $episode_name)->pluck('id')->first();
+
+       // Check Channel Purchase 
+
+        if ( $settings->user_channel_plans_page_status == 1 && $this->Theme == "theme6" ) {
+
+            $UserChannelSubscription = null ;
+
+            $channel_id = Episode::where('id',$source_id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+            if (!Auth::guest() ) {
+
+                $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                ->where('channel_id',$channel_id)->where('status','active')
+                                                ->where('subscription_start', '<=', Carbon::now())
+                                                ->where('subscription_ends_at', '>=', Carbon::now())
+                                                ->latest()->first();
+
+                if (Auth::user()->role == "admin") {
+                    $UserChannelSubscription = true ;
+                }
+            }
+
+            if (is_null($UserChannelSubscription)) {
+                session()->flash('channel_subscription_error', 'Channel Subscription not found.');
+                return back();
+            }
         }
 
-        $episodess = Episode::where('slug', '=', $episode_name)
-            ->orderBy('id', 'DESC')
-            ->first();
+            // Enable videoCipher Upload
+
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+            return $this->VideoCipher_Episode($series_name, $episode_name,$plan);
+        }
+
+        $auth_user = Auth::user();
     
-        $source_id = Episode::where('slug', '=', $episode_name)
-            ->pluck('id')
-            ->first();
+        $auth_user_id = $auth_user == null ? null : Auth::user()->id ;
     
         $episode_watchlater = Watchlater::where('episode_id', $episodess->id)
             ->where('user_id', $auth_user_id)
@@ -2743,6 +2765,18 @@ public function RemoveDisLikeEpisode(Request $request)
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function AllSeries_category(){
+        try{
+            return Theme::view('SeriesBasedCategories');
+
+        }
+        catch (\Throwable $th) {
+
+            return $th->getMessage();
+            return abort(404);
         }
     }
 

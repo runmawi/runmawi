@@ -241,8 +241,11 @@
       <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
 
    <!-- Style -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
+   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
+   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
+
+   <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
+   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
       
    <!-- Responsive -->
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
@@ -1952,7 +1955,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                           <div class="search-box iq-search-bar d-search">
                                              <form action="<?= URL::to("searchResult") ?>" class="searchbox" id="searchResult" method="get" >
-                                                <div class="form-group position-relative">
+                                                <div class="form-group position-relative" style="background: #80808094;padding-bottom: 2px;">
                                                    <input type="text" class="text search-input font-size-12 searches"
                                                       placeholder="type here to search..." name="search" >
                                                    <i class="search-link ri-search-line"></i>
@@ -2135,14 +2138,14 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
 
-                                                      <div class="toggle mt-2 ">
+                                                      <!-- <div class="toggle mt-2 ">
                                                          <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                                                <span class="sliderk round"></span>
                                                             </label>
                                                          <i class="fas fa-sun"></i>
-                                                      </div>
+                                                      </div> -->
 
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
                                                          <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card setting-dropdown">
@@ -2184,14 +2187,14 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                                    <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
                                                       
-                                                      <div class="toggle mt-2 ">
+                                                      <!-- <div class="toggle mt-2 ">
                                                          <i class="fas fa-moon"></i>
                                                             <label class="switch toggle mt-3">
                                                                <input type="checkbox" id="toggle"  value=<?php echo $theme_mode;  ?>  <?php if($theme_mode == "light") { echo 'checked' ; } ?> />
                                                                <span class="sliderk round"></span>
                                                             </label>
                                                          <i class="fas fa-sun"></i>
-                                                      </div>
+                                                      </div> -->
 
                                                       <div class="iq-card-body p-0 pl-3 pr-3">
 
@@ -2542,7 +2545,7 @@ window.onload = function () {
       }
 </script>
 
-<script>
+<!-- <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const ids = [ 'down-live', 'down-network', 'down-series'];
 
@@ -2558,7 +2561,7 @@ window.onload = function () {
                 }
             });
         });
-    </script>
+    </script> -->
 
 <style>
    .navbar-list-flex {
