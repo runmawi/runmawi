@@ -1007,7 +1007,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
             @endif
          </li>
 
-         @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_transaction_details == 1)
+         {{-- @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_transaction_details == 1) --}}
          <li>
                <div class="men" style="">
                   <p class="lnk" >{{ (__('Transaction Details')) }}</p>
@@ -1022,7 +1022,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <li><a href="{{ route('admin.transaction-details.index') }}">{{ (__('All Transactions')) }}</a></li>
                </ul>
          </li>
-         @endif
+         {{-- @endif --}}
          
           {{--Partner Payouts --}}
           @if(!empty(@$AdminAccessPermission) && @$AdminAccessPermission->enable_partner_payouts == 1)

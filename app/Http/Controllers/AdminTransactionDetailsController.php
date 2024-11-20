@@ -68,7 +68,7 @@ class AdminTransactionDetailsController extends Controller
         }
 
         if ($transactionType === 'subscription') {
-            $transaction->stripe_id = $request->stripe_id;
+            $transaction->payment_id = $request->payment_id;
         } elseif ($transactionType === 'ppv') {
             $transaction->payment_id = $request->payment_id;
         }

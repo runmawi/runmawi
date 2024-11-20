@@ -42,7 +42,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($transactions as $i => $transaction)
-                                        @if($transaction) <!-- Check if transaction is not null -->
+                                        @if($transaction)
                                             <tr>
                                                 <td>{{ $i + 1 }}</td>
                                                 @if($transaction->user)
@@ -51,9 +51,9 @@
                                                 <td>-</td>
                                                 @endif
                                                 @if ($transaction->transaction_type == 'Subscription')
-                                                    <td>{{ $transaction->stripe_id ? $transaction->stripe_id : 'N/A' }}</td>
+                                                    <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
                                                 @else
-                                                    <td>PPV</td>
+                                                    <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
                                                 @endif
                                                 @if ($transaction->transaction_type == 'Subscription')
                                                     <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>

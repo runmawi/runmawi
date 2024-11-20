@@ -455,6 +455,7 @@ border-radius: 0px 4px 4px 0px;
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6"></div>                   
 
 
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
