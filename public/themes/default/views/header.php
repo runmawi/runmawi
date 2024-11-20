@@ -528,6 +528,9 @@
       body.light-theme h4, body.light-theme p, body.light-theme span {
       color: <?php echo $GetLightText; ?>;
       }
+      body.light-theme .block-description p.epi-name{
+      color: <?php echo $GetLightText; ?> !important;
+      }
       body.light-theme header#main-header{
       background-color: <?php echo $GetLightBg; ?>!important;
       color: <?php echo $GetLightText; ?> !important;

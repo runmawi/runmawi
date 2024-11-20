@@ -117,7 +117,7 @@ line-height: 22px;
 color: #161616;
   /*  border-bottom: 2px solid var(--iq-body-bg);*/
 }
-.table td, .table th{/*border-top: 1px solid #808080 /*var(--iq-body-bg)*/;
+.table td, .table th{/*border-top: 1px solid #808080 /*var(--iq-body-bg)*/
 }
 textarea {
   resize: none;
@@ -347,7 +347,7 @@ Avatar Size
 /*----------------------------------------------
 Card
 ------------------------------------------------*/
-.iq-card { background:#fff; var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+.iq-card { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
 border-radius: 5px; }
 .iq-card1 { background:#fff; /*var(--iq-light-card)*/; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-bottom: 30px; border: none;x:0px;y:16px;blur:40px;apha:20%;box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
 border-radius: 5px;}
@@ -398,7 +398,7 @@ Buttons
 .btn.focus, .btn:focus { box-shadow: none !important; }
 .btn i { margin-right: 5px; }
 .btn-group-sm>.btn, .btn-sm { padding: .25rem .5rem; }
-.btn { font-size: 16px;height:  border-radius: 4px;padding: 10px 10px; }
+.btn { font-size: 16px;border-radius: 4px;padding: 10px 10px; }
 .btn.focus, .btn:focus { box-shadow: none !important; }
 .btn i { margin-right: 5px; }
 .iq-sign-btn { display: inline-block; text-align: center; border: 1px solid transparent; padding: .375rem 1rem; border-radius: 5px; line-height: normal; }
