@@ -43,10 +43,10 @@
 
 <section id="home" class="iq-main-slider p-0">
 
-    @if (session('error'))
+    @if (session('channel_subscription_error'))
         <script>
             $(document).ready(function() {
-                toastr.error('{{ session('error') }}', 'Error Message');
+                toastr.error('{{ session('channel_subscription_error') }}', 'Error Message');
             });
         </script>
     @endif
