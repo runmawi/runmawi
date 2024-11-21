@@ -71,7 +71,7 @@
     <style>
         select{
             height: 30px !important;
-            width: 50px !important;
+            width: 60px !important;
         }
         label{
             margin-left: 5px;

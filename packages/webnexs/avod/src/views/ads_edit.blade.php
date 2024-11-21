@@ -290,7 +290,7 @@
                                 </button>
 
                                 <video id="my-video" class="my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                    width="auto" height="auto" playsinline="playsinline" autoplay>
+                                    width="auto" height="auto" playsinline="playsinline">
                                     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
                                     {{-- <source src={{$Advertisement->ads_video}} type="video/mp4"> --}}
                                 </video>

@@ -1189,6 +1189,8 @@ class ApiAuthController extends Controller
         ]);
       }
 
+      user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
+
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
 
@@ -27555,11 +27557,11 @@ public function TV_login(Request $request)
           $otp_status = "true";
           $message = Str::title('Otp verify successfully!');
 
-          User::find($request->user_id)->update([
-            'otp' => null ,
-            'otp_request_id' => null ,
-            'otp_through' => null ,
-          ]);
+          // User::find($request->user_id)->update([
+          //   'otp' => null ,
+          //   'otp_request_id' => null ,
+          //   'otp_through' => null ,
+          // ]);
 
         }else{
 
