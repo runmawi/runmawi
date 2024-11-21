@@ -153,12 +153,17 @@ class WatchLaterController extends Controller
           $ppvvideos = Video::where('active', '=', '1')->whereIn('id', $ppv_array)->paginate(12);
           $ppvlivevideos = LiveStream::where('active', '=', '1')->whereIn('id', $ppvlive_array)->paginate(12);
           $ppvseries = Series::where('active', '=', '1')->whereIn('id', $ppvseries_array)->paginate(12);
+
+          $default_vertical_image_url = default_vertical_image_url();
+
+
           $data = array(
             'ppv' => $ppvvideos,
             'ppvlive' => $ppvlivevideos,
             'currency' => CurrencySetting::first(),
             'ppvseries' => $ppvseries,
             'ThumbnailSetting' => ThumbnailSetting::first(),
+            "default_vertical_image_url"   => $default_vertical_image_url,
             
           );
           return Theme::view('myppv', $data);

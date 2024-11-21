@@ -344,7 +344,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
                     hasPlayedOnce = true;
                 }
                 player.play();
-                $('.slider-inner').css('pointer-events','none');
+                $('._meta_desc_data_').css('pointer-events','none');
             },
             function () {
                 player.pause();
@@ -365,7 +365,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
          $(this).hover(
                function () {
                   video.play();
-                  $('.slider-inner').css('pointer-events','none');
+                  $('._meta_desc_data_').css('pointer-events','none');
                },
                function () {
                   video.pause();
