@@ -60,7 +60,7 @@ if (Auth::guest())
 					<?php
             elseif ($episode->type == 'file' || $episode->type == 'upload'): ?>
 						<div id="series_container">
-						<video id="videoPlayer"  <?= $autoplay ?>  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
+						<video id="videoPlayer" controlsList="nodownload" <?= $autoplay ?>  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
 
 							<source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto' >
 							<source src="<?=$episode->webm_url; ?>" type='video/webm' label='auto' >
@@ -76,7 +76,7 @@ if (Auth::guest())
 						</div>
             <?php  elseif($episode->type == 'm3u8'): ?>
 							<div id="series_container">
-								 <video id="video" <?= $autoplay ?>  controls crossorigin playsinline 
+								 <video id="video" <?= $autoplay ?> controlsList="nodownload" controls crossorigin playsinline 
 								 poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
 								 controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
 									<source 
@@ -93,7 +93,7 @@ if (Auth::guest())
 								</div>
                 <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
                   <div id="series_container">
-                  <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                  <video id="video" <?= $autoplay ?> controlsList="nodownload" controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
                   
                   <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
                   
@@ -170,7 +170,7 @@ if (Auth::guest())
         
 ?>
 			<div id="series_container">
-			<video id="videoPlayer" <?= $autoplay ?>  class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
+			<video id="videoPlayer" <?= $autoplay ?> controlsList="nodownload"  class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
 				<source src="<?=$season[0]->trailer; ?>" type='video/mp4' label='auto' >
         <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
                         foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
