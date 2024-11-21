@@ -319,6 +319,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
         freeScroll: true,
         imagesLoaded: true,
         lazyload: true,
+        autoPlay: 5000,
     });
 
     // Video trailer slider
