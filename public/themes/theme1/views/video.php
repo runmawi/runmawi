@@ -940,7 +940,9 @@ Auth::user()->role == 'admin' && $video->type != "" || Auth::user()->role =="sub
        <!-- Year, Running time, Age --> 
          <div class="row align-items- text-white text-detail justify-content-between">
              <div class="col-sm-6 col-md-6 col-xs-12">
-            <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+              <?php if($ThumbnailSetting->age == 1): ?>
+                <span class="badge badge-secondary p-2"><?php echo __($video->age_restrict).' '.'+';?></span>
+              <?php endif; ?>
             <span class="ml-2 small"><?php echo __(gmdate('H:i:s', $video->duration));?></span>
             <?php if (empty($video->year)) { ?>  <?php } else { ?><span class="trending-year"> <?php echo $video->year;} ?></span>
             <span class="trending-year"><?php
@@ -1364,7 +1366,7 @@ $artists = [];
 
 
   <?php if( $settings->show_recommended_videos == 1 ): ?>
-    <div class="video-list you-may-like  overflow-hidden">
+    <div class="container-fluid video-list you-may-like  overflow-hidden">
         <h4 class="Continue Watching" style="color:#fffff;"><?php echo __('Recomended Videos');?></h4>
             <div class="slider" data-slick='{"slidesToShow": 4, "slidesToScroll": 4, "<?= $autoplay ?>": false}'>   
                 <?php include('partials/video-loop.php');?>
