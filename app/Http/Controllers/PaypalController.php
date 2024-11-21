@@ -2,33 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\User;
 
 // Used to process plans
-use PayPal\Api\ChargeModel;
-use PayPal\Api\Currency;
-use PayPal\Api\MerchantPreferences;
-use PayPal\Api\PaymentDefinition;
+use App\Video;
+use App\Channel;
+use Carbon\Carbon;
+use App\PpvPurchase;
 use PayPal\Api\Plan;
+use App\Subscription;
 use PayPal\Api\Patch;
-use PayPal\Api\PatchRequest;
-use PayPal\Common\PayPalModel;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Payer;
+use PayPal\Api\Amount;
+use App\ModeratorsUser;
 
 // use to process billing agreements
-use PayPal\Api\Agreement;
-use PayPal\Api\Payer;
-use PayPal\Api\ShippingAddress;
-use PayPal\Api\Amount;
 use PayPal\Api\Payment;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\Transaction;
-use App\Video;
-use App\ModeratorsUser;
 use App\VideoCommission;
-use App\Channel;
-use App\PpvPurchase;
+use PayPal\Api\Currency;
+use App\SubscriptionPlan;
+use PayPal\Api\Agreement;
+use PayPal\Api\ChargeModel;
+use PayPal\Api\Transaction;
+use PayPal\Rest\ApiContext;
+use Illuminate\Http\Request;
+use PayPal\Api\PatchRequest;
+use PayPal\Api\RedirectUrls;
+use PayPal\Common\PayPalModel;
+use PayPal\Api\ShippingAddress;
+use PayPal\Api\PaymentDefinition;
+use PayPal\Api\MerchantPreferences;
+use PayPal\Auth\OAuthTokenCredential;
 
 class PaypalController extends Controller
 {
@@ -208,8 +212,7 @@ class PaypalController extends Controller
         // Data from Request
 
         $settings = $settings = \App\Setting::first();/*Setting::first()*/
-        $user_email = $request->session()->get('register.email');
-        $user = User::where('email',$user_email)->first();
+        $user = auth()->check() ? User::where('email', auth()->user()->email)->first() : null;
         $paymentMethod = $request->get('py_id');
         $subscriptionID = $request->get('subscriptionID');
         $plan = $request->get('plan');
@@ -230,7 +233,8 @@ class PaypalController extends Controller
         $next_date = $plandetail->days;
         $date = Carbon::parse($current_date)->addDays($next_date);
         // $subscription = Subscription::where('user_id',$user->id)->first();
-        $purchase = new Subscription;
+        $subscription = new Subscription();
+        $subscription->user_id = $user->id;
         $subscription->price = $plandetail->price;
         $subscription->name = $user->username;
         $subscription->days = $plandetail->days;
@@ -239,6 +243,7 @@ class PaypalController extends Controller
         $subscription->cityname = $cityName;
         $subscription->ends_at = $date;
         $subscription->platform = 'WebSite';
+        $subscription->payment_id = $subscriptionID;
         $subscription->save();
 
         $response = array(
