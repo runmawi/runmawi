@@ -2,7 +2,7 @@
 
     $current_time = Carbon\Carbon::now()->format('H:i:s');
     $advertisement_plays_24hrs = App\Setting::pluck('ads_play_unlimited_period')->first();
-
+    $episode_ads = App\AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id');
     $video_js_mid_advertisement_sequence_time = $episode_details->video_js_mid_advertisement_sequence_time != null ? Carbon\Carbon::parse( $episode_details->video_js_mid_advertisement_sequence_time )->secondsSinceMidnight()  : '300';
 
     $pre_advertisement  = null ;
@@ -38,7 +38,6 @@
                                         ->pluck('ads_path')
                                         ->first();
 
-
             // Mid-advertisement 
 
         $mid_advertisement = App\Advertisement::select('advertisements.*', 'ads_events.ads_id', 'ads_events.status', 'ads_events.end', 'ads_events.start')
@@ -64,7 +63,6 @@
                                             })
                                     
                                     ->pluck('ads_path');
-
             // Post-advertisement 
 
         $post_advertisement = App\Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
