@@ -2,7 +2,7 @@
 @php
 include(public_path('themes/default/views/header.php'));
 $settings = App\Setting::first(); 
-$AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
+$AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
 @endphp
 
 <style>
@@ -372,7 +372,7 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
                           <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                         </div> 
                     
-                        @if($AdminOTPCredentials->status == 0)
+                        @if($AdminOTPCredentials == 0)
                            <div class="form-group position-relative">
                               <label>{{ __('Password') }}:</label><br>
                               <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >

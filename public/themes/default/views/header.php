@@ -15,7 +15,7 @@
       $GetLightBg   = GetLightBg();
       $GetWebsiteName  = GetWebsiteName();
       $GetDarkBg    = GetDarkBg();
-      $AdminOTPCredentials =  App\AdminOTPCredentials::first();
+      $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
 
       if(Auth::guest()){
          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -1404,7 +1404,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <?php if($AdminOTPCredentials->status == 0){ ?>
+                                       <?php if($AdminOTPCredentials == 0){ ?>
                                           <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center" style="padding-left: 6px;">
                                                 <div class="right-icon">
@@ -1623,7 +1623,7 @@
                                              </div>
                                           </div>
                                        </a>
-                                       <?php if($AdminOTPCredentials->status == 0){ ?>
+                                       <?php if($AdminOTPCredentials == 0){ ?>
                                           <a href="<?php echo  URL::to('change-profile') ?>" class="iq-sub-card setting-dropdown">
                                              <div class="media align-items-center" style = "padding-left: 6px;">
                                                 <div class="right-icon">
