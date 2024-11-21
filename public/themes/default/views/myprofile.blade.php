@@ -272,17 +272,16 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
                             <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                         </div>   
                     </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">{{ __('Password') }}</span>
-                            <p class="mb-0">***********</p>
+                     @if($AdminOTPCredentials == 0)
+                        <div class="row align-items-center justify-content-end">
+                              <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                 <span class="text-light font-size-13">{{ __('Password') }}</span>
+                                 <p class="mb-0">***********</p>
+                              </div>
                         </div>
-                    </div>
+                     @endif
                     
-                  
-                       
-                   
-                          </div>
+                     </div>
                     </div>
                       <div class="a-border"></div>
                     <div class="row">
