@@ -15,7 +15,7 @@
       $GetLightBg   = GetLightBg();
       $GetWebsiteName  = GetWebsiteName();
       $GetDarkBg    = GetDarkBg();
-      $AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
+      $AdminOTPCredentials =  App\AdminOTPCredentials::first();
 
       if(Auth::guest()){
          $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
