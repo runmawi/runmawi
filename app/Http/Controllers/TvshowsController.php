@@ -818,48 +818,93 @@ class TvshowsController extends Controller
                 $item['video_recap_end_time_seconds']    = $item->recap_end_time ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
                 
                     //  Episode URL
+
+                    if($this->Theme == 'theme4'){
+                        switch (true) {
+
+                            case $item['type'] == "file"  :
+                                $item['Episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.mp4') ;
+                                $item['Episode_player_type'] =  'video/mp4' ;
+                            break;
             
-                    switch (true) {
+                            case $item['type'] == "upload"  :
+                              $item['Episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.mp4') ;
+                              $item['Episode_player_type'] =   'video/mp4' ;
+                            break;
+            
+                            case $item['type'] == "m3u8":
+                                $item['Episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.m3u8')   ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+            
+                            case $item['type'] == "bunny_cdn":
+                                $item['Episode_url'] =  $item->url    ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+    
+                            case $item['type'] == "m3u8_url":
+                                $item['Episode_url'] =  $item->url    ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+                            
+                            case $item['type'] == "aws_m3u8":
+                              $item['Episode_url'] =  $item->path ;
+                              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+    
+                            case $item['type'] == "embed":
+                                $item['Episode_url'] =  $item->path ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+            
+                            default:
+                                $item['Episode_url'] =  null ;
+                                $item['Episode_player_type'] =  null ;
+                            break;
+                        }
+                    } else{
+                        switch (true) {
 
-                        case $item['type'] == "file"  :
-                            $item['Episode_url'] =  $item->mp4_url ;
-                            $item['Episode_player_type'] =  'video/mp4' ;
-                        break;
-        
-                        case $item['type'] == "upload"  :
-                          $item['Episode_url'] =  $item->mp4_url ;
-                          $item['Episode_player_type'] =   'video/mp4' ;
-                        break;
-        
-                        case $item['type'] == "m3u8":
-                            $item['Episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
-                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-        
-                        case $item['type'] == "bunny_cdn":
-                            $item['Episode_url'] =  $item->url    ;
-                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-
-                        case $item['type'] == "m3u8_url":
-                            $item['Episode_url'] =  $item->url    ;
-                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-                        
-                        case $item['type'] == "aws_m3u8":
-                          $item['Episode_url'] =  $item->path ;
-                          $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-
-                        case $item['type'] == "embed":
-                            $item['Episode_url'] =  $item->path ;
-                            $item['Episode_player_type'] =  'application/x-mpegURL' ;
-                        break;
-        
-                        default:
-                            $item['Episode_url'] =  null ;
-                            $item['Episode_player_type'] =  null ;
-                        break;
+                            case $item['type'] == "file"  :
+                                $item['Episode_url'] =  $item->mp4_url ;
+                                $item['Episode_player_type'] =  'video/mp4' ;
+                            break;
+            
+                            case $item['type'] == "upload"  :
+                              $item['Episode_url'] =  $item->mp4_url ;
+                              $item['Episode_player_type'] =   'video/mp4' ;
+                            break;
+            
+                            case $item['type'] == "m3u8":
+                                $item['Episode_url'] =  URL::to('/storage/app/public/'. $item->path .'.m3u8')   ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+            
+                            case $item['type'] == "bunny_cdn":
+                                $item['Episode_url'] =  $item->url    ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+    
+                            case $item['type'] == "m3u8_url":
+                                $item['Episode_url'] =  $item->url    ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+                            
+                            case $item['type'] == "aws_m3u8":
+                              $item['Episode_url'] =  $item->path ;
+                              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+    
+                            case $item['type'] == "embed":
+                                $item['Episode_url'] =  $item->path ;
+                                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                            break;
+            
+                            default:
+                                $item['Episode_url'] =  null ;
+                                $item['Episode_player_type'] =  null ;
+                            break;
+                        }
                     }
   
                 return $item;
@@ -989,7 +1034,7 @@ class TvshowsController extends Controller
                                     ->orderBy('episode_order', 'asc')
                                     ->first();
 
-        
+
             if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
                 $data = [
                     'currency' => $currency,
@@ -1042,7 +1087,7 @@ class TvshowsController extends Controller
                     'subscribe_btn'            => $subscribe_btn,
                     'next_episode'             => $next_episode,
                 ];
-
+                
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
                 } else {
