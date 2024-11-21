@@ -532,6 +532,10 @@
         display: block;
         opacity: 1;
     }
+
+    @media(max-width:768px){
+        ._meta_desc_data_{display:none;}
+    }
 </style>
 
  <!--  video-js Script  -->
