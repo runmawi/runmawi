@@ -1159,6 +1159,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     onApprove: function (data, actions) {
                         return actions.order.capture().then(function (details) {
                             // console.log(details);
+                            const paymentId = details.id;
                             $.ajax({
                                 url: '{{ URL::to('paypal-ppv-video') }}',
                                 method: 'post',
@@ -1166,6 +1167,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     _token: '<?= csrf_token() ?>',
                                     amount: amount,
                                     video_id: '<?= @$videodetail->id ?>',
+                                    paymentId: paymentId,
                                 },
                                 success: (response) => {
                                     console.log("Server response:", response);
