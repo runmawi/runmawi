@@ -128,14 +128,14 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">Picture</label>
                         <p class="p1">Select the artist image (300x300 px or 2:2 ratio):</p>
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-control" name="image" id="image" />
+                            <input type="file" multiple="true" class="form-control" name="image" id="image" value="{{ $artist->image }}" />
                         </div>
                     </div>
 
                     <div class="col-sm-6 mt-3" data-collapsed="0">
                         <div class="panel-body">
                             @if(!empty($artist->image) &&  $artist->image != null )
-                            <img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" class="movie-img" width="200" />
+                                <img src="{{ URL::to('/public/uploads/artists/') . '/'.$artist->image }}" class="movie-img" width="200" />
                             @endif
                         </div>
                     </div>
