@@ -3987,6 +3987,7 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'channel';
         return $item;
       });
       if(count($channel_videos) > 0){
