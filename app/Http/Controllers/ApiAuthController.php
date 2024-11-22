@@ -7208,7 +7208,14 @@ return response()->json($response, 200);
         $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
        
         $item['episode_id'] =$item->id;
-        $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
+        if($this->Theme == 'theme4'){
+          unset($item['mp4_url']);
+          $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public-latest/').'/'.$item->path . '.m3u8' : " ";
+          $item['mp4_url'] = URL::to('/storage/app/public-latest/'. $item->path .'.mp4');
+        }
+        else{
+          $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
+        }
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
         $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
         return $item;
