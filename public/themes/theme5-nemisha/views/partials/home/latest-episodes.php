@@ -1,11 +1,13 @@
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h5 class="main-title">Recently Added Episodes</h5>                      
 </div>
+
 <?php
 ?>
     <div class="favorites-contens"> 
       <div class="latest-episode home-sec list-inline row p-0 mb-0">
     <?php  if(isset($latest_episodes)) :
+                // dd($latest_episodes);
     					 foreach($latest_episodes as $key => $latest_episode) {
         // foreach($latest_series as $latest_serie) { 
 ?>
@@ -46,7 +48,7 @@
 </div>
 
 <script>
-    var elem = document.querySelector('.latest-audios');
+    var elem = document.querySelector('.latest-episode');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
