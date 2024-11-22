@@ -196,7 +196,7 @@ class ProducerController extends Controller
 
                 }else {
 
-                    $errorMessage = $response->json()['error'] ?? 'An unknown error occurred'; 
+                    $errorMessage = $response->body() ?? 'An unknown error occurred'; 
                     
                     return response()->json(['exists' => false,'message_note' => 'OTP Not Sent!','error_details' => $errorMessage ]);
                     
