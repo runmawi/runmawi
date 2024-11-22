@@ -14,8 +14,44 @@
                     <div class="tvthrillers-contens">
                         <ul class="favorites-slider list-inline">
                             @foreach ($data as $channel)
+
+                                @php
+                                    $UserChannelSubscription = null ;
+
+                                    $all_channel_redirection_url = route('ChannelHome', $channel->channel_slug);
+                                    $all_channel_button =  "Visit" ;
+
+                                    if ($settings->user_channel_plans_page_status == 1){
+
+                                        if (!Auth::guest()) {
+
+                                            $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                                            ->where('channel_id',$channel->id)->where('status','active')
+                                                                            ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                                            ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
+                                                                            ->latest()->first();
+                                        }
+
+                                        if (!Auth::guest() && Auth::user()->role != "admin"){
+
+                                            $all_channel_redirection_url = is_null($UserChannelSubscription) ? route('channel.payment', $channel->id) : route('ChannelHome', $channel->channel_slug);
+                                            $all_channel_button = is_null($UserChannelSubscription) ? "Subscribe" : "Visit" ;
+
+                                        }elseif(!Auth::guest() && Auth::user()->role == "admin"){
+
+                                            $all_channel_redirection_url = route('ChannelHome', $channel->channel_slug);
+                                            $all_channel_button =  "Visit" ;
+
+                                        }elseif( Auth::guest() ){
+
+                                            $all_channel_redirection_url = route('login');
+                                            $all_channel_button =  "Subscribe" ;
+                                        }
+                                    }
+                                @endphp
+
                                 <li class="slide-item">
-                                    <a href="{{ URL::to('channel/' . $channel->channel_slug) }}">
+                                    <a href="{{ $all_channel_redirection_url }}">
                                         <div class="block-images position-relative">
                                           
                                             <div class="img-box">
@@ -30,7 +66,7 @@
 
                                                 <div class="hover-buttons">
                                                     <span class="btn btn-hover"><i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                        Visit
+                                                        {{ __($all_channel_button) }}
                                                     </span>
                                                 </div>
                                             </div>
