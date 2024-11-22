@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\AdminOTPCredentials;
+use App\VideoCommission;
 use App\ModeratorsUser;
 use App\SeriesSeason;
 use App\PpvPurchase;
 use App\LiveStream;
+use App\UserAccess;
 use App\Video;
 use App\Series;
 use App\Audio;
@@ -25,10 +28,26 @@ class ProducerController extends Controller
         $this->current_time = Carbon::now($current_timezone);
     }
 
+    // Login Module
+
     public function login(Request $request)
     {
         try {
-            return view('producer.login');
+
+            $current_timezone = 'Asia/Kolkata';
+            $current_time = Carbon::now($current_timezone);
+
+            $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+            $jsondata = json_decode($jsonString, true); 
+
+            $data = array(
+                'current_timezone' => $current_timezone,
+                'current_time' => $current_time,
+                'jsonString'   => $jsonString,
+                'jsondata'     => $jsondata,
+            );
+
+            return view('producer.login',$data);
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -56,7 +75,7 @@ class ProducerController extends Controller
         
             $request->session()->put('cpp_user_id', $ModeratorsUser->id);
 
-            return redirect()->intended(route('producer.home'));
+            return redirect()->route('producer.home');
 
         } catch (\Throwable $th) {
 
@@ -64,11 +83,26 @@ class ProducerController extends Controller
         }
     }
 
+    // Signup Module
+     
     public function signup(Request $request)
     {
         try {
 
-            return view('producer.signup');
+            $current_timezone = 'Asia/Kolkata';
+            $current_time = Carbon::now($current_timezone);
+
+            $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+            $jsondata = json_decode($jsonString, true); 
+
+            $data = array(
+                'current_timezone' => $current_timezone,
+                'current_time' => $current_time,
+                'jsonString'   => $jsonString,
+                'jsondata'     => $jsondata,
+            );
+
+            return view('producer.signup',$data);
 
         } catch (\Throwable $th) {
 
@@ -76,108 +110,149 @@ class ProducerController extends Controller
         }
     }
 
-    public function signup_otp(Request $request)
+    public function Signup_check_mobile_exist(Request $request)
     {
+        $mobile_number = $request->input('mobile_number');
+
+        if( is_null($mobile_number)){
+            return response()->json(['exists' => false]);
+        }
+
+        $user = ModeratorsUser::where('mobile_number', $mobile_number)->where('ccode',$request->ccode)->first();
+
+        if ( is_null($user)) {
+
+            ModeratorsUser::updateOrCreate([
+                'ccode'    => $request->ccode,
+                'mobile_number' => $request->mobile_number ,
+            ]);
+
+            return response()->json(['exists' => true]);
+        } else {
+
+            if( $user->signup_exits_status == 1 ){
+                return response()->json(['exists' => false]);
+            }else{
+
+                return response()->json(['exists' => true]);
+            }
+        }
+    }
+
+    public function Signup_Sending_OTP(Request $request)
+    {
+        $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
+
+        if(is_null($AdminOTPCredentials)){
+            return response()->json(['exists' => false, 'message_note' => 'Some Error in OTP Config, Please connect admin']);
+        }
+
         try {
-
-            // Moderators User exists
             
-            $ModeratorsUser_exists = ModeratorsUser::where('mobile_number',$request->mobile_number)->exists();
+            $random_otp_number = random_int(1000, 9999);
+            $ccode = str_replace('+','',$request->ccode );
+            $mobile             = $request->mobile_number;
+            $Mobile_number      = $ccode.$request->mobile ;
 
-            if ($ModeratorsUser_exists) {
-                
-                return back()->withErrors(['mobile_number' => 'This Mobile Number alreay taken !!.']);
-            }
-
-            // OTP Credentials
-
-            $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
-
-            if(is_null($AdminOTPCredentials)){
-    
-                return back()->withErrors(['mobile_number' => 'Error In OTP , Please, Check the Admin OTP Credentials']);
-            }
-
-            // OTP Sending
+            $user = ModeratorsUser::where('mobile_number',$mobile)->where('ccode',$ccode)->where('signup_exits_status',0)->first();
 
             if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
-
-                $random_otp_number = random_int(1000, 9999);
 
                 $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
                 $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
                 $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
-    
+
                 $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
                 $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
-    
+
                 $inputs = array(
                     'APIKEY' => $API_key_24x7sms,
-                    'MobileNo' => $request->mobile_number,
+                    'MobileNo' => $Mobile_number,
                     'SenderID' => $SenderID,
                     'ServiceName' => $ServiceName,
                 );
-    
+
                 if ($ServiceName == "TEMPLATE_BASED") {
                     $inputs += array(
+                        // 'DLTTemplateID' => $DLTTemplateID,
                         'Message' => $message,
                     );
                 }
-    
+
                 $response = Http::withoutVerifying()->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
-    
+
                 if (str_contains($response->body(), 'success')) {
-    
+
                     $parts = explode(':', $response->body());
                     $msgId = $parts[1];
-    
-                    ModeratorsUser::create([
-                        'mobile_number' => $request->mobile_number,
-                        'username'  => $request->username,
-                        'otp'   => $random_otp_number,
+
+                    ModeratorsUser::find($user->id)->update(
+                        ['otp' => $random_otp_number ,
+                        'otp_request_id' => $msgId ,
+                        'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
+                    return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+
                 }else {
-                    return back()->withErrors(['mobile_number' => 'Error In OTP , Please, Check the Admin OTP Credentials']);
-                }      
+                    return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!']);
+                }         
             }
-
-            $data = array(
-                'mobile_number' => $request->mobile_number,
-            );
-
-            return view('producer.signup-otp',$data);
-
-        }  catch (\Throwable $th) {
-
-            return abort(404);
+           
+        } catch (\Throwable $th) {
+            
+            return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!','error_note' => $th->getMessage()]);
         }
     }
 
-    public function verify_signup(Request $request)
+    public function signup_otp_verification(Request $request)
     {
-        // try {
+        try {
 
-            $ModeratorsUser_exists = ModeratorsUser::where('mobile_number', $request->mobile_number)->where('otp', $request->otp)->first();
+            $ccode = str_replace('+','',$request->ccode );
+            $mobileNumber             = $request->mobileNumber;
 
+            $user_verify = ModeratorsUser::where('mobile_number',$mobileNumber)->where('ccode',$ccode)->where('otp', $request->otp)
+                                            ->where('signup_exits_status',0)->first();
 
-            if (is_null($ModeratorsUser_exists)) {
-                
-                // return redirect()->route('producer.login', ['param' => 'value']);
+            if( !is_null($user_verify) ){
 
-                return back()->withErrors(['otp' => 'Incorrect OTP.']);
+                $commission_percentage = VideoCommission::where('type','CPP')->pluck('percentage')->first();
+                $CPP_commission_percentage = $commission_percentage ? 100 - $commission_percentage  : null;
+
+                ModeratorsUser::find($user_verify->id)->update([
+                    'username'=> $request->username,
+                    'signup_exits_status' => 1 ,
+                    'password' =>  Hash::make($request->otp),
+                    'commission_percentage'  => $CPP_commission_percentage,
+                    'user_permission' => '1,2',
+                    'status'   => 0,
+                    'user_role'=> 3,
+                ]);
+
+                UserAccess::updateOrCreate([
+                    'user_id' => $user_verify->id ,
+                    'role_id' => 3 ,
+                    'permissions_id' => 2,
+                ]);
+
+                session()->flash('Regiter_successfully', 'Producer Registered Successfully, Waiting for Admin Approval.');
+
+                return response()->json([
+                    'status' => true,
+                    'message_note' => 'OTP verify successfully &  wait a few seconds to register !',
+                ]);
             }
 
+            return response()->json( [ 'status' => false , 'message_note' => 'Please, Enter the Valid OTP !' ] );
+            
+        } catch (\Throwable $th) {
 
-            $request->session()->put('cpp_user_id', $ModeratorsUser_exists->id);
-
-            return redirect()->intended(route('producer.home'));
-
-        // }  catch (\Throwable $th) {
-
-        //     return abort(404);
-        // }
+            return response()->json( [ 'status' => false , 'fails' => $th->getMessage() ] );
+        }
     }
+   
+    // Dashboard Module
 
     public function home(Request $request)
     {
@@ -727,6 +802,8 @@ class ProducerController extends Controller
         }
     }
     
+    // Logout Module
+
     public function logout(Request $request)
     {
         try {

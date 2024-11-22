@@ -30,6 +30,12 @@ class ModeratorsUser extends Model
         'picture',
         'user_role',
         'user_permission',
+        'signup_exits_status',
+        'ccode',
+        'otp_request_id',
+        'otp_through',
+        'commission_percentage',
+        'status',
         'created_at',
         'updated_at',
     ];

@@ -21,9 +21,9 @@ class CheckCPPLoginSession
             'producer.login',
             'producer.verify_login',
             'producer.signup',
-            'producer.signup_login',
-            'producer.signup_otp',
-            'producer.verify_signup',
+            'producer.Signup_check_mobile_exist',
+            'producer.otp.signup-sending-otp',
+            'producer.otp.signup_otp_verification'
         ];
         
         if (in_array($request->route()->getName(), $allowedRoutes)) {

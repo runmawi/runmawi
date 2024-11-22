@@ -3020,15 +3020,16 @@ Route::group(['prefix' => '/producer', 'middleware' => ['runmawi.CheckCPPLoginSe
 
     Route::get('/', 'ProducerController@login')->name('producer.login');
     Route::get('/login', 'ProducerController@login')->name('producer.login');
-
-    Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
-    Route::get('/signup-otp', 'ProducerController@signup_otp')->name('producer.signup_otp');
-    Route::get('/verify-signup', 'ProducerController@verify_signup')->name('producer.verify_signup');
-
     Route::post('/verify-login', 'ProducerController@verify_login')->name('producer.verify_login');
+
     Route::get('/signup', 'ProducerController@signup')->name('producer.signup');
+    Route::get('/Signup_check_mobile_exist', 'ProducerController@Signup_check_mobile_exist')->name('producer.Signup_check_mobile_exist');
+    Route::get('/signup-sending-otp', 'ProducerController@Signup_Sending_OTP')->name('producer.otp.signup-sending-otp');
+    Route::get('/signup-otp-verification', 'ProducerController@signup_otp_verification')->name('producer.otp.signup_otp_verification');
+
     Route::get('/home', 'ProducerController@home')->name('producer.home');
     Route::get('/stats/{source}/{source_id}', 'ProducerController@stats')->name('producer.stats');
+    
     Route::get('/logout', 'ProducerController@logout')->name('producer.logout');
 });
 Route::get('admin/partner_monetization_settings/index', 'AdminPartnerMonetizationSettings@Index')->name('partner_monetization_settings');
