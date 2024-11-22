@@ -70,9 +70,9 @@ class ChannelPartnerController extends Controller
             $currency = CurrencySetting::first();
             $FrontEndQueryController = new FrontEndQueryController();
 
-            $all_channels = Channel::where('status', 1)->get();
-
             $settings = $this->settings;
+
+            $all_channels = Channel::where('status', 1)->get();
 
             $channel_data = $all_channels->map(function ($item) use ($FrontEndQueryController) {
 
@@ -112,7 +112,7 @@ class ChannelPartnerController extends Controller
 
             // Sliders
 
-            $channel_slider = $all_channels->map(function ($item) use ($FrontEndQueryController,$settings) {
+            $channel_slider = Channel::where('status', 1)->get()->map(function ($item) use ($FrontEndQueryController,$settings) {
 
                 $channel_partner = $item->id;
 
