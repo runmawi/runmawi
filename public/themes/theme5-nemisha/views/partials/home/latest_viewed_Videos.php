@@ -4,14 +4,18 @@
 
    if(Auth::guest() != true ){
 
-        $latest_view_videos =  App\RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
+            $latest_view_videos = App\RecentView::join('videos', 'videos.id', '=', 'recent_views.video_id')
             ->where('recent_views.user_id',Auth::user()->id)
-            ->groupBy('recent_views.video_id');
+            ->where('videos.status', 1)
+            ->where('videos.draft', 1) 
+            ->where('videos.active', 1) 
+            ->groupBy('recent_views.video_id')
+            ->orderBy('recent_views.created_at', 'desc'); 
 
-            if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
-                $latest_view_videos = $latest_view_videos  ->whereNotIn('videos.id',Block_videos());
+            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                $latest_view_videos = $latest_view_videos->whereNotIn('videos.id', Block_videos());
             }
-            
+
             $latest_view_videos = $latest_view_videos->get();
    }
    else

@@ -21,6 +21,7 @@
   ?>
   </a>
   </h5>  
+  <a class="see" href="<?php echo URL::to('Channel-list') ?>">See All</a>
 </div>
 <div class="favorites-contens"> 
   <div class="channel-partner home-sec list-inline row p-0 mb-0">
@@ -31,7 +32,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo $channel->channel_image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $channel->channel_name; ?>">                 
+                  <img src="<?php echo $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $channel->channel_name; ?>">                 
                 </div></div>
 
               <div class="block-description"></div>

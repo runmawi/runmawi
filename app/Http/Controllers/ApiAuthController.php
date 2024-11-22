@@ -216,6 +216,8 @@ class ApiAuthController extends Controller
         $this->getfeching = Geofencing::first();
         $this->videos_expiry_date_status = videos_expiry_date_status();
 
+        $this->Theme = HomeSetting::pluck('theme_choosen')->first();
+
   }
 
   public function signup(Request $request)
@@ -6319,6 +6321,73 @@ public function checkEmailExists(Request $request)
         }
 
          //  Episode URL
+         if($this->Theme == 'theme4'){
+          switch (true) {
+
+            case $item['type'] == "file"  :
+                $item['episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.mp4') ;
+                $item['Episode_player_type'] =  'video/mp4' ;
+                $item['qualities']  = [] ;
+            break;
+  
+            case $item['type'] == "upload"  :
+              $item['episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.mp4') ;
+              $item['Episode_player_type'] =   'video/mp4' ;
+              $item['qualities']  = [] ;
+            break;
+  
+            case $item['type'] == "m3u8":
+                $item['episode_url'] =  URL::to('/storage/app/public-latest/'. $item->path .'.m3u8')   ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                $item['qualities']  = [] ;
+            break;
+  
+            case $item['type'] == "m3u8_url":
+                $item['episode_url'] =  $item->url    ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                $item['qualities']  = [] ;
+            break;
+            
+            case $item['type'] == "aws_m3u8":
+              $item['episode_url'] =  $item->path ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+              $item['qualities']  = [] ;
+            break;
+  
+            case $item['type'] == "embed":
+                $item['episode_url'] =  $item->path ;
+                $item['Episode_player_type'] =  'application/x-mpegURL' ;
+                $item['qualities']  = [] ;
+            break;
+  
+            case $item['type'] == 'bunny_cdn' :
+              $item['episode_url']   = $item->url ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+  
+              $response = Http::withoutVerifying()->get( $item['episode_url'] );
+              $qualities = [];
+  
+              if ($response->successful()) {
+                  $contents = $response->body();
+                  preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+  
+                  foreach ($matches[2] as $quality) {
+                      $qualities[] = str_replace('p', '', $quality);
+                  }
+                  $qualities = $qualities ;
+              } 
+  
+              $item['qualities']   = $qualities ;
+              
+              break;
+  
+            default:
+                $item['episode_url'] =  null ;
+                $item['Episode_player_type'] =  null ;
+               $item['qualities']  = [] ;
+            break;
+          }
+         } else {
          
          switch (true) {
 
@@ -6385,6 +6454,7 @@ public function checkEmailExists(Request $request)
              $item['qualities']  = [] ;
           break;
         }
+      }
 
          return $item;
        });
