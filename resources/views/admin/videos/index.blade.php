@@ -164,14 +164,8 @@ border-radius: 0px 4px 4px 0px;
                                     <td>
                                        <div class="flex align-items-center list-user-action">
 
-                                       <?php if($video->draft != null && $video->draft == 1 && $video->status != null && $video->status == 1 && $video->active != null && $video->active == 1){ ?>
                                           <a class="iq-bg-warning pt-1" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="View" href="{{ URL::to('/category/videos') . '/' . $video->slug }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-                                       <?php } else{?>
-                                          <a class="iq-bg-warning mt-2" style = "opacity: 0.6; cursor: not-allowed;" data-toggle="tooltip" data-placement="top" title=""
-                                             data-original-title="Disable View" ><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-                                       <?php }?>
-
                                           <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
                                              data-original-title="Edit Meta" href="{{ URL::to('admin/videos/edit') . '/' . $video->id }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                              <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
