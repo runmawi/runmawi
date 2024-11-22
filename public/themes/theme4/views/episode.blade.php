@@ -1163,7 +1163,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     
     ?>
 
-    //  <!-- Watchlater & wishlist -->
+      <!-- Watchlater & wishlist -->
 
     <script>
         function episodewatchlater(ele) {
