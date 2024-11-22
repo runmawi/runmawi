@@ -2,6 +2,7 @@
 @php
 include(public_path('themes/default/views/header.php'));
 $settings = App\Setting::first(); 
+$AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
 @endphp
 
 <style>
@@ -209,7 +210,7 @@ $settings = App\Setting::first();
             <div class="col-lg-4 mb-3 bdr">
                   <a class="" href="{{ URL::to('/home') }}"><button class=' btn bd btn-action back'  style=''> <i class="fas fa-arrow-alt-circle-left"></i> {{ (__('Home')) }}</button></a>
                   <br><br>
-                <h4 class="text-white">{{ (__('Account Settings')) }}</h4>
+                <span class="text-white" style="font-size: 20px; font-weight:500;">{{ (__('Account Settings')) }}</span>
                 <div class="mt-5 text-white p-0">
                     <ul class="usk" style="margin-left: -45px;">
                       <!--  <li><a class="showSingle" target="1">User Settings</a></li>-->
@@ -248,7 +249,7 @@ $settings = App\Setting::first();
                 <div class="" id="personal_det">
                 <div class="" >
                     <div class="d-flex align-items-baseline justify-content-between">
-                    <div><h4 class="mb-2 pb-3 text-white">{{ __('Personal Details') }}</h4></div>
+                    <div><span class="mb-2 pb-3 text-white" style="font-size: 20px; font-weight:500;">{{ __('Personal Details') }}</span></div>
                     <div><a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
                         </div></div>
                     </div>
@@ -256,7 +257,7 @@ $settings = App\Setting::first();
                    <div class="a-border"></div>
                       <div class="row jusitfy-content-center">
                         <div class="col-md-3 mt-3">
-                            <h4 class="text-white">{{ __('Account Details') }}</h4>
+                            <span class="text-white" style="font-size: 20px; font-weight:500;">{{ __('Account Details') }}</span>
                           </div>
                         <div class="col-md-9">
                              <div class="row align-items-center justify-content-end">
@@ -271,17 +272,16 @@ $settings = App\Setting::first();
                             <p class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
                         </div>   
                     </div>
-                    <div class="row align-items-center justify-content-end">
-                        <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                            <span class="text-light font-size-13">{{ __('Password') }}</span>
-                            <p class="mb-0">***********</p>
+                     @if($AdminOTPCredentials == 0)
+                        <div class="row align-items-center justify-content-end">
+                              <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                 <span class="text-light font-size-13">{{ __('Password') }}</span>
+                                 <p class="mb-0">***********</p>
+                              </div>
                         </div>
-                    </div>
+                     @endif
                     
-                  
-                       
-                   
-                          </div>
+                     </div>
                     </div>
                       <div class="a-border"></div>
                     <div class="row">
@@ -309,7 +309,7 @@ $settings = App\Setting::first();
                           <div class="a-border"></div>
                          
                           <div class="mt-3 row align-items-center">
-                              <div class="col-md-3"> <h4 class="card-title mb-2 text-white">{{ __('Update Profile:') }}</h4></div>
+                              <div class="col-md-3"> <span class="card-title mb-2 text-white" style="font-size: 20px; font-weight: 500;">{{ __('Update Profile:') }}</span></div>
                               <div class="col-md-9"> 
                     <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
@@ -371,13 +371,13 @@ $settings = App\Setting::first();
                           <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
                         </div> 
                     
-                    
-                        <div class="form-group position-relative">
-                          <label>{{ __('Password') }}:</label><br>
-                          <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
-                            <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
-
-                      </div> 
+                        @if($AdminOTPCredentials == 0)
+                           <div class="form-group position-relative">
+                              <label>{{ __('Password') }}:</label><br>
+                              <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
+                              <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+                           </div>
+                        @endif 
                     
                     
                         <div class="form-group">
@@ -409,9 +409,9 @@ $settings = App\Setting::first();
                         <?php }else{ ?> 
                         <div class="d-flex justify-content-center">  <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?= $user->provider_avatar; ?>"  alt="profile-bg"/></div>
                            <?php } ?>
-                    <h4 class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
-                      <h4 class="mb-3 text-white"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($subscriptions_created_at)): ?><?= $subscriptions_created_at ?><?php endif; ?></h4>
-                      <h4 class="mb-3"></h4>
+                     <span style="font-size: 20px; font-weight:500;" class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span><br>
+                     <span style="font-size: 20px; font-weight:500;" class="mb-3 text-white"><?php if(!empty($user->role)): ?><?= $user->role ?><?php endif; ?> as on <?php if(!empty($subscriptions_created_at)): ?><?= $subscriptions_created_at ?><?php endif; ?></span>
+                     <span style="font-size: 20px; font-weight:500;" class="mb-3"></span>
                     
       <div class="text-center">
                    <?php  if($user_role == 'registered'){ ?>
@@ -507,7 +507,7 @@ $settings = App\Setting::first();
                 </div>
                 <div class="targetDiv" id="div5">
                     <div class=" mb-3">
-                  <h4 class="card-title mb-0 text-white">{{ __('Preference for videos') }}</h4>
+                  <span style="font-size: 20px; font-weight:500;" class="card-title mb-0 text-white">{{ __('Preference for videos') }}</span>
                   <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                   @csrf
                   <input type="hidden" name="user_id" value="<?= $user->id ?>" />
@@ -537,7 +537,7 @@ $settings = App\Setting::first();
                <div class="targetDiv" id="div6">
                   <div class=" mb-3">
                      <div class="d-flex justify-content-between">
-                        <h4 class="card-title mb-0 manage text-white">{{ __('Profile') }}</h4>
+                        <span style="font-size: 20px; font-weight:500" class="card-title mb-0 manage text-white">{{ __('Profile') }}</span>
                         <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> Add Profile</a> 
                      </div>
                      <div class="col-md-12 profile_image mt-3 p-0">                  
@@ -577,7 +577,7 @@ $settings = App\Setting::first();
                     <div class="iq-card" id="recentviews" style="background-color:#191919;">
                  <div class="iq-card-header d-flex justify-content-between" >
                     <div class="iq-header-title">
-                       <h4 class="card-title text-white">{{ __('Recently Viewed Items') }}</h4>
+                       <span style="font-size: 20px; font-weight:500;" class="card-title text-white">{{ __('Recently Viewed Items') }}</span>
                     </div>
                     
                  </div>

@@ -54,7 +54,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('/play_series/' . $latest_serie->slug) }}">
-                                                      <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}"  alt="{{ $latest_serie->title }}">
+                                                      <img class="img-fluid w-100 flickity-lazyloaded series_img_load" src="{{ $latest_serie->image ? URL::to('/public/uploads/images/' . $latest_serie->image) : $default_vertical_image_url }}"  alt="{{ $latest_serie->title }}">
                                                   </a>
                                                   @if($ThumbnailSetting->free_or_cost_label == 1)
                                                       @if($latest_serie->access == 'subscriber')
@@ -152,9 +152,9 @@
 <script>
 
     $(document).ready(function(){
-        $('.flickity-lazyloaded').css('opacity','0');
-        $('.block-description').hide();
-        $('.p-tag').hide();
+        // $('.series_img_load').css('opacity','0');
+        // $('.block-description').hide();
+        // $('.p-tag').hide();
 
         var elem = document.querySelector('.latest-series-video');
     var flkty = new Flickity(elem, {
@@ -189,7 +189,7 @@
             @endforeach
 
             flkty.reloadCells();
-            $('.flickity-lazyloaded').css('opacity','1');
+            $('.series_img_load').css('opacity','1');
             $('.block-description').show();
             $('.p-tag').show();
         })
