@@ -67,11 +67,7 @@ class AdminTransactionDetailsController extends Controller
             return redirect()->route('admin.transaction-details.index')->with('error', 'Transaction not found.');
         }
 
-        if ($transactionType === 'subscription') {
-            $transaction->payment_id = $request->payment_id;
-        } elseif ($transactionType === 'ppv') {
-            $transaction->payment_id = $request->payment_id;
-        }
+        $transaction->payment_id = $request->payment_id;
 
         $transaction->save();
 

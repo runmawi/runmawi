@@ -4827,12 +4827,15 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
+        // dd('video');
         try {
 
+            $sub_user = Session::get('subuser_id');
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
             $setting = Setting::first();
+            $countryName = $geoip->getCountry();
 
                     // Adsvariables
 
@@ -4860,6 +4863,19 @@ class ChannelController extends Controller
             }
 
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
+
+            
+            if (!Auth::guest() ) {
+                $view = new RecentView();
+                $view->video_id = $video_id;
+                $view->user_id = Auth::user()->id;
+                $view->country_name = $countryName;
+                if ($sub_user != null) {
+                    $view->sub_user = $sub_user;
+                }
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+                }
 
             // Check Channel Purchase 
 
