@@ -7165,7 +7165,7 @@ return response()->json($response, 200);
         $count_episode = count($episodes);
       }
 
-      $season_name = 'Season '.($key+1);
+      $season_name = $season['series_seasons_name'];
       $settings = Setting::first();
 
       $myData[] = array(
