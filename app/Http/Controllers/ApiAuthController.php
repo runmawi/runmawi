@@ -7101,11 +7101,12 @@ return response()->json($response, 200);
   /* Season and Episode details*/
   public function SeasonsEpisodes(Request $request)
   {
+    try {
+   
     $seriesid = $request->seriesid;
     $myData = array();
-    $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
 
-    $series = Series::query()->where('id',$seriesid)->get()->map(function($item){
+    $series = Series::where('id',$seriesid)->where('active', '1')->get()->map(function($item){
 
       $item['categories'] =  SeriesCategory::select('series_categories.*','category_id','series_id','series_genre.name as name','series_genre.slug')
                                                         ->join('series_genre','series_genre.id','=','series_categories.category_id')
@@ -7121,24 +7122,36 @@ return response()->json($response, 200);
                                           
       return $item ;
     })->first();
+
+    if (is_null($series)) {
+
+      return response()->json([
+        'status' => 'false',
+        'message' => 'No Series Found',
+        'SeasonsEpisodes' => []
+      ], 400);
+
+    }
+
+    $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
-    $series_player_image =  $series->player_image ? $series->player_image : " ";
-    $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : " ";
+    $series_player_image =  $series->player_image ? $series->player_image :default_vertical_image_url();
+    $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : default_horizontal_image_url();
 
     foreach ($seasonlist as $key => $season) {
 
       $seasonid = $season['id'];
       $season_access = $season['access'];
 
-      $episodes= Episode::where('season_id',$seasonid)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
+      $episodes= Episode::where('series_id',$season['series_id'])->where('season_id',$seasonid)->where('status', 1)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
 
         $item['image'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
         $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_horizontal_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
         $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
        
-        $item['episode_id'] =$item->id;
-        $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
+        $item['episode_id'] = $item->id;
+        $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/'.$item->path . '.m3u8') : " ";
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
         $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
         return $item;
@@ -7146,9 +7159,12 @@ return response()->json($response, 200);
 
       if(count($episodes) > 0){
         $msg = 'success';
+        $count_episode = count($episodes);
       }else{
         $msg = 'nodata';
+        $count_episode = count($episodes);
       }
+
       $season_name = 'Season '.($key+1);
       $settings = Setting::first();
 
@@ -7162,17 +7178,29 @@ return response()->json($response, 200);
         "series_image" => $image,
         "season_id"   => $seasonid,
         "message" => $msg,
+        "count_episode" => $count_episode,
         "episodes" => $episodes,
       );
     }
 
-
     $response = array(
       'status' => 'true',
+      'status_code' => 200,
+      'message' => 'Retrieved Series Season Successfully',
       'SeasonsEpisodes' => $myData
     );
 
-    return response()->json($response, 200);
+    } catch (\Throwable $th) {
+      
+      $response = array(
+        'status' => 'false',
+        'status_code' => 400,
+        'message' => $th->getMessage(),
+        'SeasonsEpisodes' => $myData
+      );
+    }
+
+    return response()->json($response, $response['status_code']);
   }
 
   public function VideoCipher_Seasondetail($data)
