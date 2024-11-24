@@ -7204,7 +7204,7 @@ return response()->json($response, 200);
 
     }
 
-    $seasonlist = SeriesSeason::where('series_id',$seriesid)->get()->toArray();
+    $seasonlist = SeriesSeason::where('series_id',$seriesid)->orderBy('order')->get()->toArray();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
     $series_player_image =  $series->player_image ? $series->player_image :default_vertical_image_url();
