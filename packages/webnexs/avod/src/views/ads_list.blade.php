@@ -4,7 +4,7 @@
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12">
+                <div style="padding-right: 20px">
                     <div class="iq-card">
                         <div class="justify-content-between d-flex">
                            <h2 class=" mb-3">Advertisement List</h2>
@@ -19,7 +19,7 @@
                                         <th> Ads Name </th>
                                         <th> Ads Type </th>
                                         <th> Ads Category </th>
-                                        <th> Ads Position Play </th>
+                                        <th> Ads Position </th>
                                         <th> Location </th>
                                         <th> Total Views </th>
                                         <th> Status </th>
@@ -49,7 +49,7 @@
                                             <td>
                                                 <a href="#" target="_blank" class="iq-bg-warning"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
                                                 @if($advertisement->status == 1)
-                                                    <a href="{{ route('Ads_edit',[$advertisement->id]) }}" class="iq-bg-success ml-2 mr-2"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                                    <a href="{{ route('Ads_edit',[$advertisement->id]) }}" class="iq-bg-success"><img class="ply " src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
                                                 @endif
                                                 <a href="{{ route('Ads_delete',[$advertisement->id]) }}" onclick="return confirm('Are you sure remove this Ads?')" class="iq-bg-danger"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/delete.svg';  ?>"></a>
                                             </td>
@@ -75,6 +75,11 @@
 
 @include('avod::ads_footer')
 
+<style>
+    table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, 
+    table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, 
+    table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after{ display: none !important;}
+</style>
 
 <!-- Imported styles on this page -->
 <script src="<?= URL::to('/') . '/assets/admin/dashassets/js/jquery.min.js' ?>"></script>

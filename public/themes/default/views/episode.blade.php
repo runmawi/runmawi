@@ -826,11 +826,11 @@
                             $payment_type = App\PaymentSetting::get();
                         @endphp
                         <div class="col-sm-4">
-                            <span class="badge badge-secondary p-2">{{ __($episodes->title) }}</span>
-                            <span class="badge badge-secondary p-2">{{ __($episodes->age_restrict) . ' ' . '+' }}</span>
+                            <span class="badge badge-secondary p-2">{{ __(@$episodes->title) }}</span>
+                            <span class="badge badge-secondary p-2">{{ __(@$episodes->age_restrict) . ' ' . '+' }}</span>
 
                             <span class="trending-year">{{ $episode->year != 0 ? $episode->year : '' }}</span>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __($currency->symbol . ' ' . $episodes->ppv_price) }}</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __($currency->symbol . ' ' . @$episodes->ppv_price) }}</button>
                             <label for="method">
                                 <h3>{{ __('Payment Method') }}</h3>
                             </label>

@@ -156,7 +156,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
         }
 
         .header-logo {
-            padding-left: 25px
+            padding-left: 20px
         }
 
         hr {
@@ -517,7 +517,7 @@ body.dark h1, body.dark .support a {color: #ffffffe6;}
         <div class="iq-sidebar">
             <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
                 <a href="{{ URL::to('home') }}" class="header-logo">
-                    <img src="{{ URL::to('public/uploads/settings/'. $settings->logo) }}" class="c-logo" alt="" style="height: 100px; width:100px" >
+                    <img src="{{ URL::to('public/uploads/settings/'. $settings->logo) }}" class="c-logo" alt="" style="height: 50px; width:50px" >
                     <div class="logo-title">
                         <span class="text-primary text-uppercase"></span>
                     </div>

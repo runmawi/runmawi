@@ -106,6 +106,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
     body.light-theme .vpageBanner .content .right .utilities {
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme .CircularProgressbar-text {
+        fill: <?php echo GetLightText(); ?>!important;
+    }
     body.light-theme .artistHeading {
         color: <?php echo GetLightText(); ?>;
     }
@@ -232,6 +235,18 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         display: flex !important;
         opacity: 1 !important;
     }
+    .share-box {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.9s ease, visibility 0s 9s; /* 3s delay for hiding */
+    }
+
+    .share:hover .share-box {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.9s ease, visibility 0s 0s; /* Remove delay when hovered */
+    }
+
     
     /* @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}} */
         #trailermodal .my-video.vjs-fluid{height: 68vh !important;}
@@ -373,12 +388,13 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                         <!-- Watchlater -->
                                     <li class="share">
                                         <span  data-toggle="modal"  data-video-id={{ $videodetail->id }} onclick="video_watchlater(this)" >
-                                            <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
+                                            <i class="video-watchlater {{ $videodetail->watchlater_exist ? 'fal fa-minus' : 'fal fa-plus' }}"></i>
+
                                         </span>
                                         <div class="share-box box-watchtrailer " onclick="video_watchlater(this)" style="top:41px">
                                             <div class="playbtn"  data-toggle="modal">  
                                                 <span class="text" style="background-color: transparent; font-size: 14px; width:124px; height:21px">
-                                                {{ !is_null($videodetail->watchlater_exist) ? "Remove from Watchlist" : "Add To Watchlist"  }}
+                                                {{ !empty($videodetail->watchlater_exist) ? "Remove from Watchlist" : "Add To Watchlist"  }}
                                                 </span>
                                             </div>
                                         </div>
@@ -1143,6 +1159,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     onApprove: function (data, actions) {
                         return actions.order.capture().then(function (details) {
                             // console.log(details);
+                            const paymentId = details.id;
                             $.ajax({
                                 url: '{{ URL::to('paypal-ppv-video') }}',
                                 method: 'post',
@@ -1150,6 +1167,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                     _token: '<?= csrf_token() ?>',
                                     amount: amount,
                                     video_id: '<?= @$videodetail->id ?>',
+                                    paymentId: paymentId,
                                 },
                                 success: (response) => {
                                     console.log("Server response:", response);
@@ -1378,6 +1396,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
             $('#trailermodal').modal('hide');
         });
     });
+
+    
 </script>
 
 

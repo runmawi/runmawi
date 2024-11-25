@@ -162,9 +162,11 @@
                             <?php echo (strlen($watchlater_video->title) > 15) ? substr($watchlater_video->title, 0, 12) . '...' : $watchlater_video->title; ?>
                           </h6>
                         </div>
-                        <div class="badge badge-secondary p-1 mr-2">
-                          <?php echo $watchlater_video->age_restrict . ' ' . '+' ?>
-                        </div>
+                        <?php if($ThumbnailSetting->age == 1): ?>
+                          <div class="badge badge-secondary p-1 mr-2">
+                            <?php echo $watchlater_video->age_restrict . ' ' . '+' ?>
+                          </div>
+                        <?php endif; ?>
 
                       </div>
                       <span class="text-white"><i class="fa fa-clock-o"></i>

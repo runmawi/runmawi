@@ -1148,7 +1148,7 @@ class AuthController extends Controller
                 'Advertisement' => $Advertisement,
                 'post_route'    => route('Ads_update', [$Ads_id]),
                 'ads_category' => Adscategory::all(),
-                'button_text'  => 'update',
+                'button_text'  => 'Update',
                 'AdsEvent'     => AdsEvent::where('ads_id',$Ads_id)->get(['start', 'end', 'day']),
             ];
 

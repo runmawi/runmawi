@@ -16,6 +16,7 @@
     .abu h2{
         color: #fff!important;
     }
+    body.light-theme .share-box a{color:<?php echo $GetLightText; ?> !important;}
 </style>
 
 <!--<div class="aud" style="background-image:url(<?php echo URL::to('/').'/public/uploads/artists/'.$artist->image;?>)">
@@ -39,41 +40,23 @@
                 <!-- <i  class="fa fa-play-circle-o" aria-hidden="true" style="color:#fff!important;"></i> -->
             </div>
 
-            <?php if(Auth::User() != null ){ ?>
-                <?php if($artist_following == 0){ ?>
-                    <div class="flw" id="followingone" >
-                        <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
-
-                       
-                    </div>
-                <?php } ?>
-
-                <?php if($artist_following > 0){ ?>
-                    <div class="flw" id="removefollowingone">
-                         <i class="fa fa-user-plus" id="removefollow" aria-hidden="true"></i>
-
-                      
-                    </div>
-                <?php } ?>
-
-                <div class="flw" id="following" >
-                       <i class="fa fa-user-plus" id="follow" aria-hidden="true"></i>
-
+            @if(Auth::user() !== null)
+            <div class="flw mr-3" id="follow-container" data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="{{ $artist_following == 0 ? 'Add to Following' : 'Remove from Following' }}">
+                    <i class="fa {{ $artist_following == 0 ? 'fa-user-plus' : 'fa-user' }}" id="follow-icon" aria-hidden="true"></i>
                 </div>
-
-                <div class="flw" id="removefollowing" >
-                   <i class="fa fa-user-plus" id="removefollow" aria-hidden="true"></i>
-
+            @else
+                <div class="flw" id="sign-in-prompt">
+                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                    <span>Please Sign In to Follow</span>
                 </div>
-            <?php }else{ ?>
+            @endif
 
-                <div class="flw" id="" >
-                      <i class="fa fa-user-plus" id="sign_in_follow" aria-hidden="true"></i>
+            <!-- Notification message -->
+            <div id="follow-message" style="display: none; z-index: 100; position: fixed; top: 73px; right: 0; transform: translateX(-7%); text-align: center; padding: 11px; color: white; font-size: 14px; border-radius: 5px;">
+            </div>
 
-                  
-                </div>
-
-            <?php }?>
 
             <div class="flw">
                 <!-- <i class="fa fa-share-square-o" aria-hidden="true" style="color:#fff!important;"></i> -->
@@ -429,56 +412,65 @@
 
 function Copy() {
     var media_path = $('#media_url').val();
-  var url =  navigator.clipboard.writeText(window.location.href);
-  var path =  navigator.clipboard.writeText(media_path);
-  $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-}
-
-            $('#following').hide();
-            $('#removefollowing').hide();
-    $('#follow').click(function(){
-        var artist_id = '<?=  $artist->id ?>';
-        // alert(artist_id);
-         $.post('<?= URL::to('artist/following') ?>', { artist_id : artist_id, following : 1, _token: '<?= csrf_token(); ?>' },
-          function(data){
-            $('#following').hide();
-            $('#followingone').hide();
-            $('#removefollowing').show();
-            // followingone removefollowingone
-          });
-               $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Artist Added To Your Following List </div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-              //  alert();             
-     });
-
-
-
-
-     $('#removefollow').click(function(){
-        var artist_id = '<?=  $artist->id ?>';
-        // alert(artist_id);
-         $.post('<?= URL::to('artist/following') ?>', { artist_id : artist_id, following : 0, _token: '<?= csrf_token(); ?>' },
-          function(data){
-            $('#following').show();
-            $('#removefollowing').hide();
-            $('#removefollowingone').hide();
-          });
-          $("body").append('<div class="remove_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white;">Artist Removed To Your Following List</div>');
-               setTimeout(function() {
-                $('.add_watch').slideUp('fast');
-               }, 3000);
-              //  alert();             
-     });
+    var url =  navigator.clipboard.writeText(window.location.href);
+    var path =  navigator.clipboard.writeText(media_path);
+    $("body").append('<div class="add_watch" style="z-index: 100; position: fixed; top: 73px; margin: 0 auto; left: 81%; right: 0; text-align: center; width: 225px; padding: 11px; background: #38742f; color: white;">Copied URL</div>');
+        setTimeout(function() {
+        $('.add_watch').slideUp('fast');
+        }, 3000);
+    } 
 
      $("#sign_in_follow").click(function(){
         
         window.location.href = "<?php echo URL::to('/login') ; ?>";
 
     });
+
+    // <?= URL::to('artist/following') ?>
+
+    
+    $(document).ready(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+
+        $('#follow-container').click(function () {
+            var artist_id = '{{ $artist->id }}';
+            var isFollowing = $('#follow-icon').hasClass('fa-user'); // Check current state
+
+            var following = isFollowing ? 0 : 1;
+            var tooltipText = following ? 'Remove from Following' : 'Add to Following';
+            var iconClass = following ? 'fa-user' : 'fa-user-plus';
+            var message = following
+                ? 'Artist Added to Your Following List ✔️'
+                : 'Artist Removed from Your Following List ❌';
+            var backgroundColor = following ? '#dff0d8' : '#f2dede';
+            var Color = following ? '#3c763d' : '#a94442';
+
+            $.post('<?= URL::to('artist/following') ?>', {
+                artist_id: artist_id,
+                following: following,
+                _token: '{{ csrf_token() }}'
+            }, function (data) {
+                $('#follow-icon').removeClass('fa-user fa-user-plus').addClass(iconClass);
+                $('#follow-container').attr('title', tooltipText).tooltip('dispose').tooltip(); // Update tooltip text
+
+                showNotification(message, backgroundColor,Color);
+            });
+        });
+
+        //  notification
+        function showNotification(message, backgroundColor,Color) {
+            $('#follow-message')
+                .text(message)
+                .css({ background: backgroundColor, display: 'block', color: Color })
+                .fadeIn();
+
+            setTimeout(function () {
+                $('#follow-message').fadeOut();
+            }, 3000);
+        }
+    });
+
+
+
 
 </script>

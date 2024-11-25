@@ -556,8 +556,6 @@
                 <div class="col-lg-8 col-md-7">
                     <div class="flick1">
 
-                        <div class="small-heading text-white">Step 2 of 2 </div>
-                            
                             {{-- User Name --}}
                         @guest
                             <p class="text-white">Hello, Guest</p>
@@ -581,7 +579,7 @@
                                     {{-- Recurly --}}
                                 @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
                                     <div class=" align-items-center ml-2">
-                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
+                                        <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" checked  >
                                         <label class=" ml-2"> <p>{{ ucwords( $recurly_payment_settings->recurly_label ? $recurly_payment_settings->recurly_label : "Pay vai Recurly") }} </p></label> 
                                     </div>
                                 @endif
@@ -604,7 +602,7 @@
                                                     <div class="vl "></div>
 
                                                     <div class="col-md-4 p-2">
-                                                        <h4 class="">{{ currency_symbol() .  $item->price }}</h4>
+                                                        <h4>{{ currency_symbol() .  $item->price }}</h4>
                                                         <p>Billed as {{ currency_symbol() .  $item->price }}</p>
                                                     </div>
                                                 </div>
@@ -627,12 +625,8 @@
                                     <h4> Due today: <span class="plan_price final_price">  </span></h4>
 
                                     <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <div class="">
-                                            <p> Payable Amount &nbsp; </p>
-                                        </div>
-                                        <div class="">
-                                            <p id="coupon_amt_deduction" class="final_price">  </p>
-                                        </div>
+                                        <div><p> Payable Amount &nbsp; </p></div>
+                                        <div><p id="coupon_amt_deduction" class="final_price">  </p></div>
                                     </div>
                                     <hr>
 
@@ -685,31 +679,9 @@
             }, 3000);
 
             $('.stripe_payment,.Recurly_payment').hide();
+
+            $(".payment_gateway").click();
         })
-  
-        function updatePaymentAmount(planAmount,PlanId,PaymentGateway) {
-
-            $('.stripe_payment,.Recurly_payment').hide();
-
-            let currency_symbol = "{{ currency_symbol() }}"; 
-
-            document.querySelectorAll('.final_price').forEach(function(item){
-                item.innerText = currency_symbol + planAmount;
-            });
-
-            if( PaymentGateway == "Stripe") {
-
-                document.getElementById('stripe-payment-button').setAttribute('data-plan-id', PlanId);
-                $('.stripe_payment').show();
-
-            }
-
-            if( PaymentGateway == "Recurly") {
-                document.getElementById('recurly_plan_id').value = PlanId;
-                $('.Recurly_payment').show();
-            }
-
-        }
       
          var payment_images = $('#payment_image').val();
 
@@ -787,6 +759,30 @@
                 }
             });
         });
+
+        function updatePaymentAmount(planAmount,PlanId,PaymentGateway) {
+
+            $('.stripe_payment,.Recurly_payment').hide();
+
+            let currency_symbol = "{{ currency_symbol() }}"; 
+
+            document.querySelectorAll('.final_price').forEach(function(item){
+                item.innerText = currency_symbol + planAmount;
+            });
+
+            if( PaymentGateway == "Stripe") {
+
+                document.getElementById('stripe-payment-button').setAttribute('data-plan-id', PlanId);
+                $('.stripe_payment').show();
+
+            }
+
+            if( PaymentGateway == "Recurly") {
+                document.getElementById('recurly_plan_id').value = PlanId;
+                $('.Recurly_payment').show();
+            }
+
+        }
     
     </script>
 

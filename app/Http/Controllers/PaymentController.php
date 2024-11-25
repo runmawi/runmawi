@@ -2122,6 +2122,7 @@ public function UpgadeSubscription(Request $request){
 
           $data = $request->all();
           $video_id = $data['video_id'];
+          $payment_id = $data['paymentId'];
           $setting = Setting::first();  
           $ppv_hours = $setting->ppv_hours;
           // $to_time =  Carbon::now()->addHour($ppv_hours);
@@ -2194,7 +2195,7 @@ public function UpgadeSubscription(Request $request){
           $purchase->to_time = $to_time;
           $purchase->moderator_id = $moderator_id;
           $purchase->platform = 'website';
-      
+          $purchase->payment_id = $payment_id;
           $purchase->save();
           return 1;
 

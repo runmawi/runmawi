@@ -135,11 +135,14 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $request->stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
 
-        
             if( $stripe_payment_session->status == "complete"){
 
                                 // Retrieve Subscriptions
                 $subscription = $stripe->subscriptions->retrieve(  $stripe_payment_session->subscription );
+
+                $latest_invoice = $stripe->invoices->retrieve($subscription->latest_invoice);
+
+                $stripe_payment_id = $latest_invoice->payment_intent;
               
                                 // User & Subscription data storing
                 $user = User::where('email',$stripe_payment_session->customer_email )->first();
@@ -194,6 +197,7 @@ class StripePaymentController extends Controller
                     'ends_at'        =>  $trial_ends_at,
                     'coupon_used'    =>  !is_null($subscription['discount'] ) ?  $subscription['discount']->promotion_code : null,
                     'platform'       => 'WebSite',
+                    'payment_id'     => $stripe_payment_id,
                 ]);
 
                 $user_data = array(
@@ -415,7 +419,8 @@ class StripePaymentController extends Controller
                             // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
-
+            $stripe_payment_id = $stripe_payment_session->payment_intent;
+            
             if( $stripe_payment_session->status == "complete"){
         
                 $video = LiveStream::where('id',$live_id)->first();
@@ -463,6 +468,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'payment_id' => $stripe_payment_id ,
                 ]);
  
                 LivePurchase::create([
@@ -512,7 +518,6 @@ class StripePaymentController extends Controller
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id ) ;
-
             $default_Currency = CurrencySetting::first();
 
                // Checkout Page Creation 
@@ -602,7 +607,6 @@ class StripePaymentController extends Controller
                 'payment_method_types' => $payment_method_types,
                 'customer_email' => Auth::user()->email, 
             );
-            
             $stripe_checkout = $stripe->checkout->sessions->create($Checkout_details);
 
             $url = $stripe_checkout->url;
@@ -628,6 +632,7 @@ class StripePaymentController extends Controller
                             // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
+            $stripe_payment_id = $stripe_payment_session->payment_intent;
 
             $video = Video::where('id',$video_id)->first();
 
@@ -679,6 +684,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'payment_id' => $stripe_payment_id,
                 ]);
 
 
@@ -830,6 +836,7 @@ class StripePaymentController extends Controller
                             // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
+            $stripe_payment_id = $stripe_payment_session->payment_intent;
 
             $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
             $series_id = $SeriesSeason->series_id;
@@ -879,6 +886,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'payment_id' =>   $stripe_payment_id,
                 ]);
 
                 $respond = array(
@@ -1031,7 +1039,7 @@ class StripePaymentController extends Controller
                             // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
-
+            $stripe_payment_id = $stripe_payment_session->payment_intent;
             $Series = Series::where('id',$Series_id)->first();
 
             if( $stripe_payment_session->status == "complete"){
@@ -1077,6 +1085,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'payment_id' => $stripe_payment_id ,
                 ]);
 
                 $respond = array(
@@ -1231,7 +1240,7 @@ class StripePaymentController extends Controller
                             // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
-
+            $stripe_payment_id = $stripe_payment_session->payment_intent;
             $video = Video::where('id',$video_id)->first();
 
             if( $stripe_payment_session->status == "complete"){
@@ -1286,6 +1295,7 @@ class StripePaymentController extends Controller
                     'payment_in'       => 'website',
                     'platform'       => 'website',
                     'ppv_plan'       => $ppv_plan,
+                    'payment_id' =>   $stripe_payment_id,
                 ]);
 
 
@@ -1440,7 +1450,7 @@ class StripePaymentController extends Controller
                                 // Retrieve Payment Session
                 $stripe_payment_session_id = $stripe_payment_session_id ;
                 $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
-    
+                $stripe_payment_id = $stripe_payment_session->payment_intent;
                 $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
                 $series_id = $SeriesSeason->series_id;
                 $series = Series::find($series_id);
@@ -1494,6 +1504,7 @@ class StripePaymentController extends Controller
                         'payment_in'       => 'website',
                         'platform'       => 'website',
                         'ppv_plan' => $ppv_plan,
+                        'payment_id' =>   $stripe_payment_id,
                     ]);
     
                     $respond = array(

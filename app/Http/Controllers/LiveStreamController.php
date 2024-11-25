@@ -207,7 +207,7 @@ class LiveStreamController extends Controller
 
        // Check Channel Purchase 
        
-       if ( $settings->user_channel_plans_page_status == 1) {
+       if ( $settings->user_channel_plans_page_status == 1 && $this->Theme == "theme6") {
 
             $UserChannelSubscription = null ;
 
@@ -227,7 +227,7 @@ class LiveStreamController extends Controller
             }
 
             if (is_null($UserChannelSubscription)) {
-                session()->flash('error', 'Channel Subscription not found.');
+                session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                 return back();
             }
         }
@@ -426,8 +426,9 @@ class LiveStreamController extends Controller
                                             ."&ads.network_name=".$categoryVideos->title;
             }
 
-            $Livestream_details = LiveStream::where('id',$vid)->where('status',1)->where('active',1)
-                                            ->get()->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
+            $Livestream_details = LiveStream::where('id',$vid)->where('status',1)
+                                            ->get()
+                                            ->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
 
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]);
@@ -662,7 +663,7 @@ class LiveStreamController extends Controller
                                                 }
                                             })->latest()->first();
 
-                                            
+
               return $item;
 
             })->first();
@@ -696,68 +697,65 @@ class LiveStreamController extends Controller
                 }
             }
             
-           $data = array(
-                 'currency'     => $currency,
-                 'video_access' => $video_access,
-                 'video'        => $categoryVideos,
-                 'password_hash' => $password_hash,
-                 'publishable_key' => $publishable_key,
-                 'ppv_exist'  => $ppv_exist,
-                 'ppv_exists' => $ppv_exists ,
-                 'ppv_price'  => $categoryVideos->ppv_price,
-                 'watchlatered' => $watchlater,
-                 'mywishlisted' => $wishlisted,
-                 'new_date'     => $new_date,
-                 'payment_setting' => $payment_setting,
-                 'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                 'Paystack_payment_setting' => $Paystack_payment_setting ,
-                 'stripe_payment_setting'   => $stripe_payment_setting ,
-                 'paydunya_payment_setting' => $paydunya_payment_setting ,
-                 'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
-                 'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
-                 'M3U_channels' => $M3U_channels ,
-                 'M3U_files'    => $M3U_files ,
-                 'source_id'    => $source_id,
-                 'commentable_type' => "LiveStream_play" ,
-                 'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
-                 'category_name'   => $category_name ,
-                 'live_purchase_status' => $live_purchase_status ,
-                 'free_duration_condition' => $free_duration_condition ,
-                 'Livestream_details'      => $Livestream_details ,
-                 'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                 'user_role' => Auth::check() ? Auth::user()->role : 'guest',
-                 'setting'                => $settings,
-                 'current_theme'          => $this->Theme,
-                 'enable_ppv_rent_live'  => $enable_ppv_rent_live,
-                 'ppv_live_description'   => $ppv_live_description,
-                 'ThumbnailSetting'      => $ThumbnailSetting,
-                 'button_text'          => $button_text,
-                 'purchase_btn'                    => $purchase_btn,
-                'subscribe_btn'                    => $subscribe_btn,
-                 'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                    </svg>',
-                'paypal_payment_setting' => $PayPalpayment,
-                'paypal_signature' => $paypal_signature,
-                'AdminAccessPermission' => AdminAccessPermission::first(),
-           );           
+            if($Livestream_details->active == 1 || ($Livestream_details->active == 0 && Auth::user()->role == 'admin')){
+                $data = array(
+                    'currency'     => $currency,
+                    'video_access' => $video_access,
+                    'video'        => $categoryVideos,
+                    'password_hash' => $password_hash,
+                    'publishable_key' => $publishable_key,
+                    'ppv_exist'  => $ppv_exist,
+                    'ppv_exists' => $ppv_exists ,
+                    'ppv_price'  => $categoryVideos->ppv_price,
+                    'watchlatered' => $watchlater,
+                    'mywishlisted' => $wishlisted,
+                    'new_date'     => $new_date,
+                    'payment_setting' => $payment_setting,
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'Paystack_payment_setting' => $Paystack_payment_setting ,
+                    'stripe_payment_setting'   => $stripe_payment_setting ,
+                    'paydunya_payment_setting' => $paydunya_payment_setting ,
+                    'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
+                    'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
+                    'M3U_channels' => $M3U_channels ,
+                    'M3U_files'    => $M3U_files ,
+                    'source_id'    => $source_id,
+                    'commentable_type' => "LiveStream_play" ,
+                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type','CinetPay')->first() ,
+                    'category_name'   => $category_name ,
+                    'live_purchase_status' => $live_purchase_status ,
+                    'free_duration_condition' => $free_duration_condition ,
+                    'Livestream_details'      => $Livestream_details ,
+                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
+                    'setting'                => $settings,
+                    'current_theme'          => $this->Theme,
+                    'enable_ppv_rent_live'  => $enable_ppv_rent_live,
+                    'ppv_live_description'   => $ppv_live_description,
+                    'ThumbnailSetting'      => $ThumbnailSetting,
+                    'button_text'          => $button_text,
+                    'purchase_btn'                    => $purchase_btn,
+                    'subscribe_btn'                    => $subscribe_btn,
+                    'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                        </svg>',
+                    'paypal_payment_setting' => $PayPalpayment,
+                    'paypal_signature' => $paypal_signature,
+                    'AdminAccessPermission' => AdminAccessPermission::first(),
+                );           
 
-           if(  $Theme == "default" || $Theme == "theme6" ){
-              return Theme::view('video-js-Player.Livestream.live', $data);
-           }else{
-              return Theme::view('livevideo', $data);
-           }
-
-          // }else{
-          //   $system_settings = SystemSetting::first();
-
-          //   return view('auth.login',compact('system_settings'));
-          // }
-          
+                if(  $Theme == "default" || $Theme == "theme6" ){
+                    return Theme::view('video-js-Player.Livestream.live', $data);
+                }else{
+                    return Theme::view('livevideo', $data);
+                }
+            } else {
+                return abort(404);
+            }
+            
         } catch (\Throwable $th) {
-
-            //   return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
         }
@@ -1362,6 +1360,27 @@ class LiveStreamController extends Controller
         }
     }
 
+
+    public function RadioStationList(){
+        try{
+
+            $currency = CurrencySetting::first();
+            $ThumbnailSetting = ThumbnailSetting::first();
+            $station = LiveStream::where('stream_upload_via','radio_station')->get();
+
+            $data=[
+                "station"             => $station,
+                "currency"            => $currency,
+                "ThumbnailSetting"    => $ThumbnailSetting,
+            ];
+
+            return Theme::view('RadioStationList',$data);
+
+        }catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }   
+    }
 
 
 }

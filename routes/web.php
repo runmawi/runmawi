@@ -575,6 +575,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     // Radio Station
     Route::get('/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('datafree/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
+    Route::get('/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
@@ -2380,7 +2381,7 @@ Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('channel-partner', 'ChannelPartnerController@channelparnter')->name('channelparnter_index');
     Route::get('channel-partner/{slug}', 'ChannelPartnerController@unique_channelparnter')->name('channelparnter_details');
 
-    Route::get('channel-home', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
+    Route::get('channel-addons', 'ChannelPartnerController@all_Channel_home')->name('channel.all_Channel_home');
     Route::get('channel-payment/{channel_id}', 'ChannelPartnerController@channelparnterpayment')->name('channel.payment');
     Route::get('channel-payment-gateway-depends-plans', 'ChannelPartnerController@payment_gateway_depends_plans')->name('channel.payment_gateway_depends_plans');
 
@@ -3034,3 +3035,9 @@ Route::get('/admin/get-user-details/{id}', 'AdminPartnerMonetizationPayouts@getU
 Route::post('PartnerMonetization','ChannelController@PartnerMonetization')->name('PartnerMonetization');
 Route::post('EpisodePartnerMonetization','TvshowsController@EpisodePartnerMonetization')->name('EpisodePartnerMonetization');
 Route::post('LivestreamPartnerMonetization', 'AdminLiveStreamController@LivestreamPartnerMonetization')->name('LivestreamPartnerMonetization');
+
+Route::get('admin/transaction_details', 'AdminTransactionDetailsController@index')->name('admin.transaction-details.index');
+Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetailsController@edit')->name('admin.transaction-details.edit');
+Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
+Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
+

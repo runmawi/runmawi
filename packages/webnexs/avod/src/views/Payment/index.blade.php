@@ -114,60 +114,14 @@
 @include('avod::ads_footer')
 
 <style>
-    .iq-top-navbar {
-        min-height: 73px;
-        position: fixed;
-        top: 0;
-        /* left: auto; */
-        right: 0;
-        width: calc(100% - 55px);
-        display: inline-block;
-        z-index: 99;
-        background:
-            /*var(--iq-light-card)*/
-            #fff;
-        margin-right: 25px;
-        transition: all 0.45s ease 0s;
-        border-bottom: 1px solid #f1f1f1;
-    }
-
-    .content-page {
-        margin-left: 0px;
-        padding: 100px 15px 0;
-        transition: all 0.3s ease-out 0s;
-    }
-
-    .iq-footer {
-        margin-left: 0px !important;
-    }
-
-    .payment-details-container {
-        margin: 0px 50px;
-    }
-
-    .dg {
-        padding: 10px;
-        color: #000 !important;
-        /* background-color: #fff; */
-        margin: 5px;
-        height: 200px;
-        border: 5px solid #ddd;
-    }
-
-    .dgk {
-        padding: 30px 24px;
-        background-color: #f5f5f5 !important;
-    }
-
-    .cont {
-        background-color: #f5f5f5 !important;
-        padding: 36px 47px 70px;
-        margin-bottom: 35px;
-    }
-
-    hr {
-        border: 2px solid #988585;
-    }
+    .iq-top-navbar{min-height:73px;position:fixed;top:0;right:0;width:calc(100% - 55px);display:inline-block;z-index:99;background:#fff;margin-right:25px;transition:all 0.45s ease 0s;border-bottom:1px solid #f1f1f1}
+    .content-page{margin-left:0;padding:100px 15px 0;transition:all 0.3s ease-out 0s}
+    .iq-footer{margin-left:0px!important}
+    .payment-details-container{margin:0 50px}
+    .dg{padding:10px;color:#000!important;margin:5px;height:200px;border:5px solid #ddd}
+    .dgk{padding:30px 24px;background-color:#f5f5f5!important}
+    .cont{background-color:#f5f5f5!important;padding:36px 47px 70px;margin-bottom:35px}
+    hr{border:2px solid #988585}
 </style>
 
 <script src="{{ URL::to('assets/admin/dashassets/js/jquery.min.js') }}"></script>

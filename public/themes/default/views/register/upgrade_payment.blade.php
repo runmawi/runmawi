@@ -896,41 +896,33 @@ if (!is_null($PayPalpayment)) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <script>
-        function plan_details(ele) {
 
+       var base_url = $('#base_url').val();
+
+       function plan_details(ele) {
+            // Get data attributes from the clicked element
             var plans_id = $(ele).attr('data-plan_id');
             var plan_payment_type = $(ele).attr('data-payment-type');
             var plan_pay_type = $(ele).attr('data-pay-type');
             var plan_price = $(ele).attr('data-plan-price');
             var plan_id_class = $(ele).attr('data-plan-id');
-            let currency_symbols = document.getElementById("currency_symbol").value;
+            var currency_symbols = document.getElementById("currency_symbol").value;
 
-            $('#paypal-button-container').empty();
-            $('#paypal-button-container').hide();
 
-            if(plan_pay_type == 'PayPal'){
+            $('#paypal-button-container').empty().hide();
+
+            if (plan_pay_type === 'PayPal') {
                 $('#paypal-button-container').show();
                 $('.Stripe_Payment').hide();
-                var plans_id = $(ele).attr('data-plan_id');
-                var plan_payment_type = $(ele).attr('data-payment-type');
-                var plan_price = $(ele).attr('data-plan-price');
-                var plan_id_class = $(ele).attr('data-plan-id');
-                let currency_symbols = document.getElementById("currency_symbol").value;
+                var classname = 'paypal-button-container-' + plans_id;
+                $('#paypal-button-container').addClass(classname);
+                $("#paypal-button-container").append('<div id="' + classname + '"></div>');
 
-                var classname = 'paypal-button-container-' + plans_id
-                $('#paypal-button-container').addClass(classname)
-                // $("#paypal-button-container").append('<div class:' + classname + ';></div>');
-                $("#paypal-button-container").append('<div id="' + classname + '";></div>');
-
-                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' +
-                    plan_payment_type + '">');
+                $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
                 $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
-                $('.plan_price').empty(plan_price);
-                $('.plan_price').append(plan_price);
-
+                $('.plan_price').empty().append(plan_price);
                 $('.dg').removeClass('actives');
                 $('#' + plan_id_class).addClass('actives');
-
 
                 var plan_data = $("#plan_name").val();
                 var coupon_code = $("#coupon_code").val();
@@ -943,62 +935,59 @@ if (!is_null($PayPalpayment)) {
                         shape: 'pill',
                         color: 'white',
                         layout: 'vertical',
-                        label: 'subscribe'
+                        label: 'subscribe',
                     },
-                    createSubscription: function(data, actions) {
+                    createSubscription: function (data, actions) {
                         return actions.subscription.create({
                             plan_id: plans_id
                         });
                     },
                     onApprove: function(data, actions) {
-                        // alert(data.subscriptionID); // You can add optional success message for the subscriber here
                         if (data.subscriptionID) {
                             $.post(base_url + '/paypal-subscription', {
-                                    payment_type: payment_type,
-                                    amount: final_payment,
-                                    plan: plan_data,
-                                    plans_id: plans_id,
-                                    subscriptionID: data.subscriptionID,
-                                    coupon_code: final_coupon_code_stripe,
-                                    _token: '<?= csrf_token() ?>',
-                                    userId: '{{ Auth::user()->id }}',
-                                },
-
-                                function(data) {
-                                    $('#loader').css('display', 'block');
-                                    swal({
-                                        title: "Subscription Purchased Successfully!",
-                                        text: "Your Payment done Successfully!",
-                                        icon: payment_images + '/Successful_Payment.gif',
-                                        buttons: false,
-                                        closeOnClickOutside: false,
-                                    });
-                                    setTimeout(function() {
-                                        window.location.replace(base_url + '/login');
-                                    }, 2000);
+                                payment_type: payment_type,
+                                amount: final_payment,
+                                plan: plan_data,
+                                plans_id: plans_id,
+                                subscriptionID: data.subscriptionID,
+                                orderID: data.orderID,
+                                coupon_code: final_coupon_code_stripe,
+                                userId: '{{ Auth::user()->id }}',
+                                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            })
+                            .done(function (response) {
+                                $('#loader').css('display', 'block');
+                                swal({
+                                    title: "Subscription Purchased Successfully!",
+                                    text: "Your Payment was Successful!",
+                                    icon: payment_images + '/Successful_Payment.gif',
+                                    buttons: false,
+                                    closeOnClickOutside: false,
                                 });
+                                setTimeout(function () {
+                                    window.location.replace(base_url + '/myprofile');
+                                }, 2000);
+                            })
+                            .fail(function (xhr, status, error) {
+                                swal("Error", "Payment failed. Please try again.", "error");
+                            });
                         }
                     }
-                }).render('#paypal-button-container-'+plans_id);
-                
+                }).render('#' + classname);
             }
             else{
                 $('#payment_type').replaceWith('<input type="hidden" name="payment_type" id="payment_type" value="' + plan_payment_type + '">');
                 $('#plan_name').replaceWith('<input type="hidden" name="plan_name" id="plan_name" value="' + plans_id + '">');
                 $('#Cinetpay_Price').replaceWith('<input type="hidden" name="Cinetpay_Price" id="Cinetpay_Price" value="' + plan_price + '">');
-                $('.plan_price').empty(plan_price);
-                $('.plan_price').append( plan_price);
+                $('.plan_price').empty().append(plan_price);
+                $('#coupon_amt_deduction').empty().append(plan_price);
 
-                $('#coupon_amt_deduction').empty(plan_price);
-                $('#coupon_amt_deduction').append( plan_price);
 
                 $('.dg').removeClass('actives');
                 $('#' + plan_id_class).addClass('actives');
             }
-
         }
 
-        var base_url = $('#base_url').val();
 
         window.onload = function() {
             $('#active2').addClass('actives');

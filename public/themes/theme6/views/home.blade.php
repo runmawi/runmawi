@@ -42,6 +42,14 @@
 
       <section id="home" class="iq-main-slider p-0">
          
+         @if (session('channel_subscription_error'))
+            <script>
+               $(document).ready(function() {
+                     toastr.error('{{ session('channel_subscription_error') }}', 'Error Message');
+               });
+            </script>
+         @endif
+
          {{-- Message Note  --}}
                <div id="message-note" ></div>
 
@@ -107,7 +115,7 @@
 
             @if( $item == 'ChannelPartner' && $home_settings->channel_partner == 1 )        {{-- channel partner  --}}
                <?php $channels = App\Channel::where('status',1)->get(); ?>
-               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/ChannelPartners', ['data' => $channels, 'order_settings_list' => $order_settings_list ])->content() !!}
+               {!! Theme::uses('theme6')->load('public/themes/theme6/views/partials/home/ChannelPartners', ['data' => $channels, 'order_settings_list' => $order_settings_list , 'settings' => $settings ])->content() !!}
             @endif
 
             @if( $item == 'Series_Genre' && $home_settings->SeriesGenre == 1 )        {{-- Series Genre  --}}

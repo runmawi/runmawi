@@ -6,6 +6,7 @@
 {{-- video-js Style --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
 <link rel="stylesheet" href="<?= URL::to('/') . '/public/themes/default/assets/css/video-js/videojs.min.css' ?>" />
+<link rel="stylesheet" href="<?= URL::to('/') . '/public/themes/default/assets/css/video-js/videos-player.css' ?>" />
 
 {{-- video-js Script --}}
 <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -66,32 +67,24 @@
         display: inline-block;
         cursor: pointer;
     }
-    .my-video.video-js .vjs-big-play-button{font-size:3em;line-height:1.5em;height:1.63332em;width:3em;display:inline-block;position:absolute;top:50%;left:50%;padding:0;margin-top:-.81666em;margin-left:-1.5em;cursor:pointer;opacity:1;border:none;background-color:#fff0;border-radius:none;transition:3s;color:#000}
-    .my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before{height:50px;width:50px;left:27%;border-radius:50%;background-color:#fff;display:grid;place-content:center;cursor:pointer}
-    .my-video.video-js .vjs-control-bar{background:linear-gradient(transparent,rgb(0 0 0 / .75));background:var(--plyr-video-controls-background,linear-gradient(transparent,#fff0));transition:opacity 0.4s ease-in-out,transform 0.4s ease-in-out;z-index:3;height:64px}
-    .vjs-icon-play:before,.my-video .video-js .vjs-play-control .vjs-icon-placeholder:before,.my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before{content:"\f101"}
-    .my-video.video-js.vjs-playing .vjs-big-play-button .vjs-icon-placeholder:before{content:"\f103"}
+    
+    /* Video-Player CSS */
+    .my-video.video-js .vjs-big-play-button{ top: 48% !important; left: 48% !important;}
+    .video-js .vjs-control-bar{ height: 6em !important;}
     .vjs-play-control .vjs-icon-placeholder:before{margin-top:.33em;border-radius:4px;border:0 solid #fff0;font-size:25px}
-    .my-video.video-js button{background:#fff0;border:none;color:#fff;display:inline-block;font-size:13px;text-transform:capitalize;text-decoration:none;appearance:none;font-weight:500}
-    .my-video.video-js .vjs-mute-control{cursor:pointer;flex:none;line-height:3.3em;margin-top:40px;right:12px}
-    .my-video.video-js .vjs-time-control{flex:none;font-size:1.3em;line-height:4.8em;display:block;left:3px}
-    .my-video.video-js .vjs-control.vjs-menu-button{height:50%;border-radius:3px;margin-bottom:22px;margin-top:15px;margin-right:10px}
-    .vjs-menu-button-popup .vjs-menu .vjs-menu-content{position:absolute;width:100%;bottom:.9em;max-height:15em;background-color:#2b333f;border-radius:5px}
-    .vjs-menu li.vjs-menu-item:focus,.vjs-menu li.vjs-menu-item:hover,.js-focus-visible .vjs-menu li.vjs-menu-item:hover{background-color:#095ae5}
-    .vjs-menu-button-popup .vjs-menu{display:none;position:absolute;bottom:0;width:10em;left:-3em;height:0em;margin-bottom:2.5em;border-top-color:rgb(43 51 63 / .7)}
-    .vjs-volume-panel{position:absolute;right:auto;bottom:20px;left:10px;height:150px;width:20px;display:flex;align-items:center;justify-content:center}
-    .vjs-volume-bar{height:100%;width:10px;display:flex;flex-direction:column-reverse;transform-origin:center center}
-    .vjs-volume-bar .vjs-volume-level{width:100%;height:auto}
-    .video-js .vjs-volume-panel .vjs-volume-control{margin-left:-18px!important;margin-top:40px!important}
+    .vjs-icon-play:before,.my-video .video-js .vjs-play-control .vjs-icon-placeholder:before,.my-video.video-js .vjs-big-play-button .vjs-icon-placeholder:before{content:"\f101"}
+    .my-video.video-js .vjs-play-progress:before{ border-radius: 5px;}
+    .vjs-icon-picture-in-picture-enter:before, .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before{ line-height: 43px !important;}
     .vjs-volume-bar.vjs-slider-horizontal{height:0.5em!important}
     .my-video.video-js .vjs-volume-level:before{font-size:1.4em}
     .vjs-slider-horizontal .vjs-volume-level:before{line-height:0em!important;top: -0.15em !important;}
-    .vjs-volume-bar .vjs-volume-handle{height:10px;width:100%;bottom:auto;left:0;transform:translateX(50%)}
-    .my-video.vjs-theme-city .vjs-progress-control .vjs-progress-holder,.my-video.vjs-theme-city .vjs-progress-control:hover .vjs-progress-holder{font-size:1.5em}
-    .my-video.video-js .vjs-slider{position:relative;cursor:pointer;padding:0;margin:0 .45em 0 .55em;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;background-color:#73859f;font-size:10px;border-radius:3px}
-    .my-video.video-js .vjs-progress-holder{flex:auto;transition:all 0.2s;height:.2em}
-    .video-js .vjs-picture-in-picture-control{right:5px}
-    .vjs-playback-rate .vjs-playback-rate-value{ font-size: 1.4em !important;line-height: 3.15em !important;}
+    .my-video.video-js .vjs-picture-in-picture-control .vjs-icon-placeholder:before{ left: -6px !important;}
+    .vjs-fullscreen-control .vjs-control .vjs-button{top: 20%;}
+    .video-js .vjs-fullscreen-control .vjs-icon-placeholder:before, .vjs-icon-fullscreen-enter:before{top: 1px;font-size: 25px;left: -7px;}
+    .vjs-loading-spinner{top: 49.2% !important;left: 47.8% !important;}
+    .custom-skip-forward-button{left: 60% !important;}
+    .custom-skip-forward-button, .custom-skip-backward-button{top: calc(100% - 53%) !important;}
+    .custom-skip-forward-button svg, .custom-skip-backward-button svg{ width: 30px !important;}
 
 </style>
 
@@ -287,9 +280,17 @@
                         </div>
 
                         <div class="row mt-3">
-                            <div class="container">                
+                            <div class="container">
+                                <button class="custom-skip-forward-button">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M20.8888889,7.55555556 C19.3304485,4.26701301 15.9299689,2 12,2 C6.4771525,2 2,6.4771525 2,12 C2,17.5228475 6.4771525,22 12,22 L12,22 C17.5228475,22 22,17.5228475 22,12 M22,4 L22,8 L18,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                                </button>
+                
+                                <button class="custom-skip-backward-button">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 38px;"><path fill="none" stroke-width="2" d="M3.11111111,7.55555556 C4.66955145,4.26701301 8.0700311,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 L12,22 C6.4771525,22 2,17.5228475 2,12 M2,4 L2,8 L6,8 M9,16 L9,9 L7,9.53333333 M17,12 C17,10 15.9999999,8.5 14.5,8.5 C13.0000001,8.5 12,10 12,12 C12,14 13,15.5000001 14.5,15.5 C16,15.4999999 17,14 17,12 Z M14.5,8.5 C16.9253741,8.5 17,11 17,12 C17,13 17,15.5 14.5,15.5 C12,15.5 12,13 12,12 C12,11 12.059,8.5 14.5,8.5 Z"></path></svg>
+                                </button>
+
                                 <video id="my-video" class="my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
-                                    width="auto" height="auto" playsinline="playsinline" autoplay>
+                                    width="auto" height="auto" playsinline="playsinline">
                                     <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
                                     {{-- <source src={{$Advertisement->ads_video}} type="video/mp4"> --}}
                                 </video>

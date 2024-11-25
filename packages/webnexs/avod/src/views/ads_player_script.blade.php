@@ -1,18 +1,18 @@
-c<script>
+<script>
     var ads_position = "<?php echo $Advertisement->ads_position ?>";
     var ads_path = "<?php echo $Advertisement->ads_path ?>";
     var ads_video = "<?php echo $Advertisement->ads_video ?>";
-    // console.log("ads_path", ads_path);
 
-    let users_video_visibility_free_duration_status = 1; 
-    const modal = document.getElementById('largeModal');
+    let users_video_visibility_free_duration_status = 1;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var player = videojs('my-video', { // Video Js Player
+    document.addEventListener("DOMContentLoaded", function () {
+        var player = videojs('my-video', {
             aspectRatio: '16:9',
+            autoplay: false,
             fill: true,
             playbackRates: [0.5, 1, 1.5, 2, 3, 4],
             fluid: true,
+            volumePanel: false,
             controlBar: {
                 children: {
                     'playToggle': {},
@@ -21,13 +21,24 @@ c<script>
                     'progressControl': {},
                     'remainingTimeDisplay': {},
                     'playbackRateMenuButton': {},
-                    'pictureInPictureToggle': {},
-                    "volumePanel": {},
                     'fullscreenToggle': {},
                 },
             }
         });
 
+        const skipForwardButton = document.querySelector('.custom-skip-forward-button');
+        const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+
+        skipForwardButton.addEventListener('click', function () {
+            player.currentTime(player.currentTime() + 10);
+        });
+
+        skipBackwardButton.addEventListener('click', function () {
+            player.currentTime(player.currentTime() - 10);
+        });
 
         // Ads Marker
         player.on("loadedmetadata", function () {
@@ -41,11 +52,13 @@ c<script>
 
             if (total != 'Infinity') {
                 if (CheckPreAds) markers.push({ time: 0 });
-                if (midrollincreaseInterval && midrollincreaseInterval != 0 && checkMidrollAds_array > 0) {
+
+                if (midrollincreaseInterval && checkMidrollAds_array > 0) {
                     for (let time = midrollincreaseInterval; time < total; time += midrollincreaseInterval) {
                         markers.push({ time });
                     }
                 }
+
                 if (CheckPostAds) markers.push({ time: total });
 
                 var marker_space = jQuery(player.controlBar.progressControl.children_[0].el_);
@@ -62,7 +75,6 @@ c<script>
         // Advertisement
         var vastTagPreroll = ads_position === 'pre' || ads_position === 'all' ? ads_path : null;
         var vastTagPostroll = ads_position === 'post' || ads_position === 'all' ? ads_path : null;
-        console.log("vastTagPostroll",vastTagPostroll);
 
         var prerollTriggered = false;
         var postrollTriggered = false;
@@ -71,137 +83,96 @@ c<script>
         if (ads_position === 'mid' || ads_position === 'all') {
             try {
                 vastTagMidrollArray = JSON.parse(ads_path);
-                if (!Array.isArray(vastTagMidrollArray)) { vastTagMidrollArray = [ads_path]; }
-            } 
-            catch (e){ vastTagMidrollArray = [ads_path]; }
+                console.log("vastTagMidrollArray-try",vastTagMidrollArray);
+                
+                if (!Array.isArray(vastTagMidrollArray)) {
+                    vastTagMidrollArray = [ads_path];
+                    console.log("vastTagMidrollArray-if",vastTagMidrollArray);
+                    
+                }
+            } catch (e) {
+                vastTagMidrollArray = [ads_path];
+                console.log("vastTagMidrollArray-catch",vastTagMidrollArray);
+                
+            }
         }
 
         var midrollRequested = false;
         var lastMidrollTime = 0;
         var midrollInterval = 300;
-        
-        if (!prerollTriggered) {
-            player.ima({
-                adTagUrl: vastTagPreroll,
-                showControlsForAds: true,
-                debug: false,
-            });
-        } else {
-            player.ima({
-                adTagUrl: '',
-                showControlsForAds: true,
-                debug: false,
-            });
-        }
+
+        player.ima({
+            adTagUrl: prerollTriggered ? '' : vastTagPreroll,
+            showControlsForAds: true,
+            debug: false,
+            adsRenderingSettings: {
+                loadVideoTimeout: 15000,
+            }
+        });
         player.ima.initializeAdDisplayContainer();
 
         function requestMidrollAd(vastTagMidroll) {
-            midrollRequested = true;
             player.ima.changeAdTag(vastTagMidroll);
             player.ima.requestAds();
+            midrollRequested = true;
         }
 
-        var initial_current_time = 0;
-        var timeupdate_counter = 0;
-
-        player.on("timeupdate", function() {
+        player.on("timeupdate", function () {
             var currentTime = player.currentTime();
-            var Player_duration = player.duration() ;
+            var Player_duration = player.duration();
 
             // Mid ads
             var timeSinceLastMidroll = currentTime - lastMidrollTime;
             if (timeSinceLastMidroll >= midrollInterval && !midrollRequested) {
                 lastMidrollTime = currentTime;
-                console.log("Midroll triggered");
-
-                const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);
-                const vastTagMidroll = vastTagMidrollArray[random_array_index];                
-
+                const random_array_index = Math.floor(Math.random() * vastTagMidrollArray.length);                
+                const vastTagMidroll = vastTagMidrollArray[random_array_index];
+                
                 requestMidrollAd(vastTagMidroll);
             }
-        });
 
-        player.on("timeupdate", function() {
-            const duration = player.duration();
-            if ( duration != "Infinity" ) {
-                const currentTime = player.currentTime();
-                if (!postrollTriggered && duration - currentTime < 2) {
-                    console.log("Postroll Ads requested");
-                    player.ima.initializeAdDisplayContainer();
-                    player.ima.changeAdTag(vastTagPostroll);
-                    player.ima.requestAds();
-                    postrollTriggered = true;
-                }
+            // Postroll
+            if (!postrollTriggered && Player_duration - currentTime < 2) {
+                console.log("player.ima.changeAdTag(vastTagPostroll)",player.ima.changeAdTag(vastTagPostroll));
+                
+                player.ima.changeAdTag(vastTagPostroll);
+                player.ima.requestAds();
+                postrollTriggered = true;
             }
+            
         });
 
-        player.on("adsready", function() {
-            if (midrollRequested) { console.log("Ads ready - midroll"); } 
-            else if(prerollTriggered) { console.log("Ads ready - preroll"); }
-            else{ console.log("Ads ready - postroll"); }
-        });
-
-        player.on("aderror", function() {
-            console.log("Ads aderror");
+        // Handle Ad Errors
+        player.on("aderror", function (event) {
+            console.error("Ad error: ", event);
+            midrollRequested = false; // Reset midroll status on failure
             player.play();
         });
 
-        player.on("adend", function() {
-            if (lastMidrollTime > 0) {
-                console.log("A midroll ad has finished playing.");
-                midrollRequested = false;
-            } else if(prerollTriggered) {
-                console.log("The preroll ad has finished playing.");
-                prerollTriggered = false;
-            } else {
-                console.log("The postroll ad has finished playing.");
-                postrollTriggered = false;
-            }
+        player.on("adend", function () {
+            midrollRequested = false;
+            prerollTriggered = false;
+            postrollTriggered = false;
             player.play();
         });
 
-        player.on('userinactive', () => {
-            $('.vjs-big-play-button').hide();
-        });
-        player.on('useractive', () => {
-            $('.vjs-big-play-button').show();
-        });
-
-        function togglePlayPause(e) {
-            if (e.code === '"Space') { 
-                e.preventDefault(); 
-                player.paused() ? player.play() : player.pause(); 
+        // Key controls
+        document.addEventListener('keydown', function (e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                player.paused() ? player.play() : player.pause();
             }
-        }
-        document.addEventListener('keydown', togglePlayPause);
-        
-        function handleKeydown(e) {
             if (e.code === 'ArrowRight') {
                 e.preventDefault();
-                var currentTime = player.currentTime();
-                var newTime = Math.min(currentTime + 10, player.duration());
-                player.currentTime(newTime);
+                player.currentTime(player.currentTime() + 10);
             }
             if (e.code === 'ArrowLeft') {
                 e.preventDefault();
-                var currentTime = player.currentTime();
-                var newTime = Math.min(currentTime - 10, player.duration());
-                player.currentTime(newTime);
+                player.currentTime(player.currentTime() - 10);
             }
-        }
-        document.addEventListener('keydown', handleKeydown);
-
-        $('.close-btn').click(function(){ 
-            player.currentTime(0); 
-            player.pause(); });
-
-        $(modal).on('shown.bs.modal', function () { 
-            player.play(); 
         });
-
     });
 </script>
-
 
 <style>
     .vjs-marker {
