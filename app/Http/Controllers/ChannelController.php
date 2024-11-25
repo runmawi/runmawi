@@ -4783,9 +4783,7 @@ class ChannelController extends Controller
 
             $default_vertical_image_url = default_vertical_image_url();
 
-            $user_role = Auth::check() ? Auth::user()->role : 'guest';
-
-            if($videodetail->status == 1 || ($videodetail->status == 0 && $user_role == 'admin')){
+            if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'videodetail'    => $videodetail ,
                     'video'          => $videodetail ,   // Videos - Working Social Login
@@ -4812,7 +4810,6 @@ class ChannelController extends Controller
                     'paypal_signature' => $paypal_signature,
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
-                    'user_role' => $user_role,
                 );
                 return Theme::view('video-js-Player.video.videos-details', $data);
             } else {
