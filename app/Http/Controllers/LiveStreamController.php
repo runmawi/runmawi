@@ -727,7 +727,7 @@ class LiveStreamController extends Controller
                     'free_duration_condition' => $free_duration_condition ,
                     'Livestream_details'      => $Livestream_details ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role'                => $user_role,
+                    'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
                     'setting'                => $settings,
                     'current_theme'          => $this->Theme,
                     'enable_ppv_rent_live'  => $enable_ppv_rent_live,

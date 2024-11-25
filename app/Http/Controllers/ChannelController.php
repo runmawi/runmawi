@@ -5263,40 +5263,28 @@ class ChannelController extends Controller
 
             if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
-                    'videodetail'    => $videodetail ,
-                    'video'          => $videodetail ,   // Videos - Working Social Login
-                    'setting'        => Setting::first(),
-                    'CommentSection' => CommentSection::first(),
-                    'source_id'      => $videodetail->id ,
-                    'commentable_type' => 'play_videos',
-                    'ThumbnailSetting' => ThumbnailSetting::first() ,
-                    'currency'         => $currency,
-                    'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
-                    'publishable_key'    => $publishable_key ,
-                    'button_text'      => $button_text,
+                    'videodetail' => $videodetail ,
+                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                    'recomended' => $recomended ,
+                    'videoURl' => $videoURl ,
+                    'subtitles_name' => $subtitles ,
+                    'subtitles' => $subtitle ,
+                    'setting'   => $setting,
                     'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                             <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                             <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
                                         </svg>',
-
-                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                    'paypal_payment_setting' => $PayPalpayment,
-                    'stripe_payment_setting'   => $Stripepayment,
-                    'default_vertical_image_url'   => $default_vertical_image_url,
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'currency'         => $currency,
+                    'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
                     'playerui' => Playerui::first(),
-                    'paypal_signature' => $paypal_signature,
-                    'purchase_btn'                    => $purchase_btn,
-                    'subscribe_btn'                    => $subscribe_btn,
-                    'user_role' => $user_role,
                 );
-                return Theme::view('video-js-Player.video.videos-details', $data);
+                return Theme::view('video-js-Player.video.videos', $data);
             } else {
                 return abort(404);
             }
 
         } catch (\Throwable $th) {
-
             // return $th->getMessage();
             return abort(404);
         }
