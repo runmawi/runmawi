@@ -577,8 +577,8 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                             <?php $payment_type = App\PaymentSetting::get(); ?>
 
                             <div class="col-sm-4">
-                                <span class="badge badge-secondary p-2"><?php echo __($episodes->title); ?></span>
-                                <span class="badge badge-secondary p-2"><?php echo __($episodes->age_restrict) . ' ' . '+'; ?></span>
+                                <span class="badge badge-secondary p-2"><?php echo __($episode->title); ?></span>
+                                <span class="badge badge-secondary p-2"><?php echo __($episode->age_restrict) . ' ' . '+'; ?></span>
                                 <!-- <span class="badge badge-secondary p-2"><?php //echo __($video->categories->name);
                                 ?></span>
                 <span class="badge badge-secondary p-2"><?php //echo __($video->languages->name);
@@ -591,7 +591,7 @@ $SeriesSeason = App\SeriesSeason::where('id', $episode->season_id)->first();
                                     echo $episode->year;
                                 } ?></span>
                                 <button type="button" class="btn btn-primary"
-                                    data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episodes->ppv_price); ?></button>
+                                    data-dismiss="modal"><?php echo __($currency->symbol . ' ' . $episode->ppv_price); ?></button>
                                 <label for="method">
                                     <h3>Payment Method</h3>
                                 </label>
