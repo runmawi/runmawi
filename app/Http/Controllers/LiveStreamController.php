@@ -697,9 +697,7 @@ class LiveStreamController extends Controller
                 }
             }
             
-            $user_role = Auth::check() ? Auth::user()->role : 'guest';
-            
-            if($Livestream_details->active == 1 || ($Livestream_details->active == 0 && $user_role == 'admin')){
+            if($Livestream_details->active == 1 || ($Livestream_details->active == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'currency'     => $currency,
                     'video_access' => $video_access,

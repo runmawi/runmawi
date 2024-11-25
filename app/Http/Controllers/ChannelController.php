@@ -5261,9 +5261,7 @@ class ChannelController extends Controller
                 $recomended = [];
             }
 
-            $user_role = Auth::check() ? Auth::user()->role : 'guest';
-
-            if($videodetail->status == 1 || ($videodetail->status == 0 && $user_role == 'admin')){
+            if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'videodetail'    => $videodetail ,
                     'video'          => $videodetail ,   // Videos - Working Social Login
