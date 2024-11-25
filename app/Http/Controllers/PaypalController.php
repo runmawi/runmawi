@@ -15,19 +15,11 @@ use PayPal\Api\Patch;
 use PayPal\Api\Payer;
 use PayPal\Api\Amount;
 use App\ModeratorsUser;
-
-// use to process billing agreements
 use PayPal\Api\Payment;
 use App\VideoCommission;
-use App\Channel;
-use App\PpvPurchase;
-use \App\User as User;
 use App\SubscriptionPlan;
-use App\Subscription;
-use Carbon\Carbon;
 use auth;
 use PayPal\Api\Currency;
-use App\SubscriptionPlan;
 use PayPal\Api\Agreement;
 use PayPal\Api\ChargeModel;
 use PayPal\Api\Transaction;
