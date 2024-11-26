@@ -102,7 +102,7 @@
             currentTime = Math.floor(currentTime);
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && currentTime == monetization_view_limit && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent) {
                 viewCountSent = true;
                 countview = 1;
                 $.ajax({

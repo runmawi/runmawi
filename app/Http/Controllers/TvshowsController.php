@@ -1034,121 +1034,124 @@ class TvshowsController extends Controller
                                     ->orderBy('episode_order', 'asc')
                                     ->first();
 
-
-            if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
-                $data = [
-                    'currency' => $currency,
-                    'video_access' => $video_access,
-                    'free_episode' => $free_episode,
-                    'ppv_exits' => $ppv_exits,
-                    'checkseasonppv_exits' => 0,
-                    'publishable_key' => $publishable_key,
-                    'episode' => $episode,
-                    'season' => $season,
-                    'series' => $series,
-                    'playerui_settings' => $playerui,
-                    'episodenext' => $episodenext,
-                    'episodeprev' => $episodeprev,
-                    'mywishlisted' => $wishlisted,
-                    'watchlatered' => $watchlater,
-                    'url' => 'episodes',
-                    'settings' => $settings,
-                    'menu' => Menu::orderBy('order', 'ASC')->get(),
-                    'view_increment' => $view_increment,
-                    'series_categories' => SeriesGenre::all(),
-                    'pages' => Page::where('active', '=', 1)->get(),
-                    'episode_watchlater' => $episode_watchlater,
-                    'episode_Wishlist' => $episode_Wishlist,
-                    'like_dislike' => $like_dislike,
-                    'source_id' => $source_id,
-                    'commentable_type' => 'play_episode',   
-                    'series_lists' =>   $series_lists ,
-                    'subtitles_name' =>   $subtitles_name ,
-                    'playerui_settings' =>   $playerui ,
-                    'episodesubtitles' =>   $subtitle ,
-                    'Stripepayment' => PaymentSetting::where('payment_type', 'Stripe')->first(),
-                    'paypal_payment_setting' => $PayPalpayment,
-                    'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
-                    'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
-                    'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
-                    'category_name'             => $category_name ,
-                    'episode_details'           => $episode_details ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
-                    'episode_PpvPurchase'  => $episode_PpvPurchase,
-                    'episode_play_access'  => $episode_play_access,
-                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                    'Paystack_payment_setting' => $Paystack_payment_setting ,
-                    'stripe_payment_setting'   => $stripe_payment_setting ,
-                    'paydunya_payment_setting' => $paydunya_payment_setting ,
-                    'ppv_series_description'   => $ppv_series_description,
-                    'paypal_signature' => $paypal_signature,
-                    'purchase_btn'             => $purchase_btn,
-                    'subscribe_btn'            => $subscribe_btn,
-                    'next_episode'             => $next_episode,
-                ];
-                
-                if (Auth::guest() && $settings->access_free == 1) {
-                    return Theme::view('beforloginepisode', $data);
+            if($episode->active == 1 || ($episode->active == 0 && Auth::user()->role == 'admin')){
+                if ((!Auth::guest() && Auth::user()->role == 'admin') || $series_ppv_status != 1 || $ppv_exits > 0 || $free_episode > 0) {
+                    $data = [
+                        'currency' => $currency,
+                        'video_access' => $video_access,
+                        'free_episode' => $free_episode,
+                        'ppv_exits' => $ppv_exits,
+                        'checkseasonppv_exits' => 0,
+                        'publishable_key' => $publishable_key,
+                        'episode' => $episode,
+                        'season' => $season,
+                        'series' => $series,
+                        'playerui_settings' => $playerui,
+                        'episodenext' => $episodenext,
+                        'episodeprev' => $episodeprev,
+                        'mywishlisted' => $wishlisted,
+                        'watchlatered' => $watchlater,
+                        'url' => 'episodes',
+                        'settings' => $settings,
+                        'menu' => Menu::orderBy('order', 'ASC')->get(),
+                        'view_increment' => $view_increment,
+                        'series_categories' => SeriesGenre::all(),
+                        'pages' => Page::where('active', '=', 1)->get(),
+                        'episode_watchlater' => $episode_watchlater,
+                        'episode_Wishlist' => $episode_Wishlist,
+                        'like_dislike' => $like_dislike,
+                        'source_id' => $source_id,
+                        'commentable_type' => 'play_episode',   
+                        'series_lists' =>   $series_lists ,
+                        'subtitles_name' =>   $subtitles_name ,
+                        'playerui_settings' =>   $playerui ,
+                        'episodesubtitles' =>   $subtitle ,
+                        'Stripepayment' => PaymentSetting::where('payment_type', 'Stripe')->first(),
+                        'paypal_payment_setting' => $PayPalpayment,
+                        'Paystack_payment_settings' => PaymentSetting::where('payment_type', 'Paystack')->first(),
+                        'Razorpay_payment_settings' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+                        'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
+                        'category_name'             => $category_name ,
+                        'episode_details'           => $episode_details ,
+                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                        'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                        'episode_PpvPurchase'  => $episode_PpvPurchase,
+                        'episode_play_access'  => $episode_play_access,
+                        'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                        'Paystack_payment_setting' => $Paystack_payment_setting ,
+                        'stripe_payment_setting'   => $stripe_payment_setting ,
+                        'paydunya_payment_setting' => $paydunya_payment_setting ,
+                        'ppv_series_description'   => $ppv_series_description,
+                        'paypal_signature' => $paypal_signature,
+                        'purchase_btn'             => $purchase_btn,
+                        'subscribe_btn'            => $subscribe_btn,
+                        'next_episode'             => $next_episode,
+                    ];
+                    
+                    if (Auth::guest() && $settings->access_free == 1) {
+                        return Theme::view('beforloginepisode', $data);
+                    } else {
+                        return Theme::view('episode', $data);
+                    }
                 } else {
-                    return Theme::view('episode', $data);
+
+                    $data = [
+                        'currency' => $currency,
+                        'video_access' => $video_access,
+                        'ppv_exits' => $ppv_exits,
+                        'free_episode' => $free_episode,
+                        'publishable_key' => $publishable_key,
+                        'episode' => $episode,
+                        'season' => $season,
+                        'series' => $series,
+                        'playerui_settings' => $playerui,
+                        'episodenext' => $episodenext,
+                        'episodeprev' => $episodeprev,
+                        'mywishlisted' => $wishlisted,
+                        'watchlatered' => $watchlater,
+                        'url' => 'episodes',
+                        'settings' => $settings,
+                        'menu' => Menu::orderBy('order', 'ASC')->get(),
+                        'view_increment' => $view_increment,
+                        'series_categories' => SeriesGenre::all(),
+                        'pages' => Page::where('active', '=', 1)->get(),
+                        'episode_watchlater' => $episode_watchlater,
+                        'episode_Wishlist' => $episode_Wishlist,
+                        'like_dislike' => $like_dislike,
+                        'source_id' => $source_id,
+                        'commentable_type' => 'play_episode',
+                        'series_lists' =>  $series_lists ,
+                        'subtitles_name' =>   $subtitles_name ,
+                        'playerui_settings' =>   $playerui ,
+                        'episodesubtitles' =>   $subtitle ,
+                        'category_name'             => $category_name ,
+                        'episode_details'  => $episode_details ,
+                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                        'episode_PpvPurchase'  => $episode_PpvPurchase,
+                        'episode_play_access'  => $episode_play_access,
+                        'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                        'Paystack_payment_setting' => $Paystack_payment_setting ,
+                        'stripe_payment_setting'   => $stripe_payment_setting ,
+                        'paydunya_payment_setting' => $paydunya_payment_setting ,
+                        'ppv_series_description'   => $ppv_series_description,
+                        'paypal_signature' => $paypal_signature,
+                        'paypal_payment_setting' => $PayPalpayment,
+                        'purchase_btn'             => $purchase_btn,
+                        'subscribe_btn'            => $subscribe_btn,
+                        'next_episode'             => $next_episode,
+                    ];
+        
+                    if (Auth::guest() && $settings->access_free == 1) {
+                        return Theme::view('beforloginepisode', $data);
+                    } else {
+                        return Theme::view('episode', $data);
+                    }
+        
+                    // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
                 }
             } else {
-
-                $data = [
-                    'currency' => $currency,
-                    'video_access' => $video_access,
-                    'ppv_exits' => $ppv_exits,
-                    'free_episode' => $free_episode,
-                    'publishable_key' => $publishable_key,
-                    'episode' => $episode,
-                    'season' => $season,
-                    'series' => $series,
-                    'playerui_settings' => $playerui,
-                    'episodenext' => $episodenext,
-                    'episodeprev' => $episodeprev,
-                    'mywishlisted' => $wishlisted,
-                    'watchlatered' => $watchlater,
-                    'url' => 'episodes',
-                    'settings' => $settings,
-                    'menu' => Menu::orderBy('order', 'ASC')->get(),
-                    'view_increment' => $view_increment,
-                    'series_categories' => SeriesGenre::all(),
-                    'pages' => Page::where('active', '=', 1)->get(),
-                    'episode_watchlater' => $episode_watchlater,
-                    'episode_Wishlist' => $episode_Wishlist,
-                    'like_dislike' => $like_dislike,
-                    'source_id' => $source_id,
-                    'commentable_type' => 'play_episode',
-                    'series_lists' =>  $series_lists ,
-                    'subtitles_name' =>   $subtitles_name ,
-                    'playerui_settings' =>   $playerui ,
-                    'episodesubtitles' =>   $subtitle ,
-                    'category_name'             => $category_name ,
-                    'episode_details'  => $episode_details ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                   'user_role' => Auth::check() ? Auth::user()->role : 'guest',
-                    'episode_PpvPurchase'  => $episode_PpvPurchase,
-                    'episode_play_access'  => $episode_play_access,
-                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                    'Paystack_payment_setting' => $Paystack_payment_setting ,
-                    'stripe_payment_setting'   => $stripe_payment_setting ,
-                    'paydunya_payment_setting' => $paydunya_payment_setting ,
-                    'ppv_series_description'   => $ppv_series_description,
-                    'paypal_signature' => $paypal_signature,
-                    'paypal_payment_setting' => $PayPalpayment,
-                    'purchase_btn'             => $purchase_btn,
-                    'subscribe_btn'            => $subscribe_btn,
-                    'next_episode'             => $next_episode,
-                ];
-    
-                if (Auth::guest() && $settings->access_free == 1) {
-                    return Theme::view('beforloginepisode', $data);
-                } else {
-                    return Theme::view('episode', $data);
-                }
-    
-                // return Redirect::to('/tv-shows')->with(array('message' => 'Sorry, To Watch series You have to purchase.', 'note_type' => 'error'));
+                return abort(404);
             }
         } else {
             return Redirect::to('series-list')->with(['note' => 'Sorry, this series is no longer active.', 'note_type' => 'error']);
