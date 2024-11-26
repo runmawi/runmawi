@@ -1449,77 +1449,89 @@ document.getElementById('select-all').addEventListener('change', function() {
         }
     }
 
-        var myDropzone = new Dropzone(".dropzone", { 
-            parallelUploads: 10,
-            maxFilesize: 15000000000000000, // 15000MB
-            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
-            previewTemplate: document.getElementById('template').innerHTML,
-            init: function() {
-                this.on("sending", function(file, xhr, formData) {
-                    formData.append('series_id', series_id);
-                    formData.append('season_id', season_id);
-                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
-                    formData.append("_token", CSRF_TOKEN);
+    var myDropzone = new Dropzone(".dropzone", { 
+    parallelUploads: 2,
+    maxFilesize: 15000000000000000, // 15000MB
+    acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+    previewTemplate: document.getElementById('template').innerHTML,
+    init: function() {
+        this.on("sending", function(file, xhr, formData) {
+            formData.append('series_id', series_id);
+            formData.append('season_id', season_id);
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+            formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
+            formData.append("_token", CSRF_TOKEN);
 
-                    // Initialize retry counter and canceled flag if they don't exist
-                    if (!file.retryCount) {
-                        file.retryCount = 0;
-                    }
-                    if (!file.userCanceled) {
-                        file.userCanceled = false;
-                    }
+            // Initialize retry counter and canceled flag if they don't exist
+            if (!file.retryCount) {
+                file.retryCount = 0;
+            }
+            if (!file.userCanceled) {
+                file.userCanceled = false;
+            }
 
-                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
-                        console.log("Cancel button clicked for file: " + file.name);
-                        file.userCanceled = true; 
-                        xhr.abort();
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                        // alert("Upload canceled for file: " + file.name);
-                        handleError(file, "Upload canceled by user.");
-                        var cancelMessage = "Upload canceled for file: " + file.name;
-                        var messageElement = document.getElementById('cancel-message');
-                        messageElement.innerHTML = cancelMessage;
-                        messageElement.style.display = 'block'; 
-                        setTimeout(function() {
-                            messageElement.style.display = 'none'; 
-                        }, 5000);
-                    });
-                });
-                this.on("uploadprogress", function(file, progress) {
-                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
-                    progressElement.textContent = Math.round(progress) + '%';
-                });
-                
-                this.on("success", function (file, value) {
-                    if (value.error == 3) {
-                        console.log(value.error);
-                        alert("File not uploaded. Choose Library!");
-                        location.reload();
-                    } else {
-                        $("#buttonNext").show();
-                        $("#episode_id").val(value.Episode_id);
-                        $("#title").val(value.episode_title);
-                        $("#duration").val(value.episode_duration);
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                    }
-                });
+            // Add cancel button event listener
+            file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                console.log("Cancel button clicked for file: " + file.name);
+                file.userCanceled = true; 
+                xhr.abort(); // Abort the current upload
+                file.status = Dropzone.CANCELED; // Mark the file as canceled
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
 
-                this.on("error", function(file, response) {
-                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
-                        file.retryCount++;
-                        setTimeout(function() {
-                            myDropzone.removeFile(file);  // Remove the failed file from Dropzone
-                            myDropzone.addFile(file);     // Requeue the file for upload
-                        }, 1000); 
-                    } else if (file.userCanceled) {
-                        console.log("File upload canceled by user: " + file.name);
-                    } else {
-                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
-                    }
-                });
+                // Display a cancel message temporarily
+                alert("Upload canceled for file: " + file.name);
+                handleError(file, "Upload canceled by user.");
+                var cancelMessage = "Upload canceled for file: " + file.name;
+                var messageElement = document.getElementById('cancel-message');
+                messageElement.innerHTML = cancelMessage;
+                messageElement.style.display = 'block'; 
+                setTimeout(function() {
+                    messageElement.style.display = 'none'; 
+                }, 5000);
+                myDropzone.processQueue();
+            });
+        });
+        this.on("uploadprogress", function(file, progress) {
+            var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+            progressElement.textContent = Math.round(progress) + '%';
+        });
+
+        this.on("success", function(file, value) {
+            if (value.error == 3) {
+                console.log(value.error);
+                alert("File not uploaded. Choose Library!");
+                location.reload();
+            } else {
+                $("#buttonNext").show();
+                $("#episode_id").val(value.Episode_id);
+                $("#title").val(value.episode_title);
+                $("#duration").val(value.episode_duration);
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
             }
         });
+
+        this.on("error", function(file, response) {
+            if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
+                file.retryCount++;
+                setTimeout(function() {
+                    myDropzone.removeFile(file);  // Remove the failed file from Dropzone
+                    myDropzone.addFile(file);     // Requeue the file for upload
+                }, 1000); 
+            } else if (file.userCanceled) {
+                console.log("File upload canceled by user: " + file.name);
+            } else {
+                alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+            }
+
+            // Ensure queue continues after handling error
+            myDropzone.processQueue();
+        });
+
+        this.on("queuecomplete", function() {
+            console.log("All uploads in the queue have been processed.");
+        });
+    }
+});
 
     // Dropzone.autoDiscover = false;
     // var myDropzone = new Dropzone(".dropzone", {
