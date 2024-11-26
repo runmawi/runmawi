@@ -4353,8 +4353,8 @@ class ChannelController extends Controller
                 $UserChannelSubscription = null ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
-    
-                if (!Auth::guest() ) {
+
+                if (!Auth::guest() && !is_null($channel_id) ) {
     
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                     ->where('channel_id',$channel_id)->where('status','active')
@@ -4367,7 +4367,7 @@ class ChannelController extends Controller
                     }
                 }
     
-                if (is_null($UserChannelSubscription)) {
+                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
                     session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }
@@ -4419,7 +4419,6 @@ class ChannelController extends Controller
                         $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
                         ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
                         ->count();
-                        // dd($ppv_exists_check_query);
 
                         $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
                         ->where('user_id', Auth::user()->id)
@@ -4434,9 +4433,7 @@ class ChannelController extends Controller
                             $ppv_exists_check_query = null;
                         }
  
-
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-                        // dd($PPV_exists);
 
                                 // free PPV access for subscriber status Condition
 
@@ -4878,7 +4875,7 @@ class ChannelController extends Controller
                 $UserChannelSubscription = null ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
-
+                
                 if (!Auth::guest() ) {
 
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
@@ -4892,7 +4889,7 @@ class ChannelController extends Controller
                     }
                 }
 
-                if (is_null($UserChannelSubscription)) {
+                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
                     session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }

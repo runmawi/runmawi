@@ -226,7 +226,7 @@ class LiveStreamController extends Controller
                 }
             }
 
-            if (is_null($UserChannelSubscription)) {
+            if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
                 session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                 return back();
             }
