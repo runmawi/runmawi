@@ -2448,6 +2448,7 @@ $(document).ready(function($){
                 xhr.abort();
                 alert("Upload canceled for file: " + file.name);
                 handleError(file, "Upload canceled by user.");
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
 
                 // Mark file as completed in Dropzone
                 file.status = Dropzone.CANCELED;
@@ -2478,6 +2479,7 @@ $(document).ready(function($){
                 $('#Next').show();
                 $('#video_id').val(response.video_id);
                 $('#title').val(response.video_title);
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
             }
         });
 
@@ -2492,6 +2494,7 @@ $(document).ready(function($){
                 console.log("File upload canceled by user: " + file.name);
             } else {
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
             }
             myDropzone.processQueue(); // Ensure queue continues processing
         });
