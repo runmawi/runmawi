@@ -3987,7 +3987,7 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'channel';
+        $item['source'] = 'video';
         return $item;
       });
       if(count($channel_videos) > 0){
@@ -12809,6 +12809,26 @@ $cpanel->end();
                                             ->get()
                                             ->map(function ($episode) {
                                               $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
+                                              // return $episode;
+                                              if($this->Theme == 'theme4'){
+                                                if($episode->type == 'm3u8'){
+                                                  $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                } elseif($episode->type == 'embed'){
+                                                    $url = $episode->url;
+                                                }
+                                                else{
+                                                  $url = $episode->url;
+                                                }
+                                              }else{
+                                                if($episode->type == 'm3u8'){
+                                                  $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                } elseif($episode->type == 'embed'){
+                                                    $url = $episode->url;
+                                                }
+                                                else{
+                                                  $url = $episode->url;
+                                                }
+                                              }
                                               return [
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
@@ -12822,7 +12842,7 @@ $cpanel->end();
                                                                                 'videos' => [
                                                                                     [
                                                                                         'videoType' => $episode->type,
-                                                                                        'url' => $episode->url,
+                                                                                        'url' => $url,
                                                                                     ],
                                                                                 ],
                                                                                 'duration' => $episode->duration,
@@ -12888,6 +12908,25 @@ $cpanel->end();
                                                                                                                                 ->get()
                                                                                                                                 ->map(function ($episode) {
                                                                                                                                   $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
+                                                                                                                                  if($this->Theme == 'theme4'){
+                                                                                                                                    if($episode->type == 'm3u8'){
+                                                                                                                                      $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                                                                                                    } elseif($episode->type == 'embed'){
+                                                                                                                                        $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                    else{
+                                                                                                                                      $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                  }else{
+                                                                                                                                    if($episode->type == 'm3u8'){
+                                                                                                                                      $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                                                                                                    } elseif($episode->type == 'embed'){
+                                                                                                                                        $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                    else{
+                                                                                                                                      $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                  }
                                                                                                                                   return [
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
@@ -12901,7 +12940,7 @@ $cpanel->end();
                                                                                                                                                                     'videos' => [
                                                                                                                                                                         [
                                                                                                                                                                             'videoType' => $episode->type,
-                                                                                                                                                                            'url' => $episode->url,
+                                                                                                                                                                            'url' => $url,
                                                                                                                                                                         ],
                                                                                                                                                                     ],
                                                                                                                                                                     'duration' => $episode->duration,

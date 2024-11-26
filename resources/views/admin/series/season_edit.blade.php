@@ -1479,6 +1479,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
 
                 // Display a cancel message temporarily
+                alert("Upload canceled for file: " + file.name);
                 handleError(file, "Upload canceled by user.");
                 var cancelMessage = "Upload canceled for file: " + file.name;
                 var messageElement = document.getElementById('cancel-message');
