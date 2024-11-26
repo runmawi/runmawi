@@ -1,125 +1,117 @@
-@php
-      include(public_path('themes/theme5-nemisha/views/header.php'));
-   @endphp
+@php include public_path('themes/theme5-nemisha/views/header.php'); @endphp
 
 <!-- MainContent -->
 
 <section id="iq-favorites">
-<div class="container-fluid">
-   <div class="row">
-      <div class="col-sm-12 page-height">
+    @if (isset($respond_data['Series']) && count($respond_data['Series']) > 0)
 
-         @if(isset($respond_data['Series']) && count($respond_data['Series']) > 0 )
+        <div class="container-fluid"
+            style="padding: 0px 40px!important;background: linear-gradient(135.05deg, rgba(136, 136, 136, 0.48) 1.85%, rgba(64, 32, 32, 0.13) 38.53%, rgba(81, 57, 57, 0.12) 97.89%);">
+            <div class="row">
 
-             <div class="iq-main-header align-items-center justify-content-between">
-               <h3 class="vid-title">  <b>Channel Series in:</b> {{{ $respond_data['channel_slug'] }}}  </h3>
-            </div>
-             
-            <div class="favorites-contens">
-               <ul class="category-page list-inline row p-0 mb-0">
-                     @forelse($respond_data['Series'] as $key => $Serie)
+                <div class="col-sm-12 page-height">
 
-                        <li class="slide-item col-sm-2 col-md-2 col-xs-12">
-                           <a  href="{{ URL::to('play_series/'. $Serie->slug ) }}">
-                              <div class="block-images position-relative">
-                                 <div class="img-box">
-                                    <img src="{{ URL::to('public/uploads/images/'.$Serie->image) }}" class="img-fluid w-100" alt="Channel-Series-Image">
-                                       @if(!empty($Serie->ppv_price))
-                                          <p class="p-tag1" >{{ $respond_data['currency']->symbol.' '.$Serie->ppv_price }} </p>
-                                       @elseif( !empty($Serie->global_ppv || !empty($Serie->global_ppv) && $Serie->ppv_price == null)) 
-                                          <p class="p-tag1">{{ $Serie->global_ppv.' '. $respond_data['currency']->symbol }} </p>
-                                       @elseif($Serie->global_ppv == null && $Serie->ppv_price == null )
-                                          <p class="p-tag" >{{ "Free" }} </p>
-                                       @endif
-                                 </div>
+                    <div class="iq-main-header align-items-center justify-content-between">
+                        <h4 class="main-title mt-3">                  
+                            <b>Channel Series Videos in:</b> {{{ $respond_data['channel_slug'] }}} 
+                        </h4>                   
+                    </div>
 
-                                 <div class="block-description">
-                                    @if( $respond_data['ThumbnailSetting']->title == 1)  <!-- Title -->
-                                       <a  href="{{ URL::to('play_series' . $Serie->slug) }}">
-                                          <h6><?php  echo (strlen($Serie->title) > 17) ? substr($Serie->title,0,18).'...' : $Serie->title; ?></h6>
-                                       </a>
-                                    @endif  
+                    <div class="favorites-contens">
+                        <ul class="category-page list-inline row p-0 mb-0">
+                            @if (isset($respond_data['Series']))
 
-                                    <div class="movie-time d-flex align-items-center pt-1">
-                                       @if($respond_data['ThumbnailSetting']->age == 1) 
-                                                   <!-- Age -->
-                                          <div class="badge badge-secondary p-1 mr-2">{{ $Serie->age_restrict.' '.'+' }}</div>
-                                       @endif
+                                @foreach ($respond_data['Series'] as $key => $Serie)
 
-                                       @if($respond_data['ThumbnailSetting']->duration == 1) 
-                                                   <!-- Duration -->
-                                          <span class="text-white"><i class="fa fa-clock-o"></i> <?= gmdate('H:i:s', $Serie->duration); ?></span>
-                                       @endif
-                                    </div>
+                                    <li class="slide-item col-sm-3 col-md-3 col-xs-12">
 
-                                    @if(($respond_data['ThumbnailSetting']->published_year == 1) || ($respond_data['ThumbnailSetting']->rating == 1))
-                                       <div class="movie-time d-flex align-items-center pt-1">
-                                          @if($respond_data['ThumbnailSetting']->rating == 1) <!--Rating  -->
-                                             <div class="badge badge-secondary p-1 mr-2">
-                                                <span class="text-white">
-                                                   <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                      {{ $Serie->rating }}
-                                                </span>
-                                             </div>
-                                          @endif
-
-                                          @if($respond_data['ThumbnailSetting']->published_year == 1)   <!-- published_year -->
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                   <span class="text-white">
-                                                      <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                         {{ ($Serie->year) }}
-                                                   </span>
+                                       <a  href="{{ URL::to('play_series/'. $Serie->slug ) }}">
+                                            <div class="block-images position-relative">
+                                                <div class="img-box">
+                                                    <img src="{{ $Serie->image ? URL::to('/public/uploads/images/'.$Serie->image) : $default_vertical_image_url }}" class="img-fluid" alt="Channel-Video-Image">
                                                 </div>
-                                          @endif
 
-                                          @if($respond_data['ThumbnailSetting']->featured == 1 &&  $Serie->featured == 1) <!-- Featured -->
-                                                <div class="badge badge-secondary p-1 mr-2">
-                                                   <span class="text-white">
-                                                      <i class="fa fa-flag-o" aria-hidden="true"></i>
-                                                   </span>
+                                                <div class="block-description">
+                                                    <div class="hover-buttons">
+                                                        <a href="{{ URL::to('play_series/'. $Serie->slug ) }}">
+                                                            <img class="ply" src="{{ URL::to('assets/img/play.svg') }} ">
+                                                        </a>
+                                                    <div>
                                                 </div>
-                                          @endif
-                                       </div>
-                                    @endif
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                    <div class="hover-buttons">
-                                       <a  href="{{  URL::to('play_series/'. $Serie->slug) }}">	
-                                          <span class="text-white">
-                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> Watch Now
-                                          </span>
-                                       </a>
-                                    <div>
-                                 </div>
-                              </div>
+                                            <div>
+                                                <div class="mt-2 d-flex justify-content-between p-0">
+                                                    @if ($respond_data['ThumbnailSetting']->title == 1)
+                                                        <h6>{{ strlen($Serie->title) > 17 ? substr($Serie->title, 0, 18) . '...' : $Serie->title }}</h6>
+                                                    @endif
 
-                              <div>
-                                 <button type="button" class="show-details-button" data-toggle="modal" data-target="#myModal<?= $Serie->id;?>">
-                                    <span class="text-center thumbarrow-sec">
-                                    </span>
-                                 </button>
-                              </div>
-                              </div>
-                              </div>
-                           </a>
-                        </li>
-                     @empty
-                        <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                           <p ><h3 class="text-center">No Series Available</h3>
+                                                    @if ($respond_data['ThumbnailSetting']->age == 1 && $Serie->age_restrict != null )
+                                                        <div class="badge badge-secondary">
+                                                            {{ $Serie->age_restrict . ' ' . '+' }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+
+                                                <div class="movie-time my-2">
+
+                                                    <!-- Rating -->
+
+                                                    @if ($respond_data['ThumbnailSetting']->rating == 1 && $Serie->rating != null)
+                                                        <span class="text-white">
+                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                             {{ $Serie->rating }}
+                                                        </span>
+                                                    @endif
+
+                                                    <!-- Featured -->
+                                                    @if ($respond_data['ThumbnailSetting']->featured == 1 && $Serie->featured != null && $Serie->featured == 1)
+                                                        <span class="text-white">
+                                                            <i class="fa fa-flag" aria-hidden="true"></i>
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                    {{-- Source --}}
+                                                <div class="movie-time my-2">
+                                                    <span class="text-white">
+                                                        {{ $Serie->source }}
+                                                    </span>
+                                                </div>
+
+                                                    <!-- published_year -->
+                                                @if ($respond_data['ThumbnailSetting']->published_year == 1 && $Serie->year != null)
+                                                    <div class="movie-time my-2">
+                                                        <span class="text-white">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                {{ $Serie->year }}
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+
+                        <div class="col-md-12 pagination justify-content-end">
+                            {!! $respond_data['Series']->links() !!}
                         </div>
-                     @endforelse
-               </ul>
 
-               <div class="col-md-12 pagination justify-content-end" >
-                  {!!  $respond_data['Series']->links() !!}
-               </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="col-md-12 text-center mt-4"
+            style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+            <h3 class="text-center">No Video Available</h3>
+        </div>
+    @endif
+</section>
 
-            </div>
-         @else
-            <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-               <p ><h3 class="text-center">No Series Available</h3>
-            </div>
-         @endif
-      </div>
-   </div>
-</div>
-<?php include(public_path('themes/theme5-nemisha/views/footer.blade.php'));  ?>
+<?php include public_path('themes/theme5-nemisha/views/footer.blade.php'); ?>
