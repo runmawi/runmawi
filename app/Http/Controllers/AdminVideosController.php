@@ -12739,7 +12739,7 @@ class AdminVideosController extends Controller
             $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1;
-            $video->status = $status;
+            $video->status = 1;
             $video->embed_code = $embed_code;
             $video->publish_type = $publish_type;
             $video->publish_time = $publish_time;
