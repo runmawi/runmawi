@@ -763,7 +763,7 @@ border-radius: 0px 4px 4px 0px;
                      </div>
                </div>
                <div>
-               <div class="row mt-3">
+               <div class="row mt-3" id="quality_video_id">
                   
                {{-- video id --}}
                      <div class="col-sm-4 form-group" >
@@ -2207,18 +2207,20 @@ $('#error_video_Category').hide();
 
       var enable_ppv_plans = Number('<?= @$theme_settings->enable_ppv_plans ?>');
       var transcoding_access = Number('<?= @$settings->transcoding_access ?>');
+      var video_upload_type = '<?= $video->type ?>';
 
-      if (enable_ppv_plans === 1 && transcoding_access === 1) {
+      if (enable_ppv_plans === 1 && transcoding_access === 1 && video_upload_type == 'VideoCipher') {
 
          if ($("#access").val() === 'ppv') {
             $('#quality_ppv_price').show();
             $('#global_ppv_status').hide();
             $('#ppv_price').hide();
-
+            $('#quality_video_id').show();		
          } else {
             $('#quality_ppv_price').hide();
             $('#global_ppv_status').hide();
             $('#ppv_price').hide();
+            $('#quality_video_id').show();		
          }
 
       } else {
@@ -2226,10 +2228,12 @@ $('#error_video_Category').hide();
             $('#ppv_price').show();
             $('#global_ppv_status').show();
             $('#quality_ppv_price').hide();
+            $('#quality_video_id').hide();		
          } else {
             $('#ppv_price').hide();
             $('#global_ppv_status').hide();
             $('#quality_ppv_price').hide();
+            $('#quality_video_id').hide();		
          }
       }
 
@@ -2238,24 +2242,30 @@ $('#error_video_Category').hide();
    	$("#access").change(function(){
 
          
-         if(transcoding_access == 1 && enable_ppv_plans == 1){
+         if(transcoding_access == 1 && enable_ppv_plans == 1 && video_upload_type == 'VideoCipher'){
                if($(this).val() == 'ppv'){
                   $('#quality_ppv_price').show();
                   $('#global_ppv_status').show();
+                  $('#quality_video_id').show();		
       
                }else{
                   $('#quality_ppv_price').hide();		
                   $('#global_ppv_status').hide();				
+                  $('#quality_video_id').show();		
       
                }
             }else{
                if($(this).val() == 'ppv'){
                   $('#ppv_price').show();
                   $('#global_ppv_status').hide();
+                  $('#quality_ppv_price').hide();		
+                  $('#quality_video_id').hide();		
          
                }else{
                   $('#ppv_price').hide();		
+                  $('#quality_ppv_price').hide();		
                   $('#global_ppv_status').show();				
+                  $('#quality_video_id').hide();		
          
                }
             }

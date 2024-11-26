@@ -120,7 +120,7 @@ Index Of Script
 		----------------------------------------------------------------------- */
          
 		$('#home-slider').slick({
-			autoplay: true,
+			autoplay: false,
 			autoplaySpeed: 10000, // 10 seconds
 			// speed: 800, (You can remove this line if not needed)
 			lazyLoad: 'progressive',

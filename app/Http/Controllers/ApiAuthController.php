@@ -150,6 +150,7 @@ use App\StorageSetting;
 use App\SeriesNetwork;
 use App\Adsvariables;
 use App\TVSplashScreen;
+use App\UserChannelSubscription;
 
 
 class ApiAuthController extends Controller
@@ -2298,14 +2299,17 @@ public function verifyandupdatepassword(Request $request)
   {
 
     $data = $request->all();
+
+    $videoid = $request->videoid;
+
+    $videodetailType = Video::where('id',$videoid)->pluck('type')->first();
     
-    if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+    if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $videodetailType == 'VideoCipher'){
         return $this->VideoCipher_Videodetail($data);
     }
     
     try {
 
-      $videoid = $request->videoid;
 
       $current_date = date('Y-m-d h:i:s a', time());
 
@@ -3987,7 +3991,7 @@ public function verifyandupdatepassword(Request $request)
       $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'channel';
+        $item['source'] = 'video';
         return $item;
       });
       if(count($channel_videos) > 0){
@@ -12809,6 +12813,26 @@ $cpanel->end();
                                             ->get()
                                             ->map(function ($episode) {
                                               $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
+                                              // return $episode;
+                                              if($this->Theme == 'theme4'){
+                                                if($episode->type == 'm3u8'){
+                                                  $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                } elseif($episode->type == 'embed'){
+                                                    $url = $episode->url;
+                                                }
+                                                else{
+                                                  $url = $episode->url;
+                                                }
+                                              }else{
+                                                if($episode->type == 'm3u8'){
+                                                  $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                } elseif($episode->type == 'embed'){
+                                                    $url = $episode->url;
+                                                }
+                                                else{
+                                                  $url = $episode->url;
+                                                }
+                                              }
                                               return [
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
@@ -12822,7 +12846,7 @@ $cpanel->end();
                                                                                 'videos' => [
                                                                                     [
                                                                                         'videoType' => $episode->type,
-                                                                                        'url' => $episode->url,
+                                                                                        'url' => $url,
                                                                                     ],
                                                                                 ],
                                                                                 'duration' => $episode->duration,
@@ -12888,6 +12912,25 @@ $cpanel->end();
                                                                                                                                 ->get()
                                                                                                                                 ->map(function ($episode) {
                                                                                                                                   $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
+                                                                                                                                  if($this->Theme == 'theme4'){
+                                                                                                                                    if($episode->type == 'm3u8'){
+                                                                                                                                      $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                                                                                                    } elseif($episode->type == 'embed'){
+                                                                                                                                        $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                    else{
+                                                                                                                                      $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                  }else{
+                                                                                                                                    if($episode->type == 'm3u8'){
+                                                                                                                                      $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                                                                                                    } elseif($episode->type == 'embed'){
+                                                                                                                                        $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                    else{
+                                                                                                                                      $url = $episode->url;
+                                                                                                                                    }
+                                                                                                                                  }
                                                                                                                                   return [
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
@@ -12901,7 +12944,7 @@ $cpanel->end();
                                                                                                                                                                     'videos' => [
                                                                                                                                                                         [
                                                                                                                                                                             'videoType' => $episode->type,
-                                                                                                                                                                            'url' => $episode->url,
+                                                                                                                                                                            'url' => $url,
                                                                                                                                                                         ],
                                                                                                                                                                     ],
                                                                                                                                                                     'duration' => $episode->duration,
@@ -15189,7 +15232,9 @@ public function QRCodeMobileLogout(Request $request)
       $settings = Setting::first();
       $slug = $request->slug;
       $channel = Channel::where('channel_slug',$slug)->first(); 
+
       $channels = Channel::where('channel_slug',$slug)->get()->map(function ($item) {
+
         $settings = Setting::first();
   
           if(!empty($item['channel_banner']) && $item['channel_banner'] != null){
@@ -15208,6 +15253,38 @@ public function QRCodeMobileLogout(Request $request)
           }else{
             $item['channel_logo'] = URL::to('/public/uploads/images/'.$settings->default_video_image);
           }
+
+          $UserChannelSubscription_status = true ;
+
+          if ( $settings->user_channel_plans_page_status == 1 ){
+
+              if (!Auth::guest()) {
+
+                  $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                  ->where('channel_id',$item->id)->where('status','active')
+                                                  ->where('subscription_start', '<=', Carbon::now())
+                                                  ->where('subscription_ends_at', '>=', Carbon::now())
+                                                  ->latest()->first();
+              }
+
+              if (!Auth::guest() && Auth::user()->role != "admin"){
+
+                  $UserChannelSubscription_status = is_null($UserChannelSubscription) ? false : true ;
+
+              }elseif(!Auth::guest() && Auth::user()->role == "admin"){
+
+                $UserChannelSubscription_status =  true ;
+
+              }elseif( Auth::guest() ){
+
+                $UserChannelSubscription_status =  false ;
+
+              }
+          }
+
+          $item['UserChannelSubscription_status'] =  $UserChannelSubscription_status ;
+          $item['channel_payment_url'] =  URL::to('channel-payment/'.$item->id) ;
+
           return $item;
       });
 
@@ -17037,8 +17114,42 @@ public function QRCodeMobileLogout(Request $request)
                     $item['Channel_Logo_url'] = $item->channel_logo != null ? $item->channel_logo : URL::to('/public/uploads/images/'.default_vertical_image());
                     $item['description'] = null ;
                     $item['source']    = "Channel_Partner";
-                        return $item;
-                    });
+
+                    $settings = Setting::first();
+
+                    $UserChannelSubscription_status = true ;
+
+                    if ( $settings->user_channel_plans_page_status == 1 ){
+
+                        if (!Auth::guest()) {
+
+                            $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                            ->where('channel_id',$item->id)->where('status','active')
+                                                            ->where('subscription_start', '<=', Carbon::now())
+                                                            ->where('subscription_ends_at', '>=', Carbon::now())
+                                                            ->latest()->first();
+                        }
+
+                        if (!Auth::guest() && Auth::user()->role != "admin"){
+
+                            $UserChannelSubscription_status = is_null($UserChannelSubscription) ? false : true ;
+
+                        }elseif(!Auth::guest() && Auth::user()->role == "admin"){
+
+                          $UserChannelSubscription_status =  true ;
+
+                        }elseif( Auth::guest() ){
+
+                          $UserChannelSubscription_status =  false ;
+
+                        }
+                    }
+
+                    $item['UserChannelSubscription_status'] =  $UserChannelSubscription_status ;
+                    $item['channel_payment_url'] =  URL::to('channel-payment/'.$item->id) ;
+                    
+                    return $item;
+                  });
 
        endif;
    
@@ -27651,6 +27762,7 @@ public function TV_login(Request $request)
 
           return response()->json( [
             'status'    => 'true',
+            'otp_status' => 'true',
             'message'    => Str::title('Otp verify successfully !!'),
           ], 200); 
 
