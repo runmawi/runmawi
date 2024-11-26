@@ -5112,6 +5112,92 @@ class AdminUsersController extends Controller
         ));
     }
 
+    
+    public function AnalyticsIndex(Request $request)
+    {
+        try {
+            // Default filters
+            $revenueType = $request->input('revenue_type', 'overall'); // overall, ppv, subscription
+            $dateFilter = $request->input('date_filter', 'last_7_days'); // last_7_days, last_30_days, last_90_days, lifetime
+
+            // Date range logic
+            $startDate = null;
+            $endDate = now();
+
+            switch ($dateFilter) {
+                case 'last_7_days':
+                    $startDate = now()->subDays(7);
+                    break;
+                case 'last_30_days':
+                    $startDate = now()->subDays(30);
+                    break;
+                case 'last_90_days':
+                    $startDate = now()->subDays(90);
+                    break;
+                case 'lifetime':
+                    $startDate = null;
+                    break;
+            }
+
+            // Fetch data based on revenue type
+            $ppvRevenue = 0;
+            $subscriptionRevenue = 0;
+            $ppvData = collect();
+            $subscriptionData = collect();
+            
+
+            if ($revenueType === 'overall' || $revenueType === 'ppv') {
+                $ppvQuery = PpvPurchase::query()->with(['video', 'user']);
+                if ($startDate) {
+                    $ppvQuery->whereBetween('created_at', [$startDate, $endDate]);
+                }
+                $ppvRevenue = $ppvQuery->sum('total_amount');
+                $ppvData = $ppvQuery->paginate(10, ['*'], 'ppv_page'); // Add pagination here
+            
+                // Add related data transformations
+                $ppvData->getCollection()->transform(function ($item) {
+                    $item['video_name'] = Video::where('id', $item->video_id)->pluck('title')->first();
+                    $item['slug'] = Video::where('id', $item->video_id)->pluck('slug')->first();
+                    $item['user_name'] = User::where('id',$item->user_id)->pluck('name')->first();
+                    return $item;
+                });
+            }
+            
+            if ($revenueType === 'overall' || $revenueType === 'subscription') {
+                $subscriptionQuery = Subscription::query()->with('user');
+                if ($startDate) {
+                    $subscriptionQuery->whereBetween('created_at', [$startDate, $endDate]);
+                }
+                $subscriptionRevenue = $subscriptionQuery->sum('price');
+                $subscriptionData = $subscriptionQuery->paginate(10, ['*'], 'subscription_page');
+
+                $subscriptionData->getCollection()->transform(function ($item) {
+                    $item['user_name'] = User::where('id',$item->user_id)->pluck('name')->first();
+                    return $item;
+                });
+            }
+            
+
+            // Calculate total revenue
+            $totalRevenue = $ppvRevenue + $subscriptionRevenue;
+
+            // Pass data to the view
+            return view('admin.analytics.analyticsIndex', [
+                'revenueType' => $revenueType,
+                'dateFilter' => $dateFilter,
+                'ppvRevenue' => $ppvRevenue,
+                'subscriptionRevenue' => $subscriptionRevenue,
+                'totalRevenue' => $totalRevenue,
+                'ppvData' => $ppvData,
+                'subscriptionData' => $subscriptionData,
+            ]);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+
     public function TV_Splash_destroy($id)
     {
  
@@ -5430,6 +5516,8 @@ class AdminUsersController extends Controller
             throw $th;
         }
     }
+    
+
     
 
 

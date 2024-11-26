@@ -943,7 +943,7 @@ if (!is_null($PayPalpayment)) {
                         });
                     },
                     onApprove: function(data, actions) {
-                        if (data.subscriptionID) { // Ensure subscriptionID exists
+                        if (data.subscriptionID) {
                             $.post(base_url + '/paypal-subscription', {
                                 payment_type: payment_type,
                                 amount: final_payment,
@@ -952,6 +952,7 @@ if (!is_null($PayPalpayment)) {
                                 subscriptionID: data.subscriptionID,
                                 orderID: data.orderID,
                                 coupon_code: final_coupon_code_stripe,
+                                userId: '{{ Auth::user()->id }}',
                                 _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                             })
                             .done(function (response) {
