@@ -2298,14 +2298,17 @@ public function verifyandupdatepassword(Request $request)
   {
 
     $data = $request->all();
+
+    $videoid = $request->videoid;
+
+    $videodetailType = Video::where('id',$videoid)->pluck('type')->first();
     
-    if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+    if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $videodetailType == 'VideoCipher'){
         return $this->VideoCipher_Videodetail($data);
     }
     
     try {
 
-      $videoid = $request->videoid;
 
       $current_date = date('Y-m-d h:i:s a', time());
 

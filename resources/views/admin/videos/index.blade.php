@@ -130,6 +130,7 @@ border-radius: 0px 4px 4px 0px;
                                        @elseif(isset($video->type) && $video->type == "mp4_url") MP4 Video
                                        @elseif(isset($video->type) && $video->type == "m3u8_url") M3u8 URL Video
                                        @elseif(isset($video->type) && $video->type == "embed") Embed Video
+                                       @elseif(isset($video->type) && $video->type == "VideoCipher") VideoCipher Video
                                        @endif</td>
 
                                     <!-- <td>{{ $video->type }}</td> -->

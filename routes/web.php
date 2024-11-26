@@ -1405,6 +1405,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
     Route::post('/bunnycdn_videolibrary', 'AdminVideosController@BunnycdnVideolibrary');
     Route::post('/stream_bunny_cdn_video', 'AdminVideosController@StreamBunnyCdnVideo');
+    Route::post('/videocipher_type', 'AdminVideosController@videocipher_type');
+    Route::post('/video_upload_type', 'AdminVideosController@video_upload_type');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 

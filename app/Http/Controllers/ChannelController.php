@@ -4457,13 +4457,17 @@ class ChannelController extends Controller
                             $item['users_video_visibility_block_button']     = false ;
 
 
-                            if ($item->access == "ppv" && Enable_PPV_Plans() == 0) {
+                            if ($item->access == "ppv" && Enable_PPV_Plans() == 0 ) {
 
                                 $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
 
-                            }elseif ($item->access == "ppv" && Enable_PPV_Plans() == 1) {
+                            }elseif ($item->access == "ppv" && Enable_PPV_Plans() == 1 && $item->type == "VideoCipher") {
 
                                
+                            }elseif ($item->access == "ppv" && Enable_PPV_Plans() == 1 && $item->type != "VideoCipher") {
+
+                                $item['users_video_visibility_redirect_url'] =  $currency->enable_multi_currency == 1 ? route('Stripe_payment_video_PPV_Purchase',[ $item->id,PPV_CurrencyConvert($item->ppv_price) ]) : route('Stripe_payment_video_PPV_Purchase',[ $item->id, $item->ppv_price ]) ;
+
                             }elseif( Auth::user()->role == 'registered') {
 
                                 $item['users_video_visibility_redirect_url'] =  URL::to('/becomesubscriber') ;
@@ -4718,7 +4722,7 @@ class ChannelController extends Controller
 
                 return $item;
             })->first();
-            
+                
             // Payment Gateway Stripe
 
             $Stripepayment = PaymentSetting::where('payment_type', 'Stripe')->where('status',1)->first();
@@ -4824,7 +4828,6 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
-        // dd('video');
         try {
 
             $sub_user = Session::get('subuser_id');
@@ -4902,9 +4905,9 @@ class ChannelController extends Controller
 
             }
 
-                // Enable videoCipher Upload
+            $videodetailType = Video::where('id',$video_id)->pluck('type')->first();
 
-            if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+            if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $videodetailType == 'VideoCipher'){
                 return $this->VideoCipher_fullplayer($slug,$plan);
             }
 
