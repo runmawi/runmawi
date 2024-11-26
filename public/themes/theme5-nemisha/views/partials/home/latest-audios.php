@@ -59,11 +59,7 @@
 
                  <?php       endif; ?>
       
-<style>
-   .flickity-prev-next-button {
-      top: 50% !important;
-   }
-</style>
+
 <script>
     var elem = document.querySelector('.latest-audios');
     var flkty = new Flickity(elem, {
