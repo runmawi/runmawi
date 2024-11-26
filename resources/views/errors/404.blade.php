@@ -65,5 +65,8 @@
   .contant_box_404 {
     margin-top: -50px;
   }
+  header, footer{
+    display: none;
+  }
 
 </style>

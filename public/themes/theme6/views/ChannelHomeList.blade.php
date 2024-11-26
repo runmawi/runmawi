@@ -72,7 +72,7 @@
                                         <div class="row align-items-center  h-100">
                                             <div class="col-xl-9 col-lg-12 col-md-12">
                                                     <div class="channel-logo" data-delay-in="0.5">
-                                                        <img src="{{ front_end_logo() }}" class="c-logo" alt="streamit">
+                                                        <img src="{{ front_end_logo() }}" class="c-logo" alt="">
                                                     </div>
                                                 <h1 class="slider-text title">{{ strlen($item->title) > 17 ? substr($item->title, 0, 18) . '...' : $item->title }} </h1>
                     
@@ -254,32 +254,42 @@
                             @php
                                 $UserChannelSubscription = null ;
 
-                                if (!Auth::guest()) {
-                                    $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
-                                                                    ->where('channel_id',$media->id)->where('status','active')
-                                                                    ->where('subscription_start', '<=', Carbon\Carbon::now())
-                                                                    ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
-                                                                    ->latest()->first();
-                                                                    
+                                $all_channel_redirection_url = route('ChannelHome', $media->channel_slug);
+                                $all_channel_button =  "Visit" ;
+
+                                if ($settings->user_channel_plans_page_status == 1){
+
+                                    if (!Auth::guest()) {
+
+                                        $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                                        ->where('channel_id',$media->id)->where('status','active')
+                                                                        ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                                        ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
+                                                                        ->latest()->first();
+                                    }
+
+                                    if (!Auth::guest() && Auth::user()->role != "admin"){
+
+                                        $all_channel_redirection_url = is_null($UserChannelSubscription) ? route('channel.payment', $media->id) : route('ChannelHome', $media->channel_slug);
+                                        $all_channel_button = is_null($UserChannelSubscription) ? "Subscribe" : "Visit" ;
+
+                                    }elseif(!Auth::guest() && Auth::user()->role == "admin"){
+
+                                        $all_channel_redirection_url = route('ChannelHome', $media->channel_slug);
+                                        $all_channel_button =  "Visit" ;
+
+                                    }elseif( Auth::guest() ){
+
+                                        $all_channel_redirection_url = route('login');
+                                        $all_channel_button =  "Subscribe" ;
+                                    }
                                 }
                             @endphp
 
                             <div class="items">
                                 <div class="block-images position-relative">
-                                        @if ($settings->user_channel_plans_page_status == 1)
-                                            @if (!Auth::guest() && Auth::user()->role != "admin")
 
-                                                <a href="{{ is_null($UserChannelSubscription) ? route('channel.payment', $media->channel_slug) : route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
-                                            @elseif(!Auth::guest() && Auth::user()->role == "admin")
-                                            
-                                                <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
-                                            @else
-                                                <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
-                                            @endif
-                                        @else
-                                            <a href="{{ route('ChannelHome', $media->channel_slug) }}" style="color:white;font-weight:600">
-                                        @endif
-
+                                    <a href="{{ $all_channel_redirection_url }}" style="color:white;font-weight:600">
 
                                         <div class="img-box">
                                             <img src="{{ $media->channel_image && $media->channel_image != "default_image.jpg" ? $media->channel_image : default_vertical_image_url() }}" class="img-fluid" alt="">
@@ -290,19 +300,9 @@
                                             
                                             <div class="hover-buttons">
                                                 <span class="btn btn-hover">
-                                                    @if ($settings->user_channel_plans_page_status == 1)
-                                                        @if (!Auth::guest() && Auth::user()->role != "admin")
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            {{ is_null($UserChannelSubscription) ? "subscribe" : "Play Now" }}
-                                                        @else
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Login') }}
-                                                        @endif
-                                                    @else
-                                                        <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __('Play Now') }}
-                                                    @endif
+                                                    <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __($all_channel_button) }}
                                                 </span>
                                             </div>
-                                            
                                         </div>
                                     </a>            
                                 </div>
@@ -323,27 +323,44 @@
                             @php
                                 $UserChannelSubscription = null ;
 
-                                if (!Auth::guest()) {
-                                    $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
-                                                                    ->where('channel_id',$channels->id)->where('status','active')
-                                                                    ->where('subscription_start', '<=', Carbon\Carbon::now())
-                                                                    ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
-                                                                    ->latest()->first();
-                                                                    
+                                $channel_button =  "Visit" ;
+
+                                if ($settings->user_channel_plans_page_status == 1){
+
+                                    if (!Auth::guest()) {
+                                        $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                                        ->where('channel_id',$channels->id)->where('status','active')
+                                                                        ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                                        ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
+                                                                        ->latest()->first();
+                                                                        
+                                    }
+
+                                    if (!Auth::guest() && Auth::user()->role != "admin"){
+
+                                        $channel_button = is_null($UserChannelSubscription) ? "Subscribe" : "Play Now" ;
+
+                                    }elseif(!Auth::guest() && Auth::user()->role == "admin"){
+
+                                        $channel_button =  "Play Now" ;
+
+                                    }elseif( Auth::guest() ){
+
+                                        $channel_button =  "Subscribe" ;
+                                    }
                                 }
                             @endphp
 
                             @if ( $settings->user_channel_plans_page_status == 1 )
 
-                                @if ( !Auth::guest() && Auth::user()->role != "admin" && is_null($UserChannelSubscription) )
-                                    <div class="subscribe">
+                                <div class="subscribe">
+                                    @if ( !Auth::guest() && Auth::user()->role != "admin" && is_null($UserChannelSubscription) )
                                         <a class="btn btn-primary" href="{{ route('channel.payment',$channels->id)  }}"><span> {{ "Subscribe" }} </span></a>
-                                    </div>
-                                @elseif(Auth::guest())
-                                    <div class="subscribe">
+                                    @elseif(Auth::guest())
                                         <a class="btn btn-primary" href="{{ route('login')  }}"><span> {{ "Subscribe" }} </span></a>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
+
                             @endif
                         </div>
                         
@@ -381,8 +398,7 @@
         
                                                         <div class="hover-buttons">
                                                             <span class="btn btn-hover">
-                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ __('Play Now')}}
+                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __( $channel_button )}}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -418,8 +434,7 @@
         
                                                         <div class="hover-buttons">
                                                             <span class="btn btn-hover">
-                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ __('Play Now')}}
+                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __( $channel_button )}}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -453,8 +468,7 @@
         
                                                         <div class="hover-buttons">
                                                             <span class="btn btn-hover">
-                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                                {{ __('Play Now')}}
+                                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>{{ __( $channel_button )}}
                                                             </span>
                                                         </div>
                                                     </div>

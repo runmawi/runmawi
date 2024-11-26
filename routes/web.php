@@ -421,6 +421,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::post('/register3', 'SignupController@PostcreateStep3');
 
     Route::post('/paypal-subscription', 'PaypalController@PayPalSubscription');
+    Route::get('/PayPalcancelSubscription', 'PaypalController@PayPalcancelSubscription');
 
     Route::post('/submitpaypal', 'SignupController@submitpaypal');
     Route::post('/subscribepaypal', 'SignupController@subscribepaypal');
@@ -3055,3 +3056,5 @@ Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetail
 Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
 Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
 
+// Analytics management
+Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');

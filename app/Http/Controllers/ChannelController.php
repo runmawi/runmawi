@@ -4353,8 +4353,8 @@ class ChannelController extends Controller
                 $UserChannelSubscription = null ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
-    
-                if (!Auth::guest() ) {
+
+                if (!Auth::guest() && !is_null($channel_id) ) {
     
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                     ->where('channel_id',$channel_id)->where('status','active')
@@ -4367,14 +4367,14 @@ class ChannelController extends Controller
                     }
                 }
     
-                if (is_null($UserChannelSubscription)) {
+                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
                     session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }
             }
 
 
-            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
+            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
                                         $button_text = ButtonText::first();
                                         
@@ -4419,7 +4419,6 @@ class ChannelController extends Controller
                         $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
                         ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
                         ->count();
-                        // dd($ppv_exists_check_query);
 
                         $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
                         ->where('user_id', Auth::user()->id)
@@ -4434,9 +4433,7 @@ class ChannelController extends Controller
                             $ppv_exists_check_query = null;
                         }
  
-
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-                        // dd($PPV_exists);
 
                                 // free PPV access for subscriber status Condition
 
@@ -4783,35 +4780,38 @@ class ChannelController extends Controller
 
             $default_vertical_image_url = default_vertical_image_url();
 
-            $data = array(
-                'videodetail'    => $videodetail ,
-                'video'          => $videodetail ,   // Videos - Working Social Login
-                'setting'        => Setting::first(),
-                'CommentSection' => CommentSection::first(),
-                'source_id'      => $videodetail->id ,
-                'commentable_type' => 'play_videos',
-                'ThumbnailSetting' => ThumbnailSetting::first() ,
-                'currency'         => $currency,
-                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
-                'publishable_key'    => $publishable_key ,
-                'button_text'      => $button_text,
-                'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                    </svg>',
+            if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
+                $data = array(
+                    'videodetail'    => $videodetail ,
+                    'video'          => $videodetail ,   // Videos - Working Social Login
+                    'setting'        => Setting::first(),
+                    'CommentSection' => CommentSection::first(),
+                    'source_id'      => $videodetail->id ,
+                    'commentable_type' => 'play_videos',
+                    'ThumbnailSetting' => ThumbnailSetting::first() ,
+                    'currency'         => $currency,
+                    'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                    'publishable_key'    => $publishable_key ,
+                    'button_text'      => $button_text,
+                    'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                        </svg>',
 
-                'Razorpay_payment_setting' => $Razorpay_payment_setting,
-                'paypal_payment_setting' => $PayPalpayment,
-                'stripe_payment_setting'   => $Stripepayment,
-                'default_vertical_image_url'   => $default_vertical_image_url,
-                'current_theme'     => $this->HomeSetting->theme_choosen,
-                'playerui' => Playerui::first(),
-                'paypal_signature' => $paypal_signature,
-                'purchase_btn'                    => $purchase_btn,
-                'subscribe_btn'                    => $subscribe_btn,
-            );
-
-            return Theme::view('video-js-Player.video.videos-details', $data);
+                    'Razorpay_payment_setting' => $Razorpay_payment_setting,
+                    'paypal_payment_setting' => $PayPalpayment,
+                    'stripe_payment_setting'   => $Stripepayment,
+                    'default_vertical_image_url'   => $default_vertical_image_url,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'playerui' => Playerui::first(),
+                    'paypal_signature' => $paypal_signature,
+                    'purchase_btn'                    => $purchase_btn,
+                    'subscribe_btn'                    => $subscribe_btn,
+                );
+                return Theme::view('video-js-Player.video.videos-details', $data);
+            } else {
+                return abort(404);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
@@ -4821,12 +4821,15 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
+        // dd('video');
         try {
 
+            $sub_user = Session::get('subuser_id');
             $currency = CurrencySetting::first();
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $getfeching = Geofencing::first();
             $setting = Setting::first();
+            $countryName = $geoip->getCountry();
 
                     // Adsvariables
 
@@ -4855,6 +4858,19 @@ class ChannelController extends Controller
 
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
 
+            
+            if (!Auth::guest() ) {
+                $view = new RecentView();
+                $view->video_id = $video_id;
+                $view->user_id = Auth::user()->id;
+                $view->country_name = $countryName;
+                if ($sub_user != null) {
+                    $view->sub_user = $sub_user;
+                }
+                $view->visited_at = date('Y-m-d');
+                $view->save();
+                }
+
             // Check Channel Purchase 
 
             if ($setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
@@ -4862,7 +4878,7 @@ class ChannelController extends Controller
                 $UserChannelSubscription = null ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
-
+                
                 if (!Auth::guest() ) {
 
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
@@ -4876,7 +4892,7 @@ class ChannelController extends Controller
                     }
                 }
 
-                if (is_null($UserChannelSubscription)) {
+                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
                     session()->flash('channel_subscription_error', 'Channel Subscription not found.');
                     return back();
                 }
@@ -4889,7 +4905,7 @@ class ChannelController extends Controller
                 return $this->VideoCipher_fullplayer($slug,$plan);
             }
 
-            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
+            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url)  {
 
                 $item['users_video_visibility_status']         = true ;
@@ -5239,30 +5255,31 @@ class ChannelController extends Controller
                 $recomended = [];
             }
 
-            $data = array(
-                'videodetail' => $videodetail ,
-                'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                'user_role' => Auth::check() ? Auth::user()->role : 'guest',
-                'recomended' => $recomended ,
-                'videoURl' => $videoURl ,
-                'subtitles_name' => $subtitles ,
-                'subtitles' => $subtitle ,
-                'setting'   => $setting,
-                'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                    </svg>',
-                'currency'         => $currency,
-                'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
-                'playerui' => Playerui::first(),
-            );
-
-
-            return Theme::view('video-js-Player.video.videos', $data);
+            if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
+                $data = array(
+                    'videodetail' => $videodetail ,
+                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                    'recomended' => $recomended ,
+                    'videoURl' => $videoURl ,
+                    'subtitles_name' => $subtitles ,
+                    'subtitles' => $subtitle ,
+                    'setting'   => $setting,
+                    'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                            <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                            <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                        </svg>',
+                    'currency'         => $currency,
+                    'CurrencySetting'  => CurrencySetting::pluck('enable_multi_currency')->first(),
+                    'playerui' => Playerui::first(),
+                );
+                return Theme::view('video-js-Player.video.videos', $data);
+            } else {
+                return abort(404);
+            }
 
         } catch (\Throwable $th) {
-
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
