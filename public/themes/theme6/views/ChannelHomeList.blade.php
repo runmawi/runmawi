@@ -4,7 +4,6 @@
     .flickity-slider .items{width:14.444%;padding:10px 5px}
     .home-sec{padding:10px 0 1% 1%;list-style:none;margin:0;position:relative;z-index:12;display:block}
     .flickity-button{background:#fff0;color:#fff}
-    .flickity-button:disabled{opacity:0}
     .fa-crown:before{content:"\f521"}
     .flickity-slider .items:before{content:'';display:block;position:absolute;background-color:#555;background-image:url(https://watch.e360tv.com/img/placeholder.jpg);background-size:cover;background-position:center;top:2px;bottom:2px;left:2px;right:2px;z-index:0;margin:10px 5px}
     .flickity-button:hover{background:transparent!important}
@@ -25,7 +24,7 @@
     .flickity-button:hover{background:#fff;cursor:pointer}
     .flickity-button:focus{outline:none;box-shadow:0 0 0 5px #19F}
     .flickity-button:active{opacity:.6}
-    .flickity-button:disabled{opacity:.3;cursor:auto;pointer-events:none}
+    .flickity-button:disabled{opacity: 0!important;cursor:auto;pointer-events:none}
     .flickity-button-icon{fill:rgb(255 255 255)}
     .flickity-prev-next-button{top:50%;width:44px;height:44px;border-radius:50%;transform:translateY(-50%)}
     .flickity-prev-next-button.previous{left:10px}.flickity-prev-next-button.next{right:10px}.flickity-rtl .flickity-prev-next-button.previous{left:auto;right:10px}
