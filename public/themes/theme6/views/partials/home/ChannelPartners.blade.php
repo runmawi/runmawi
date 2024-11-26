@@ -34,7 +34,8 @@
 
                                         if (!Auth::guest() && Auth::user()->role != "admin"){
 
-                                            $all_channel_redirection_url = is_null($UserChannelSubscription) ? route('channel.payment', $channel->id) : route('ChannelHome', $channel->channel_slug);
+
+                                            $all_channel_redirection_url = is_null($UserChannelSubscription) ? route('channel.all_Channel_home') : route('ChannelHome', $channel->channel_slug);
                                             $all_channel_button = is_null($UserChannelSubscription) ? "Subscribe" : "Visit" ;
 
                                         }elseif(!Auth::guest() && Auth::user()->role == "admin"){

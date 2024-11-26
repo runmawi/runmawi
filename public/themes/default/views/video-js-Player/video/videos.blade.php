@@ -39,9 +39,9 @@
 
                     <iframe class="" src="<?= $videodetail->videos_url ?>" poster="<?= $videodetail->player_image_url ?>"
                         frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen style="width: 100%; height: 75vh;">
+                        allowfullscreen style="width: 100%; height: 100vh;">
                     </iframe>
-
+                <!-- before we have 75vh -->
             @else
 
                 <button class="staticback-btn" onclick="history.back()" title="Back Button">

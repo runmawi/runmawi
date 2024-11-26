@@ -460,9 +460,11 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     </div>
 
                     <div class="row plays_btn_res m-0">
-                        @if ( $videodetail->users_video_visibility_status == false )
+                        @if ( $videodetail->users_video_visibility_status == false && $videodetail->type == 'VideoCipher')
 
-                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) 
+                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) 
+                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
                                 <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
@@ -503,7 +505,10 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             @endif  --}}
 
                         @else
-                            @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' )
+                            @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' && $videodetail->type == 'VideoCipher'
+                            || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' && $videodetail->type == 'VideoCipher'
+                             || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'subscriber' && $videodetail->type == 'VideoCipher'
+                             || !Auth::guest() && Auth::user()->role == 'admin' && Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'ppv' && $videodetail->type == 'VideoCipher')
                                 
                             <div class="dropdown btn" id="guest-qualitys-selct">
                                 <div class="playbtn" style="gap:5px;">
