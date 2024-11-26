@@ -27573,6 +27573,7 @@ public function TV_login(Request $request)
 
           return response()->json( [
             'status'    => 'true',
+            'otp_status' => 'true',
             'message'    => Str::title('Otp verify successfully !!'),
           ], 200); 
 
