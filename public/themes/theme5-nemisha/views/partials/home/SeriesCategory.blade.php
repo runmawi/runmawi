@@ -61,7 +61,7 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                         <div class="block-images position-relative">
                                             <div class="img-box">
                                                 <img src="{{ URL::to('public/uploads/images/' . @$Series_Genre->image) }}"
-                                                    class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $Series_Genre->title; ?>">
+                                                    class="img-fluid w-100 h-50" alt="<?php echo $Series_Genre->title; ?>">
                                             </div>
                                         </div>
 

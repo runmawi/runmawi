@@ -49,7 +49,7 @@
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid lazyload w-100 h-50 flickity-lazyloaded"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_audio->image; ?>" class="img-fluid lazyload w-100 h-50 "
                             alt="<?php echo $latest_view_audio->title; ?>">
                     </div>
                 </div>
