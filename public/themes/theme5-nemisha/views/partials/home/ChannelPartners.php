@@ -7,7 +7,7 @@
 
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-  <h5 class="main-title">
+  <h4 class="main-title">
     <!-- Recently Added Series -->
 <a href="<?php if ($order_settings_list[13]->header_name) { echo URL::to('/').'/'.$order_settings_list[13]->url ;} else { echo "" ; } ?>">
     <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
@@ -20,7 +20,7 @@
         } 
   ?>
   </a>
-  </h5>  
+  </h4>  
   <a class="see" href="<?php echo URL::to('Channel-list') ?>">See All</a>
 </div>
 <div class="favorites-contens"> 

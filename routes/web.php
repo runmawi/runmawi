@@ -1406,6 +1406,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/upload_bunny_cdn_video', 'AdminVideosController@UploadBunnyCDNVideo');
     Route::post('/bunnycdn_videolibrary', 'AdminVideosController@BunnycdnVideolibrary');
     Route::post('/stream_bunny_cdn_video', 'AdminVideosController@StreamBunnyCdnVideo');
+    Route::post('/videocipher_type', 'AdminVideosController@videocipher_type');
+    Route::post('/video_upload_type', 'AdminVideosController@video_upload_type');
 
     Route::post('/AWSUploadFile', 'AdminVideosController@AWSUploadFile');
 
@@ -3042,3 +3044,5 @@ Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetail
 Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
 Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
 
+// Analytics management
+Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');

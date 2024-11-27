@@ -5,7 +5,7 @@
     foreach($sliders as $key => $slider_video): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?php echo $slider_video->link; ?>';" class="slide slick-bg s-bg-1" loading="lazy"
+            <div onclick="window.location.href='<?php echo $slider_video->link; ?>';" class="slide slick-bg s-bg-1" 
             style="background: url('<?php echo URL::to('/').'/public/uploads/videocategory/' .$slider_video->slider;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
@@ -19,7 +19,7 @@
                         <?php 
                             $count = $slider_video->rating;
                             for ($i = 0; $i < $count; $i++) { 
-                                echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                             }
                         ?>
                     </div>
@@ -53,7 +53,7 @@ endif; ?>
     foreach($live_banner as $key => $slider_video): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>';" class="slide slick-bg s-bg-1" loading="lazy"
+            <div onclick="window.location.href='<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>';" class="slide slick-bg s-bg-1" 
             style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer;  ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
@@ -74,9 +74,9 @@ data-delay-in="0.6">
                             <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
                             <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/>  -->
                             <?php 
-                                $count = $slider_video->rating; // Example count
-                                for ($i = 0; $i < $count; $i++) { // Loop to repeat image
-                                    echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                $count = $slider_video->rating;
+                                for ($i = 0; $i < $count; $i++) {
+                                    echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                 }
                             ?>
                             </div>
@@ -133,7 +133,7 @@ endif; ?>
 <?php if(isset($live_event_banners)) :
     foreach($live_event_banners as $key => $live_event_banner): ?>
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?= route('live_event_play',$live_event_banner->slug)  ?>';" class="slide slick-bg s-bg-1" loading="lazy"
+            <div onclick="window.location.href='<?= route('live_event_play',$live_event_banner->slug)  ?>';" class="slide slick-bg s-bg-1" 
                 style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$live_event_banner->player_image;?>') no-repeat;background-size:cover;background-position:right;cursor: pointer;   ">
                 <div class="container-fluid position-relative h-100">
                     <div class="slider-inner h-100">
@@ -147,8 +147,8 @@ endif; ?>
                                     <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
                                     <?php 
                                         $count = $live_event_banner->rating; 
-                                        for ($i = 0; $i < $count; $i++) { // Loop to repeat image
-                                            echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                        for ($i = 0; $i < $count; $i++) {
+                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                         }
                                     ?>
                                 </div>
@@ -185,7 +185,7 @@ endif; ?>
     foreach($video_banners as $key => $videos): ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>';" class="slide slick-bg s-bg-1" loading="lazy"
+            <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>';" class="slide slick-bg s-bg-1" 
             style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position: right;cursor: pointer;">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner ">
@@ -208,9 +208,9 @@ endif; ?>
                             <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
                             <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
                             <?php 
-                                $count = $videos->rating; // Example count
-                                for ($i = 0; $i < $count; $i++) { // Loop to repeat image
-                                    echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                $count = $videos->rating;
+                                for ($i = 0; $i < $count; $i++) {
+                                    echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                 }
                             ?>
                             </div>
@@ -342,9 +342,9 @@ if(Route::current()->getName() == "home"){
                                 <div class="mb-3" style="display: flex; gap: 5px; width:30px; height:15px;" >
                                    <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
                                    <?php 
-                                        $count = $videos->rating; // Example count
-                                        for ($i = 0; $i < $count; $i++) { // Loop to repeat image
-                                            echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                        $count = $videos->rating;
+                                        for ($i = 0; $i < $count; $i++) { 
+                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                         }
                                     ?>
                                 </div>
@@ -456,7 +456,7 @@ if(Route::current()->getName() == "home"){
             ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
-            <div onclick="window.location.href='<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>';" class="slide slick-bg s-bg-1" loading="lazy"
+            <div onclick="window.location.href='<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>';" class="slide slick-bg s-bg-1" 
             style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$slider_video->player_image;?>') no-repeat;background-size:cover;background-position:right; cursor: pointer; ">
             <div class="container-fluid position-relative h-100">
                 <div class="slider-inner h-100">
@@ -564,9 +564,9 @@ endif; ?>
                             <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
                                 <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
                                 <?php 
-                                    $count = $series_slider->rating; // Example count
-                                    for ($i = 0; $i < $count; $i++) { // Loop to repeat image
-                                        echo '<img class="" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                    $count = $series_slider->rating;
+                                    for ($i = 0; $i < $count; $i++) {
+                                        echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                     }
                                 ?>
                             </div>

@@ -188,6 +188,19 @@
    <div class="container-fluid p-0" id="content_videopage">
       <div class="admin-section-title">
          <div class="iq-card">
+
+
+         <label for="" class='videofile_lable'>Upload Type</label>
+         <div class="col-md-12 text-center">
+            <select class="form-control" name="videofile" id="videofile">
+                  <option value="">Choose Upload Type</option>
+                  <option value="VideoCipher">Video Upload VideoCipher</option>
+                  <option value="m3u8">Video Upload Url m3u8</option>
+                  <option value="videomp4">Video Upload Url MP4</option>
+                  <option value="embed_video">Embed Video</option>
+            </select>
+         </div>
+         <h4 id="videocipher_text">User Can Choose Multipe VideoId and PPV Price on Next Step</h4>
             <div class="row">
                
                @if (Session::has('message'))
@@ -203,7 +216,59 @@
                @endif
              
             </div>
-          
+            <div class="row first_step">
+
+            <div class="col-md-12">
+               <div id="videocipher_url" style="">
+               <div class="new-audio-file mt-3">
+                     <button class="btn btn-primary"  id="submit_videocipher">Submit</button>
+                  </div>
+               </div>
+            </div>
+
+         <div class="col-md-12">
+            <div id="m3u8_url" style="">
+               <div class="new-audio-file mt-3">
+                  <label for="embed_code"><label>m3u8 URL:</label></label>
+                  <input type="text" class="form-control" name="m3u8_video_url" id="m3u8_video_url" value="" />
+               </div>
+               <div class="new-audio-file mt-3">
+                  <button class="btn btn-primary"  id="submit_m3u8">Submit</button>
+               </div>
+            </div>
+            <!-- Embedded Video -->        
+            <div id="embedvideo" style="">
+               <div class="new-audio-file mt-3">
+                  <label for="embed_code">Embed URL:</label>
+                  <p class="p1">Example URL Format : ( https://www.youtube.com/embed/*xxxxxxxxx*/) ) </p>
+                  <input type="text" class="form-control" name="embed_code" id="embed_code" value="" />
+               </div>
+               <div class="new-audio-file mt-3">
+                  <button class="btn btn-primary"  id="submit_embed">Submit</button>
+               </div>
+            </div>
+            
+            <!-- MP4 Video -->        
+               <div id="video_mp4" style="">
+                  <div class="new-audio-file mt-3" >
+                     <label for="mp4_url"><label>Mp4 File URL:</label></label>
+                     <input type="text" class="form-control" name="mp4_url" id="mp4_url" value="" />
+                  </div>
+                  <div class="new-audio-file mt-3">
+                     <button class="btn btn-primary"  id="submit_mp4">Submit</button>
+                  </div>
+               </div>
+                     
+         </div>
+               
+            <div class="text-center" style="margin-top: 30px;margin-left: 30%;">
+               <input type="button" id="Next" value='Proceed to Next Step' class='btn btn-primary'>
+            </div>
+            <br>
+            <input type="hidden" id="embed_url" value="<?php echo URL::to('/admin/embededcode');?>">
+            <input type="hidden" id="mp4url" value="<?php echo URL::to('/admin/mp4url');?>">
+            <input type="hidden" id="m3u8url" value="<?php echo URL::to('/admin/m3u8url');?>">
+      </div>
          </div>
           
       </div>
@@ -216,6 +281,180 @@
    </div>
 </div>
 
+  
+
+<script>
+         $('#video_mp4').hide();
+         $('#embedvideo').hide();
+         $('#m3u8_url').hide();
+         $('#videocipher_url').hide();
+         $('#videocipher_text').hide();
+         $('#Next').show();
+
+         $('#videofile').change(function(){
+            if($(this).val() == 'videomp4'){
+               $('#video_mp4').show();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#videocipher_url').hide();
+               $('#Next').hide();    
+            }else if($(this).val() == 'embed_video'){
+               $('#video_mp4').hide();
+               $('#embedvideo').show();
+               $('#m3u8_url').hide();
+               $('#videocipher_url').hide();
+               $('#Next').hide();
+            }else if($(this).val() == 'm3u8'){
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').show();
+               $('#videocipher_url').hide();
+               $('#Next').hide();
+            }else if($(this).val() == 'VideoCipher'){
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#videocipher_url').show();
+               $('#Next').hide();
+            }else{
+               $('#video_mp4').hide();
+               $('#embedvideo').hide();
+               $('#m3u8_url').hide();
+               $('#videocipher_url').show();
+               $('#Next').hide();
+            }
+         	     
+         })
+         
+         $.ajaxSetup({
+            headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+         });
+   
+   
+      $(document).ready(function(){
+
+         var url =$('#m3u8url').val();
+         $('#submit_m3u8').click(function(){
+         $.ajax({
+               url: url,
+               type: "post",
+               data: {
+                        _token: '{{ csrf_token() }}',
+                        m3u8_url: $('#m3u8_video_url').val()
+
+                  },        success: function(value){
+                  console.log(value);
+                     $('#Next').show();
+               $('#videocipher_text').show();
+               $('#video_id').val(value.video_id);
+
+               }
+            });
+         })
+
+      });
+
+      $(document).ready(function(){
+
+         var url = "{{ URL::to('admin/videocipher_type') }}";
+         $('#submit_videocipher').click(function(){
+         $.ajax({
+               url: url,
+               type: "post",
+               data: {
+                        _token: '{{ csrf_token() }}',
+               },        success: function(value){
+                  console.log(value);
+                     $('#Next').show();
+                  $('#video_id').val(value.video_id);
+
+               }
+            });
+         })
+
+      });
+
+
+   $(document).ready(function(){
+       var url =$('#mp4url').val();
+       $('#submit_mp4').click(function(){
+       $.ajax({
+           url: url,
+           type: "post",
+            data: {
+                  _token: '{{ csrf_token() }}',
+                  mp4_url: $('#mp4_url').val()
+   
+            },        success: function(value){
+               console.log(value);
+               $('#Next').show();
+              $('#video_id').val(value.video_id);
+   
+           }
+           });
+       })
+   
+   });
+
+   
+   	$(document).ready(function(){
+         
+         var url =$('#embed_url').val();
+         $('#submit_embed').click(function(){
+            $.ajax({
+               url: url,
+               type: "post",
+               data: {
+                        _token: '{{ csrf_token() }}',
+                        embed: $('#embed_code').val()
+         
+                  },        success: function(value){
+                  console.log(value);
+                     $('#Next').show();
+                  $('#video_id').val(value.video_id);
+         
+               }
+            });
+         })
+      })
+
+
+      $('#Next').click(function(){
+         $('#videofile').hide();
+         $('.videofile_lable').hide();
+         $('#video_mp4').hide();
+         $('#embedvideo').hide();
+         $('#m3u8_url').hide();
+         $('#videocipher_url').hide();
+         $('#videocipher_text').hide();
+         $('#Next').hide();
+         $('#video_details').show();
+
+            $.ajax({
+               url: '{{ URL::to('admin/video_upload_type') }}',
+               type: "post",
+               data: {
+                        _token: '{{ csrf_token() }}',
+                        video_id: $('#video_id').val()
+         
+                  },        success: function(value){
+                     if(value.video_upload_type == 'VideoCipher'){
+                        $('#quality_video_id').show();   
+                     }else{
+                        $('#quality_video_id').hide();   
+                     }
+                     $('#video_upload_type').val(value.video_upload_type);
+                     $('#video_upload_id').val(value.video_upload_id);
+                     $('#video_id').val(value.video_upload_id);
+         
+               }
+            });
+
+      });
+</script>
+      
 <div id="video_details">
    <style>
       .p1{
@@ -255,6 +494,9 @@ border-radius: 0px 4px 4px 0px;
       
       <div class="container-fluid">
           
+
+
+
            <div class="iq-card " style="padding:40px;">
          <div class="row justify-content-center">
             <div class="col-11 col-sm-10 col-md-10 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
@@ -285,6 +527,9 @@ border-radius: 0px 4px 4px 0px;
                                  <!-- <h2 class="steps">Step 1 - 4</h2> -->
                               </div>
                            </div>
+                           <input type="hidden" id="video_id" name="video_id">
+                           <input type="hidden" id="video_upload_id" name="video_upload_id">
+                           <input type="hidden" id="video_upload_type" name="video_upload_type">
                            <div class="row">
                               <div class="col-sm-6 form-group" >
                                  <label class="m-0">Title :</label>
@@ -634,7 +879,7 @@ border-radius: 0px 4px 4px 0px;
                                        </select>
                                  </div>
                               </div>
-                              <div class="row" >
+                              <div class="row" id="quality_video_id">
 
                               <div class="col-sm-6 form-group" >
                                     <label class="m-0">Choose video Id 480p:</label>
@@ -1251,7 +1496,8 @@ $(document).ready(function() {
             
          var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
          var transcoding_access = '<?= @$settings->transcoding_access ?>';
-            if(enable_ppv_plans == 1 && transcoding_access == 1){
+
+            if(enable_ppv_plans == 1 && transcoding_access == 1 && $('#video_upload_type').val() == 'VideoCipher'){
                $('#submit_button').removeAttr('disabled');
             }else{
                if ($(this).val() == 'ppv') {
@@ -1722,12 +1968,12 @@ $(document).ready(function($){
        $('#global_ppv_status').hide();
        
    		$("#access").change(function(){
-
             var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
             var transcoding_access = '<?= @$settings->transcoding_access ?>';
 
-            if(transcoding_access == 1 && enable_ppv_plans == 1){
-               if($(this).val() == 'ppv'){
+            if(transcoding_access == 1 && enable_ppv_plans == 1 && $('#video_upload_type').val() == 'VideoCipher'){
+       
+            if($(this).val() == 'ppv'){
                   $('#quality_ppv_price').show();
                   $('#global_ppv_status').show();
       
@@ -1864,7 +2110,7 @@ $(document).ready(function($){
    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
    
    $('#Next').hide();
-   $('#video_details').show();
+   $('#video_details').hide();
    //   $('#video_upload').hide();
    //   $('#video_mp4').hide();
    //   $('#embedvideo').hide();

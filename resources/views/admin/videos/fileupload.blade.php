@@ -2422,81 +2422,88 @@ $(document).ready(function($){
         }
     }
 
-        var myDropzone = new Dropzone(".dropzone", { 
-            parallelUploads: 10,
-            maxFilesize: 150000000, // 150MB
-            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
-            previewTemplate: document.getElementById('template').innerHTML,
-            init: function() {
-                this.on("sending", function(file, xhr, formData) {
+    var myDropzone = new Dropzone(".dropzone", {
+    parallelUploads: 2,
+    maxFilesize: 150000000, // 150MB
+    acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+    previewTemplate: document.getElementById('template').innerHTML,
+    init: function() {
+        this.on("sending", function(file, xhr, formData) {
+         
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+            formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
+            formData.append("_token", CSRF_TOKEN);
 
-                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
-                    formData.append("_token", CSRF_TOKEN);
+            if (!file.retryCount) {
+                file.retryCount = 0;
+            }
+            if (!file.userCanceled) {
+                file.userCanceled = false;
+            }
 
-                    // Initialize retry counter and canceled flag if they don't exist
-                    if (!file.retryCount) {
-                        file.retryCount = 0;
-                    }
-                    if (!file.userCanceled) {
-                        file.userCanceled = false;
-                    }
+            // Add cancel button event listener
+            file.previewElement.querySelector('.dz-cancel').addEventListener('click', function () {
+                console.log("Cancel button clicked for file: " + file.name);
+                file.userCanceled = true; // Mark the file as user-canceled
+                xhr.abort();
+                alert("Upload canceled for file: " + file.name);
+                handleError(file, "Upload canceled by user.");
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
 
-                    // Add cancel button event listener
-                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
-                        console.log("Cancel button clicked for file: " + file.name); // Log for debugging
-                        file.userCanceled = true; // Mark the file as user-canceled
-                        xhr.abort();
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                        // myDropzone.removeFile(file);
-                        alert("Upload canceled for file: " + file.name);
-                        handleError(file, "Upload canceled by user.");
-                    });
-                });
+                // Mark file as completed in Dropzone
+                file.status = Dropzone.CANCELED;
 
-                this.on("uploadprogress", function(file, progress) {
-                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
-                    progressElement.textContent = Math.round(progress) + '%';
-                });
+                // Trigger queue processing
+                myDropzone.processQueue();
+            });
+        });
 
-                this.on("success", function(file, response) {
-                    console.log(file);
-                    console.log(response);
-                   
-                    if (response.success == 2) {
-                        swal("File not uploaded!");   
-                    } else if (response.error == 3) {
-                        console.log(response.error);
-                        alert("File not uploaded. Choose Library!");   
-                    }
-                    else if (response.success == 'video_upload_limit_exist') { 
-                        myDropzone.removeFile(file);  
-                        Swal.fire("You have reached your video upload limit for this month.");
-                        $('#Next').hide();
-                     }
-                     else {
-                        $('#Next').show();
-                        $('#video_id').val(response.video_id);
-                        $('#title').val(response.video_title);
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                    }
-                });
+        this.on("uploadprogress", function (file, progress) {
+            var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+            progressElement.textContent = Math.round(progress) + '%';
+        });
 
-                this.on("error", function(file, response) {
-                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
-                        file.retryCount++;
-                        setTimeout(function() {
-                            myDropzone.removeFile(file);  
-                            myDropzone.addFile(file);     
-                        }, 1000); 
-                    } else if (file.userCanceled) {
-                        console.log("File upload canceled by user: " + file.name);
-                    } else {
-                        alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
-                    }
-                });
+        this.on("success", function (file, response) {
+            console.log(file);
+            console.log(response);
+
+            if (response.success == 2) {
+                swal("File not uploaded!");
+            } else if (response.error == 3) {
+                console.log(response.error);
+                alert("File not uploaded. Choose Library!");
+            } else if (response.success == 'video_upload_limit_exist') {
+                Swal.fire("You have reached your video upload limit for this month.");
+                $('#Next').hide();
+            } else {
+                $('#Next').show();
+                $('#video_id').val(response.video_id);
+                $('#title').val(response.video_title);
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
             }
         });
+
+        this.on("error", function (file, response) {
+            if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
+                file.retryCount++;
+                setTimeout(function () {
+                    myDropzone.removeFile(file);
+                    myDropzone.addFile(file);
+                }, 1000);
+            } else if (file.userCanceled) {
+                console.log("File upload canceled by user: " + file.name);
+            } else {
+                alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
+            }
+            myDropzone.processQueue(); // Ensure queue continues processing
+        });
+
+        this.on("queuecomplete", function () {
+            console.log("All uploads in the queue have been processed.");
+        });
+    }
+});
          
    //   Dropzone.autoDiscover = false;
    //   var myDropzone = new Dropzone(".dropzone",{ 

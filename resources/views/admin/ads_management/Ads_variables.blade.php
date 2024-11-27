@@ -17,9 +17,9 @@
                             <div class="iq-header-title">
                                 <h4 class="card-title">{{ __('Ads Variable') }}</h4>
                             </div>
-                            <div class="iq-card-header-toolbar d-flex align-items-center">
+                            <div class="iq-card-header-toolbar">
                                 <a data-toggle="modal" data-target='#edit_modal'
-                                    class="btn btn-primary create_variable"> {{ _('Create Ads Variable') }}</a>
+                                    class="btn btn-primary create_variable"> {{ __('Create Ads Variable') }}</a>
                             </div>
                         </div>
                         <div class="iq-card-body table-responsive">

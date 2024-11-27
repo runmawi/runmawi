@@ -2759,6 +2759,15 @@ class AdminVideosController extends Controller
 
         if ($data['access'] == "ppv") {
             $video->ppv_price = $data["ppv_price"];
+        }else if($data['access'] != "ppv"){
+            $data['ppv_price_480p'] = null ;
+            $data['ppv_price_720p'] = null ;
+            $data['ppv_price_1080p'] = null ;
+            $data['ios_ppv_price_480p'] = null ;
+            $data['ios_ppv_price_720p'] = null ;
+            $data['ios_ppv_price_1080p'] = null ;
+            $data["ppv_price"] = null;
+            $video->ppv_price =  null;
         } else {
             $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
         }
@@ -4983,7 +4992,9 @@ class AdminVideosController extends Controller
             }else{ 
                 $dropzone_url =  URL::to('admin/uploadEditVideo');
             }
-            
+
+            $theme_settings = SiteTheme::first();
+ 
         $data = [
             "headline" => '<i class="fa fa-edit"></i> Edit Video',
             "video" => $video,
@@ -5016,8 +5027,13 @@ class AdminVideosController extends Controller
             "dropzone_url" => $dropzone_url,
 
         ];
-
-        return View::make("admin.videos.edit_video", $data);
+           
+        if($theme_settings->enable_video_cipher_upload == 1){
+            return View::make("admin.videos.VideoCipherEditVideo", $data);
+        }else{
+            return View::make("admin.videos.edit_video", $data);
+        }
+        
     }
 
     public function uploadEditVideo(Request $request)
@@ -11968,12 +11984,13 @@ class AdminVideosController extends Controller
                 'title' => 'required|max:255',
             ]);
             
-            $createdVideo = Video::create([
-                            'title' => $request->title,
-                        ]);
+            // $createdVideo = Video::create([
+            //                 'title' => $request->title,
+            //             ]);
 
-            $id = $createdVideo->id;
+            $id = $data['video_upload_id'];
             $video = Video::findOrFail($id);
+
             Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
     
             if (!empty($video->embed_code)) {
@@ -12000,7 +12017,7 @@ class AdminVideosController extends Controller
             if($request->ppv_price == null && empty($data["global_ppv"]) ){
                 $video->global_ppv = null;
                 $data["ppv_price"] = null;
-            }else if(empty($data["global_ppv"]) ){
+            }else if(empty($data["global_ppv"]) && empty($data["ppv_price"]) ){
                 $video->global_ppv = null;
                 $data["ppv_price"] = null;
             }else{
@@ -12020,12 +12037,15 @@ class AdminVideosController extends Controller
                 }else if(empty($data["global_ppv"]) && !empty($data["ppv_price"])  && $request->ppv_price != null) {
                     $data["ppv_price"] = $request->ppv_price;
                     $video->global_ppv = null;
+                }elseif(!empty($data["ppv_price"])) {
+                    $video->global_ppv = null;
+                    $data["ppv_price"] = $data["ppv_price"];
                 } else {
                     $video->global_ppv = null;
                     $data["ppv_price"] = null;
                 }
             }
-    
+
             if ($request->slug == '') {
                 $data['slug'] = $this->createSlug($data['title']);
             } else {
@@ -12606,58 +12626,7 @@ class AdminVideosController extends Controller
                     $video->reels_thumbnail = "default.jpg";
                 }
             }
-            // if ($reels_videos != null) {
-            //     foreach ($reels_videos as $Reel_Videos) {
-            //         $reelvideo_name = time() . rand(1, 50) . '.' . $Reel_Videos->extension();
-            //         $reel_videos_slug = substr($Reel_Videos->getClientOriginalName(), 0, strpos($Reel_Videos->getClientOriginalName(), '.'));
-            //         $reelvideo_names = 'reels' . $reelvideo_name;
-    
-            //         $reelvideo = $Reel_Videos->move(public_path('uploads/reelsVideos'), $reelvideo_name);
-    
-            //         $videoPath = public_path("uploads/reelsVideos/{$reelvideo_name}");
-            //         $shorts_name = 'shorts_'.$reelvideo_name; 
-            //         $videoPath = str_replace('\\', '/', $videoPath);
-            //         $outputPath = public_path("uploads/reelsVideos/shorts/{$shorts_name}");
-            //         // Ensure the output directory exists
-            //         File::ensureDirectoryExists(dirname($outputPath));
-            //         // FFmpeg command to resize to 9:16 aspect ratio
-            //         $command = [
-            //             'ffmpeg',
-            //             '-y', // Add this option to force overwrite
-            //             '-i', $videoPath,
-            //             '-vf', 'scale=-1:720,crop=400:720', // Adjusted crop filter values
-            //             '-c:a', 'copy',
-            //             $outputPath,
-            //         ];
-            //         $process = new Process($command);
-    
-            //         try {
-            //             $process->mustRun();
-            //             // return 'Video resized successfully!';
-            //         } catch (ProcessFailedException $exception) {
-            //             throw new \Exception('Error resizing video: ' . $exception->getMessage());
-            //         }
-    
-    
-            //         $ffmpeg = \FFMpeg\FFMpeg::create();
-            //         $videos = $ffmpeg->open('public/uploads/reelsVideos' . '/' . $reelvideo_name);
-            //         $videos->filters()->clip(TimeCode::fromSeconds(1), TimeCode::fromSeconds(60));
-            //         $videos->save(new \FFMpeg\Format\Video\X264('libmp3lame'), 'public/uploads/reelsVideos' . '/' . $reelvideo_names);
-    
-            //         unlink($reelvideo);
-    
-            //         $Reels_videos = new ReelsVideo();
-            //         $Reels_videos->video_id = $video->id;
-            //         $Reels_videos->reels_videos = $shorts_name;
-            //         $Reels_videos->reels_videos_slug = $reel_videos_slug;
-            //         $Reels_videos->save();
-    
-            //         $video->reels_thumbnail = default_vertical_image();
-            //     }
-            // }
-    
-            // Reels Thumbnail
-    
+     
             if (!empty($request->reels_thumbnail)) {
                 $Reels_thumbnail = 'reels_' . time() . '.' . $request->reels_thumbnail->extension();
                 $request->reels_thumbnail->move(public_path('uploads/images'), $Reels_thumbnail);
@@ -12762,7 +12731,7 @@ class AdminVideosController extends Controller
             if ($video->type == "VideoCipher") {
                 $status = 1;
             } else {
-                $status = 0;
+                $status = 1;
             }
     
             $shortcodes = $request['short_code'];
@@ -12779,7 +12748,7 @@ class AdminVideosController extends Controller
             $video->uploaded_by = Auth::user()->role;
             $video->draft = 1;
             $video->active = 1;
-            $video->status = $status;
+            $video->status = 1;
             $video->embed_code = $embed_code;
             $video->publish_type = $publish_type;
             $video->publish_time = $publish_time;
@@ -12815,7 +12784,7 @@ class AdminVideosController extends Controller
             $video->video_id_480p = ( !empty($data["video_id_480p"])) ? $data["video_id_480p"] : null;
             $video->video_id_720p = (!empty($data["video_id_720p"])) ? $data["video_id_720p"] : null;
             $video->video_id_1080p =( !empty($data["video_id_1080p"])) ? $data["video_id_1080p"] : null;
-            $video->type = 'VideoCipher';
+            // $video->type = 'VideoCipher';
             $video->status = 1;
             // Ads videos
             if (!empty($data['ads_tag_url_id']) == null) {
@@ -13883,6 +13852,52 @@ class AdminVideosController extends Controller
             return abort(404) ;
         }
     }
+
+
+    public function videocipher_type(Request $request)
+    {
+        $data = $request->all();
+        $value = [];
+
+
+            $video = new Video();
+            $video->disk = "public";
+            $video->original_name = "public";
+            $video->type = "VideoCipher";
+            $video->draft = 1;
+            $video->status = 1;
+            $video->active = 0;
+            $video->image = default_vertical_image();
+            $video->video_tv_image = default_horizontal_image();
+            $video->player_image = default_horizontal_image();
+            $video->user_id = Auth::user()->id;
+            $video->save();
+
+            $video_id = $video->id;
+
+            $value["success"] = 1;
+            $value["message"] = "Uploaded Successfully!";
+            $value["video_id"] = $video_id;
+
+            \LogActivity::addVideoLog("Added Embeded URl Video.", $video_id);
+
+            return $value;
+    }
+
+
+    
+    public function video_upload_type(Request $request)
+    {
+        $value = [];
+        $video_upload_type = Video::where('id',$request->video_id)->pluck('type')->first();
+        $video_upload_id = Video::where('id',$request->video_id)->pluck('id')->first();
+        $value["success"] = 1;
+        $value["message"] = "Uploaded Successfully!";
+        $value["video_upload_type"] = $video_upload_type;
+        $value["video_upload_id"] = $video_upload_id;
+        return $value;
+    }
+
 
 }
     

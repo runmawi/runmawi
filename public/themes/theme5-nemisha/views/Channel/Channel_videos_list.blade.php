@@ -28,7 +28,7 @@
                                         <a href="{{ $video->redirect_url }}">
                                             <div class="block-images position-relative">
                                                 <div class="img-box">
-                                                    <img loading="lazy" src="{{ $video->image_url }}" class="img-fluid" alt="Channel-Video-Image">
+                                                    <img src="{{ $video->image ? URL::to('/public/uploads/images/'.$video->image) : $default_vertical_image_url }}" class="img-fluid" alt="Channel-Video-Image">
                                                 </div>
 
                                                 <div class="block-description">
@@ -83,7 +83,7 @@
                                                         </span>
                                                     @endif
                                                 </div>
-
+                                                
                                                     {{-- Source --}}
                                                 <div class="movie-time my-2">
                                                     <span class="text-white">
@@ -167,7 +167,7 @@
         </div>
     @else
         <div class="col-md-12 text-center mt-4"
-            style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+            style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
             <h3 class="text-center">No Video Available</h3>
         </div>
     @endif
