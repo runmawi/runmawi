@@ -67,11 +67,6 @@ if(count($latest_video) > 0) : ?>
 </div>
 <?php endif; ?>
 
-<style>
-   .flickity-prev-next-button {
-      top: 50% !important;
-   }
-</style>
 <!-- Flickity Slider -->
 <script>
     var elem = document.querySelector('.video-category');

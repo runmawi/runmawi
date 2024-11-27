@@ -59,11 +59,6 @@ endif; ?>
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-5 col-lg-12 col-md-12">
-<!--<a href="javascript:void(0);">
-<div class="channel-logo" data-animation-in="fadeInLeft" data-delay-in="0.5" background-size:cover; background-position:center>
-<img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
-</div>
-</a>-->
 <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft"
 data-delay-in="0.6">
 <?php
@@ -84,7 +79,6 @@ data-delay-in="0.6">
     <span class="badge badge-secondary p-2">
         <?php echo __($slider_video->year); ?>
     </span>
-    <!--                      <span class="ml-3"><?php echo __($slider_video->language); ?></span>-->
 </div>
 <div 
 style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
@@ -95,28 +89,13 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
 </div>
 <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
     data-delay-in="1.2">
-    <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"
-        class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
-        <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
-        <a class="btn bd ml-2" href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
+    <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>" class="btn bd">
+        <i class="fa fa-play mr-2" aria-hidden="true"></i> Play
+    </a>
+        
 </div>
 </div>
 </div>
-
-    <!-- <div class="trailor-video">
-        <a href="<?= URL::to('/') ?><?= '/live'.'/'. $slider_video->slug ?>" class="video-open playbtn">
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
-                stroke-linejoin="round" stroke-miterlimit="10"
-                points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-                stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-            </svg>
-            <span class="w-trailor">Watch Trailer</span>
-        </a>
-    </div> -->
 
 </div>
 </div>
@@ -186,110 +165,73 @@ endif; ?>
 
         <div class="item <?php if($key == 0){echo 'active';}?> header-image">
             <div onclick="window.location.href='<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>';" class="slide slick-bg s-bg-1" 
-            style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position: right;cursor: pointer;">
-            <div class="container-fluid position-relative h-100">
-                <div class="slider-inner ">
+                style="background: url('<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>'); background-repeat:no-repeat;background-size:cover;background-position: right;cursor: pointer;">
+                <div class="container-fluid position-relative h-100">
+                    <div class="slider-inner ">
 
-                    <div class="row align-items-center bl h-100">
-                        <div class="col-xl-5 col-lg-12 col-md-12">
+                        <div class="row align-items-center bl h-100">
+                            <div class="col-xl-5 col-lg-12 col-md-12">
 
-                                                    <!--  Video thumbnail image-->
-                            <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
-                                    <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
-                                        <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
-                                    </a>
-                                                        <!-- Video Title  -->
-                            <?php }else{ ?>
-                                    <h2 class="text-white slider-text title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
-                                        <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,50).'...' : $videos->title; ?>
-                                    </h2>
-                            <?php } ?>
+                                                        <!--  Video thumbnail image-->
+                                <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
+                                        <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
+                                            <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
+                                        </a>
+                                                            <!-- Video Title  -->
+                                <?php }else{ ?>
+                                        <h2 class="text-white slider-text title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6" >
+                                            <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,50).'...' : $videos->title; ?>
+                                        </h2>
+                                <?php } ?>
 
-                            <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
-                            <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
-                            <?php 
-                                $count = $videos->rating;
-                                for ($i = 0; $i < $count; $i++) {
-                                    echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
-                                }
-                            ?>
-                            </div>
-
-                            
-                            <?php if( $videos->year != null ):?>
-                                <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
-                                    <span class="badge badge-secondary p-2">
-                                        <?php echo __($videos->year); ?>
-                                    </span>
+                                <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
+                                <!-- <img class="" src="<?php echo  URL::to('/assets/img/star.webp')?>" alt="Star-Image"/> -->
+                                <?php 
+                                    $count = $videos->rating;
+                                    for ($i = 0; $i < $count; $i++) {
+                                        echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                    }
+                                ?>
                                 </div>
-                            <?php endif; ?>
-                        
-                            <div style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
-                                        -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
-                                <p><?php echo html_entity_decode($videos->description); ?></p>
-                            </div>
 
-                            <div class="row justify r-mb-23  p-0 mb-4 text-center align-items-center" >
-                                <!--<div class="col-3 col-md-3">
-                                  <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="text-white">
-                                <div class="" style="font-size:25px;">
-                             <i class="fa fa-plus" aria-hidden="true"></i>
-
-                                      </div>
-                                Add Watchlist</a></div>-->
-                                <div class="col-3 col-md-3">
-                                 <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="text-white ">
-                                <div class="" style="font-size:25px;">
-                              <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                      </div>
-                                Share</a> -->
-                            </div></div>
-                            <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
-                                    data-delay-in="1.2" >                                
-                                <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
-                                class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play </a>
-                            </div>
+                                
+                                <?php if( $videos->year != null ):?>
+                                    <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
+                                        <span class="badge badge-secondary p-2">
+                                            <?php echo __($videos->year); ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
                             
-                </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2">
+                                <div style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bottom: 20px;color:#fff;display: -webkit-box;
+                                            -webkit-line-clamp: 3;  -webkit-box-orient: vertical; overflow: hidden;">
+                                    <p><?php echo html_entity_decode($videos->description); ?></p>
+                                </div>
+
+                                <div class="d-flex justify-content-evenly align-items-center r-mb-23" data-animation-in="fadeInUp"
+                                        data-delay-in="1.2" >                                
+                                    <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
+                                    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-12 col-md-12 mt-5 pt-5 b2"></div>
+                            <div class="col-xl-4 col-lg-12 col-md-12 text-center">
+                                <!--  <div class="">
+                                    <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
+                                    <h2 class="sp"></h2>
+                                </div>-->
+                            </div>
                         </div>
-                        <div class="col-xl-4 col-lg-12 col-md-12 text-center">
-                      <!--  <div class="">
-                             <a class="navbar-brand" href="<?php echo URL::to('home') ?>"> <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo; ?>" class="c-logo w-100" alt="<?php echo $settings->website_name ; ?>"> </a>
-                            <h2 class="sp"></h2>
-                        </div>--></div>
-                </div>
-              <!--  <div class="trailor-video">
-                        <a href="#vide
-                                 o-trailer"
-                            class="video-open playbtn">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-                            viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                            <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-miterlimit="10"
-                            points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-                            <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-                        </svg>
-                        <span class="w-trailor">Watch Trailer</span>
-                    </a>
-                    </div>-->
-                    <div class="col-md-12">
-            <div id="video-trailer" class="mfp-hide">
-             <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+                        <div class="col-md-12">
+                            <div id="video-trailer" class="mfp-hide">
+                                <video id="videoPlayer" poster="<?php echo URL::to('/').'/public/uploads/images/' .$videos->player_image;?>"  class="" controls src="<?= $videos->trailer; ?>"  type="application/x-mpegURL" ></video>
+                            </div>
+                        </div>
                     </div>
-            </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-    
-<?php  ?>
-<?php endforeach; 
+    <?php endforeach; 
 endif; ?>
 
 
@@ -355,24 +297,6 @@ if(Route::current()->getName() == "home"){
                                     <p>  <?php echo __($videos->description); ?></p>
                                 </div>
 
-                                <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"  data-delay-in="1.2">
-                                    <!--<div class="col-4 col-md-3">
-                                    <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white">
-                                        <div class="" style="font-size:25px;">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                        </div>  Add Watchlist
-                                    </a>
-                                    </div>-->
-
-                                    <div class="col-3 col-md-3">
-                                        <!-- <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>" class="text-white ">
-                                            <div class="" style="font-size:25px;">
-                                                <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                            </div> Share
-                                        </a> -->
-                                    </div>
-                                </div>
-
                                 <div class="justify r-mb-23  p-0" data-animation-in="fadeInUp"  data-delay-in="1.2">
                                     <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>"
                                         class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Start Watching</a>
@@ -397,59 +321,6 @@ if(Route::current()->getName() == "home"){
 
 <?php } }?>
 
-
-
-	<!-- Add New Modal -->
-
-
-
-<!--
-        <div class="modal fade" id="addnew">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">  
-                        <button type="button" id="Close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div> 
-                    <div id="popUpForm" class="modal-body">
-                        <video id="videoPlayer" autoplay class="" controls src="<?//$videos->trailer;  ?>"  type="application/x-mpegURL" > </video>
-                    </div>    
-                </div>
-            </div>
-        </div>
--->
-
-
-
-
-<!--
-<script>
-
-        $(document).ready(function(){
-        $('#videopopup').click(function(){
-        $('.container-fluid.position-relative.h-100').css('display','none');
-
-        $('#addnew').modal({
-        backdrop: 'static',
-        keyboard: false
-        });
-        });
-        $('#Close').click(function() {
-        var videoPlayer = document.getElementById('videoPlayer');
-        player.pause();
-        $('.container-fluid.position-relative.h-100').css('display','block');
-
-        });
-        });
-
-   
-// if (!$(this.target).is('#popUpForm')) {
-//     $(".modalDialog").hide();
-// $('.container-fluid.position-relative.h-100').css('display','block');
-
-//   }
-
-</script>
--->
 <!-- Banners -->
 <?php  if(isset($banner)) : 
     foreach($banner as $key => $slider_video): 
@@ -493,48 +364,16 @@ style="overflow: hidden !important;text-overflow: ellipsis !important; margin-bo
   overflow: hidden;">
     <p><?php echo __($slider_video->description); ?></p>
 </div>
-   <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp"
-                            data-delay-in="1.2">
-                                <!--<div class="col-md-3">
-                                  <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
-                                class="text-white">
-                                <div class="" style="font-size:25px;">
-                             <i class="fa fa-plus" aria-hidden="true"></i>
-
-                                      </div>
-                                Add Watchlist</a></div>-->
-                                <div class="col-md-3">
-                                 <!-- <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
-                                class="text-white ">
-                                <div class="" style="font-size:25px;">
-                              <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                      </div>
-                                Share</a> -->
-                            </div></div>                         
-<div class="justify r-mb-23" data-animation-in="fadeInUp"
-data-delay-in="1.2">
-<a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
-    class="btn bd"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
+    <div class="row justify r-mb-23  p-0 mb-4 text-center" data-animation-in="fadeInUp" data-delay-in="1.2">
+    </div></div>                         
+<div class="justify r-mb-23" data-animation-in="fadeInUp" data-delay-in="1.2">
+<a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>" class="btn bd">
+    <i class="fa fa-play mr-2" aria-hidden="true"></i> Play</a>
     <!-- <a class=" btn black" href="https://flicknexui.webnexs.org/" ><i class="fa fa-plus" aria-hidden="true"></i> Watchlater</a>
     <a class="btn bd ml-3" href="<?php echo URL::to('episode') ?><?= '/'.@$slider_video->series_title->slug.'/' . $slider_video->slug ?>"><i class="fa fa-info" aria-hidden="true"></i> More details</a>-->
 </div>
 </div>
 </div>
-<!--<div class="trailor-video">
-    <a href="<?php echo URL::to('episode/'.@$slider_video->series_title->slug.'/'.$slider_video->slug ) ?>"
-        class="video-open playbtn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px"
-        viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-        <polygon class='triangle' fill="none" stroke-width="7" stroke-linecap="round"
-        stroke-linejoin="round" stroke-miterlimit="10"
-        points="73.5,62.5 148.5,105.8 73.5,149.1 " />
-        <circle class='circle' fill="none" stroke-width="7" stroke-linecap="round"
-        stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" />
-    </svg>
-    <span class="w-trailor">Watch Trailer</span>
-</a>
-</div>-->
 </div>
 </div>
 </div>

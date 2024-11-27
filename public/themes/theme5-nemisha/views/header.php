@@ -225,6 +225,15 @@
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="preload" as="style">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="preload" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/all.min.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/slick.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/slick-theme.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/owl.carousel.min.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style">
+    <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
     
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="stylesheet">

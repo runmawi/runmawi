@@ -34,6 +34,17 @@
 
 <div class="main-content" id="home_sections">
 
+   <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
+      <section id="iq-continue overflow-hidden">
+         <div class="container-fluid ">
+               <div class="row">
+                  <div class="col-sm-12 ">
+                     <?php include 'partials/home/continue-watching.php'; ?>
+                  </div>
+               </div>
+         </div>
+      </section>
+   <?php  } ?>
 
    <?php if($home_settings->shorts_minis == '1' ): ?>
       <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
@@ -50,18 +61,6 @@
          </div>
       </section>
    <?php endif; ?>
-
-   <?php if( !Auth::guest() && $continue_watching_setting != null &&  $continue_watching_setting == 1 ){ ?>
-      <section id="iq-continue overflow-hidden">
-         <div class="container-fluid ">
-               <div class="row">
-                  <div class="col-sm-12 ">
-                     <?php include 'partials/home/continue-watching.php'; ?>
-                  </div>
-               </div>
-         </div>
-      </section>
-   <?php  } ?>
 
    <?php foreach($order_settings as $key => $item): ?>
       <?php if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1' ): ?>
