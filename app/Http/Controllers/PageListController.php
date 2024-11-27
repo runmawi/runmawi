@@ -48,7 +48,7 @@ class PageListController extends Controller
              
             $FrontEndQueryController = new FrontEndQueryController();
             $order_settings_list = OrderHomeSetting::get();
-            
+
             $latest_videos_pagelist = ($slug == null) ? $FrontEndQueryController->Latest_videos() : $FrontEndQueryController->latest_videos()->filter(function ($latest_videos) use ($channel_partner_id) {
                 if ( $latest_videos->user_id == $channel_partner_id && $latest_videos->uploaded_by == "Channel" ) {
                     return $latest_videos;
@@ -63,9 +63,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $latest_videos_paginate,
+                'base_url' => 'category/videos',
+                'header_name' => $order_settings_list[1]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
             return Theme::view('Page-List.latest-videos', $data);
+            }
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -130,9 +137,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $featured_videos_paginate,
+                'base_url' => 'category/videos',
+                'header_name' => $order_settings_list[0]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
             return Theme::view('Page-List.Featured-videos', $data);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
@@ -157,10 +171,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $featured_videos_paginate,
+                'base_url' => 'category',
+                'header_name' => $order_settings_list[11]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
             return Theme::view('Page-List.video-category', $data);
-
+            }
         } catch (\Throwable $th) {
             // return $th->getMessage();
             return abort(404);
@@ -186,9 +206,16 @@ class PageListController extends Controller
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
                 'button_text'                => $button_text,
+                'page_list' => $live_list_paginate,
+                'base_url' => 'live',
+                'header_name' => $order_settings_list[3]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
             return Theme::view('Page-List.live-stream', $data);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
@@ -265,10 +292,17 @@ class PageListController extends Controller
                 'audio_list_pagelist' => $audio_list_paginate,
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
-                    'default_vertical_image_url' => default_vertical_image_url(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $audio_list_paginate,
+                'base_url' => 'audio',
+                'header_name' => $order_settings_list[5]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.audios-list', $data);
+            } else {
             return Theme::view('Page-List.audio-list', $data);
+            }
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
@@ -407,10 +441,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $latestViewed_audio_paginate,
+                'base_url' => 'audio',
+                'header_name' => $order_settings_list[17]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.audios-list', $data);
+            } else {
             return Theme::view('Page-List.latest_viewed_audios', $data);
-
+            }
         } catch (\Throwable $th) {
             return $th->getMessage();
             return abort(404);
@@ -634,9 +674,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $latest_viewed_video_paginate,
+                'base_url' => 'category/videos',
+                'header_name' => $order_settings_list[15]->header_name,
             );
         
-            return Theme::view('Page-List.latest_viewed_video', $data);
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
+                return Theme::view('Page-List.latest_viewed_video', $data);
+            }
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -848,6 +895,39 @@ class PageListController extends Controller
         }
     }
 
+    public function ShortsMinis()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $ugc_pagelist = $FrontEndQueryController->UGCVideos();
+            $ugc_paginate = $this->paginateCollection($ugc_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'ugc_pagelist' => $ugc_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $ugc_paginate,
+                'base_url' => 'ugc/video-player',
+                'header_name' => $order_settings_list[41]->header_name,
+            );
+        
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
+                return Theme::view('Page-List.videos-list', $data);
+            }
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
 
     public function deconstruct()
     {
