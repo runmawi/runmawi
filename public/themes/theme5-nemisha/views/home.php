@@ -616,8 +616,8 @@
       var renderedWidth = image.clientWidth;
       var renderedHeight = image.clientHeight;
 
-      image.setAttribute('width', renderedWidth);
-      image.setAttribute('height', renderedHeight);
+      image.setAttribute('width', naturalWidth);
+      image.setAttribute('height', naturalHeight);
    });
 
 </script>
