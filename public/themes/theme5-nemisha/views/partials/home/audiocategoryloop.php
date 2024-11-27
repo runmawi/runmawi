@@ -41,6 +41,7 @@
                         }
                         ?>
                     </h5>
+                    <a class="see" href="<?php echo URL::to('/audios/category') . '/' . $category->slug; ?>"><?php echo (__('See all')); ?></a>
                 </a>
             </div>
             <div class="favorites-contens"> 
