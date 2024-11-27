@@ -27,7 +27,7 @@
                     <div class="img-box">
                     <a href="<?php echo URL::to('/') ?><?= '/audio/' . $category_audio->slug ?>">
                                 <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_audio->image;  ?>"
-                                        class="img-fluid w-100 h-50 flickity-lazyloaded" alt="Datafree series"> 
+                                        class="img-fluid w-100 h-50" alt="Datafree series"> 
                             </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

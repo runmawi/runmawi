@@ -90,7 +90,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="datafree-live" />
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$video->image;  ?>" class="img-fluid w-100 h-50" alt="datafree-live" />
                         </a>
                         
                       <!-- PPV price -->

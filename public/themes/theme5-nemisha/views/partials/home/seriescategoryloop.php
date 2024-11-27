@@ -58,7 +58,7 @@
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100 h-50 flickity-lazylaoded" alt="<?php echo $series_video->title; ?>">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $series_video->image; ?>" class="img-fluid w-100 h-50" alt="<?php echo $series_video->title; ?>">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($series_video->access == 'subscriber' ){ ?>

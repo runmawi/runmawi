@@ -16,7 +16,7 @@ include public_path('themes/theme5-nemisha/views/header.php');
                                     <a href="<?php echo URL::to('/play_series/' . $Series_Genre->slug); ?>">
                                         <div class="block-images position-relative">
                                             <div class="img-box">
-                                                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . @$Series_Genre->image; ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $Series_Genre->title; ?>">
+                                                <img src="<?php echo URL::to('/') . '/public/uploads/images/' . @$Series_Genre->image; ?>" class="img-fluid w-100 h-50" alt="<?php echo $Series_Genre->title; ?>">
                                             </div>
     </div>
                                             <div class="block-description">    </div>
