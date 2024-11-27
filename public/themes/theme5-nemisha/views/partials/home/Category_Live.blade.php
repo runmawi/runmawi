@@ -59,7 +59,7 @@
                                                 <div class="block-images position-relative">
                                                     <div class="img-box">
                                                         <img src="{{ URL::to('public/uploads/images/' . $LiveCategory->image) }}"
-                                                            class="img-fluid w-100 h-50 flickity-lazyloaded" alt="Category Live">
+                                                            class="img-fluid w-100 h-50 " alt="Category Live">
                                                     </div>
                                                 </div>
 

@@ -2365,15 +2365,6 @@
                 }
             });
 
-            //  width and height set dynamically
-            var images = document.querySelectorAll('.logo-img');
-            images.forEach(function(image) {
-                var renderedWidth = image.clientWidth;
-                var renderedHeight = image.clientHeight;
-
-                image.setAttribute('width', naturalWidth);
-                image.setAttribute('height', naturalHeight);
-            });
         </script>
 
         </header>
