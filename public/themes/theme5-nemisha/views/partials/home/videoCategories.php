@@ -30,7 +30,7 @@ if(count($latest_video) > 0) : ?>
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('/category/') . '/' . $Categories->slug; ?>" aria-label="videos">
-                            <img src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded"
+                            <img src="<?php echo URL::to('/') . '/public/uploads/videocategory/' . $Categories->image; ?>" class="img-fluid loading w-100 h-50"
                             alt="<?php echo $Categories->title; ?>">
                         </a>
                     </div>
@@ -67,11 +67,6 @@ if(count($latest_video) > 0) : ?>
 </div>
 <?php endif; ?>
 
-<style>
-   .flickity-prev-next-button {
-      top: 50% !important;
-   }
-</style>
 <!-- Flickity Slider -->
 <script>
     var elem = document.querySelector('.video-category');

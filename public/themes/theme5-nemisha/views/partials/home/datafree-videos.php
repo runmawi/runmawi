@@ -63,7 +63,7 @@
                     <div class="img-box">
                     <a href="<?php echo URL::to('category') ?><?= '/videos/' . $category_video->slug ?>">
                                 <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"
-                                        class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $category_video->title; ?>"> 
+                                        class="img-fluid w-100 h-50" alt="<?php echo $category_video->title; ?>"> 
                             </a>
                         <!-- PPV price -->
                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?> 

@@ -55,7 +55,7 @@
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid lazyload w-100"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid w-100 h-50"
                             alt="<?php echo $latest_view_video->title; ?>">
 
                         <!-- PPV price -->
@@ -73,8 +73,8 @@
 
                 <div class="block-description">
                     <div class="hover-buttons text-white">
-                        <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> <img
-                                class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                        <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> 
+                            <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" alt="play" /> </a>
                         <div></div>
                     </div>
                 </div>

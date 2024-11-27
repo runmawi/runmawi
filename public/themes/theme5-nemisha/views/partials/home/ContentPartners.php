@@ -31,7 +31,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $content_user->username; ?>">                 
+                <img src="<?php echo URL::to('/public/uploads/moderator_albums'.'/'.$content_user->picture);  ?>" class="img-fluid w-100 h-50 " alt="<?php echo $content_user->username; ?>">                 
               </div> </div>
 
               <div class="block-description"> </div>

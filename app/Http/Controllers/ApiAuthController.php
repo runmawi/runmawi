@@ -18471,7 +18471,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Series_Genre_Pagelist(){
 
-    $query = SeriesGenre::query()->where('in_home',1);
+    $query = SeriesGenre::query();
 
     $data = $query->latest()->get();
 

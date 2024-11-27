@@ -16,14 +16,14 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="FeaturedEpisodes">
+                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$latest_episode->image;  ?>" class="img-fluid w-100 h-50 " alt="FeaturedEpisodes">
               
               </div>              </div>
               <div class="block-description">
             
                 <div class="hover-buttons d-flex">
                 <a class="text-white" href="<?php if($latest_episode->series_id == @$latest_episode->series_title->id){ echo URL::to('/episode'.'/'.@$latest_episode->series_title->slug.'/'.$latest_episode->slug) ; }?> ">
-                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                    <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>" alt="play"> 
                    
                   </a>
                 </div>

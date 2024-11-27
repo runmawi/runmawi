@@ -13,7 +13,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a  href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $ugc_video->slug ?>" aria-label="videos">
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $ugc_video->title; ?>">
+                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $ugc_video->title; ?>">
                         </a>
                     </div>
                 </div>

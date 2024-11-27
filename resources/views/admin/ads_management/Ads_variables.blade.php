@@ -28,16 +28,16 @@
                                     <thead>
                                         <tr class="r1">
                                             <th>#</th>
-                                            <th>{{ _('Variable Name') }}</th>
-                                            <th> {{ _('website')}} </th>
-                                            <th>{{ _('andriod')}}</th>
-                                            <th>{{ _('ios')}}</th>
-                                            <th>{{ _('tv')}}</th>
-                                            <th>{{ _('roku')}}</th>
-                                            <th>{{ _('lg')}}</th>
-                                            <th>{{ _('samsung')}}</th>
-                                            <th>{{ _('Fire Tv')}}</th>
-                                            <th>{{ _('Action') }}</th>
+                                            <th>{{ __('Variable Name') }}</th>
+                                            <th>{{ __('website')}} </th>
+                                            <th>{{ __('andriod')}}</th>
+                                            <th>{{ __('ios')}}</th>
+                                            <th>{{ __('tv')}}</th>
+                                            <th>{{ __('roku')}}</th>
+                                            <th>{{ __('lg')}}</th>
+                                            <th>{{ __('samsung')}}</th>
+                                            <th>{{ __('Fire Tv')}}</th>
+                                            <th>{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -87,31 +87,31 @@
                     <input type="hidden" id="url" name="url" value="">
                     <div class="modal-body">
 
-                        <label>{{ _('Variable Name') }}</label>
+                        <label>{{ __('Variable Name') }}</label>
                         <input type="text" name="name" id="name" value="" class="form-control" placeholder="Enter the Variable Name">
 
-                        <label>{{ _('Website')}}</label>
+                        <label>{{ __('Website')}}</label>
                         <input type="text" name="website" id="website" value="" class="form-control" placeholder="Enter the Website">
 
-                        <label>{{ _('Andriod')}}</label>
+                        <label>{{ __('Andriod')}}</label>
                         <input type="text" name="andriod" id="andriod" value="" class="form-control" placeholder="Enter the Andriod">
 
-                        <label>{{ _('Ios')}}</label>
+                        <label>{{ __('Ios')}}</label>
                         <input type="text" name="ios" id="ios" value="" class="form-control" placeholder="Enter the IOS">
 
-                        <label>{{ _('Tv')}}</label>
+                        <label>{{ __('Tv')}}</label>
                         <input type="text" name="tv" id="tv" value="" class="form-control" placeholder="Enter the TV">
                             
-                        <label>{{ _('Roku')}}</label>
+                        <label>{{ __('Roku')}}</label>
                         <input type="text" name="roku" id="roku" value="" class="form-control" placeholder="Enter the Roku">
 
-                        <label>{{ _('Lg')}}</label>
+                        <label>{{ __('Lg')}}</label>
                         <input type="text" name="Lg" id="Lg" value="" class="form-control" placeholder="Enter the LG">
 
-                        <label>{{ _('Samsung')}}</label>
+                        <label>{{ __('Samsung')}}</label>
                         <input type="text" name="samsung" id="samsung" value="" class="form-control" placeholder="Enter the Samsung">
                          
-                        <label>{{ _('Fire Tv')}}</label>
+                        <label>{{ __('Fire Tv')}}</label>
                         <input type="text" name="firetv" id="firetv" value="" class="form-control" placeholder="Enter the fire tv">
                          
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
