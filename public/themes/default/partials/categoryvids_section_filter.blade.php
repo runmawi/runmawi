@@ -39,7 +39,7 @@
 
 </style>
 
-<div class="row mt-2 p-0 justify-content-end">
+<div class="row m-0 p-0 justify-content-start">
 
     {{-- <div class="col-md-2 col-sm-4 mb-1">
         <select class="selectpicker " multiple title="Refine" data-live-search="true">
