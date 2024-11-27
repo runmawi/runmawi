@@ -9,7 +9,7 @@
 
     .bootstrap-select>.dropdown-toggle {
         background-color: transparent !important;
-        width: 85% !important;
+        width: 92% !important;
 
     }
 
@@ -28,16 +28,8 @@
     .nav-div.container-fluid {
         padding: 0;
     }
-    .banner_img{height: 400px;overflow: hidden;}
-    .banner_img img{height: 100%;width: 100%;object-fit: cover;}
-    .title-cates{position: absolute;top: 20%;left: 5%;}
-    /* .contents{margin-top: 10rem;} */
-    .main-content{
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-        height: calc(100vh - 40px);
-    }
+    .banner_img{height: 400px;overflow: hidden;position: relative;}
+    ._filter_div_{position: absolute;bottom: 5%;width: inherit;}
     @media(min-width:1800px){
         .banner_img{height:800px;}
     }
@@ -61,45 +53,54 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
 
 ?>
 
-<div class="main-content" style="background:linear-gradient(to top, rgba(0, 0, 0, 50.8)45%, rgba(0, 0, 0, 0) 100%), url('{{ URL::to('/public/uploads/videocategory/'.$category_data->banner_image) }}');background-size: cover;background-position: center;">
-        <h2 class="title-cates">{{ $categoryVideos['category_title'] }}</h2>
+<div class="main-content">
     <section id="iq-favorites">
+        <div class="banner_img" style="background: linear-gradient(90deg, rgba(0,0,0,0.801733193277311) 0%, rgba(0,0,0,0.7401085434173669) 35%, rgba(255,255,255,0) 100%), url('{{ URL::to('public/uploads/videocategory/'.$category_data->banner_image)}}'); background-size: cover; background-position: center;">
+            <div class="container-fluid">
+                <!-- BREADCRUMBS -->
+                <div class=" d-flex">
+                    <div class="nav nav-tabs nav-fill container-fluid nav-div mt-0" id="nav-tab" role="tablist">
+                        <div class="bc-icons-2">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a class="black-text"
+                                        href="<?= route('latest-videos') ?>"><?= ucwords(__('videos')) ?></a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                </li>
+
+                                <li class="breadcrumb-item"><a class="black-text"
+                                        href="<?= route('categoryList') ?>"><?= ucwords(__('Category')) ?></a>
+                                    <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                </li>
+
+                                <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? ucwords(substr($categoryVideos['category_title'], 0, 120) . '...') : ucwords($categoryVideos['category_title']); ?>
+                                    </a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Main Content  --}}
+                
+
+                <div class="_filter_div_ mt-4">
+                    <div class="iq-main-header align-items-center d-flex justify-content-between mb-3">
+                        <h2 class=""><?php echo __($categoryVideos['category_title']); ?></h2>
+                    </div>
+                    @partial('categoryvids_section_filter')
+                </div>
+
+            </div>
+        </div>
+        
         <div class="container-fluid overflow-hidden">
             <div class="row pageheight">
                 <div class="col-sm-12 ">
-                    <!-- BREADCRUMBS -->
-                    <div class=" d-flex">
-                        <div class="nav nav-tabs nav-fill container-fluid nav-div m-0" id="nav-tab" role="tablist">
-                            <div class="bc-icons-2">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('latest-videos') ?>"><?= ucwords(__('videos')) ?></a>
-                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                    </li>
+                   
 
-                                    <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('categoryList') ?>"><?= ucwords(__('Category')) ?></a>
-                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                    </li>
-
-                                    <li class="breadcrumb-item"><a class="black-text"><?php echo strlen($categoryVideos['category_title']) > 50 ? ucwords(substr($categoryVideos['category_title'], 0, 120) . '...') : ucwords($categoryVideos['category_title']); ?>
-                                        </a></li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
                     
-                    <div class="contents">
-                        @partial('categoryvids_section_filter')
 
-                        {{-- Main Content  --}}
-                        {{-- <div class="iq-main-header align-items-center d-flex justify-content-between">
-                            <h4 class=""><?php echo __($categoryVideos['category_title']); ?></h4>
-                        </div> --}}
-
-                        <div class="data">
-                            @partial('categoryvids_section')
-                        </div>
+                    <div class="data">
+                        @partial('categoryvids_section')
                     </div>
                 </div>
             </div>
