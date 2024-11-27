@@ -29,7 +29,7 @@
         padding: 0;
     }
     .banner_img{height: 400px;overflow: hidden;position: relative;}
-    ._filter_div_{position: absolute;bottom: 5%;width: inherit;}
+    ._filter_div_{position: absolute;bottom: 48%;width: inherit;}
     @media(min-width:1800px){
         .banner_img{height:800px;}
     }
