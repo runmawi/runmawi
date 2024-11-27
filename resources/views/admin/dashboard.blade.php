@@ -370,7 +370,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="mt-3">
+                  {{-- <div class="mt-3">
                      <div class="iq-card-header d-flex justify-content-between align-items-center">
                         <div class="iq-header-title">
                            <h4 class="card-title">Top Rated Item </h4>
@@ -406,7 +406,7 @@
                            @endforeach
                         </ul>
                      </div>
-                  </div>
+                  </div> --}}
                </div>
                
             </div>
