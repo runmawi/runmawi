@@ -43,7 +43,7 @@ if (Auth::guest() != true) {
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>" class="img-fluid lazyload w-100"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_episode->image; ?>" class="img-fluid flickity-lazyload"
                             alt="<?php echo $latest_view_episode->title; ?>">
                     </div>
                 </div>

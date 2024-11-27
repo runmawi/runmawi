@@ -32,7 +32,7 @@
                              <!-- block-images -->
                              <div class="block-images position-relative">
                                 <div class="img-box">
-                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid img-zoom w-100 h-50 flickity-lazyloaded" alt="<?php echo $audio->title; ?>">
+                                <img src="<?php echo URL::to('/').'/public/uploads/images/'.$audio->image;?>" class="img-fluid flickity-lazyloaded" alt="<?php echo $audio->title; ?>">
                                 </div> </div>
                                 <div class="block-description" > </div>
                                            
