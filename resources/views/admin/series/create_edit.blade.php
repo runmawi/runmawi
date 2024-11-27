@@ -580,7 +580,19 @@ $settings  = App\Setting::first();?>
 									</p>
 								</span>
 							</div>
-                                
+							@if(Enable_PPV_Plans() == 1)
+								<div class="form-group">
+									<label> Choose Episode Type:</label>
+									<select class="form-control" id="series_seasons_type" name="series_seasons_type">
+										<option value="">Choose Upload Type</option>
+										<option value="VideoCipher" >VideoCipher Episode</option>
+										<option value="m3u8">Episode Upload Url m3u8</option>
+										<option value="videomp4">Episode Upload Url MP4</option>
+										<option value="embed_video">Embed Episode</option>
+									</select>
+									<span class="ErrorText"> *User Access Series is set as Subscriber. </span>
+								</div>
+							@endif
 						    <div class="form-group">
 		                        <label> Choose User Access:</label>
 								<select class="form-control" id="ppv_access" name="ppv_access">
@@ -734,6 +746,7 @@ $settings  = App\Setting::first();?>
 			var transcoding_access = '<?= @$settings->transcoding_access ?>';
 
 			$('#access').change(function(){
+				var series_seasons_type = $('#series_seasons_type').val();
 		
 				if($('#access').val() == "ppv"){
 					$('#ppv_price').show();
@@ -745,8 +758,9 @@ $settings  = App\Setting::first();?>
 			$(document).ready(function () {
 				$('.ErrorText').hide();
 				$('#ppv_access').change(function () {
+					var series_seasons_type = $('#series_seasons_type').val();
 					var series_access = '<?= @$series->access ?>';
-					if(enable_ppv_plans == 1 && enable_video_cipher_upload == 1){
+					if(enable_ppv_plans == 1 && enable_video_cipher_upload == 1 && series_seasons_type == 'VideoCipher'){
 						if ($('#ppv_access').val() == "ppv") {
 							$('#ppv_price').hide();
 							$('#ppv_price_plan').show();
@@ -767,10 +781,12 @@ $settings  = App\Setting::first();?>
 							$('.ErrorText').show();
 							$('#ios_ppv_price_plan').hide();
 							$('#submit-new-cat').prop('disabled', true);
+							$('#ppv_price_plan').hide();
 						} else {
 							$('#submit-new-cat').prop('disabled', false);
 							$('.ErrorText').hide();
 							$('#ios_ppv_price_plan').hide();
+							$('#ppv_price_plan').hide();
 						}
 					}	
 				});

@@ -2759,6 +2759,15 @@ class AdminVideosController extends Controller
 
         if ($data['access'] == "ppv") {
             $video->ppv_price = $data["ppv_price"];
+        }else if($data['access'] != "ppv"){
+            $data['ppv_price_480p'] = null ;
+            $data['ppv_price_720p'] = null ;
+            $data['ppv_price_1080p'] = null ;
+            $data['ios_ppv_price_480p'] = null ;
+            $data['ios_ppv_price_720p'] = null ;
+            $data['ios_ppv_price_1080p'] = null ;
+            $data["ppv_price"] = null;
+            $video->ppv_price =  null;
         } else {
             $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
         }

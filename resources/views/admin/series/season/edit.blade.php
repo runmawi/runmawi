@@ -82,6 +82,18 @@
                             </div>
                          </div>
                     </div>
+                    
+                    @if(Enable_PPV_Plans() == 1)
+                        <div class="form-group {{ $errors->has('series_seasons_type') ? 'has-error' : '' }}">
+                            <label class="m-0">Choose Episode Type:</label>
+                            <select class="form-control" id="series_seasons_type" name="series_seasons_type">
+                                <option value="VideoCipher" @if(!empty($season->series_seasons_type) && $season->series_seasons_type == 'VideoCipher'){{ 'selected' }}@endif>VideoCipher Video</option>
+                                <option value="m3u8" @if(!empty($season->series_seasons_type) && $season->series_seasons_type == 'm3u8'){{ 'selected' }}@endif>Episode Upload Url m3u8</option>
+                                <option value="videomp4" @if(!empty($season->series_seasons_type) && $season->series_seasons_type == 'videomp4'){{ 'selected' }}@endif>Episode Upload Url MP4</option>
+                                <option value="embed_video" @if(!empty($season->series_seasons_type) && $season->series_seasons_type == 'embed_video'){{ 'selected' }}@endif>Episode Upload Url Embed</option>
+                            </select>
+                        </div>
+                    @endif
 
                     <div class="form-group {{ $errors->has('ppv_access') ? 'has-error' : '' }}">
                         <label class="m-0">Choose User Access:</label>
@@ -197,15 +209,16 @@
             var ppvPrice = $('#ppv_price_input').val();
             var iosPpvPrice = $('#ios_ppv_price').val();
             var ppvInterval = $('#ppv_interval').val();
+            var series_seasons_type = $('#series_seasons_type').val();
             var enable_ppv_plans = '<?= @$theme_settings->enable_ppv_plans ?>';
             var enable_video_cipher_upload = '<?= @$theme_settings->enable_video_cipher_upload ?>';
             var transcoding_access = '<?= @$settings->transcoding_access ?>';
 
 
-            if (ppvAccess === 'ppv') {
-                $('#ppv_price_group').show();
-                $('#ios_ppv_price_old').show();
-                $('#ios_ppv_price').show();
+            if (ppvAccess === 'ppv' && series_seasons_type == 'VideoCipher') {
+                $('#ppv_price_group').hide();
+                $('#ios_ppv_price_old').hide();
+                $('#ios_ppv_price').hide();
                 $('#ppv_intravel_group').show();
                 $('#ppv_price_plan').show();
 
@@ -220,6 +233,15 @@
                     $('#ios_error_req').hide();
                     $('#intravel_error_req').hide();
                 }
+            } else if (ppvAccess === 'ppv' && series_seasons_type != 'VideoCipher') {
+                $('#ppv_price_group').show();
+                $('#ios_ppv_price_old').show();
+                $('#ios_ppv_price').show();
+                $('#ppv_intravel_group').hide();
+                $('#ppv_price_plan').hide();
+                $('#ios_ppv_price_plan').hide();
+
+             
             } else {
                 $('#ppv_price_group').hide();
                 $('#ppv_price_plan').hide();
