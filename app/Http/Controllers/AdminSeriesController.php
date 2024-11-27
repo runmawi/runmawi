@@ -1965,11 +1965,11 @@ class AdminSeriesController extends Controller
                 Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
                 Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
                 
-                $data["responsive_player_image"] = default_horizontal_image();
+                $data["responsive_player_image"] = $player_image_filename ;
 
         }else{
 
-            $data["responsive_player_image"] = $video->responsive_player_image; 
+            $data["responsive_player_image"] = default_horizontal_image();
         }
 
 
