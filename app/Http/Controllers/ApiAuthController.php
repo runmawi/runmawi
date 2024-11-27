@@ -6365,6 +6365,11 @@ public function checkEmailExists(Request $request)
                 $item['qualities']  = [] ;
             break;
   
+            case $item['type'] == "embed_video_url":
+              $item['Episode_url'] =  $item->embed_video_url ;
+              $item['Episode_player_type'] =  'application/x-mpegURL' ;
+            break;
+
             case $item['type'] == 'bunny_cdn' :
               $item['episode_url']   = $item->url ;
               $item['Episode_player_type'] =  'application/x-mpegURL' ;
@@ -6420,6 +6425,11 @@ public function checkEmailExists(Request $request)
               $item['qualities']  = [] ;
           break;
           
+          case $item['type'] == "embed_video_url":
+            $item['Episode_url'] =  $item->embed_video_url ;
+            $item['Episode_player_type'] =  'application/x-mpegURL' ;
+          break;
+
           case $item['type'] == "aws_m3u8":
             $item['episode_url'] =  $item->path ;
             $item['Episode_player_type'] =  'application/x-mpegURL' ;
@@ -7470,10 +7480,11 @@ return response()->json($response, 200);
     $season_id = $request->season_id;
     $episode_id = $request->episode_id;
     $user_id = $request->user_id;
+    $series_seasons_type = SeriesSeason::where('id', $season_id)->pluck('series_seasons_type')->first();
 
       $data = $request->all();
       
-      if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+      if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $series_seasons_type == 'VideoCipher'){
           return $this->VideoCipher_Seasondetail($data);
       }
       
@@ -18460,7 +18471,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Series_Genre_Pagelist(){
 
-    $query = SeriesGenre::query()->where('in_home',1);
+    $query = SeriesGenre::query();
 
     $data = $query->latest()->get();
 

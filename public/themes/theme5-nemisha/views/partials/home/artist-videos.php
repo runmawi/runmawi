@@ -20,7 +20,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('artist') ?><?= '/' . $artist_details->artist_slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $artist_details->artist_name; ?>"> 
+                            <img src="<?php echo URL::to('/').'/public/uploads/artists/'.$artist_details->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $artist_details->artist_name; ?>"> 
                         </a>
                     </div>
                 </div>

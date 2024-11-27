@@ -88,7 +88,7 @@
                                 <div class="block-images position-relative">
                                                                 
                                     <div class="img-box">    <!-- block-images -->
-                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="l-img">
+                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$livestream->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $livestream->title; ?>">
                                     
                                         <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>  
                                             <p class="p-tag1">

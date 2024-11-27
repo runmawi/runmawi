@@ -59,7 +59,7 @@
                             <div class="block-images position-relative">
                                 <div class="img-box">
                                     <!-- block-images -->
-                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="cate">
+                                    <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $audio->image; ?>" class="img-fluid w-100 h-50" alt="cate">
                                     <?php if($ThumbnailSetting->free_or_cost_label == 1) { ?>
                                     <p class="p-tag1">
                                         <?php  if($audio->access == 'subscriber' ){ ?>

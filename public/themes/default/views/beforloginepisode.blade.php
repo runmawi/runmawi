@@ -157,7 +157,13 @@
                                  
                               </div>
                            @endif
+                           @if($episode_details->type == 'embed_video_url')
 
+                           <iframe class="" src="<?= $episode_details->Episode_url ?>" poster="<?= $episode_details->Player_thumbnail ?>"
+                              frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowfullscreen style="width: 100%; height: 100vh;">
+                           </iframe>
+                           @else
                            <video id="episode-player" class="vjs-big-play-centered vjs-theme-city my-video video-js vjs-play-control customVideoPlayer vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive"
                               controls preload="auto" width="auto" height="auto" playsinline="playsinline"
                               muted="muted" preload="yes" autoplay="autoplay"
@@ -165,6 +171,7 @@
                               <source src="<?= $episode_details->Episode_url ?>"
                                  type="<?= $episode_details->Episode_player_type ?>">
                            </video>
+                        @endif
                         </div>
 
                      <?php if ($episode->type == 'embed'): ?>

@@ -32,7 +32,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                  <img src="<?php echo $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $channel->channel_name; ?>">                 
+                  <img src="<?php echo $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $channel->channel_name; ?>">                 
                 </div></div>
 
               <div class="block-description"></div>
