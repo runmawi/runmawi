@@ -462,9 +462,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                     <div class="row plays_btn_res m-0">
                         @if ( $videodetail->users_video_visibility_status == false && $videodetail->type == 'VideoCipher')
 
-                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) 
-                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) 
-                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
+                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) && $videodetail->access == 'ppv'
+                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) && $videodetail->access == 'ppv'
+                            || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) && $videodetail->access == 'ppv') 
                                 <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
