@@ -404,8 +404,10 @@ class AdminSeriesController extends Controller
                 $data['duration'] = $time_seconds;
         }
 
+        $data['network_id'] = !empty($data['network_id']) ? json_encode($data['network_id']) : null ;
+          
         $series = Series::create($data);
-        // dd($series->id);
+        
         if(!empty($data['ppv_status'])){
 
             $ppv_status = $data['ppv_status'];
@@ -454,7 +456,6 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
-        $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : null;
         $series->blocked_countries = json_encode($countryIds);
         $series->save();  
 
