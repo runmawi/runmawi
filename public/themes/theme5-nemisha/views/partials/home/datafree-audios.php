@@ -26,7 +26,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                     <a href="<?php echo URL::to('/') ?><?= '/audio/' . $category_audio->slug ?>">
-                                <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_audio->image;  ?>"
+                                <img data-src="<?php echo URL::to('/').'/public/uploads/images/'.$category_audio->image;  ?>"
                                         class="img-fluid w-100 h-50 flickity-lazyloaded" alt="Datafree series"> 
                             </a>
                         <!-- PPV price -->
