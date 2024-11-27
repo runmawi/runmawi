@@ -128,7 +128,7 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">Picture</label>
                         <p class="p1">Select the artist image (300x300 px or 2:2 ratio):</p>
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-control" name="image" id="image" value="{{ $artist->image }}" />
+                            <input type="file" multiple="true" class="form-control" name="image" id="image"  />
                         </div>
                     </div>
 
