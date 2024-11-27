@@ -400,6 +400,7 @@ tr td:nth-last-child(9) {
                             <th scope="col">Name</th>
                             <th scope="col">Date</th>
                             <th scope="col">Video Name</th>
+                            <th scope="col">Type</th>
                             <th scope="col">Amount</th>
                         </tr>
                         </thead>
@@ -408,15 +409,12 @@ tr td:nth-last-child(9) {
                             <tr>
                                 <td class="text-center">{{ $data->user_id ?? 'N/A' }}</td>
                                 <td>
-                                    @if ($data->user_name)
-                                        <img src="https://i.postimg.cc/FR5xjr4g/user.png" alt="User Icon" />
-                                        {{ $data->user_name }}
-                                    @else
-                                        N/A
-                                    @endif
+                                  <img src="https://i.postimg.cc/FR5xjr4g/user.png" alt="User Icon" />
+                                  {{ $data->user->username ?? 'N/A' }}
                                 </td>
                                 <td>{{ $data->created_at ? $data->created_at->format('M-d-Y') : 'N/A' }}</td>
                                 <td><a class="video-redirect" href="{{ URL::to('category/videos/'.$data->slug)}}">{{ $data->video_name ?? 'N/A' }}</a></td>
+                                <td>{{ $data->payment_gateway ? $data->payment_gateway : 'N/A' }}</td>
                                 <td>${{ number_format($data->total_amount, 2) }}</td>
                             </tr>
                         @empty
@@ -440,6 +438,7 @@ tr td:nth-last-child(9) {
                                 <th scope="col" class="text-center">User ID</th>
                                 <th scope="col">Name</th>
                                 <th>Status</th>
+                                <th>Type</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
@@ -448,18 +447,15 @@ tr td:nth-last-child(9) {
                             <tr>
                                 <td class="text-center">{{ $data->user_id ?? 'N/A' }}</td>
                                 <td>
-                                    @if ($data->user_name)
-                                        <img src="https://i.postimg.cc/FR5xjr4g/user.png" alt="User Icon" />
-                                        {{ $data->user_name }}
-                                    @else
-                                        N/A
-                                    @endif
+                                  <img src="https://i.postimg.cc/FR5xjr4g/user.png" alt="User Icon" />
+                                  {{ $data->user->username ?? 'N/A' }}
                                 </td>
                                 <td>
                                     <span style="background-color: {{ $data->stripe_status == 'active' ? '#eef2fe' : '#fff0ee' }}; color:{{$data->stripe_status == 'active' ? '#5487fa' : '#f33e5d'}};padding: 5px 14px;border-radius:20px;">
                                         {{ $data->stripe_status }}
                                     </span>
                                 </td>
+                                <td>{{ $data->PaymentGateway ? $data->PaymentGateway : 'N/A' }}</td>
                                 
                                 <td>${{ number_format((float) $data->price, 2) }}</td>
                             </tr>
