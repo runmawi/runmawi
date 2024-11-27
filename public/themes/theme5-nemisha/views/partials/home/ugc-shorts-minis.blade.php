@@ -112,7 +112,7 @@
         <div class="col-6">          
              <a  href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $eachshortsminis->slug ?>" class="m-1">
                         <div class="shorts-minis-videos" style="position: relative;" >
-                             <img class="flickity-lazyloaded" src="<?php echo URL::to('/').'/public/uploads/images/'.$eachshortsminis->image;  ?>" alt="<?php echo $eachshortsminis->title; ?>">
+                             <img class="w-100 h-50" src="<?php echo URL::to('/').'/public/uploads/images/'.$eachshortsminis->image;  ?>" alt="<?php echo $eachshortsminis->title; ?>">
                         </div>
                         <div class="text-white pt-3">
                             <h6><?php  echo (strlen($eachshortsminis->title) > 17) ? substr($eachshortsminis->title,0,18).'...' : $eachshortsminis->title; ?></h6>

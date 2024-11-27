@@ -55,7 +55,7 @@
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid flickity-lazyload"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_video->image; ?>" class="img-fluid w-100 h-50"
                             alt="<?php echo $latest_view_video->title; ?>">
 
                         <!-- PPV price -->

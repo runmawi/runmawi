@@ -31,7 +31,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="AudioGenre">
+                <img src="<?php echo URL::to('/').'/public/uploads/audios/'.@$Audio_Category->image;  ?>" class="img-fluid w-100 h-50 " alt="AudioGenre">
 
               </div>
 

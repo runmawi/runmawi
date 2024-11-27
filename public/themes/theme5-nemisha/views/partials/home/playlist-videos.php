@@ -30,7 +30,7 @@
                              <!-- block-images -->
             <div class="block-images position-relative">
               <div class="img-box">
-              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $VideoPlaylist->name; ?>">
+              <img src="<?php  echo URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $VideoPlaylist->name; ?>">
 
               </div>
 

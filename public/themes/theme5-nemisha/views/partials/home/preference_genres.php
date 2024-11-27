@@ -12,7 +12,7 @@
                 <div class="block-images position-relative">
                     <div class="img-box">
                         <a href="<?php echo URL::to('category') ?><?= '/videos/' . $preference_genre->slug ?>">
-                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" class="img-fluid w-100 h-50 flickity-lazyloaded" alt="<?php echo $preference_genre->title; ?>">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $preference_genre->title; ?>">
                             <!--<video width="100%" height="auto" class="play-video lazy" poster="<?php echo URL::to('/').'/public/uploads/images/'.$preference_genre->image;  ?>" data-play="hover">
                                 <source src="<?php echo $preference_genre->trailer;  ?>" type="video/mp4" />
                             </video>-->
