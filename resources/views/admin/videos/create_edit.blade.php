@@ -1251,7 +1251,7 @@ button[data-plyr="captions"] {
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
                            {{-- ADS Management --}}
-                  @include('admin.videos.create_edit_ads_fieldset'); 
+                  @include('admin.videos.create_edit_ads_fieldset')
             </form>
          </div>
       </div>
@@ -3043,7 +3043,7 @@ $(document).ready(function(){
 
    </script>
 
-@include('admin.videos.Ads_edit_videos'); 
+@include('admin.videos.Ads_edit_videos')
 
 @section('javascript')
 @stop
