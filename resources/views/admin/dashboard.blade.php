@@ -411,7 +411,7 @@
                
             </div>
             <div class="row">
-               <div class="col-sm-12  col-lg-5">
+               {{-- <div class="col-sm-12  col-lg-5">
                   <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
                         <div class="iq-header-title">
@@ -438,14 +438,14 @@
                         ?>                      
                      </div>
                   </div>
-               </div>
+               </div> --}}
                <div class="col-lg-7">
-                  <div class=" iq-card-block iq-card-stretch iq-card-height">
+                  {{-- <div class=" iq-card-block iq-card-stretch iq-card-height">
                      <div class="iq-card-header d-flex align-items-center justify-content-between">
                         <div class="iq-header-title">
                            <h4 class="card-title">Top Category</h4>
                         </div>
-                        <!-- <div class="iq-card-header-toolbar d-flex align-items-center seasons">
+                         <div class="iq-card-header-toolbar d-flex align-items-center seasons">
                            <div class="iq-custom-select d-inline-block sea-epi s-margin">
                               <select name="cars" class="form-control season-select">
                                  <option value="season1">Today</option>
@@ -453,7 +453,7 @@
                                  <option value="season2">This Month</option>
                               </select>
                            </div>
-                        </div> -->
+                        </div> 
                      </div>
                      <div class="iq-card-body row align-items-center">
                         <div class="col-lg-12">
@@ -484,7 +484,7 @@
                            <div id="view-chart-02" class="view-cahrt-02"></div>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                </div>
                <div class="col-sm-12 mt-4">
                   <div class="">
