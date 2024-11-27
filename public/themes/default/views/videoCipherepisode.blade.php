@@ -280,7 +280,7 @@
                                 </h4>
                                 <div class="clear"></div>
                             </div>
-                            @if(!Auth::guest() && !empty($episode_details->playbackmessage))
+                            @if(!Auth::guest() && !empty($episode_details->playbackmessage) && 1 == 0)
                                 <div class="fallback-message" style="color: white; text-align: center; margin-top: 20px;">
                                     <p style='position: absolute;margin-left: 32%;margin-top: -15%;'>Video is not available at the moment. Please try again later.</p>
                                     <div class="col-md-12 text-center mt-4">

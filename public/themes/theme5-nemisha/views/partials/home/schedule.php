@@ -17,7 +17,7 @@ $id = Auth::user()->id ; } else { $id = 0 ; } ?>
                              <div class="block-images position-relative">
                                 <div class="img-box">
                                 <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">
-                                   <img src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100 h-50 flickity-lazyloaded" alt="<?php echo $Schedule->name; ?>"></a>  
+                                   <img src="<?php echo $Schedule->image;  ?>" class="img-fluid loading w-100 h-50" alt="<?php echo $Schedule->name; ?>"></a>  
                                 </div>
                                 <div class="block-description">
                                      <a  href="<?php echo URL::to("/schedule/videos/embed") ?><?= '/' . $Schedule->name ?>">

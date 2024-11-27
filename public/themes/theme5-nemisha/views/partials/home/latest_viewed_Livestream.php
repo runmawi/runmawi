@@ -44,7 +44,7 @@
 
                     <!-- block-images -->
                     <div class="img-box">
-                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_livestreams->image; ?>" class="img-fluid lazyload w-100"
+                        <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_view_livestreams->image; ?>" class="img-fluid w-100 h-50"
                             alt="<?php echo $latest_view_livestreams->title; ?>">
 
                         <!-- PPV price -->

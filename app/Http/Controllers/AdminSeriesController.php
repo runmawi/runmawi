@@ -1729,6 +1729,8 @@ class AdminSeriesController extends Controller
         ->where('season_id' ,'=', $season_id)->orderBy('episode_order')->get();
         $compress_image_settings = CompressImage::first();
         $season_name = SeriesSeason::where('id', $season_id)->pluck('series_seasons_name')->first();
+        $series_seasons_type = SeriesSeason::where('id', $season_id)->pluck('series_seasons_type')->first();
+
         // dd($season_name);
 
         $StorageSetting = StorageSetting::first();
@@ -1869,6 +1871,7 @@ class AdminSeriesController extends Controller
                 'theme_settings' => $theme_settings ,
                 'season_name'        => $season_name,
                 'FlussonicUploadlibrary' => $FlussonicUploadlibrary ,
+                'series_seasons_type'        => $series_seasons_type,
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
@@ -2461,6 +2464,8 @@ class AdminSeriesController extends Controller
 
         $subtitle = SeriesSubtitle::where('episode_id', '=', $id)->get();
 
+        $series_seasons_type = SeriesSeason::where('id', $episodes->season_id)->pluck('series_seasons_type')->first();
+
         $post_route =  URL::to('admin/episode/update');
 
         $data = array(
@@ -2482,6 +2487,7 @@ class AdminSeriesController extends Controller
                 'page'  => 'Edit',
                 'playerui_settings'  => Playerui::first(),
                 'playerui'  => Playerui::first(),
+                'series_seasons_type' => $series_seasons_type,
             );
 
         if($theme_settings->enable_video_cipher_upload == 1){
@@ -2816,6 +2822,9 @@ class AdminSeriesController extends Controller
         $episode->episode_id_480p = ( !empty($data["episode_id_480p"])) ? $data["episode_id_480p"] : null;
         $episode->episode_id_720p = (!empty($data["episode_id_720p"])) ? $data["episode_id_720p"] : null;
         $episode->episode_id_1080p =( !empty($data["episode_id_1080p"])) ? $data["episode_id_1080p"] : null;
+        $episode->url =  !empty($data['m3u8_url']) ? $data['m3u8_url'] : null;
+        $episode->mp4_url =  !empty($data['mp4_url']) ? $data['mp4_url'] : null;
+        $episode->embed_video_url =  !empty($data['embed_video_url']) ? $data['embed_video_url'] : null;
         $episode->status =  1;
 
         // {{--Ads Video.Js Player--}}
@@ -4908,11 +4917,10 @@ class AdminSeriesController extends Controller
         
         $data = $request->all();
         $settings =Setting::first();
-
+     
         $createdEpisode = Episode::create([
             'title' => $request->title,
         ]);
-
         if(!empty($data['ppv_price'])){
             $ppv_price = $data['ppv_price'];
             $ppv_price = null;
@@ -4926,10 +4934,19 @@ class AdminSeriesController extends Controller
         $id = $createdEpisode->id;
         $episodes = Episode::findOrFail($id);
 
+        if(!empty($data['m3u8_url'])){
+            $episodes->type = 'm3u8_url';
+        }else if(!empty($data['mp4_url'])){
+            $episodes->type = 'file';
+        }else if(!empty($data['embed_video_url'])){
+            $episodes->type = 'embed_video_url';
+        }
+        
         if($episodes->type == 'm3u8'){
             $type = 'm3u8';
+        }else if($episodes->type == 'embed_video_url'){
+            $type = 'embed_video_url';
         } 
-        
         elseif($episodes->type == 'aws_m3u8'){
             $type = 'aws_m3u8';
         }elseif($episodes->type == 'm3u8_url'){
@@ -5242,9 +5259,12 @@ class AdminSeriesController extends Controller
             $episodes->responsive_image =  $data['responsive_image'];
             $episodes->responsive_player_image =  $data['responsive_player_image'];
             $episodes->responsive_tv_image =  $data['responsive_tv_image'];
-            $episodes->episode_id_480p =  $data['episode_id_480p'];
-            $episodes->episode_id_720p =  $data['episode_id_720p'];
-            $episodes->episode_id_1080p =  $data['episode_id_1080p'];
+            $episodes->episode_id_480p =  !empty($data['episode_id_480p']) ? $data['episode_id_480p'] : null;
+            $episodes->episode_id_720p =  !empty($data['episode_id_720p']) ? $data['episode_id_720p'] : null;
+            $episodes->episode_id_1080p =  !empty($data['episode_id_1080p']) ? $data['episode_id_1080p'] : null;
+            $episodes->url =  !empty($data['m3u8_url']) ? $data['m3u8_url'] : null;
+            $episodes->mp4_url =  !empty($data['mp4_url']) ? $data['mp4_url'] : null;
+            $episodes->embed_video_url =  !empty($data['embed_video_url']) ? $data['embed_video_url'] : null;
             $episodes->status =  1;
             
             // {{-- Ads Video.Js Player--}}
