@@ -485,11 +485,9 @@ border-radius: 0px 4px 4px 0px;
 
                </div> 
 
-               <div class="row d-flex justify-content-end">
                   <button type="submit" class="btn btn-primary" value="{{ $button_text }}" style="margin: 10px 0px;">{{ $button_text }}</button>
                   <input type="button" name="next" id="next2" class="next action-button" value="Next" />
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-               </div>
                </fieldset>
                <fieldset class="Next3" id="videocategory_data">
                <div class="form-card">
@@ -1012,11 +1010,9 @@ border-radius: 0px 4px 4px 0px;
                    </div>
                 </div> 
 
-                  <div class="row justify-content-end">
                      <button type="submit" class="btn btn-primary " value="{{ $button_text }}" style="margin: 10px 0;">{{ $button_text }}</button>
                      <input type="button" name="next" class="next action-button" value="Next" id="nextppv" />
                      <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                  </div>
                </fieldset>
 
                <fieldset id="upload_datas">
@@ -1215,11 +1211,9 @@ border-radius: 0px 4px 4px 0px;
                      </div>
 
                   </div>
-                  <div class="row d-flex justify-content-end">
                      <button type="submit" class="btn btn-primary update_upload_img" value="{{ $button_text }}" style="margin: 10px 0;">{{ $button_text }}</button>
                      <input type="button" name="next" class="next action-button update_upload_img" value="Next" />
                      <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                  </div>
               
                </fieldset>
               
