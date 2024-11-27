@@ -41,6 +41,7 @@
                 echo '';
             } ?></a>
     </h5>
+    <a class="see" href="<?php echo !empty($order_settings_list[15]->header_name) ? URL::to('/') . '/' . $order_settings_list[15]->url : ""; ?>"> See All </a>
 </div>
 
 <div class="favorites-contens"> 
@@ -72,8 +73,8 @@
 
                 <div class="block-description">
                     <div class="hover-buttons text-white">
-                        <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> <img
-                                class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" /> </a>
+                        <a class="" href="<?php echo URL::to('category'); ?><?= '/videos/' . $latest_view_video->slug ?>"> 
+                            <img class="ply" src="<?php echo URL::to('/') . '/assets/img/default_play_buttons.svg'; ?>" alt="play" /> </a>
                         <div></div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@
 @endphp
 
 <div class="favorites-contens data" >
-    <ul class="category-page list-inline  row p-0 mb-4">
+    <ul class="category-page list-inline  row p-0 m-0">
         <?php if (count($categoryVideos['categoryVideos']) > 0) { ?>         
                 @forelse($categoryVideos['categoryVideos'] as $key => $videos)
 

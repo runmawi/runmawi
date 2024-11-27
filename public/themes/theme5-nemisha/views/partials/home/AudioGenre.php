@@ -1,4 +1,3 @@
-
 <?php 
      if(isset($latest_series)) :
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
@@ -21,6 +20,7 @@
   ?>
   </a>
   </h5>  
+  <a class="see" href="<?php echo  $order_settings_list->header_name ? url('/' . $order_settings_list->url) : ''; ?>"> See All </a>
 </div>
 <div class="favorites-contens"> 
   <div class="audio-genre home-sec list-inline row p-0 mb-0">
