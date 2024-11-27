@@ -91,15 +91,15 @@
                 <div class="col-sm-12 ">
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <!-- <h4 class="main-title"><a href="<?php echo URL::to('home') ?>">Latest Videos</a></h4> -->
-                        <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
+                        <a href="<?php echo URL::to('/category/').'/'.$video_category->slug;?>" class="category-heading" style="text-decoration: none; color: #fff;">
                             <h4 class="movie-title">
                                 <?php 
-                                if(!empty($category->home_genre)){ echo optional($video_category)->name ; }else{ echo optional($video_category)->name ; }  
+                                if(!empty($video_category->home_genre)){ echo optional($video_category)->name ; }else{ echo optional($video_category)->name ; }  
                                 //   echo __($category->name);
                                 ?>
                             </h4>
                         </a>
-                        <a href="<?php echo URL::to('/category/').'/'.$category->slug;?>" class="see" >See All</a>
+                        <a href="<?php echo URL::to('/category/').'/'.$video_category->slug;?>" class="see" >See All</a>
                     </div>
                     <div class="favorites-contens">
                             <div class="video-based-categories home-sec list-inline row p-0 mb-0" id="video-category-{{ $key }}">

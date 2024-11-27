@@ -95,6 +95,55 @@
             }
         });
 
+
+         // Continue watching script
+         function EpisodeContinueWatching(episodeId, duration, currentTime) {
+            if (duration > 0) {
+                var watch_percentage = (currentTime * 100 / duration);
+                $.ajax({
+                    url: "<?php echo URL::to('EpisodeContinueWatching');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        episode_id: episodeId,
+                        duration: duration,
+                        currentTime: currentTime,
+                        watch_percentage: watch_percentage,
+                    },
+                });
+            }
+            // console.log('duration: ' + duration);
+            // console.log('currentTime: ' + currentTime);
+            // console.log('watch_percentage: ' + watch_percentage);
+        }
+
+
+        player.on('loadedmetadata', function() {
+            // console.log('Video metadata loaded');
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+
+                updateNextEpisodeButtonOpacity(duration, currentTime);
+
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                EpisodeContinueWatching(episodeId, duration, currentTime);
+            });
+        });
+
+
        
         let viewCountSent = false;
 

@@ -4,6 +4,7 @@
     <?php if ($order_settings_list[6]->header_name) { echo $order_settings_list[6]->header_name ;} else { echo "" ; } ?>
     <!-- Albums -->
 </a></h5>      
+<a href="<?php if ($order_settings_list[6]->header_name) { echo URL::to('/').'/'.$order_settings_list[6]->url ;} else { echo "" ; } ?>" class="see" >See All</a>
 </div>
 <div class="favorites-contens"> 
    <div class="latest-albums home-sec list-inline row p-0 mb-0">
