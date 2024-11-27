@@ -31,7 +31,7 @@
 </style>
 
 
-<fieldset id="ads_data">
+<section id="ads_eidt_files">
 
    <div class="form-card">
       <div class="row">
@@ -556,4 +556,4 @@
 
    <button type="submit" class="btn btn-primary mr-2" value="{{ $button_text }}">{{ $button_text }}</button>
    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-</fieldset>
+</section>

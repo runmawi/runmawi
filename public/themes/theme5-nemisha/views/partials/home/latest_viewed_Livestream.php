@@ -31,6 +31,7 @@
                 echo '';
             } ?></a>
     </h5>
+    <a href="<?php if ($order_settings_list[16]->header_name) { echo URL::to('/').'/'.$order_settings_list[16]->url ;} else { echo "" ; } ?>" class="see" >See All</a>
 </div>
 
 <div class="favorites-contens"> 

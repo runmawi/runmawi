@@ -174,6 +174,48 @@
             }
         });
 
+        function saveContinueWatching(videoId, duration, currentTime) {
+            if (duration > 0) {
+                var watch_percentage = (currentTime * 100 / duration);
+                $.ajax({
+                    url: "<?php echo URL::to('saveContinueWatching');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        duration: duration,
+                        currentTime: currentTime,
+                        watch_percentage: watch_percentage,
+                    },
+                });
+            }
+            console.log('duration: ' + duration);
+            console.log('currentTime: ' + currentTime);
+            console.log('watch_percentage: ' + watch_percentage);
+        }
+
+        player.on('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+
+            window.addEventListener('beforeunload', function() {
+                var currentTime = player.currentTime();
+                var duration = player.duration();
+                saveContinueWatching(videoId, duration, currentTime);
+            });
+        });
+
 
         // Skip Intro & Skip Recap 
 

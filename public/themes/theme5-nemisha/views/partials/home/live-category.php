@@ -12,6 +12,7 @@
                         //   echo __($category->name);
                           ?>
                     </h4>
+                    <a href="<?php echo URL::to('/live/category/').'/'.$category->slug;?>" class="see" >See All</a>
                 </a>
             </div>
 
