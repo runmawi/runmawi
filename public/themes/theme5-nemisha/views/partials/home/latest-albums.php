@@ -14,7 +14,7 @@
          <div class="block-images position-relative">
                              <!-- block-images -->
             <div class="img-box">
-            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid img-zoom w-100 h-50 flickity-lazyloaded" alt="<?php echo $album->albumname; ?>">
+            <img src="<?php echo URL::to('/').'/public/uploads/albums/'.$album->album;?>" class="img-fluid flickity-lazyloaded" alt="<?php echo $album->albumname; ?>">
             </div>  </div>
             <div class="block-description" >  </div>
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" aria-label="Podcasts">

@@ -1152,13 +1152,13 @@
                                 </a>
                                 <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                                 <a class="navbar-brand mb-0" href="<?php echo URL::to('home'); ?>"> <img
-                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->light_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
+                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->light_mode_logo; ?>" class="c-logo logo-img" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?>
                                 <a class="navbar-brand mb-0" href="<?php echo URL::to('home'); ?>"> <img
-                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
+                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>" class="c-logo logo-img" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php }else { ?>
                                 <a class="navbar-brand mb-0" href="<?php echo URL::to('home'); ?>"> <img
-                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" class="c-logo" alt="<?php echo $settings->website_name; ?>"> </a>
+                                        src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" class="c-logo logo-img" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php } ?>
 
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -2363,6 +2363,16 @@
                     required: "This Search field is required",
                 }
                 }
+            });
+
+            //  width and height set dynamically
+            var images = document.querySelectorAll('.logo-img');
+            images.forEach(function(image) {
+                var renderedWidth = image.clientWidth;
+                var renderedHeight = image.clientHeight;
+
+                image.setAttribute('width', renderedWidth);
+                image.setAttribute('height', renderedHeight);
             });
         </script>
 

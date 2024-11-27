@@ -91,7 +91,7 @@
             <div>
                 <a href="<?php echo route('profile.show', ['username' => $user->username]); ?>" >
                 <div>
-                    <img style="height: 80px; width: 80px;" loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/avatars/'.$user->avatar;  ?>" class="rounded-circle img-fluid text-center m-2" alt="<?php echo $user->username; ?>">
+                    <img style="height: 80px; width: 80px;" src="<?php echo URL::to('/').'/public/uploads/avatars/'.$user->avatar;  ?>" class="rounded-circle img-fluid text-center m-2" alt="<?php echo $user->username; ?>">
                 </div>
                 <div class="text-center">
                     <p> <?php echo $user->username ?> </p>
@@ -112,7 +112,7 @@
         <div class="col-6">          
              <a  href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $eachshortsminis->slug ?>" class="m-1">
                         <div class="shorts-minis-videos" style="position: relative;" >
-                             <img loading="lazy" data-src="<?php echo URL::to('/').'/public/uploads/images/'.$eachshortsminis->image;  ?>" alt="<?php echo $eachshortsminis->title; ?>">
+                             <img class="flickity-lazyloaded" src="<?php echo URL::to('/').'/public/uploads/images/'.$eachshortsminis->image;  ?>" alt="<?php echo $eachshortsminis->title; ?>">
                         </div>
                         <div class="text-white pt-3">
                             <h6><?php  echo (strlen($eachshortsminis->title) > 17) ? substr($eachshortsminis->title,0,18).'...' : $eachshortsminis->title; ?></h6>
