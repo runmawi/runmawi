@@ -6,6 +6,8 @@
                  <?php if ($order_settings_list[1]->header_name) { echo $order_settings_list[8]->header_name ;} else { echo "" ; } ?>
             </a>
         </h5>  
+<a href="<?php if ($order_settings_list[8]->header_name) { echo URL::to('/').'/'.$order_settings_list[8]->url ;} else { echo "" ; } ?>" class="see" >See All</a>
+
 </div>
 <div class="favorites-contens"> 
     <div class="artist-video home-sec list-inline row p-0 mb-0">

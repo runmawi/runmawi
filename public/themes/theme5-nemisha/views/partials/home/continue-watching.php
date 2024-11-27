@@ -2,8 +2,8 @@
 <?php  if(!Auth::guest() && !empty($data['password_hash'])) { 
  $id = Auth::user()->id ; } else { $id = 0 ; } ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
-    <h5 class="main-title"><a href="<?php echo URL::to('continue-watching-list') ?>">Continue Watching</a></h5>
-    <a class="see" href="<?php echo URL::to('continue-watching-list') ?>">See All</a>
+    <h5 class="main-title"><a href="<?php echo URL::to('continue_watching_list') ?>">Continue Watching</a></h5>
+    <a class="see" href="<?php echo URL::to('continue_watching_list') ?>">See All</a>
 </div>
 <div class="favorites-contens"> 
 <div class="continue-watching home-sec list-inline row p-0 mb-0">
