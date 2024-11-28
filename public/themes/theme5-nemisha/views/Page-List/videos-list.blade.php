@@ -1,4 +1,3 @@
-
 @php
     include public_path("themes/{$current_theme}/views/header.php");
 @endphp

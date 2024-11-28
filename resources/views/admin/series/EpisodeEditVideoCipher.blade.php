@@ -238,22 +238,41 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                          {{-- for validate --}} 
                     <input type="hidden" id="check_Tv_image" name="check_Tv_image" value="@if(!empty($episodes->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
                     <div class="row">
+                    @if($series_seasons_type == 'VideoCipher')
 
-                    <div class="col-sm-6">
-                        <label class="m-0">Choose Episode ID for 480p </label>
-                        <p class="p1">Episode ID for 480p Plan</p>
-                        <input class="form-control" name="episode_id_480p" id="episode_id_480p" value="@if(!empty($episodes->episode_id_480p)){{ $episodes->episode_id_480p }}@endif"/>
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="m-0">Choose Episode ID for 720p </label>
-                        <p class="p1">Episode ID for 720p Plan</p>
-                        <input class="form-control" name="episode_id_720p" id="episode_id_720p" value="@if(!empty($episodes->episode_id_720p)){{ $episodes->episode_id_720p }}@endif"/>
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="m-0">Choose Episode ID for 1080p </label>
-                        <p class="p1">Episode ID for 1080p Plan</p>
-                        <input class="form-control" name="episode_id_1080p" id="episode_id_1080p" value="@if(!empty($episodes->episode_id_1080p)){{ $episodes->episode_id_1080p }}@endif"/>
-                    </div>
+                        <div class="col-sm-6">
+                            <label class="m-0">Choose Episode ID for 480p </label>
+                            <p class="p1">Episode ID for 480p Plan</p>
+                            <input class="form-control" name="episode_id_480p" id="episode_id_480p" value="@if(!empty($episodes->episode_id_480p)){{ $episodes->episode_id_480p }}@endif"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="m-0">Choose Episode ID for 720p </label>
+                            <p class="p1">Episode ID for 720p Plan</p>
+                            <input class="form-control" name="episode_id_720p" id="episode_id_720p" value="@if(!empty($episodes->episode_id_720p)){{ $episodes->episode_id_720p }}@endif"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="m-0">Choose Episode ID for 1080p </label>
+                            <p class="p1">Episode ID for 1080p Plan</p>
+                            <input class="form-control" name="episode_id_1080p" id="episode_id_1080p" value="@if(!empty($episodes->episode_id_1080p)){{ $episodes->episode_id_1080p }}@endif"/>
+                        </div>
+                        @elseif($series_seasons_type == 'm3u8')
+                            <div class="col-sm-12">
+                                <label class="m-0">Upload M3U8 URL </label>
+                                <input class="form-control m3u8_url" name="m3u8_url" id="m3u8_url"  value="@if(!empty($episodes->url)){{ $episodes->url }}@endif" />
+                            </div>
+
+                        @elseif($series_seasons_type == 'videomp4')
+                            <div class="col-sm-12">
+                                <label class="m-0">Upload MP4 URL </label>
+                                <input class="form-control mp4_url" name="mp4_url" id="mp4_url"  value="@if(!empty($episodes->mp4_url)){{ $episodes->mp4_url }}@endif" />
+                            </div>
+                        @elseif($series_seasons_type == 'embed_video')
+                            <div class="col-sm-12">
+                                <label class="m-0">Upload Embeded URL </label>
+                                <input class="form-control embed_video_url" name="embed_video_url" id="embed_video_url"  value="@if(!empty($episodes->embed_video_url)){{ $episodes->embed_video_url }}@endif" />
+                            </div>
+
+                        @endif
 
                         {{-- for validate --}} 
                     <input type="hidden" id="check_Tv_image" name="check_Tv_image" value="@if(!empty($episodes->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />

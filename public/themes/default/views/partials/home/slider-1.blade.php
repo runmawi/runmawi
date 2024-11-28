@@ -414,7 +414,7 @@
         z-index: 0;
     }
 
-
+#home-slider .flickity-viewport{height: calc(100vw / 3.5) !important;}
 
     ._banner_img {
         position: relative;

@@ -277,6 +277,7 @@
                         </div>
     
                     </div>
+                    @if($series_seasons_type == 'VideoCipher')
                     <div class="col-sm-12 row">
 
                         <div class="col-sm-6">
@@ -295,19 +296,42 @@
                             <p class="p1">Episode ID for 1080p Plan</p>
                             <input class="form-control episode_id_group" name="episode_id_1080p" id="episode_id_1080p" />
                         </div>
-                        
-                             {{-- for validate --}} 
+                    
+                    </div>
+                    @elseif($series_seasons_type == 'm3u8')
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <label class="m-0">Upload M3U8 URL </label>
+                            <input class="form-control m3u8_url" name="m3u8_url" id="m3u8_url" />
+                        </div>
+                    </div>
+
+                    @elseif($series_seasons_type == 'videomp4')
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <label class="m-0">Upload MP4 URL </label>
+                            <input class="form-control mp4_url" name="mp4_url" id="mp4_url" />
+                        </div>
+                    </div>
+                    @elseif($series_seasons_type == 'embed_video')
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <label class="m-0">Upload Embeded URL </label>
+                            <input class="form-control embed_video_url" name="embed_video_url" id="embed_video_url" />
+                        </div>
+                    </div>
+                    @endif
+
+                                      {{-- for validate --}} 
                         <input type="hidden" id="check_Tv_image" name="check_Tv_image" value="@if(!empty($episodes->tv_image) ) {{ "validate" }} @else {{ " " }} @endif"  />
 
                         <div class="col-sm-12">
                             <label class="m-0"> Episode Description </label>
                             <p class="p1"> Add a description of the Episode below: </p> 
                             <div class="panel-body">
-                                <textarea class="form-control description_editor" name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
+                                <textarea class="form-control " name="episode_description" id="description_editor"> @if(!empty($episodes->episode_description)){{ ($episodes->episode_description) }} @endif </textarea>
                             </div>
                         </div>
-                    </div>
-
                     <div class="row mt-3">
                         <div class="col-sm-12">
                             <div class="panel panel-primary" data-collapsed="0">

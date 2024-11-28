@@ -1245,13 +1245,17 @@ button[data-plyr="captions"] {
                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                   <button type="submit" class="btn btn-primary update_upload_img" style = "margin-left: 26%;position: absolute;margin-top: .8%;" value="{{ $button_text }}">{{ $button_text }}</button>
               </fieldset>
-                        <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
-                        <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
-                        <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
-                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+              <fieldset id="ads_data">
+               {{-- ADS Management --}}
+                     
+                     <input type="hidden" id="selectedImageUrlInput" name="selected_image_url" value="">
+                     <input type="hidden" id="videoImageUrlInput" name="video_image_url" value="">
+                     <input type="hidden" id="SelectedTVImageUrlInput" name="selected_tv_image_url" value="">
+                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 
-                           {{-- ADS Management --}}
-                  @include('admin.videos.create_edit_ads_fieldset')
+                     @include('admin.videos.create_edit_ads_fieldset')
+
+              </fieldset>
             </form>
          </div>
       </div>
@@ -1383,7 +1387,8 @@ button[data-plyr="captions"] {
    box-shadow: 0px 0px 15px #e1e1e1; */
        padding: 0;
    }
-   #progressbar li.active {
+   
+   body.light #progressbar li.active ,#progressbar li.active {
    color: #000000!important; font-weight:500;
    }
    #progressbar li {
@@ -1444,9 +1449,10 @@ button[data-plyr="captions"] {
    top: 25px;
    z-index: -1
    }
-   #progressbar li.active:before, #progressbar li.active:after {
+
+   /* #progressbar li.active:before, #progressbar li.active:after {
    background: #48bbe5;
-   }
+   } */
    .fit-image {
    width: 100%;
    object-fit: cover
@@ -2074,71 +2080,60 @@ $('#error_video_Category').hide();
       // $('#upload_datas').hide();
       // $('#ads_data').hide();
 
-   $('#videot').click(function(){
-      $(".progress-bar").css({"width":"17%"});
-      $('#player_data').show();
-      $('#slug_validate').hide();
-      $('#videocategory_data').hide();
-      $('#video_access_data').hide();
-      $('#upload_datas').hide();
-      $('#ads_data').hide();
-
-   });
-   $('#account').click(function(){
-      $(".progress-bar").css({"width":"33%"});
-     $('#player_data').hide();
-      $('#slug_validate').show();
-      $('#videocategory_data').hide();
-      $('#video_access_data').hide();
-      $('#upload_datas').hide();
-      $('#ads_data').hide();
-
-   });
-   $('#personal').click(function(){
-
-      $(".progress-bar").css({"width":"50%"});
-
-      $('#player_data').hide();
-      $('#slug_validate').hide();
-      $('#videocategory_data').show();
-      $('#video_access_data').hide();
-      $('#upload_datas').hide();
-      $('#ads_data').hide();
-
-   });
-   $('#useraccess_ppvprice').click(function(){
-      $(".progress-bar").css({"width":"67%"});
-
-      $('#player_data').hide();
-      $('#slug_validate').hide();
-      $('#videocategory_data').hide();
-      $('#video_access_data').show();
-      $('#upload_datas').hide();
-      $('#ads_data').hide();
-
-   });
-   $('#payment').click(function(){
-      $(".progress-bar").css({"width":"83%"});
-
-      $('#player_data').hide();
-      $('#slug_validate').hide();
-      $('#videocategory_data').hide();
-      $('#video_access_data').hide();
-      $('#upload_datas').show();
-      $('#ads_data').hide();
-
-   });
-   $('#confirm').click(function(){
-      $(".progress-bar").css({"width":"100%"});
-
+   // Function to handle tab switching
+   function switchTab(tabId, progressWidth) {
+      $(".progress-bar").css({ "width": progressWidth });
+      
+      // Hide all sections
       $('#player_data').hide();
       $('#slug_validate').hide();
       $('#videocategory_data').hide();
       $('#video_access_data').hide();
       $('#upload_datas').hide();
-      $('#ads_data').show();
+      $('#ads_data').hide();
 
+      // Show the current section
+      $(tabId).show();
+   }
+
+   // Tab click event handlers
+   $('#videot').click(function() {
+      switchTab('#player_data', '17%');
+      $('#player_data').css('opacity','1');
+      $("#videot").addClass("active");
    });
+
+   $('#account').click(function() {
+      switchTab('#slug_validate', '33%');
+      $('#slug_validate').css('opacity','1');
+      $("#account").addClass("active");
+   });
+
+   $('#personal').click(function() {
+      switchTab('#videocategory_data', '50%');
+      $('#videocategory_data').css('opacity','1');
+      $("#personal").addClass("active");
+   });
+
+   $('#useraccess_ppvprice').click(function() {
+      switchTab('#video_access_data', '67%');
+      $('#video_access_data').css('opacity','1');
+      $("#useraccess_ppvprice").addClass("active");
+   });
+
+   $('#payment').click(function() {
+      switchTab('#upload_datas', '83%');
+      $('#upload_datas').css('opacity','1');
+      $("#payment").addClass("active");
+   });
+
+   $('#confirm').click(function() {
+      switchTab('#ads_data', '100%');
+      $('#ads_data').css('opacity','1');
+      $('#ads_eidt_files').css('opacity','1');
+      $('#ads_eidt_files').show();
+   });
+
 });
    $(document).ready(function($){
       
