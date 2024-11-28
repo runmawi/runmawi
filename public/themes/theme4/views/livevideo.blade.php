@@ -238,6 +238,8 @@
     div#video\ sda{position:relative;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .my-video.vjs-fluid{height: calc(100vh - 70px)!important;}
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     @media (max-width: 500px) {
         .category-name {
             display: inline-block;

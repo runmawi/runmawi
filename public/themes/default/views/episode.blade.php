@@ -71,6 +71,8 @@
         display:none;
     }
     #episode-player_ima-ad-container div{ overflow:hidden;}
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     #episode-player { position: relative; }
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     #series_container { position: relative;}
