@@ -190,7 +190,8 @@
     }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
-    /* .staticback-btn{display:none;} */
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     .custom-skip-backward-button .custom-skip-forward-button{font-size: 45px;color: white;}
 </style>

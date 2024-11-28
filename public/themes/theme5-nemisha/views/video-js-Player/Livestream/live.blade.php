@@ -197,6 +197,8 @@
     body.dark-theme .modal-content{background-color: <?php echo GetAdminDarkBg(); ?>!important;;color: <?php echo GetAdminDarkText(); ?>;} /* #9b59b6 */
  
     div#video\ sda{position:relative;}
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 2%; left:1%; color: white; border: none; cursor: pointer; font-size:25px; }
     @media (max-width: 500px) {
         .category-name {
