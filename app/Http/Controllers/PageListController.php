@@ -651,9 +651,16 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
+                'page_list' => $latest_viewed_live_paginate,
+                'base_url' => 'category/videos',
+                'header_name' => $order_settings_list[16]->header_name,
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.videos-list', $data);
+            } else {
             return Theme::view('Page-List.latest_viewed_live', $data);
+            }
 
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -821,9 +828,7 @@ class PageListController extends Controller
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
             );
-        
         return Theme::view('Page-List.continue-watching-list', $data);
-
         } catch (\Throwable $th) {
             return $th->getMessage();
             return abort(404);
@@ -861,9 +866,15 @@ class PageListController extends Controller
                 'Video_cnt'             => $FrontEndQueryController->VideoJsContinueWatching(),
                 'episode_cnt'           => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
                 'current_theme'         => $current_theme,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'currency'      => CurrencySetting::first(),
             );
             // dd($Video_cnt);
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.continue-watching-list', $data);
+            } else {   
             return Theme::view('Page-List.Continue-watching', $data);
+            }
             // return Theme::view('All-Videos.ContinueWatchingList', $respond_data);
 
         } catch (\Throwable $th) {
