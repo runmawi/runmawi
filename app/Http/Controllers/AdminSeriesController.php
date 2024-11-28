@@ -2533,7 +2533,7 @@ class AdminSeriesController extends Controller
         $episode  = Episode::findOrFail($id);
         $settings = Setting::first();
         $subtitles = isset($input["subtitle_upload"])? $input["subtitle_upload"] : "";
-
+        
         $searchtags = !empty($input['searchtags']) ? $input['searchtags'] :  $episode->searchtags ;
 
         if(empty($input['image']) && !empty($episode->image)){
@@ -2823,9 +2823,9 @@ class AdminSeriesController extends Controller
         $episode->episode_id_480p = ( !empty($data["episode_id_480p"])) ? $data["episode_id_480p"] : null;
         $episode->episode_id_720p = (!empty($data["episode_id_720p"])) ? $data["episode_id_720p"] : null;
         $episode->episode_id_1080p =( !empty($data["episode_id_1080p"])) ? $data["episode_id_1080p"] : null;
-        $episode->url =  !empty($data['m3u8_url']) ? $data['m3u8_url'] : null;
-        $episode->mp4_url =  !empty($data['mp4_url']) ? $data['mp4_url'] : null;
-        $episode->embed_video_url =  !empty($data['embed_video_url']) ? $data['embed_video_url'] : null;
+        $episode->url = !empty($episode->url) ? $episode->url : (!empty($data['m3u8_url']) ? $data['m3u8_url'] : null);
+        $episode->mp4_url = !empty($episode->mp4_url) ? $episode->mp4_url : (!empty($data['mp4_url']) ? $data['mp4_url'] : null);
+        $episode->embed_video_url = !empty($episode->embed_video_url) ? $episode->embed_video_url : (!empty($data['embed_video_url']) ? $data['embed_video_url'] : null);
         $episode->status =  1;
 
         // {{--Ads Video.Js Player--}}
