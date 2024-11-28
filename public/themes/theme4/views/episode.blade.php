@@ -63,6 +63,8 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     .slick-arrow{z-index: 99;}
     .slick-next{right:0;}
     .slick-prev{left:10px;}
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     .my-video.vjs-fluid{height: calc(100vh - 70px)!important;}
     @media only screen and (max-width: 600px) {
         .custom-skip-forward-button, .custom-skip-backward-button {

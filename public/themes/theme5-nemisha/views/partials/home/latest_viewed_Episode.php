@@ -30,6 +30,7 @@ if (Auth::guest() != true) {
             } ?>
         </a>
     </h5>
+    <a class="see" href="<?php echo !empty($order_settings_list[18]->header_name) ? URL::to('/') . '/' . $order_settings_list[18]->url : ""; ?>"> See All </a>
 </div>
 
 <div class="favorites-contens"> 

@@ -70,6 +70,10 @@
     background-size: 15px;
 }
 
+body.light-theme span{
+    color: white !important;
+}
+
 .video-js .vjs-mute-control .vjs-icon-placeholder:before {
     content: "";
     background-image: url(../../../../../images/VideoPlayer-icon/Volume.svg);
