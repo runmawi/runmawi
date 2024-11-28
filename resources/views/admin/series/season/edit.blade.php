@@ -216,14 +216,16 @@
 
 
             if (ppvAccess === 'ppv' && series_seasons_type == 'VideoCipher') {
+
                 $('#ppv_price_group').hide();
                 $('#ios_ppv_price_old').hide();
                 $('#ios_ppv_price').hide();
                 $('#ppv_intravel_group').show();
                 $('#ppv_price_plan').show();
+                $('#ios_ppv_price_plan').show();
 
                 if (ppvPrice === '' || iosPpvPrice === '' || ppvInterval === '') {
-                    $('#submit-update-cat').prop('disabled', true);
+                    // $('#submit-update-cat').prop('disabled', true);
                     if (ppvPrice === '') $('#ppv_error_req').show();
                     if (iosPpvPrice === '') $('#ios_error_req').show();
                     if (ppvInterval === '') $('#intravel_error_req').show();

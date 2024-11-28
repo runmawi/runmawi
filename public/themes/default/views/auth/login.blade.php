@@ -364,7 +364,7 @@
                             </form>
                             <div class="">
                         <div class="text -left links">
-                        {{ __("Don't have an account?") }} <a href="{{ route('signup') }}" class="text-primary ml-2">{{ __('Sign Up here!') }}</a>
+                        {{ __("Don't have an account?") }} <a href="{{ route('signup') }}" class="text-primary ml-2" style="font-weight: 600">{{ __('Sign Up Here!') }}</a>
                         </div>
                         
                     </div>
