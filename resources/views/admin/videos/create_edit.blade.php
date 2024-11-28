@@ -1925,7 +1925,9 @@ $('#error_video_Category').hide();
    	setInterval(function(){ 
    		$.getJSON('<?php echo URL::to("/admin/get_processed_percentage/");?>'+'/'+$("#id").val(), function(data) {
    			$('.low_bar').width(data.processed_low+'%');
-            if(data.processed_low == null){
+            if(data.processed_low == null && data.watermark_transcoding_progress == 1){
+   			$('.low_percent').html('Watermark encoding on the video, Transcoding will be started after watermark encoding completed.');
+            }else if(data.processed_low == null){
    			$('.low_percent').html('Transcoding is Queued. Waiting for Server to Respond');
             }else{
    			$('.low_percent').html(data.processed_low+'%');
