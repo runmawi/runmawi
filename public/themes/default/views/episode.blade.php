@@ -1621,7 +1621,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-minus-circle').toggleClass('fa fa-plus-circle');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(0deg 68% 50%); color: white; width: 20%;">Episode removed from watchlater</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1673,7 +1673,7 @@
                         $(id).find($(".fa")).toggleClass('fa fa-heart').toggleClass('fa ri-heart-line');
 
                         $("body").append(
-                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(11deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
+                            '<div class="remove_watch" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(0deg 68% 50%); color: white; width: 20%;">Episode removed from wishlist</div>'
                             );
                         setTimeout(function() {
                             $('.remove_watch').slideUp('fast');
@@ -1710,10 +1710,25 @@
                     dislikeButton.find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
                     dislikeButton.attr('data-list', episode_id);
                 }
+                
+                $("body").append(
+                    '<div class="like_added" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: #38742f; color: white; width: 20%;">You Liked This Video</div>'
+                );
+                setTimeout(function() {
+                    $('.like_added').slideUp('fast');
+                }, 3000);
+
             } else if (data.message === "Removed from Like Episode") {
                 // Toggle Like button back to outlined
                 $(ele).find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
                 $(ele).attr('data-list', episode_id);
+
+                $("body").append(
+                    '<div class="like_removed" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(0deg 68% 50%); color: white; width: 20%;">You Removed Like From This Video</div>'
+                );
+                setTimeout(function() {
+                    $('.like_removed').slideUp('fast');
+                }, 3000);
             }
         }
     });
@@ -1743,10 +1758,25 @@ function episodedislike(ele) {
                     likeButton.find('i').removeClass('ri-thumb-up-fill').addClass('ri-thumb-up-line');
                     likeButton.attr('data-list', episode_id);
                 }
+
+                $("body").append(
+                    '<div class="dislike_added" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: #38742f; color: white; width: 20%;">You  Disliked This Video</div>'
+                );
+                setTimeout(function() {
+                    $('.dislike_added').slideUp('fast');
+                }, 3000);
+
             } else if (data.message === "Removed from Dislike Episode") {
                 // Toggle Dislike button back to outlined
                 $(ele).find('i').removeClass('ri-thumb-down-fill').addClass('ri-thumb-down-line');
                 $(ele).attr('data-list', episode_id);
+
+                $("body").append(
+                    '<div class="dislike_removed" style="z-index: 100; position: fixed; top: 20%; margin: 0 auto; left: 81%; text-align: center; right: 0; width: 225px; padding: 11px; background: hsl(0deg 68% 50%); color: white; width: 20%;">You Removed Disliked From This Video</div>'
+                );
+                setTimeout(function() {
+                    $('.dislike_removed').slideUp('fast');
+                }, 3000);
             }
         }
     });

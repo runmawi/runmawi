@@ -359,7 +359,7 @@ class AdminAudioCategoriesController extends Controller
 
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
+        }
         if (!Auth::guest()) {
             $package_id = auth()->user()->id;
             $user_package =    User::where('id', $package_id)->first();
@@ -385,11 +385,11 @@ class AdminAudioCategoriesController extends Controller
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+                );
             return View::make('admin.expired_dashboard', $data);
         }else if(check_storage_exist() == 0){
             $settings = Setting::first();

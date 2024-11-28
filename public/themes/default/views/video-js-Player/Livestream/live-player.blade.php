@@ -122,7 +122,7 @@
     @else
     
         <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
-            <div class="container-fluid video-details">
+            <div class="container-fluid video-details" style="background: #cfcece21;border-radius: 20px;padding: 20px;">
                 <div class="col-8">
                     <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                     <p class="trending-dec w-100 mb-0 text-white mb-4"> {{ strip_tags($Livestream_details->description) }}</p>
@@ -166,7 +166,7 @@
 
     <div id="" style="background: linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.3)), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 100px 10px;">
 
-        <div class="container-fluid video-details">
+        <div class="container-fluid video-details" style="background: #cfcece21;border-radius: 20px;padding: 20px;">
             <div class="col-8">
                 <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                 <p class="trending-dec w-100 mb-0 text-white mb-4"> {!! html_entity_decode(__($Livestream_details->description)) !!}</p>
@@ -278,7 +278,7 @@
 @elseif( $live_publish_later_status == true )
     <div id="" style="background: linear-gradient(220deg, rgba(4, 21, 45, 0) 0%, #050505 79.17%), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 10px 10px;">
 
-        <div class="container-fluid video-details">
+        <div class="container-fluid video-details" style="background: #cfcece21;border-radius: 20px;padding: 20px;">
             <div class="col-8">
                 <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
                 <p class="trending-dec w-100 mb-3 text-white">{{ strip_tags($Livestream_details->description) }}</p>
