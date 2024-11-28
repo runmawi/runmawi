@@ -25,8 +25,8 @@
 <?php
    $series= App\series::where('id',$episode->series_id)->first();
    $SeriesSeason= App\SeriesSeason::where('id',$episode->season_id)->first();
-   // dd($SeriesSeason);
-   ?>
+?>
+ 
 <input type="hidden" value="<?php echo URL::to('/');?>" id="base_url" >
 <input type="hidden" value="<?php echo URL::to('/'); ?>" id="base_url" >
 <input type="hidden" id="videoslug" value="<?php if (isset($episode->path))
@@ -38,197 +38,210 @@
        echo "0";
    } ?>">
 <input type="hidden" value="<?php echo $episode->type; ?>" id='episode_type'>
+
 <div id="series_bg">
    <div class="">
+
       <?php
          if (Auth::guest())
          {
-         
-             if ($free_episode > 0 )
-             {
-         
-               if ($series->access == 'guest' ||  $free_episode > 0): 
+            if ($free_episode > 0 ){
 
-         ?>
-      <?php if ($episode->type == 'embed'): ?>
-      <div id="series_container" class="fitvid">
-         <?=$episode->embed_code
-            ?>
-      </div>
-      <?php
-         elseif ($episode->type == 'file' || $episode->type == 'upload'): ?>
+               if ($series->access == 'guest' ||  $free_episode > 0): ?>
+
+                  <?php if ($episode->type == 'embed'): ?>
+
+                     <div id="series_container" class="fitvid">
+                        <?=$episode->embed_code ?>
+                     </div>
+
+                  <?php elseif ($episode->type == 'file' || $episode->type == 'upload'): ?>
+
+                     <div id="series_container">
+                        <video id="videoPlayer" <?= $autoplay ?>  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
+                           <source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto' >
+                           <source src="<?=$episode->webm_url; ?>" type='video/webm' label='auto' >
+                           <source src="<?=$episode->ogg_url; ?>" type='video/ogg' label='auto' >
+                           <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                                   foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                              <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                                 srclang="<?= $episodesubtitles_file->sub_language ?>"
+                                 label="<?= $episodesubtitles_file->shortcode ?>" default>
+                              <?php } } } ?>
+                           <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
+                        </video>
+                     </div>
+
+                  <?php  elseif($episode->type == 'm3u8'): ?>
+
+                     <div id="series_container">
+                        <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
+                           controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                           <source  type="application/x-mpegURL"  src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>">
+                              <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                       foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                                          <track kind="captions" src="<?= $episodesubtitles_file->url ?>" srclang="<?= $episodesubtitles_file->sub_language ?>"
+                                             label="<?= $episodesubtitles_file->shortcode ?>" default>
+                              <?php } } } ?>
+                        </video>
+                     </div>
+
+                  <?php  elseif( $episode->type == 'bunny_cdn' ): ?>
+
+                     <div id="series_container">
+                           <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
+                              data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
+
+                              <source type="application/x-mpegURL" src="<?php echo  $episode->url ; ?>">
+
+                                 <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                          foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                                             <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                                                srclang="<?= $episodesubtitles_file->sub_language ?>"
+                                                label="<?= $episodesubtitles_file->shortcode ?>" default>
+                                 <?php } } } ?>
+                           </video>
+                     </div>
+
+                  <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
+
+                     <div id="series_container">
+                           <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+                           
+                           <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
+                           
+                           <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                                foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                           <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                              srclang="<?= $episodesubtitles_file->sub_language ?>"
+                              label="<?= $episodesubtitles_file->shortcode ?>" default>
+                           <?php } } } ?>
+                        </video>
+                     </div>
+
+                  <?php  else: ?>                                  
+                     <div id="series_container">
+                        <video id="videoPlayer"  <?= $autoplay ?>  class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
+                           <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
+                           <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
+                           <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>
+                           <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
+                                       foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
+                                          <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
+                                             srclang="<?= $episodesubtitles_file->sub_language ?>" label="<?= $episodesubtitles_file->shortcode ?>" default>
+                                 <?php } } } ?>
+                        </video>
+                     </div>
+                  <?php endif; ?>
+
+                  <!-- Intro Skip and Recap Skip -->
+                  <div class="col-sm-12 intro_skips">
+                     <input type="button" class="skips" value="Skip Intro" id="intro_skip">
+                     <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
+                  </div>
+
+                  <div class="col-sm-12 Recap_skip">
+                     <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
+                  </div>
+                  
+                  <!-- Intro Skip and Recap Skip -->
+               <?php else: ?>
+
+                  <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                     <div class="container-fluid">
+
+                           <h4 class=""><?= @$episode->title ; ?></h4>
+                           <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
+
+                           <h4 class="">Subscribe to view more
+                              <?php if ($series->access == 'subscriber'): ?><?php
+                              elseif ($series->access == 'registered'): ?>Registered Users<?php
+                              endif; ?>
+                           </h4>
+
+                        <div class="clear"></div>
+
+                        <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
+
+                           <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
+                                 <div class="">
+                                 <button id="button">Become a subscriber to watch this episode</button></div>
+                           </form>
+
+                        <?php else: ?>
+
+                           <form method="get" action="<?=URL::to('signup') ?>">
+                              <div class="container-fluid mt-3">
+                                 <button id="button" class="btn btn-primary">Subscribe to view more 
+                                    <?php if ($series->access == 'subscriber'): ?><?php
+                                    elseif ($series->access == 'registered'): ?>for Free!<?php
+                                    endif; ?>
+                                 </button>
+                              </div>
+                           </form>
+
+                        <?php endif; ?>
+
+                     </div>
+                  </div>
+
+               <?php endif;
+            }
+            else {  ?>
+
       <div id="series_container">
-         <video id="videoPlayer" <?= $autoplay ?>  class="video-js vjs-default-skin" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' width="100%" style="width:100%;" type="video/mp4"  data-authenticated="<?=!Auth::guest() ?>">
-            <source src="<?=$episode->mp4_url; ?>" type='video/mp4' label='auto' >
-            <source src="<?=$episode->webm_url; ?>" type='video/webm' label='auto' >
-            <source src="<?=$episode->ogg_url; ?>" type='video/ogg' label='auto' >
-            <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-            <p class="vjs-no-js">To view this series please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 series</a></p>
-         </video>
-      </div>
-      <?php  elseif($episode->type == 'm3u8'): ?>
-      <div id="series_container">
-         <video id="video" <?= $autoplay ?> controls crossorigin playsinline 
-            poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
-            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-            <source 
-               type="application/x-mpegURL" 
-               src="<?php echo URL::to('/storage/app/public/').'/'.$episode->path . '.m3u8'; ?>"
-               >
-               <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-         </video>
-      </div>
-      <?php  elseif( $episode->type == 'bunny_cdn' ): ?>
-        <div id="series_container">
-            <video id="video" muted <?= $autoplay ?> controls crossorigin playsinline
-                poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" controls
-                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'>
-
-                <source type="application/x-mpegURL" src="<?php echo  $episode->url ; ?>">
-
-                <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-            </video>
-        </div>
-      <?php  elseif( $episode->type == 'aws_m3u8' ): ?>
-         <div id="series_container">
-               <video id="video" <?= $autoplay ?> controls crossorigin playsinline poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
-               
-               <source type="application/x-mpegURL" src="<?php echo $episode->path; ?>">
-               
-               <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-            </video>
-         </div>
-
-
-      <?php  else: ?>                                  
-      <div id="series_container">
-         <video id="videoPlayer"  <?= $autoplay ?>  class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
-            <source src="<?php echo URL::to('/storage/app/public/') . '/' . 'TfLwBgA62jiyfpce_2_1000_00018'; ?>" type='application/x-mpegURL' label='360p' res='360' />
-            <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_0_250.m3u8'; ?>" type='application/x-mpegURL' label='480p' res='480'/>
-            <source src="<?php echo URL::to('/storage/app/public/') . '/' . $episode->path . '_2_1000.m3u8'; ?>" type='application/x-mpegURL' label='720p' res='720'/>
-            <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?>
-         </video>
-      </div>
-      <?php
-         endif; ?>
-      <!-- Intro Skip and Recap Skip -->
-      <div class="col-sm-12 intro_skips">
-         <input type="button" class="skips" value="Skip Intro" id="intro_skip">
-         <input type="button" class="skips" value="Auto Skip in 5 Secs" id="Auto_skip">
-      </div>
-      <div class="col-sm-12 Recap_skip">
-         <input type="button" class="Recaps" value="Recap Intro" id="Recaps_Skip" style="display:none;">
-      </div>
-      <!-- Intro Skip and Recap Skip -->
-      <?php
-         else: ?>
-      <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-          <div class="container-fluid">
-      <h4 class=""><?php echo $episode->title ; ?></h4>
-      <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo ($episode->episode_description) ; ?></p>
-         <h4 class="">Subscribe to view more<?php if ($series->access == 'subscriber'): ?><?php
-            elseif ($series->access == 'registered'): ?>Registered Users<?php
-            endif; ?></h4>
-         <div class="clear"></div>
-         <?php if (!Auth::guest() && $series->access == 'subscriber'): ?>
-         <form method="get" action="<?=URL::to('/') ?>/user/<?=Auth::user()->username ?>/upgrade_subscription">
-             <div class="">
-             <button id="button">Become a subscriber to watch this episode</button></div>
-         </form>
-         <?php
-            else: ?>
-         <form method="get" action="<?=URL::to('signup') ?>">
-             <div class="container-fluid mt-3">
-            <button id="button" class="btn btn-primary">Subscribe to view more <?php if ($series->access == 'subscriber'): ?><?php
-               elseif ($series->access == 'registered'): ?>for Free!<?php
-               endif; ?></button></div>
-         </form>
-         <?php
-            endif; ?>
-      </div></div>
-      <?php
-         endif;
-         }
-         else
-         { //dd($season);
-          ?>
-      <div id="series_container">
-         <!-- <video id="videoPlayer"  <?= $autoplay ?> class="video-js vjs-default-skin" controls preload="auto" poster="<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>"  data-setup="{}" width="100%" style="width:100%;" data-authenticated="<?=!Auth::guest() ?>">
-            <source src="<?=$season[0]->trailer; ?>" type='video/mp4' label='auto' >
-            <?php  if(@$playerui_settings['subtitle'] == 1 ){ if(isset($episodesubtitles)){
-                                    foreach ($episodesubtitles as $key => $episodesubtitles_file) { ?>
-                <track kind="captions" src="<?= $episodesubtitles_file->url ?>"
-                    srclang="<?= $episodesubtitles_file->sub_language ?>"
-                    label="<?= $episodesubtitles_file->shortcode ?>" default>
-                <?php } } } ?> -->
-         <!-- </video> -->
-         <div
-                id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
-                <div class="container-fluid">
-                    <h4 class=""><?php echo $episode->title; ?></h4>
-                    <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
-                    <h4 class=""><?php if ($series->access == 'subscriber'): ?><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?><?php elseif($series->access == 'registered'): ?><?php echo __('Purchase to view Episode'); ?>
-                        <?php endif; ?></h4>
-                    <div class="clear"></div>
-                </div>
-                <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
-                     || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
-                <div class="container-fluid mt-3">
-                    <!-- <button type="button"
-                        class="btn2  btn-outline-primary"><?php echo __('Purchase Now'); ?></button> -->
-                    <form method="get" action="<?= URL::to('/signup') ?>">
-                        <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
-                    </form>
-                </div>
-                <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
-                <div class="container-fluid mt-3">
-                <form method="get" action="<?= URL::to('/signup') ?>">
-                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
-                    </form>
-                </div>
-                <?php else: ?>
-                <div class="container-fluid mt-3">
-                    <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
-                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
-                            <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
-                    </form>
-                </div>
-                <?php endif; ?>
        
-      </div>
+         <div id="subscribers_only"style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+            <div class="container-fluid">
+               <h4 class=""><?php echo $episode->title; ?></h4>
+               <p class=" text-white col-lg-8" style="margin:0 auto";><?php echo $episode->episode_description; ?></p>
+
+               <h4 class="">
+                  <?php if ($series->access == 'subscriber'): ?>
+                     <?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?>
+                     <?php elseif($series->access == 'registered'): ?>
+                     <?php echo __('Purchase to view Episode'); ?>
+                  <?php endif; ?>
+               </h4>
+
+               <div class="clear"></div>
+            </div>
+         
+               <?php if( Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access != 'subscriber' 
+                              || Auth::guest() && $SeriesSeason->access == 'ppv' && $series->access == 'registered'  ):  ?>
+
+                  <div class="container-fluid mt-3">
+                     <form method="get" action="<?= URL::to('/signup') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Purchase Now'); ?></button>
+                     </form>
+                  </div>
+
+               <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
+
+                  <div class="container-fluid mt-3">
+                     <form method="get" action="<?= URL::to('/signup') ?>">
+                        <button class="btn btn-primary" id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
+                     </form>
+                  </div>
+
+               <?php else: ?>
+                  <div class="container-fluid mt-3">
+                     <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
+                        <button id="button" class="btn bd"><?php echo __('Signup Now'); ?> <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
+                        <?php elseif($series->access == 'registered'): ?><?php echo __('for Free!'); ?><?php endif; ?></button>
+                     </form>
+                  </div>
+               <?php endif; ?>
+         </div>
       <div>
-      </div>
+   </div>
       <?php
          }
          }
          ?>
    </div>
 </div>
+
 <input type="hidden" class="seriescategoryid" data-seriescategoryid="<?=$episode->genre_id
    ?>" value="<?=$episode->genre_id
    ?>">
