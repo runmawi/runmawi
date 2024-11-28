@@ -2,49 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use \App\User as User;
-use \App\Setting as Setting;
-use \App\Video as Video;
-use \App\VideoCategory as VideoCategory;
-use \App\PpvVideo as PpvVideo;
-use \App\Subscription as Subscription;
-use \Redirect as Redirect;
 use Illuminate\Http\Request;
-use App\RecentView as RecentView;
-use URL;
-use Carbon\Carbon as Carbon;
-use Auth;
-use Hash;
 use Illuminate\Support\Facades\Cache;
-use Image;
-use View;
-use App\CategoryVideo as CategoryVideo;
-use App\LanguageVideo;
-use App\Episode;
-use App\LiveStream;
-use App\Audio;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
-use Mail;
-use Laravel\Cashier\Invoice;
-use App\StorageSetting;
-use App\PpvPurchase;
-use App\Language;
-use App\LoggedDevice;
-use App\GuestLoggedDevice;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use GuzzleHttp\Exception\RequestException;
 use League\Flysystem\Filesystem;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Illuminate\Support\Facades\Storage;
-use App\UserTranslation;
+use Mail;
+use URL;
+use Auth;
+use Hash;
+use Image;
+use View;
 use Session;
+use Carbon\Carbon as Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use Laravel\Cashier\Invoice;
+use \App\User ;
+use \App\Setting ;
+use \App\Video ;
+use \App\VideoCategory ;
+use \App\PpvVideo ;
+use \App\Subscription ;
+use \Redirect ;
+use App\RecentView ;
+use App\CategoryVideo;
+use App\LanguageVideo;
+use App\Episode;
+use App\LiveStream;
+use App\Audio;
+use App\StorageSetting;
+use App\PpvPurchase;
+use App\Language;
+use App\LoggedDevice;
+use App\GuestLoggedDevice;
+use App\UserTranslation;
 
 class AdminDashboardController extends Controller
 {
-
-
     public function __construct() 
     {
         $storageZoneRegion = 'LA';
@@ -259,7 +259,7 @@ class AdminDashboardController extends Controller
         $LoggedDevice = LoggedDevice::count(); 
         $GuestLoggedDevice = GuestLoggedDevice::count();
         $total_visitors = $LoggedDevice + $GuestLoggedDevice ;
-        // dd($total_visitors);
+        
         $data = array(
                 'settings' => $settings,
                 'total_subscription' => $total_subscription,
@@ -289,60 +289,64 @@ class AdminDashboardController extends Controller
     }
 
     public function Masterlist()
-
     {
-        if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
-            return redirect('/admin/restrict');
-    }
-        $user =  User::where('id',1)->first();
-        $duedate = $user->package_ends;
-        $current_date = date('Y-m-d');
+        try {
 
-        if ($current_date > $duedate)
-        {
-            $client = new Client();
-            $url = "https://flicknexs.com/userapi/allplans";
-            $params = [
-                        'userid' => 0,
-            ];
+            if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
+                return redirect('/admin/restrict');
+            }
     
-            $headers = [
-                'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
-            ];
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+    
+            if ($current_date > $duedate)
+            {
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                            'userid' => 0,
+                ];
+        
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+    
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+        
+                $responseBody = json_decode($response->getBody());
+                $settings = Setting::first();
+                
+                $data = array(
+                    'settings' => $settings,
+                    'responseBody' => $responseBody,
+                    );
+                return View::make('admin.expired_dashboard', $data);
 
-            $response = $client->request('post', $url, [
-                'json' => $params,
-                'headers' => $headers,
-                'verify'  => false,
-            ]);
+            }else if(check_storage_exist() == 0){
+                $settings = Setting::first();
     
-            $responseBody = json_decode($response->getBody());
-            $settings = Setting::first();
-            
-            $data = array(
-                'settings' => $settings,
-                'responseBody' => $responseBody,
+                $data = array(
+                    'settings' => $settings,
                 );
-            return View::make('admin.expired_dashboard', $data);
-        }else if(check_storage_exist() == 0){
-            $settings = Setting::first();
-
-            $data = array(
-                'settings' => $settings,
-            );
-
-            return View::make('admin.expired_storage', $data);
-        }
-        else{
+    
+                return View::make('admin.expired_storage', $data);
+            }
+            else{
+                
                 $Videos =  Video::orderBy('created_at', 'DESC')->get();
-
+    
                 $LiveStream = LiveStream::orderBy('created_at', 'DESC')->get();
-
+    
                 $audios = Audio::orderBy('created_at', 'DESC')->get();
-
+    
                 // $Episode = Episode::Select('episodes.*','series.title as series_title','series.access as series_access','series_seasons.access as series_seasons_access')->leftjoin('series', 'series.id', '=', 'episodes.series_id')
                 //             ->leftjoin('series_seasons', 'series_seasons.id', '=', 'episodes.season_id')->orderBy('created_at', 'DESC')->get();
-
+    
                 $Episode = Episode::select(
                                         'episodes.*',
                                         'series.title as series_title',
@@ -355,11 +359,9 @@ class AdminDashboardController extends Controller
                                     ->leftJoin('moderators_users', 'moderators_users.id', '=', 'series.user_id')
                                     ->orderBy('episodes.created_at', 'DESC')
                                     ->get();
-
-                // dd($Episode);
-                        
+    
                 $master_count = count($LiveStream) + count($audios) + count($Episode) + count($Videos);
-
+    
                 $data = array(
                     'Videos' => $Videos,
                     'LiveStream' => $LiveStream,
@@ -367,9 +369,13 @@ class AdminDashboardController extends Controller
                     'Episode' => $Episode,
                     'master_count' => $master_count,
                 );
-
+    
                 return View::make('admin.Masterlist.index', $data);
             }
+
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function PlanPurchase($plan_name)
@@ -784,5 +790,17 @@ class AdminDashboardController extends Controller
                 // You can customize the error handling based on your requirements
                 return $e->getMessage();
             }
+        }
+
+        public function storage_Test()
+        {
+            $process = new Process(['ls', '-lsa']);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+            
+            dd( nl2br($process->getOutput()));
         }
 }
