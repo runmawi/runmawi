@@ -89,6 +89,8 @@ class TranscodeVideo implements ShouldQueue
         // return response()->download($output_path);
         $this->video->update([
             'path' =>  $output_path_rand,
+            'watermark_transcoding_progress' =>  0,
+            
         ]);
         $video = $this->video;   
 
