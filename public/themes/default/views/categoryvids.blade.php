@@ -28,10 +28,22 @@
     .nav-div.container-fluid {
         padding: 0;
     }
-    .banner_img{height: 400px;overflow: hidden;position: relative;}
     ._filter_div_{position: absolute;bottom: 48%;width: inherit;}
-    @media(min-width:1800px){
+    /* @media(min-width:1800px){
         .banner_img{height:800px;}
+    } */
+    .banner_img {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .banner_img img {
+        width: 100%;
+        height: 100%;
+        /* object-fit: cover; */
+        filter: brightness(70%); /* Darkens the image for better text readability */
     }
 </style>
 
@@ -55,7 +67,8 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
 
 <div class="main-content">
     <section id="iq-favorites">
-        <div class="banner_img" style="background: linear-gradient(90deg, rgba(0,0,0,0.801733193277311) 0%, rgba(0,0,0,0.7401085434173669) 35%, rgba(255,255,255,0) 100%), url('{{ URL::to('public/uploads/videocategory/'.$category_data->banner_image)}}'); background-size: cover; background-position: center;">
+        <div class="banner_img" style="height: calc(100vw / 3.8) !important;"> 
+            <img src="{{ URL::to('public/uploads/videocategory/'.$category_data->banner_image) }}" alt="{{$categoryVideos['category_title']}}">
             <div class="container-fluid">
                 <!-- BREADCRUMBS -->
                 <div class=" d-flex">
@@ -86,7 +99,7 @@ $category_slug = App\VideoCategory::where('name', $categoryVideos['category_titl
                     <div class="iq-main-header align-items-center d-flex justify-content-between mb-3">
                         <h2 class=""><?php echo __($categoryVideos['category_title']); ?></h2>
                     </div>
-                    @partial('categoryvids_section_filter')
+                    {{-- @partial('categoryvids_section_filter') --}}
                 </div>
 
             </div>

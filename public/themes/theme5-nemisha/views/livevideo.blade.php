@@ -114,7 +114,8 @@
         font-size: revert;
     }
     .staticback-btn{position: relative !important; display: inline-block; position: absolute; background: transparent; z-index: 1; left:1%; color: white; border: none; cursor: pointer;  font-size:25px; }
-
+    body.light-theme span { color: white !important;}
+    .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     .responsive-iframe {
         position: relative !important;
         height: calc(100vh - 80px) !important;

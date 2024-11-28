@@ -622,9 +622,15 @@ class PageListController extends Controller
                 'default_vertical_image_url' => default_vertical_image_url(),
             );
         
+            if ($this->current_theme == 'theme5-nemisha') {
+                return Theme::view('Page-List.latest_viewed_episode', $data);
+            } else {
+        
             return Theme::view('Page-List.latest_viewed_Episode', $data);
+            }
 
         } catch (\Throwable $th) {
+            dd( $th->getMessage());
             return $th->getMessage();
             return abort(404);
         }
