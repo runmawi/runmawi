@@ -13,8 +13,6 @@
                 </div>
 
                 @if ($audio_list_pagelist->isNotEmpty())
-
-                    {{-- @dd($audio_list_pagelist); --}}
                     <div class="favorites-contens">
                         <ul class="category-page list-inline row p-0 mb-0">
                             @forelse($audio_list_pagelist as $key => $audio)
