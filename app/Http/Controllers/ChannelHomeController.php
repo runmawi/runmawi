@@ -95,6 +95,8 @@ class ChannelHomeController extends Controller
     
     public function ChannelHome($slug)
     {
+        try {
+        
         $settings = Setting::first();
         $channel_partner = Channel::where('channel_slug',$slug)->first(); 
         $currency = CurrencySetting::first();
@@ -304,6 +306,10 @@ class ChannelHomeController extends Controller
 
             return Theme::view('ChannelHome', $data);
         }else{
+            return abort(404);
+        }
+            
+        } catch (\Throwable $th) {
             return abort(404);
         }
     }

@@ -319,7 +319,10 @@
 
 <div id="video_bg">
                         {{-- Player --}}
-    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg, 'enable_ppv_rent_live' => $enable_ppv_rent_live, 'button_text' => $button_text, 'subscribe_btn' => $subscribe_btn])->content() !!}
+    {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/video-js-Player/Livestream/live-player", ['Livestream_details' => $Livestream_details, 'play_btn_svg' => $play_btn_svg, 
+                                                                                                                            'enable_ppv_rent_live' => $enable_ppv_rent_live, 'button_text' => $button_text, 
+                                                                                                                            'subscribe_btn' => $subscribe_btn , 'UserChannelSubscription' => $UserChannelSubscription
+                                                                                                                        ])->content()  !!}
 
     @php
         $Current_time = Carbon\Carbon::now(current_timezone())->isoFormat('h:mm A');

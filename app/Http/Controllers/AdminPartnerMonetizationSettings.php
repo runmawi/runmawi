@@ -16,7 +16,12 @@ class AdminPartnerMonetizationSettings extends Controller
 
     public function Index()
     {
-        if (!Auth::guest() && Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP') {
+
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (!Auth::guest() && (Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP')) {
             return redirect('/admin/restrict');
         }
 
@@ -55,11 +60,6 @@ class AdminPartnerMonetizationSettings extends Controller
 
             return View::make('admin.expired_storage', $data);
         } else {
-            // $partner_monetization_settings = PartnerMonetizationSetting::get();
-            // $data = array(
-            //             'partner_monetization_settings' => $partner_monetization_settings  ,
-            // );
-            // return view('admin.revenuesettings.index',$data);
             $partner_monetization_settings = PartnerMonetizationSetting::where('id', '=', 1)->first();
             $data = array(
                 'partner_monetization_settings' => $partner_monetization_settings,
@@ -97,7 +97,11 @@ class AdminPartnerMonetizationSettings extends Controller
 
     public function Edit($id)
     {
-        if (!Auth::guest() && Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP') {
+         if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+         
+        if (!Auth::guest() && (Auth::user()->package == 'Channel' || Auth::user()->package == 'CPP')) {
             return redirect('/admin/restrict');
         }
         $user = User::where('id', 1)->first();
