@@ -305,7 +305,16 @@
                     </div>
 
                     <div class="row">
-                        @if ( $videodetail->users_video_visibility_status == false )
+                        @if($UserChannelSubscription == false )
+
+                            <a class="btn" href="{{ !Auth::guest() ? route('channel.payment', $videodetail->user_id) : route('login') }}">
+                                <div class="playbtn" style="gap:5px">
+                                    {!! $play_btn_svg !!}
+                                    <span class="text pr-2"> {{ __( 'Subscribe to Watch') }} </span>
+                                </div>
+                            </a>
+                            
+                        @elseif ( $videodetail->users_video_visibility_status == false )
 
                             @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p))
                                 <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">

@@ -703,4 +703,6 @@ Route::group(
             Route::get('tv-splash-screen', 'ApiAuthController@tv_splash_screen'); 
 
             Route::post('radiostationdetail', 'ApiAuthController@radiostationdetail');
+            Route::get('ugcvideolist', 'ApiAuthContinueController@ugcvideolist');
+            Route::post('uploadugcvideo', 'ApiAuthContinueController@uploadugcvideo');
         });
