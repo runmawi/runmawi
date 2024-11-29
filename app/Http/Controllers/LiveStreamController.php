@@ -207,28 +207,29 @@ class LiveStreamController extends Controller
 
        // Check Channel Purchase 
        
+       $UserChannelSubscription = true ;
+
        if ( $settings->user_channel_plans_page_status == 1 && $this->Theme == "theme6") {
 
-            $UserChannelSubscription = null ;
+            $UserChannelSubscription = false ;
 
             $channel_id = LiveStream::where('id',$source_id)->where('uploaded_by','channel')->pluck('user_id')->first();
 
-            if (!Auth::guest() ) {
+            if (is_null($channel_id)) {
+                $UserChannelSubscription = true ;
+            }
+
+            if (!Auth::guest() && !is_null($channel_id) ) {
 
                 $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                 ->where('channel_id',$channel_id)->where('status','active')
                                                 ->where('subscription_start', '<=', Carbon::now())
                                                 ->where('subscription_ends_at', '>=', Carbon::now())
-                                                ->latest()->first();
+                                                ->latest()->exists();
 
                 if (Auth::user()->role == "admin") {
                     $UserChannelSubscription = true ;
                 }
-            }
-
-            if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
-                session()->flash('channel_subscription_error', 'Channel Subscription not found.');
-                return back();
             }
         }
 
@@ -743,6 +744,7 @@ class LiveStreamController extends Controller
                     'paypal_payment_setting' => $PayPalpayment,
                     'paypal_signature' => $paypal_signature,
                     'AdminAccessPermission' => AdminAccessPermission::first(),
+                    'UserChannelSubscription' => $UserChannelSubscription,
                 );           
 
                 if(  $Theme == "default" || $Theme == "theme6" ){
@@ -755,7 +757,7 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
         }

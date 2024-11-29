@@ -152,7 +152,41 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
     <div id="series_bg">
         <div class="">
-            @if(!Auth::guest())
+
+            @if ($UserChannelSubscription == false)
+                
+                <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)), url('{{ url('/public/uploads/images/' . $episode->player_image) }}'); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
+                    <div class="container">
+                        <h3 class="epi-name text-left m-0 mt-2">
+                            <?= __($episode->title) ?>
+                        </h3>
+
+                        <p class="desc-name text-left m-0 mt-1">
+                            <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                        </p>
+
+                        <h3 class="banner-details text-left">{{ "Subscribe this Channel to Watch this Episode" }}</h3>
+
+                        <div class="row container p-0">
+                            <div class="col-lg-12 col-12 mt-5">
+                                <div class="d-flex">
+                                    <a class="btn" href="{{ route('channel.payment',$episode->user_id) }}">
+                                        <div class="playbtn text-white" style="gap:5px">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                            </svg>
+                                            <span class="text pr-2"> {{ __('Subscribe Now' ) }} </span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            @elseif(!Auth::guest())
                 @if($episode_play_access > 0)
                     <div id="series_container">
                         <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -1550,5 +1584,3 @@ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     include public_path('themes/theme6/views/footer.blade.php');
     include public_path('themes/theme6/views/episode_player_script.blade.php');
 ?>
-
-    <!-- episode -->

@@ -2320,9 +2320,9 @@ Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('w
 Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 //    Theme Integration
-Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
-Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
-Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
+// Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
+// Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+// Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
 Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('Movie-Description', 'HomeController@Movie_description');
@@ -3046,5 +3046,3 @@ Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetail
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
-
-Route::get('/storage_Test', 'AdminDashboardController@storage_Test');
