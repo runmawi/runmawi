@@ -401,7 +401,7 @@ class AdminAudioCategoriesController extends Controller
             return View::make('admin.expired_storage', $data);
         }else{
         if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
-        $allAlbums = AudioAlbums::all();
+        $allAlbums = AudioAlbums::latest()->get();
         $allCategories = AudioCategory::all();
         $data = array(
             'audioCategories' => $allCategories,
