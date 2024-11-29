@@ -65,7 +65,7 @@ class ChannelPartnerController extends Controller
 
     public function all_Channel_home(Request $request)
     {
-        // try {
+        try {
          
             $currency = CurrencySetting::first();
             $FrontEndQueryController = new FrontEndQueryController();
@@ -217,10 +217,10 @@ class ChannelPartnerController extends Controller
             
             return Theme::view('ChannelHomeList', $data);
 
-        // } catch (\Throwable $th) {
-        //     return $th->getMessage();
-        //     return abort(404);
-        // }
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
     }
 
     public function channelparnterpayment(Request $request, $channel_id)
@@ -253,7 +253,7 @@ class ChannelPartnerController extends Controller
             return Theme::view('ChannelPartner.payment.payment-page',$data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -264,7 +264,7 @@ class ChannelPartnerController extends Controller
 
         $plans_data = AdminUserChannelSubscriptionPlans::where('status', 1)
         ->where('paymentGateway', $request->payment_gateway)
-        // ->whereJsonContains('channel_id', $request->channel_id)
+        ->whereJsonContains('channel_id', $request->channel_id)
         ->get();
 
         $response = array(
