@@ -338,11 +338,12 @@ class FrontEndQueryController extends Controller
         
                 $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
         
-                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes->take(15)
                                                         ->map(function ($item) {
                                                         $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
                                                         return $item;
                                                     });
+                $item['has_more'] = Series::find($item->id)->Series_depends_episodes->count() > 14;
         
                 $item['source'] = 'Series';
                 return $item;
