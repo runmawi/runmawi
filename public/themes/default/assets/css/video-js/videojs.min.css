@@ -194,7 +194,7 @@ body.vjs-full-window{padding:0;margin:0;height:100%}
 .vjs-volume-bar.vjs-slider-vertical{width:.3em;height:5em;margin:1.35em auto}
 .video-js .vjs-volume-level{position:absolute;bottom:0;right: 3px !important;background-color:#fff}
 .video-js .vjs-volume-level:before{position:absolute;font-size:.9em;z-index:1}
-.vjs-slider-vertical .vjs-volume-level{width: 0.4em}
+.vjs-slider-vertical .vjs-volume-level{width: 0.5em}
 .vjs-slider-vertical .vjs-volume-level:before{top:-.5em;left:-.3em;z-index:1}
 .vjs-slider-horizontal .vjs-volume-level{height:.3em}
 .vjs-slider-horizontal .vjs-volume-level:before{top:-.3em;right:-.5em}
