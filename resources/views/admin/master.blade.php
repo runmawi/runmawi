@@ -557,7 +557,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/currency_settings') }}"><i class="las la-eye"></i>Currency Settings</a></li>
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Profile Screen</span></a></li>
-                            <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme</span></a></li>
+                            {{-- <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i><span>Theme</span></a></li> --}}
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> Home Page Pop Up Settings </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>
@@ -807,7 +807,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Thumbnail Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Profile Screen</a></li>
-                            <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li>
+                            {{-- <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect"><i class="ri-price-tag-line"></i>Theme</a></li> --}}
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">Image Setting </a></li>
                             <li><a href="{{ route('admin.OTP-Credentials-index') }}" class="iq-waves-effect">{{ (__('OTP Credentials')) }} </a></li>
                             <li><a href="{{ route('partner_monetization_settings') }}" class="iq-waves-effect">{{ (__('Partner Monetization Settings')) }} </a></li>
@@ -1214,20 +1214,21 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/analytics') }}">Revenue Analytics </a></li>
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}">{{ (__('Users Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/users/revenue') }}">{{ (__('Users Revenue')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"></i>{{ (__('Purchased Video Analytics')) }} </a></li>
+                        {{-- <li><a href="{{ URL::to('admin/users/revenue') }}">{{ (__('Users Revenue')) }} </a></li> --}}
+                        {{-- <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"></i>{{ (__('Purchased Video Analytics')) }} </a></li> --}}
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}">{{ (__('CPP Analytics')) }} </a></li>
                         <li><a href="{{ URL::to('admin/cpp/video-analytics') }}">{{ (__('CPP Video Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/cpp/revenue') }}">{{ (__('CPP Revenue')) }} </a></li>
+                        {{-- <li><a href="{{ URL::to('admin/cpp/revenue') }}">{{ (__('CPP Revenue')) }} </a></li> --}}
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}">{{ (__('Views By Region')) }}</a></li>
-                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}">{{ (__('Revenue by Region')) }}</a></li>
+                         {{-- <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}">{{ (__('Revenue by Region')) }}</a></li> --}}
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}">{{ (__('Player Video Analytics')) }}</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}">{{ (__('Region Video Analytics')) }}</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}">{{ (__('Player User Analytics')) }}</a></li>
                         <li><a href="{{ URL::to('admin/livestream-analytics') }}">{{ (__('CPP Live Video')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">{{ (__('Purchased LiveStream Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/purchased-analytics') }}">{{ (__('Purchased Content Analytics')) }}</a></li>
+                        {{-- <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">{{ (__('Purchased LiveStream Analytics')) }} </a></li> --}}
+                        {{-- <li><a href="{{ URL::to('admin/purchased-analytics') }}">{{ (__('Purchased Content Analytics')) }}</a></li> --}}
                         <li><a href="{{ URL::to('admin/Content-Analytics') }}">{{ (__('Content Analytics')) }}</a></li>
 
                      </ul>
@@ -1253,7 +1254,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}">{{ (__('Revenue Settings')) }}</a></li>
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" class="iq-waves-effect">{{ (__('Thumbnail Settings')) }}</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" class="iq-waves-effect">{{ (__('Profile Screen')) }}</a></li>
-                            <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">{{ (__('Theme')) }}</a></li>
+                            {{-- <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" class="iq-waves-effect">{{ (__('Theme')) }}</a></li> --}}
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect">{{ (__('Image Settings')) }}  </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect">{{ (__('Home page Pop Up settings')) }} </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> {{ (__('Comment Section Settings')) }} </a></li>
@@ -1596,7 +1597,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                             <li><a href="{{ URL::to('admin/revenue_settings/index') }}"><i class="las la-eye"></i>Revenue Settings</a></li>
                             <li><a href="{{ URL::to('admin/ThumbnailSetting') }}" ><i class="ri-price-tag-line"></i>Thumbnail Settings</a></li>
                             <li><a href="{{ URL::to('admin/ChooseProfileScreen') }}" ><i class="ri-price-tag-line"></i>Profile Screen</a></li>
-                            <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" ><i class="ri-price-tag-line"></i>Theme</a></li>
+                            {{-- <li  data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue" class=" " data-tour="step: 3; title: Manage Theme; content: Go to 'Manage Template' to choose a template for our website from our catalogue"><a href="{{ URL::to('admin/ThemeIntegration') }}" ><i class="ri-price-tag-line"></i>Theme</a></li> --}}
                             <li><a href="{{ route('compress_image') }}" class="iq-waves-effect"> Image Settings </a></li>
                             <li><a href="{{ route('homepage_popup') }}" class="iq-waves-effect"> {{ ucwords('Home page Pop Up settings') }} </a></li>
                             <li><a href="{{ route('comment_section') }}" class="iq-waves-effect"> Comment Section Settings </a></li>

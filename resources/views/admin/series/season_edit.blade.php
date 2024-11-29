@@ -852,13 +852,15 @@
     @section('javascript')
     
     <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
    
 
      {{-- image validation --}}
@@ -1011,15 +1013,14 @@ document.getElementById('select-all').addEventListener('change', function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
     <script>
-         ClassicEditor
-            .create( document.querySelector( '#description_editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+             ClassicEditor
+                .create( document.querySelector( '#description_editor' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
     </script>
     <script>
             $('#episode_uploads').show();
@@ -1413,15 +1414,6 @@ document.getElementById('select-all').addEventListener('change', function() {
         });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
-    <script>
-        CKEDITOR.replace("summary-ckeditor", {
-            filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: "form",
-        });
-    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">

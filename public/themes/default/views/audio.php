@@ -307,10 +307,15 @@ Your browser does not support the audio element.
 <?php  //else: ?> -->
 
 <?php if($audio):  ?>
-<?php if ( 1 == 0 ) { ?>
+
+  <?php if ( $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role == 'registered') { ?>
   <!--  $audio->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' -->
 <div id="subscribers_only">
 <a  class="text-center btn btn-success" id="paynowbutton"> <?php echo __('Pay for View'); ?>  </a>
+</div>
+<?php } else if(Auth::user()->role == 'registered'){ ?>
+  <div id="subscribers_only">
+<a  class="text-center btn btn-success" id="paynowbutton"> <?php echo __('Subscribe to play this audio'); ?>  </a>
 </div>
 <?php } else { ?>                
 

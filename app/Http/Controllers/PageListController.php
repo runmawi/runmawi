@@ -171,7 +171,7 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
-                'page_list' => $featured_videos_paginate,
+                'page_list' => $category_videos_paginate,
                 'base_url' => 'category',
                 'header_name' => $order_settings_list[11]->header_name,
             );
@@ -630,7 +630,6 @@ class PageListController extends Controller
             }
 
         } catch (\Throwable $th) {
-            dd( $th->getMessage());
             return $th->getMessage();
             return abort(404);
         }
@@ -654,7 +653,7 @@ class PageListController extends Controller
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
                 'page_list' => $latest_viewed_live_paginate,
-                'base_url' => 'category/videos',
+                'base_url' => 'live',
                 'header_name' => $order_settings_list[16]->header_name,
             );
         

@@ -243,7 +243,7 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
                     <?php }else{ ?> 
                     <img class="rounded-circle img-fluid d-block  mb-3" height="100" width="100" src="<?=  $user->provider_avatar; ?>"  alt="profile-bg"/>
                      <?php } ?>
-                    <h4 class="mb-3 text-white"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
+                    <h4 class="mb-3 " style="color: white !important;"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></h4>
                    </div>
                      <div class=""> <!--style="margin-left: 66%;margin-right: 13%;padding-left: 1%;padding-bottom: 0%;"-->
                 <div class="" id="personal_det">
@@ -415,7 +415,7 @@ $AdminOTPCredentials =  App\AdminOTPCredentials::pluck('status')->first();
                     
       <div class="text-center">
                    <?php  if($user_role == 'registered'){ ?>
-                          <h6><?php echo 'Registered'." " .__('Free'); ?> {{ __('Subscription') }}</h6>                                       
+                          <h6 style="color: white !important;"><?php echo 'Registered'." " .__('Free'); ?> {{ __('Subscription') }}</h6>                                       
                           <h6></h6>                                       
                        <?php }elseif($user_role == 'subscriber'){ ?>
                           <h6><?php echo $role_plan." " .__('Paid User'); ?></h6>

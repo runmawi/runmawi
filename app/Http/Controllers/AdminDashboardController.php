@@ -259,6 +259,22 @@ class AdminDashboardController extends Controller
         $LoggedDevice = LoggedDevice::count(); 
         $GuestLoggedDevice = GuestLoggedDevice::count();
         $total_visitors = $LoggedDevice + $GuestLoggedDevice ;
+
+        $storage_vai_symfony = null ;
+
+        try {
+            $process = new Process(['du', '-sh']);
+            $process->run();
+        
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            $storage_vai_symfony =  $process->getOutput();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         
         $data = array(
                 'settings' => $settings,
@@ -280,7 +296,7 @@ class AdminDashboardController extends Controller
                 'VideoCategory' => $VideoCategory,
                 'Language' => $Language,
                 'total_visitors' => $total_visitors,
-
+                'storage_vai_symfony' => $storage_vai_symfony ,
         );
         
 		return View::make('admin.dashboard', $data);
@@ -790,17 +806,5 @@ class AdminDashboardController extends Controller
                 // You can customize the error handling based on your requirements
                 return $e->getMessage();
             }
-        }
-
-        public function storage_Test()
-        {
-            $process = new Process(['ls', '-lsa']);
-            $process->run();
-
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-            
-            dd( nl2br($process->getOutput()));
         }
 }
