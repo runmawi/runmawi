@@ -92,6 +92,17 @@
                                                         </div>
                                                     </div>
                                                 @endforeach
+                                                @if ($series->has_more)
+                                                    <div class="depends-row" style="height: 100%">
+                                                            <a href="{{ route('network.play_series', $series->slug) }}">
+                                                            <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
+                                                                <div class=" position-relative">
+                                                                    <p class="text-white">{{ "View All" }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach

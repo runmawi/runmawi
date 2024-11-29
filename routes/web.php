@@ -3046,3 +3046,5 @@ Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetail
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
+
+Route::get('/storage_Test', 'AdminDashboardController@storage_Test');

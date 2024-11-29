@@ -3,18 +3,29 @@
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
-                $item['series'] = App\Series::select('id','title','slug','access','active','ppv_status','featured','duration','image','embed_code',
-                                                                                                    'mp4_url','webm_url','ogg_url','url','tv_image','player_image','details','description','network_id')
-                                                                                                    ->where('active', '1')->whereJsonContains('network_id',["$item->id"])
-                                                                                                    ->latest()->limit(15)->get()->map(function ($item) {
-                                                                                                            $item['image_url'] = $item->image != null ?  URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                                                                                            $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                                                                                            $item['TV_image_url'] = $item->tv_image != null ?  URL::to('public/uploads/images/'.$item->tv_image) : @$default_horizontal_image_url ;       
-                                                                                                            $item['season_count'] =  App\SeriesSeason::where('series_id',$item->id)->count();
-                                                                                                            $item['episode_count'] =  App\Episode::where('series_id',$item->id)->count();
-                                                                                                            return $item;
-                                                                                                        });  
+                $Series = App\Series::select(
+                                'id', 'title', 'slug', 'access', 'active', 'ppv_status', 'featured', 'duration', 'image',
+                                'embed_code', 'mp4_url', 'webm_url', 'ogg_url', 'url', 'tv_image', 'player_image',
+                                'details', 'description', 'network_id'
+                            )
+                            ->where('active', 1)
+                            ->whereJsonContains('network_id',["$item->id"])
+                            ->latest();
 
+                            $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url) {
+                                $seriesItem['image_url'] = $seriesItem->image != null ? URL::to('public/uploads/images/' . $seriesItem->image) : $default_vertical_image_url;
+                                $seriesItem['Player_image_url'] = $seriesItem->player_image != null ? URL::to('public/uploads/images/' . $seriesItem->player_image) : $default_horizontal_image_url;
+                                $seriesItem['TV_image_url'] = $seriesItem->tv_image != null ? URL::to('public/uploads/images/' . $seriesItem->tv_image) : @$default_horizontal_image_url;
+
+                                $seriesItem['season_count'] = App\SeriesSeason::where('series_id', $seriesItem->id)->count();
+                                $seriesItem['episode_count'] = App\Episode::where('series_id', $seriesItem->id)->count();
+
+                                return $seriesItem;
+                            });
+
+                            $item['has_more'] = $Series->count() > 15;
+
+                            $item['series'] = $series;
                 return $item;
             });
 
@@ -92,6 +103,17 @@
                                                     </div>
                                                 </div>
                                             @endforeach
+                                            @if ($series_networks->has_more)
+                                                <div class="depends-row" style="height: 100%">
+                                                    <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
+                                                        <a href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
+                                                            <div class=" position-relative">
+                                                            <p class="text-white">{{ "View All" }}</p>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
 
                                     </div>

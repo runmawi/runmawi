@@ -713,6 +713,10 @@ class AdminVideosController extends Controller
                 
                 $Playerui = Playerui::first();
                 if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+
+                    $video = Video::find($video->id);
+                    $video->watermark_transcoding_progress = 1;
+                    $video->save();
                     TranscodeVideo::dispatch($video);
                 }
                 // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
@@ -1383,6 +1387,11 @@ class AdminVideosController extends Controller
 
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+
+                $video = Video::find($video->id);
+                    $video->watermark_transcoding_progress = 1;
+                    $video->save();
+
                 TranscodeVideo::dispatch($video);
             }
             // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
@@ -2427,6 +2436,11 @@ class AdminVideosController extends Controller
 
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+
+                $video = Video::find($video->id);
+                $video->watermark_transcoding_progress = 1;
+                $video->save();
+
                 TranscodeVideo::dispatch($video);
             }
             // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
@@ -5156,9 +5170,14 @@ class AdminVideosController extends Controller
             $video->user_id = Auth::user()->id;
             $video->save();
 
+            $video_id = $video->id;
 
             $Playerui = Playerui::first();
             if(@$Playerui->video_watermark_enable == 1 && !empty($Playerui->video_watermark)){
+
+                $video = Video::find($video_id);
+                $video->watermark_transcoding_progress = 1;
+                $video->save();
                 TranscodeVideo::dispatch($video);
             }
             // else if(@$settings->video_clip_enable == 1 && !empty($settings->video_clip)){
