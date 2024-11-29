@@ -1349,7 +1349,7 @@
                                  <p class="mt-3" style="font-size: 14px;">
                                     <?php
                                        $subuser=Session::get('subuser_id');
-                                       if($subuser != ''){
+                                       if($subuser != '' && $subuser != null){
                                           $subuser=App\Multiprofile::where('id',$subuser)->first();
                                          echo  $subuser->user_name  ;
                                        }

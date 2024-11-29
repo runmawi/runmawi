@@ -57,7 +57,35 @@
     }
 @endphp
 
-@if( $recurring_program_Status == false && $live_publish_later_status ==  false )
+@if ($UserChannelSubscription == false)
+
+    <div style="background: linear-gradient(220deg, rgba(4, 21, 45, 0) 0%, #050505 79.17%), url({{ URL::to('/') }}/public/uploads/images/{{ $Livestream_details->player_image }}); background-repeat: no-repeat; background-size: cover; padding: 10px 10px;">
+        <div class="container video-details">
+            <div class="col-8">
+                <h2 class="banner-details text-left">{{ ucwords($Livestream_details->title) }}</h2><br>
+                <p class="trending-dec w-100 mb-3 text-white">{{ strip_tags($Livestream_details->description) }}</p>
+
+                <h3 class="banner-details text-left">{{ "Subscribe this Channel to Watch this video" }}</h3>
+                   
+                <div class="video" >
+                    <div class="row container p-0">
+                        <div class="col-lg-12 col-12 mt-5">
+                            <div class="d-flex">
+                                <a class="btn" href="{{ route('channel.payment',$Livestream_details->user_id) }}">
+                                    <div class="playbtn text-white" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2"> {{ __('Subscribe Now' ) }} </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@elseif( $recurring_program_Status == false && $live_publish_later_status ==  false )
 
     @if ( $Livestream_details->users_video_visibility_status || ( Auth::check() && Auth::user()->role == "subscriber" && $Livestream_details->access == "ppv" && $enable_ppv_rent_live == 1))
 
@@ -291,23 +319,8 @@
                     <div class="video" >
                         <div class="row container p-0">
 
-                                                {{-- Back Button --}}
-                            <!-- <button class="staticback-btn" onclick="history.back()" title="Back Button">
-                                <i class="fa fa-arrow-left" aria-hidden="true" style="font-size:25px;"></i>
-                            </button> -->
-
-                            <!-- <div class="col-2"></div> -->
-
-                            <!-- <div class="col-lg-3 col-6 mt-5">
-                                <img class="posterImg w-100"  src="{{ $Livestream_details->Thumbnail }}" >
-                            </div> -->
-
                             <div class="col-lg-12 col-12 mt-5">
-                                <!-- <h2 class="title">{{ optional($Livestream_details)->title }} </h2><br> -->
-                                
 
-
-                                
                                     @if ($Livestream_details->users_video_visibility_status == false && Auth::check() && Auth::user()->role == "subscriber" && $Livestream_details->access == "ppv" &&  $enable_ppv_rent_live == 1)
                                         
                                     

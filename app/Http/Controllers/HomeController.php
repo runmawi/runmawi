@@ -3306,6 +3306,11 @@ class HomeController extends Controller
 
     }
 
+    public function subcriberuser($id){
+        $session = Session::put('subuser_id', null);
+        return redirect::to('/home');
+    }
+
     public function subuser($id)
     {
 

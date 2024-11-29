@@ -237,6 +237,11 @@
  
                             </div>
                             <div class="iq-header-title">
+
+                                 @if ( !is_null($storage_vai_symfony))
+                                    <p style="color:black;">Total Storage : {{ $storage_vai_symfony }}</p>
+                                 @endif
+
                                  <?php 
                                     $users = App\User::where('id',1)->first(); 
                                     $date=date_create($users->package_ends);

@@ -4348,11 +4348,17 @@ class ChannelController extends Controller
            
                 // Check Channel Purchase 
 
+            $UserChannelSubscription = true ;
+
             if ( $setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
 
-                $UserChannelSubscription = null ;
+                $UserChannelSubscription = false ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+                if (is_null($channel_id)) {
+                    $UserChannelSubscription = true ;
+                }
 
                 if (!Auth::guest() && !is_null($channel_id) ) {
     
@@ -4360,19 +4366,13 @@ class ChannelController extends Controller
                                                     ->where('channel_id',$channel_id)->where('status','active')
                                                     ->where('subscription_start', '<=', Carbon::now())
                                                     ->where('subscription_ends_at', '>=', Carbon::now())
-                                                    ->latest()->first();
+                                                    ->latest()->exists();
 
                     if (Auth::user()->role == "admin") {
                         $UserChannelSubscription = true ;
                     }
                 }
-    
-                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
-                    session()->flash('channel_subscription_error', 'Channel Subscription not found.');
-                    return back();
-                }
             }
-
 
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching)  {
@@ -4809,8 +4809,9 @@ class ChannelController extends Controller
                     'current_theme'     => $this->HomeSetting->theme_choosen,
                     'playerui' => Playerui::first(),
                     'paypal_signature' => $paypal_signature,
-                    'purchase_btn'                    => $purchase_btn,
-                    'subscribe_btn'                    => $subscribe_btn,
+                    'purchase_btn'     => $purchase_btn,
+                    'subscribe_btn'    => $subscribe_btn,
+                    'UserChannelSubscription' => $UserChannelSubscription ,
                 );
                 return Theme::view('video-js-Player.video.videos-details', $data);
             } else {
@@ -4876,30 +4877,34 @@ class ChannelController extends Controller
 
             // Check Channel Purchase 
 
-            if ($setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
+            $UserChannelSubscription = true ;
 
-                $UserChannelSubscription = null ;
+            if ( $setting->user_channel_plans_page_status == 1 && $this->HomeSetting->theme_choosen == "theme6" ) {
+
+                $UserChannelSubscription = false ;
 
                 $channel_id = Video::where('id',$video_id)->where('uploaded_by','channel')->pluck('user_id')->first();
-                
-                if (!Auth::guest() ) {
 
+                if (is_null($channel_id)) {
+                    $UserChannelSubscription = true ;
+                }
+
+                if (!Auth::guest() && !is_null($channel_id) ) {
+    
                     $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
                                                     ->where('channel_id',$channel_id)->where('status','active')
                                                     ->where('subscription_start', '<=', Carbon::now())
                                                     ->where('subscription_ends_at', '>=', Carbon::now())
-                                                    ->latest()->first();
+                                                    ->latest()->exists();
 
                     if (Auth::user()->role == "admin") {
                         $UserChannelSubscription = true ;
                     }
                 }
 
-                if (!is_null($channel_id) && is_null($UserChannelSubscription)  ) {
-                    session()->flash('channel_subscription_error', 'Channel Subscription not found.');
-                    return back();
+                if ( $UserChannelSubscription == false  ) {
+                    return redirect()->route('channel.all_Channel_home');
                 }
-
             }
 
             $videodetailType = Video::where('id',$video_id)->pluck('type')->first();
