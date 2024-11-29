@@ -253,8 +253,7 @@ class FrontEndQueryController extends Controller
     public function latest_Series()
     {
         $countryList = CountryCode::pluck('country_name', 'id')->toArray();
-        // dd($country);
-
+      
             $latest_series = Series::select('id', 'title', 'slug', 'year', 'rating', 'access', 
                                              'duration', 'image', 'featured', 'tv_image', 'player_image', 
                                              'details', 'description', 'uploaded_by', 'user_id', 
@@ -272,10 +271,9 @@ class FrontEndQueryController extends Controller
             
                     return $series;
                 });
-                // dd($latest_series);
+              
             return $latest_series;
         
-            
 
             // $latest_series = Series::select('id','title','slug','year','rating','access','duration','rating','image','featured','tv_image','player_image','details','description','uploaded_by','user_id','available_countries','blocked_countries')
             //     ->where('active', '1')->latest()->get();
@@ -338,11 +336,12 @@ class FrontEndQueryController extends Controller
         
                 $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
         
-                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes->take(15)
                                                         ->map(function ($item) {
                                                         $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
                                                         return $item;
                                                     });
+                $item['has_more'] = Series::find($item->id)->Series_depends_episodes->count() > 14;
         
                 $item['source'] = 'Series';
                 return $item;
@@ -428,7 +427,7 @@ class FrontEndQueryController extends Controller
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
                                         ->where('status', 1)->latest()
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
@@ -652,7 +651,7 @@ class FrontEndQueryController extends Controller
     public function latest_audios()
     {
         
-        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id','uploaded_by','user_id')
+        $latest_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price','duration','rating','image','featured','player_image','details','description','uploaded_by','user_id')
                                 ->where('active', '1')->where('status', '1')
                                 ->latest()->get();
 

@@ -220,7 +220,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
     || $series->access == 'subscriber' && !Auth::guest() && Auth::user()->role == 'subscriber' || !Auth::guest() && $settings->enable_ppv_rent == 1 && Auth::user()->role == 'subscriber'):  ?>
 		<div class="col-md-7 p-0">
 			<div id="series_title">
-				<div class="container-fluid">
+				<div class="container-fluid" style="background: #cfcece3d;border-radius: 20px;padding: 20px;margin: 10px 0;">
 					 <h1 class=""><?= $series->title ?></h1>
                   
 					<!--<div class="col-md-6 p-0">
@@ -254,7 +254,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
 
                                   <div class="details-show mt-3">
-                                    <span><?= nl2br($series->description) ?></span>
+                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
                                   </div>
 
                                     <script>
@@ -565,7 +565,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
 
                                   <div class="details-show mt-3">
-                                    <span><?= nl2br($series->description) ?></span>
+                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
                                   </div>
 
                                     <script>
@@ -722,7 +722,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
 
                                   <div class="details-show mt-3">
-                                    <span><?= nl2br($series->description) ?></span>
+                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
                                   </div>
 
                                     <script>
@@ -855,7 +855,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
 
                                   <div class="details-show mt-3">
-                                    <span><?= nl2br($series->description) ?></span>
+                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
                                   </div>
 
                                     <script>
@@ -1299,6 +1299,14 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                           </label>
                                       <?php endif; ?>
 
+                                        <!-- PayPal Button -->
+                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                            <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                                <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $paypal_payment_setting->payment_type; ?>" data-value="PayPal">
+                                                <?php echo $paypal_payment_setting->payment_type; ?>
+                                            </label>
+                                        <?php endif; ?>
+
                                       <!-- Razorpay Button -->
                                       <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
                                           <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
@@ -1314,69 +1322,61 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                               <?php echo $Paystack_payment_setting->payment_type; ?>
                                           </label>
                                       <?php endif; ?>
-
-                                                <!-- PayPal Button -->
-                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
-                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
-                                              <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $paypal_payment_setting->payment_type; ?>" data-value="PayPal">
-                                              <?php echo $paypal_payment_setting->payment_type; ?>
-                                          </label>
-                                      <?php endif; ?>
                                   </div>
 
                                   <div class="becomesubs-page">
-                                      <div class="Stripe_button row mt-3 justify-content-around">  
-                                          <div class="Stripe_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.$seasons->id.'/'.$seasons->ppv_price) ?>' ;"> <!-- Stripe Button -->
-                                              <?= ("Continue") ?>
-                                          </div>
-                                          <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
-                                              <?= ("Cancel") ?>
-                                          </div>
-                                      </div>
-
-                                      <div class="row mt-3 justify-content-around">  <!-- Razorpay Button -->
-                                        <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
-                                          <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $seasons->id . '/' . $seasons->ppv_price) ?>' ;">
-                                             <?= ("Continue") ?>
-                                          </div>
-                                        <?php endif; ?>
-                                          <div class="Razorpay_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
-                                              <?= ("Cancel") ?>
-                                          </div>
-                                      </div>
-
-                                      <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
-                                        <?php if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack'): ?>
-                                          <div class="paystack_button col-md-6 col-6 btn text-white" onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $seasons->id, 'amount' => $SeriesSeason->ppv_price]) ?>' ;"> 
-                                                <?= ("Continue") ?>
-                                          </div>
-                                        <?php endif; ?>
-                                          <div class="paystack_button col-md-5 col-5 btn">
-                                            <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
-                                              <?= ("Cancel") ?>
-                                            </button>
-                                          </div>
-                                      </div>
-
-                                      <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
-                                        <?php if (!Auth::guest() && $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
-                                            <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $seasons->id; ?>, <?php echo $seasons->ppv_price; ?>)">
+                                        <div class="Stripe_button row mt-3 justify-content-around">  
+                                            <div class="Stripe_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.$seasons->id.'/'.$seasons->ppv_price) ?>' ;"> <!-- Stripe Button -->
                                                 <?= ("Continue") ?>
                                             </div>
-                                        <?php else :?>
-                                            <a href="<?= URL::to('/login') ?>" >  <div style='#fff !important;'class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" >
-                                            <?= ("Continue") ?>
-                                            </div></a>
-                                        <?php endif; ?>
+                                            <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                                <?= ("Cancel") ?>
+                                            </div>
+                                        </div>
 
-                                          <div class="paypal_button col-md-5 col-5 btn" id="paypal_pay_cancel">
-                                            <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
-                                              <?= ("Cancel") ?>
-                                            </button>
-                                          </div>
-                                      </div>
-                                        <!-- PayPal Button Container -->
-                                        <div id="paypal-button-container"></div>
+                                        <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
+                                            <?php if (!Auth::guest() && $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                                <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $seasons->id; ?>, <?php echo $seasons->ppv_price; ?>)">
+                                                    <?= ("Continue") ?>
+                                                </div>
+                                            <?php else :?>
+                                                <a href="<?= URL::to('/login') ?>" >  <div style='#fff !important;'class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" >
+                                                <?= ("Continue") ?>
+                                                </div></a>
+                                            <?php endif; ?>
+
+                                            <div class="paypal_button col-md-5 col-5 btn" id="paypal_pay_cancel">
+                                                <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
+                                                <?= ("Cancel") ?>
+                                                </button>
+                                            </div>
+                                        </div>
+                                            <!-- PayPal Button Container -->
+                                            <div id="paypal-button-container"></div>
+
+                                        <div div class="row mt-3 justify-content-around">  <!-- Razorpay Button -->
+                                            <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
+                                            <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $seasons->id . '/' . $seasons->ppv_price) ?>' ;">
+                                                <?= ("Continue") ?>
+                                            </div>
+                                            <?php endif; ?>
+                                            <div class="Razorpay_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                                <?= ("Cancel") ?>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
+                                            <?php if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack'): ?>
+                                            <div class="paystack_button col-md-6 col-6 btn text-white" onclick="location.href ='<?= route('Paystack_Video_Rent', ['video_id' => $seasons->id, 'amount' => $SeriesSeason->ppv_price]) ?>' ;"> 
+                                                    <?= ("Continue") ?>
+                                            </div>
+                                            <?php endif; ?>
+                                            <div class="paystack_button col-md-5 col-5 btn">
+                                                <button type="button" class="btn text-white" data-dismiss="modal" aria-label="Close">
+                                                <?= ("Cancel") ?>
+                                                </button>
+                                            </div>
+                                        </div>
                                   </div>
                               </div>
                           </div>

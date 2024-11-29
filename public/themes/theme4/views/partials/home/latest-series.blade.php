@@ -1,12 +1,13 @@
 @php
     $data->map(function($item){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes->take(15)
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                                         return $item;
                                                 });
+        $item['has_more'] = App\Series::find($item->id)->Series_depends_episodes->count() > 14;
 
-            return $item;
+        return $item;
     });
 @endphp
 
@@ -86,6 +87,17 @@
                                                 </div>
                                             </div>
                                         @endforeach
+                                        @if ($latest_series->has_more)
+                                            <div class="depends-row" style="height: 100%">
+                                                <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
+                                                    <a href="{{ URL::to('play_series/'.$latest_series->slug) }}">
+                                                        <div class=" position-relative">
+                                                           <p class="text-white">{{ "View All" }}</p>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endforeach
                             </div>

@@ -644,7 +644,7 @@ if (!is_null($PayPalpayment)) {
                                 @if (!empty($Stripe_payment_settings) && $Stripe_payment_settings->stripe_status == 1)
                                     <div class="align-items-center ">
                                         <input type="radio" id="stripe_radio_button" class="payment_gateway" name="payment_gateway" value="stripe">
-                                        <label class="ml-2"><p> {{ $stripe_label }} </p> </label> <br />
+                                        <label class="ml-2 mt-2"><p> {{ $stripe_label }} </p> </label> <br />
                                     </div>
                                 @endif
                                 
@@ -653,7 +653,7 @@ if (!is_null($PayPalpayment)) {
                                 @if (!empty($Razorpay_payment_settings) && $Razorpay_payment_settings->status == 1)
                                     <div class="align-items-center  ml-2">
                                         <input type="radio" id="Razorpay_radio_button" class="payment_gateway" name="payment_gateway" value="Razorpay">
-                                        <label class="ml-2"> <p> {{ $Razorpay_label }} </p></label><br />
+                                        <label class="ml-2 mt-2"> <p> {{ $Razorpay_label }} </p></label><br />
                                     </div>
                                 @endif
 
@@ -662,7 +662,7 @@ if (!is_null($PayPalpayment)) {
                                 @if (!empty($Paystack_payment_settings) && $Paystack_payment_settings->status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paystack_radio_button" class="payment_gateway"  name="payment_gateway" value="paystack">
-                                        <label class="ml-2"><p>{{ $paystack_label }} </p></label> <br />
+                                        <label class="ml-2 mt-2"><p>{{ $paystack_label }} </p></label> <br />
                                     </div>
                                 @endif
 
@@ -671,7 +671,7 @@ if (!is_null($PayPalpayment)) {
                                 @if (!empty($PayPal_payment_settings) && $PayPal_payment_settings->paypal_status == 1)
                                     <div class="align-items-center  ml-2">
                                         <input type="radio" id="paypaul_radio_button" class="payment_gateway" name="payment_gateway" value="paypal">
-                                        <label class="ml-2"><p>{{ $paypal_label }} </p> </label> <br />
+                                        <label class="ml-2 mt-2"><p>{{ $paypal_label }} </p> </label> <br />
                                     </div>
                                 @endif
                                             <!-- CinetPay -->
@@ -679,7 +679,7 @@ if (!is_null($PayPalpayment)) {
                                 @if (!empty($CinetPay_payment_settings) && $CinetPay_payment_settings->CinetPay_Status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="cinetpay_radio_button" class="payment_gateway" name="payment_gateway" value="CinetPay">
-                                        <label class="ml-2"><p>{{ $CinetPay_lable }} </p></label><br />
+                                        <label class="ml-2 mt-2"><p>{{ $CinetPay_lable }} </p></label><br />
                                     </div>
                                 @endif
                                 
@@ -687,7 +687,7 @@ if (!is_null($PayPalpayment)) {
                                 @if(!empty($Paydunya_payment_settings) && $Paydunya_payment_settings->paydunya_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="paydunya_radio_button" class="payment_gateway" name="payment_gateway" value="Paydunya" >
-                                        <label class="ml-2"> <p>{{ __($Paydunya_label) }} </p></label> 
+                                        <label class="ml-2 mt-2"> <p>{{ __($Paydunya_label) }} </p></label> 
                                     </div>
                                 @endif
 
@@ -695,7 +695,7 @@ if (!is_null($PayPalpayment)) {
                                 @if(!empty($recurly_payment_settings) && $recurly_payment_settings->recurly_status == 1)
                                     <div class=" align-items-center ml-2">
                                         <input type="radio" id="recurly_radio_button" class="payment_gateway" name="payment_gateway" value="Recurly" >
-                                        <label class="ml-2"> <p>{{ __($recurly_label) }} </p></label> 
+                                        <label class="ml-2 mt-2"> <p>{{ __($recurly_label) }} </p></label> 
                                     </div>
                                 @endif
                             </div>

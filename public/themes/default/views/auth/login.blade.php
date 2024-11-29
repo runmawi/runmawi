@@ -170,6 +170,7 @@
                 margin-top: 0 !important;
             } 
             .sign-in-page{background: #000;}
+            .btn.disabled, .btn:disabled { cursor: not-allowed;}
             
         </style>
     </head>
