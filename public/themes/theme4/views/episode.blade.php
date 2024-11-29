@@ -676,7 +676,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                       <?php if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe'): ?>
                                           <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                               <input type="radio" class="payment_btn" id="tres_important" name="payment_method" value="<?php echo $stripe_payment_setting->payment_type; ?>" data-value="stripe">
-                                              <?php echo $stripe_payment_setting->payment_type; ?>
+                                              <?php echo !empty($stripe_payment_setting->stripe_lable) ? $stripe_payment_setting->stripe_lable : 'Stripe'; ?>
                                           </label>
                                       <?php endif; ?>
 
@@ -684,7 +684,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                       <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
                                           <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                               <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $Razorpay_payment_setting->payment_type; ?>" data-value="Razorpay">
-                                              <?php echo $Razorpay_payment_setting->payment_type; ?>
+                                              <?php echo !empty($Razorpay_payment_setting->razorpay_lable) ? $Razorpay_payment_setting->razorpay_lable : 'Razorpay'; ?>
                                           </label>
                                       <?php endif; ?>
 
@@ -696,11 +696,11 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                           </label>
                                       <?php endif; ?>
 
-                                                                                      <!-- PayPal Button -->
-                                    <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                                <!-- PayPal Button -->
+                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
                                           <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
                                               <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $paypal_payment_setting->payment_type; ?>" data-value="PayPal">
-                                              <?php echo $paypal_payment_setting->payment_type; ?>
+                                              <?php echo !empty($paypal_payment_setting->paypal_lable) ? $paypal_payment_setting->paypal_lable : 'Paypal'; ?>
                                           </label>
                                       <?php endif; ?>
                                   </div>
