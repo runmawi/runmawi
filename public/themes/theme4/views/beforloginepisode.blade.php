@@ -72,9 +72,9 @@
         <div class="">
             <?php
                 if (Auth::guest()) {
-                    if ($free_episode > 0 ){
+                    if ($episode_play_access > 0 ){
 
-                        if ($series->access == 'guest' ||  $free_episode > 0): ?>
+                        if ($series->access == 'guest' ||  $episode_play_access > 0): ?>
 
                             <div id="series_container" class="fitvid" style="position: relative;">
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">

@@ -1,6 +1,16 @@
 @php
     include public_path('themes/theme4/views/header.php');
+    
 @endphp
+
+
+<?php if(Auth::check() && !Auth::guest()): ?>
+   <?php
+        $user_name = Auth::user()->username;
+        $user_img = Auth::user()->avatar;
+        $user_avatar = $user_img !== 'default.png' ? URL::to('public/uploads/avatars/') . '/' . $user_img : URL::to('/assets/img/placeholder.webp');
+    ?>
+<?php endif; ?>
 
 <style type="text/css">
     .nav-pills li a {
@@ -126,6 +136,60 @@
         color: #ffffff!important;
     }
     .favorites-slider .slick-prev, #trending-slider-nav .slick-prev, .favorites-slider .slick-next, #trending-slider-nav .slick-next{top:40%;}
+
+  /* payment modal */
+  #purchase-modal-dialog{max-width: 100% !important;margin: 0;}
+  #purchase-modal-dialog .modal-content{height: 100vh;}
+  #purchase-modal-dialog .modal-header.align-items-center{height: 70px;border: none;}
+  #purchase-modal-dialog .modal-header.align-items-center .col-12{height: 50px;}
+  #purchase-modal-dialog .modal-header.align-items-center .d-flex.align-items-center.justify-content-end{height: 50px;}
+  #purchase-modal-dialog .modal-header.align-items-center img{height: 100%;width: 100%;}
+  .col-sm-7.col-12.details{border-radius: 10px;padding: 0 1.5rem;}
+  .modal-open .modal{overflow-y: hidden;}
+  div#video-purchase-now-modal{padding-right: 0 !important;}
+  .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
+  .col-md-12.btn {margin-top: 2rem;}
+  .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
+  .btn-primary-dark {
+      background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
+  }
+
+  .btn-primary-light {
+      background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
+  }
+  .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
+  .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
+  .quality_option {width: 15px;height: 15px;margin-right: 10px;}
+  span.descript::before {content: '•';margin-right: 5px;color: white;font-size: 16px;}
+  input[type="radio"].payment_btn,input[type="radio"].quality_option {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+      position: relative;
+  }
+
+  input[type="radio"].payment_btn:checked,input[type="radio"].quality_option:checked {
+      background-color: black;
+      border-color: white;
+  }
+
+  input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_option:checked::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
 </style>
 
 <?php
@@ -141,7 +205,7 @@
     <!-- BREADCRUMBS -->
 
         <div class="row mr-2">
-            <div class="nav container-fluid pl-0 mar-left " id="nav-tab" role="tablist">
+            <div class="nav container-fluid" id="nav-tab" role="tablist">
                 <div class="bc-icons-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a class="black-text"
@@ -167,10 +231,10 @@
             </div>
         </div>
 
-        <div class="container-fluid pl-0">
+        <div class="row">
             <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker" <?php endif; ?>></div>
 
-                <div class="container-fluid pl-3">
+                <div class="container-fluid">
                     @if( $ppv_exits > 0 || $video_access == 'free' ||
                         ($series->access == 'guest' && $series->ppv_status != 1) ||
                         (($series->access == 'subscriber' || $series->access == 'registered') &&
@@ -296,6 +360,126 @@
                                             <script>
                                                 const player = new Plyr('#videoPlayer1');
                                             </script>
+                                        </div>
+
+                                        <div class="col-6 mb-3">
+                                            <?php foreach($season as $key => $seasons): ?>
+                                                <div class="episodes_div season_<?= $seasons->id;?>">
+                                                    <?php
+                                                    // Calculate episode play access inside the loop
+                                                      if (Auth::check()) {
+                                                          $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)
+                                                                              ->select('user_id', 'season_id')
+                                                                              ->first();
+              
+                                                              $ppv_purchase = App\PpvPurchase::where('season_id','=',$seasons->id)->orderBy('created_at', 'desc')
+                                                              ->where('user_id', Auth::user()->id)
+                                                              ->first();
+                                                      
+                                                              if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                                                                  $new_date = \Carbon\Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                                                                  $currentdate = date("M d , y H:i:s");
+                                                                  $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                                                              }
+                                                              else{
+                                                                  $ppv_exists_check_query = 0;
+                                                              }    
+                                                  
+                                         
+                                                      } else {
+                                                          $ppv_purchase_user = null; 
+                                                      }
+                                                    $setting_subscirbe_series_access = App\Setting::pluck('enable_ppv_rent_series')->first();
+                                                    $season_access_ppv = App\SeriesSeason::where('id', $seasons->id)->pluck('access')->first();
+                                                    
+                                                    if($season_access_ppv == "free" || Auth::check() && Auth::user()->role == "admin") {
+                                                        $episode_play_access = 1;
+                                                    } else {
+              
+                                                        if(Auth::guest()) {
+                                                            $episode_play_access = 0;
+                                                        } elseif(Auth::user()->role == "registered") {
+                                                            if($ppv_purchase_user && $ppv_purchase_user->season_id == $seasons->id || $ppv_exists_check_query > 0) {
+                                                                $episode_play_access = 1;
+                                                            } else {
+                                                                $episode_play_access = 0;
+                                                            }
+                                                        } elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1) {
+                                                            $episode_play_access = 1;
+                                                        } elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0) {
+                                                            if($ppv_purchase_user && $ppv_purchase_user->season_id == $seasons->id || $ppv_exists_check_query > 0) {
+                                                                $episode_play_access = 1;
+                                                            } else {
+                                                                $episode_play_access = 0;
+                                                            }
+                                                        }
+                                                    }
+                                                    ?>
+              
+                                                    <?php if($episode_play_access == 0): ?>
+                                                        <?php if($series->access == "guest" && $seasons->access == "ppv"): ?>
+                                                            <?php if(Auth::guest() && $seasons->access == "ppv"): ?>
+                                                                <div class="d-flex">
+                                                                  <?php if($subscribe_btn == 1): ?>
+                                                                      <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                                          <button id="button" class="view-count rent-video btn bd mr-4 text-white"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                                      </form>
+                                                                    <?php endif; ?>
+                                                                    <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                                        <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                                    </button>
+                                                                </div>
+                                                            <?php elseif(Auth::check() && Auth::user()->role == "registered" && $seasons->access == "ppv"): ?>
+                                                                <div class="d-flex">
+                                                                  <?php if($subscribe_btn == 1): ?>
+                                                                      <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                                      <button id="button" class="view-count rent-video btn text-white bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                                      </form>
+                                                                  <?php endif; ?>
+                                                                    <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                                        <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                                    </button>
+                                                                </div>
+                                                            <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                                <div class="d-flex">
+                                                                    <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                                        <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                                    </button>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        <?php elseif($series->access == "registered" && $seasons->access == "ppv"): ?>
+                                                            <?php if(Auth::check() && Auth::user()->role == "registered" && $seasons->access == "ppv"): ?>
+                                                                <div class="d-flex">
+                                                                  <?php if($subscribe_btn == 1): ?>
+                                                                      <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                                      <button id="button" class="view-count rent-video btn bd text-white mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                                      </form>
+                                                                  <?php endif; ?>
+                                                                    <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>">
+                                                                        <div class="playbtn text-white" style="gap:5px">
+                                                                            <span class="text pr-2"> <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?> </span>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                                <div class="d-flex">
+                                                                    <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>">
+                                                                        <div class="playbtn text-white" style="gap:5px">
+                                                                            <span class="text pr-2"> <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?> </span>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        <?php elseif($series->access == "subscriber" && $seasons->access == "ppv"): ?>
+                                                            <?php if($settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                                <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                                    <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                                </button>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -579,6 +763,146 @@
             </div>
         </div>
 
+        <?php 
+          foreach($season as $key => $seasons): ?>
+             <div class="modal fade" 
+            id="season-purchase-now-modal-<?= $seasons->id; ?>" tabindex="-1" 
+            role="dialog" aria-labelledby="season-purchase-now-modal-<?= $seasons->id; ?>-Title" 
+            aria-hidden="true" style="top: 0;">
+            <div id="purchase-modal-dialog" class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content container-fluid bg-dark">
+
+                      <div class="modal-header align-items-center">
+                          <div class="row">
+                              <div class="col-12">
+                                  <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $theme->dark_mode_logo; ?>" class="c-logo" alt="<?php echo $settings->website_name ; ?>">
+                              </div>
+                          </div>
+                          <div class="d-flex align-items-center justify-content-end">
+                              <?php if (Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber' || Auth::user()->role == 'admin')): ?>
+                                  <img src="<?php echo $user_avatar; ?>" alt="<?php echo $user_name; ?>">
+                                  <h5 class="pl-4"><?php echo $user_name; ?></h5>
+                              <?php endif; ?>
+                          </div>
+                      </div>
+
+                      <div class="modal-body">
+                          <div class="row justify-content-between m-0">
+                              <h3 class="font-weight-bold"><?php echo $seasons->series_seasons_name; ?></h3>
+                              <button type="button" class="close-btn" data-dismiss="modal" aria-label="Close">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                              </button>
+                          </div>
+                          <p class="text-white">You are currently on plan.</p>
+                          <div class="row justify-content-between m-0" style="gap: 4rem;">
+                              <div class="col-sm-4 col-12 p-0">
+                                  <img class="img__img w-100" src="<?php echo $seasons->image; ?>" class="img-fluid" alt="<?php echo $seasons->series_seasons_name; ?>" style="border-radius: 10px;">
+                              </div>
+
+                              <div class="col-sm-7 col-12 details">
+                                  <div class="movie-rent btn">
+                                      <div class="d-flex justify-content-between title">
+                                          <h3 class="font-weight-bold"><?php echo $seasons->series_seasons_name; ?></h3>
+                                      </div>
+
+                                      <div class="d-flex justify-content-between align-items-center mt-3">
+                                          <div class="col-8 d-flex justify-content-start p-0">
+                                              <span class="descript text-white"><?php echo $ppv_series_description; ?></span>
+                                          </div>
+                                          <div class="col-4">
+                                              <h3 class="pl-2" style="font-weight:700;" id="price-display">
+                                                  <?php echo $currency->enable_multi_currency == 1 ? Currency_Convert($seasons->ppv_price) : $currency->symbol .$seasons->ppv_price; ?>
+                                              </h3>
+                                          </div>
+                                      </div>
+
+                                      <div class="mb-0 mt-3 p-0 text-left">
+                                          <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2">Select payment method:</h5>
+                                      </div>
+
+                                      <!-- Stripe Button -->
+                                      <?php if ($stripe_payment_setting && $stripe_payment_setting->payment_type == 'Stripe'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="tres_important" name="payment_method" value="<?php echo $stripe_payment_setting->payment_type; ?>" data-value="stripe">
+                                              <?php echo $stripe_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+
+                                      <!-- Razorpay Button -->
+                                      <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $Razorpay_payment_setting->payment_type; ?>" data-value="Razorpay">
+                                              <?php echo $Razorpay_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+
+                                      <!-- Paystack Button -->
+                                      <?php if ($Paystack_payment_setting && $Paystack_payment_setting->payment_type == 'Paystack'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" name="payment_method" value="<?php echo $Paystack_payment_setting->payment_type; ?>" data-value="Paystack">
+                                              <?php echo $Paystack_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+
+                                                <!-- PayPal Button -->
+                                        <?php if ($paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                          <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center">
+                                              <input type="radio" class="payment_btn" id="important" name="payment_method" value="<?php echo $paypal_payment_setting->payment_type; ?>" data-value="PayPal">
+                                              <?php echo $paypal_payment_setting->payment_type; ?>
+                                          </label>
+                                      <?php endif; ?>
+                                  </div>
+
+                                  <div class="becomesubs-page">
+                                      <div class="Stripe_button row mt-3 justify-content-around">  
+                                          <div class="Stripe_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.$seasons->id.'/'.$seasons->ppv_price) ?>' ;"> <!-- Stripe Button -->
+                                              <?= ("Continue") ?>
+                                          </div>
+                                          <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                          </div>
+                                      </div>
+
+                                      <div class="row mt-3 justify-content-around">  <!-- Razorpay Button -->
+                                        <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
+                                          <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpaySeriesSeasonRent/' . $seasons->id . '/' . $seasons->ppv_price) ?>' ;">
+                                             <?= ("Continue") ?>
+                                          </div>
+                                        <?php endif; ?>
+                                          <div class="Razorpay_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                          </div>
+                                      </div>
+
+
+                                      <div class="row mt-3 justify-content-around"> <!-- Paystack Button -->
+                                        <?php if (!Auth::guest() && $paypal_payment_setting && $paypal_payment_setting->payment_type == 'PayPal'): ?>
+                                            <div class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" onclick="paypal_checkout(<?php echo $seasons->id; ?>, <?php echo $seasons->ppv_price; ?>)">
+                                                <?= ("Continue") ?>
+                                            </div>
+                                        <?php else :?>
+                                            <a href="<?= URL::to('/login') ?>" >  <div style='#fff !important;'class="paypal_button col-md-6 col-6 btn text-white paypal_pay_now" type="button" id="paypal_pay_now" >
+                                            <?= ("Continue") ?>
+                                            </div></a>
+                                        <?php endif; ?>
+
+                                          <div class="paypal_button col-md-5 col-5 btn" id="paypal_pay_cancel">
+                                            <button type="button" class="btn text-white paypal_pay_now" data-dismiss="modal" aria-label="Close">
+                                              <?= ("Cancel") ?>
+                                            </button>
+                                          </div>
+                                      </div>
+                                        <!-- PayPal Button Container -->
+                                        <div id="paypal-button-container"></div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+        <?php endforeach; ?>
+
 
 <input type="hidden" name="publishable_key" id="publishable_key" value="<?= $publishable_key ?>">
 <input type="hidden" name="series_id" id="series_id" value="<?= $series->id ?>">
@@ -598,6 +922,128 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+
+<script>
+
+  
+    function paypal_checkout(seasons_id, amount) {
+        $('#paypal-button-container').empty();
+            $('#paypal_pay_cancel').hide();
+            $('.paypal_pay_now').hide();
+    
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: amount,
+                            }
+                        }]
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        console.log(details);
+                        $.ajax({
+                            url: '<?= URL::to('paypal-ppv-series-season') ?>',
+                            method: 'post',
+                            data: {
+                                _token: '<?= csrf_token() ?>',
+                                amount: amount,
+                                SeriesSeason_id: seasons_id,
+                            },
+                            success: function(response) {
+                                console.log("Server response:", response);
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function(error) {
+                                swal('error');
+                            }
+                        });
+                    });
+                },
+                onError: function (err) {
+                    console.error(err);
+                }
+            }).render('#paypal-button-container'); 
+        }
+    
+    
+      $(document).ready(function() {
+    
+        $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
+    
+        $(".payment_btn").click(function() {
+    
+            $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button,.paypal_button').hide();
+    
+            let payment_gateway = $('input[name="payment_method"]:checked').val();
+    
+            if (payment_gateway == "Stripe") {
+    
+                $('.Stripe_button').show();
+    
+            } else if (payment_gateway == "Razorpay") {
+    
+                $('.Razorpay_button').show();
+    
+            } else if (payment_gateway == "Paystack") {
+    
+                $('.paystack_button').show();
+    
+            } else if (payment_gateway == "CinetPay") {
+    
+                $('.cinetpay_button').show();
+            }
+            else if (payment_gateway == "PayPal") {
+    
+                $('.paypal_button').show();
+    
+            }
+        });
+    
+    
+      });
+    
+    </script>
+<script>
+
+  
+    $(document).ready(function() {
+  
+      $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+  
+      $(".payment_btn").click(function() {
+  
+          $('.Razorpay_button,.Stripe_button,.paystack_button,.cinetpay_button').hide();
+  
+          let payment_gateway = $('input[name="payment_method"]:checked').val();
+  
+          if (payment_gateway == "Stripe") {
+  
+              $('.Stripe_button').show();
+  
+          } else if (payment_gateway == "Razorpay") {
+  
+              $('.Razorpay_button').show();
+  
+          } else if (payment_gateway == "Paystack") {
+  
+              $('.paystack_button').show();
+  
+          } else if (payment_gateway == "CinetPay") {
+  
+              $('.cinetpay_button').show();
+          }
+      });
+  
+  
+    });
+  
+  </script>
 
 <script>
     $(document).ready(function() {
