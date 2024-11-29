@@ -32,6 +32,7 @@
     </div>
 </div>
 
+
 <section class="mt-5 mb-5">
     <div class="container">
         <div class="row ">
@@ -41,6 +42,7 @@
                     @php include(public_path('themes/theme6/views/partials/channel-social-share.php')); @endphp
                 </ul>
             </div>
+
 
             @if(!empty(@$channel_partner) && $channel_partner->intro_video != null)
 
@@ -63,6 +65,40 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            @endif
+            
+            @php
+
+                $UserChannelSubscription = true ;
+
+                if ( $settings->user_channel_plans_page_status == 1 ) {
+
+                    $UserChannelSubscription = false ;
+
+                    if (!Auth::guest() ) {
+
+                        $UserChannelSubscription = App\UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                        ->where('channel_id',$channel_partner->id)->where('status','active')
+                                                        ->where('subscription_start', '<=', Carbon\Carbon::now())
+                                                        ->where('subscription_ends_at', '>=', Carbon\Carbon::now())
+                                                        ->latest()->exists();
+
+                        if (Auth::user()->role == "admin") {
+                            $UserChannelSubscription = true ;
+                        }
+                    }
+                }
+            @endphp
+    
+            @if ( $UserChannelSubscription == false)
+                <div class="col-4 col-lg-4" >
+                    <p> {{"Subscribe {$channel_partner->channel_name} Channel to Watch content"}} </p>
+                    <a class="btn" href="{{ route('channel.payment',$channel_partner->id) }}"   style="cursor: pointer;">
+                        <span class="text-white">
+                            <i class="fa fa-play mr-1" aria-hidden="true"></i>  {{ __('Subscribe Now' ) }}
+                        </span>
+                    </a>
                 </div>
             @endif
         </div>

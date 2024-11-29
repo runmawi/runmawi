@@ -65,7 +65,7 @@ class ChannelPartnerController extends Controller
 
     public function all_Channel_home(Request $request)
     {
-        try {
+        // try {
          
             $currency = CurrencySetting::first();
             $FrontEndQueryController = new FrontEndQueryController();
@@ -77,35 +77,46 @@ class ChannelPartnerController extends Controller
             $channel_data = $all_channels->map(function ($item) use ($FrontEndQueryController) {
 
                 $channel_partner = $item->id;
+                $channel_partner_name = $item->channel_name;
 
-                $videos = $FrontEndQueryController->latest_videos()->filter(function ($videos)  use ($channel_partner) {
+                $videos = $FrontEndQueryController->latest_videos()->filter(function ($videos)  use ($channel_partner,$channel_partner_name) {
                     if ( $videos->user_id == $channel_partner && $videos->uploaded_by == "Channel" ) {
+                        $videos['channel_partner_name'] = $channel_partner_name;
+                        $videos['source_model'] = 'App\Video'; 
                         return $videos;
                     }
                 });
 
-                $livestream = $FrontEndQueryController->livestreams()->filter(function ($livestream)  use ($channel_partner) {
+                $livestream = $FrontEndQueryController->livestreams()->filter(function ($livestream)  use ($channel_partner,$channel_partner_name) {
                     if ( $livestream->user_id == $channel_partner && $livestream->uploaded_by == "Channel" ) {
-                        return $livetream;
+                        $livestream['channel_partner_name'] = $channel_partner_name;
+                        $livestream['source_model'] = 'App\livestream'; 
+                        return $livestream  ;
                     }
                 });
 
-                $episode = $FrontEndQueryController->latest_episodes()->filter(function ($episode)  use ($channel_partner) {
+                $episode = $FrontEndQueryController->latest_episodes()->filter(function ($episode)  use ($channel_partner,$channel_partner_name) {
                     if ( $episode->user_id == $channel_partner && $episode->uploaded_by == "Channel" ) {
+                        $episode['channel_partner_name'] = $channel_partner_name;
+                        $episode['source_model' ]= 'App\Episode'; 
                         return $episode;
                     }
                 });
 
-                $latest_series = $FrontEndQueryController->latest_Series()->filter(function ($latest_Series)  use ($channel_partner) {
+                $latest_series = $FrontEndQueryController->latest_Series()->filter(function ($latest_Series)  use ($channel_partner,$channel_partner_name) {
                     if ( $latest_Series->user_id == $channel_partner && $latest_Series->uploaded_by == "Channel" ) {
+                        $latest_Series['channel_partner_name'] = $channel_partner_name;
+                        $latest_Series['source_model'] = 'App\Series'; 
                         return $latest_Series;
                     }
                 });
 
-                $all_data = $videos->merge($livestream)->merge($episode);
+
+                $all_data = $videos->concat($livestream)->concat($episode)->concat($latest_series);
                 $all_data = $all_data->take(15);
 
                 $item->all_data = $all_data;
+
                 return $item;
 
             });
@@ -122,34 +133,15 @@ class ChannelPartnerController extends Controller
                 $video_banners = $FrontEndQueryController->video_banners()->filter(function ($video_banners)  use ($channel_partner,$default_vertical_image_url,$default_horizontal_image_url,$settings) {
                     if ( $video_banners->user_id == $channel_partner && $video_banners->uploaded_by == 'Channel' ) {
 
-                        $UserChannelSubscription = null ;
 
-                        if (!Auth::guest() ) {
-                            $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
-                                                            ->where('channel_id',$channel_partner)->where('status','active')
-                                                            ->where('subscription_start', '<=', Carbon::now())
-                                                            ->where('subscription_ends_at', '>=', Carbon::now())
-                                                            ->latest()->first();
-                                                            
-                        }
 
                         $video_banners['source_name']        = $video_banners->title;
                         $video_banners['source_description'] = $video_banners->description;
                         $video_banners['source_image_url']          =  $video_banners->image != null ?  URL::to('/public/uploads/images/'.$video_banners->image) : $default_vertical_image_url ;
                         $video_banners['source_Player_image_url']   =  $video_banners->player_image != null ?  URL::to('public/uploads/images/'.$video_banners->player_image) : $default_horizontal_image_url ;  
 
-                        if ($settings->user_channel_plans_page_status == 1) {
-                            if (!Auth::guest() && Auth::user()->role != "admin"){
-                                $video_banners['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $video_banners->user_id) : URL::to('category/videos/'.$video_banners->slug)  ;  
-                                $video_banners['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now'  ;  
-                            }else{
-                                $video_banners['source_redirection_url']  =  route('login');  
-                                $video_banners['source_button_name']  =  'Play Now';  
-                            }
-                        }else{
-                            $Episode_sliders['source_redirection_url']  =  URL::to('category/videos/'.$video_banners->slug)  ;  
-                            $video_banners['source_button_name']  =  'Play Now';  
-                        }
+                        $video_banners['source_redirection_url']  =  URL::to('category/videos/'.$video_banners->slug)  ;  
+                        $video_banners['source_button_name']  =  'Play Now';  
 
                         return $video_banners;
                     }
@@ -163,18 +155,8 @@ class ChannelPartnerController extends Controller
                         $live_banners['source_image_url']          =  $live_banners->image != null ?  URL::to('/public/uploads/images/'.$live_banners->image) : $default_vertical_image_url ;
                         $live_banners['source_Player_image_url']   =  $live_banners->player_image != null ?  URL::to('public/uploads/images/'.$live_banners->player_image) :  $default_horizontal_image_url ;
                         
-                        if ($settings->user_channel_plans_page_status == 1) {
-                            if (!Auth::guest() && Auth::user()->role != "admin"){
-                                $live_banners['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $live_banners->user_id) : URL::to('live/'.$live_banners->slug) ;  
-                                $live_banners['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now';  
-                            }else{
-                                $live_banners['source_redirection_url']  =  route('login');  
-                                $live_banners['source_button_name']  =  'Play Now';  
-                            }
-                        }else{
-                            $live_banners['source_redirection_url']  = URL::to('live/'.$live_banners->slug) ;  
-                            $live_banners['source_button_name']  =  'Play Now';  
-                        }
+                        $live_banners['source_redirection_url']  = URL::to('live/'.$live_banners->slug) ;  
+                        $live_banners['source_button_name']  =  'Play Now';  
 
                         return $live_banners;
                     }
@@ -188,18 +170,8 @@ class ChannelPartnerController extends Controller
                         $series_sliders['source_image_url']          =  $series_sliders->image != null ?  URL::to('/public/uploads/images/'.$series_sliders->image) :  $default_vertical_image_url ;
                         $series_sliders['source_Player_image_url']   =  $series_sliders->player_image != null ?  URL::to('public/uploads/images/'.$series_sliders->player_image) :  $default_horizontal_image_url ;
 
-                        if ($settings->user_channel_plans_page_status == 1) {
-                            if (!Auth::guest() && Auth::user()->role != "admin"){
-                                $series_sliders['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $series_sliders->user_id) : URL::to('play_series/'.$series_sliders->slug) ;  
-                                $series_sliders['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now';  
-                            }else{
-                                $series_sliders['source_redirection_url']  =  route('login');  
-                                $series_sliders['source_button_name']  =  'Play Now';  
-                            }
-                        }else{
-                            $Episode_sliders['source_redirection_url']  =  URL::to('play_series/'.$series_sliders->slug);  
-                            $series_sliders['source_button_name']  =  'Play Now';  
-                        }
+                        $series_sliders['source_redirection_url']  =  URL::to('play_series/'.$series_sliders->slug);  
+                        $series_sliders['source_button_name']  =  'Play Now';  
 
                         return $series_sliders;
                     }
@@ -214,18 +186,8 @@ class ChannelPartnerController extends Controller
                         $Episode_sliders['source_Player_image_url']   =  $Episode_sliders->player_image != null ?  URL::to('public/uploads/images/'.$Episode_sliders->player_image) :  $default_horizontal_image_url ;
                         $series_slug = $Episode_sliders->series->slug;
 
-                        if ($settings->user_channel_plans_page_status == 1) {
-                            if (!Auth::guest() && Auth::user()->role != "admin"){
-                                $Episode_sliders['source_redirection_url']  =  is_null($UserChannelSubscription) ? route('channel.payment', $Episode_sliders->channel_slug) : URL::to("episode/{$series_slug}/{$Episode_sliders->slug}") ;  
-                                $Episode_sliders['source_button_name']  =  is_null($UserChannelSubscription) ? "subscribe" : 'Play Now';  
-                            }else{
-                                $Episode_sliders['source_redirection_url']  =  route('login');  
-                                $Episode_sliders['source_button_name']  =  'Play Now';  
-                            }
-                        }else{
-                            $Episode_sliders['source_redirection_url']  =  URL::to("episode/{$series_slug}/{$Episode_sliders->slug}");  
-                            $Episode_sliders['source_button_name']  =  'Play Now';  
-                        }
+                        $Episode_sliders['source_redirection_url']  =  URL::to("episode/{$series_slug}/{$Episode_sliders->slug}");  
+                        $Episode_sliders['source_button_name']  =  'Play Now';  
 
                         return $Episode_sliders;
                     }
@@ -255,10 +217,10 @@ class ChannelPartnerController extends Controller
             
             return Theme::view('ChannelHomeList', $data);
 
-        } catch (\Throwable $th) {
-            // return $th->getMessage();
-            return abort(404);
-        }
+        // } catch (\Throwable $th) {
+        //     return $th->getMessage();
+        //     return abort(404);
+        // }
     }
 
     public function channelparnterpayment(Request $request, $channel_id)
@@ -291,7 +253,7 @@ class ChannelPartnerController extends Controller
             return Theme::view('ChannelPartner.payment.payment-page',$data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -302,7 +264,7 @@ class ChannelPartnerController extends Controller
 
         $plans_data = AdminUserChannelSubscriptionPlans::where('status', 1)
         ->where('paymentGateway', $request->payment_gateway)
-        ->whereJsonContains('channel_id', $request->channel_id)
+        // ->whereJsonContains('channel_id', $request->channel_id)
         ->get();
 
         $response = array(
