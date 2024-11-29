@@ -2008,14 +2008,27 @@ public function verifyandupdatepassword(Request $request)
                       ->where('user_id', $data['user_id'])
                       ->first();
 
-      if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
-          $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
-          $currentdate = date("M d , y H:i:s");
-          $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
-      }
-      else{
+      if (!empty($ppv_purchase) && !empty($ppv_purchase->to_time)) {
+          try {
+              $new_date = Carbon::parse($ppv_purchase->to_time); 
+              $currentdate = Carbon::now(); 
+              
+              $ppv_exists_check_query = $new_date->greaterThan($currentdate) ? 1 : 0; 
+          } catch (\Exception $e) {
+              $ppv_exists_check_query = 0;
+          }
+      } else {
           $ppv_exists_check_query = 0;
       }
+
+      // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+      //     $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+      //     $currentdate = date("M d , y H:i:s");
+      //     $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+      // }
+      // else{
+      //     $ppv_exists_check_query = 0;
+      // }
 
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
 
