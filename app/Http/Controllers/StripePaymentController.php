@@ -401,6 +401,8 @@ class StripePaymentController extends Controller
 
         } catch (\Throwable $th) {
 
+            // return $th->getMessage();
+
             $video = LiveStream::where('id',$live_id)->first();
 
             $Error_msg = "Error on Payment, Pls Connect admin" ;
@@ -819,7 +821,7 @@ class StripePaymentController extends Controller
             echo "<script type='text/javascript'> window.location.href = '$url' </script>";
 
         } catch (\Throwable $th) {
-
+            // return $th->getMessage();
             $Error_msg = "Error on Payment, Pls Connect admin" ;
             $url = URL::to('play_series/'.$series->slug);
 

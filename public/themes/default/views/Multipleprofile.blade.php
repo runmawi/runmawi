@@ -82,7 +82,7 @@
                         <div class="row-data" style="display:flex; ">
 
                             <div class="member ">
-                                <a href="{{ $redirection_url }}">
+                                <a href="{{ route('subcriberuser', $subcriber_user->id) }}">
                                     <img src="{{ URL::asset('public/multiprofile/chooseimage.jpg') }}" alt="user"
                                         class="multiuser_img" style="width:120px">
                                 </a>

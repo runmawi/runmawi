@@ -300,6 +300,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/', 'HomeController@FirstLanging')->name('FirstLanging');
 
     Route::get('choose-profile', 'HomeController@Multipleprofile');
+    Route::get('subcriberuser/{id}', 'HomeController@subcriberuser')->name('subcriberuser');
     Route::get('subuser/{id}', 'HomeController@subuser')->name('subuser');
     Route::get('kidsMode', 'HomeController@kidsMode')->name('kidsMode');
     Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');

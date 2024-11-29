@@ -83,7 +83,7 @@
                             @endif
 
                             @if ($value->video_name == 'Series_Genre')
-                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], ])->content() !!}
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], 'order_settings_list_header' => $order_settings_list,'default_horizontal_image_url' => $default_horizontal_image_url,'default_vertical_image_url' => $default_vertical_image_url, ])->content() !!}
                             @endif
 
                             @if ($value->video_name == 'Series_Genre_videos')
