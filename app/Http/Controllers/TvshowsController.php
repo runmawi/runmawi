@@ -942,8 +942,8 @@ class TvshowsController extends Controller
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
             if(!Auth::guest()){
-                $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
-
+                $ppv_purchase_user = PpvPurchase::where('season_id','=',$season_ide)->where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
+                // dd($ppv_purchase_user);
                 $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
                 ->where('user_id', Auth::user()->id)
                 ->first();
@@ -1104,6 +1104,7 @@ class TvshowsController extends Controller
                         'next_episode'             => $next_episode,
                         'UserChannelSubscription'  => $UserChannelSubscription
                     ];
+                    // dd($data);
                     
                     if (Auth::guest() && $settings->access_free == 1) {
                         return Theme::view('beforloginepisode', $data);

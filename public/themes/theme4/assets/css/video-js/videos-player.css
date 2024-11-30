@@ -977,6 +977,27 @@ display: block !important;
   margin: 1.35em auto;
 }
 
+.vjs-title-bar {
+  /* display: inline-block; */
+  position: absolute;
+  background: transparent;
+  z-index: 1;
+  top: 1%;
+  left: 4%;
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  border-left: 3px solid #fd0000;
+  padding-left: 10px;
+  height: 25px;
+  display: flex
+;
+  align-items: center;
+}
+
 /* For screens up to 600px */
 @media only screen and (max-width: 600px) {
   .custom-skip-backward-button {
