@@ -4912,6 +4912,7 @@ class ModeratorsUserController extends Controller
 
             $data = [
                 "commission" => $commission,
+                "settings" => Setting::first()  ,
             ];
             
             return view("moderator.commission", $data);
@@ -4939,6 +4940,20 @@ class ModeratorsUserController extends Controller
             "message",
             "Successfully Updated Percentage!"
         );
+    }
+
+    public function CPP_Commission_Status_update(Request $request)
+    {
+        try {
+
+            Setting::first()->update(['CPP_Commission_Status' => $request->CPP_Commission_Status]);
+
+            return response()->json(["message" => "true"]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(["message" => "false"]);
+        }
     }
 
     public function Dashboard_Revenue(Request $request)
