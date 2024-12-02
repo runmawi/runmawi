@@ -94,7 +94,7 @@
             @if ( $UserChannelSubscription == false)
                 <div class="col-4 col-lg-4" >
                     <p> {{"Subscribe {$channel_partner->channel_name} Channel to Watch content"}} </p>
-                    <a class="btn" href="{{ route('channel.payment',$channel_partner->id) }}"   style="cursor: pointer;">
+                    <a class="btn" href="{{ !Auth::guest() ? route('channel.payment',$channel_partner->id) : route('login') }}"   style="cursor: pointer;">
                         <span class="text-white">
                             <i class="fa fa-play mr-1" aria-hidden="true"></i>  {{ __('Subscribe Now' ) }}
                         </span>
