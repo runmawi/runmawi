@@ -1,10 +1,14 @@
 <?php
-
 if(isset($video)):
     $media_title = $video->title;
     $url = URL::to('/live');
+    $radio_station_url = URL::to('/radio-station');
     $embed_url = URL::to('/live/embed');
+    if($video->stream_upload_via == 'radio_station'){
+    $media_url = $radio_station_url . '/' . $video->slug;
+    }else{
     $media_url = $url . '/' . $video->slug;
+    }
     $embed_media_url = $embed_url . '/' . $video->slug;
     $hidden = '<input type="hidden" value="'.$video->id.'" id="videoid">';
 elseif(isset($audio)):

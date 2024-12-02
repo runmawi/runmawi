@@ -187,6 +187,7 @@ class HomeSettingsController extends Controller
         $settings->live_artist = !empty($request->live_artist) ?  "1" : "0" ;
         $settings->user_generated_content = !empty($request->user_generated_content) ?  "1" : "0" ;
         $settings->shorts_minis = !empty($request->shorts_minis) ?  "1" : "0" ;
+        // $settings->radio_station = !empty($request->radio_station) ?  "1" : "0" ;
 
         $settings->web_pagination_count = !empty($request['web_pagination_count']) ? $request['web_pagination_count'] : '3';
 
