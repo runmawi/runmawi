@@ -7,7 +7,7 @@
         $epg_program_end_time   = $Livestream_details->epg_program_end_time ;
         $epg_program_timeloop_parse   = $Livestream_details->epg_program_timeloop_parse ;
 
-        $colors = ['lightblue', 'lightgreen', 'lightcoral', 'lightgoldenrodyellow', 'lightpink'];
+        $colors = ['#333','#8f8d8d'];
       
         $program_title_once_show = true;
         $lastShownIndex = null;
@@ -35,7 +35,7 @@
                         {{-- Publish now  --}}
 
                 @if ( $Livestream_details->publish_type == "publish_now")
-                    <div class="epg-program" style="background-color: {{ $colors[2] }};">
+                    <div class="epg-program" style="background-color: {{ $colors[2] }};" >
                         <b>{{ $program_title_once_show ?  @$Livestream_details->epg_program_title :null }}</b>          
                         @php $program_title_once_show = false; @endphp 
                     </div>
@@ -56,33 +56,32 @@
                 {{-- Schedular Program --}}
                   
                 @if ( $Livestream_details->publish_type == "schedule_program")
-                    @forelse ($epg_program_title as $index => $title)
-                        @if ($title)
-                            @php
-                                $startTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_start_time[$index]);
-                                $endTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_end_time[$index]);
-                                $color = $colors[$index % count($colors)];
-                            @endphp
-
-                            @if ($time->between($startTime, $endTime))
-                                @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
-                                    <div class="epg-program epg-timeline-{{ $index }}" style="border-left:1px solid #fff;">
-                                        @if ($title && $index !== $lastShownIndex)
-                                            <b style="position:absolute;">{{ "{$title} (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]})" }}</b>
-                                        @endif
-                                    </div>
+                @forelse ($epg_program_title as $index => $title)
+                @if ($title)
+                    @php
+                        $startTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_start_time[$index]);
+                        $endTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_end_time[$index]);
+                        $color = $colors[$index % count($colors)]; // Select a color from the $colors array
+                    @endphp
+            
+                    @if ($time->between($startTime, $endTime))
+                        <div class="epg-program epg-timeline-{{ $index }}" 
+                             style="background-color: {{ $color }};" sty >
+                            @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
+                                @if ($index !== $lastShownIndex)
+                                <b style="position: absolute; top: 3px; left: 10px; z-index: 2; ">
+                                    {{ "{$title} " }}
+                                    {{-- {{ (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]}) }} --}}
+                                </b>
                                 @endif
-
-                                @if($time->greaterThanOrEqualTo($endTime) && $time->lessThan($endTime->copy()->addMinutes(15)))
-                                    <div class="epg-program epg-timeline-{{ $index }}" style="border-right:1px solid;"></div>
-                                @endif
-
-                                @php $lastShownIndex = $index; @endphp
                             @endif
-                        @endif
-                    @empty
-                        <p>No programs scheduled for today.</p>
-                    @endforelse
+                        </div>
+                        @php $lastShownIndex = $index; @endphp
+                    @endif
+                @endif
+            @empty
+                <p>No programs scheduled for today.</p>
+            @endforelse
                 @endif
             </div>
         @endfor

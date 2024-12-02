@@ -23,7 +23,7 @@
                             <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ optional($order_settings_list[4])->header_name }}</a>
                         </h4>                   
                         <h4 class="main-title">
-                            <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'view all' }}</a>
+                            <a href="{{ $order_settings_list[4]->url ? URL::to($order_settings_list[4]->url) : null }} ">{{ 'View all' }}</a>
                         </h4>                   
                      </div>
 
@@ -92,7 +92,7 @@
                                                 <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
                                                     <a href="{{ URL::to('play_series/'.$latest_series->slug) }}">
                                                         <div class=" position-relative">
-                                                           <p class="text-white">{{ "View All" }}</p>
+                                                           <p class="text-white">{{ "View all" }}</p>
                                                         </div>
                                                     </a>
                                                 </div>

@@ -693,12 +693,14 @@ $settings  = App\Setting::first();?>
 		<tr class="table-header">
 			<th>Seasons</th>
 			<th>Episodes</th>
+			<th>Access</th>
 			<th>Operation</th>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr id="{{ $seasons_value->id }}">
 				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
 				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
+				<td valign="bottom"><p>{{ $seasons_value->access }}</p></td>
 				<td>
 					<p>
 						<a href="{{ URL::to('admin/season/edit') . '/' . $series->id. '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Manage Episodes</a>

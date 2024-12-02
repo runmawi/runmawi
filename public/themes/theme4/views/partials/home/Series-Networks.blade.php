@@ -40,7 +40,7 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[30]->url ? URL::to($order_settings_list[30]->url) : null }} ">{{ optional($order_settings_list[30])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[30]->url ? URL::to($order_settings_list[30]->url) : null }} ">{{ 'view all' }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[30]->url ? URL::to($order_settings_list[30]->url) : null }} ">{{ 'View all' }}</a></h4>
                     </div>
 
                     <div id="tv-networks" class="channels-list">
@@ -108,7 +108,7 @@
                                                     <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
                                                         <a href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
                                                             <div class=" position-relative">
-                                                            <p class="text-white">{{ "View All" }}</p>
+                                                            <p class="text-white">{{ "View all" }}</p>
                                                             </div>
                                                         </a>
                                                     </div>

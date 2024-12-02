@@ -812,11 +812,12 @@
                                         </div>
                                     </td>
 
-                                    <?php if($episode->active == null){ ?>
-                                    <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
-                                             <?php }elseif($episode->active == 1){ ?>
-                                    <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
-                                             <?php } ?>
+                                    @if ( ($episode->active != 1) || ($episode->status != 1) )
+                                        <td> <p class = "bg-warning video_active">{{ "Draft" }}</p></td>
+                                    @else
+                                        <td> <p class = "bg-success video_active">{{ "Published" }} </p></td>
+                                    @endif
+
                                     <td>
                                         <div class="d-flex justify-content-between align-items-center" style="gap:5px;">
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Meta"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>

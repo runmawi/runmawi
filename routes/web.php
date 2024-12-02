@@ -1069,7 +1069,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/Multi_limit_store', 'AdminMultiUserController@Multi_limit_store')->name('Multi_limit_store');
 
     // Theme Integration
-    Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
+    // Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegratiofn');
 
     // Compress Image
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
@@ -2323,9 +2323,9 @@ Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('w
 Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 //    Theme Integration
-// Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
-// Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
-// Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
+Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
+Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
 Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('Movie-Description', 'HomeController@Movie_description');
