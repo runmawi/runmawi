@@ -2529,7 +2529,7 @@ $(document).ready(function($){
                 socure_type: "Video",
                 error: errorMessage
             }, function(response) {
-                console.log("Error log submitted:", response);
+               //  console.log("Error log submitted:", response);
             }).fail(function(xhr) {
                //  console.error("Failed to log error:", xhr.responseText);
             });

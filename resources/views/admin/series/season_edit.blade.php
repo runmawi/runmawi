@@ -1573,7 +1573,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 socure_type: "Episode",
                 error: errorMessage
             }, function(response) {
-                console.log("Error log submitted:", response);
+                // console.log("Error log submitted:", response);
             }).fail(function(xhr) {
                 // console.error("Failed to log error:", xhr.response/Text);
             });
