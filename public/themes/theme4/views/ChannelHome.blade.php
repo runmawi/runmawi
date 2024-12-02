@@ -1,11 +1,20 @@
 <!-- Header Start -->
-<?php
-include public_path('themes/theme4/views/header.php');
+@php
+    include(public_path('themes/theme4/views/header.php'));
 
-$order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
-$order_settings_list = App\OrderHomeSetting::get();
-$continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
-?>
+    $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first();
+    $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();
+
+    $homepage_array_data = [
+        'order_settings_list' => App\OrderHomeSetting::get(),
+        'multiple_compress_image' => $multiple_compress_image,
+        'videos_expiry_date_status' => $videos_expiry_date_status,
+        'getfeching' => $getfeching,
+        'default_vertical_image_url' => $default_vertical_image_url,
+        'default_horizontal_image_url' => $default_horizontal_image_url,
+    ];
+@endphp
+
 <style>
     hr{
         border-top:none!important;
@@ -241,7 +250,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php include public_path('themes/theme4/views/partials/home/latest-videos.blade.php');  ?>
+                    {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-videos', array_merge($homepage_array_data, ['data' => $latest_video]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -256,9 +265,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/theme4/views/partials/home/live-videos.php');
-                    ?>
+                    {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -274,9 +281,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/theme4/views/partials/home/latest-series.php');
-                    ?>
+                    {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
                 </div>
             </div>
         </div>
@@ -292,9 +297,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
         <div class="container-fluid overflow-hidden">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <?php
-                    include public_path('themes/theme4/views/partials/home/latest-audios.php');
-                    ?>
+                    {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-audios', array_merge($homepage_array_data, ['data' => $latest_audios]) )->content() !!}
                 </div>
             </div>
         </div>
