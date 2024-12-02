@@ -1,5 +1,8 @@
 <script>
 let video_url = "<?php echo $videodetail->videos_url; ?>";
+var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+var user_role = "<?php echo $user_role; ?>";
+var played_views = "<?php echo $videodetail->played_views; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
         var player = videojs('my-video', { // Video Js Player 
@@ -40,6 +43,62 @@ let video_url = "<?php echo $videodetail->videos_url; ?>";
                 });
             }
         });
+
+
+
+        
+            
+        let viewCountSent = false;
+
+        function PartnerMonetization(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            // console.log(currentTime);
+
+            var countview;
+
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > 5) {
+                viewCountSent = true;
+                countview = 1;
+              
+                $.ajax({
+                    url: "<?php echo URL::to('PartnerMonetization');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                });
+            }
+
+            // console.log('currentTime: ' + currentTime);
+            // console.log('countview: ' + countview);
+        }
+
+
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            });
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                var currentTime = player.currentTime();
+                PartnerMonetization(videoId, currentTime);
+            }
+        });
+
+
+
+
 
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
