@@ -1416,6 +1416,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/UpdateEmbededcode', 'AdminVideosController@UpdateEmbededcode');
     Route::post('/Updatemp4url', 'AdminVideosController@Updatemp4url');
 
+    Route::post('/UploadErrorLog', 'AdminVideosController@UploadErrorLog');
 
     Route::post('/FlussonicUploadlibrary', 'AdminVideosController@FlussonicUploadlibrary');
     Route::post('/Flussonic_Storage_UploadURL', 'AdminVideosController@Flussonic_Storage_UploadURL');
