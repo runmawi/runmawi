@@ -1490,6 +1490,7 @@ document.getElementById('select-all').addEventListener('change', function() {
             // Add cancel button event listener
             file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
                 console.log("Cancel button clicked for file: " + file.name);
+                sendErrorLog(file.name, "Cancel button clicked for file");
                 file.userCanceled = true; 
                 xhr.abort(); // Abort the current upload
                 file.status = Dropzone.CANCELED; // Mark the file as canceled
@@ -1515,10 +1516,12 @@ document.getElementById('select-all').addEventListener('change', function() {
 
         this.on("success", function(file, value) {
             if (value.error == 3) {
+                sendErrorLog(file.name, value.error);
                 console.log(value.error);
                 alert("File not uploaded. Choose Library!");
                 location.reload();
             } else {
+                sendErrorLog(file.name, response);
                 $("#buttonNext").show();
                 $("#episode_id").val(value.Episode_id);
                 $("#title").val(value.episode_title);
@@ -1535,8 +1538,10 @@ document.getElementById('select-all').addEventListener('change', function() {
                     myDropzone.addFile(file);     // Requeue the file for upload
                 }, 1000); 
             } else if (file.userCanceled) {
-                console.log("File upload canceled by user: " + file.name);
+                    sendErrorLog(file.name, "File upload canceled by user");
+                    console.log("File upload canceled by user: " + file.name);
             } else {
+                sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
             }
 
@@ -1545,8 +1550,36 @@ document.getElementById('select-all').addEventListener('change', function() {
         });
 
         this.on("queuecomplete", function() {
+            const files = this.files;
+            files.forEach(function (file) {
+               if (file.status === Dropzone.SUCCESS) {
+                     sendErrorLog(file.name, "File processed successfully.");
+               } else if (file.status === Dropzone.ERROR) {
+                  if (file.xhr) {
+                     const serverResponse = file.xhr.response;
+                     sendErrorLog(file.name, `Error: ${serverResponse}`);
+                  } else {
+                     sendErrorLog(file.name, "Unknown error occurred.");
+                  }
+               }
+            });
             console.log("All uploads in the queue have been processed.");
         });
+
+        function sendErrorLog(filename, errorMessage) {
+            $.post("<?php echo URL::to('/admin/UploadErrorLog'); ?>", {
+                _token: CSRF_TOKEN,
+                filename: filename,
+                socure_type: "Episode",
+                error: errorMessage
+            }, function(response) {
+                console.log("Error log submitted:", response);
+            }).fail(function(xhr) {
+                console.error("Failed to log error:", xhr.responseText);
+            });
+        }
+
+
     }
 });
 
