@@ -55,12 +55,13 @@
 
         // Ads Marker
 
+        let viewCountSent = false;
 
         function LivestreamPartnerMonetization(videoId, currentTime) {
             currentTime = Math.floor(currentTime);
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > 5) {
                 viewCountSent = true;
                 countview = 1;
             

@@ -715,6 +715,30 @@
                         
                     </div>
 
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <label class="m-0">Status Settings</label>
+                            <div class="panel-body">
+                                <div>
+                                    <label class="m-0" >Is this episode Featured:</label>
+                                    <input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
+                                </div>
+                                <div class="clear"></div>
+                                <div>
+                                    <label class="m-0">Is this episode Active:</label>
+                                    <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@endif name="active" value="1"
+                                    id="active" />
+                                </div>
+                                <div class="clear"></div>
+                                <div>
+                                    <label class="m-0">Is this episode display in Banner:</label>
+                                    <input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row align-items-center">
                         <!-- <div class="col-sm-4" id="ppv_price"> 
 				<div class="panel panel-primary" data-collapsed="0"> 

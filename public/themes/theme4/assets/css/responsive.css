@@ -72,7 +72,7 @@
 @media (max-width: 768px){
   .res-signin{margin-right: 0 !important;}
   #sidebar-scrollbar{top:143%;left: 0;}
-  header .navbar-light .navbar-brand img.logo {width: 100px !important;}
+  header .navbar-light .navbar-brand img.logo {width: 100px !important; padding: 0 !important;}
   .responsive-toggle-btn{display: block;}
   ul.top-colps li.menu-item a{font-size: 15px !important;}
   ul.top-colps li.menu-item{border-bottom: 1px solid rgba(85, 85, 85, 0.3) !important;width: 100%;margin-top: 10px;}
