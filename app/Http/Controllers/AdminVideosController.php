@@ -8250,18 +8250,26 @@ class AdminVideosController extends Controller
 
     public function indexCPPPartner(Request $request)
     {
+        try {
+         
         $ModeratorsUser = ModeratorsUser::get();
+
         $video = Video::where("uploaded_by", "!=", "CPP")
             ->orWhere("uploaded_by", null)
             ->get();
-        // dd($video);
 
         $data = [
+            'setting' => Setting::first(),
             "ModeratorsUser" => $ModeratorsUser,
             "video" => $video,
         ];
 
         return view("admin.videos.move_videos.move_cpp_index", $data);
+          
+        } catch (\Throwable $th) {
+            
+            return abort(404);
+        }
     }
 
     public function MoveCPPPartner(Request $request)
@@ -8275,6 +8283,7 @@ class AdminVideosController extends Controller
         $video = Video::where("id", $vid)->first();
         $video->user_id = $cpp_id;
         $video->uploaded_by = "CPP";
+        $video->CPP_commission_percentage = $request->CPP_commission_percentage;
         $video->save();
 
         // CPP
