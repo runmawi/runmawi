@@ -8,6 +8,8 @@
       $GetDarkBg    = GetDarkBg();
       $GetLightBg   = GetLightBg();  
       $button_bg_color = button_bg_color();
+      $css = App\Css::pluck('custom_css')->toArray();
+
 
       $signin_header = $theme->signin_header;
       $admin_advertistment_banners = App\AdminAdvertistmentBanners::first();
@@ -337,6 +339,15 @@
          foreach($Script as $Scriptheader){   ?>
             <?= $Scriptheader ?>
     <?php } } ?>
+
+      <!-- custom css -->
+   <?php
+      if(count($css) > 0){
+         foreach($css as $customCss){   ?>
+            <?= $customCss ?>
+         <?php }
+      } 
+   ?>
 </head>
 
 <style>

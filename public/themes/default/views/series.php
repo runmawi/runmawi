@@ -253,9 +253,6 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <?php echo $shortDescription; ?>
                                   </div>
 
-                                  <div class="details-show mt-3">
-                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
-                                  </div>
 
                                     <script>
                                         function toggleDescription() {
@@ -564,10 +561,6 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <?php echo $shortDescription; ?>
                                   </div>
 
-                                  <div class="details-show mt-3">
-                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
-                                  </div>
-
                                     <script>
                                         function toggleDescription() {
                                             var descriptionContainer = document.querySelector('.description-container');
@@ -721,10 +714,6 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                       <?php echo $shortDescription; ?>
                                   </div>
 
-                                  <div class="details-show mt-3">
-                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
-                                  </div>
-
                                     <script>
                                         function toggleDescription() {
                                             var descriptionContainer = document.querySelector('.description-container');
@@ -855,7 +844,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                   </div>
 
                                   <div class="details-show mt-3">
-                                    <span>Month by month, year by year, in the most comprehensive series ever produced on the conflict. More than 60 episodes, starting September 2024</span>
+                                    <span><?= nl2br($series->description) ?></span>
                                   </div>
 
                                     <script>

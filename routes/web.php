@@ -300,6 +300,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/', 'HomeController@FirstLanging')->name('FirstLanging');
 
     Route::get('choose-profile', 'HomeController@Multipleprofile');
+    Route::get('subcriberuser/{id}', 'HomeController@subcriberuser')->name('subcriberuser');
     Route::get('subuser/{id}', 'HomeController@subuser')->name('subuser');
     Route::get('kidsMode', 'HomeController@kidsMode')->name('kidsMode');
     Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');
@@ -1068,7 +1069,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/Multi_limit_store', 'AdminMultiUserController@Multi_limit_store')->name('Multi_limit_store');
 
     // Theme Integration
-    Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
+    // Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegratiofn');
 
     // Compress Image
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
@@ -1436,6 +1437,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderator/Allview', 'ModeratorsUserController@AllRoleView');
     Route::get('/moderator/commission', 'ModeratorsUserController@Commission');
     Route::post('/add/commission', 'ModeratorsUserController@AddCommission');
+    Route::get('/CPP-commission-status-update', 'ModeratorsUserController@CPP_Commission_Status_update')->name('admin.CPP_commission_status_update');
     Route::get('/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
     Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
@@ -2320,9 +2322,9 @@ Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('w
 Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 //    Theme Integration
-// Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
-// Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
-// Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
+Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
+Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
 Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('Movie-Description', 'HomeController@Movie_description');

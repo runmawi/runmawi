@@ -42,6 +42,8 @@ class ApiAuthContinueController extends Controller
         try {
           
             $userId = $request->input('user_id');
+            $video_title = $request->input('title');
+            $video_description = $request->input('description');
 
             $file = $request->file('file');
             $original_name = $request->file->getClientOriginalName() ? $request->file->getClientOriginalName() : "";
@@ -62,6 +64,8 @@ class ApiAuthContinueController extends Controller
             // Save video details
             $video = new UGCVideo();
             $video->user_id = $userId;
+            $video->title = $video_title;
+            $video->description = $video_description;
             $video->disk = "public";
             $video->original_name = "public";
             $video->path = $randomName;
@@ -72,7 +76,7 @@ class ApiAuthContinueController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Video uploaded successfully',
+                'message' => 'Video uploaded successfully and waiting for Approval ',
                 'data' => [
                     'video_id' => $video->id,
                     'video_title' => $video->original_name,

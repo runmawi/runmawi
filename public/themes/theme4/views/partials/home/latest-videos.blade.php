@@ -1,4 +1,5 @@
 
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
@@ -8,7 +9,7 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[1])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ "view all" }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[1]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ "View all" }}</a></h4>
                     </div>
 
                     <div class="channels-list">
