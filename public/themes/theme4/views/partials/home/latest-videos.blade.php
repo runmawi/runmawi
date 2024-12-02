@@ -1,6 +1,6 @@
 
 
-if (!empty($data) && $data->isNotEmpty())
+@if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
