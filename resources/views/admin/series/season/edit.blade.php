@@ -104,7 +104,7 @@
                     </div>
                     
                     <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price_group">
-                        <label class="m-0">PPV Price:</label>
+                        <label class="m-0">PPV Price ($):</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="ppv_price_input" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
                         <p id="ppv_error_req" style="color: red !important;display:none;">*This field is required</p>
                     </div>
@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="form-group ios_ppv_price_old" id='ios_ppv_price_old' >
-                        <label class="m-0">IOS PPV Price:</label>
+                        <label class="m-0">IOS PPV Price ($):</label>
                         <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                             <option value= "" >Select IOS PPV Price: </option>
                             @foreach($InappPurchase as $Inapp_Purchase)

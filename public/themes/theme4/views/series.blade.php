@@ -318,7 +318,7 @@ div#video-js-trailer-player {
                       
                             <div class="col-6 mb-3">
                               <?php foreach($season as $key => $seasons): ?>
-                                  <div class="episodes_div season_<?= $seasons->id;?>">
+                                  <div id="season_ppv_status_btns_" class="episodes_div season_<?= $seasons->id;?>" style="display: none;">
                                       <?php
                                       // Calculate episode play access inside the loop
                                         if (Auth::check()) {
@@ -1399,6 +1399,12 @@ div#video-js-trailer-player {
         <input type="hidden" id="episode_id" value="<?php echo @$episode->id; ?>">
         <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
         <script src="https://checkout.stripe.com/checkout.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#season_ppv_status_btns_').show();
+    })
+</script>
 
 <script>
 
