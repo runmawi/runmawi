@@ -1575,7 +1575,7 @@ document.getElementById('select-all').addEventListener('change', function() {
             }, function(response) {
                 console.log("Error log submitted:", response);
             }).fail(function(xhr) {
-                console.error("Failed to log error:", xhr.responseText);
+                // console.error("Failed to log error:", xhr.response/Text);
             });
         }
 
