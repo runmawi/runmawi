@@ -190,7 +190,7 @@
 
                                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
 
-                                    <div class="container mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
                                             <button class="btn btn-primary"
                                                 id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
@@ -199,7 +199,7 @@
 
                                 <?php else: ?>
 
-                                    <div class="container mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                                             <button id="button" class="btn bd"><?php echo __('Signup Now'); ?>
                                                 <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>

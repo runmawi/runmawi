@@ -4017,19 +4017,22 @@ class AdminSeriesController extends Controller
 
         public function indexCPPPartner(Request $request)
         {
-
+            try {
+           
             $ModeratorsUser = ModeratorsUser::get();
             $Series = Series::where("uploaded_by","!=","CPP")->orWhere("uploaded_by",null)->get();
-            // dd($Series);
 
             $data = array(
-                
+                'setting'   => Setting::first(), 
                 'ModeratorsUser' => $ModeratorsUser,
                 'Series' => $Series,
-
             );
 
             return view('admin.series.move_series.move_cpp_series',$data);
+               
+            } catch (\Throwable $th) {
+                return abort(404);
+            }
         }
 
         public function MoveCPPPartner(Request $request)
@@ -4043,9 +4046,8 @@ class AdminSeriesController extends Controller
             $Series = Series::where("id",$Seriesid)->first();
             $Series->user_id = $cpp_id;
             $Series->uploaded_by = 'CPP';
+            $Series->CPP_commission_percentage = $request->CPP_commission_percentage;
             $Series->save();
-
-            // CPP
 
             return Redirect::back()->with('message','Your video moved to selected partner');
         }
