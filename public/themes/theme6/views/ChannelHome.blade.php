@@ -149,7 +149,7 @@
         @endif
 
         @if ( $item->video_name == 'series' && $home_settings->series == 1 ) {{-- Series --}}
-            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/Latest-episodes", array_merge($homepage_array_data, ['data' => $latest_episode]) )->content() !!} </div>
+            <div> {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-episodes", array_merge($homepage_array_data, ['data' => $latest_episode]) )->content() !!} </div>
         @endif
 
         @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}

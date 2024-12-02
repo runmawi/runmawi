@@ -1438,6 +1438,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderator/Allview', 'ModeratorsUserController@AllRoleView');
     Route::get('/moderator/commission', 'ModeratorsUserController@Commission');
     Route::post('/add/commission', 'ModeratorsUserController@AddCommission');
+    Route::get('/CPP-commission-status-update', 'ModeratorsUserController@CPP_Commission_Status_update')->name('admin.CPP_commission_status_update');
     Route::get('/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
     Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
