@@ -91,10 +91,9 @@
 
                                                                 <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                                 
-                                                                <p class="trending-dec" >
-                                                                    {{ $series_details->season_count ." S ".$series_details->episode_count .' E' }} <br>
-                                                                    {{ optional($series_details)->title   }} <br>
-                                                                    {!! (strip_tags(substr(optional($series_details)->description, 0, 50))) !!}
+                                                                <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                    <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $series_details->season_count ." Seasons ".$series_details->episode_count .' Episodes' }}</span> <br>
+                                                                    {{ optional($series_details)->title   }}
                                                                 </p>
                                                                 
                                                             </div>
