@@ -3,6 +3,7 @@
         $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes->take(15)
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                        $item['season_name'] = App\SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
                                                         return $item;
                                                 });
         $item['has_more'] = App\Series::find($item->id)->Series_depends_episodes->count() > 14;
@@ -76,10 +77,11 @@
 
                                                             <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                             
-                                                            <p class="trending-dec" >
-                                                                {{ " S".$episode_details->season_id ." E".$episode_details->episode_order  }} 
-                                                                {!! (strip_tags(substr(optional($episode_details)->episode_description, 0, 150))) !!}
+                                                            <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $episode_details->season_name ." - Episode ".$episode_details->episode_order  }}</span> <br>
+                                                                {!! (strip_tags(substr(optional($episode_details)->title, 0, 150))) !!}
                                                             </p>
+
                                                             
                                                         </div>
                                                     </div>

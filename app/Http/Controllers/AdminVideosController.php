@@ -105,6 +105,7 @@ use App\EPGSchedulerData;
 use App\Jobs\VideoCompression;
 use App\Jobs\ConvertEpisodeVideo;
 use App\Jobs\ConvertSerieTrailer;
+use App\UploadErrorLog;
 
 class AdminVideosController extends Controller
 {
@@ -13926,6 +13927,31 @@ class AdminVideosController extends Controller
         return $value;
     }
 
+
+    public function UploadErrorLog(Request $request)
+    {
+        // try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            UploadErrorLog::create([
+                'user_id' => 1,
+                'user_ip' => $userIp,
+                'socure_title' => $request->filename,
+                // 'socure_type' => 'Video',
+                'socure_type' => $request->socure_type,
+                'error_message' => $request->error,
+            ]);
+
+            return response()->json(['status' => 'success'], 200);
+
+        // } catch (\Throwable $th) {
+        //     return response()->json(['status' => 'failed'], 501);
+
+        // }
+    }
+    
 
 }
     

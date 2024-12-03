@@ -2444,6 +2444,7 @@ $(document).ready(function($){
             // Add cancel button event listener
             file.previewElement.querySelector('.dz-cancel').addEventListener('click', function () {
                 console.log("Cancel button clicked for file: " + file.name);
+                sendErrorLog(file.name, "Cancel button clicked for file");
                 file.userCanceled = true; // Mark the file as user-canceled
                 xhr.abort();
                 alert("Upload canceled for file: " + file.name);
@@ -2464,18 +2465,22 @@ $(document).ready(function($){
         });
 
         this.on("success", function (file, response) {
-            console.log(file);
-            console.log(response);
+            // console.log(file);
+            // console.log(response);
 
             if (response.success == 2) {
+                sendErrorLog(file.name, "File not uploaded!");
                 swal("File not uploaded!");
             } else if (response.error == 3) {
                 console.log(response.error);
+                sendErrorLog(file.name, "File not uploaded. Choose Library!");
                 alert("File not uploaded. Choose Library!");
             } else if (response.success == 'video_upload_limit_exist') {
                 Swal.fire("You have reached your video upload limit for this month.");
+                sendErrorLog(file.name, "You have reached your video upload limit for this month.");
                 $('#Next').hide();
             } else {
+               sendErrorLog(file.name, response);
                 $('#Next').show();
                 $('#video_id').val(response.video_id);
                 $('#title').val(response.video_title);
@@ -2492,16 +2497,44 @@ $(document).ready(function($){
                 }, 1000);
             } else if (file.userCanceled) {
                 console.log("File upload canceled by user: " + file.name);
+                sendErrorLog(file.name, "File upload canceled by user");
             } else {
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
                 file.previewElement.querySelector('.dz-cancel').innerHTML = " "; 
             }
-            myDropzone.processQueue(); // Ensure queue continues processing
+            myDropzone.processQueue(); 
         });
 
         this.on("queuecomplete", function () {
-            console.log("All uploads in the queue have been processed.");
+            const files = this.files;
+            files.forEach(function (file) {
+               if (file.status === Dropzone.SUCCESS) {
+                     sendErrorLog(file.name, "File processed successfully.");
+               } else if (file.status === Dropzone.ERROR) {
+                  if (file.xhr) {
+                     const serverResponse = file.xhr.response;
+                     sendErrorLog(file.name, `Error: ${serverResponse}`);
+                  } else {
+                     sendErrorLog(file.name, "Unknown error occurred.");
+                  }
+               }
+            });
         });
+
+        function sendErrorLog(filename, errorMessage) {
+            $.post("<?php echo URL::to('/admin/UploadErrorLog'); ?>", {
+                _token: CSRF_TOKEN,
+                filename: filename,
+                socure_type: "Video",
+                error: errorMessage
+            }, function(response) {
+               //  console.log("Error log submitted:", response);
+            }).fail(function(xhr) {
+               //  console.error("Failed to log error:", xhr.responseText);
+            });
+        }
+
     }
 });
          
