@@ -207,7 +207,7 @@ div#video-js-trailer-player {
 <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
     <div class="container-fluid" >
 	    <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
-            <div class="row mt-3 align-items-center">
+            <div class="row pt-3 align-items-center">
                 <div class="col-md-7 pl-0">
                     <div id="series_title">
                         <div class="container-fluid pl-0">
