@@ -689,7 +689,7 @@
 
             $('.stripe_payment,.Recurly_payment').hide();
 
-            let payment_gateway = $('input[name="payment_gateway"]:checked').val();
+            let payment_gateway = 'Recurly';
             let currency_symbol = "{{ currency_symbol() }}"; 
             
             swal({
