@@ -69,15 +69,6 @@
                                  @endforeach
                               </select>
                            </div>
-
-                           @if ( $setting->CPP_Commission_Status == 1)
-                              <div class="col-md-6" style="margin-top: 2rem;">
-                                 <label for="">Commission Percentage (%)</label>
-                                 <input type="number" class="form-control" name="CPP_commission_percentage" id="CPP_commission_percentage"  placeholder="0 - 100"
-                                       value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
-                              </div>
-                           @endif
-
                         </div><br>
 
                         <div class="col-md-12">

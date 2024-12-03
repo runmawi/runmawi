@@ -47,14 +47,7 @@
                                             </div>
 
                                             <div class="thumbnail" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
-                                                @if ($multiple_compress_image == 1)
-                                                    <img class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200" src="{{ $series->player_image ? URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
-                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
-                                                                {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
-                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}">
-                                                @else
-                                                    <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
-                                                @endif
+                                                <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
 
                                             <div id="network-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }}" class="network-based-depends-slider networks-depends-series-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }} content-list" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
@@ -77,15 +70,11 @@
                                                                             $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first();
                                                                         @endphp
 
-                                                                        <p class="trending-dec">
-                                                                            @if (!is_null($series_seasons_name))
-                                                                                {{ "Season - ". $series_seasons_name }}<br>
-                                                                            @endif
-
-                                                                            {{ "Episode - " . optional($episode)->title }}<br>
-
-                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                        <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                            <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $episode->season_name ." - Episode ".$episode->episode_order  }}</span> <br>
+                                                                            {!! (strip_tags(substr(optional($episode)->title, 0, 150))) !!}
                                                                         </p>
+
                                                                     </div>
                                                                 </div>
                                                             </a>

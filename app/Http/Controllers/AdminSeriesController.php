@@ -2541,14 +2541,14 @@ class AdminSeriesController extends Controller
         }else{
             $image = (isset($input['image'])) ? $input['image'] : '';
         }
-
+        
         if(empty($input['player_image']) && !empty($episode->player_image)){
             $player_image = $episode->player_image ;
 
         }else{
             $player_image = (isset($input['player_image'])) ? $input['player_image'] : '';
         }
-       
+
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
             $ppv_price = null;
@@ -2705,7 +2705,7 @@ class AdminSeriesController extends Controller
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
                 }else{
 
-                    $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $episode_player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                     $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image );
                 }  
