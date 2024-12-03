@@ -660,18 +660,24 @@ class ModeratorsUserController extends Controller
                 ) {
                     $moderators = ModeratorsUser::find($id);
                     $useraccess = UserAccess::where("user_id", "=", $id)->get();
-                    // $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
                     $moderatorsrole = ModeratorsRole::all();
                     $moderatorspermission = ModeratorsPermission::all();
                     $moderatorsuser = ModeratorsUser::all();
+
+                    $videos = Video::where('user_id',$id)->where('uploaded_by','CPP')->get();
+                    $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->get();
+                    $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->get();
 
                     $data = [
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "moderatorsuser" => $moderatorsuser,
                         "moderators" => $moderators,
-                        // 'moderatorspermission' => $permission,
                         "useraccess" => $useraccess,
+                        "videos" => $videos,
+                        "livestream" => $livestream,
+                        "series" => $series,
+                        "setting" => Setting::first(),
                     ];
 
                     return view("moderator.create_edit", $data);
@@ -775,6 +781,7 @@ class ModeratorsUserController extends Controller
             $package = $user_package->package;
 
             if ($package == "Pro" ||$package == "Business" ||($package == "" && Auth::User()->role == "admin")) {
+                
                 $data = $request->all();
                 $role = ModeratorsRole::where("id", "=",$request->user_role)->get();
                 $permission = $role[0]->user_permission;
@@ -798,7 +805,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser["status"] = $status;
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
-                $moderatorsuser["commission_percentage"] = $data["commission_percentage"];
+                $moderatorsuser["commission_percentage"] = !empty($data["commission_percentage"]) ?? $data["commission_percentage"] ;
 
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";
@@ -832,6 +839,25 @@ class ModeratorsUserController extends Controller
                     $userrolepermissiom->role_id = $request->user_role;
                     $userrolepermissiom->permissions_id = $value;
                     $userrolepermissiom->save();
+                }
+
+                // Commission Percentage
+                $videos = Video::where('user_id', $id)->where('uploaded_by', 'CPP')->where('id', $request->video_id)->first();
+                
+                if (!is_null($videos)) {
+                    $videos->update(['CPP_commission_percentage' => $request->videos_commission]);
+                }
+
+                $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->livestream_id)->first();
+
+                if( !is_null($livestream)){
+                    $livestream->update(['CPP_commission_percentage' => $request->live_commission]);
+                }
+
+                $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->series_id)->first();
+
+                if( !is_null($series)){
+                    $series->update(['CPP_commission_percentage' => $request->series_commission]);
                 }
 
                      // Partner Content Update - admin
@@ -874,6 +900,7 @@ class ModeratorsUserController extends Controller
                 return back()->with("message", "Successfully User Updated!.");
 
                 return \Redirect::back();
+
             } elseif ($package == "Basic") {
                 return view("blocked");
             }
@@ -882,6 +909,42 @@ class ModeratorsUserController extends Controller
             $user = User::where("id", "=", 1)->first();
             return view("auth.login", compact("system_settings", "user"));
         }
+    }
+
+    public function getCPPCommission(Request $request)
+    {
+
+        if( $request->sourceName == "videos"  ){
+
+            $query = Video::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+            ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "livestream"  ){
+
+            $query = LiveStream::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "series" ){
+
+            $query = Series::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'sourceName' => $request->sourceName ,
+                'commission' => $query->CPP_commission_percentage, 
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'sourceName' => $request->sourceName ,
+            'message' => 'Commission not found',
+        ]);
     }
 
     public function RoleUpdate(Request $request)
@@ -1108,6 +1171,7 @@ class ModeratorsUserController extends Controller
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "moderatorsuser" => $moderatorsuser,
+                        'setting' => Setting::first(),
                     ];
                     return view("moderator.view", $data);
                 } elseif ($package == "Basic") {

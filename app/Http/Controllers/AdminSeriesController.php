@@ -2098,7 +2098,9 @@ class AdminSeriesController extends Controller
             $data['views'] = 0;
         }
 
-        if(empty($data['featured'])){
+        if(!empty($data['featured'])){
+            $data['featured'] = 1;
+        }else{
             $data['featured'] = 0;
         }
         if(empty($data['skip_recap'])){
@@ -2195,6 +2197,7 @@ class AdminSeriesController extends Controller
             $episodes->episode_description =  $data['episode_description'];
             $episodes->type =  $type;
             $episodes->banner =  $banner;
+            $episodes->featured =  $data['featured'];
 
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];

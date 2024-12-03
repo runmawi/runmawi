@@ -204,6 +204,11 @@ div#video-js-trailer-player {
     $ThumbnailSetting = App\ThumbnailSetting::first();
 ?>
 
+@php
+    $season_count = App\SeriesSeason::where('series_id', $series->id)->count();
+    $episode_count = App\Episode::where('series_id', $series->id)->count();
+@endphp
+
 <div id="myImage" style="background:linear-gradient(90deg, rgba(0, 0, 0, 1.3)47%, rgba(0, 0, 0, 0.3))40%, url(<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>);background-position:right; background-repeat: no-repeat; background-size:contain; ">
     <div class="container-fluid" >
 	    <div id="series_bg_dim" <?php if($series->access == 'guest' || ($series->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
@@ -215,38 +220,43 @@ div#video-js-trailer-player {
                             <div class="row p-0 mt-3 text-white">
                                 <div class="col-md-10">
                                     <?= __('Season') ?>  <span class="sea"> 1 </span>
-                                    <?php
-                                        $description = $series->details;
+                                    <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 250) ? html_entity_decode(substr($series->description, 0, 250)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                    <!-- Model for banner discription -->
+                                        <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                                <div class="container">
+                                                    <div class="modal-content" style="border:none;">
+                                                        <div class="modal-body">
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                        <img  src="<?=URL::to('/') . '/public/uploads/images/' . $series->player_image ?>" width="100%" alt="">
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                                <h2 class="caption-h2">{{ $series->title }}</h2>
 
-                                        if (strlen($description) > 200) {
-                                            $shortDescription = html_entity_decode(substr($description, 0, 200)) . "<span class='more-text' style='display:none;'>" . substr($description, 200) . "</span> <span class='text-primary see-more' onclick='toggleDescription()'> See More </span>";
-                                        } else {
-                                            $shortDescription = html_entity_decode($description);
-                                        }
-                                    ?>
+                                                                            </div>
+                                                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                            <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $season_count ." Seasons - ".$episode_count. ' Episodes'  }}</span> <br>
+                                                                        </p>
+                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
 
-                                    <div id="descriptionContainer" class="description-container" style="cursor:pointer;">
-                                        <?php echo $shortDescription; ?>
-                                    </div>
-                                    
-                                    <script>
-                                        function toggleDescription() {
-                                            var descriptionContainer = document.querySelector('.description-container');
-                                            var moreText = descriptionContainer.querySelector('.more-text');
-                                            var seeMoreButton = descriptionContainer.querySelector('.see-more');
-                                            var myImage = document.querySelector('#myImage');
-
-                                            if (moreText.style.display === 'none' || moreText.style.display === '') {
-                                                moreText.style.display = 'inline';
-                                                seeMoreButton.innerText = ' See Less ';
-                                                myImage.style.height = 'auto';
-                                            } else {
-                                                moreText.style.display = 'none';
-                                                seeMoreButton.innerText = ' See More ';
-                                                
-                                            }
-                                        }
-                                    </script>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     <div class="d-flex p-0 mt-3 align-items-center">
                                         
@@ -571,9 +581,9 @@ div#video-js-trailer-player {
                                                             <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                                             </nav> -->
                                                                                                             
-                                                            <p class="trending-dec" >
-                                                                {{ " S".$episodes->season_id ." E".$episodes->episode_order  }} 
-                                                                {!! (strip_tags(substr(optional($episodes)->episode_description, 0, 150))) !!}
+                                                            <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $seasons->series_seasons_name ." - Episode ".$episodes->episode_order  }}</span> <br>
+                                                                {!! (strip_tags(substr(optional($episodes)->title, 0, 150))) !!}
                                                             </p>
                                                         </div>
                                                     </div>
