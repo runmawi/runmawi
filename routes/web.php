@@ -1517,6 +1517,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
     Route::post('/moderatoruser/update', 'ModeratorsUserController@update');
     Route::get('/live_search', 'AdminVideosController@live_search');
+    Route::get('/moderatorsuser-get-CPP-Commission', 'ModeratorsUserController@getCPPCommission')->name('ModeratorsUser.getCPPCommission');
 
     Route::get('/devices', 'AdminPlansController@DevicesIndex');
     Route::post('/devices/store', 'AdminPlansController@DevicesStore');
