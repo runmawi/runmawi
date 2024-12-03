@@ -236,20 +236,20 @@
                               <p style="color:black;">Total Space Disk: {{ $space_disk }} </p> --}}
  
                             </div>
-                            <div class="iq-header-title">
 
-                                 @if ( !is_null($storage_vai_symfony))
-                                    <p style="color:black;">Total Storage : {{ $storage_vai_symfony }}</p>
-                                 @endif
+                            <div class="iq-header-title">
 
                                  <?php 
                                     $users = App\User::where('id',1)->first(); 
                                     $date=date_create($users->package_ends);
                                     $package_ends = date_format($date,"Y-M-d"); 
                                   ?>
-                              <p style="color:black;">Subscribed To {{ $users->package }}</p>
-                              <p style="color:black;">Package Ends On {{ $package_ends }} </p>
- 
+                                 <p style="color:black;">Subscribed To {{ $users->package }}</p>
+                                 <p style="color:black;">Package Ends On {{ $package_ends }} </p>
+
+                                 <p style="color:black;" id="storage-info"></p>
+                                 <input type="button" class="btn btn-primary" value="Show Storage" id="show-storage-btn">
+
                             </div>
                             <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                         </div>
@@ -649,7 +649,20 @@
             </div>
          </div>
       </div>
+
       <script>
+         document.getElementById('show-storage-btn').addEventListener('click', function() {
+
+            fetch('admin/get-storage-data')
+               .then(response => response.json())
+               .then(data => {
+                     document.getElementById('storage-info').innerText = data.storage_vai_symfony;
+                     $('#show-storage-btn').hide();
+               })
+               .catch(error => {
+                     console.error('Error fetching storage data:', error);
+               });
+         });                  
 
  
          </script>
