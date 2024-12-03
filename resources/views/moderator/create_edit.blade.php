@@ -143,34 +143,39 @@
                             {{-- Commission Percentage --}}
 
                         @if ( $setting->CPP_Commission_Status == 1)  
+
+                            <div class="col-md-12 m-0 mb-1"><hr>
+                                <h5> Commission Percentage (%)</h5>
+                            </div>
                             
-                            <div class="col-md-4" >
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="col-form-label text-md-right">{{ __('Videos') }}</label>
-                                    <select class="form-control" id="" name="video_id">
+                                    <select class="form-control source_id" data-source-name="videos" id="video_id" name="video_id">
                                         <option value="">Select videos</option>
                                         @foreach($videos as $value)
-                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
+                                            <option value="{{ $value->id }}">{{ $value->title }}</option>
                                         @endforeach
-                                    </select>   
+                                    </select>
                                 </div>
                             </div>
-
-                            <div class="col-md-2" >
+                            
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
-                                    <input type="number" class="form-control" name="videos_commission" id="videos_commission"  placeholder="0 - 100"
-                                            value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                    <input type="number" class="form-control" name="videos_commission" id="videos_commission" placeholder="0 - 100"
+                                           value="" min="0" max="100" step="1"
+                                           oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
                                 </div>
                             </div>
 
                             <div class="col-md-4" >
                                 <div class="form-group row">
                                     <label class=" col-form-label text-md-right">{{ __('Livestream') }}</label>
-                                    <select class="form-control"  name="livestream_id">
+                                    <select class="form-control source_id" data-source-name="livestream"  name="livestream_id">
                                         <option value="">Select Livestream</option>
                                         @foreach($livestream as $value)
-                                            <option value="{{ $livestream->id }}" >{{ $value->title }}</option>
+                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
                                         @endforeach
                                     </select>  
                                 </div>
@@ -187,7 +192,7 @@
                             <div class="col-md-4" >
                                 <div class="form-group row">
                                     <label class=" col-form-label text-md-right">{{ __('TV Shows') }}</label>
-                                    <select class="form-control" id="" name="series_id">
+                                    <select class="form-control source_id" data-source-name="series" name="series_id">
                                         <option value="">Select TV Shows</option>
                                         @foreach($series as $value)
                                             <option value="{{ $value->id }}" >{{ $value->title }}</option>
@@ -251,23 +256,77 @@
 
 @section('javascript')
 
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-<script>
-$('form[id="Moderator_edit"]').validate({
-	rules: {
-        username : 'required',
-        mobile_number : 'required',
-        user_role : 'required',
-        email_id : 'required'
-	},
-	messages: {
-        username: 'This field is required',
-        mobile_number: 'This field is required',
-	},
-	submitHandler: function(form) {
-	  form.submit();
-	}
-  });
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    
+    <script>
+        
+        $('form[id="Moderator_edit"]').validate({
+            rules: {
+                username : 'required',
+                mobile_number : 'required',
+                user_role : 'required',
+                email_id : 'required'
+            },
+            messages: {
+                username: 'This field is required',
+                mobile_number: 'This field is required',
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
 
-</script>
-	@stop
+        $(document).ready(function() {
+
+            $('.source_id').on('change', function() {
+                
+                let sourceName = $(this).data('source-name'); 
+                let sourceID = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('ModeratorsUser.getCPPCommission') }}", 
+                    type: 'GET',
+                    data: {
+                            sourceID: sourceID,
+                            sourceName : sourceName,
+                            moderator_id: "{{ $moderators->id }}",
+                        },
+                    success: function(response) {
+                        if (response.success) {
+
+                            if (response.sourceName == "videos") {
+                                $('#videos_commission').val(response.commission);
+                            }
+
+                            if (response.sourceName == "livestream") {
+                                $('#live_commission').val(response.commission);
+                            }
+
+                            if (response.sourceName == "series") {
+                                $('#series_commission').val(response.commission);
+                            }
+                        } else {
+                            alert('No commission data found for the selected.');
+
+                            if (response.sourceName == "videos") {
+                                $('#videos_commission').val(" ");
+                            }
+
+                            if (response.sourceName == "livestream") {
+                                $('#live_commission').val(" ");
+                            }
+
+                            if (response.sourceName == "series") {
+                                $('#series_commission').val(" ");
+                            }
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while fetching commission data.');
+                    }
+                });
+            });
+        });
+
+    </script>
+@stop

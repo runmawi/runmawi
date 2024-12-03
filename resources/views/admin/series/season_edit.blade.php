@@ -1521,7 +1521,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 alert("File not uploaded. Choose Library!");
                 location.reload();
             } else {
-                sendErrorLog(file.name, response);
+                sendErrorLog(file.name, "File Updated");
                 $("#buttonNext").show();
                 $("#episode_id").val(value.Episode_id);
                 $("#title").val(value.episode_title);
