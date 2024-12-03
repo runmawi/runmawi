@@ -43,7 +43,7 @@
 
                     <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit" onsubmit="return validateMobileNumber()">
                         @csrf
-                        <div class="row container-fluid">
+                    <div class="row container-fluid">
                         <div class="col-md-6" >
 
                         <div class="form-group row">
@@ -99,13 +99,15 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6" >
-                            <div class="form-group row">
-                                <label for="" class=" col-form-label text-md-right">{{ __('Commission Percentage') }}</label>
-                                <input type="number" class="form-control" name="commission_percentage" id="percentage"  value="{{ (!is_null($moderators->commission_percentage)) ? $moderators->commission_percentage : null }}" 
-                                    min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                        @if ( $setting->CPP_Commission_Status == 0)  
+                            <div class="col-md-6" >
+                                <div class="form-group row">
+                                    <label for="" class=" col-form-label text-md-right">{{ __('Commission Percentage') }}</label>
+                                    <input type="number" class="form-control" name="commission_percentage" id="percentage"  value="{{ (!is_null($moderators->commission_percentage)) ? $moderators->commission_percentage : null }}" 
+                                        min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="col-md-6" >
                             <div class="form-group row">
@@ -138,6 +140,71 @@
                             @endif
                         </div>
 
+                            {{-- Commission Percentage --}}
+
+                        @if ( $setting->CPP_Commission_Status == 1)  
+                            
+                            <div class="col-md-4" >
+                                <div class="form-group">
+                                    <label class="col-form-label text-md-right">{{ __('Videos') }}</label>
+                                    <select class="form-control" id="" name="video_id">
+                                        <option value="">Select videos</option>
+                                        @foreach($videos as $value)
+                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
+                                        @endforeach
+                                    </select>   
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" >
+                                <div class="form-group">
+                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                    <input type="number" class="form-control" name="videos_commission" id="videos_commission"  placeholder="0 - 100"
+                                            value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" >
+                                <div class="form-group row">
+                                    <label class=" col-form-label text-md-right">{{ __('Livestream') }}</label>
+                                    <select class="form-control"  name="livestream_id">
+                                        <option value="">Select Livestream</option>
+                                        @foreach($livestream as $value)
+                                            <option value="{{ $livestream->id }}" >{{ $value->title }}</option>
+                                        @endforeach
+                                    </select>  
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" >
+                                <div class="form-group">
+                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                    <input type="number" class="form-control" name="live_commission" id="live_commission"  placeholder="0 - 100"
+                                            value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" >
+                                <div class="form-group row">
+                                    <label class=" col-form-label text-md-right">{{ __('TV Shows') }}</label>
+                                    <select class="form-control" id="" name="series_id">
+                                        <option value="">Select TV Shows</option>
+                                        @foreach($series as $value)
+                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
+                                        @endforeach
+                                    </select>  
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" >
+                                <div class="form-group">
+                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                    <input type="number" class="form-control" name="series_commission" id="series_commission"  placeholder="0 - 100"
+                                    value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                     <br>
                                             <div class="form-group row mb-0">
@@ -154,47 +221,31 @@
                                 </div>
                             </div>
                     @endsection
-                    <!-- //    display: flex; -->
+
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     <script src="jquery-3.5.1.min.js"></script>
 
                     <script>
-                    //     $(document).ready(function(){
-                    //     $('#submit').click(function(){
-                    //         if($('#picture').val() == ""){
-                    //         $('#error_picture').text('Picture Is Requried');
-                    //         $('#error_picture').css('color', 'red');
-
-                    //             return false;
-                    //         }else{
-                    //             return true;
-                    //         }
-                    //     });
-                    // });
-
                     
                             function validateMobileNumber() {
 
-                            var mobileNumber = document.getElementById('mobile_number').value;
+                                 var mobileNumber = document.getElementById('mobile_number').value;
 
-                            if (mobileNumber.length !== 10 || !/^\d+$/.test(mobileNumber)) {
-                                alert("Please enter a valid 10-digit mobile number.");
-                                return false;
+                                if (mobileNumber.length !== 10 || !/^\d+$/.test(mobileNumber)) {
+                                    alert("Please enter a valid 10-digit mobile number.");
+                                    return false;
+                                }
+
+                                return true; 
+
                             }
-
-                            return true; 
-
-                            }
+                                    
+                        $(document).ready(function(){
+                            setTimeout(function() {
+                                $('#successMessage').fadeOut('fast');
+                            }, 3000);
+                        })
                     </script>
-
-                    <script>
-    $(document).ready(function(){
-        // $('#message').fadeOut(120);
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
 
 
 

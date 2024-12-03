@@ -54,7 +54,10 @@
                                     <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Description</th>
-                                    <th>Commission Percentage</th>
+                                    @if ( $setting->CPP_Commission_Status == 0)  
+                                        <th>Commission Percentage</th>
+                                        <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
+                                    @endif
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -65,7 +68,10 @@
                                         <td valign="bottom"> {{ $user->email }} </td>
                                         <td valign="bottom"><p>{{ $user->mobile_number }}</p></td>
                                         <td valign="bottom"><p>{{ $user->description }}</p></td>
-                                        <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
+
+                                        @if ( $setting->CPP_Commission_Status == 0)  
+                                            <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
+                                        @endif
                                         
                                         <?php if($user->status == 0){ ?>
                                        <td class="bg-warning"> <?php echo "Pending"; ?></td>
