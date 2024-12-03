@@ -12728,13 +12728,13 @@ $cpanel->end();
 
              
               if($item['type'] == 'mp4_url'){
-                $item['video_url'] = $item['mp4_url'];
+                $item['url'] = $item['mp4_url'];
               }elseif($item['type'] == 'm3u8_url'){
-                $item['video_url'] = $item['m3u8_url'];
+                $item['url'] = $item['m3u8_url'];
               }elseif($item['type'] == ''){
-                $item['video_url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
+                $item['url'] = URL::to('/').'/storage/app/public/'.$item['path'].'.m3u8';
               }else{
-                $item['video_url'] = URL::to('/').'/storage/app/public/';
+                $item['url'] = URL::to('/').'/storage/app/public/';
               }
 
               $details = html_entity_decode($item->description);
@@ -13335,6 +13335,7 @@ $cpanel->end();
 
         $dataToCheck = [
             'category_videos'               => $myData,
+            'movies'                 => $latest_videos,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
             '24/7'                           => $epg,
