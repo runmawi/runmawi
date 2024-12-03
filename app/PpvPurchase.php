@@ -6,6 +6,8 @@ use App\User;
 use App\Audio;
 use App\Video;
 use App\Series;
+use App\LiveStream;
+use App\SeriesSeason;
 use Illuminate\Database\Eloquent\Model;
 
 class PpvPurchase extends Model
@@ -27,6 +29,17 @@ class PpvPurchase extends Model
     public function series() {
         return $this->belongsTo(Series::class, 'series_id');
     }
+
+    public function SeriesSeason() {
+        return $this->belongsTo(SeriesSeason::class, 'season_id');
+    }
+
+    public function livestream() {
+        return $this->belongsTo(LiveStream::class, 'livestream_id');
+    }
+
+
+    
 
     public function user()
     {
