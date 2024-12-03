@@ -911,6 +911,42 @@ class ModeratorsUserController extends Controller
         }
     }
 
+    public function getCPPCommission(Request $request)
+    {
+
+        if( $request->sourceName == "videos"  ){
+
+            $query = Video::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+            ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "livestream"  ){
+
+            $query = LiveStream::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "series" ){
+
+            $query = Series::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'sourceName' => $request->sourceName ,
+                'commission' => $query->CPP_commission_percentage, 
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'sourceName' => $request->sourceName ,
+            'message' => 'Commission not found',
+        ]);
+    }
+
     public function RoleUpdate(Request $request)
     {
         $data = Session::all();
