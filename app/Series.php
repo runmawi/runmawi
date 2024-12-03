@@ -10,7 +10,7 @@ class Series extends Model
 {
     protected $fillable = ['title','genre_id','user_id','type','access','details','description','active','featured','duration','views','rating','image',
                             'embed_code','mp4_url','webm_url','ogg_url','language',
-                            'year','trailer','url','banner','player_image','search_tag','network_id'];
+                            'year','trailer','url','banner','player_image','search_tag','network_id','CPP_commission_percentage'];
 
      
     public function theme4_Series_depends_episodes()
