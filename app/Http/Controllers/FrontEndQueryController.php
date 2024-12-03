@@ -47,6 +47,7 @@ use App\CategoryVideo;
 use App\Videoartist;
 use App\ContinueWatching;
 use App\CountryCode;
+use App\SeriesSeason;
 
 class FrontEndQueryController extends Controller
 {
@@ -325,7 +326,7 @@ class FrontEndQueryController extends Controller
         $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
             $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                        ->whereJsonContains('network_id', [(string)$item->id])
+            ->whereJsonContains('network_id', [(string)$item->id])
         
                         ->latest('series.created_at')->get()->map(function ($item) { 
                 
@@ -339,6 +340,7 @@ class FrontEndQueryController extends Controller
                 $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes->take(15)
                                                         ->map(function ($item) {
                                                         $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
+                                                        $item['season_name'] = SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
                                                         return $item;
                                                     });
                 $item['has_more'] = Series::find($item->id)->Series_depends_episodes->count() > 14;
