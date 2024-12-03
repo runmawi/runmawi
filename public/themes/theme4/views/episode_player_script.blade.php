@@ -30,11 +30,53 @@
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        const titleButton = document.querySelector('.vjs-title-bar');
         var hovered = false;
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(titleButton);
+        player.el().appendChild(backButton); 
+
+        function updateControls() {
+            var isMobile = window.innerWidth <= 768;
+            var controlBar = player.controlBar;
+
+            if (controlBar.getChild('subtitlesButton')) {
+                controlBar.removeChild('subtitlesButton');
+            }
+            if (controlBar.getChild('playbackRateMenuButton')) {
+                controlBar.removeChild('playbackRateMenuButton');
+            }
+            if (controlBar.getChild('settingsMenuButton')) {
+                controlBar.removeChild('settingsMenuButton');
+            }
+
+            if (!isMobile){
+                controlBar.addChild('subtitlesButton');
+                controlBar.addChild('playbackRateMenuButton');
+            } 
+            else{
+                controlBar.addChild('settingsMenuButton', {
+                    entries: [
+                        'subtitlesButton',
+                        'playbackRateMenuButton',
+                    ]
+                });
+            }
+        }
+
+        player.on('loadedmetadata', function() {
+            updateControls();
+        });
+
+        window.addEventListener('resize', function() {
+            updateControls();
+        });
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
