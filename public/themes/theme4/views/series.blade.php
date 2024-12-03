@@ -220,7 +220,9 @@ div#video-js-trailer-player {
                             <div class="row p-0 mt-3 text-white">
                                 <div class="col-md-10">
                                     <?= __('Season') ?>  <span class="sea"> 1 </span>
-                                    <p class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal"> {!! substr($series->description, 0, 250) ? html_entity_decode(substr($series->description, 0, 250)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->description ) !!} </p>
+                                    <div class="trending-dec mt-2" data-bs-toggle="modal" data-bs-target="#discription-Modal" style="cursor: pointer;">
+                                        <p style="cursor: pointer;">{!! substr($series->details, 0, 250) ? html_entity_decode(substr($series->details, 0, 250)) . "..." . " <span class='text-primary'> See More </span>": html_entity_decode($series->details ) !!} </p>
+                                    </div>
                                     <!-- Model for banner discription -->
                                         <div class="modal fade info_model" id='discription-Modal' tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
@@ -247,7 +249,7 @@ div#video-js-trailer-player {
                                                                         <p class="trending-dec" style="font-weight: 600;height:auto;">
                                                                             <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $season_count ." Seasons - ".$episode_count. ' Episodes'  }}</span> <br>
                                                                         </p>
-                                                                        <div class="trending-dec mt-4">{{ html_entity_decode($series->description ) }}</div>
+                                                                        <div class="trending-dec mt-4">{{ html_entity_decode(strip_tags($series->details )) }}</div>
 
                                                                     </div>
                                                                 </div>
