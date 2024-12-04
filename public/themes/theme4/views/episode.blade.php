@@ -374,7 +374,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         @endforeach
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
-                    <p class="">{{ $episode->episode_description }}</p>
+                    <p class="">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
 
                     <?php
                     $media_url = URL::to('episode') . '/' . $series->slug . '/' . $episode->slug;
