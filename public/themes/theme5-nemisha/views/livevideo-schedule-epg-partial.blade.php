@@ -66,7 +66,7 @@
 
                             @if ($time->between($startTime, $endTime))
                                 <div class="epg-program epg-timeline-{{ $index }}"
-                                    style="background-color: {{ $color }}; margin-left:40px;" sty>
+                                    style="background-color: {{ $color }};" sty>
                                     @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
                                         @if ($index !== $lastShownIndex)
                                             <b style="position: absolute; top: 3px; left: 10px; z-index: 2;  ">
