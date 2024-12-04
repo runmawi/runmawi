@@ -1798,6 +1798,7 @@ class AdminVideosController extends Controller
         }
 
         $data = $request->all();
+        // dd($data);
 
         $validatedData = $request->validate([
             "title" => "required|max:255",
@@ -2791,6 +2792,7 @@ class AdminVideosController extends Controller
         $languages = $request["sub_language"];
         $video->mp4_url = $data["mp4_url"];
         $video->trailer = $data["trailer"];
+        $video->trailer_type = $data["trailer_type"];
         $video->duration = $data["duration"];
         $video->language = $request["language"];
         $video->skip_recap = $request["skip_recap"];
