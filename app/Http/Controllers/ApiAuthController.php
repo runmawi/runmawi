@@ -1446,7 +1446,7 @@ class ApiAuthController extends Controller
                                                             ->where('verification_code',$request->verify_code)
                                                             ->update(['verification_code' => null ]);
 
-        return response()->json([ 'status'=>'false',
+        return response()->json([ 'status'=>'true',
                                   'status_code'=> 200 ,
                                   'message'=>'verification done successfully'
                                 ],200);
