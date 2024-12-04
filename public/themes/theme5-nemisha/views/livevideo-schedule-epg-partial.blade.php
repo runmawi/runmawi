@@ -36,7 +36,7 @@
                 {{-- Publish now  --}}
 
                 @if ($Livestream_details->publish_type == 'publish_now')
-                    <div class="epg-program" style="background-color: {{ $colors[2] }};">
+                    <div class="epg-program" style="background-color: {{ $colors[0] }};">
                         <b>{{ $program_title_once_show ? @$Livestream_details->epg_program_title : null }}</b>
                         @php $program_title_once_show = false; @endphp
                     </div>
@@ -66,7 +66,7 @@
 
                             @if ($time->between($startTime, $endTime))
                                 <div class="epg-program epg-timeline-{{ $index }}"
-                                    style="background-color: {{ $color }}; margin-left:40px;" sty>
+                                    style="background-color: {{ $color }};" sty>
                                     @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
                                         @if ($index !== $lastShownIndex)
                                             <b style="position: absolute; top: 3px; left: 10px; z-index: 2;  ">
