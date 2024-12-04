@@ -553,16 +553,16 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
                         </div>
                        
-                        @if( optional($videodetail)->trailer_videos_url )
+                        @if( optional($videodetail)->trailer )
 
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share sharemobres">
-                                    <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
+                                    <span  data-bs-toggle="modal" data-bs-target="#trailermodal">   {{-- Trailer --}}
                                         <i class="fal fa-play"></i>
                                     </span>
 
                                     <div class="share-box box-watchtrailer">
-                                        <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
+                                        <div class="playbtn"  data-bs-toggle="modal" data-bs-target="#trailermodal">     {{-- Trailer --}}
                                             <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
                                         </div>
                                     </div>
