@@ -3,6 +3,31 @@
 
 <style>
     .form-group{margin: 8px auto;}
+
+    .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin-left: 31rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .disable-actions {
+        pointer-events: none; /* Disables all mouse events */
+        opacity: 0.6;         /* Adds a semi-transparent overlay effect */
+    }
+
+    .disable-actions #loadingIndicator {
+        pointer-events: auto; /* Allow interactions with the loading spinner */
+        opacity: 1;           /* Ensure the spinner remains fully visible */
+    }
 </style>
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -15,7 +40,6 @@
         <div class="iq-card">
 
             <div id="moderator-container">
-
 	
                 <div class="moderator-section-title">
                     <h4><i class="entypo-globe"></i>Update Moderator Users</h4> 
@@ -37,7 +61,7 @@
                 @endif	
 
                 <form method="POST" action="{{ URL::to('admin/moderatoruser/update') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Moderator_edit" onsubmit="return validateMobileNumber()">
-                        @csrf
+                    @csrf
                     <div class="row container-fluid">
                         <div class="col-md-6" >
                             <div class="form-group row">
@@ -129,75 +153,89 @@
                             @endif
                         </div>
 
-                            {{-- Commission Percentage --}}
+                            {{-- Commission Percentage - Individual commission content --}}
 
                         @if ( $setting->CPP_Commission_Status == 1)  
-
-                            <div class="d-flex col-md-12 m-0 mb-1"><hr>
-                                <div class="col-md-8">
-                                    <h5> Commission Percentage (%)</h5>
-                                </div>
+                       
+                            <div class="col-md-12 m-0 mb-1"><hr>
+                                <h5> Commission Percentage (%)</h5>
+                                <div id="loadingIndicator" style="display:none;" class="loading-spinner"></div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="col-form-label text-md-right">{{ __('Videos') }}</label>
-                                    <select class="form-control source_id" data-source-name="videos" id="video_id" name="video_id">
-                                        <option value="">Select videos</option>
-                                        @foreach($videos as $value)
-                                            <option value="{{ $value->id }}">{{ $value->title }}</option>
-                                        @endforeach
-                                    </select>
+                                    @if ( ($videos)->isNotEmpty())
+                                        <select class="form-control source_id" data-source-name="videos" id="video_id" name="video_id">
+                                            @forelse($videos as $value)
+                                                <option value="{{ $value->id }}">{{ $value->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <p > No data found </p>
+                                    @endif
                                 </div>
                             </div>
                             
                             <div class="col-md-2">
-                                <div class="form-group">
-                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
-                                    <input type="number" class="form-control" name="videos_commission" id="videos_commission" placeholder="0 - 100"
-                                           value="" min="0" max="100" step="1"
-                                           oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
-                                </div>
+                                @if ( ($videos)->isNotEmpty())
+                                    <div class="form-group">
+                                        <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                        <input type="number" class="form-control" name="videos_commission" id="videos_commission" placeholder="0 - 100" value="{{ @$videos[0]->CPP_commission_percentage }}"
+                                            value="" min="0" max="100" step="1"
+                                            oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-4" >
-                                <div class="form-group row">
+                                <div class="form-group">
                                     <label class=" col-form-label text-md-right">{{ __('Livestream') }}</label>
-                                    <select class="form-control source_id" data-source-name="livestream"  name="livestream_id">
-                                        <option value="">Select Livestream</option>
-                                        @foreach($livestream as $value)
-                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
-                                        @endforeach
-                                    </select>  
+                                    @if ( ($livestream)->isNotEmpty())
+                                        <select class="form-control source_id" data-source-name="livestream"  name="livestream_id">
+                                            @foreach($livestream as $value)
+                                                <option value="{{ $value->id }}" >{{ $value->title }}</option>
+                                            @endforeach
+                                        </select>  
+                                    @else
+                                        <p > No data found </p>
+                                    @endforelse
                                 </div>
                             </div>
 
                             <div class="col-md-2" >
-                                <div class="form-group">
-                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
-                                    <input type="number" class="form-control" name="live_commission" id="live_commission"  placeholder="0 - 100"
-                                            value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
-                                </div>
+                                @if ( ($livestream)->isNotEmpty())
+                                    <div class="form-group">
+                                        <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                        <input type="number" class="form-control" name="live_commission" id="live_commission"  placeholder="0 - 100" value="{{ @$livestream[0]->CPP_commission_percentage }}"
+                                                value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-4" >
-                                <div class="form-group row">
+                                <div class="form-group">
                                     <label class=" col-form-label text-md-right">{{ __('TV Shows') }}</label>
-                                    <select class="form-control source_id" data-source-name="series" name="series_id">
-                                        <option value="">Select TV Shows</option>
-                                        @foreach($series as $value)
-                                            <option value="{{ $value->id }}" >{{ $value->title }}</option>
-                                        @endforeach
-                                    </select>  
+                                    @if ( ($series)->isNotEmpty())
+                                        <select class="form-control source_id" data-source-name="series" name="series_id">
+                                            @foreach($series as $value)
+                                                <option value="{{ $value->id }}" >{{ $value->title }}</option>
+                                            @endforeach
+                                        </select>  
+                                    @else
+                                        <p > No data found </p>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="col-md-2" >
-                                <div class="form-group">
-                                    <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
-                                    <input type="number" class="form-control" name="series_commission" id="series_commission"  placeholder="0 - 100"
-                                    value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
-                                </div>
+                                @if ( ($series)->isNotEmpty())
+                                    <div class="form-group">
+                                        <label class="col-form-label text-md-right">{{ __('Commission') }}</label>
+                                        <input type="number" class="form-control" name="series_commission" id="series_commission"  placeholder="0 - 100" value="{{ @$series[0]->CPP_commission_percentage }}"
+                                        value=""  min="0" max="100" step="1" oninput="this.value = this.value > 100 ? 100 : this.value < 0 ? 0 : this.value;" />
+                                    </div>
+                                @endif
                             </div>
                         @endif
 
@@ -206,13 +244,43 @@
 
                     <div class="form-group row mb-0">
                         <div class="col-md-12 text-right">
-                            <button type="submit" id ="submit" class="btn btn-primary">
-                                {{ __('Update') }}
-                            </button>
+                            <button type="submit" id ="submit" class="btn btn-primary">{{ __('Update') }}</button>
                         </div>
                     </div>
                 </form>
             </div> 
+
+            {{-- Commission Percentage Table - Individual commission content --}}
+
+            @if ( $setting->CPP_Commission_Status == 1)  
+
+                <div class="table-view">
+
+                    <h5> CPP Commission Percentage (%)  List</h5><br>
+
+                    <table id="Commission_table" class="table movie_table text-center table-bordered" style="width:100%">
+                        <thead>
+                            <tr class="r1">
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 30%;">Title</th>
+                                <th style="width: 30%;">Commission Percentage (%) </th>
+                                <th style="width: 25%;">Source </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($all_data as $key => $data)
+                                <tr >
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ @$data->title}}</td>
+                                    <td>{{ @$data->CPP_commission_percentage}}</td>
+                                    <td>{{ @$data->source}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 </div>
@@ -236,6 +304,15 @@
         }
                 
     $(document).ready(function(){
+
+        $('#Commission_table').DataTable({
+            responsive: true, 
+            paging: true,     
+            pageLength: 10,   
+            lengthMenu: [5, 10, 25, 50, 100], 
+            autoWidth: false  
+        });
+
         setTimeout(function() {
             $('#successMessage').fadeOut('fast');
         }, 3000);
@@ -267,21 +344,27 @@
         $(document).ready(function() {
 
             $('.source_id').on('change', function() {
-                
+
                 let sourceName = $(this).data('source-name'); 
                 let sourceID = $(this).val();
+                
+                $('#loadingIndicator').show();
+                $('body').addClass('disable-actions');
 
                 $.ajax({
                     url: "{{ route('ModeratorsUser.getCPPCommission') }}", 
                     type: 'GET',
                     data: {
-                            sourceID: sourceID,
-                            sourceName : sourceName,
-                            moderator_id: "{{ $moderators->id }}",
-                        },
+                        sourceID: sourceID,
+                        sourceName: sourceName,
+                        moderator_id: "{{ $moderators->id }}",
+                    },
                     success: function(response) {
-                        if (response.success) {
+                    
+                        $('#loadingIndicator').hide();
+                        $('body').removeClass('disable-actions');
 
+                        if (response.success) {
                             if (response.sourceName == "videos") {
                                 $('#videos_commission').val(response.commission);
                             }
@@ -310,11 +393,12 @@
                         }
                     },
                     error: function() {
+                        $('#loadingIndicator').hide();
+                        $('body').removeClass('disable-actions');
                         alert('An error occurred while fetching commission data.');
                     }
                 });
             });
         });
-
     </script>
 @stop
