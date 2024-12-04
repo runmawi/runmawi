@@ -7494,6 +7494,7 @@ return response()->json($response, 200);
     $episode_id = $request->episode_id;
     $user_id = $request->user_id;
     $series_seasons_type = SeriesSeason::where('id', $season_id)->pluck('series_seasons_type')->first();
+    $Seasons_access = SeriesSeason::where('id', $season_id)->pluck('access')->first();
 
       $data = $request->all();
       
@@ -7541,9 +7542,15 @@ return response()->json($response, 200);
     $free_episode = 'guest';
   }
 
+  if($Seasons_access == 'free'){
+    $Seasons_access = 'guest';
+  }else{
+    $Seasons_access = $Seasons_access;
+  }
+
     $response = array(
       'status' => 'true',
-      'access' => $free_episode,
+      'access' => $Seasons_access,
       'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
