@@ -664,9 +664,22 @@ class ModeratorsUserController extends Controller
                     $moderatorspermission = ModeratorsPermission::all();
                     $moderatorsuser = ModeratorsUser::all();
 
-                    $videos = Video::where('user_id',$id)->where('uploaded_by','CPP')->get();
-                    $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->get();
-                    $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->get();
+                    $videos = Video::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Videos";
+                        return $item;
+                    });
+
+                    $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Livestream";
+                        return $item;
+                    });
+
+                    $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Series";
+                        return $item;
+                    });
+
+                    $all_data = $videos->concat($livestream)->concat($series);
 
                     $data = [
                         "roles" => $moderatorsrole,
@@ -678,6 +691,7 @@ class ModeratorsUserController extends Controller
                         "livestream" => $livestream,
                         "series" => $series,
                         "setting" => Setting::first(),
+                        "all_data" => $all_data ,
                     ];
 
                     return view("moderator.create_edit", $data);

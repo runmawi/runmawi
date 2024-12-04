@@ -705,4 +705,5 @@ Route::group(
             Route::post('radiostationdetail', 'ApiAuthController@radiostationdetail');
             Route::get('ugcvideolist', 'ApiAuthContinueController@ugcvideolist');
             Route::post('uploadugcvideo', 'ApiAuthContinueController@uploadugcvideo');
+            Route::post('deleteugcvideo', 'ApiAuthContinueController@deleteugcvideo');
         });
