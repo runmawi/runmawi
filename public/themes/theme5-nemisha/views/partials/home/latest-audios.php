@@ -18,7 +18,7 @@
             </a>
          </h5>             
          
-         <a class="see" href="<?php if ($order_settings_list[5]->header_name) { echo $order_settings_list[5]->header_name ;} else { echo "" ; } ?>">See All </a>
+         <a class="see" href="<?php echo !empty($order_settings_list[5]->header_name) ? URL::to('/') . '/' . $order_settings_list[5]->url : ""; ?>"> See All </a>
 
       <?php } ?>
 

@@ -17,6 +17,7 @@ if(count($latest_video) > 0) : ?>
                 echo '';
             } ?>
         </a></h5>
+        <a class="see" href="<?php echo !empty($order_settings_list[11]->header_name) ? URL::to('/') . '/' . $order_settings_list[11]->url : ""; ?>"> See All </a>
 </div>
 <div class="favorites-contens"> 
     <div class="video-category home-sec list-inline row p-0 mb-0">
