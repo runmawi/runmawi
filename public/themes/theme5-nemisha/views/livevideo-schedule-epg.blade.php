@@ -94,8 +94,13 @@
 
 @php
     $now = \Carbon\Carbon::now(); 
-@endphp
+   
+    $scheduleDays = isset($Livestream_details->scheduler_program_days) ? json_decode($Livestream_details->scheduler_program_days, true) : [];
 
+    $currentDay = $now->format('N');
+
+
+@endphp
 <div class="epg-container">
 
     <div class="epg-header m-1">
@@ -128,24 +133,23 @@
         </div>
 
         <div class="epg-channels mt-2">
-            <div class="epg-channel"> {{ ucwords(@$Livestream_details->title) }}</div>
+            <div class="epg-channel" id="epg-channel-title"></div>
         </div>
         </div>
 
         <div class="epg-right" style="margin-top:25px;">
         <div class="epg-timeline-container">
             <div class="epg-programs">
-
-                <div class="epg-arrow-buttons">
-                    <div class="left-arrow">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
-                    <div class="right-arrow">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </div>
-                </div>
-
                 <div id="data">
+                    <div class="epg-arrow-buttons">
+                        <div class="left-arrow">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </div>
+                        <div class="right-arrow">
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
                     {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
                     ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
                 </div>
@@ -156,7 +160,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     $(document).ready(function(){
         $('.day-nav').click(function() {
             var selectedDay = $(this).data('day'); 
@@ -177,6 +181,94 @@
                     console.log(xhr.responseText); 
                 }
             });
+        });
+    });
+</script> --}}
+
+
+{{-- woks for title --}}
+{{-- <script>
+    $(document).ready(function () {
+        // Get the scheduled days and program title from Blade
+        var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
+        var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
+
+        $('.day-nav').click(function () {
+            var selectedDay = $(this).data('day');
+            var selectedDate = $(this).data('date');
+
+            // Check if the selected day is a scheduled day
+            if (scheduleDays.includes(String(selectedDay))) {
+                $('#epg-channel-title').html('<p>' + programTitle + '</p>');
+
+                $.ajax({
+                    url: "{{ route('livestream-fetch-timeline') }}",
+                    type: "GET",
+                    data: {
+                        day: selectedDay,
+                        date: selectedDate,
+                        publish_type: "{{ $Livestream_details->publish_type }}",
+                        Livestream_id: "{{ $Livestream_details->id }}"
+                    },
+                    success: function (response) {
+                        $('#data').html(response);
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        $('#data').html('<p>Error loading the EPG data.</p>');
+                    }
+                });
+            } else {
+                // If not a scheduled day, show the default message
+                $('#epg-channel-title').html('<p>No program scheduled today.</p>');
+                $('#data').html('<p>No program data available for the selected day.</p>');
+            }
+        });
+    });
+</script> --}}
+
+<script>
+    $(document).ready(function () {
+        var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
+        var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
+        var currentDay = new Date().getDay();
+
+        function checkProgramAvailability(day) {
+            if (scheduleDays.includes(String(day))) {
+                $('#epg-channel-title').html('<p>' + programTitle + '</p>');
+                $.ajax({
+                    url: "{{ route('livestream-fetch-timeline') }}",
+                    type: "GET",
+                    data: {
+                        day: day,
+                        date: new Date().toISOString(),
+                        publish_type: "{{ $Livestream_details->publish_type }}",
+                        Livestream_id: "{{ $Livestream_details->id }}"
+                    },
+                    success: function (response) {
+                        if (response.trim() === '' || response === null) {
+                            $('#data').html('<p style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+                        } else {
+                            $('#data').html(response);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        $('#data').html('<p>Error loading the EPG data.</p>');
+                    }
+                });
+            } else {
+                $('#epg-channel-title').html('<p>No program scheduled.</p>');
+                $('#data').html('<p  style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+            }
+        }
+
+        checkProgramAvailability(currentDay);
+
+        $('.day-nav').click(function () {
+            var selectedDay = $(this).data('day');
+            var selectedDate = $(this).data('date');
+            checkProgramAvailability(selectedDay);
         });
     });
 </script>
