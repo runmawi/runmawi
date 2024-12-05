@@ -249,7 +249,8 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
     
     /* @media(max-width:2800px){    .my-video.vjs-fluid{height:65vh !important;}} */
-        #trailermodal .my-video.vjs-fluid{height: 68vh !important;}
+        #trailermodal .my-video.vjs-fluid, #trailermodal .modal-content{height: 68vh !important;}
+        #trailermodal .embed-responsive{height: 100%;}
     @media screen and (min-width: 1900px){
         #trailermodal .my-video.vjs-fluid{height: 35vh !important;}
         .modal-dialog-centered{align-items: unset;top: 15%;}
@@ -552,16 +553,16 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             @php include public_path("themes/{$current_theme}/views/partials/social-share.php"); @endphp 
                         </div>
                        
-                        @if( optional($videodetail)->trailer_videos_url )
+                        @if( optional($videodetail)->trailer )
 
                             <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                 <li class="share sharemobres">
-                                    <span  data-toggle="modal" data-target="#video-js-trailer-modal">   {{-- Trailer --}}
+                                    <span  data-bs-toggle="modal" data-bs-target="#trailermodal">   {{-- Trailer --}}
                                         <i class="fal fa-play"></i>
                                     </span>
 
                                     <div class="share-box box-watchtrailer">
-                                        <div class="playbtn"  data-toggle="modal" data-target="#video-js-trailer-modal">     {{-- Trailer --}}
+                                        <div class="playbtn"  data-bs-toggle="modal" data-bs-target="#trailermodal">     {{-- Trailer --}}
                                             <span class="text" style="background-color: transparent; font-size: 14px; width:84px">{{ __('Watch Trailer') }}</span>
                                         </div>
                                     </div>
@@ -673,10 +674,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                             
                                             <div class="embed-responsive embed-responsive-16by9">
                                                 <?php if($videodetail->trailer_type == "embed_url" ) : ?>
-                                                    <iframe id="video-js-trailer-player_embed" width="100%" height="auto" src="<?= $videodetail->trailer_videos_url ?>" 
-                                                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowfullscreen>
-                                                    </iframe>
+                                                    <iframe width="100%" height="auto"  src="{{ $videodetail->trailer }}" frameborder="0" allowfullscreen></iframe>
                                                 <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
                                                     <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
                                                         <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">

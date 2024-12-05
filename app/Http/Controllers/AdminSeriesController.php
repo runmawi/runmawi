@@ -544,7 +544,12 @@ class AdminSeriesController extends Controller
 
             $compress_image_settings = CompressImage::first();
 
-            $blockedCountries = json_decode($series->blocked_countries, true);
+            if ($series && isset($series->blocked_countries)) {
+                $blockedCountries = json_decode($series->blocked_countries, true);
+            } else {
+                $blockedCountries = [];
+            }
+            // $blockedCountries = json_decode($series->blocked_countries, true);
 
             $blcok_CountryName = CountryCode::whereIn('id', (!empty($blockedCountries) ? $blockedCountries : []))->pluck('country_name')->toArray();
 
@@ -1651,8 +1656,11 @@ class AdminSeriesController extends Controller
             $series_id = SeriesSeason::find($id)->series_id;
 
             $season = SeriesSeason::find($id); 
-            $episodes = $season->episodes->pluck('id'); 
-            
+            $episodes = Episode::where('season_id',$season->id)->pluck('id');
+            $SeriesId = $season->series_id;
+
+            // $episodes = $season->episodes->pluck('id');
+            // dd($episodes);
             foreach($episodes as $episode_id ){
 
                 $Episode   = Episode::find($episode_id);
@@ -1720,7 +1728,7 @@ class AdminSeriesController extends Controller
             return abort (404);
         }
 
-        return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        return Redirect::to('admin/series/edit' . '/' . $SeriesId)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
     }
 
     public function manage_season($series_id,$season_id)

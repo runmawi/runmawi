@@ -2,6 +2,13 @@
     .my-video.vjs-fluid {
         height: calc(100vh - 350px) !important;
     }
+
+    @media only screen and (max-width: 600px) {
+    .my-video.vjs-fluid {
+        height: 25vh !important;
+    }
+    }
+
 </style>
 
 <div id="video_bg">
@@ -35,12 +42,11 @@
                 <!-- BREADCRUMBS -->
                 <div class="col-sm-12 col-md-12 col-xs-12">
                     <div class="row">
-                        <div class="col-md-12 p-0">
-                            <div class="bc-icons-2">
+                        <div class=" p-0">
+                            <div class="">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
-                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                            href="<?= route('liveList') ?>"><?= ucwords('Radio Station') ?></a>
                                     </li>
 
                                     <?php foreach ($category_name as $key => $video_category_name) { ?>
@@ -62,6 +68,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="p-3">
                 <div class="">
                     <h1 class="trending-text big-title text-uppercase mt-3">
                         <?php echo __($video->title); ?>
@@ -80,15 +87,16 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-xs-12">
-                        <div class="video-details-container" style="padding: 0 40px;">
+                        <div class="video-details-container">
                             <?php if (!empty($video->details)) { ?>
-                            <h6 class="mt-3 mb-1">Live Details</h6>
+                            <h6 class="mt-3 mb-1">Radio Station Details</h6>
                             <p class="trending-dec w-100 mb-3 text-white">
                                 <?= $video->details ?></p>
                             <?php  } ?>
                         </div>
                     </div>
                 </div>
+           
                 <?php
                 if (!empty($video->publish_time)) {
                     $originalDate = $video->publish_time;
@@ -120,7 +128,7 @@
                 <?php } ?>
 
 
-    
+            </div>
 
             </div>
         </div>
