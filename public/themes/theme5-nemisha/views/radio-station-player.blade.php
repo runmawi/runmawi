@@ -46,8 +46,7 @@
                             <div class="">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a class="black-text"
-                                            href="<?= route('liveList') ?>"><?= ucwords('Livestreams') ?></a>
-                                        <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
+                                            href="<?= route('liveList') ?>"><?= ucwords('Radio Station') ?></a>
                                     </li>
 
                                     <?php foreach ($category_name as $key => $video_category_name) { ?>
@@ -88,9 +87,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-xs-12">
-                        <div class="video-details-container" style="padding: 0 40px;">
+                        <div class="video-details-container">
                             <?php if (!empty($video->details)) { ?>
-                            <h6 class="mt-3 mb-1">Live Details</h6>
+                            <h6 class="mt-3 mb-1">Radio Station Details</h6>
                             <p class="trending-dec w-100 mb-3 text-white">
                                 <?= $video->details ?></p>
                             <?php  } ?>

@@ -94,8 +94,13 @@
 
 @php
     $now = \Carbon\Carbon::now(); 
-@endphp
+   
+    $scheduleDays = isset($Livestream_details->scheduler_program_days) ? json_decode($Livestream_details->scheduler_program_days, true) : [];
 
+    $currentDay = $now->format('N');
+
+
+@endphp
 <div class="epg-container">
 
     <div class="epg-header m-1">
@@ -128,7 +133,7 @@
         </div>
 
         <div class="epg-channels mt-2">
-            <div class="epg-channel"> {{ ucwords(@$Livestream_details->title) }}</div>
+            <div class="epg-channel" id="epg-channel-title"></div>
         </div>
         </div>
 
@@ -156,7 +161,7 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     $(document).ready(function(){
         $('.day-nav').click(function() {
             var selectedDay = $(this).data('day'); 
@@ -179,48 +184,74 @@
             });
         });
     });
-</script>
+</script> --}}
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const leftArrow = document.querySelector('.left-arrow');
-    const rightArrow = document.querySelector('.right-arrow');
-    const timeSlots = document.querySelector('.epg-timeline');
-    const programRows = document.querySelectorAll('.timeline-slot');
+    $(document).ready(function () {
+        var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
+        var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
+        var currentDay = new Date().getDay();
+        var scrollAmount = 100;
+        var currentOffset = 0;
 
-    let currentOffset = 0;
-    const scrollAmount = 100;
-
-    function getMaxScroll() {
-        const timeSlotsWidth = timeSlots.scrollWidth;
-        const wrapperWidth = timeSlots.parentElement.offsetWidth;
-        return -(timeSlotsWidth - wrapperWidth);
-    }
-
-    function scrollEPG(offset) {
-        const maxScroll = getMaxScroll();
-
-        currentOffset += offset;
-
-        if (currentOffset > 0) {
-            currentOffset = 0;
-        } else if (currentOffset < maxScroll) {
-            currentOffset = maxScroll;
+        function checkProgramAvailability(day) {
+            if (scheduleDays.includes(String(day))) {
+                $('#epg-channel-title').html('<p>' + programTitle + '</p>');
+                $.ajax({
+                    url: "{{ route('livestream-fetch-timeline') }}",
+                    type: "GET",
+                    data: {
+                        day: day,
+                        date: new Date().toISOString(),
+                        publish_type: "{{ $Livestream_details->publish_type }}",
+                        Livestream_id: "{{ $Livestream_details->id }}"
+                    },
+                    success: function (response) {
+                        if (response.trim() === '' || response === null) {
+                            $('#data').html('<p style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+                        } else {
+                            $('#data').html(response);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseText);
+                        $('#data').html('<p>Error loading the EPG data.</p>');
+                    }
+                });
+            } else {
+                $('#epg-channel-title').html('<p>No program scheduled.</p>');
+                $('#data').html('<p  style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+            }
         }
 
-        timeSlots.style.transition = 'transform 0.3s ease-in-out'; 
-        timeSlots.style.transform = `translateX(${currentOffset}px)`;
-        programRows.forEach(row => {
-            row.style.transform = `translateX(${currentOffset}px)`;
+        checkProgramAvailability(currentDay);
+        $('.day-nav').click(function () {
+            var selectedDay = $(this).data('day');
+            var selectedDate = $(this).data('date');
+            checkProgramAvailability(selectedDay);
         });
-    }
 
-    leftArrow.addEventListener('click', function () {
-        scrollEPG(scrollAmount);
-    });
+        function scrollEPG(offset) {
+            const timeSlots = $('.epg-timeline');
+            const maxScroll = timeSlots[0].scrollWidth - timeSlots.parent().width();
+            currentOffset += offset;
 
-    rightArrow.addEventListener('click', function () {
-        scrollEPG(-scrollAmount);
+            if (currentOffset > 0) {
+                currentOffset = 0;
+            } else if (currentOffset < -maxScroll) {
+                currentOffset = -maxScroll;
+            }
+
+            timeSlots.css('transition', 'transform 0.3s ease-in-out');
+            timeSlots.css('transform', 'translateX(' + currentOffset + 'px)');
+        }
+
+        $('.left-arrow').click(function () {
+            scrollEPG(scrollAmount);
+        });
+
+        $('.right-arrow').click(function () {
+            scrollEPG(-scrollAmount);
+        });
     });
-});
 </script>
