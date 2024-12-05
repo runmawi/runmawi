@@ -140,16 +140,16 @@
         <div class="epg-right" style="margin-top:25px;">
         <div class="epg-timeline-container">
             <div class="epg-programs">
-                <div id="data">
-                    <div class="epg-arrow-buttons">
-                        <div class="left-arrow">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </div>
-                        <div class="right-arrow">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </div>
+                <div class="epg-arrow-buttons">
+                    <div class="left-arrow">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </div>
+                    <div class="right-arrow">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </div>
+                </div>
 
+                <div id="data">
                     {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
                     ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
                 </div>
