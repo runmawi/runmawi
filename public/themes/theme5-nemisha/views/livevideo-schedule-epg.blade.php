@@ -140,6 +140,7 @@
         <div class="epg-right" style="margin-top:25px;">
         <div class="epg-timeline-container">
             <div class="epg-programs">
+
                 <div class="epg-arrow-buttons">
                     <div class="left-arrow">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -185,53 +186,13 @@
     });
 </script> --}}
 
-
-{{-- woks for title --}}
-{{-- <script>
-    $(document).ready(function () {
-        // Get the scheduled days and program title from Blade
-        var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
-        var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
-
-        $('.day-nav').click(function () {
-            var selectedDay = $(this).data('day');
-            var selectedDate = $(this).data('date');
-
-            // Check if the selected day is a scheduled day
-            if (scheduleDays.includes(String(selectedDay))) {
-                $('#epg-channel-title').html('<p>' + programTitle + '</p>');
-
-                $.ajax({
-                    url: "{{ route('livestream-fetch-timeline') }}",
-                    type: "GET",
-                    data: {
-                        day: selectedDay,
-                        date: selectedDate,
-                        publish_type: "{{ $Livestream_details->publish_type }}",
-                        Livestream_id: "{{ $Livestream_details->id }}"
-                    },
-                    success: function (response) {
-                        $('#data').html(response);
-                    },
-                    error: function (xhr) {
-                        console.log(xhr.responseText);
-                        $('#data').html('<p>Error loading the EPG data.</p>');
-                    }
-                });
-            } else {
-                // If not a scheduled day, show the default message
-                $('#epg-channel-title').html('<p>No program scheduled today.</p>');
-                $('#data').html('<p>No program data available for the selected day.</p>');
-            }
-        });
-    });
-</script> --}}
-
 <script>
     $(document).ready(function () {
         var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
         var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
         var currentDay = new Date().getDay();
+        var scrollAmount = 100;
+        var currentOffset = 0;
 
         function checkProgramAvailability(day) {
             if (scheduleDays.includes(String(day))) {
@@ -264,55 +225,33 @@
         }
 
         checkProgramAvailability(currentDay);
-
         $('.day-nav').click(function () {
             var selectedDay = $(this).data('day');
             var selectedDate = $(this).data('date');
             checkProgramAvailability(selectedDay);
         });
-    });
-</script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const leftArrow = document.querySelector('.left-arrow');
-    const rightArrow = document.querySelector('.right-arrow');
-    const timeSlots = document.querySelector('.epg-timeline');
-    const programRows = document.querySelectorAll('.timeline-slot');
+        function scrollEPG(offset) {
+            const timeSlots = $('.epg-timeline');
+            const maxScroll = timeSlots[0].scrollWidth - timeSlots.parent().width();
+            currentOffset += offset;
 
-    let currentOffset = 0;
-    const scrollAmount = 100;
+            if (currentOffset > 0) {
+                currentOffset = 0;
+            } else if (currentOffset < -maxScroll) {
+                currentOffset = -maxScroll;
+            }
 
-    function getMaxScroll() {
-        const timeSlotsWidth = timeSlots.scrollWidth;
-        const wrapperWidth = timeSlots.parentElement.offsetWidth;
-        return -(timeSlotsWidth - wrapperWidth);
-    }
-
-    function scrollEPG(offset) {
-        const maxScroll = getMaxScroll();
-
-        currentOffset += offset;
-
-        if (currentOffset > 0) {
-            currentOffset = 0;
-        } else if (currentOffset < maxScroll) {
-            currentOffset = maxScroll;
+            timeSlots.css('transition', 'transform 0.3s ease-in-out');
+            timeSlots.css('transform', 'translateX(' + currentOffset + 'px)');
         }
 
-        timeSlots.style.transition = 'transform 0.3s ease-in-out'; 
-        timeSlots.style.transform = `translateX(${currentOffset}px)`;
-        programRows.forEach(row => {
-            row.style.transform = `translateX(${currentOffset}px)`;
+        $('.left-arrow').click(function () {
+            scrollEPG(scrollAmount);
         });
-    }
 
-    leftArrow.addEventListener('click', function () {
-        scrollEPG(scrollAmount);
+        $('.right-arrow').click(function () {
+            scrollEPG(-scrollAmount);
+        });
     });
-
-    rightArrow.addEventListener('click', function () {
-        scrollEPG(-scrollAmount);
-    });
-});
 </script>
