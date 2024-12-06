@@ -814,7 +814,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
     Route::post('/view-buffer-cache', 'ClearCacheController@view_buffer_cache')->name('view_buffer_cache');
     Route::post('/clear-buffer-cache', 'ClearCacheController@clear_buffer_cache')->name('clear_buffer_cache');
-
+    Route::get('/testing_command', 'ClearCacheController@testing_command')->name('testing_command');
+    
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');
     Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
