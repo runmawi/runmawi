@@ -3,12 +3,13 @@
 @section('css')
     <link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-
 @endsection
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 @section('content')
+   <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
+   <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+   <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+   <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">
@@ -27,8 +28,7 @@
                         </div>
                         <div class="iq-card-body table-responsive p-0">
                             <div class="table-view">
-                                <table class="table table-striped table-bordered iq-card text-center"
-                                    id="transaction_detials" style="width:100%">
+                                <table class="data-tables table table-striped table-bordered iq-card text-center" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Id</th>
@@ -41,7 +41,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transactions as $i => $transaction)
+                                        @foreach ($paginatedTransactions as $i => $transaction)
                                         @if($transaction)
                                             <tr>
                                                 <td>{{ $i + 1 }}</td>
@@ -78,17 +78,16 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                <div class="clear"></div>
+		                        <div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right"><?= $paginatedTransactions->appends(Request::only('s'))->render(); ?></div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
 
             $('#transaction_detials').DataTable();
@@ -115,5 +114,10 @@
                 fetch_customer_data(query);
             });
         });
-    </script>
+    </script> --}}
+    <script>
+        $(document).ready(function(){
+             $('#DataTables_Table_0_paginate').hide();
+         });
+     </script>
 @stop

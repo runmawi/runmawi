@@ -350,8 +350,8 @@
                                     </li>
 
                                     @if(!empty($category_name) && is_array($category_name))
+                                        <?php $category_name_length = count($category_name); ?>
                                         @foreach ($category_name as $key => $video_category_name)
-                                            <?php $category_name_length = count($category_name); ?>
                                             <li class="breadcrumb-item">
                                                 <a class="black-text"
                                                     href= "{{route ('LiveCategory', [$video_category_name->categories_slug])}} ">
