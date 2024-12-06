@@ -109,14 +109,14 @@
 
             if (check == true) {
                 $.ajax({
-                    type: "POST", 
-                    dataType: "json", 
+                    type: "POST",
+                    dataType: "json",
                     url: "{{ route('view_buffer_cache') }}",
                     data: {
-                        _token: "{{csrf_token()}}",
+                        _token: "{{ csrf_token() }}",
                     },
                     success: function(data) {
-                        if (data.status == true) {
+                        if (data.status === true) {
                             alert(
                                 "Total Memory: " + data.data.memory.total +
                                 "\nTotal used: " + data.data.memory.used +
@@ -128,15 +128,15 @@
                                 "\nSwap used: " + data.data.swap.used +
                                 "\nSwap free: " + data.data.swap.free
                             );
-                        } else if (data.status == false) {
+                        } else if (data.status === false) {
                             alert('Oops... Something went wrong!');
-                            window.location.href = '{{ URL::to('admin/clear-cache') }}';
+                            window.location.href = '{{ url("admin/clear-cache") }}';
                         }
                     },
                     error: function(xhr, status, error) {
                         alert("An error occurred: " + error);
                         console.error("Error details: ", xhr.responseText);
-                        window.location.href = '{{ URL::to('admin/clear-cache') }}'; 
+                        window.location.href = '{{ url("admin/clear-cache") }}';
                     }
                 });
             }
