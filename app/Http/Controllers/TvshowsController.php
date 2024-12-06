@@ -2714,6 +2714,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'episode_play_access' => $episode_play_access,
+                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
 
                 ];
                 
@@ -2761,6 +2763,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
+                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
