@@ -858,7 +858,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   {{-- Clear cache  --}}
                   <li><p class="lnk">Configurations</p></li>
 
-                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                  <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                         <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Management </span>
                      </a>
@@ -1320,7 +1320,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                  {{-- Clear cache  --}}
                  <li><p class="lnk">{{ (__('Configurations')) }} </p></li>
 
-                 <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                 <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Cache Management.svg')?>">
                      <span>{{ (__('Cache Management')) }}  </span>
                      </a>
@@ -1650,7 +1650,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   {{-- Clear cache  --}}
                   <li><p class="lnk">Configurations </p></li>
 
-                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                  <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Management </span>
                      </a>
