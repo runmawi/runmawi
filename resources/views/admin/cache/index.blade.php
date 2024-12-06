@@ -116,7 +116,7 @@
                         _token: "{{ csrf_token() }}",
                     },
                     success: function(data) {
-                        if (data.status === true) {
+                        if (data.status == true) {
                             alert(
                                 "Total Memory: " + data.data.memory.total +
                                 "\nTotal used: " + data.data.memory.used +
@@ -128,7 +128,7 @@
                                 "\nSwap used: " + data.data.swap.used +
                                 "\nSwap free: " + data.data.swap.free
                             );
-                        } else if (data.status === false) {
+                        } else if (data.status == false) {
                             alert('Oops... Something went wrong!');
                             window.location.href = '{{ url("admin/clear-cache") }}';
                         }
