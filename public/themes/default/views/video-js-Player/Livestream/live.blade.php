@@ -349,9 +349,9 @@
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 
-                                    @empty($category_name)
+                                    @if(!empty($category_name) && is_array($category_name))
+                                        <?php $category_name_length = count($category_name); ?>
                                         @foreach ($category_name as $key => $video_category_name)
-                                            <?php $category_name_length = count($category_name); ?>
                                             <li class="breadcrumb-item">
                                                 <a class="black-text"
                                                     href= "{{route ('LiveCategory', [$video_category_name->categories_slug])}} ">
@@ -361,7 +361,7 @@
                                         @endforeach
 
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
-                                    @endempty
+                                    @endif
 
                                     <li class="breadcrumb-item"><a class="black-text">{{ strlen($video->title) > 50 ? ucwords(substr($video->title, 0, 120) . '...') : ucwords($video->title) }}</a></li>
                                 </ol>
