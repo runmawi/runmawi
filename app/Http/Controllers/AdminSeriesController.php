@@ -559,6 +559,9 @@ class AdminSeriesController extends Controller
             $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
                     // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
+            $season_ids = SeriesSeason::where('series_id', $id)->pluck('id');
+            $unassigned_episodes = Episode::where('series_id',$id)->whereNotIn('season_id', $season_ids)->get();
+            // dd($unassigned_episodes);
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -582,6 +585,7 @@ class AdminSeriesController extends Controller
             'theme_settings' => SiteTheme::first(),
             "countries"      => CountryCode::all(),
             "blcok_CountryName" => $blcok_CountryName,
+            // "unassigned_episodes" => $unassigned_episodes,
             );
 
         return View::make('admin.series.create_edit', $data);
