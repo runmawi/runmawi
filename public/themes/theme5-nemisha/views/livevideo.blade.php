@@ -591,6 +591,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         ])->content() !!}
                                 @endif
 
+                                <?php if ($Livestream_details->stream_upload_via != 'radio_station') { ?>
                                 <div class="row" style="padding: 0 11px;">
                                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos'); ?></h4>
@@ -603,6 +604,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         </div>
                                     </div>
                                 </div>
+                                <?php }?>
                             </div>
 
 
