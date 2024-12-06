@@ -56,7 +56,7 @@
                                     <th>Description</th>
                                     @if ( $setting->CPP_Commission_Status == 0)  
                                         <th>Commission Percentage</th>
-                                        <td valign="bottom"><p>{{ $user->commission_percentage }}</p></td>
+                                        <td valign="bottom"><p>{{ !empty($user) ? $user->commission_percentage : 'N/A' }}</p></td>
                                     @endif
                                     <th>Status</th>
                                     <th>Action</th>
