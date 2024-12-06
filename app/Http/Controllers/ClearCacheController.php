@@ -210,21 +210,21 @@ class ClearCacheController extends Controller
                 ];
         
                 return response()->json([
-                    'success' => true,
+                    'status' => true,
                     'message' => 'Retrieve memory details.',
                     'data' => $memoryDetails,
                 ]);
             }
     
             return response()->json([
-                'success' => false,
+                'status' => true,
                 'message' => 'Failed to retrieve memory details.',
             ], 500);
 
         } catch (\Exception $e) {
 
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'An error occurred.',
                 'error' => $e->getMessage(),
             ], 500);
