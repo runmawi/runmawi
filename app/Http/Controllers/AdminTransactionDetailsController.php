@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\PpvPurchase;
 use App\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminTransactionDetailsController extends Controller
 {
@@ -28,7 +29,17 @@ class AdminTransactionDetailsController extends Controller
 
         $transactions = $subscriptions->concat($payPerView)->sortByDesc('created_at');
 
-        return view('admin.transaction_details.index', compact('transactions'));
+        $perPage = 10; 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = $transactions->forPage($currentPage, $perPage);
+        $paginatedTransactions = new LengthAwarePaginator(
+            $currentItems, 
+            $transactions->count(), 
+            $perPage, 
+            $currentPage, 
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+        return view('admin.transaction_details.index', compact('paginatedTransactions'));
     }
 
     public function edit($unique_id)
