@@ -157,8 +157,6 @@ class ClearCacheController extends Controller
     {
         try {
             $process = new Process(['sudo', 'sh', '-c', 'sync; echo 3 > /proc/sys/vm/drop_caches']);
-            $process->setTimeout(10); 
-
             $process->run();
 
             if ($process->isSuccessful()) {
@@ -185,9 +183,7 @@ class ClearCacheController extends Controller
     {
         try {
 
-            $process = new Process(['free', '-h']);
-            $process->setTimeout(10); 
-
+            $process = new Process(['sudo', 'free', '-h']);
             $process->run();
 
             if ($process->isSuccessful()) {

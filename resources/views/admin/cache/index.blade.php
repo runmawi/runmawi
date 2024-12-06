@@ -154,7 +154,7 @@
 
         $("#clear_buffer_cache").click(function(){
 
-            var check = confirm("Are you sure you to view buffer cache?");  
+            var check = confirm("Are you sure you to clear buffer cache?");  
 
             if(check == true){ 
                 $.ajax({
