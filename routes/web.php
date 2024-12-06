@@ -578,6 +578,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('datafree/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
+    Route::get('datafree/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
