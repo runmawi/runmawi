@@ -735,10 +735,6 @@ $settings  = App\Setting::first();?>
 							<div class="col-2">{{"Assign to" }}</div>
 							<div class="col-2">{{"Episode_id" }}</div>
 						</div>
-						@foreach(@$unassigned_episodes as $item)
-							<div class="col-2">{{ $item->title }}</div>
-							<div class="col-6">{{ $item->title }}</div>
-						@endforeach
 					</div>
 					<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
