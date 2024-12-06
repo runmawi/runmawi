@@ -202,4 +202,28 @@ class ClearCacheController extends Controller
             return response()->json([ 'message'=> "false", 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function testing_command(Request $request)
+    {
+        try {
+
+            $process = new Process(['sudo', 'free', '-h']);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                return response()->json([
+                    'message'=>"true",
+                    'output' => $process->getOutput(),
+                ]);
+            }
+
+            return response()->json([
+                'message'=> "false",
+                'error' => $process->getErrorOutput(),
+            ], 500);
+
+        } catch (ProcessFailedException $e) {
+            return response()->json([ 'message'=> "false", 'error' => $e->getMessage()], 500);
+        }
+    }
 }
