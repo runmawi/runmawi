@@ -1183,7 +1183,7 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if( $request->mobile != "0987654321"){
+      if( $request->mobile != "9774080533"){
 
         user::find(Auth::user()->id)->update([
           'otp' => null ,
@@ -1191,8 +1191,6 @@ class ApiAuthController extends Controller
           'otp_through' => null ,
         ]);
       }
-
-      user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -27638,7 +27636,7 @@ public function TV_login(Request $request)
         $Mobile_number   = $ccode.$mobile ;
 
         // Only for Play Store Testing 
-        if( $mobile == "0987654321"){
+        if( $mobile == "9774080533"){
 
           $user = User::Where('id',$user_id)->where('mobile',$mobile)
                         ->update([
@@ -27784,7 +27782,7 @@ public function TV_login(Request $request)
         }
 
         // Only for Play Store Testing 
-        if( $request->mobile_number == "0987654321"){
+        if( $request->mobile_number == "9774080533"){
 
           $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
                         ->update([
