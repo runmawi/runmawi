@@ -712,14 +712,14 @@ $settings  = App\Setting::first();?>
 			@endforeach
 	</table>
             </div>
-			@if(!empty(@$unassigned_episodes->toArray()))
+			{{-- @if(!empty(@$unassigned_episodes->toArray()))
 				<h6 class="unassigned_episode" data-toggle="modal" data-target="#unassignedEpisodes" style="pointer-event:none;">
 					Here are some unassigned episodes.. <span class="text-primary" style="cursor: pointer;">click to see</span>
 				</h6>
-			@endif
+			@endif --}}
 			
 			<!-- Modal -->
-			<div class="modal fade" id="unassignedEpisodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			{{-- <div class="modal fade" id="unassignedEpisodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -742,7 +742,7 @@ $settings  = App\Setting::first();?>
 					</div>
 				</div>
 				</div>
-			</div>
+			</div> --}}
 
 		<div class="clear"></div>
 
