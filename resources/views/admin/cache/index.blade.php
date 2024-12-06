@@ -24,30 +24,20 @@
                     </div>
 
                     <div class="panel-body">
-                        <div class="row align-items-center p-2">
-                            <div class="col-sm-3">
-                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                    <div class="mt-1 d-flex align-items-center justify-content-around">
-                                        <button class="button-87" role="button" id="clear_cache"> {{ ucwords('clear cache') }} </button>
-                                    </div>
-                                </div>
-                            </div>
-                             <div class="col-sm-4">
-                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
-                                    <div class="d-flex align-items-center justify-content-around">
-                                        <button class="button-87" role="button" id="clear_views_cache"> {{ ucwords('clear views cache') }} </button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="d-flex " style="justify-content: space-evenly;">
+                            <button class="button-87" role="button" id="clear_cache"> {{ ucwords('clear cache') }} </button>
+
+                            <button class="button-87" role="button" id="clear_views_cache"> {{ ucwords('clear views cache') }} </button>
+
+                            <button class="button-87" role="button" id="view_buffer_cache"> {{ ucwords('view buffer cache') }} </button>
+
+                            <button class="button-87" role="button" id="clear_buffer_cache"> {{ ucwords('clear buffer cache') }} </button>
                         </div>
                     </div>
 
                     <div class="panel-body">
-                        <div class="row align-items-center p-2">
-                           
-                        </div>
+                        <div class="row align-items-center p-2"></div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -55,7 +45,6 @@
 </div>
 
 @stop
-
 
 @section('javascript')
 
@@ -97,8 +86,7 @@
             }
         });
 
-
-         $("#clear_views_cache").click(function(){
+        $("#clear_views_cache").click(function(){
 
             var check = confirm("Are you sure you  to Clear Views Cache?");  
 
@@ -127,6 +115,72 @@
                                  });
                               }
                            },
+                });
+            }
+        });
+
+        $("#view_buffer_cache").click(function(){
+
+            var check = confirm("Are you sure you to view buffer cache?");  
+
+            if(check == true){ 
+                $.ajax({
+                    type: "POST", 
+                    dataType: "json", 
+                    url: "{{ route('view_buffer_cache') }}",
+                    data: {
+                        _token  : "{{csrf_token()}}" ,
+                    },
+                    success: function(data) {
+                        if(data.message == 'true'){
+                            alert('view buffer cache Successfully');
+                            location.reload();
+                        }
+                        else if(data.message == 'false'){
+                            swal.fire({
+                            title: 'Oops', 
+                            text: 'Something went wrong!', 
+                            allowOutsideClick:false,
+                            icon: 'error',
+                            title: 'Oops...',
+                            }).then(function() {
+                                location.href = '{{ URL::to('admin/clear_cache') }}';
+                            });
+                        }
+                    },
+                });
+            }
+        });
+
+        $("#clear_buffer_cache").click(function(){
+
+            var check = confirm("Are you sure you to view buffer cache?");  
+
+            if(check == true){ 
+                $.ajax({
+                    type: "POST", 
+                    dataType: "json", 
+                    url: "{{ route('clear_buffer_cache') }}",
+                    data: {
+                        _token  : "{{csrf_token()}}" ,
+                    },
+                    success: function(data) {
+                        if(data.message == 'true'){
+                            alert('Clear buffer cache Successfully');
+                            location.reload();
+                        }
+                        else if(data.message == 'false'){
+                            swal.fire({
+                            title: 'Oops', 
+                            text: 'Something went wrong!', 
+                            allowOutsideClick:false,
+                            icon: 'error',
+                            title: 'Oops...',
+                            }).then(function() {
+                                location.href = '{{ URL::to('admin/clear_cache') }}';
+                            });
+                        }
+                    },
                 });
             }
         });
