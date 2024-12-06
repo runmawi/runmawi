@@ -172,16 +172,9 @@ class PageListController extends Controller
                 'order_settings_list' => $order_settings_list,
                 'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
                 'default_vertical_image_url' => default_vertical_image_url(),
-                'page_list' => $category_videos_paginate,
-                'base_url' => 'category',
-                'header_name' => $order_settings_list[11]->header_name,
             );
         
-            if ($this->current_theme == 'theme5-nemisha') {
-                return Theme::view('Page-List.videos-list', $data);
-            } else {
             return Theme::view('Page-List.video-category', $data);
-            }
         } catch (\Throwable $th) {
             // return $th->getMessage();
             return abort(404);
