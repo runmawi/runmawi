@@ -809,9 +809,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
-    Route::get('/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+    Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
+    Route::post('/view-buffer-cache', 'ClearCacheController@view_buffer_cache')->name('view_buffer_cache');
+    Route::post('/clear-buffer-cache', 'ClearCacheController@clear_buffer_cache')->name('clear_buffer_cache');
 
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');

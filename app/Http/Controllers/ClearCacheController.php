@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use \Redirect as Redirect;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
-use \App\Setting as Setting;
-use \App\User as User;
+use \App\Setting;
+use \App\User;
 use View;
 
 class ClearCacheController extends Controller
@@ -150,4 +152,58 @@ class ClearCacheController extends Controller
         }
     }
 
+    
+    public function clear_buffer_cache()
+    {
+        try {
+            $process = new Process(['sudo', 'sh', '-c', 'sync; echo 3 > /proc/sys/vm/drop_caches']);
+            $process->setTimeout(10); 
+
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                return response()->json([
+                    'message'=>"true",
+                    'output' => $process->getOutput(),
+                ]);
+            }
+
+            return response()->json([
+                'message'=> "false",
+                'error'  => $process->getErrorOutput(),
+            ], 500);
+
+        } catch (ProcessFailedException $e) {
+
+            return response()->json([
+                'message'=> "false",
+                'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function view_buffer_cache()
+    {
+        try {
+
+            $process = new Process(['free', '-h']);
+            $process->setTimeout(10); 
+
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                return response()->json([
+                    'message'=>"true",
+                    'output' => $process->getOutput(),
+                ]);
+            }
+
+            return response()->json([
+                'message'=> "false",
+                'error' => $process->getErrorOutput(),
+            ], 500);
+
+        } catch (ProcessFailedException $e) {
+            return response()->json([ 'message'=> "false", 'error' => $e->getMessage()], 500);
+        }
+    }
 }
