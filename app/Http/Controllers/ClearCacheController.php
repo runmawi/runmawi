@@ -182,24 +182,52 @@ class ClearCacheController extends Controller
     public function view_buffer_cache()
     {
         try {
-
             $process = new Process(['free', '-h']);
             $process->run();
-
+    
             if ($process->isSuccessful()) {
+
+                $output = $process->getOutput();
+    
+                $lines = explode("\n", trim($output)); 
+                $memLine = preg_split('/\s+/', $lines[1]);
+                $swapLine = preg_split('/\s+/', $lines[2]); 
+
+                $memoryDetails = [
+                    'memory' => [
+                        'total' => $memLine[1],
+                        'used' => $memLine[2],
+                        'free' => $memLine[3],
+                        'shared' => $memLine[4],
+                        'buff_cache' => $memLine[5],
+                        'available' => $memLine[6],
+                    ],
+                    'swap' => [
+                        'total' => $swapLine[1],
+                        'used' => $swapLine[2],
+                        'free' => $swapLine[3],
+                    ],
+                ];
+        
                 return response()->json([
-                    'message'=>"true",
-                    'output' => $process->getOutput(),
+                    'success' => true,
+                    'message' => 'Retrieve memory details.',
+                    'data' => $memoryDetails,
                 ]);
             }
-
+    
             return response()->json([
-                'message'=> "false",
-                'error' => $process->getErrorOutput(),
+                'success' => false,
+                'message' => 'Failed to retrieve memory details.',
             ], 500);
 
-        } catch (ProcessFailedException $e) {
-            return response()->json([ 'message'=> "false", 'error' => $e->getMessage()], 500);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
