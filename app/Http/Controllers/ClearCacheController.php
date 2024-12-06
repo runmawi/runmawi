@@ -156,7 +156,7 @@ class ClearCacheController extends Controller
     public function clear_buffer_cache()
     {
         try {
-            $process = new Process(['sudo', 'sh', '-c', 'sync; echo 3 > /proc/sys/vm/drop_caches']);
+            $process = new Process([ 'sh', '-c', 'sync; echo 3 > /proc/sys/vm/drop_caches']);
             $process->run();
 
             if ($process->isSuccessful()) {
@@ -183,7 +183,7 @@ class ClearCacheController extends Controller
     {
         try {
 
-            $process = new Process(['sudo', 'free', '-h']);
+            $process = new Process(['free', '-h']);
             $process->run();
 
             if ($process->isSuccessful()) {
