@@ -738,8 +738,6 @@ $settings  = App\Setting::first();?>
 						@foreach(@$unassigned_episodes as $item)
 							<div class="col-2">{{ $item->title }}</div>
 							<div class="col-6">{{ $item->title }}</div>
-							<div class="col-2">{{ }}</div>
-							<div class="col-2">{{ }}</div>
 						@endforeach
 					</div>
 					<div class="modal-footer">
