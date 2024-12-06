@@ -151,6 +151,7 @@ use App\SeriesNetwork;
 use App\Adsvariables;
 use App\TVSplashScreen;
 use App\UserChannelSubscription;
+use App\InappPurchase;
 
 
 class ApiAuthController extends Controller
@@ -2029,10 +2030,16 @@ public function verifyandupdatepassword(Request $request)
       // }
 
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
+      $ios_plans_id = InappPurchase::get();
+      // return $ios_plans_id;
 
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query)  {
+        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query, $ios_plans_id)  {
+          $item['ppv_480p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
+          $item['ppv_720p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
+          $item['ppv_1080p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_1080p)['plan_price'] ?? null;
+  
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
@@ -2265,7 +2272,7 @@ public function verifyandupdatepassword(Request $request)
             }else{
               $languages = "";
             }
-
+            
       $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
