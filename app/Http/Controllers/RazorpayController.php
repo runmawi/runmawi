@@ -94,7 +94,7 @@ class RazorpayController extends Controller
 
     public function RazorpayIntegration(Request $request,$Plan_Id)
     {
-
+        try {
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $countryName = $geoip->getCountry();
@@ -142,6 +142,11 @@ class RazorpayController extends Controller
         );
 
         return Theme::view('Razorpay.checkout',compact('respond'),$respond);
+
+        } catch (\Throwable $th) {
+
+            return abort(404);
+        }
     }
 
     public function RazorpayCompleted(Request $request)
