@@ -727,6 +727,7 @@ class LiveStreamController extends Controller
                     'live_purchase_status' => $live_purchase_status ,
                     'free_duration_condition' => $free_duration_condition ,
                     'Livestream_details'      => $Livestream_details ,
+                    'Radio_station_lists'      => LiveStream::where('stream_upload_via','radio_station')->get() ,
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
                     'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
                     'setting'                => $settings,
