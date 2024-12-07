@@ -7,7 +7,10 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left">
-                            <a href="#">{{ "Latest Episodes" }}</a>
+                            <a href="{{ URL::to('latest_episodes')}}">{{ "Latest Episodes" }}</a>
+                        </h4>                   
+                        <h4 class="main-title mar-left">
+                            <a href="{{ URL::to('latest_episodes')}}">{{ "View all" }}</a>
                         </h4>                   
                     </div>
 
@@ -18,10 +21,10 @@
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
                                             @if ($multiple_compress_image == 1)
-                                                <img class="flickity-lazyloaded" {{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}"
-                                                    srcset="{{ URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w') }},
-                                                    {{ URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') }},
-                                                    {{ URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') }}"  width="300" height="200">
+                                                <img class="flickity-lazyloaded" alt="{{ $episode_details->title }}" src="{{ $episode_details->image ?  URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}"
+                                                    srcset="{{ $episode_details->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w')) : URL::to('public/uploads/images/'.$episode_details->image) }},
+                                                    {{ $episode_details->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') : URL::to('public/uploads/images/'.$episode_details->image) }},
+                                                    {{ $episode_details->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') : URL::to('public/uploads/images/'.$episode_details->image) }}" >
                                             @else
                                                 <img src="{{ $episode_details->image ? URL::to('public/uploads/images/'.$episode_details->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{ $episode_details->title }}"  width="300" height="200">
                                             @endif
