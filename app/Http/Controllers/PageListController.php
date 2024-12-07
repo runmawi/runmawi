@@ -949,4 +949,31 @@ class PageListController extends Controller
         Theme::uses($this->current_theme);
     }
 
+    public function Latest_episodes()
+    {
+        try {
+             
+            $FrontEndQueryController = new FrontEndQueryController();
+            $order_settings_list = OrderHomeSetting::get();
+            
+            $latest_episodes_pagelist = $FrontEndQueryController->latest_episodes();
+            $latest_episodes_paginate = $this->paginateCollection($latest_episodes_pagelist, $this->videos_per_page);
+
+            $data = array(
+                'current_theme' => $this->current_theme ,
+                'currency'      => CurrencySetting::first(),
+                'latest_episodes_pagelist' => $latest_episodes_paginate,
+                'order_settings_list' => $order_settings_list,
+                'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                'default_vertical_image_url' => default_vertical_image_url(),
+            );
+        
+            return Theme::view('Page-List.Latest-episodes', $data);
+
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
+    }
+
 }
