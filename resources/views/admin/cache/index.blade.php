@@ -159,8 +159,8 @@
                             if (data.status) {
                                 alert(
                                     " Message : " + data.message +
-                                    "\output: " + data.output +
-                                    "\error_output: " + data.error_output 
+                                    "\noutput: " + data.output +
+                                    "\nerror_output: " + data.error_output 
                                 );
 
                                 location.reload();
