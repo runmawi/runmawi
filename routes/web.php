@@ -351,6 +351,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
     Route::get('shorts_minis', 'PageListController@ShortsMinis')->name('pagelist.shorts-minis');
     Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    Route::get('latest_episodes', 'PageListController@Latest_episodes')->name('pagelist.latest_episodes');
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
 
