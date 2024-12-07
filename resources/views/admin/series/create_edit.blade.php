@@ -712,43 +712,6 @@ $settings  = App\Setting::first();?>
 			@endforeach
 	</table>
             </div>
-			@if(!empty(@$unassigned_episodes->toArray()))
-				<h6 class="unassigned_episode" data-toggle="modal" data-target="#unassignedEpisodes" style="pointer-event:none;">
-					Here are some unassigned episodes.. <span class="text-primary" style="cursor: pointer;">click to see</span>
-				</h6>
-			@endif
-			
-			<!-- Modal -->
-			<div class="modal fade" id="unassignedEpisodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle">Unassigned Episodes</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-2">{{"Episode_id" }}</div>
-							<div class="col-6">{{"Episode Name" }}</div>
-							<div class="col-2">{{"Assign to" }}</div>
-							<div class="col-2">{{"Episode_id" }}</div>
-						</div>
-						@foreach(@$unassigned_episodes as $item)
-							<div class="col-2">{{ $item->title }}</div>
-							<div class="col-6">{{ $item->title }}</div>
-							<div class="col-2">{{ }}</div>
-							<div class="col-2">{{ }}</div>
-						@endforeach
-					</div>
-					<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
-				</div>
-				</div>
-			</div>
 
 		<div class="clear"></div>
 
