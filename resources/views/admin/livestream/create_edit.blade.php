@@ -908,13 +908,13 @@
                         <div class="col-sm-2 recurring_program_week_day"  >
                             <label class="m-0">{{ __('Week Days ')}} </label>
                             <select class="form-control" name="recurring_program_week_day" >
-                                <option value="0" > Sunday </option>
                                 <option value="1">  Monday </option>
                                 <option value="2">  Tuesday </option>
                                 <option value="3"> Wednesday </option>
                                 <option value="4" > Thrusday</option>
                                 <option value="5" > Friday</option>
                                 <option value="6" > Saturday</option>
+                                <option value="7" > Sunday </option>
                             </select>
                         </div>
 

@@ -757,7 +757,7 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
         }
