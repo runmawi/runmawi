@@ -328,7 +328,7 @@ class FrontEndQueryController extends Controller
             $item['Series_depends_Networks'] = Series::where('series.active', 1)
             ->whereJsonContains('network_id', [(string)$item->id])
         
-                        ->latest('series.created_at')->get()->map(function ($item) { 
+                        ->latest('series.created_at')->get()->map(function ($item) {
                 
                 $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
                 $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  $this->default_horizontal_image_url ;
@@ -337,14 +337,15 @@ class FrontEndQueryController extends Controller
         
                 $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
         
-                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes->take(15)
+                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                         ->map(function ($item) {
                                                         $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
                                                         $item['season_name'] = SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
                                                         return $item;
                                                     });
-                $item['has_more'] = Series::find($item->id)->Series_depends_episodes->count() > 14;
-        
+                                                   
+                $item['has_more'] = count($item['Series_depends_episodes']) > 14;
+                // dd($item['has_more']);
                 $item['source'] = 'Series';
                 return $item;
                                                                     
