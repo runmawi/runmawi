@@ -13,7 +13,7 @@ $settings = App\Setting::first();
       background: #33333391;
       border: 1px solid var(--iq-body-text);
       font-size: 14px;
-      color: var(--iq-secondary);
+      color: var(--iq-black) !important;
       border-radius: 4px;
    }
 
@@ -75,12 +75,14 @@ $settings = App\Setting::first();
       right: 0px;
       top: 34px;
       color: #000;
-      background-color: #578cea;
+      /* background-color: #578cea; */
       padding: 12px 22px;
       /* width: 100%; */
       display: flex;
       justify-content: center;
+      cursor: pointer;
    }
+   .artists-table th{color: #fff;}
 </style>
 
 <body>
@@ -237,121 +239,127 @@ $settings = App\Setting::first();
                                  <div class="d-flex align-items-baseline justify-content-between">
                                     <div><span style="font-size: 18px" class="mb-2 pb-3 ">{{ __('Personal Details') }}</span></div>
                                     <div>
-                                       <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white" data-toggle="modal" data-target="#add-profile"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a>
+                                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change-profile">
+                                          {{ __('Change') }}
+                                        </button>
+                                       {{-- <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary text-white" data-toggle="modal" data-target="#add-profile"><i class="fa fa-plus-circle"></i> {{ __('Change') }}</a> --}}
                                     </div>
                                  </div>
                               </div>
                               <div class="a-border"></div>
                               <div class="a-border"></div>
                               <div class="row jusitfy-content-center">
-                              <div class="col-md-3 mt-3">
-                                 <span style="font-size: 18px">{{ __('Account Details') }}</span>
+                                 <div class="col-md-3 mt-3">
+                                    <span style="font-size: 18px">{{ __('Account Details') }}</span>
+                                 </div>
+                                 <div class="col-md-9">
+                                    <div class="row align-items-center justify-content-end">
+                                       <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                          <span class="text-light font-size-13">{{ __('Email') }}</span>
+                                          <span class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p>
+                                       </div>   
+                                    </div>
+                                    <div class="row align-items-center justify-content-end">
+                                       <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                          <span class="text-light font-size-13">{{ __('Username') }}</span>
+                                          <span class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p>
+                                       </div>   
+                                    </div>
+                                    <div class="row align-items-center justify-content-end">
+                                       <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                          <span class="text-light font-size-13">{{ __('Password') }}</span>
+                                          <span class="mb-0">***********</span>
+                                       </div>
+                                    </div>
+                                 </div>
                               </div>
-                              <div class="col-md-9">
-                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                                       <span class="text-light font-size-13">{{ __('Email') }}</span>
-                                       <span class="mb-0"><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></p></div>   
-                                 </div>
-                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                                       <span class="text-light font-size-13">{{ __('Username') }}</span>
-                                       <span class="mb-0"><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></p></div>   
-                                 </div>
-                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                                       <span class="text-light font-size-13">{{ __('Password') }}</span>
-                                       <span class="mb-0">***********</span>
+                              <div class="a-border"></div>
+                              <div class="row">
+                                 <div class="col-md-3"></div>
+                                 <div class="col-md-9">
+                                    <div class="row align-items-center justify-content-end">
+                                       <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
+                                          <span class="text-light font-size-13">{{ __('Phone') }}</span>
+                                          <span class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p>
+                                       </div>
+                                    </div> 
+                                    <div class="row align-items-center justify-content-end">
+                                       <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
+                                          <span class="text-light font-size-13">{{ __('DOB') }}</span>
+                                          <span class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
                            <div class="a-border"></div>
-                           <div class="row">
-                              <div class="col-md-3"></div>
-                              <div class="col-md-9">
-                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-8 d-flex justify-content-between mt-2 mb-2">
-                                       <span class="text-light font-size-13">{{ __('Phone') }}</span>
-                                       <span class="mb-0"><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></p></div>
-                                 </div> 
-                                 <div class="row align-items-center justify-content-end">
-                                    <div class="col-md-8 d-flex justify-content-between mt-1 mb-2">
-                                       <span class="text-light font-size-13">{{ __('DOB') }}</span>
-                                       <span class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p></div>
-                                 </div>
+                           <div class="mt-3 row align-items-center">
+                              <div class="col-md-3"> <span style="font-size: 18px;" class="card-title mb-2">{{ __('Update Profile Picture') }}</span></div>
+                              <div class="col-md-9"> 
+                                 <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row align-items-center">
+                                       <div class="col-sm-6">
+                                          <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                          <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
+                                          <!-- <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                                       </div>
+                                       <div class="col-sm-6">
+                                          <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
+                                          <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update') }}</button>     
+                                       </div>
+                                    </div>
+                                       
+                                 </form>	
                               </div>
+                              <div class="col-md-3"></div>
                            </div>
-                     
-                        </div>
-                        <div class="a-border"></div>
-                        <div class="mt-3 row align-items-center">
-                           <div class="col-md-3"> <span style="font-size: 18px;" class="card-title mb-2">{{ __('Update Profile Picture') }}</span></div>
-                           <div class="col-md-9"> 
-                              <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
-                                 @csrf
-                                 <div class="row align-items-center">
-                                    <div class="col-sm-6">
-                                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                                       <input type="file" multiple="true" class="form-control editbtn mt-3" name="avatar" id="avatar" />
-                                       <!-- <input type="submit" value="<?=__('Update Profile');?>" class="btn btn-primary  noborder-radius btn-login nomargin editbtn" /> -->    
+                        
+                           <!-- Add New Modal -->
+                           <div class="modal fade" id="add-profile">
+                              <div class="modal-dialog">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h4 class="modal-title text-black">{{ __('Update Profile') }}</h4>
+                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
-                                    <div class="col-sm-6">
-                                       <button type="submit" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile " style="display: none;">{{ __('Verify Profile') }} </button>
-                                       <button class="btn btn-primary noborder-radius btn-login nomargin editbtn " type="submit" name="create-account" value="<?=__('Update Profile');?>">{{ __('Update') }}</button>     
+                                 
+                                    <div class="modal-body">
+                                       <form id="old-new-cat-forms" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+                                          <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                                          <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                                      
+                                          <div class="form-group">
+                                             <label>{{ __('Username') }} :</label>
+                                             <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+                                          </div>
+                                          <div class="form-group">
+                                             <label>{{ __('Email') }} :</label>
+                                             <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
+                                          </div>     
+                                          <div class="form-group position-relative">
+                                             <label>{{ __('Password') }}:</label><br>
+                                             <input type="password" id="old-pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
+                                                <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+
+                                          </div>                                     
+                                          <div class="form-group">
+                                             <label> {{ __('Phone') }}:</label>
+                                             <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
+                                          </div>
+                                          <div class="form-group">
+                                             <label>{{ __('DOB') }} :</label>
+                                             <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
+                                             <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
+                                          </div>
+
+                                       </form>
                                     </div>
-                                 </div>
-                                    
-                              </form>	
-                           </div>
-                           <div class="col-md-3"></div>
-                        </div>
-                                          {{-- </div> --}}
-                     
-                        <!-- Add New Modal -->
-                        <div class="modal fade" id="add-profile">
-                           <div class="modal-dialog">
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <h4 class="modal-title text-black">{{ __('Update Profile') }}</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                 </div>
-                              
-                                 <div class="modal-body">
-                                    <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
-                                       <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-                                       <input type="hidden" name="user_id" value="<?= $user->id ?>" />
-                                                   
-                                       <div class="form-group">
-                                          <label>{{ __('Username') }} :</label>
-                                          <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
-                                       </div>
-                                       <div class="form-group">
-                                          <label>{{ __('Email') }} :</label>
-                                          <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
-                                       </div>     
-                                       <div class="form-group position-relative">
-                                          <label>{{ __('Password') }}:</label><br>
-                                          <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
-                                             <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
-
-                                       </div>                                     
-                                       <div class="form-group">
-                                          <label> {{ __('Phone') }}:</label>
-                                          <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
-                                       </div>
-                                       <div class="form-group">
-                                          <label>{{ __('DOB') }} :</label>
-                                          <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
-                                          <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
-                                       </div>
-
-                                    </form>
-                                 </div>
-                              
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button>
-                                    <button type="button" class="btn btn-primary" id="submit-new-cat">{{ __('Save changes') }}</button>
+                                 
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-primary" data-dismiss="modal">{{ __('Close') }}</button>
+                                       <button type="button" class="btn btn-primary" id="old-submit-new-cat">{{ __('Save changes') }}</button>
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -472,17 +480,19 @@ $settings = App\Setting::first();
                      
                      <div class="targetDiv" id="div6">
                         <div class=" mb-3">
-                           <span style="font-size: 1.5em" class="card-title mb-0 manage">{{ __('Profile') }} </span>
+                           <div class="d-flex justify-content-between">
+                              <span style="font-size: 20px; font-weight:500" class="card-title mb-0 manage text-white">{{ __('Profile') }}</span>
+                              <a class="btn" style="color: white !important; " href="{{ route('Multi-profile-create') }}" > <i class="fa fa-plus-circle fa-100x "></i> Add Profile</a> 
+                           </div>
                            <div class="col-md-12 profile_image mt-3 p-0">                  
                               @forelse  ( $profile_details as $profile )
                                  <div class="">
                                     <div>
-                                       <div class="d-flex justify-content-center">
-                                          <span class="name">{{ $profile ? $profile->user_name : ''  }}</span>
-                                       </div>
+                                       <h2 class="name" style="color:#fff !important;">{{ $profile ? $profile->user_name : ''  }}</h2>
+      
                                        <img src="{{URL::asset('public/multiprofile/').'/'.$profile->Profile_Image}}" alt="user" class="multiuser_img" style="width:120px">
                                     </div>
-                                    <div class=" text-center text-white">
+                                    <div class=" text-center text-white">                       
                                        <a  href="{{ route('profile-details_edit', $profile->id ) }}"> <i class="fa fa-pencil"></i> </a>
                                        @if($Multiuser == null)
                                           <a class="ml-2"  href="{{ URL::to('profile_delete', $profile->id)}}" onclick="return confirm('Are you sure to delete this Profile?')" >
@@ -491,16 +501,15 @@ $settings = App\Setting::first();
                                        @endif
                                     </div>
                                  </div> 
-                                 @empty
+                              @empty
                                  <div class="col-sm-6">  
-                                    <p class="name">{{ __('No Profile') }}  </p>  
+                                    <p class="name text-white">{{ __('No Profile') }}  </p>  
                                  </div>
                               @endforelse
-
-                              <div class="col-md-6" style="margin-top: 63px;">
-                                 <li> <a class="fa fa-plus-circle fa-100x" style="color: white !important; " href="{{ route('Multi-profile-create') }}" ></a> </li>
+      
+                              <div class="col-md-6">
                               </div>
-
+      
                            </div>    
                         </div> 
                      </div>
@@ -581,7 +590,7 @@ $settings = App\Setting::first();
                      
                      <div class="targetDiv" id="div9">
                         <p class="text-white">{{ __('Tv Logged User List') }}</p>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                            <table class="table  artists-table iq-card text-center p-0">
                               <tr class="r1">
                                  <th><label> {{ __('S.No') }} </label></th>
@@ -613,6 +622,54 @@ $settings = App\Setting::first();
             <div class="clear"></div>   
    
          </div>
+
+         <div class="modal fade" id="change-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="new-cat-form" accept-charset="UTF-8" action="{{ URL::to('/profile/update') }}" method="post">
+                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                     <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                                 
+                     <div class="form-group">
+                        <label>{{ __('Username') }} :</label>
+                        <input type="text" id="username" name="username" value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>" class="form-control" placeholder="username">
+                     </div>
+                     <div class="form-group">
+                        <label>{{ __('Email') }} :</label>
+                        <input type="email" readonly id="email" name="email" value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>" class="form-control" placeholder="{{ __('Email') }}">
+                     </div>     
+                     <div class="form-group position-relative">
+                        <label>{{ __('Password') }}:</label><br>
+                        <input type="password" id="pass_log_id"  name="password"   placeholder="{{ __('Password') }}"  class="form-control"  >
+                           <span toggle="#password-field" class="fa fa-fw fa-eye-slash field_icon toggle-password"></span>
+
+                     </div>                                     
+                     <div class="form-group">
+                        <label> {{ __('Phone') }}:</label>
+                        <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="{{ __('Mobile Number') }}">
+                     </div>
+                     <div class="form-group">
+                        <label>{{ __('DOB') }} :</label>
+                        <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
+                        <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
+                     </div>
+
+                  </form>
+               </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="submit-new-cat">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
       </section>
       
    </div>
@@ -939,10 +996,8 @@ $settings = App\Setting::first();
 
    jQuery(document).ready(function($){
 
-
-      // Add New Category
       $('#submit-new-cat').click(function(){
-      $('#new-cat-form').submit();
+         $('#new-cat-form').submit();
       });
    });
 
@@ -954,9 +1009,9 @@ $settings = App\Setting::first();
 </script>
 
 <script>
-   $(document).on('click', '.toggle-password', function() {
+    $(document).on('click', '.toggle-password', function() {
 
-      $(this).toggleClass("fa-eye fa-eye-slash");
+      $(this).toggleClass("fa-eye-slash fa-eye");
       
       var input = $("#pass_log_id");
       input.attr('type') === 'password' ? input.attr('type','text') : input.attr('type','password')
