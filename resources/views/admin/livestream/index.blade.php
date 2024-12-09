@@ -178,10 +178,6 @@ border-radius: 0px 4px 4px 0px;
 
 										switch ($video->recurring_program_week_day) {
 
-											case 0:
-												$recurring_program_week_day = 'Sunday' ;
-											break;
-
 											case 1 :
 												$recurring_program_week_day =  'Monday' ;
 											break;
@@ -204,6 +200,10 @@ border-radius: 0px 4px 4px 0px;
 
 											case 6:
 												$recurring_program_week_day =  'Saturday' ;
+											break;
+
+											case 7:
+												$recurring_program_week_day = 'Sunday' ;
 											break;
 
 											default:
