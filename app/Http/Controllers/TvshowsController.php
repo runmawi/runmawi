@@ -119,7 +119,7 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,32])->orderBy('id', 'asc')->get();
+            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,30,32])->orderBy('id', 'asc')->get();
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
