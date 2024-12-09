@@ -712,7 +712,6 @@ $settings  = App\Setting::first();?>
 			@endforeach
 	</table>
             </div>
-	
 
 		<div class="clear"></div>
 

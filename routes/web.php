@@ -351,6 +351,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
     Route::get('shorts_minis', 'PageListController@ShortsMinis')->name('pagelist.shorts-minis');
     Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    Route::get('latest_episodes', 'PageListController@Latest_episodes')->name('pagelist.latest_episodes');
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
 
@@ -810,6 +811,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
+    
     Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
