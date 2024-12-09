@@ -2,7 +2,7 @@
     include public_path('themes/theme6/views/header.php');
 @endphp
 
-@if(!empty($category_data))
+@if($categoryVideos['categoryVideos']->isNotEmpty())
     <!-- Slider  -->
     @if (!empty($categoryVideos['video_banners']) && $categoryVideos['video_banners']->isNotEmpty())
         <section id="home" class="iq-main-slider p-0">
@@ -355,8 +355,8 @@
         @endif
     </div>
 @else
-    <div class="col-md-12 text-center mt-4" style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-        <h3 class="text-center">{{ __('No Data Available On This Category') }}</h3>
+    <div class="col-md-12 text-center mt-5" style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 450px!important;">
+        <h4 class="text-center">{{ __('No Videos Available') }}</h4>
     </div>
 @endif
 
