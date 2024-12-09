@@ -10,7 +10,7 @@
     <style>
         li{list-style:none;}
         body{background: #000;padding: 20px;vertical-align: middle;height: 100%;}
-        .login-success {border: 2px solid black;width: 20%;height: 50px;font-size: 18px;font-weight: 600;background: #8cff7d;align-items: center;float: inline-end;justify-content: center;box-shadow: 5px 5px #454545;}
+        .login-success {border: 2px solid black;width: 20%;height: 50px;font-size: 18px;font-weight: 600;background: #8cff7d;align-items: center;float: inline-end;justify-content: center;}
     </style>
 </head>
 <div class="message">
@@ -71,6 +71,12 @@
  @endsection
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script>
+    setTimeout(() => {
+        document.querySelector('.message').style.display = 'none';
+    }, 3000);
+</script>
+
  <style>
      .row1{
        background: linear-gradient(180deg, rgba(21, 30, 41, 0.85) 0%, rgba(21, 63, 95, 1) 100%);
