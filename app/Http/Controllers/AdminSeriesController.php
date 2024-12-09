@@ -585,7 +585,7 @@ class AdminSeriesController extends Controller
             'theme_settings' => SiteTheme::first(),
             "countries"      => CountryCode::all(),
             "blcok_CountryName" => $blcok_CountryName,
-            // "unassigned_episodes" => $unassigned_episodes,
+            "unassigned_episodes" => $unassigned_episodes,
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -5648,6 +5648,17 @@ class AdminSeriesController extends Controller
     {
         return Episode::where("id", "=", $id)->first();
     }
+
+    public function UnassignedEpisodes(Request $request)
+    {
+        // dd($request);
+       
+        foreach ($request['episodes'] as $episode) {
+            $updated = Episode::where('id', $episode['id'])->update(['season_id' => !empty($episode['season_id']) ? ($episode['season_id']) : Null ]);
+        }
+        return redirect()->back()->with('success', 'Episodes updated successfully.');
+    }
+
 
 
 }

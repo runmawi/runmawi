@@ -3058,3 +3058,6 @@ Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetail
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
+
+// Unassigned episodes assign
+Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
