@@ -49,10 +49,6 @@
                                             @php
                                                 switch ($livestream_videos->recurring_program_week_day) {
 
-                                                    case 0:
-                                                        $recurring_program_week_day = 'Sunday' ;
-                                                    break;
-
                                                     case 1 :
                                                         $recurring_program_week_day =  'Monday' ;
                                                     break;
@@ -75,6 +71,10 @@
 
                                                     case 6:
                                                         $recurring_program_week_days =  'Saturday' ;
+                                                    break;
+
+                                                    case 7:
+                                                        $recurring_program_week_day = 'Sunday' ;
                                                     break;
 
                                                     default:
