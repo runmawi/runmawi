@@ -356,12 +356,12 @@ class HomeController extends Controller
                 return true;
             });
 
-            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
                 $item['Series_depends_Networks'] = Series::where('series.active', 1)
                             ->whereJsonContains('network_id', [(string)$item->id])
 
-                            ->latest('series.created_at')->limit(15)->get()->map(function ($item) {
+                            ->latest('series.created_at')->get()->map(function ($item) {
 
                     $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                     $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
@@ -376,6 +376,7 @@ class HomeController extends Controller
                                                             return $item;
                                                         });
 
+                    $item['has_more'] = count($item['Series_depends_episodes']) > 14;
                     $item['source'] = 'Series';
                     return $item;
 
@@ -1109,12 +1110,12 @@ class HomeController extends Controller
 
                         // Series_based_on_Networks
 
-                    $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->limit(15)->get()->map(function ($item) {
+                    $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
                         $item['Series_depends_Networks'] = Series::where('series.active', 1)
                                     ->whereJsonContains('network_id', [(string)$item->id])
 
-                                    ->latest('series.created_at')->limit(15)->get()->map(function ($item) {
+                                    ->latest('series.created_at')->get()->map(function ($item) {
 
                             $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                             $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
@@ -1128,7 +1129,7 @@ class HomeController extends Controller
                                                                     $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
                                                                 });
-
+                            $item['has_more'] = count($item['Series_depends_episodes']) > 14;
                             $item['source'] = 'Series';
                             return $item;
 
@@ -1688,7 +1689,7 @@ class HomeController extends Controller
                     'VideoSchedules'         => $FrontEndQueryController->VideoSchedules()->take(15),
                     'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
                     'AudioCategory'          => $FrontEndQueryController->AudioCategory()->take(15),
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(15),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                     'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
                     'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
                     'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
