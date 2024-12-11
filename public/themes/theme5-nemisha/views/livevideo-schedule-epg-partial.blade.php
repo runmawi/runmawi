@@ -47,7 +47,7 @@
                 @if ($Livestream_details->publish_type == 'publish_later')
                     @if ($time->greaterThan($epg_program_start_time))
                         <div class="epg-program" style="background-color: {{ $colors[1] }};">
-                            <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title} (Start: {$epg_program_start_time}" : null }}</b>
+                            <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title}" : null }}</b>
                             @php $program_title_once_show = false; @endphp
                         </div>
                     @endif
