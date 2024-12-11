@@ -718,7 +718,11 @@ $settings  = App\Setting::first();?>
             </div>
 			@if(!empty($unassigned_episodes->toArray()))
 				<div class="unassigned_episodes">
-					{{-- <p>Here are some unassigned_episodes. <span class="text-primary" data-toggle="modal" data-target="#unassignedepisodes" style="cursor: pointer;">Click to see..</span></p> --}}
+					@if(!empty($seasons->toArray()))
+					<p>We found some unassigned episodes <span class="text-primary" data-toggle="modal" data-target="#unassignedepisodes" style="cursor: pointer;">Click here to assign now.</span></p>
+					@else
+						<p>We found some unassigned episodes <span class="text-primary" onclick="jQuery('#add-new').modal('show');" style="cursor: pointer;">Create a season to assign now.</span></p>
+					@endif
 				</div>
 
 				<div class="modal fade" id="unassignedepisodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
