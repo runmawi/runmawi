@@ -1184,7 +1184,7 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if( $request->mobile != "9774080533"){
+      if( ($request->mobile != "9774080533") || ($request->mobile != "9962743248") ){
 
         user::find(Auth::user()->id)->update([
           'otp' => null ,
@@ -27643,7 +27643,7 @@ public function TV_login(Request $request)
         $Mobile_number   = $ccode.$mobile ;
 
         // Only for Play Store Testing 
-        if( $mobile == "9774080533"){
+        if( ($mobile == "9774080533") || ($mobile == "9962743248") ){
 
           $user = User::Where('id',$user_id)->where('mobile',$mobile)
                         ->update([
