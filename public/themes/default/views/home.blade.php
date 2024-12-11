@@ -307,7 +307,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 
 };
 
-   document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     // Initialize Flickity slider
     var elem = document.querySelector('.home-sliders');
     var flkty = new Flickity(elem, {
@@ -387,14 +387,14 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 
 
    //  width and height set dynamically
-    var images = document.querySelectorAll('.flickity-lazyloaded');
-      images.forEach(function(image) {
-         var renderedWidth = image.clientWidth;
-         var renderedHeight = image.clientHeight;
+   var images = document.querySelectorAll('.flickity-lazyloaded');
+   images.forEach(function(image) {
+      var renderedWidth = image.clientWidth;
+      var renderedHeight = image.clientHeight;
 
-         image.setAttribute('width', renderedWidth);
-         image.setAttribute('height', renderedHeight);
-      });
+      image.setAttribute('width', renderedWidth);
+      image.setAttribute('height', renderedHeight);
+   });
 });
 
 </script>
