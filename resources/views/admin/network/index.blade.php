@@ -159,7 +159,7 @@
                                         <th><label>S.No</label></th>
                                         <th><label>Networks Name</label></th>
                                         <th><label>Networks Image</label></th>
-                                        <th><label>Series List</label></th>
+                                        <th><label>Series Order</label></th>
                                         <th><label>Operation</label></th>
                                     </tr>
 
@@ -169,8 +169,8 @@
                                             <td>{{ $network_data->name }}</td>
                                             <td valign="bottom"><img src="{{ $network_data->image_url }}" width="50" height="50"></td>
                                             <td valign="bottom">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="{{'#SeriesList-'.$key}}">
-                                                    Open
+                                                <button type="button" class="" data-toggle="modal" data-target="{{'#SeriesList-'.$key}}" style="border:none;background-color:transparent;">
+                                                   Order your Shows
                                                 </button>
                                             </td>
 
