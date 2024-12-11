@@ -29,7 +29,7 @@ $Livestream_detail = $Livestream_details;
         border-radius: 10px;
         padding: 10px;
         border-width: 2px;
-        height:45%;
+        height:70%;
         overflow: hidden;
     }
 
@@ -263,13 +263,22 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         }
     }
 
-    #Epg_schedule_modal .modal-dialog {
-    max-width: 100% !important;
+    .modal{
+        right: 0;
+    }
+
+    @media (min-width: 576px) {
+        #Epg_schedule_modal .modal-dialog {
+            max-width: 100%;
+        }
     }
 
     #Epg_schedule_modal .modal-content {
     background-color: transparent;
     }
+
+   
+
 </style>
 <?php if (Session::has('message')): ?>
 <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
@@ -296,7 +305,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
             <a class="text-center btn btn-success" id="paynowbutton"> Pay for View </a>
         </div>
         <?php } else { ?>
-        <div class="row album-top-30 mt-4 ">
+        <div class="row album-top-30 my-4 ">
             <div class="col-lg-8">
                 <div class="player-ctn" id="player-ctn"
                     style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
@@ -564,6 +573,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
       var moreInfoBtn = document.createElement('button');
       document.querySelector("#ptc-" + index).appendChild(moreInfoBtn);
+      moreInfoBtn.setAttribute("style", "display: none;"); // Hide the button
 
         moreInfoBtn.addEventListener('click', function () {
             const liveId = this.getAttribute('data-live-id');

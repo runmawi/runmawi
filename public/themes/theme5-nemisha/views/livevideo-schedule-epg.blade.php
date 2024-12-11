@@ -104,11 +104,12 @@
 <div class="epg-container mt-3">
 
     <div class="epg-header m-1">
-        <img src="{{ @$Livestream_details->image }}" alt="Program Image">
+        <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
+
 
         <div class="epg-info">
             <h2> {{ ucwords(@$Livestream_details->title) }} </h2>
-            <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
+            
         </div>
         
         <div class="epg-time">
