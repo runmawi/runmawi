@@ -966,7 +966,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -997,7 +997,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!--<i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1018,7 +1018,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1089,7 +1089,7 @@
                     echo $menu->custom_url;
                 } ?>" aria-label="<?php echo __($menu->name); ?>">
                     <!-- <img class=""  src="<?php echo URL::to('/assets/img/home.png'); ?>" /> <span class="mt-2" ><?php echo __($menu->name); ?></span> -->
-                    <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
+                    <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
                         class=""><?php echo __($menu->name); ?></span>
 
                 </a>
@@ -2179,6 +2179,18 @@
                     required: "This Search field is required",
                 }
                 }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                //  width and height set dynamically
+                var images = document.querySelectorAll('.menu-items');
+                images.forEach(function(image) {
+                    var renderedWidth = image.clientWidth;
+                    var renderedHeight = image.clientHeight;
+
+                    image.setAttribute('width', renderedWidth);
+                    image.setAttribute('height', renderedHeight);
+                });
             });
 
         </script>
