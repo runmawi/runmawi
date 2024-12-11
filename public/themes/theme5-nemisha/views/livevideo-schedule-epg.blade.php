@@ -46,7 +46,7 @@
     .day-nav{margin:0 50px; cursor: pointer;}
     .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex; }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
-    .epg-channel {width: 100%; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
+    .epg-channel {width: 100%; white-space: nowrap; overflow: auto;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
 
     /* .timeline-slot:last-child{border-left: 1px solid;} */
     .epg-arrow-buttons {
