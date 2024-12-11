@@ -46,8 +46,8 @@ if(count($latest_video) > 0) : ?>
                 <a href="<?php echo  URL::to('category/' . $Categories->slug) ?> ">
                     <?php if($ThumbnailSetting->title == 1):  ?>
                             <!-- Title -->
-                    <h6> <?php echo strlen($Categories->name) > 17 ? substr($Categories->name, 0, 18) . '...' : $Categories->name; ?>
-                    </h6>
+                    <h5 style="font-size:1.0em; font-weight:500;"> <?php echo strlen($Categories->name) > 17 ? substr($Categories->name, 0, 18) . '...' : $Categories->name; ?>
+                    </h5>
 
                     <?php endif; ?>
 
