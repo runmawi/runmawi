@@ -10,7 +10,10 @@
 <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
-
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- Style -->
 <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" as="style">
