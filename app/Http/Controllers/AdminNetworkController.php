@@ -60,7 +60,7 @@ class AdminNetworkController extends Controller
             return view('admin.network.index',$data);
         
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
 

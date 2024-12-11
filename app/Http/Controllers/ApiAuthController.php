@@ -14078,46 +14078,60 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
             'type'        => 'Code',
           ]);
 
-      }else{
+        }else{
 
-        TVLoginCode::create([
-          'email'       => $request->email,
-          'uniqueId'    => $request->uniqueId,
-          'tv_code'     => $request->tv_code,
-          'type'        => 'Code',
-          'status'      => 0,
-      ]);
+          TVLoginCode::create([
+            'email'       => $request->email,
+            'uniqueId'    => $request->uniqueId,
+            'tv_code'     => $request->tv_code,
+            'type'        => 'Code',
+            'status'      => 0,
+        ]);
 
 
-      }
+        }
 
         $user = User::where('email',$email)->first();
+        if ($user) {
+          if (Hash::check($password, $user->password)) {
+            if($user->role == 'subscriber'){
 
-        if($user->role == 'subscriber'){
-
-          $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
-          $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
-          ->where('subscriptions.user_id',$user->id)
-          ->orderBy('subscriptions.created_at', 'desc')->first();
-
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
-
-        }else{
-          $plans_name = '';
-          $plan_ends_at = '';
-        }
-            $response = array(
-                'status'=> 'true',
-                'message' => 'Logged In Successfully',
-                'user_details'=> $user,
-                'plans_name'=>$plans_name,
-                'plan_ends_at'=>$plan_ends_at,
-                'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
-            );
-
-        }
-        catch (\Throwable $th) {
+              $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+              $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+              ->where('subscriptions.user_id',$user->id)
+              ->orderBy('subscriptions.created_at', 'desc')->first();
+    
+              $plans_name = $Subscription->plans_name;
+              $plan_ends_at = $Subscription->ends_at;
+    
+            }else{
+              $plans_name = '';
+              $plan_ends_at = '';
+            }
+                $response = array(
+                    'status'=> 'true',
+                    'message' => 'Logged In Successfully',
+                    'user_details'=> $user,
+                    'plans_name'=>$plans_name,
+                    'plan_ends_at'=>$plan_ends_at,
+                    'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+                );
+          } else {
+              // Incorrect password
+              $response = [
+                  'status'  => 'false',
+                  'message' => 'Password is incorrect',
+              ];
+          }
+      } else {
+          // Incorrect email
+          $response = [
+              'status'  => 'false',
+              'message' => 'Email is incorrect',
+          ];
+      }
+     } 
+     catch (\Throwable $th) {
 
             $response = array(
               'status'=>'false',

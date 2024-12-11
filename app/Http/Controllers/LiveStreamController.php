@@ -13,6 +13,7 @@ use App\User ;
 use \Redirect ;
 use App\Channel;
 use App\Setting;
+use App\Favorite;
 use App\Language;
 use App\TimeZone;
 use App\Wishlist;
@@ -42,8 +43,8 @@ use Jenssegers\Agent\Agent;
 use App\PartnerMonetization;
 use Illuminate\Http\Request;
 use App\AdminAccessPermission;
-use App\PartnerMonetizationSetting;
 use App\UserChannelSubscription;
+use App\PartnerMonetizationSetting;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -763,6 +764,7 @@ class LiveStreamController extends Controller
                     'Livestream_details'      => $Livestream_details ,
                     'Radio_station_lists'      => $RadioStation ,
                     'Related_radiostation' => $related_radiostation,
+                    'media_url' => URL::to('/').'/radio-station/',
                     'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
                     'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
                     'setting'                => $settings,
@@ -793,7 +795,7 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
         }
@@ -1437,5 +1439,21 @@ class LiveStreamController extends Controller
         }   
     }
 
+    public function add_favorite(Request $request)
+    {
+        $audio_id = $request->get('audio_id');
+        if($audio_id){
+            $favorite = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
+            if(isset($favorite->id)){ 
+                $favorite->delete();
+            } else {
+                $favorite = new Favorite;
+                $favorite->user_id = Auth::user()->id;
+                $favorite->audio_id = $audio_id;
+                $favorite->save();
+                echo $favorite;
+            }
+        }
+    }
 
 }
