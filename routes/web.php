@@ -3061,3 +3061,4 @@ Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('adm
 
 // Unassigned episodes assign
 Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
+Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');

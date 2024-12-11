@@ -1847,31 +1847,30 @@
             showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
         }
 
-        $(".program-fields").each(function() {
+        $(".program-fields").each(function () {
+            let $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
+            let $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
+            let $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
 
-            var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
-            var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
-            var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
+            let title = $titleInput.val();
+            let startTime = $startTimeInput.val();
+            let endTime = $endTimeInput.val();
 
-            var title = $titleInput.val();
-            var startTime = $startTimeInput.val();
-            var endTime = $endTimeInput.val();
-           
             if (!title) {
                 isValid = false;
                 showErrorMessage($titleInput, "Program title is required.");
             }
-            
+
             if (!startTime) {
                 isValid = false;
                 showErrorMessage($startTimeInput, "Start time is required.");
             }
-         
+
             if (!endTime) {
                 isValid = false;
                 showErrorMessage($endTimeInput, "End time is required.");
             }
-           
+
             if (startTime && endTime) {
                 if (startTime >= endTime) {
                     isValid = false;
@@ -1879,17 +1878,24 @@
                     showErrorMessage($endTimeInput, "End time must be later than start time.");
                 }
 
-                if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
-                    isValid = false;
-                    showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
-                    showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
+                if (isValid) {
+                    const hasOverlap = timeSlots.some(slot => {
+                        return (
+                            (startTime >= slot.startTime && startTime < slot.endTime) || (endTime > slot.startTime && endTime <= slot.endTime) || (startTime <= slot.startTime && endTime >= slot.endTime)
+                        );
+                    });
+
+                    if (hasOverlap) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "This time range overlaps with an existing program.");
+                        showErrorMessage($endTimeInput, "This time range overlaps with an existing program.");
+                    }
                 }
 
                 if (isValid) {
                     timeSlots.push({ startTime: startTime, endTime: endTime });
                 }
             }
-
         });
 
         if (isValid) {
