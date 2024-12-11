@@ -323,35 +323,57 @@ class FrontEndQueryController extends Controller
 
     public function Series_based_on_Networks()
     {
-        $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+        $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
+        ->orderBy('order')
+        ->get()
+        ->map(function ($item) {
+            $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                ->where('series.active', 1)
+                ->where('series_network_order.network_id', $item->id)
+                ->orderBy('series_network_order.order', 'asc')
+                ->get()
+                ->map(function ($series) {
+                    $series->id = $series->series_id;
+                    $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+                        ? URL::to('public/uploads/images/' . $series->image)
+                        : $this->default_vertical_image;
+    
+                    $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
+                        ? URL::to('public/uploads/images/' . $series->player_image)
+                        : $this->default_horizontal_image_url;
+    
+                    $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY');
+                    $series['duration_format'] = !is_null($series->duration)
+                        ? Carbon::parse($series->duration)->format('G\H i\M')
+                        : null;
+    
+                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
+                        ->get()->take(15)
+                        ->map(function ($episode) {
+                            $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
+                                ? URL::to('public/uploads/images/' . $episode->image)
+                                : $this->default_vertical_image;
+    
+                            $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
+                                ->pluck('series_seasons_name')
+                                ->first();
+    
+                            return $episode;
+                        });
+    
+                        $totalEpisodes = Episode::where('series_id', $series->id)->count();
 
-            $item['Series_depends_Networks'] = Series::where('series.active', 1)
-            ->whereJsonContains('network_id', [(string)$item->id])
-        
-                        ->latest('series.created_at')->get()->map(function ($item) {
-                
-                $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  $this->default_horizontal_image_url ;
-        
-                $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
-        
-                $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-        
-                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                        ->map(function ($item) {
-                                                        $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                                                        $item['season_name'] = SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
-                                                        return $item;
-                                                    });
-                                                   
-                $item['has_more'] = count($item['Series_depends_episodes']) > 14;
-                // dd($item['has_more']);
-                $item['source'] = 'Series';
-                return $item;
-                                                                    
-            });
+                        // Check if there are more than 14 episodes
+                        $series['has_more'] = $totalEpisodes > 14;
+                    $series['source'] = 'Series';
+    
+                    return $series;
+                });
+    
             return $item;
         });
+    
+        // dd($Series_based_on_Networks);
 
         return $Series_based_on_Networks;
     }
