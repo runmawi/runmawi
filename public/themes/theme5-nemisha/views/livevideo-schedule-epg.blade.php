@@ -44,7 +44,7 @@
     .epg-navigation{height:38px;z-index:0;position:relative;overflow-x:auto; background-color: #333;}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
     .day-nav{margin:0 50px; cursor: pointer;}
-    .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex;}
+    .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex; }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
     .epg-channel {width: 100%; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
 
@@ -101,14 +101,15 @@
 
 
 @endphp
-<div class="epg-container">
+<div class="epg-container mt-3">
 
     <div class="epg-header m-1">
-        <img src="{{ @$Livestream_details->Player_thumbnail }}" alt="Program Image">
+        <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
+
 
         <div class="epg-info">
             <h2> {{ ucwords(@$Livestream_details->title) }} </h2>
-            <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
+            
         </div>
         
         <div class="epg-time">

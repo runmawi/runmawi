@@ -38,7 +38,7 @@
                                            
                                    <div class="hover-buttons">
                                    <a href="<?= URL::to('audio') ?><?= '/' . $audio->slug ?>" alt="<?php echo $audio->title; ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $audio->title; ?></h6>
+                  <h5 style="font-size:1.0em; font-weight:500;" class="epi-name text-white mb-0"><?php echo $audio->title; ?></h5>
                </a>
                <!-- <div class="d-flex align-items-center justify-content-between">
                     <span class="text-white"><small><?php echo get_audio_artist($audio->id); ?></small></span>

@@ -83,7 +83,7 @@
                             <div class="p-0">
                                 <div class="mt-2 d-flex justify-content-between p-0">
                                     <?php if($ThumbnailSetting->title == 1): ?>
-                                        <h6><?php echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title, 0, 18).'...' : $watchlater_video->title; ?></h6>
+                                        <h5 style="font-size:1.0em; font-weight:500;"><?php echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title, 0, 18).'...' : $watchlater_video->title; ?></h5>
                                     <?php endif; ?>
 
                                     <?php if($ThumbnailSetting->age == 1): ?>

@@ -49,7 +49,7 @@
                             }
                         ?>
         <div class="items">
-            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>">
+            <a href="<?php echo URL::to('category') ?><?= '/videos/' . $watchlater_video->slug ?>" aria-label="Featured-Videos">
                 <!-- block-images -->
                 <div class="block-images position-relative">
                     <div class="img-box">
@@ -102,7 +102,7 @@
                 </div>
                 <div class="mt-2 d-flex justify-content-between p-0">
                     <?php if($ThumbnailSetting->title == 1) { ?>
-                    <h6><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h6>
+                    <h5 style="font-size:1.0em; font-weight:500;"><?php  echo (strlen($watchlater_video->title) > 17) ? substr($watchlater_video->title,0,18).'...' : $watchlater_video->title; ?></h5>
                     <?php } ?>
 
                     <?php if($ThumbnailSetting->age == 1) { ?>

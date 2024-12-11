@@ -47,7 +47,7 @@
                 @if ($Livestream_details->publish_type == 'publish_later')
                     @if ($time->greaterThan($epg_program_start_time))
                         <div class="epg-program" style="background-color: {{ $colors[1] }};">
-                            <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title} (Start: {$epg_program_start_time}" : null }}</b>
+                            <b>{{ $program_title_once_show ? "{$Livestream_details->epg_program_title}" : null }}</b>
                             @php $program_title_once_show = false; @endphp
                         </div>
                     @endif
@@ -56,33 +56,39 @@
                 {{-- Schedular Program --}}
 
                 @if ($Livestream_details->publish_type == 'schedule_program')
-                    @forelse ($epg_program_title as $index => $title)
-                        @if ($title)
-                            @php
-                                $startTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_start_time[$index]);
-                                $endTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_end_time[$index]);
-                                $color = $colors[$index % count($colors)]; // Select a color from the $colors array
-                            @endphp
-
-                            @if ($time->between($startTime, $endTime))
-                                <div class="epg-program epg-timeline-{{ $index }}"
-                                    style="background-color: {{ $color }};" sty>
-                                    @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
-                                        @if ($index !== $lastShownIndex)
-                                            <b style="position: absolute; top: 3px; left: 10px; z-index: 2;  ">
-                                                {{ "{$title} " }}
-                                                {{-- {{ (Start: {$epg_program_start_time[$index]} - End: {$epg_program_end_time[$index]}) }} --}}
-                                            </b>
+                @isset($epg_program_title)
+                    @if (is_array($epg_program_title) && count($epg_program_title) > 0)
+                        @foreach ($epg_program_title as $index => $title)
+                            @if ($title)
+                                @php
+                                    $startTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_start_time[$index]);
+                                    $endTime = \Carbon\Carbon::createFromFormat('H:i', $epg_program_end_time[$index]);
+                                    $color = $colors[$index % count($colors)]; // Select a color from the $colors array
+                                @endphp
+            
+                                @if ($time->between($startTime, $endTime))
+                                    <div class="epg-program epg-timeline-{{ $index }}"
+                                        style="background-color: {{ $color }};">
+                                        @if ($time->greaterThanOrEqualTo($startTime) && $time->lessThan($startTime->copy()->addMinutes(15)))
+                                            @if ($index !== $lastShownIndex)
+                                                <b style="position: absolute; top: 3px; left: 10px; z-index: 2;">
+                                                    {{ "{$title} " }}
+                                                </b>
+                                            @endif
                                         @endif
-                                    @endif
-                                </div>
-                                @php $lastShownIndex = $index; @endphp
+                                    </div>
+                                    @php $lastShownIndex = $index; @endphp
+                                @endif
                             @endif
-                        @endif
-                    @empty
+                        @endforeach
+                    @else
                         <p>No programs scheduled for today.</p>
-                    @endforelse
-                @endif
+                    @endif
+                @else
+                    <p>No program data available.</p>
+                @endisset
+            @endif
+            
             </div>
         @endfor
     </div>
