@@ -1376,28 +1376,49 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
 <script>
     $(document).ready(function() {
-        // Initialize Video.js player
-        var player = videojs('video-js-trailer-player', {
-            aspectRatio: '16:9',
-            fluid: true,
-            controlBar: {
-                volumePanel: { inline: false },
-                children: {
-                    'playToggle': {},
-                    'liveDisplay': {},
-                    'flexibleWidthSpacer': {},
-                    'progressControl': {},
-                    'remainingTimeDisplay': {},
-                    'fullscreenToggle': {}, 
-                }
-            }
-        });
+        
+        var Url_type = '<?php echo @$videodetail->trailer_type ; ?>';
+        var originalSrc = '<?php echo @$videodetail->trailer ; ?>';
 
-        // Close button functionality
-        $(".btn-close").click(function() {
-            player.pause();
-            $('#trailermodal').modal('hide');
-        });
+        if(Url_type === 'embed_url'){
+            console.log('Url_type ' + Url_type);
+            var iframeplayer = videojs('video-js-trailer-player_embed');
+            $('#trailermodal').on('hidden.bs.modal', function () {
+                console.log('modal close');
+                $('#video-js-trailer-player_embed_html5_api').attr('src', '');
+            });
+
+            $('#trailermodal').on('shown.bs.modal', function () {
+                console.log('modal open');
+                $('#video-js-trailer-player_embed_html5_api').attr('src', originalSrc);
+            });
+            $(".video-js-trailer-modal-close").click(function() {
+                console.log('close btn');
+                $('#trailermodal').modal('hide');
+            });
+        }else{
+            var player = videojs('video-js-trailer-player', {
+                aspectRatio: '16:9',
+                fluid: true,
+                controlBar: {
+                    volumePanel: { inline: false },
+                    children: {
+                        'playToggle': {},
+                        'liveDisplay': {},
+                        'flexibleWidthSpacer': {},
+                        'progressControl': {},
+                        'remainingTimeDisplay': {},
+                        'fullscreenToggle': {}, 
+                    }
+                }
+            });
+
+            // Close button functionality
+            $(".btn-close").click(function() {
+                player.pause();
+                $('#trailermodal').modal('hide');
+            });
+        }
     });
 
     
