@@ -333,7 +333,17 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                                                     </div>
                                                 </li>
                                                 <li>
-                                                <a aria-hidden="true" class="favorite <?php echo audiofavorite($Livestream_detail->id);?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $Livestream_detail->id ?>"><?php if(audiofavorite($Livestream_detail->id) == "active"): ?><i id="ff" class="fa fa-heart" ></i><?php else: ?><i id="ff" class="fa fa-heart-o" ></i><?php endif; ?></a>
+                                                    <a aria-hidden="true" 
+                                                    class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
+                                                    data-authenticated="<?= !Auth::guest() ?>" 
+                                                    data-audio_id="<?= $Livestream_detail->id ?>"
+                                                    onclick="toggleFavorite(this)">
+                                                     <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
+                                                         <i id="ff" class="fa fa-heart"></i>
+                                                     <?php else: ?>
+                                                         <i id="ff" class="fa fa-heart-o"></i>
+                                                     <?php endif; ?>
+                                                 </a>
                                                 </li>
                                                 <li>
                                                     <div class="dropdown">
@@ -427,7 +437,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
                     Your browser does not support the audio element.
                 </audio>
-                <div class="play-border" style="margin-top:40px;">
+                <div class="play-border" style="margin: 40px 20px;">
                     <div class="playlist-ctn">
                         <h6 class="mb-4 font-weight-bold">
                            <span class="program-name" ></span> <i class="fa fa-music"
@@ -490,14 +500,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     var base_url = $('#base_url').val();
     
     $(document).ready(function(){
-    $('.favorite').click(function(){
-    if($(this).data('authenticated')){
-    $.post('/saka/favorite', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
-    $(this).toggleClass('active');
-    } else {
-    window.location = base_url+'/signup';
-    }
-    });
+    
     
     //watchlater
     $('.watchlater').click(function(){
@@ -537,24 +540,38 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     });
     
  </script>
- <script type="text/javascript">
-    //Audio Favorite
-          $('.favorite').click(function(){
-            if($(this).data('authenticated')){
-              $.post('<?= URL::to('favorite') ?>', { audio_id : $(this).data('audio_id'), _token: '<?= csrf_token(); ?>' }, function(data){});
-              $(this).toggleClass('active');
-              $(this).html("");
-                  if($(this).hasClass('active')){
-                    $(this).html('<i class="fa fa-heart"></i>');
-                  }else{
-                    $(this).html('<i class="fa fa-heart-o"></i>');
-                  }
-            } else {
-              window.location = '<?= URL::to('login') ?>';
-            }
+<script type="text/javascript">
+    function toggleFavorite(element) {
+      // Check if the user is authenticated
+      if ($(element).data('authenticated')) {
+        // Get the current audio ID from the data attribute
+        const audioId = $(element).data('audio_id');
+        const isActive = $(element).hasClass('active');
+  
+        // Toggle the active class and heart icon
+        if (isActive) {
+          // If already active, send a request to remove from favorites
+          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
+            // Handle the response if needed
           });
-    
- </script>
+          $(element).removeClass('active');
+          $(element).html('<i class="fa fa-heart-o"></i>');
+        } else {
+          // If not active, send a request to add to favorites
+          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
+            // Handle the response if needed
+          });
+          $(element).addClass('active');
+          $(element).html('<i class="fa fa-heart"></i>');
+        }
+      } else {
+        // If not authenticated, redirect to login
+        window.location = '<?= URL::to('login') ?>';
+      }
+    }
+  </script>
+  
+  
  <script>
     function createTrackItem(index,name,duration,liveId){
     
@@ -614,70 +631,78 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     var indexAudio = 0;
 
     function getCurrentProgram(index) {
-        var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
-        var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
-        var programTitles = JSON.parse(listAudio[index].scheduler_program_title); 
+        try {
+            var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+            var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
+            var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
 
-        var currentTime = new Date();
-        var currentHour = currentTime.getHours();
-        var currentMinute = currentTime.getMinutes();
-
-        for (var i = 0; i < startTimes.length; i++) {
-            var startTimeParts = startTimes[i].split(":");
-            var endTimeParts = endTimes[i].split(":");
-
-            var startHour = parseInt(startTimeParts[0], 10);
-            var startMinute = parseInt(startTimeParts[1], 10);
-            var endHour = parseInt(endTimeParts[0], 10);
-            var endMinute = parseInt(endTimeParts[1], 10);
-
-            var startDate = new Date(currentTime);
-            var endDate = new Date(currentTime);
-            
-            startDate.setHours(startHour, startMinute, 0, 0);
-            endDate.setHours(endHour, endMinute, 0, 0);
-
-            if (currentTime >= startDate && currentTime <= endDate) {
-                return programTitles[i];
+            if (!startTimes.length || !endTimes.length || !programTitles.length) {
+                return "No schedule available.";
             }
-        }
 
-        return "No Current Program."; 
+            var currentTime = new Date();
+
+            for (var i = 0; i < startTimes.length; i++) {
+                var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                var [endHour, endMinute] = endTimes[i].split(":").map(Number);
+
+                var startDate = new Date(currentTime);
+                var endDate = new Date(currentTime);
+                startDate.setHours(startHour, startMinute, 0, 0);
+                endDate.setHours(endHour, endMinute, 0, 0);
+
+                if (endDate < startDate) {
+                    endDate.setDate(endDate.getDate() + 1); 
+                }
+
+                if (currentTime >= startDate && currentTime <= endDate) {
+                    return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
+                }
+            }
+
+            return "No Current Program.";
+        } catch (error) {
+            console.error("Error parsing schedule data:", error);
+            return "Invalid schedule data.";
+        }
     }
 
     function getNextProgram(index) {
-        var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time); 
-        var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time); 
-        var programTitles = JSON.parse(listAudio[index].scheduler_program_title); 
+        try {
+            var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+            var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
 
-        var currentTime = new Date();
-        
-        var nextProgram = null;
-
-        for (var i = 0; i < startTimes.length; i++) {
-            var startTimeParts = startTimes[i].split(":");
-            var endTimeParts = endTimes[i].split(":");
-
-        
-            var startHour = parseInt(startTimeParts[0], 10);
-            var startMinute = parseInt(startTimeParts[1], 10);
-            var endHour = parseInt(endTimeParts[0], 10);
-            var endMinute = parseInt(endTimeParts[1], 10);
-
-           
-            var startDate = new Date(currentTime);
-            var endDate = new Date(currentTime);
-            
-            startDate.setHours(startHour, startMinute, 0, 0); 
-            endDate.setHours(endHour, endMinute, 0, 0); 
-
-            if (currentTime < startDate) {
-                nextProgram = programTitles[i]; 
-                break; 
+            if (!startTimes.length || !programTitles.length) {
+                return "No schedule available.";
             }
-        }
 
-        return nextProgram ? nextProgram : "No Next Program.";
+            var currentTime = new Date();
+
+            for (var i = 0; i < startTimes.length; i++) {
+                var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                var startDate = new Date(currentTime);
+                startDate.setHours(startHour, startMinute, 0, 0);
+
+                if (currentTime < startDate) {
+                    return `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
+                }
+            }
+
+            return "No Next Program.";
+        } catch (error) {
+            console.error("Error parsing schedule data:", error);
+            return "Invalid schedule data.";
+        }
+    }
+
+     
+    function formatTime(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+        minutes = minutes.toString().padStart(2, "0");
+        return `${hours}:${minutes} ${ampm}`;
     }
 
 
@@ -712,6 +737,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     document.querySelector('#source-audio').src = <?php echo json_encode(@$Livestream_detail->livestream_URL) ; ?>  
     document.querySelector('.title').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
     document.querySelector('.program-name').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
+    
     var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
     var audio_images = player_images +'/' + <?php echo json_encode(@$Livestream_detail->image) ; ?>;
     $("#audio_img").attr('src', audio_images);
