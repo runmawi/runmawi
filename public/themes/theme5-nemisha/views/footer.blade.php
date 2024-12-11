@@ -301,22 +301,18 @@ function about(evt , id) {
 <link rel="preload" href="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>" as="script">
 <script defer src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
  
-<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" as="script">
-<script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
+{{-- <link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" as="script"> --}}
+{{-- <script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script> --}}
  
 <link rel="preload" href="<?= URL::to('/'). '/assets/js/hls.min.js';?>" as="script">
 <script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
 
-<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.js';?>" as="script">
-<script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
+{{-- <link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.js';?>" as="script"> --}}
+{{-- <script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script> --}}
 
 <script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
  <!-- <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script> -->
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
-
-<link rel="preload" href="https://cdn.plyr.io/3.4.6/plyr.js" as="script">
-<script src="https://cdn.plyr.io/3.4.6/plyr.js"></script>
-        
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>        
 
 <?php
 
@@ -331,8 +327,7 @@ try {
     include('episode_player_script.blade.php');
   }
   else{
-
-    include('footerPlayerScript.blade.php');
+    // include('footerPlayerScript.blade.php');
   }
 
 } catch (\Throwable $th) {

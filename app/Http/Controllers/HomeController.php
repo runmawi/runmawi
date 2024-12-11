@@ -359,7 +359,7 @@ class HomeController extends Controller
             $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
                 $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                            ->whereJsonContains('network_id', [(string)$item->id])
+                ->whereJsonContains('network_id', [(string)$item->id])
 
                             ->latest('series.created_at')->get()->map(function ($item) {
 
@@ -468,7 +468,7 @@ class HomeController extends Controller
                 'Kids_Mode'             => $Kids_Mode = 2,
                 'ThumbnailSetting'      => $ThumbnailSetting,
                 'artist'                => Artist::all(),
-                'Series_based_on_Networks' => $Series_based_on_Networks ,
+                'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                 'Series_based_on_category' => $Series_based_on_category ,
                 'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
                 'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
@@ -1113,7 +1113,7 @@ class HomeController extends Controller
                     $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
                         $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                                    ->whereJsonContains('network_id', [(string)$item->id])
+                        ->whereJsonContains('network_id', [(string)$item->id])
 
                                     ->latest('series.created_at')->get()->map(function ($item) {
 
@@ -1222,7 +1222,7 @@ class HomeController extends Controller
                         'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
                         'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                         'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
-                        'Series_based_on_Networks' => $Series_based_on_Networks ,
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $Series_based_on_category ,
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                         'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),

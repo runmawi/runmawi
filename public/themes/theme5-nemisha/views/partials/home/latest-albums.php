@@ -22,7 +22,7 @@
                </a>                         
                <div class="hover-buttons">
                <a href="<?= URL::to('album') ?><?= '/' . $album->slug ?>" alt="<?php echo $album->albumname; ?>">
-                  <h6 class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h6>
+                  <h5 style="font-size:1.0em; font-weight:500;" class="epi-name text-white mb-0"><?php echo $album->albumname; ?></h5>
                </a>
                 <div class="d-flex align-items-center justify-content-between">
                   <span class="text-white"><small><?php echo get_audio_artist($album->id); ?></small></span>
