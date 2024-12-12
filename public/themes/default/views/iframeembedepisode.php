@@ -43,6 +43,19 @@
             >
             </video>
             </div>
+            <?php  elseif($episode->type == 'bunny_cdn'): ?>
+            <div id="series_container">
+                <span id="videotitle"><a href="<?= URL::to('/'). '/episode/'.$series->title.'/'. $episode->slug; ?>" target="_blank"><?php echo $episode->title ?></a></span>
+                <span id="videofavicon"><image src="<?= URL::to('/'). '/public/uploads/settings/'. $settings->favicon; ?>" /></span>
+            <video id="video"  controls crossorigin playsinline 
+            poster="<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>" 
+            controls data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}' >
+            <source 
+                type="application/x-mpegURL" 
+                src="<?php echo $episode->url; ?>"
+            >
+            </video>
+          </div>
         <?php  else: ?>                                  
             <div id="series_container">
                 <span id="videotitle"><a href="<?= URL::to('/'). '/episode/'. $series->title.'/'.$episode->slug; ?>" target="_blank"><?php echo $episode->title ?></a></span>
