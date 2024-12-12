@@ -220,11 +220,6 @@
     $('body').on('click', '.drp-close', function() {
         $('.live-stream-dropdown').hide();
     });
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.item').css('height', '100%');
-        }, 2000);
-    });
 </script>
 
 
