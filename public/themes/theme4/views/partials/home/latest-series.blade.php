@@ -34,7 +34,7 @@
                                 @foreach ($data as $key => $latest_series)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}"  class="flickity-lazyloaded" alt="latest_series">
+                                            <img data-flickity-lazyload="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}"  class="flickity-lazyloaded" alt="{{ $latest_series->title }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -164,13 +164,16 @@
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
-            groupCells: true,
+            groupCells: false,
             pageDots: false,
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload:true,
+            lazyLoad: 5,
         });
+
+        flkty.reloadCells();
+
         document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
             document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
@@ -222,5 +225,9 @@
     $('body').on('click', '.drp-close', function() {
         $('.series-dropdown').hide();
     });
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.item').css('height', '100%');
+        }, 2000);
+    });
     </script>
-    

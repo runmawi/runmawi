@@ -49,7 +49,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
+                                            <img data-flickity-lazyload="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
                                     </div>
                                 @endforeach
@@ -183,14 +183,17 @@
 var elem = document.querySelector('.series-network-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
-    });
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 5,
+        });
+
+        flkty.reloadCells();
+
     document.querySelectorAll('.series-network-video .item').forEach(function(item) {
     item.addEventListener('click', function() {
         document.querySelectorAll('.series-network-video .item').forEach(function(item) {
@@ -242,5 +245,11 @@ var elem = document.querySelector('.series-network-video');
 $('body').on('click', '.drp-close', function() {
     $('.series-network-dropdown').hide();
 });
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.item').css('height', '100%');
+        }, 2000);
+    });
 </script>
 

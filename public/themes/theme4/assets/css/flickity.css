@@ -135,3 +135,7 @@ https://flickity.metafizzy.co
   .flickity-page-dots .dot.is-selected {
     opacity: 1;
   }
+  img[data-flickity-lazyload] {
+      opacity: 0 !important;
+      transition: opacity 0.3s ease-in-out;
+  }
