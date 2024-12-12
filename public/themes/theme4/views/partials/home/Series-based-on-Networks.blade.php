@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -164,14 +164,16 @@
 document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
-    });
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 5,
+        });
+
+        flkty.reloadCells();
 
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
@@ -234,5 +236,11 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         dropdown.style.display = 'none';
     });
 });
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.item').css('height', '100%');
+        }, 2000);
+    });
 </script>
 

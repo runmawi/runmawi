@@ -621,20 +621,6 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                     </div>
                                 </div>
                                 <?php }?>
-                                <?php if ($Livestream_details->stream_upload_via == 'radio_station') { ?>
-                                    <div class="row" style="padding: 0 11px;">
-                                        <div class=" container-fluid video-list you-may-like overflow-hidden">
-                                            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-                                            <div class="slider">
-                                                @php
-                                                    include public_path(
-                                                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
-                                                    );
-                                                @endphp
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php }?>
                             </div>
 
 

@@ -604,6 +604,7 @@
                     @else    
 
                                                 {{-- Ads Position --}}
+                        @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )                        
                         <div class="row mt-3">
                             <div class="col-sm-6"  >
                                 <label class="m-0">Choose Ads Position</label>
@@ -623,6 +624,7 @@
                                 </select>
                             </div>
                         </div>
+                        @endif
                     @endif
 
                     <div class="row mt-3">
@@ -673,6 +675,7 @@
 
                     {{-- Macros --}}
 
+                    @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
                     <div class="row mt-3">
 
                         <div class="col-sm-6">
@@ -720,6 +723,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
@@ -1853,7 +1857,7 @@
             let $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
 
             let title = $titleInput.val();
-            let startTime = $startTimeInput.val();
+            let startTime = $startTimeInput.val(); // Expecting "HH:mm" format (e.g., "14:30")
             let endTime = $endTimeInput.val();
 
             if (!title) {
@@ -1872,6 +1876,7 @@
             }
 
             if (startTime && endTime) {
+                // Validate time order
                 if (startTime >= endTime) {
                     isValid = false;
                     showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
@@ -1879,9 +1884,12 @@
                 }
 
                 if (isValid) {
+                    // Check for overlapping time slots
                     const hasOverlap = timeSlots.some(slot => {
                         return (
-                            (startTime >= slot.startTime && startTime < slot.endTime) || (endTime > slot.startTime && endTime <= slot.endTime) || (startTime <= slot.startTime && endTime >= slot.endTime)
+                            (startTime >= slot.startTime && startTime < slot.endTime) || 
+                            (endTime > slot.startTime && endTime <= slot.endTime) || 
+                            (startTime <= slot.startTime && endTime >= slot.endTime)
                         );
                     });
 
@@ -1897,6 +1905,7 @@
                 }
             }
         });
+
 
         if (isValid) {
             $("#schedule_program_modal").hide();
