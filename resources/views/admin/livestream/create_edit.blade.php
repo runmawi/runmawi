@@ -766,15 +766,15 @@
                         <div class="col-sm-6">
                             <label class="m-0">Publish Type</label>
                             <div class="panel-body p2" style="color: black;">
-                                <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later <br />
+                                <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> <label for="publish_now" style="font-weight: 500; font-size:14px;"> {{ __('Publish Now')}}</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> <label for="publish_later" style="font-weight: 500; font-size:14px;"> {{ __('Publish Later')}}</label> <br />
                                
                                 @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
-                                    <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
+                                    <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> <label for="recurring" style="font-weight: 500; font-size:14px;"> {{ __('Recurring Program')}}</label> <br />
                                 @endif
 
                                 @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
-                                    <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> {{ __('Schedule Program')}} <br />
+                                    <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> <label for="scheduleprogram" style="font-weight: 500; font-size:14px;"> {{ __('Schedule Program')}}</label> <br />
                                 @endif
                             </div>
                         </div>
