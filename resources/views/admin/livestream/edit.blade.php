@@ -275,7 +275,6 @@ border-radius: 0px 4px 4px 0px;
 
             <div class="row mt-3">
                 <div class="col-sm-6">
-
                     <div class="">
                         <label class="m-0">TV Image Cover</label>
                         <p class="p1"> Select the {{  $inputs_details_array['text_main_name'] }} image (1920 X 1080  Or 16:9 Ratio)  :</p>
@@ -291,7 +290,6 @@ border-radius: 0px 4px 4px 0px;
                             @endif
                         </div>
                     </div>
-
                 </div>
            </div>
 
@@ -312,10 +310,12 @@ border-radius: 0px 4px 4px 0px;
                             <option value="">Choose URL Format</option>
 
                             @if ( $currentRouteName != "admin.radio-station.index")
+                                @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
                                 <option value="mp4" @if(!empty($video->url_type) && $video->url_type == 'mp4'){{ 'selected' }}@endif > MP4/M3U8 URL </option>
                                 <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
                                 <option value="live_stream_video" @if(!empty($video->url_type) && $video->url_type == 'live_stream_video'){{ 'selected' }}@endif>{{  $inputs_details_array['text_main_name'] }} Video</option>
                                 <option value="m3u_url" @if(!empty($video->url_type) && $video->url_type == 'm3u_url'){{ 'selected' }}@endif> M3U URL </option>
+                                @endif
                             @endif
 
                             <option value="acc_audio_file" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_file'){{ 'selected' }}@endif > Mp3/AAC Audio File </option>
@@ -697,6 +697,7 @@ border-radius: 0px 4px 4px 0px;
                     {{-- Ply.io --}}
             @else   
 
+                @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
                 <div class="row mt-3">
                     <div class="col-sm-6"  >
                         <label class="m-0">Choose Ads Position</label>
@@ -721,6 +722,7 @@ border-radius: 0px 4px 4px 0px;
                         </select>
                     </div>
                 </div>
+                @endif
             @endif
 
             <div class="row mt-3">
@@ -776,6 +778,7 @@ border-radius: 0px 4px 4px 0px;
 
                 {{-- Macros --}}
 
+            @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
             <div class="row mt-3">
 
                 <div class="col-sm-6">
@@ -823,6 +826,7 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
+            @endif
 
                      {{-- User Access --}}
             <div class="row mt-3">

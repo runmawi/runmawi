@@ -424,6 +424,15 @@ class OrderHomeSettingSeeder extends Seeder
                     'created_at' => Carbon::now(),
                     'updated_at' => null,
                 ],
+                [   
+                    'user_id' => 1, 
+                    'order_id' => 43,
+                    'video_name' => 'radio_station' ,
+                    'header_name' => ucwords('Radio Station'), 
+                    'url' => '',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => null,
+                ],
 
             ];
 
