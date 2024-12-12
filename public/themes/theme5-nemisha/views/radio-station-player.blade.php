@@ -269,6 +269,29 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         }
     }
 
+    .icon-circle{
+        background-color: #ED563C;
+        padding: 10px;
+        border-radius: 50%;
+        color: white;
+        font-size: 15px;
+    }
+
+    .hidden {
+    display: none !important;
+}
+
+.icon-circle {
+    background-color: #ED563C;
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    font-size: 15px;
+    display: inline-block; /* Ensure proper inline visibility */
+}
+
+
+
     .modal{
         right: 0;
     }
@@ -375,7 +398,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                                                                             data-toggle="modal" 
                                                                             data-target="#Epg_schedule_modal"  
                                                                             data-live-id="<?php echo $Livestream_detail->id; ?>"> 
-                                                                            MORE INFO
+                                                                           VIEW SCHEDULE
                                                                         </button>
                                                                     </div>
                                                             </div>
@@ -400,26 +423,26 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <div class="btn-ctn">
                         <div class="btn-action first-btn" style="padding:0px 40px;" onclick="previous()">
                             <div id="btn-faws-back">
-                                <i class='fas fa-step-backward'></i>
+                                <i class='fas fa-step-backward icon-circle' id="prev-button"></i>
                             </div>
                         </div>
                       
-                        <div class="btn-action"style="padding:0px 40px;" onclick="toggleAudio()">
+                        <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
                             <div id="btn-faws-play-pause">
-                                <i class='fas fa-play' id="icon-play"></i>
-                                <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
+                                <i class='fas fa-play icon-circle' id="icon-play"></i>
+                                <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
                             </div>
                         </div>
                        
                         <div class="btn-action" style="padding:0px 40px;" onclick="next()">
                             <div id="btn-faws-next">
-                                <i class='fas fa-step-forward'></i>
+                                <i class='fas fa-step-forward icon-circle' id="next-button"></i>
                             </div>
                         </div>
                         <div class="btn-mute" id="toggleMute" style="padding:0px 40px;" onclick="toggleMute()">
                             <div id="btn-faws-volume">
-                                <i id="icon-vol-up" class='fas fa-volume-up'></i>
-                                <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
+                                <i id="icon-vol-up" class='fas fa-volume-up icon-circle'></i>
+                                <i id="icon-vol-mute" class='fas fa-volume-mute icon-circle' style="display: none"></i>
                             </div>
                         </div>
                     </div>
@@ -777,21 +800,27 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     var interval1;
     
     function toggleAudio() {
-      const button = document.querySelector('#vidbutton'); 
+        const button = document.querySelector('#vidbutton');
+        const playIcon = document.querySelector('#icon-play');
+        const pauseIcon = document.querySelector('#icon-pause');
 
-      if (this.currentAudio.paused) {
-        document.querySelector('#icon-play').style.display = 'none';
-        document.querySelector('#icon-pause').style.display = 'block';
-        button.innerHTML = "<i class='fas fa-pause' style='color: white; font-size:15px'></i> <span style='color: white;'> Pause</span>";
-        this.playToPause(this.indexAudio)
-        this.currentAudio.play();
-      }else{
-        document.querySelector('#icon-play').style.display = 'block';
-        document.querySelector('#icon-pause').style.display = 'none';
-        button.innerHTML = "<i class='fas fa-play' style='color: white; font-size:15px'></i> <span style='color: white;'> Play</span>";
-        this.pauseToPlay(this.indexAudio)
-        this.currentAudio.pause();
-      }
+        if (this.currentAudio.paused) {
+            // Show pause icon and hide play icon
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            button.innerHTML = "<i class='fas fa-pause' style='color: white; font-size:15px'></i> <span style='color: white;'> Pause</span>";
+            // Play the audio
+            this.playToPause(this.indexAudio);
+            this.currentAudio.play();
+        } else {
+            // Show play icon and hide pause icon
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            button.innerHTML = "<i class='fas fa-play' style='color: white; font-size:15px'></i> <span style='color: white;'> Play</span>";
+            // Pause the audio
+            this.pauseToPlay(this.indexAudio);
+            this.currentAudio.pause();
+        }
     }
     
     function pauseAudio() {
