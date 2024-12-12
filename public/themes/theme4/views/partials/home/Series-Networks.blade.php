@@ -83,7 +83,7 @@
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img src="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
+                                                            <img data-flickity-lazyload="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
                                                                 
                                                                 <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                                     <button class="playBTN"> <i class="fas fa-play"></i></button>
@@ -183,16 +183,15 @@
 var elem = document.querySelector('.series-network-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 5,
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 5,
         });
 
-        flkty.reloadCells();
 
     document.querySelectorAll('.series-network-video .item').forEach(function(item) {
     item.addEventListener('click', function() {
@@ -224,9 +223,12 @@ var elem = document.querySelector('.series-network-video');
                     var flkty = new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: true,
-                        adaptiveHeight: true,
+                        groupCells: false,
                         pageDots: false,
+                        draggable: true,
+                        freeScroll: true,
+                        imagesLoaded: true,
+                        lazyLoad: 5,
                     });
                 }, 0);
             }
@@ -242,14 +244,12 @@ var elem = document.querySelector('.series-network-video');
     });
 });
 
+flkty.reloadCells();
+
+
 $('body').on('click', '.drp-close', function() {
     $('.series-network-dropdown').hide();
 });
 
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.item').css('height', '100%');
-        }, 2000);
-    });
 </script>
 

@@ -68,7 +68,7 @@
                                                 <div class="depend-items">
                                                 <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                     <div class=" position-relative">
-                                                        <img src="{{ $episode_details->image_url }}" class="img-fluid" alt="Videos">  
+                                                        <img data-flickity-lazyload="{{ $episode_details->image_url }}" class="img-fluid" alt="{{ $episode_details->title }}">  
                                                         <div class="controls">
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
@@ -172,7 +172,7 @@
             lazyLoad: 5,
         });
 
-        flkty.reloadCells();
+        
 
         document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
@@ -204,9 +204,12 @@
                         var flkty = new Flickity(selectedSlider, {
                             cellAlign: 'left',
                             contain: true,
-                            groupCells: true,
-                            adaptiveHeight: true,
+                            groupCells: false,
                             pageDots: false,
+                            draggable: true,
+                            freeScroll: true,
+                            imagesLoaded: true,
+                            lazyLoad: 5,
                         });
                     }, 0);
                 }
@@ -221,13 +224,9 @@
             document.getElementsByClassName('series-dropdown')[0].style.display = 'flex';
         });
     });
-    
+    flkty.reloadCells();
+
     $('body').on('click', '.drp-close', function() {
         $('.series-dropdown').hide();
-    });
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.item').css('height', '100%');
-        }, 2000);
     });
     </script>

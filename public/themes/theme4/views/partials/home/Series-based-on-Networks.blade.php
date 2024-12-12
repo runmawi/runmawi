@@ -56,7 +56,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
+                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -164,16 +164,16 @@
 document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 5,
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 5,
         });
 
-        flkty.reloadCells();
+       
 
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
@@ -208,12 +208,12 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: true,
+                        groupCells: false,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyload:true,
+                        lazyLoad: 5,
                     });
                 },0);
             }
@@ -229,7 +229,7 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
         });
     });
 });
-
+flkty.reloadCells();
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
@@ -237,10 +237,5 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     });
 });
 
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('.item').css('height', '100%');
-        }, 2000);
-    });
 </script>
 
