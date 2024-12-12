@@ -400,6 +400,19 @@
          </section>
       <?php endif; ?>
 
+      <?php if( $item->video_name == 'radio_station' && $home_settings->radio_station == 1 ): ?>
+         <section id="iq-continue overflow-hidden">
+            <div class="container-fluid ">
+                  <div class="row">
+                     <div class="col-sm-12 ">
+                        <?php include 'partials/home/radio-station.php'; ?>
+                     </div>
+                  </div>
+            </div>
+         </section>
+      <?php endif; ?>
+
+
       <?php if (!Auth::guest() && $item->video_name == 'my_play_list' && $home_settings->my_playlist == 1): ?>
          <?php $MyPlaylist = !Auth::guest() ? App\MyPlaylist::where('user_id', Auth::user()->id)->limit(15)->get() : []; ?>
          <section id="iq-continue overflow-hidden">

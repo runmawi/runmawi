@@ -2,6 +2,12 @@
 $Livestream_detail = $Livestream_details;
 ?>
 <style type="text/css">
+
+    body {
+    background-color: #000; /* Replace with your desired fallback color */
+    transition: background-color 0.5s ease; /* Smooth transition */
+    }
+
     #myProgress {
         background-color: #8b0000;
         cursor: pointer;
@@ -29,7 +35,7 @@ $Livestream_detail = $Livestream_details;
         border-radius: 10px;
         padding: 10px;
         border-width: 2px;
-        height:70%;
+        height:90%;
         overflow: hidden;
     }
 
@@ -43,7 +49,7 @@ $Livestream_detail = $Livestream_details;
     .infos-ctn {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: center;
     }
 
     .infos-ctn {
@@ -390,38 +396,27 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <div id="myProgress">
                         <div id="myBar"></div>
                     </div>
-                    <div class="d-flex justify-content-between text-white">
-                        <div class="timer">00:00</div>
-                        <div class="duration">00:00</div>
-                    </div>
+                   
                     <div class="btn-ctn">
-                        <div class="btn-action first-btn" onclick="previous()">
+                        <div class="btn-action first-btn" style="padding:0px 40px;" onclick="previous()">
                             <div id="btn-faws-back">
                                 <i class='fas fa-step-backward'></i>
                             </div>
                         </div>
-                        <div class="btn-action" onclick="rewind()">
-                            <div id="btn-faws-rewind">
-                                <i class='fas fa-backward'></i>
-                            </div>
-                        </div>
-                        <div class="btn-action" onclick="toggleAudio()">
+                      
+                        <div class="btn-action"style="padding:0px 40px;" onclick="toggleAudio()">
                             <div id="btn-faws-play-pause">
                                 <i class='fas fa-play' id="icon-play"></i>
                                 <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
                             </div>
                         </div>
-                        <div class="btn-play" onclick="forward()">
-                            <div id="btn-faws-forward">
-                                <i class='fas fa-forward'></i>
-                            </div>
-                        </div>
-                        <div class="btn-action" onclick="next()">
+                       
+                        <div class="btn-action" style="padding:0px 40px;" onclick="next()">
                             <div id="btn-faws-next">
                                 <i class='fas fa-step-forward'></i>
                             </div>
                         </div>
-                        <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+                        <div class="btn-mute" id="toggleMute" style="padding:0px 40px;" onclick="toggleMute()">
                             <div id="btn-faws-volume">
                                 <i id="icon-vol-up" class='fas fa-volume-up'></i>
                                 <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
@@ -437,7 +432,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
                     Your browser does not support the audio element.
                 </audio>
-                <div class="play-border" style="margin: 40px 20px;">
+                <div class="play-border m-1">
                     <div class="playlist-ctn">
                         <h6 class="mb-4 font-weight-bold">
                            <span class="program-name" ></span> <i class="fa fa-music"
@@ -445,12 +440,12 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
                         <h6 class="mb-2 font-weight-bold">Current Program</h6>
                         <p>
-                            <span class="current-program" >
+                            <span class="current-program">
                         </p>
 
                         <h6 class="mb-2 font-weight-bold">Next Program</h6>
                         <p>
-                            <span class="next-program" >
+                            <span class="next-program">
                         </p>
                     </div>
                 </div>
@@ -490,6 +485,24 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 </div>
 <?php } ?>
 </div>
+
+<?php if ($Livestream_detail->stream_upload_via == 'radio_station') { ?>
+    <div class="container">
+    <div class="row">
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+            <div class="slider">
+                <?php
+                    include public_path(
+                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
+                    );
+                ?>
+            </div>
+        </div>
+    </div>
+    </div>
+<?php }?>
+
 
 
 <script type="text/javascript">
@@ -632,68 +645,81 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
     function getCurrentProgram(index) {
         try {
-            var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
-            var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
-            var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
+            if (listAudio[index].publish_type === "schedule_program") {
+                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+                var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
+                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
 
-            if (!startTimes.length || !endTimes.length || !programTitles.length) {
-                return "No schedule available.";
-            }
-
-            var currentTime = new Date();
-
-            for (var i = 0; i < startTimes.length; i++) {
-                var [startHour, startMinute] = startTimes[i].split(":").map(Number);
-                var [endHour, endMinute] = endTimes[i].split(":").map(Number);
-
-                var startDate = new Date(currentTime);
-                var endDate = new Date(currentTime);
-                startDate.setHours(startHour, startMinute, 0, 0);
-                endDate.setHours(endHour, endMinute, 0, 0);
-
-                if (endDate < startDate) {
-                    endDate.setDate(endDate.getDate() + 1); 
+                if (!startTimes.length || !endTimes.length || !programTitles.length) {
+                    return "No schedule available.";
                 }
 
-                if (currentTime >= startDate && currentTime <= endDate) {
-                    return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
-                }
-            }
+                var currentTime = new Date();
 
-            return "No Current Program.";
-        } catch (error) {
-            console.error("Error parsing schedule data:", error);
-            return "Invalid schedule data.";
+                for (var i = 0; i < startTimes.length; i++) {
+                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                    var [endHour, endMinute] = endTimes[i].split(":").map(Number);
+
+                    var startDate = new Date(currentTime);
+                    var endDate = new Date(currentTime);
+                    startDate.setHours(startHour, startMinute, 0, 0);
+                    endDate.setHours(endHour, endMinute, 0, 0);
+
+                    // Handle programs spanning midnight
+                    if (endDate < startDate) {
+                        endDate.setDate(endDate.getDate() + 1);
+                    }
+
+                    // Check if the current time is within this program's schedule
+                    if (currentTime >= startDate && currentTime <= endDate) {
+                        return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
+                    }
+                }
+
+                    return "No Current Program.";
+                } else {
+                    // If not a schedule program, return the track title
+                    return listAudio[index].title;
+                }
+            } catch (error) {
+                console.error("Error parsing schedule data:", error);
+                return "Invalid schedule data.";
         }
     }
 
     function getNextProgram(index) {
         try {
-            var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
-            var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
+            if (listAudio[index].publish_type === "schedule_program") {
+                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
 
-            if (!startTimes.length || !programTitles.length) {
-                return "No schedule available.";
-            }
-
-            var currentTime = new Date();
-
-            for (var i = 0; i < startTimes.length; i++) {
-                var [startHour, startMinute] = startTimes[i].split(":").map(Number);
-                var startDate = new Date(currentTime);
-                startDate.setHours(startHour, startMinute, 0, 0);
-
-                if (currentTime < startDate) {
-                    return `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
+                if (!startTimes.length || !programTitles.length) {
+                    return "No schedule available.";
                 }
-            }
 
-            return "No Next Program.";
+                var currentTime = new Date();
+
+                for (var i = 0; i < startTimes.length; i++) {
+                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                    var startDate = new Date(currentTime);
+                    startDate.setHours(startHour, startMinute, 0, 0);
+
+                    if (currentTime < startDate) {
+                        return `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
+                    }
+                }
+
+                return "No Next Program.";
+            } else {
+                // If not a schedule program, return "-"
+                return "No Program Scheduled";
+            }
         } catch (error) {
             console.error("Error parsing schedule data:", error);
             return "Invalid schedule data.";
         }
     }
+
 
      
     function formatTime(date) {
@@ -751,14 +777,18 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     var interval1;
     
     function toggleAudio() {
+      const button = document.querySelector('#vidbutton'); 
+
       if (this.currentAudio.paused) {
         document.querySelector('#icon-play').style.display = 'none';
         document.querySelector('#icon-pause').style.display = 'block';
+        button.innerHTML = "<i class='fas fa-pause' style='color: white; font-size:15px'></i> <span style='color: white;'> Pause</span>";
         this.playToPause(this.indexAudio)
         this.currentAudio.play();
       }else{
         document.querySelector('#icon-play').style.display = 'block';
         document.querySelector('#icon-pause').style.display = 'none';
+        button.innerHTML = "<i class='fas fa-play' style='color: white; font-size:15px'></i> <span style='color: white;'> Play</span>";
         this.pauseToPlay(this.indexAudio)
         this.currentAudio.pause();
       }
@@ -769,16 +799,12 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
       clearInterval(interval1);
     }
     
-    var timer = document.getElementsByClassName('timer')[0]
-    
-    var barProgress = document.getElementById("myBar");
     
     
     var width = 0;
     
     function onTimeUpdate() {
       var t = this.currentAudio.currentTime
-      timer.innerHTML = this.getMinutes(t);
       this.setBarProgress();
       if (this.currentAudio.ended) {
         document.querySelector('#icon-play').style.display = 'block';
@@ -792,11 +818,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     }
     
     
-    function setBarProgress(){
-      var progress = (this.currentAudio.currentTime/this.currentAudio.duration)*100;
-      document.getElementById("myBar").style.width = progress + "%";
-    }
-    
+
     
     function getMinutes(t){
       var min = parseInt(parseInt(t)/60);
@@ -809,9 +831,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
       }
       return min+":"+sec
     }
-    
-    var progressbar = document.querySelector('#myProgress')
-    progressbar.addEventListener("click", seek.bind(this));
+   
     
     
     function seek(event) {
@@ -819,18 +839,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
       this.currentAudio.currentTime = percent * this.currentAudio.duration;
       barProgress.style.width = percent*100 + "%";
     }
-    
-    function forward(){
-      this.currentAudio.currentTime = this.currentAudio.currentTime + 5
-      this.setBarProgress();
-    }
-    
-    function rewind(){
-      this.currentAudio.currentTime = this.currentAudio.currentTime - 5
-      this.setBarProgress();
-    }
-    
-    
+   
     function next(){
       if (this.indexAudio <listAudio.length-1) {
           var oldIndex = this.indexAudio

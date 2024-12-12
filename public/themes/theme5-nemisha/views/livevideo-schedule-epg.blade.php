@@ -41,7 +41,7 @@
     .epg-program-row{display:flex;margin-bottom:10px}
     .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
     .clearfix::after{content:"";display:table;clear:both}
-    .epg-navigation{height:38px;z-index:0;position:relative;overflow-x:auto; background-color: #333;}
+    .epg-navigation{height:38px;z-index:0;position:relative;overflow-x:auto; background-color: #333; scrollbar-width: none; }
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
     .day-nav{margin:0 50px; cursor: pointer;}
     .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex; }
@@ -122,7 +122,7 @@
         <div class="epg-left">
 
 
-        <div class="epg-navigation ">
+        <div class="epg-navigation">
             <div class="date-nav">
                 @for ($i = 0; $i < 7; $i++)
                     @php $day = $now->copy()->addDays($i); @endphp

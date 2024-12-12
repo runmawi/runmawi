@@ -1404,6 +1404,12 @@ class FrontEndQueryController extends Controller
         return $top_ten_videos;
     }
 
+    public function RadioStation()
+    {
+        $radiostations = LiveStream::where('stream_upload_via','radio_station')->limit(15)->get();
+        return $radiostations ;
+    }
+
     // public function continueWatching(){
     //     if ($multiuser != null)
     //     {
