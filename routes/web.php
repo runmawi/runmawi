@@ -351,6 +351,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
     Route::get('shorts_minis', 'PageListController@ShortsMinis')->name('pagelist.shorts-minis');
     Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    Route::get('latest_episodes', 'PageListController@Latest_episodes')->name('pagelist.latest_episodes');
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
 
@@ -578,6 +579,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('datafree/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
+    Route::get('datafree/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
@@ -809,10 +811,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
-    Route::get('/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+    
+    Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
-
+    Route::post('/view-buffer-cache', 'ClearCacheController@view_buffer_cache')->name('view_buffer_cache');
+    Route::post('/clear-buffer-cache', 'ClearCacheController@clear_buffer_cache')->name('clear_buffer_cache');
+    Route::get('/testing_command', 'ClearCacheController@testing_command')->name('testing_command');
+    
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');
     Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
@@ -1209,6 +1215,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::PATCH('/Serie/Network-update/{id}', 'AdminNetworkController@Network_update')->name('admin.Network_update');
     Route::get('/Serie/Network-delete/{id}', 'AdminNetworkController@Network_delete')->name('admin.Network_delete');
     Route::Post('/Serie/Network/order', 'AdminNetworkController@Network_order')->name('admin.Network_order');
+    Route::Post('/Serie/Network-based/order', 'AdminNetworkController@NetworkBased_order')->name('admin.Network_series_order');
 
     //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
@@ -3052,3 +3059,9 @@ Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetail
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
+
+// Unassigned episodes assign
+Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
+Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
+Route::post('/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
+Route::post('datafree/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');

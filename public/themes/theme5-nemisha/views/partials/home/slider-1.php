@@ -9,13 +9,13 @@
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">
-                                <h1 class="text-white text-uppercase mb-3" style="color:#fff!important;">
+                                <h2 class="text-white text-uppercase mb-3" style="color:#fff!important;">
                                     <?php  echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                                 </h1>
                                 <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
                                     <?php $count = $slider_video->rating;
                                         for ($i = 0; $i < $count; $i++) { 
-                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                            echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                     } ?>
                                 </div>
                                 <div class="p-0">
@@ -52,7 +52,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
-                                <h1 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <h2 class="slider-text big-title title text-uppercase text-white" data-animation-in="fadeInLeft" data-delay-in="0.6">
                                     <?php echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                                 </h1>
                                 <div class="mb-3" style="display: flex; gap: 5px;width:30px; height:15px;" >
@@ -60,7 +60,7 @@ endif; ?>
                                     <?php 
                                         $count = $slider_video->rating;
                                         for ($i = 0; $i < $count; $i++) {
-                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                            echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                         }
                                     ?>
                                 </div>
@@ -100,7 +100,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
-                                <h1 class="slider-text big-title title text-uppercase text-white" >
+                                <h2 class="slider-text big-title title text-uppercase text-white" >
                                     <?php echo (strlen($live_event_banner->title) > 15) ? substr($live_event_banner->title,0,80).'...' : $live_event_banner->title; ?>
                                 </h1>
 
@@ -109,7 +109,7 @@ endif; ?>
                                     <?php 
                                         $count = $live_event_banner->rating; 
                                         for ($i = 0; $i < $count; $i++) {
-                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                            echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                         }
                                     ?>
                                 </div>
@@ -157,7 +157,7 @@ endif; ?>
                                                         <!--  Video thumbnail image-->
                                 <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
                                         <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
-                                            <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
+                                            <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo image" alt="<?= $videos->title ?>">
                                         </a>
                                                             <!-- Video Title  -->
                                 <?php }else{ ?>
@@ -171,7 +171,7 @@ endif; ?>
                                 <?php 
                                     $count = $videos->rating;
                                     for ($i = 0; $i < $count; $i++) {
-                                        echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                        echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                     }
                                 ?>
                                 </div>
@@ -248,11 +248,11 @@ endif; ?>
                                     
                                         <?php if( $videos->enable_video_title_image == 1  &&  $videos->video_title_image != null){ ?>
                                             <a href="<?php echo URL::to('/') ?><?= '/category/videos/' . $videos->slug ?>">
-                                                <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo" alt="<?= $videos->title ?>">
+                                                <img src="<?= URL::to('public/uploads/images/'.$videos->video_title_image )?>" class="c-logo image" alt="<?= $videos->title ?>">
                                             </a>
                                                                         <!-- Video Title  -->
                                         <?php }else{ ?>
-                                            <h1 class="slider-text text-white title text-uppercase mb-3" >
+                                            <h2 class="slider-text text-white title text-uppercase mb-3" >
                                                 <?php echo (strlen($videos->title) > 15) ? substr($videos->title,0,80).'...' : $videos->title; ?>
                                             </h1>
                                         <?php } ?>
@@ -262,7 +262,7 @@ endif; ?>
                                         <?php 
                                                 $count = $videos->rating;
                                                 for ($i = 0; $i < $count; $i++) { 
-                                                    echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                                    echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                                 }
                                             ?>
                                         </div>
@@ -311,7 +311,7 @@ endif; ?>
                                         <img src="<?php echo URL::to('/').'/assets/img/logo.png'?>" class="c-logo" alt="Flicknexs">
                                     </div>
                                 </a>-->
-                                <h1 class="slider-text big-title title text-uppercase" >
+                                <h2 class="slider-text big-title title text-uppercase" >
                                     <?php echo (strlen($slider_video->title) > 15) ? substr($slider_video->title,0,80).'...' : $slider_video->title; ?>
                                 </h1>
                                 <div class="d-flex align-items-center" data-animation-in="fadeInUp" data-delay-in="1">
@@ -358,7 +358,7 @@ endif; ?>
                     <div class="slider-inner h-100">
                         <div class="row align-items-center bl h-100">
                             <div class="col-xl-5 col-lg-12 col-md-12">
-                                <h1 class="slider-text text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
+                                <h2 class="slider-text text-white title text-uppercase mb-3" data-animation-in="fadeInLeft" data-delay-in="0.6">
                                     <?php echo (strlen($series_slider->title) > 15) ? substr($series_slider->title,0,80).'...' : $series_slider->title; ?>
                                 </h1>
 
@@ -367,7 +367,7 @@ endif; ?>
                                     <?php 
                                         $count = $series_slider->rating;
                                         for ($i = 0; $i < $count; $i++) {
-                                            echo '<img class="star_rating" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
+                                            echo '<img class="star_rating image" src="' . URL::to('/assets/img/star-svgrepo-com.webp') . '" alt="Star-Image"/>';
                                         }
                                     ?>
                                 </div>
@@ -414,9 +414,7 @@ endif; ?>
             let lazyBackgroundObserver = new IntersectionObserver(function(entries, observer) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        let bg = entry.target.style.backgroundImage;
-                        console.log("bg",bg);
-                        
+                        let bg = entry.target.style.backgroundImage;                        
 
                         if (!bg || bg === 'none') {
                             let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
@@ -452,4 +450,31 @@ endif; ?>
             });
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var images = document.querySelectorAll('.image');
+        images.forEach(function(image) {
+            console.log("img",image.complete);
+            
+            // Wait for the image to fully load before setting dimensions
+            if (image.complete) {
+                setImageDimensions(image);
+            } else {
+                image.addEventListener('load', function() {
+                    setImageDimensions(image);
+                });
+            }
+        });
+
+        function setImageDimensions(image) {
+            var renderedWidth = image.clientWidth;
+            var renderedHeight = image.clientHeight;
+
+            if (renderedWidth > 0 && renderedHeight > 0) {
+                image.setAttribute('width', renderedWidth);
+                image.setAttribute('height', renderedHeight);
+            }
+        }
+    });
+
 </script>

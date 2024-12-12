@@ -544,7 +544,12 @@ class AdminSeriesController extends Controller
 
             $compress_image_settings = CompressImage::first();
 
-            $blockedCountries = json_decode($series->blocked_countries, true);
+            if ($series && isset($series->blocked_countries)) {
+                $blockedCountries = json_decode($series->blocked_countries, true);
+            } else {
+                $blockedCountries = [];
+            }
+            // $blockedCountries = json_decode($series->blocked_countries, true);
 
             $blcok_CountryName = CountryCode::whereIn('id', (!empty($blockedCountries) ? $blockedCountries : []))->pluck('country_name')->toArray();
 
@@ -554,6 +559,9 @@ class AdminSeriesController extends Controller
             $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
             // $books = SeriesSeason::with('episodes')->get();   
                     // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
+            $season_ids = SeriesSeason::where('series_id', $id)->pluck('id');
+            $unassigned_episodes = Episode::where('series_id',$id)->whereNotIn('season_id', $season_ids)->get();
+            // dd($unassigned_episodes);
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -577,6 +585,7 @@ class AdminSeriesController extends Controller
             'theme_settings' => SiteTheme::first(),
             "countries"      => CountryCode::all(),
             "blcok_CountryName" => $blcok_CountryName,
+            "unassigned_episodes" => $unassigned_episodes,
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -1651,8 +1660,11 @@ class AdminSeriesController extends Controller
             $series_id = SeriesSeason::find($id)->series_id;
 
             $season = SeriesSeason::find($id); 
-            $episodes = $season->episodes->pluck('id'); 
-            
+            $episodes = Episode::where('season_id',$season->id)->pluck('id');
+            $SeriesId = $season->series_id;
+
+            // $episodes = $season->episodes->pluck('id');
+            // dd($episodes);
             foreach($episodes as $episode_id ){
 
                 $Episode   = Episode::find($episode_id);
@@ -1720,7 +1732,7 @@ class AdminSeriesController extends Controller
             return abort (404);
         }
 
-        return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        return Redirect::to('admin/series/edit' . '/' . $SeriesId)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
     }
 
     public function manage_season($series_id,$season_id)
@@ -5636,6 +5648,17 @@ class AdminSeriesController extends Controller
     {
         return Episode::where("id", "=", $id)->first();
     }
+
+    public function UnassignedEpisodes(Request $request)
+    {
+        // dd($request);
+       
+        foreach ($request['episodes'] as $episode) {
+            $updated = Episode::where('id', $episode['id'])->update(['season_id' => !empty($episode['season_id']) ? ($episode['season_id']) : Null ]);
+        }
+        return redirect()->back()->with('success', 'Episodes updated successfully.');
+    }
+
 
 
 }

@@ -151,6 +151,7 @@ use App\SeriesNetwork;
 use App\Adsvariables;
 use App\TVSplashScreen;
 use App\UserChannelSubscription;
+use App\InappPurchase;
 
 
 class ApiAuthController extends Controller
@@ -1446,7 +1447,7 @@ class ApiAuthController extends Controller
                                                             ->where('verification_code',$request->verify_code)
                                                             ->update(['verification_code' => null ]);
 
-        return response()->json([ 'status'=>'false',
+        return response()->json([ 'status'=>'true',
                                   'status_code'=> 200 ,
                                   'message'=>'verification done successfully'
                                 ],200);
@@ -2031,10 +2032,16 @@ public function verifyandupdatepassword(Request $request)
       // }
 
       $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
+      $ios_plans_id = InappPurchase::get();
+      // return $ios_plans_id;
 
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
-        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query)  {
+        ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query, $ios_plans_id)  {
+          $item['ppv_480p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
+          $item['ppv_720p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
+          $item['ppv_1080p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_1080p)['plan_price'] ?? null;
+  
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
                   $item['videos_url'] =  $item->video_id_1080p ;
@@ -2267,7 +2274,7 @@ public function verifyandupdatepassword(Request $request)
             }else{
               $languages = "";
             }
-
+            
       $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
@@ -2323,12 +2330,13 @@ public function verifyandupdatepassword(Request $request)
     
     try {
 
-
       $current_date = date('Y-m-d h:i:s a', time());
+
+      $setting = Setting::first();
 
       $choose_player = SiteTheme::pluck('choose_player')->first();
   
-      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player){
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player , $setting){
 
           $item['details']        = strip_tags($item->details);
           $item['description']    = strip_tags($item->description);
@@ -2634,6 +2642,36 @@ public function verifyandupdatepassword(Request $request)
               $item['video_js_mid_advertisement_sequence_time_second'] = $ads_devices_vj_mid_sequence ; 
 
           }
+          
+            // Check Channel Purchase 
+
+          $UserChannelSubscription = true ;
+
+          if ( $setting->user_channel_plans_page_status == 1) {
+
+              $UserChannelSubscription = false ;
+
+              $channel_id = Video::where('id',$item->id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+              if (is_null($channel_id)) {
+                  $UserChannelSubscription = true ;
+              }
+
+              if (!Auth::guest() && !is_null($channel_id) ) {
+  
+                  $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                  ->where('channel_id',$channel_id)->where('status','active')
+                                                  ->where('subscription_start', '<=', Carbon::now())
+                                                  ->where('subscription_ends_at', '>=', Carbon::now())
+                                                  ->latest()->exists();
+
+                  if (Auth::user()->role == "admin") {
+                      $UserChannelSubscription = true ;
+                  }
+              }
+          }
+
+          $item['UserChannelSubscription'] = $UserChannelSubscription ;
 
           return $item;
         });
@@ -3133,6 +3171,8 @@ public function verifyandupdatepassword(Request $request)
       $liveid = $request->liveid;
       $user_id = $request->user_id;
 
+      $settings = Setting::first();
+
       // Live Language
 
         $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
@@ -3185,7 +3225,7 @@ public function verifyandupdatepassword(Request $request)
         }
 
         $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)
-                      ->where('status',1)->get()->map(function ($item) use ($user_id) {
+                      ->where('status',1)->get()->map(function ($item) use ($user_id , $settings) {
                           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                           $item['live_description'] = $item->description ? $item->description : "" ;
@@ -3244,6 +3284,37 @@ public function verifyandupdatepassword(Request $request)
           }else{
             $item['live_ads_url'] = null;
           }
+
+          
+       // Check Channel Purchase 
+       
+       $UserChannelSubscription = true ;
+
+       if ( $settings->user_channel_plans_page_status == 1 ) {
+
+            $UserChannelSubscription = false ;
+
+            $channel_id = LiveStream::where('id',$item->id)->where('uploaded_by','channel')->pluck('user_id')->first();
+            
+            if (is_null($channel_id)) {
+                $UserChannelSubscription = true ;
+            }
+
+            if (!Auth::guest() && !is_null($channel_id) ) {
+
+                $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                ->where('channel_id',$channel_id)->where('status','active')
+                                                ->where('subscription_start', '<=', Carbon::now())
+                                                ->where('subscription_ends_at', '>=', Carbon::now())
+                                                ->latest()->exists();
+
+                if (Auth::user()->role == "admin") {
+                    $UserChannelSubscription = true ;
+                }
+            }
+        }
+
+        $item['UserChannelSubscription'] = $UserChannelSubscription;
          
           return $item;
         });
@@ -6273,6 +6344,7 @@ public function checkEmailExists(Request $request)
       $andriodId   = $request->andriodId;
       $IOSId      = $request->IOSId;
 
+      $settings = Setting::first();
 
       // Check Episode exist
 
@@ -6280,7 +6352,7 @@ public function checkEmailExists(Request $request)
 
       // Episode Details
 
-      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id,$andriodId){
+      $episode = Episode::where('active', 1)->where('status', 1)->where('id',$episodeid)->orderBy('episode_order')->get()->map(function ($item) use ($user_id,$andriodId,$settings){
 
          $item['image'] = URL::to('public/uploads/images/'.$item->image);
 
@@ -6337,6 +6409,37 @@ public function checkEmailExists(Request $request)
           $item['skip_time'] = !is_null($ContinueWatching )? $ContinueWatching->skip_time :  null ;
 
         }
+
+           
+       // Check Channel Purchase 
+       
+       $UserChannelSubscription = true ;
+
+       if ( $settings->user_channel_plans_page_status == 1) {
+
+            $UserChannelSubscription = false ;
+
+            $channel_id = Episode::where('id',$item->id)->where('uploaded_by','channel')->pluck('user_id')->first();
+
+            if (is_null($channel_id)) {
+                $UserChannelSubscription = true ;
+            }
+
+            if (!Auth::guest() && !is_null($channel_id) ) {
+
+                $UserChannelSubscription = UserChannelSubscription::where('user_id',auth()->user()->id)
+                                                ->where('channel_id',$channel_id)->where('status','active')
+                                                ->where('subscription_start', '<=', Carbon::now())
+                                                ->where('subscription_ends_at', '>=', Carbon::now())
+                                                ->latest()->exists();
+
+                if (Auth::user()->role == "admin") {
+                    $UserChannelSubscription = true ;
+                }
+            }
+        }
+
+        $item['UserChannelSubscription'] = $UserChannelSubscription;
 
          //  Episode URL
          if($this->Theme == 'theme4'){
@@ -7494,6 +7597,7 @@ return response()->json($response, 200);
     $episode_id = $request->episode_id;
     $user_id = $request->user_id;
     $series_seasons_type = SeriesSeason::where('id', $season_id)->pluck('series_seasons_type')->first();
+    $Seasons_access = SeriesSeason::where('id', $season_id)->pluck('access')->first();
 
       $data = $request->all();
       
@@ -7540,6 +7644,12 @@ return response()->json($response, 200);
   }else{
     $free_episode = 'guest';
   }
+
+  // if($Seasons_access == 'free'){
+  //   $Seasons_access = 'guest';
+  // }else{
+  //   $Seasons_access = $Seasons_access;
+  // }
 
     $response = array(
       'status' => 'true',
@@ -13968,46 +14078,60 @@ if($LiveCategory_count > 0 || $LiveLanguage_count > 0){
             'type'        => 'Code',
           ]);
 
-      }else{
+        }else{
 
-        TVLoginCode::create([
-          'email'       => $request->email,
-          'uniqueId'    => $request->uniqueId,
-          'tv_code'     => $request->tv_code,
-          'type'        => 'Code',
-          'status'      => 0,
-      ]);
+          TVLoginCode::create([
+            'email'       => $request->email,
+            'uniqueId'    => $request->uniqueId,
+            'tv_code'     => $request->tv_code,
+            'type'        => 'Code',
+            'status'      => 0,
+        ]);
 
 
-      }
+        }
 
         $user = User::where('email',$email)->first();
+        if ($user) {
+          if (Hash::check($password, $user->password)) {
+            if($user->role == 'subscriber'){
 
-        if($user->role == 'subscriber'){
-
-          $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
-          $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
-          ->where('subscriptions.user_id',$user->id)
-          ->orderBy('subscriptions.created_at', 'desc')->first();
-
-          $plans_name = $Subscription->plans_name;
-          $plan_ends_at = $Subscription->ends_at;
-
-        }else{
-          $plans_name = '';
-          $plan_ends_at = '';
-        }
-            $response = array(
-                'status'=> 'true',
-                'message' => 'Logged In Successfully',
-                'user_details'=> $user,
-                'plans_name'=>$plans_name,
-                'plan_ends_at'=>$plan_ends_at,
-                'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
-            );
-
-        }
-        catch (\Throwable $th) {
+              $Subscription = Subscription::where('user_id',$user->id)->orderBy('created_at', 'DESC')->first();
+              $Subscription = Subscription::Join('subscription_plans','subscription_plans.plan_id','=','subscriptions.stripe_plan')
+              ->where('subscriptions.user_id',$user->id)
+              ->orderBy('subscriptions.created_at', 'desc')->first();
+    
+              $plans_name = $Subscription->plans_name;
+              $plan_ends_at = $Subscription->ends_at;
+    
+            }else{
+              $plans_name = '';
+              $plan_ends_at = '';
+            }
+                $response = array(
+                    'status'=> 'true',
+                    'message' => 'Logged In Successfully',
+                    'user_details'=> $user,
+                    'plans_name'=>$plans_name,
+                    'plan_ends_at'=>$plan_ends_at,
+                    'avatar'=>URL::to('/').'/public/uploads/avatars/'.$user->avatar
+                );
+          } else {
+              // Incorrect password
+              $response = [
+                  'status'  => 'false',
+                  'message' => 'Password is incorrect',
+              ];
+          }
+      } else {
+          // Incorrect email
+          $response = [
+              'status'  => 'false',
+              'message' => 'Email is incorrect',
+          ];
+      }
+     } 
+     catch (\Throwable $th) {
 
             $response = array(
               'status'=>'false',

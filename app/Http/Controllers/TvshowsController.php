@@ -119,7 +119,7 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,32])->orderBy('id', 'asc')->get();
+            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,30,32])->orderBy('id', 'asc')->get();
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
@@ -2714,6 +2714,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'episode_play_access' => $episode_play_access,
+                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
 
                 ];
                 
@@ -2761,6 +2763,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
+                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);

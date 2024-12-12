@@ -349,9 +349,10 @@
                                         <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                                     </li>
 
+                                    @php  $category_name_length = count($category_name); @endphp
+
                                     @empty($category_name)
                                         @foreach ($category_name as $key => $video_category_name)
-                                            <?php $category_name_length = count($category_name); ?>
                                             <li class="breadcrumb-item">
                                                 <a class="black-text"
                                                     href= "{{route ('LiveCategory', [$video_category_name->categories_slug])}} ">

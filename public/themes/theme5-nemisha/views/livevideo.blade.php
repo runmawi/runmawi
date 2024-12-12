@@ -10,7 +10,10 @@
 <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
-
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- Style -->
 <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" as="style">
@@ -328,7 +331,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
 
                                         <?php if ($Livestream_details->stream_upload_via == 'radio_station') { ?>
                                         @php
-                                            include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
+                                            include public_path('themes/theme5-nemisha/views/radio-station-player.php');
                                         @endphp
                                         <?php } ?>
 
@@ -569,7 +572,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                     <?php } ?>
                                 </div>
 
-                                <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 ): ?>
+                                <?php if( App\CommentSection::first() != null && App\CommentSection::pluck('livestream')->first() == 1 && $Livestream_details->stream_upload_via != 'radio_station'): ?>
                                 <div class="row container-fluid">
                                     <div class="  video-list you-may-like overflow-hidden">
                                         <h4 class="" style="color:#fffff;"><?php echo __('Comments'); ?></h4>
@@ -580,17 +583,31 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                 </div>
                                 <?php endif; ?>
 
-                                {{-- Radio-Station --}}
-                                @if (
-                                    !empty(@$AdminAccessPermission) &&
-                                        @$AdminAccessPermission->enable_radiostation == 1 &&
-                                        \Route::currentRouteName() == 'Radio_station_play')
-                                    {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg", [
-                                            'Livestream_details' => $Livestream_details,
-                                            'current_theme' => $current_theme,
-                                        ])->content() !!}
-                                @endif
+                                <div class="modal fade" id="Epg_schedule_modal" tabindex="-1" role="dialog" aria-labelledby="Epg_schedule_modalTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                      <div class="modal-content">
+                                        <div >
+                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                        </div>
+                                        <div class="modal-body"  id="modal-content" style="background-color:transparent">
+                                             {{-- Radio-Station --}}
+                                            @if (
+                                                !empty(@$AdminAccessPermission) &&
+                                                    @$AdminAccessPermission->enable_radiostation == 1 &&
+                                                    \Route::currentRouteName() == 'Radio_station_play')
+                                                {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg", [
+                                                        'Livestream_details' => $Livestream_details,
+                                                        'current_theme' => $current_theme,
+                                                    ])->content() !!}
+                                            @endif
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>                               
 
+                                <?php if ($Livestream_details->stream_upload_via != 'radio_station') { ?>
                                 <div class="row" style="padding: 0 11px;">
                                     <div class=" container-fluid video-list you-may-like overflow-hidden">
                                         <h4 class="" style="color:#fffff;"><?php echo __('Related Videos'); ?></h4>
@@ -603,6 +620,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         </div>
                                     </div>
                                 </div>
+                                <?php }?>
                             </div>
 
 

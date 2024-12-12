@@ -1104,7 +1104,7 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-sm-6">
+                                <div class="col-sm-6">
                                     <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
                                         <div><label class="mt-1">
                                             @if (@$order_settings_list[42]->header_name)
@@ -1124,7 +1124,7 @@
                                     <div class="ml-2">ON</div>
                                 </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
 
                                     <!-- <div class="col-sm-6">
