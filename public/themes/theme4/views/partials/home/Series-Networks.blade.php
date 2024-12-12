@@ -189,7 +189,7 @@ var elem = document.querySelector('.series-network-video');
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyLoad: 5,
+        lazyLoad: 10,
         });
 
 
@@ -228,7 +228,7 @@ var elem = document.querySelector('.series-network-video');
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 5,
+                        lazyLoad: 10,
                     });
                 }, 0);
             }
