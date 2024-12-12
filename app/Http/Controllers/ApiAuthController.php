@@ -7645,15 +7645,15 @@ return response()->json($response, 200);
     $free_episode = 'guest';
   }
 
-  if($Seasons_access == 'free'){
-    $Seasons_access = 'guest';
-  }else{
-    $Seasons_access = $Seasons_access;
-  }
+  // if($Seasons_access == 'free'){
+  //   $Seasons_access = 'guest';
+  // }else{
+  //   $Seasons_access = $Seasons_access;
+  // }
 
     $response = array(
       'status' => 'true',
-      'access' => $Seasons_access,
+      'access' => $free_episode,
       'episode' => Episode::where('id','=',$episode_id)->get(),
       'season' => $season,
     );
