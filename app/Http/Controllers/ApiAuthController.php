@@ -27789,7 +27789,7 @@ public function TV_login(Request $request)
         }
 
         // Only for Play Store Testing 
-        if( $request->mobile_number == "9774080533"){
+        if( ($request->mobile_number == "9774080533") || ($request->mobile == "9962743248") ){
 
           $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
                         ->update([
