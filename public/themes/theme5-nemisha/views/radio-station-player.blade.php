@@ -37,7 +37,7 @@ $media_url = $radio_station_url . '/' . $Livestream_detail->slug;
         border-radius: 10px;
         padding: 10px;
         border-width: 2px;
-        height:90%;
+        height:100%;
         overflow: hidden;
     }
 
@@ -455,7 +455,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
                     Your browser does not support the audio element.
                 </audio>
-                <div class="play-border m-1">
+                <div class="play-border" style="margin: 0px; 10px;" >
                     <div class="playlist-ctn">
                         <h6 class="mb-4 font-weight-bold">
                            <span class="program-name" ></span> <i class="fa fa-music"
@@ -608,12 +608,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
       document.querySelector(".playlist-ctn").appendChild(trackItem);
     
       var playBtnItem = document.createElement('div');
-      playBtnItem.setAttribute("class", "playlist-btn-play");
-      playBtnItem.setAttribute("id", "pbp-"+index);
-      document.querySelector("#ptc-"+index).appendChild(playBtnItem);
-    
-      var trackDurationItem = document.createElement('div');
-      trackDurationItem.setAttribute("class", "playlist-duration");
 
       var moreInfoBtn = document.createElement('button');
       document.querySelector("#ptc-" + index).appendChild(moreInfoBtn);
@@ -648,7 +642,13 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     
     var listAudio = <?php echo json_encode($Radio_station_lists); ?>;
 
-    console.log(listAudio);
+    listAudio = listAudio.filter(function(item) {
+        return !item.embed_url; 
+    });
+
+    for (var i = 0; i < listAudio.length; i++) {
+        createTrackItem(i, listAudio[i].title, listAudio[i].duration, listAudio[i].id);
+    }
     
     
     for (var i = 0; i < listAudio.length; i++) {
