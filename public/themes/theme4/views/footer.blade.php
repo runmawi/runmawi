@@ -285,7 +285,7 @@
         } elseif (Route::currentRouteName() == 'play_episode' || Route::currentRouteName() == "network_play_episode"  ) {
             include 'episode_player_script.blade.php';
         } else {
-            include 'footerPlayerScript.blade.php';
+            // include 'footerPlayerScript.blade.php';
         }
     } catch (\Throwable $th) {
         // throw $th;
