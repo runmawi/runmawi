@@ -1185,7 +1185,7 @@ class ApiAuthController extends Controller
 
       // Only for Play Store Testing 
 
-      if (  ( Auth::user()->mobile != "9962743248" ) || ( Auth::user()->mobile != "admin") ) {
+      if (  ( Auth::user()->mobile != "9962743248" ) || ( Auth::user()->role != "admin") ) {
 
         user::find(Auth::user()->id)->update([
           'otp' => null ,
