@@ -269,7 +269,7 @@ class TvshowsController extends Controller
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $ppv_series_description = Setting::pluck('series')->first();
-
+        
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
@@ -280,6 +280,8 @@ class TvshowsController extends Controller
         $subscribe_btn = $buttons_pay->subscribe_btn;
 
         $episodess = Episode::where('slug', $episode_name)->orderBy('id', 'DESC')->first();
+        $season_access = SeriesSeason::where('id', $episodess->season_id)->pluck('access')->first();
+        $series_access = Series::where('id', $episodess->series_id)->pluck('access')->first();
     
         $series_seasons_type = SeriesSeason::where('id', $episodess->season_id)->pluck('series_seasons_type')->first();
 
@@ -1102,7 +1104,9 @@ class TvshowsController extends Controller
                         'purchase_btn'             => $purchase_btn,
                         'subscribe_btn'            => $subscribe_btn,
                         'next_episode'             => $next_episode,
-                        'UserChannelSubscription'  => $UserChannelSubscription
+                        'UserChannelSubscription'  => $UserChannelSubscription,
+                        'Season_access'            => $season_access, 
+                        'Series_access'            => $series_access, 
                     ];
                     // dd($data);
                     
@@ -1158,7 +1162,9 @@ class TvshowsController extends Controller
                         'purchase_btn'             => $purchase_btn,
                         'subscribe_btn'            => $subscribe_btn,
                         'next_episode'             => $next_episode,
-                        'UserChannelSubscription'  => $UserChannelSubscription
+                        'UserChannelSubscription'  => $UserChannelSubscription,
+                        'Season_access'            => $season_access, 
+                        'Series_access'            => $series_access, 
                     ];
         
                     if (Auth::guest() && $settings->access_free == 1) {

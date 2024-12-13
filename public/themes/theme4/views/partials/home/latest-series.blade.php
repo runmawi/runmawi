@@ -224,7 +224,6 @@
             document.getElementsByClassName('series-dropdown')[0].style.display = 'flex';
         });
     });
-    flkty.reloadCells();
 
     $('body').on('click', '.drp-close', function() {
         $('.series-dropdown').hide();
