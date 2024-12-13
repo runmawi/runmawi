@@ -682,7 +682,7 @@ class AdminLiveStreamController extends Controller
         $movie->year =$data['year'];
         $movie->active = $active ;
         $movie->search_tags = $searchtags;
-        $movie->player_image = $player_PC_image;
+        $movie->player_image = !empty($player_PC_image) ? $player_PC_image : NULL;
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
 
