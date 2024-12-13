@@ -676,7 +676,7 @@ class AdminLiveStreamController extends Controller
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
-        $movie->image = $PC_image;
+        $movie->image = !empty($PC_image) ? $PC_image : NULL;
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
         $movie->year =$data['year'];

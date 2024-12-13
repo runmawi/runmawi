@@ -277,7 +277,6 @@
                                         <option value="mp4"> MP4/M3U8 URL </option>
                                         <option value="live_stream_video"> {{ $inputs_details_array['text_main_name']  }} Video</option>
                                         <option value="m3u_url"> M3U URL </option>
-                                        <option value="embed"> Embed URL</option>
                                     @endif
                                         
                                     <option value="embed"> Embed URL</option>
