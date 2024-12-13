@@ -1,5 +1,7 @@
 <?php
 $Livestream_detail = $Livestream_details;
+$radio_station_url = URL::to('/radio-station');
+$media_url = $radio_station_url . '/' . $Livestream_detail->slug;
 ?>
 <style type="text/css">
 
@@ -35,7 +37,7 @@ $Livestream_detail = $Livestream_details;
         border-radius: 10px;
         padding: 10px;
         border-width: 2px;
-        height:90%;
+        height:100%;
         overflow: hidden;
     }
 
@@ -287,7 +289,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     border-radius: 50%;
     color: white;
     font-size: 15px;
-    display: inline-block; /* Ensure proper inline visibility */
+    display: inline-block; 
 }
 
 
@@ -378,31 +380,29 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                                                     <div class="dropdown">
                                                        <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
-                                                          <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= 'radio-station/' . $Livestream_detail->slug ?>" target="_blank">
+                                                          <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
                                                           <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
                                                           </a>
                                                           <div class="divider" style="border:1px solid white"></div>
-                                                          <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= 'radio-station/' . $Livestream_detail->slug ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
+                                                          <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
                                                        </div>
                                                     </div>
                                                  </li>
                                                 <li>
                                                     <div>
-                                                        <?php if (!Auth::guest()) { ?>
-                                                            <div>
-                                                                    <div class="moreinfo">
-                                                                        <button 
-                                                                            type="button" 
-                                                                            style="width:100%;" 
-                                                                            class="btn bd btn-primary" 
-                                                                            data-toggle="modal" 
-                                                                            data-target="#Epg_schedule_modal"  
-                                                                            data-live-id="<?php echo $Livestream_detail->id; ?>"> 
-                                                                           VIEW SCHEDULE
-                                                                        </button>
-                                                                    </div>
-                                                            </div>
-                                                        <?php } ?>
+                                                        <div>
+                                                                <div class="moreinfo">
+                                                                    <button 
+                                                                        type="button" 
+                                                                        style="width:100%;" 
+                                                                        class="btn bd btn-primary" 
+                                                                        data-toggle="modal" 
+                                                                        data-target="#Epg_schedule_modal"  
+                                                                        data-live-id="<?php echo $Livestream_detail->id; ?>"> 
+                                                                        VIEW SCHEDULE
+                                                                    </button>
+                                                                </div>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -455,7 +455,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
                     Your browser does not support the audio element.
                 </audio>
-                <div class="play-border m-1">
+                <div class="play-border" style="margin: 0px; 10px;" >
                     <div class="playlist-ctn">
                         <h6 class="mb-4 font-weight-bold">
                            <span class="program-name" ></span> <i class="fa fa-music"
@@ -578,30 +578,21 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
  </script>
 <script type="text/javascript">
     function toggleFavorite(element) {
-      // Check if the user is authenticated
       if ($(element).data('authenticated')) {
-        // Get the current audio ID from the data attribute
         const audioId = $(element).data('audio_id');
         const isActive = $(element).hasClass('active');
-  
-        // Toggle the active class and heart icon
         if (isActive) {
-          // If already active, send a request to remove from favorites
           $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
-            // Handle the response if needed
           });
           $(element).removeClass('active');
           $(element).html('<i class="fa fa-heart-o"></i>');
         } else {
-          // If not active, send a request to add to favorites
           $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
-            // Handle the response if needed
           });
           $(element).addClass('active');
           $(element).html('<i class="fa fa-heart"></i>');
         }
       } else {
-        // If not authenticated, redirect to login
         window.location = '<?= URL::to('login') ?>';
       }
     }
@@ -617,12 +608,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
       document.querySelector(".playlist-ctn").appendChild(trackItem);
     
       var playBtnItem = document.createElement('div');
-      playBtnItem.setAttribute("class", "playlist-btn-play");
-      playBtnItem.setAttribute("id", "pbp-"+index);
-      document.querySelector("#ptc-"+index).appendChild(playBtnItem);
-    
-      var trackDurationItem = document.createElement('div');
-      trackDurationItem.setAttribute("class", "playlist-duration");
 
       var moreInfoBtn = document.createElement('button');
       document.querySelector("#ptc-" + index).appendChild(moreInfoBtn);
@@ -657,7 +642,13 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     
     var listAudio = <?php echo json_encode($Radio_station_lists); ?>;
 
-    console.log(listAudio);
+    listAudio = listAudio.filter(function(item) {
+        return !item.embed_url; 
+    });
+
+    for (var i = 0; i < listAudio.length; i++) {
+        createTrackItem(i, listAudio[i].title, listAudio[i].duration, listAudio[i].id);
+    }
     
     
     for (var i = 0; i < listAudio.length; i++) {
@@ -687,21 +678,15 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     var endDate = new Date(currentTime);
                     startDate.setHours(startHour, startMinute, 0, 0);
                     endDate.setHours(endHour, endMinute, 0, 0);
-
-                    // Handle programs spanning midnight
                     if (endDate < startDate) {
                         endDate.setDate(endDate.getDate() + 1);
                     }
-
-                    // Check if the current time is within this program's schedule
                     if (currentTime >= startDate && currentTime <= endDate) {
                         return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
                     }
                 }
-
                     return "No Current Program.";
                 } else {
-                    // If not a schedule program, return the track title
                     return listAudio[index].title;
                 }
             } catch (error) {
@@ -734,7 +719,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
                 return "No Next Program.";
             } else {
-                // If not a schedule program, return "-"
                 return "No Program Scheduled";
             }
         } catch (error) {
@@ -805,19 +789,15 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         const pauseIcon = document.querySelector('#icon-pause');
 
         if (this.currentAudio.paused) {
-            // Show pause icon and hide play icon
             playIcon.classList.add('hidden');
             pauseIcon.classList.remove('hidden');
             button.innerHTML = "<i class='fas fa-pause' style='color: white; font-size:15px'></i> <span style='color: white;'> Pause</span>";
-            // Play the audio
             this.playToPause(this.indexAudio);
             this.currentAudio.play();
         } else {
-            // Show play icon and hide pause icon
             playIcon.classList.remove('hidden');
             pauseIcon.classList.add('hidden');
             button.innerHTML = "<i class='fas fa-play' style='color: white; font-size:15px'></i> <span style='color: white;'> Play</span>";
-            // Pause the audio
             this.pauseToPlay(this.indexAudio);
             this.currentAudio.pause();
         }
@@ -845,10 +825,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         }
       }
     }
-    
-    
-
-    
+        
     function getMinutes(t){
       var min = parseInt(parseInt(t)/60);
       var sec = parseInt(t%60);
