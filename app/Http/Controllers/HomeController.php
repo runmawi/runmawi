@@ -492,7 +492,7 @@ class HomeController extends Controller
                 'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
                 'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
                 'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                'radiostation'            => $FrontEndQueryController->RadioStation()->take(15),
+                'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
             );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
@@ -1716,7 +1716,7 @@ class HomeController extends Controller
                     'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(), 
                     'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
                     'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'radiostation'            => $FrontEndQueryController->RadioStation()->take(15),
+                    'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
                 );
 
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){

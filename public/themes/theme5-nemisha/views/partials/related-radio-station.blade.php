@@ -30,11 +30,6 @@
 
                                 <div class="mt-2">
                                     <h6><?php echo __($radiostation->title); ?></h6>
-                                    <div class="movie-time d-flex align-items-center my-2">
-                                        <div class="badge badge-secondary p-1 mr-2">13+</div>
-                                        <span class="text-white"><i
-                                                class="fa fa-clock-o"></i><?= gmdate('H:i:s', $radiostation->duration) ?></span>
-                                    </div>
                                 </div>
                             </a>
                         </li>

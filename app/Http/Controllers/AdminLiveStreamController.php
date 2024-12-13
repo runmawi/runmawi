@@ -676,13 +676,13 @@ class AdminLiveStreamController extends Controller
         $movie->slug =$data['slug'];
         $movie->publish_type =$data['publish_type'];
         $movie->publish_time = $request['publish_type'] == "publish_later" && !empty($request['publish_time']) ? $request['publish_time'] : null ;
-        $movie->image = $PC_image;
+        $movie->image = !empty($PC_image) ? $PC_image : NULL;
         $movie->mp4_url =$mp4_url;
         $movie->status =$status;
         $movie->year =$data['year'];
         $movie->active = $active ;
         $movie->search_tags = $searchtags;
-        $movie->player_image = $player_PC_image;
+        $movie->player_image = !empty($player_PC_image) ? $player_PC_image : NULL;
         $movie->Tv_live_image = $Tv_live_image;
         $movie->user_id =Auth::User()->id;
 

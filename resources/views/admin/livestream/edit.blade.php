@@ -317,7 +317,7 @@ border-radius: 0px 4px 4px 0px;
                                 <option value="m3u_url" @if(!empty($video->url_type) && $video->url_type == 'm3u_url'){{ 'selected' }}@endif> M3U URL </option>
                                 @endif
                             @endif
-
+                            <option value="embed" @if(!empty($video->url_type) && $video->url_type == 'embed'){{ 'selected' }}@endif>Embed URL</option>
                             <option value="acc_audio_file" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_file'){{ 'selected' }}@endif > Mp3/AAC Audio File </option>
                             <option value="acc_audio_url" @if(!empty($video->url_type) && $video->url_type == 'acc_audio_url'){{ 'selected' }}@endif > Mp3/AAC Audio URL </option>
 
