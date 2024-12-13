@@ -2470,7 +2470,7 @@ $(document).ready(function($){
 
             if (response.success == 2) {
                 sendErrorLog(file.name, "File not uploaded!");
-                swal("File not uploaded!");
+                alert("File not uploaded!");
             } else if (response.error == 3) {
                 console.log(response.error);
                 sendErrorLog(file.name, "File not uploaded. Choose Library!");
