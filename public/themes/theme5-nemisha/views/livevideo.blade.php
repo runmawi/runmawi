@@ -339,11 +339,48 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                             <?php endif; ?>
                             <?php } ?>
 
-                            <?php if ($Livestream_details->stream_upload_via == 'radio_station') { ?>
-                            @php
-                                include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
-                            @endphp
-                            <?php } ?>
+                            
+                            <?php if ($Livestream_details->stream_upload_via == 'radio_station' && is_null($Livestream_details->embed_url )) { ?>
+                                @php
+                                    include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
+                                @endphp
+                                <?php } ?>
+                        
+                                <?php if ($Livestream_details->stream_upload_via == 'radio_station' && !is_null($Livestream_details->embed_url )) { ?>
+                                    <div class="row pt-5">
+                                        <div class="col-lg-8">
+                                            <iframe src={{ $Livestream_details->embed_url }} width="100%" height="115" frameborder="0"
+                                                referrerpolicy="origin" loading="lazy"></iframe>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="play-border">
+                                                <div class="playlist-ctn">
+                                                    <h6 class="mb-4 font-weight-bold">
+                                                    <span class="program-name" >{{$Livestream_details->title}}</span> <i class="fa fa-music"
+                                                            aria-hidden="true"></i></h6>
+                                                    <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                                    <p> {{$Livestream_details->title}} </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class=" container-fluid video-list you-may-like overflow-hidden">
+                                                <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+                                                <div class="slider">
+                                                    <?php
+                                                        include public_path(
+                                                            'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
+                                                        );
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                <?php } ?>
+                        
 
 
 
@@ -377,11 +414,47 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         <?php } ?>
 
 
-                                        <?php if ($Livestream_details->stream_upload_via == 'radio_station') { ?>
-                                        @php
-                                            include public_path('themes/theme5-nemisha/views/radio-station-player.php');
-                                        @endphp
-                                        <?php } ?>
+                                        <?php if ($Livestream_details->stream_upload_via == 'radio_station' && is_null($Livestream_details->embed_url )) { ?>
+                                            @php
+                                                include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
+                                            @endphp
+                                            <?php } ?>
+                                    
+                                            <?php if ($Livestream_details->stream_upload_via == 'radio_station' && !is_null($Livestream_details->embed_url )) { ?>
+                                                <div class="row pt-5">
+                                                    <div class="col-lg-8">
+                                                        <iframe src={{ $Livestream_details->embed_url }} width="100%" height="115" frameborder="0"
+                                                            referrerpolicy="origin" loading="lazy"></iframe>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="play-border">
+                                                            <div class="playlist-ctn">
+                                                                <h6 class="mb-4 font-weight-bold">
+                                                                <span class="program-name" >{{$Livestream_details->title}}</span> <i class="fa fa-music"
+                                                                        aria-hidden="true"></i></h6>
+                                                                <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                                                <p> {{$Livestream_details->title}} </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class=" container-fluid video-list you-may-like overflow-hidden">
+                                                            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+                                                            <div class="slider">
+                                                                <?php
+                                                                    include public_path(
+                                                                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
+                                                                    );
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                            <?php } ?>
+                                    
 
 
                                         <?php  } else { ?>
