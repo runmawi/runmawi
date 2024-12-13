@@ -271,13 +271,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         }
     }
 
-    .icon-circle{
-        background-color: #ED563C;
-        padding: 10px;
-        border-radius: 50%;
-        color: white;
-        font-size: 15px;
-    }
 
     .hidden {
     display: none !important;
@@ -285,7 +278,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
 .icon-circle {
     background-color: #ED563C;
-    padding: 10px;
+    padding: 18px;
     border-radius: 50%;
     color: white;
     font-size: 15px;
@@ -387,24 +380,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                                                           <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
                                                        </div>
                                                     </div>
-                                                 </li>
-                                                <li>
-                                                    <div>
-                                                        <div>
-                                                                <div class="moreinfo">
-                                                                    <button 
-                                                                        type="button" 
-                                                                        style="width:100%;" 
-                                                                        class="btn bd btn-primary" 
-                                                                        data-toggle="modal" 
-                                                                        data-target="#Epg_schedule_modal"  
-                                                                        data-live-id="<?php echo $Livestream_detail->id; ?>"> 
-                                                                        VIEW SCHEDULE
-                                                                    </button>
-                                                                </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                 </li>                                        
                                             </ul>
                                             <!-- Share -->
                                         </div>
@@ -457,9 +433,27 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                 </audio>
                 <div class="play-border" style="margin: 0px; 10px;" >
                     <div class="playlist-ctn">
-                        <h6 class="mb-4 font-weight-bold">
-                           <span class="program-name" ></span> <i class="fa fa-music"
-                                aria-hidden="true"></i></h6>
+                        
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6 mb-4">
+                                <h6 class="mb-0 font-weight-bold">
+                                    <span class="program-name"></span> 
+                                    <i class="fa fa-music" aria-hidden="true"></i>
+                                </h6>
+                            </div>
+                            <div class="col-12 col-md-6 mb-4">
+                                <div class="moreinfo text-md-right">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary w-100" 
+                                        data-toggle="modal" 
+                                        data-target="#Epg_schedule_modal"  
+                                        data-live-id="<?php echo $Livestream_detail->id; ?>"> 
+                                        VIEW SCHEDULE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         <h6 class="mb-2 font-weight-bold">Current Program</h6>
                         <p>
