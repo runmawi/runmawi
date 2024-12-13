@@ -627,6 +627,7 @@
                         @endif
                     @endif
 
+                    @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Enable Free Duration</label>
@@ -649,8 +650,10 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="row mt-3">
+                        @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
                         <div class="col-sm-6">
                             <label class="m-0">Duration</label>
                             <p class="p1">Enter the {{ $inputs_details_array['text_main_name']  }} duration in (HH : MM : SS)</p>
@@ -658,6 +661,7 @@
                                 <input class="form-control" name="duration" placeholder="HH:MM:SS" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
                         </div>
+                        @endif
                         
                         <div class="col-sm-6">
                             <label class="m-0">Block Country</label>
@@ -1332,7 +1336,6 @@
         rules: {
             title: "required",
             url_type: "required",
-            duration: "required",
             'language[]': {
                 required: true
             },

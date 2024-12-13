@@ -725,6 +725,7 @@ border-radius: 0px 4px 4px 0px;
                 @endif
             @endif
 
+            @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
             <div class="row mt-3">
                 <div class="col-sm-6">
                     <label class="m-0">Enable Free Duration</label>
@@ -747,9 +748,11 @@ border-radius: 0px 4px 4px 0px;
                     </div>
                 </div>
             </div>
+            @endif
             
             <div class="row mt-3">
 
+                @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
                 <div class="col-sm-6">
                     <label class="m-0">Duration</label>
                     <p class="p1">Enter the {{  $inputs_details_array['text_main_name'] }} duration in (HH : MM : SS)</p>
@@ -757,6 +760,7 @@ border-radius: 0px 4px 4px 0px;
                         <input class="form-control" name="duration" id="duration" placeholder="HH:MM:SS" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                     </div>
                 </div>
+                @endif
                 
                 <div class="col-sm-6">
                     <label class="m-0">Block Country</label>
@@ -871,15 +875,15 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-sm-4">
                     <label class="m-0">Publish Type</label>
                     <div class="panel-body" style="color: #000;">
-                        <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> Publish Now <br>
-				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later")) ? "checked" : "" }}> Publish Later <br>
+                        <input type="radio" id="publish_now" name="publish_type" value = "publish_now" {{ !empty(($video->publish_type=="publish_now"))? "checked" : "" }}> <label for="publish_now" style="font-weight: 500; font-size:14px;"> {{ __('Publish Now')}}</label> <br>
+				        <input type="radio" id="publish_later" name="publish_type" value = "publish_later"  {{ !empty(($video->publish_type=="publish_later")) ? "checked" : "" }}> <label for="publish_later" style="font-weight: 500; font-size:14px;"> {{ __('Publish Later')}}</label> <br>
 
                         @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
-                            <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> {{ __('Recurring Program')}} <br />
+                            <input type="radio" id="recurring"     name="publish_type"  value="recurring_program"  {{ !empty(($video->publish_type=="recurring_program"))? "checked" : "" }} /> <label for="recurring" style="font-weight: 500; font-size:14px;"> {{ __('Recurring Program')}}</label> <br />
                         @endif
 
                         @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
-                            <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> {{ __('Schedule Program')}} <br />
+                            <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" {{ !empty(($video->publish_type=="schedule_program"))? "checked" : "" }} /> <label for="scheduleprogram" style="font-weight: 500; font-size:14px;"> {{ __('Schedule Program')}}</label> <br />
                         @endif
                     </div>
                 </div>
