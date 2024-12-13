@@ -1184,7 +1184,8 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if (!in_array($request->mobile, ["9774080533", "9962743248"])) {
+
+      if (  ( Auth::user()->mobile != "9962743248" ) || ( Auth::user()->mobile != "admin") ) {
 
         user::find(Auth::user()->id)->update([
           'otp' => null ,
@@ -27643,7 +27644,8 @@ public function TV_login(Request $request)
         $Mobile_number   = $ccode.$mobile ;
 
         // Only for Play Store Testing 
-        if (!in_array($mobile, ["9774080533", "9962743248"])) {
+
+        if ( ($user->mobile == "9962743248" ) || ( $user->role == "admin") ) {
 
           $user = User::Where('id',$user_id)->where('mobile',$mobile)
                         ->update([
@@ -27788,8 +27790,11 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
+        $user_check = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)->first();
+
         // Only for Play Store Testing 
-      if (!in_array($request->mobile_number , ["9774080533", "9962743248"])) {
+
+        if (  (!is_null($user_check) && $user_check->mobile == "9962743248" ) || (!is_null($user_check) && $user_check->role == "admin")) {
 
           $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
                         ->update([
