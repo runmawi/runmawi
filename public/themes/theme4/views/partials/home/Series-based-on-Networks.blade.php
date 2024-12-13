@@ -119,7 +119,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ($multiple_compress_image == 1)
-                                                    <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : $default_vertical_image_url }}"
+                                                    <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ URL::to('public/uploads/images/'.$episode->player_image) }}"
                                                         srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : URL::to('public/uploads/images/'.$episode->player_image) }},
                                                         {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : URL::to('public/uploads/images/'.$episode->player_image) }},
                                                         {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : URL::to('public/uploads/images/'.$episode->player_image) }}" >
@@ -229,7 +229,6 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
         });
     });
 });
-flkty.reloadCells();
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');

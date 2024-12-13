@@ -244,7 +244,6 @@ var elem = document.querySelector('.series-network-video');
     });
 });
 
-flkty.reloadCells();
 
 
 $('body').on('click', '.drp-close', function() {

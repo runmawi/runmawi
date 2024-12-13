@@ -466,13 +466,15 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i
-                                            class="ri-links-fill mt-1"></i></span></a>
-                            </li>
+                            @if($Series_access == "guest" && $Season_access == "free")
+                                <li>
+                                    <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i
+                                                class="ri-links-fill mt-1"></i></span></a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
-
+                    
                     <div class="description">
                         {!! strlen($series->description) > 400 ?  html_entity_decode(substr($series->description, 0, 400 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($series->description)  !!}
                     </div>
