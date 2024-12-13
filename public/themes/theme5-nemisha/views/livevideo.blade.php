@@ -140,6 +140,15 @@
         overflow: hidden;
     }
 
+    @media (min-width: 576px) {
+        #Epg_schedule_modal .modal-dialog {
+            max-width: 100%;
+        }
+    }
+
+    #Epg_schedule_modal .modal-content {
+    background-color: transparent;
+    }
 
 </style>
 
@@ -229,9 +238,26 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                 <div class="col-lg-4">
                     <div class="play-border">
                         <div class="playlist-ctn">
-                            <h6 class="mb-4 font-weight-bold">
-                            <span class="program-name" >{{$Livestream_details->title}}</span> <i class="fa fa-music"
-                                    aria-hidden="true"></i></h6>
+                            <div class="row align-items-center">
+                                <div class="col-12 col-md-6 mb-4">
+                                    <h6 class="mb-0 font-weight-bold">
+                                        <span class="program-name">{{$Livestream_details->title}}</span> 
+                                        <i class="fa fa-music" aria-hidden="true"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-12 col-md-6 mb-4">
+                                    <div class="moreinfo text-md-right">
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-primary w-100" 
+                                            data-toggle="modal" 
+                                            data-target="#Epg_schedule_modal"  
+                                            data-live-id="<?php echo $Livestream_details->id; ?>"> 
+                                            VIEW SCHEDULE
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <h6 class="mb-2 font-weight-bold">Current Program</h6>
                             <p> {{$Livestream_details->title}} </p>
                         </div>
@@ -355,9 +381,26 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         <div class="col-lg-4">
                                             <div class="play-border">
                                                 <div class="playlist-ctn">
-                                                    <h6 class="mb-4 font-weight-bold">
-                                                    <span class="program-name" >{{$Livestream_details->title}}</span> <i class="fa fa-music"
-                                                            aria-hidden="true"></i></h6>
+                                                    <div class="row align-items-center">
+                                                        <div class="col-12 col-md-6 mb-4">
+                                                            <h6 class="mb-0 font-weight-bold">
+                                                                <span class="program-name">{{$Livestream_details->title}}</span> 
+                                                                <i class="fa fa-music" aria-hidden="true"></i>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="col-12 col-md-6 mb-4">
+                                                            <div class="moreinfo text-md-right">
+                                                                <button 
+                                                                    type="button" 
+                                                                    class="btn btn-primary w-100" 
+                                                                    data-toggle="modal" 
+                                                                    data-target="#Epg_schedule_modal"  
+                                                                    data-live-id="<?php echo $Livestream_details->id; ?>"> 
+                                                                    VIEW SCHEDULE
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <h6 class="mb-2 font-weight-bold">Current Program</h6>
                                                     <p> {{$Livestream_details->title}} </p>
                                                 </div>
@@ -380,10 +423,6 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                         </div>
                                         </div>
                                 <?php } ?>
-                        
-
-
-
                             <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>
 
                             <div id="video_bg">
@@ -429,9 +468,26 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                                     <div class="col-lg-4">
                                                         <div class="play-border">
                                                             <div class="playlist-ctn">
-                                                                <h6 class="mb-4 font-weight-bold">
-                                                                <span class="program-name" >{{$Livestream_details->title}}</span> <i class="fa fa-music"
-                                                                        aria-hidden="true"></i></h6>
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-12 col-md-6 mb-4">
+                                                                        <h6 class="mb-0 font-weight-bold">
+                                                                            <span class="program-name">{{$Livestream_details->title}}</span> 
+                                                                            <i class="fa fa-music" aria-hidden="true"></i>
+                                                                        </h6>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-6 mb-4">
+                                                                        <div class="moreinfo text-md-right">
+                                                                            <button 
+                                                                                type="button" 
+                                                                                class="btn btn-primary w-100" 
+                                                                                data-toggle="modal" 
+                                                                                data-target="#Epg_schedule_modal"  
+                                                                                data-live-id="<?php echo $Livestream_details->id; ?>"> 
+                                                                                VIEW SCHEDULE
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>                         
                                                                 <h6 class="mb-2 font-weight-bold">Current Program</h6>
                                                                 <p> {{$Livestream_details->title}} </p>
                                                             </div>
