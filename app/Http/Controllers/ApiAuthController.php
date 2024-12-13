@@ -7598,65 +7598,76 @@ return response()->json($response, 200);
     $user_id = $request->user_id;
     $series_seasons_type = SeriesSeason::where('id', $season_id)->pluck('series_seasons_type')->first();
     $Seasons_access = SeriesSeason::where('id', $season_id)->pluck('access')->first();
-
-      $data = $request->all();
-      
-      if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $series_seasons_type == 'VideoCipher'){
-          return $this->VideoCipher_Seasondetail($data);
-      }
-      
+    $user = User::where('id', $user_id)->first();
     $episode = Episode::where('id','=',$episode_id)->first();
-    // $season = SeriesSeason::where('series_id','=',$episode->series_id)->with('episodes')->get();
-    $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
-    ->with('episodes')->orderBy('created_at', 'desc')->get();
-    if(!empty($season)){
-      $ppv_price = $season[0]->ppv_price;
-      $ppv_interval = $season[0]->ppv_interval;
-      $season_id = $season[0]->id;
-  }
-  // echo "<pre>";
-  // print_r($season);exit;
-  // Free Interval Episodes
-  $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
-  ->where('user_id','=',$user_id)->count();
 
-  if(!empty($ppv_price) && !empty($ppv_interval)){
-      foreach($season as $key => $seasons):
-          foreach($seasons->episodes as $key => $episodes):
-                  if($seasons->ppv_interval > $key):
-                      $free_episode[$episodes->id] = Episode::where('id','=',$episode_id)->count();
-                  else :
-                      $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();
-                  endif;
+    if($Seasons_access && $user){
+        $data = $request->all();
+              
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $series_seasons_type == 'VideoCipher'){
+            return $this->VideoCipher_Seasondetail($data);
+        }
+          
+        $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
+        ->with('episodes')->orderBy('created_at', 'desc')->get();
+        if(!empty($season)){
+          $ppv_price = $season[0]->ppv_price;
+          $ppv_interval = $season[0]->ppv_interval;
+          $season_id = $season[0]->id;
+        }
+        // echo "<pre>";
+        // print_r($season);exit;
+        // Free Interval Episodes
+        $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
+        ->where('user_id','=',$user_id)->count();
+
+        if(!empty($ppv_price) && !empty($ppv_interval)){
+          foreach($season as $key => $seasons):
+              foreach($seasons->episodes as $key => $episodes):
+                      if($seasons->ppv_interval > $key):
+                          $free_episode[$episodes->id] = Episode::where('id','=',$episode_id)->count();
+                      else :
+                          $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();
+                      endif;
+              endforeach;
           endforeach;
-      endforeach;
-      if($PpvPurchaseCount > 0){
-        $free_episode = 'guest';
-      }else if (array_key_exists($episode_id,$free_episode)){
-        $free_episode = 'guest';
-      }else{
-        $free_episode = 'PPV';
-      }
-      if(empty($free_episode)){
+          if($PpvPurchaseCount > 0){
+            $free_episode = 'guest';
+          }else if (array_key_exists($episode_id,$free_episode)){
+            $free_episode = 'guest';
+          }else{
+            $free_episode = 'PPV';
+          }
+          if(empty($free_episode)){
 
-        $free_episode = 'PPV';
-      }
-  }else{
-    $free_episode = 'guest';
-  }
+            $free_episode = 'PPV';
+          }
+        }else if($ppv_interval == 0){
+            $free_episode = 'PPV';
+        }else{
+            $free_episode = 'guest';
+        }
 
-  // if($Seasons_access == 'free'){
-  //   $Seasons_access = 'guest';
-  // }else{
-  //   $Seasons_access = $Seasons_access;
-  // }
+        // if($Seasons_access == 'free'){
+        //   $Seasons_access = 'guest';
+        // }else{
+        //   $Seasons_access = $Seasons_access;
+        // }
 
-    $response = array(
-      'status' => 'true',
-      'access' => $free_episode,
-      'episode' => Episode::where('id','=',$episode_id)->get(),
-      'season' => $season,
-    );
+        $response = array(
+          'status' => 'true',
+          'access' => $free_episode,
+          'episode' => Episode::where('id','=',$episode_id)->get(),
+          'season' => $season,
+        );
+    }else{
+      $response = array(
+        'status' => 'false',
+        'message' => 'Invalid data',
+      );
+    }
+
+      
 
     return response()->json($response, 200);
   }
