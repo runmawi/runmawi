@@ -5979,7 +5979,6 @@ class ChannelController extends Controller
    
     public function PartnerMonetization(Request $request)
     {
-        // dd('test');
         try {
             $video_id = $request->video_id;
             $video = Video::where('id', $video_id)->first();

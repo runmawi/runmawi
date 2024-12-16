@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use URL;
 use Auth;
+use File;
 use getID3;
 use App\User;
+use App\Video;
 use Validator;
 use App\Setting;
 use App\UGCVideo;
 use FFMpeg\FFMpeg;
-use File;
 use App\Geofencing;
 use App\HomeSetting;
 use Illuminate\Support\Str;
+use App\PartnerMonetization;
 use Illuminate\Http\Request;
 use App\VideoExtractedImages;
-use Intervention\Image\Facades\Image;
 use FFMpeg\Coordinate\TimeCode;
+use App\PartnerMonetizationSetting;
+use Intervention\Image\Facades\Image;
 use App\Jobs\ConvertUGCVideoForStreaming;
 
 class ApiAuthContinueController extends Controller
@@ -361,69 +364,212 @@ class ApiAuthContinueController extends Controller
         }
     }
 
-    // public function revenueshare(Request $request){
+    public function revenueshare(Request $request)
+    {
+        try {
 
-    //     try {
-    //         $video_id = $request->video_id;
-    //         $video = Video::where('id', $video_id)->first();
-    //         if ($video) {
-    //             $video->played_views += 1;
-    //             $video->save(); 
+           $dd = Auth::user()->role;
 
-    //             if ($video->uploaded_by === 'Channel') {
-    //             $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
-    //             $monetization_view_limit = $monetizationSettings->viewcount_limit;
-    //             $monetization_view_amount = $monetizationSettings->views_amount;
+           return $dd;
 
-    //             if ($video->played_views > $monetization_view_limit) {
-    //                 $previously_monetized_views = $video->monetized_views ?? 0;
-    //                 $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+            $validated = $request->validate([
+                'video_id' => 'required|integer|exists:videos,id',
+            ]);
 
-    //                 if ($new_monetizable_views > 0) {
-                        
-    //                     $additional_amount = $new_monetizable_views * $monetization_view_amount;
-    //                     $video->monetization_amount += $additional_amount;
-    //                     $video->monetized_views += $new_monetizable_views;
-    //                     $video->save(); 
+            $video = Video::find($validated['video_id']);
+            $video->played_views += 1;
+            $video->save();
 
-        
-    //                     $channeluser_commission = (float) $video->channeluser->commission;
-    //                     $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
-                        
-    //                     $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
-    //                         ->where('type_id', $video->id)
-    //                         ->where('type', 'video')->first();
+            if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
 
-    //                     $monetization_data = [
-    //                         'total_views' => $video->played_views,
-    //                         'title' => $video->title,
-    //                         'monetization_amount' => $video->monetization_amount,
-    //                         'admin_commission' => $video->monetization_amount - $channel_commission,
-    //                         'partner_commission' => $channel_commission,
-    //                     ];
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
 
-    //                     if ($partner_monetization) {
-    //                         $partner_monetization->update($monetization_data);
-    //                     } else {
-    //                         PartnerMonetization::create(array_merge($monetization_data, [
-    //                             'user_id' => $video->user_id,
-    //                             'type_id' => $video->id,
-    //                             'type' => 'video',
-    //                         ]));
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //             return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-    //         } else {
-    //             return response()->json(['error' => 'Video not found'], 404);
-    //         }
-    //     } catch (\Illuminate\Validation\ValidationException $e) {
-    //         return response()->json(['error' => $e->errors()], 422);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['error' => $e->getMessage()], 500);
-    //     }
-    // }
+                    if ($new_monetizable_views > 0) {
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save();
+
+                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'video')
+                            ->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'title' => $video->title,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'video',
+                            ]));
+                        }
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => 'View count incremented and monetization updated',
+                'played_view' => $video->played_views,
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function episoderevenueshare(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'video_id' => 'required|integer|exists:videos,id',
+            ]);
+
+            $video = Episode::find($validated['video_id']);
+            $video->played_views += 1;
+            $video->save();
+
+            if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
+
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save();
+
+                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'episode')
+                            ->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'title' => $video->title,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'episode',
+                            ]));
+                        }
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => 'View count incremented and monetization updated',
+                'played_view' => $video->played_views,
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function livestreamrevenueshare(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'video_id' => 'required|integer|exists:videos,id',
+            ]);
+
+            $video = LiveStream::find($validated['video_id']);
+            $video->played_views += 1;
+            $video->save();
+
+            if ($video->uploaded_by === 'Channel') {
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                $monetization_view_amount = $monetizationSettings->views_amount;
+
+                if ($video->played_views > $monetization_view_limit) {
+                    $previously_monetized_views = $video->monetized_views ?? 0;
+                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                    if ($new_monetizable_views > 0) {
+                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                        $video->monetization_amount += $additional_amount;
+                        $video->monetized_views += $new_monetizable_views;
+                        $video->save();
+
+                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+
+                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                            ->where('type_id', $video->id)
+                            ->where('type', 'livestream')
+                            ->first();
+
+                        $monetization_data = [
+                            'total_views' => $video->played_views,
+                            'title' => $video->title,
+                            'monetization_amount' => $video->monetization_amount,
+                            'admin_commission' => $video->monetization_amount - $channel_commission,
+                            'partner_commission' => $channel_commission,
+                        ];
+
+                        if ($partner_monetization) {
+                            $partner_monetization->update($monetization_data);
+                        } else {
+                            PartnerMonetization::create(array_merge($monetization_data, [
+                                'user_id' => $video->user_id,
+                                'type_id' => $video->id,
+                                'type' => 'livestream',
+                            ]));
+                        }
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => 'View count incremented and monetization updated',
+                'played_view' => $video->played_views,
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 
     
 
