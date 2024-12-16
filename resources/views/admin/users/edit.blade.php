@@ -159,21 +159,24 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6 mt-2"> 
-							<div class="panel panel-primary" data-collapsed="0"> 
-								<div class="panel-heading"> 
-									<div class="panel-options"> 
-										<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+
+						@if ( Auth::user()->role != "admin" )
+							<div class="col-sm-6 mt-2"> 
+								<div class="panel panel-primary" data-collapsed="0"> 
+									<div class="panel-heading"> 
+										<div class="panel-options"> 
+											<a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> 
+										</div>
+									</div>
+
+									<div class="panel-body" style="display: block;"> 
+										<label class="mb-1">OTP </label>
+										<input type="text" class="form-control mb-3" name="otp" id="otp" value="<?php if(!empty($user->otp)): ?><?= $user->otp ?><?php endif; ?>" />
 									</div>
 								</div>
-
-								<div class="panel-body" style="display: block;"> 
-									<label class="mb-1">OTP </label>
-									<input type="text" class="form-control mb-3" name="otp" id="otp" value="<?php if(!empty($user->otp)): ?><?= $user->otp ?><?php endif; ?>" />
-								</div>
 							</div>
-						</div>
-
+						@endif
+						
 						<div class="col-sm-6 mt-2"> 
 							<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
 								<!--<div class="panel-title">User Active Status</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
