@@ -556,12 +556,19 @@ class AdminSeriesController extends Controller
             // dd($blockedCountries);
 
             //$episode = Episode::all();
-            $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
+            $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get()
+                                    ->map(function($item){
+                                        $item['total_episode']= Episode::where('season_id',$item->id)->count();
+                                        $item['active_episode']= Episode::where('season_id',$item->id)->where('active',1)->count();
+                                        $item['draft_episodes']= Episode::where('season_id',$item->id)->where('active',0)->count();
+                                        return $item;
+                                    });
+
             // $books = SeriesSeason::with('episodes')->get();   
                     // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
             $season_ids = SeriesSeason::where('series_id', $id)->pluck('id');
             $unassigned_episodes = Episode::where('series_id',$id)->whereNotIn('season_id', $season_ids)->get();
-            // dd($unassigned_episodes);
+            // dd($seasons);
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -2842,7 +2849,8 @@ class AdminSeriesController extends Controller
         $episode->mp4_url = !empty($episode->mp4_url) ? $episode->mp4_url : (!empty($data['mp4_url']) ? $data['mp4_url'] : null);
         $episode->embed_video_url = !empty($episode->embed_video_url) ? $episode->embed_video_url : (!empty($data['embed_video_url']) ? $data['embed_video_url'] : null);
         $episode->status =  1;
-
+        $episode->active =  empty($data['active']) ? 0 : 1;
+        // dd($episode->active);
         // {{--Ads Video.Js Player--}}
 
 
