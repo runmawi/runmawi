@@ -85,7 +85,8 @@
                                        <th><input type="checkbox" id="select-all"></th>
                                        <th style="width: 10%;">Profile</th>
                                        <th style="width: 10%;">Name</th>
-                                       <th style="width: 20%;">Contact</th>
+                                       <th style="width: 20%;">ccode</th>
+                                       <th style="width: 20%;">Mobile No</th>
                                        <th style="width: 20%;">Email</th>
                                        <th style="width: 10%;">Role</th>
                                        <th style="width: 10%;">Status</th>
@@ -105,7 +106,7 @@
                                           </td>
 
                                           <td> {{ !empty($user->username) ? $user->username : $user->name }} </td>
-                                          <td>{{ @$user->mobile}}</td>
+                                          <td>{{ @$user->ccode ." ". @$user->mobile}}</td>
                                           <td>{{ @$user->email}}</td>
                                           <td>{{ @$user->role}}</td>
 
@@ -193,6 +194,7 @@
                { data: 'select',},
                { data: 'profile',},
                { data: 'name' },
+               { data: 'ccode' },
                { data: 'mobile' },
                { data: 'email' },
                { data: 'role' },
