@@ -85,8 +85,8 @@
                                        <th><input type="checkbox" id="select-all"></th>
                                        <th style="width: 10%;">Profile</th>
                                        <th style="width: 10%;">Name</th>
-                                       <th style="width: 20%;">CCode</th>
-                                       <th style="width: 20%;">Mobile Number</th>
+                                       <th style="width: 20%;">ccode</th>
+                                       <th style="width: 20%;">Mobile No</th>
                                        <th style="width: 20%;">Email</th>
                                        <th style="width: 10%;">Role</th>
                                        <th style="width: 10%;">Status</th>
