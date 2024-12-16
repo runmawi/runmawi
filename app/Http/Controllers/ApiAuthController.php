@@ -13041,10 +13041,11 @@ $cpanel->end();
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
-                                                          $item['series'] = Series::select('id', 'title', 'access', 'description', 'details', 'player_image', 'tv_image')
+                                                          $item['series'] = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image')
+                                                                                    ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
                                                                                     ->where('active', '1')
-                                                                                    ->where('network_id', 'LIKE', '%"'.$item->id.'"%') // Use LIKE to search for network_id
-                                                                                    ->latest()
+                                                                                    ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
+                                                                                    ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
                                                                                     ->map(function ($series) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
@@ -18021,27 +18022,32 @@ public function QRCodeMobileLogout(Request $request)
 
         $item['source'] = "Series_based_on_Networks" ;
 
-        $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                    ->whereJsonContains('network_id', [(string)$item->id])
-    
-                    ->latest('series.created_at')->limit($homepage_input_array['limit'])->get()->map(function ($item) { 
-            
-            $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-            $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
-            $item['tv_image_url'] = (!is_null($item->tv_image) && $item->tv_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->tv_image )  :  default_horizontal_image_url() ;  // Note - No TV Image
+        $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                                                  ->where('series.active', 1)
+                                                  ->where('series_network_order.network_id', $item->id)
+                                                  ->orderBy('series_network_order.order', 'asc')
+                                                  ->get()
+                                                  ->map(function ($series) { 
+                                                        $series->id = $series->series_id;
+                                                        $series['image_url']        = (!is_null($series->image) && $series->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->image) : default_vertical_image() ;
+                                                        $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->player_image )  :  default_horizontal_image_url() ;
+                                                        $series['tv_image_url'] = (!is_null($series->tv_image) && $series->tv_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->tv_image )  :  default_horizontal_image_url() ;  // Note - No TV Image
 
-            $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
-    
-            $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-    
-            $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                    ->map(function ($item) {
-                                                    $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                    return $item;
-                                                });
-    
-            $item['source'] = 'Series';
-            return $item;
+                                                        $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY'); 
+                                                
+                                                        $series['duration_format'] =  !is_null($series->duration) ?  Carbon::parse( $series->duration)->format('G\H i\M'): null ;
+                                                
+                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes
+                                                                                                ->map(function ($item) {
+                                                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                                                return $item;
+                                                                                            });
+                                                        $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
+                                                        $series['has_more'] = $totalEpisodes > 14;
+
+                                                
+                                                        $series['source'] = 'Series';
+                                                        return $series;
                                                                 
         });
         return $item;
