@@ -154,6 +154,11 @@ class AdminUsersController extends Controller
             $query = User::query();
 
             return DataTables::of($query)
+
+                ->addColumn('mobile', function ($user) {
+                    return  $user->ccode." ".$user->mobile;
+                })
+
                 ->addColumn('select', function ($user) {
                     return '<input type="checkbox" class="user-checkbox" value="' . $user->id . '">';
                 })
@@ -185,7 +190,7 @@ class AdminUsersController extends Controller
                            
                         </div>';
                 })
-                ->rawColumns(['select', 'profile', 'status', 'action'])
+                ->rawColumns(['select', 'profile', 'status', 'action','mobile'])
                 ->make(true);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
