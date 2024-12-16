@@ -347,7 +347,7 @@ class FrontEndQueryController extends Controller
                         ? Carbon::parse($series->duration)->format('G\H i\M')
                         : null;
     
-                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
+                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->where('active',1)
                         ->get()->take(15)
                         ->map(function ($episode) {
                             $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
@@ -361,7 +361,7 @@ class FrontEndQueryController extends Controller
                             return $episode;
                         });
     
-                        $totalEpisodes = Episode::where('series_id', $series->id)->count();
+                        $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
 
                         // Check if there are more than 14 episodes
                         $series['has_more'] = $totalEpisodes > 14;
