@@ -9,6 +9,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\SeriesNetwork;
+use App\Series;
+use Illuminate\Support\Facades\DB;
 
 class AdminNetworkController extends Controller
 {
@@ -29,14 +31,36 @@ class AdminNetworkController extends Controller
             $SeriesNetwork =  SeriesNetwork::orderBy('order')->get()->map(function ($item) {
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
+                $item['series'] = Series::all()->filter(function ($series) use ($item) {
+                    $networkIds = json_decode($series->network_id, true);
+            
+                    // Check if the current network_id exists in the network_ids array
+                    if (in_array($item->id, $networkIds)) {
+                        $order = DB::table('series_network_order')
+                            ->where('network_id', $item->id)
+                            ->where('series_id', $series->id)
+                            ->value('order');
+                        $series->order = $order;
+            
+                        return true;
+                    }
+            
+                    return false;
+                });
+            
+                $item['series'] = $item['series']->sortBy('order'); 
+            
                 return $item;
             });
-    
+
+            // dd($SeriesNetwork);
             $data = array ( 'Series_Network'=> $SeriesNetwork );
+            // dd($data);
     
             return view('admin.network.index',$data);
         
         } catch (\Throwable $th) {
+            return $th->getMessage();
             return abort(404);
         }
 
@@ -221,4 +245,38 @@ class AdminNetworkController extends Controller
         }
         return 1;
     }
+
+    public function NetworkBased_order(Request $request)
+    {
+        $data = $request->input('position');
+        // dd($data);
+        $network_id = $request->input('network_id'); // Retrieve network_id from the request
+
+        if (is_array($data) && $network_id) {
+            foreach ($data as $order => $series_id) {
+                // Check if the row already exists
+                $exists = DB::table('series_network_order')->where('series_id', $series_id)->where('network_id', $network_id)->exists();
+                // dd($network_id);
+                if ($exists) {
+                    // Update the order if it exists
+                    DB::table('series_network_order')->where('series_id', $series_id)->where('network_id', $network_id)->update(['order' => $order + 1]);
+                } else {
+                    // Insert a new row if it does not exist
+                    DB::table('series_network_order')->insert([
+                        'series_id' => $series_id,
+                        'network_id' => $network_id, // Ensure network_id is inserted
+                        'order' => $order + 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+            return response()->json(['success' => 'Order updated successfully.']);
+        }
+
+        return response()->json(['error' => 'Invalid data or network ID missing.'], 400);
+    }
+
+
 }

@@ -207,8 +207,8 @@
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style">
    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
 <!-- JavaScript -->
-   <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
-   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async></script>
+   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>"></script>
 
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
    <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
@@ -264,11 +264,7 @@
    <!-- Remixicon -->
    <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-      
-   <!-- Ply.io -->
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" as="style"/>
-    <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/plyr-3.6.9.css') ?>" />
-
+  
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style">
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/remixicon.css') ?>" as="style">
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-theme.css') ?>" as="style">
@@ -318,7 +314,7 @@
                   if(nextEl && nextEl.classList.contains('submenu')) {	
                      // prevent opening link if link needs to open dropdown
                      e.preventDefault();
-                     console.log(nextEl);
+                     // console.log(nextEl);
                      if(nextEl.style.display == 'block'){
                         nextEl.style.display = 'none';
                      } else {
@@ -2291,7 +2287,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    <script>
 
       $(document).ready(function() {
-         console.log($(".dropdown-toggle")); 
+         // console.log($(".dropdown-toggle")); 
          $(".dropdown-toggle").dropdown();
       });
 
@@ -2333,7 +2329,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                   mode: theme_mode
                },
                success: (response) => {
-                  console.log(response);
+                  // console.log(response);
                },
          })
       });
@@ -2498,13 +2494,13 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    </style>
    <script>
       $(document).ready(function () {
-    console.log("document is ready");
+   //  console.log("document is ready");
     $('[data-toggle="offcanvas"], #navToggle').on('click', function () {
         $('.offcanvas-collapse').toggleClass('open')
     })
 });
 window.onload = function () {
-    console.log("window is loaded");
+   //  console.log("window is loaded");
 };
    </script>
    

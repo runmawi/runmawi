@@ -3219,7 +3219,7 @@ class ChannelController extends Controller
         $data['password_hash'] = '';
         $data = session()->all();
 
-        if (!Auth::guest()) {
+        // if (!Auth::guest()) {
             $get_video_id = \App\Video::where('slug', $slug)->first();
 
             $vid = $get_video_id->id;
@@ -3477,6 +3477,7 @@ class ChannelController extends Controller
                     'ppv_video_play' => $ppv_video_play,
                     'ads' => \App\AdsVideo::where('video_id', $vid)->first(),
                     'category_name' => $category_name,
+                    'settings' => Setting::first(),
                 ];
             } else {
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -3531,17 +3532,17 @@ class ChannelController extends Controller
                     'artists' => $artists,
                     'watched_time' => 0,
                     'ads' => \App\AdsVideo::where('video_id', $vid)->first(),
+                    'settings' => Setting::first(),
                 ];
             }
-
-            return Theme::view('embedvideo', $data);
-        } else {
-            $data = [
-                'video' => \App\Video::where('slug', $slug)->first(),
-                'settings' => Setting::first(),
-            ];
             return Theme::view('iframeembedvideo', $data);
-        }
+        // } else {
+        //     $data = [
+        //         'video' => \App\Video::where('slug', $slug)->first(),
+        //         'settings' => Setting::first(),
+        //     ];
+        //     return Theme::view('iframeembedvideo', $data);
+        // }
     }
 
     public function Reals_videos(Request $request, $slug)

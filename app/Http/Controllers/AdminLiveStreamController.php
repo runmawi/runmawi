@@ -670,7 +670,7 @@ class AdminLiveStreamController extends Controller
         $movie->description =$data['description'];
         $movie->featured =$data['featured'];
         $movie->banner =$data['banner'];
-        $movie->duration =$data['duration'];
+        $movie->duration =  !empty($data['duration']) ? $data['duration'] : NULL;
         $movie->ppv_price = $ppv_price;
         $movie->access =$data['access'];
         $movie->slug =$data['slug'];

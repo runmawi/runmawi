@@ -1,9 +1,15 @@
 <?php
 $Livestream_detail = $Livestream_details;
-$Radio_station_lists = $Radio_station_lists;
-// dd($Radio_station_lists);
+$radio_station_url = URL::to('/radio-station');
+$media_url = $radio_station_url . '/' . $Livestream_detail->slug;
 ?>
 <style type="text/css">
+
+    body {
+    background-color: #000; /* Replace with your desired fallback color */
+    transition: background-color 0.5s ease; /* Smooth transition */
+    }
+
     #myProgress {
         background-color: #8b0000;
         cursor: pointer;
@@ -31,6 +37,8 @@ $Radio_station_lists = $Radio_station_lists;
         border-radius: 10px;
         padding: 10px;
         border-width: 2px;
+        height:100%;
+        overflow: hidden;
     }
 
     .btn-action {
@@ -43,7 +51,7 @@ $Radio_station_lists = $Radio_station_lists;
     .infos-ctn {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: center;
     }
 
     .infos-ctn {
@@ -84,25 +92,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         border-radius: 10px;
     }
 
-    .playlist-track-ctn {
-        display: flex;
-        padding-left: 10px;
-        background-color: #464646;
-        margin-top: 3px;
-        margin-right: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        align-items: center;
-    }
-
-    .playlist-track-ctn:last-child {
-        /*border: 1px solid #ffc266; */
-    }
-
-    .playlist-track-ctn>div {
-        margin: 5px;
-        color: #fff;
-    }
 
     .playlist-info-track {
         width: 80%;
@@ -112,35 +101,15 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     .playlist-info-track,
     .playlist-duration {
         /*padding-top: 7px;
-padding-bottom: 7px;*/
+        padding-bottom: 7px;*/
         color: #e9cc95;
         font-size: 14px;
         pointer-events: none;
     }
 
-    .playlist-ctn {}
-
-    .playlist-ctn::-webkit-scrollbar {
-        width: 2px;
-    }
-
-    .playlist-ctn::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .playlist-ctn::-webkit-scrollbar-thumb {
-        background-color: red;
-        border-radius: 2px;
-        border: 2px solid red;
-        width: 2px;
-    }
 
     .playlist-ctn {
         padding-bottom: 20px;
-        overflow: scroll;
-        scroll-behavior: auto;
-        max-height: 335px;
-        scrollbar-color: rebeccapurple green !important;
         overflow-x: hidden;
     }
 
@@ -296,16 +265,44 @@ padding-bottom: 7px;*/
         padding: 0 6px;
     }
 
-    .modal-content {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    
     @media(max-width: 767px) {
         ul.share-icon-aud li {
             padding: 5px 2px;
         }
     }
+
+
+    .hidden {
+    display: none !important;
+}
+
+.icon-circle {
+    background-color: #ED563C;
+    padding: 18px;
+    border-radius: 50%;
+    color: white;
+    font-size: 15px;
+    display: inline-block; 
+}
+
+
+
+    .modal{
+        right: 0;
+    }
+
+    @media (min-width: 576px) {
+        #Epg_schedule_modal .modal-dialog {
+            max-width: 100%;
+        }
+    }
+
+    #Epg_schedule_modal .modal-content {
+    background-color: transparent;
+    }
+
+   
+
 </style>
 <?php if (Session::has('message')): ?>
 <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
@@ -325,19 +322,20 @@ padding-bottom: 7px;*/
     <div id="audio_bg_dim" <?php if($Livestream_detail->access == 'guest' || ($Livestream_detail->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
     <div class="container-fluid">
         <?php if($Livestream_detail->access == 'guest' || ( ($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $Livestream_detail->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && $ppv_status == 1)): ?>
+       
         <?php if($Livestream_detail): ?>
         <?php if (  !Auth::guest() && $Livestream_detail->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' ) { ?>
         <div id="subscribers_only">
             <a class="text-center btn btn-success" id="paynowbutton"> Pay for View </a>
         </div>
         <?php } else { ?>
-        <div class="row album-top-30 mt-4 ">
+        <div class="row album-top-30 my-4 ">
             <div class="col-lg-8">
                 <div class="player-ctn" id="player-ctn"
                     style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
                     <div class="row align-items-center">
                         <div class="col-sm-3 col-md-3 col-xs-3 ">
-                            <img height="150" width="150" id="audio_img" src="">
+                            <img height="150" width="150" id="audio_img" >
                         </div>
                         <div class="col-sm-9 col-md-9 col-xs-9">
                             <div class="album_bg">
@@ -347,7 +345,6 @@ padding-bottom: 7px;*/
                                         <h2 class="hero-title album">
                                             <div class="title"></div>
                                         </h2>
-                                        <p class="mt-2">Music by <?php echo get_audio_artist($Livestream_detail->id); ?></p>
                                         </p>
                                         <div class="d-flex"
                                             style="justify-content: space-between;width: auto;align-items: center;">
@@ -360,33 +357,30 @@ padding-bottom: 7px;*/
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <a aria-hidden="true" class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>"
-                                                        data-authenticated="<?= !Auth::guest() ?>"
-                                                        data-audio_id="<?= $Livestream_detail->id ?>"><?php if(audiofavorite($Livestream_detail->id) == "active"): ?><i
-                                                            id="ff"
-                                                            class="fa fa-heart"></i><?php else: ?><i
-                                                            id="ff"
-                                                            class="fa fa-heart-o"></i><?php endif; ?></a>
+                                                    <a aria-hidden="true" 
+                                                    class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
+                                                    data-authenticated="<?= !Auth::guest() ?>" 
+                                                    data-audio_id="<?= $Livestream_detail->id ?>"
+                                                    onclick="toggleFavorite(this)">
+                                                     <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
+                                                         <i id="ff" class="fa fa-heart"></i>
+                                                     <?php else: ?>
+                                                         <i id="ff" class="fa fa-heart-o"></i>
+                                                     <?php endif; ?>
+                                                 </a>
                                                 </li>
                                                 <li>
                                                     <div class="dropdown">
-                                                        <i id="ff" class="fa fa-share-alt " type="button"
-                                                            id="dropdownMenuButton" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false"></i>
-
+                                                       <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
+                                                          <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                                                          <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
+                                                          </a>
+                                                          <div class="divider" style="border:1px solid white"></div>
+                                                          <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
+                                                       </div>
                                                     </div>
-                                                </li>
-                                                <li>
-                                                    <div>
-                                                        <?php if(!Auth::guest()){ ?>
-                                                        <button type="button" style="width:100%;"
-                                                            class="btn bd btn-primary" data-toggle="modal"
-                                                            data-target="#exampleModal">
-                                                            Create PlayList
-                                                        </button>
-                                                        <?php } ?>
-                                                    </div>
-                                                </li>
+                                                 </li>                                        
                                             </ul>
                                             <!-- Share -->
                                         </div>
@@ -396,65 +390,80 @@ padding-bottom: 7px;*/
                         </div>
                     </div>
                     <div class="infos-ctn d-flex justify-space-between">
-                        <?php /*{ ?> ?> ?> <img
-                            src="<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->image ?>"
-                            class="img-responsive mb-2" / width="100">
-                        <?php } */?>
+                        
                     </div>
                     <div id="myProgress">
                         <div id="myBar"></div>
                     </div>
-                    <div class="d-flex justify-content-between text-white">
-                        <div class="timer">00:00</div>
-                        <div class="duration">00:00</div>
-                    </div>
+                   
                     <div class="btn-ctn">
-                        <div class="btn-action first-btn" onclick="previous()">
+                        <div class="btn-action first-btn" style="padding:0px 40px;" onclick="previous()">
                             <div id="btn-faws-back">
-                                <i class='fas fa-step-backward'></i>
+                                <i class='fas fa-step-backward icon-circle' id="prev-button"></i>
                             </div>
                         </div>
-                        <div class="btn-action" onclick="rewind()">
-                            <div id="btn-faws-rewind">
-                                <i class='fas fa-backward'></i>
-                            </div>
-                        </div>
-                        <div class="btn-action" onclick="toggleAudio()">
+                      
+                        <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
                             <div id="btn-faws-play-pause">
-                                <i class='fas fa-play' id="icon-play"></i>
-                                <i class='fas fa-pause' id="icon-pause" style="display: none"></i>
+                                <i class='fas fa-play icon-circle' id="icon-play"></i>
+                                <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
                             </div>
                         </div>
-                        <div class="btn-play" onclick="forward()">
-                            <div id="btn-faws-forward">
-                                <i class='fas fa-forward'></i>
-                            </div>
-                        </div>
-                        <div class="btn-action" onclick="next()">
+                       
+                        <div class="btn-action" style="padding:0px 40px;" onclick="next()">
                             <div id="btn-faws-next">
-                                <i class='fas fa-step-forward'></i>
+                                <i class='fas fa-step-forward icon-circle' id="next-button"></i>
                             </div>
                         </div>
-                        <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+                        <div class="btn-mute" id="toggleMute" style="padding:0px 40px;" onclick="toggleMute()">
                             <div id="btn-faws-volume">
-                                <i id="icon-vol-up" class='fas fa-volume-up'></i>
-                                <i id="icon-vol-mute" class='fas fa-volume-mute' style="display: none"></i>
+                                <i id="icon-vol-up" class='fas fa-volume-up icon-circle'></i>
+                                <i id="icon-vol-mute" class='fas fa-volume-mute icon-circle' style="display: none"></i>
                             </div>
                         </div>
                     </div>
                     <div class="title"></div>
                 </div>
-                
+        
             </div>
             <div class="col-lg-4 p-0">
                 <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-                    <source id="source-audio" src="" type="audio/mpeg">
+                    <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
                     Your browser does not support the audio element.
                 </audio>
-                <div class="play-border">
+                <div class="play-border" style="margin: 0px; 10px;" >
                     <div class="playlist-ctn">
-                        <h6 class="mb-2 font-weight-bold">AUDIO LIST <i class="fa fa-arrow-right"
-                                aria-hidden="true"></i></h6>
+                        
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-6 mb-4">
+                                <h6 class="mb-0 font-weight-bold">
+                                    <span class="program-name"></span> 
+                                    <i class="fa fa-music" aria-hidden="true"></i>
+                                </h6>
+                            </div>
+                            <div class="col-12 col-md-6 mb-4">
+                                <div class="moreinfo text-md-right">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary w-100" 
+                                        data-toggle="modal" 
+                                        data-target="#Epg_schedule_modal"  
+                                        data-live-id="<?php echo $Livestream_detail->id; ?>"> 
+                                        VIEW SCHEDULE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                        <p>
+                            <span class="current-program">
+                        </p>
+
+                        <h6 class="mb-2 font-weight-bold">Next Program</h6>
+                        <p>
+                            <span class="next-program">
+                        </p>
                     </div>
                 </div>
             </div>
@@ -467,11 +476,6 @@ padding-bottom: 7px;*/
 <!-- Playlist  -->
 <div class="container-fluid">
 </div>
-<!-- Modal -->
-<?php
-include public_path('themes/theme5-nemisha/views/radio-modal.blade.php');
-?>
-
 
 <div class="container-fluid">
     <?php endif; ?>
@@ -499,6 +503,390 @@ include public_path('themes/theme5-nemisha/views/radio-modal.blade.php');
 <?php } ?>
 </div>
 
-<?php
-include public_path('themes/theme5-nemisha/views/radio-player-script.blade.php');
-?>
+<?php if ($Livestream_detail->stream_upload_via == 'radio_station') { ?>
+    <div class="container">
+    <div class="row">
+        <div class=" container-fluid video-list you-may-like overflow-hidden">
+            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+            <div class="slider">
+                <?php
+                    include public_path(
+                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
+                    );
+                ?>
+            </div>
+        </div>
+    </div>
+    </div>
+<?php }?>
+
+
+
+<script type="text/javascript">
+    $('#store-play-list').click(function(){
+                    $('#my-playlist-form').submit();
+                });
+    
+    var base_url = $('#base_url').val();
+    
+    $(document).ready(function(){
+    
+    
+    //watchlater
+    $('.watchlater').click(function(){
+    if($(this).data('authenticated')){
+    $.post('<?= URL::to('watchlater') ?>', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+    $(this).toggleClass('active');
+    $(this).html("");
+    if($(this).hasClass('active')){
+    $(this).html('<a><i class="fa fa-check"></i>Watch Later</a>');
+    }else{
+    $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
+    }
+    
+    } else {
+    window.location = '<?= URL::to('login') ?>';
+    }
+    });
+    
+    
+    //My Wishlist
+    $('.mywishlist').click(function(){
+    if($(this).data('authenticated')){
+    $.post('<?= URL::to('mywishlist') ?>', { audio_id : $(this).data('audioid'), _token: '<?= csrf_token(); ?>' }, function(data){});
+    $(this).toggleClass('active');
+    $(this).html("");
+    if($(this).hasClass('active')){
+    $(this).html('<a><i class="fa fa-check"></i>Wishlisted</a>');
+    }else{
+    $(this).html('<a><i class="fa fa-plus"></i>Add Wishlist</a>');
+    }
+    
+    } else {
+    window.location = '<?= URL::to('login') ?>';
+    }
+    });
+    
+    });
+    
+ </script>
+<script type="text/javascript">
+    function toggleFavorite(element) {
+      if ($(element).data('authenticated')) {
+        const audioId = $(element).data('audio_id');
+        const isActive = $(element).hasClass('active');
+        if (isActive) {
+          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
+          });
+          $(element).removeClass('active');
+          $(element).html('<i class="fa fa-heart-o"></i>');
+        } else {
+          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
+          });
+          $(element).addClass('active');
+          $(element).html('<i class="fa fa-heart"></i>');
+        }
+      } else {
+        window.location = '<?= URL::to('login') ?>';
+      }
+    }
+  </script>
+  
+  
+ <script>
+    function createTrackItem(index,name,duration,liveId){
+    
+      var trackItem = document.createElement('div');
+      trackItem.setAttribute("id", "ptc-"+index);
+      trackItem.setAttribute("data-index", index);
+      document.querySelector(".playlist-ctn").appendChild(trackItem);
+    
+      var playBtnItem = document.createElement('div');
+
+      var moreInfoBtn = document.createElement('button');
+      document.querySelector("#ptc-" + index).appendChild(moreInfoBtn);
+      moreInfoBtn.setAttribute("style", "display: none;"); // Hide the button
+
+        moreInfoBtn.addEventListener('click', function () {
+            const liveId = this.getAttribute('data-live-id');
+            loadEpgContent(liveId); 
+        });
+
+
+
+    }
+
+    function loadEpgContent(liveId) {
+        $('#modal-content').html('<p>Loading...</p>');
+
+        $.ajax({
+            url: "<?php echo url('/get-epg-content'); ?>",
+            method: 'GET',
+            data: { live_id: liveId }, 
+            success: function (response) {
+                $('#modal-content').html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error); 
+                $('#modal-content').html('<p>Error loading content. Please try again.</p>');
+            }
+        });
+    }
+
+    
+    var listAudio = <?php echo json_encode($Radio_station_lists); ?>;
+
+    listAudio = listAudio.filter(function(item) {
+        return !item.embed_url; 
+    });
+
+    for (var i = 0; i < listAudio.length; i++) {
+        createTrackItem(i, listAudio[i].title, listAudio[i].duration, listAudio[i].id);
+    }
+    
+    
+    for (var i = 0; i < listAudio.length; i++) {
+        createTrackItem(i,listAudio[i].title,listAudio[i].duration,listAudio[i].id);
+    }
+    
+    var indexAudio = 0;
+
+    function getCurrentProgram(index) {
+        try {
+            if (listAudio[index].publish_type === "schedule_program") {
+                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+                var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
+                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
+
+                if (!startTimes.length || !endTimes.length || !programTitles.length) {
+                    return "No schedule available.";
+                }
+
+                var currentTime = new Date();
+
+                for (var i = 0; i < startTimes.length; i++) {
+                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                    var [endHour, endMinute] = endTimes[i].split(":").map(Number);
+
+                    var startDate = new Date(currentTime);
+                    var endDate = new Date(currentTime);
+                    startDate.setHours(startHour, startMinute, 0, 0);
+                    endDate.setHours(endHour, endMinute, 0, 0);
+                    if (endDate < startDate) {
+                        endDate.setDate(endDate.getDate() + 1);
+                    }
+                    if (currentTime >= startDate && currentTime <= endDate) {
+                        return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
+                    }
+                }
+                    return "No Current Program.";
+                } else {
+                    return listAudio[index].title;
+                }
+            } catch (error) {
+                console.error("Error parsing schedule data:", error);
+                return "Invalid schedule data.";
+        }
+    }
+
+    function getNextProgram(index) {
+        try {
+            if (listAudio[index].publish_type === "schedule_program") {
+                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
+                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
+
+                if (!startTimes.length || !programTitles.length) {
+                    return "No schedule available.";
+                }
+
+                var currentTime = new Date();
+
+                for (var i = 0; i < startTimes.length; i++) {
+                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                    var startDate = new Date(currentTime);
+                    startDate.setHours(startHour, startMinute, 0, 0);
+
+                    if (currentTime < startDate) {
+                        return `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
+                    }
+                }
+
+                return "No Next Program.";
+            } else {
+                return "No Program Scheduled";
+            }
+        } catch (error) {
+            console.error("Error parsing schedule data:", error);
+            return "Invalid schedule data.";
+        }
+    }
+
+
+     
+    function formatTime(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+        minutes = minutes.toString().padStart(2, "0");
+        return `${hours}:${minutes} ${ampm}`;
+    }
+
+
+    function loadNewTrack(index) {
+        var player = document.querySelector('#source-audio');
+        player.src = listAudio[index].livestream_URL; 
+        document.querySelector('.title').innerHTML = listAudio[index].title; 
+        document.querySelector('.program-name').innerHTML = listAudio[index].title; 
+
+        var currentProgram = getCurrentProgram(index); 
+        document.querySelector('.current-program').innerHTML = currentProgram;
+
+        var nextProgram = getNextProgram(index);
+        document.querySelector('.next-program').innerHTML = nextProgram;
+
+        var image = document.querySelector('#audio_img');
+        image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image;
+        var divElement = document.getElementById("player-ctn");
+        var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image;
+        divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25) 0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
+
+        this.currentAudio = document.getElementById("myAudio");
+        this.currentAudio.load(); 
+        this.toggleAudio(); 
+        this.updateStylePlaylist(this.indexAudio, index);
+        this.indexAudio = index;
+
+        var liveId = listAudio[index].id; 
+        loadEpgContent(liveId); 
+    }
+    
+    document.querySelector('#source-audio').src = <?php echo json_encode(@$Livestream_detail->livestream_URL) ; ?>  
+    document.querySelector('.title').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
+    document.querySelector('.program-name').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
+    
+    var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
+    var audio_images = player_images +'/' + <?php echo json_encode(@$Livestream_detail->image) ; ?>;
+    $("#audio_img").attr('src', audio_images);
+    
+    var currentAudio = document.getElementById("myAudio");
+    currentAudio.load()
+    currentAudio.onloadedmetadata = function() {
+          document.getElementsByClassName('duration')[0].innerHTML = this.getMinutes(this.currentAudio.duration)
+    }.bind(this);
+
+    var interval1;
+    
+    function toggleAudio() {
+        const button = document.querySelector('#vidbutton');
+        const playIcon = document.querySelector('#icon-play');
+        const pauseIcon = document.querySelector('#icon-pause');
+
+        if (this.currentAudio.paused) {
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            button.innerHTML = "<i class='fas fa-pause' style='color: white; font-size:15px'></i> <span style='color: white;'> Pause</span>";
+            this.playToPause(this.indexAudio);
+            this.currentAudio.play();
+        } else {
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            button.innerHTML = "<i class='fas fa-play' style='color: white; font-size:15px'></i> <span style='color: white;'> Play</span>";
+            this.pauseToPlay(this.indexAudio);
+            this.currentAudio.pause();
+        }
+    }
+    
+    function pauseAudio() {
+      this.currentAudio.pause();
+      clearInterval(interval1);
+    }
+    
+    
+    
+    var width = 0;
+    
+    function onTimeUpdate() {
+      var t = this.currentAudio.currentTime
+      this.setBarProgress();
+      if (this.currentAudio.ended) {
+        document.querySelector('#icon-play').style.display = 'block';
+        document.querySelector('#icon-pause').style.display = 'none';
+        this.pauseToPlay(this.indexAudio)
+        if (this.indexAudio < listAudio.length-1) {
+            var index = parseInt(this.indexAudio)+1
+            this.loadNewTrack(index)
+        }
+      }
+    }
+        
+    function getMinutes(t){
+      var min = parseInt(parseInt(t)/60);
+      var sec = parseInt(t%60);
+      if (sec < 10) {
+        sec = "0"+sec
+      }
+      if (min < 10) {
+        min = "0"+min
+      }
+      return min+":"+sec
+    }
+   
+    
+    
+    function seek(event) {
+      var percent = event.offsetX / progressbar.offsetWidth;
+      this.currentAudio.currentTime = percent * this.currentAudio.duration;
+      barProgress.style.width = percent*100 + "%";
+    }
+   
+    function next(){
+      if (this.indexAudio <listAudio.length-1) {
+          var oldIndex = this.indexAudio
+          this.indexAudio++;
+          updateStylePlaylist(oldIndex,this.indexAudio)
+          this.loadNewTrack(this.indexAudio);
+      }
+    }
+    
+    function previous(){
+      if (this.indexAudio>0) {
+          var oldIndex = this.indexAudio
+          this.indexAudio--;
+          updateStylePlaylist(oldIndex,this.indexAudio)
+          this.loadNewTrack(this.indexAudio);
+      }
+    }
+    
+    function updateStylePlaylist(oldIndex,newIndex){
+      this.pauseToPlay(oldIndex);
+      this.playToPause(newIndex)
+    }
+    
+    function playToPause(index){
+      var ele = document.querySelector('#p-img-'+index)
+   
+    }
+    
+    function pauseToPlay(index){
+      var ele = document.querySelector('#p-img-'+index)
+    
+    }
+    
+    
+    function toggleMute(){
+      var btnMute = document.querySelector('#toggleMute');
+      var volUp = document.querySelector('#icon-vol-up');
+      var volMute = document.querySelector('#icon-vol-mute');
+      if (this.currentAudio.muted == false) {
+         this.currentAudio.muted = true
+         volUp.style.display = "none"
+         volMute.style.display = "block"
+      }else{
+        this.currentAudio.muted = false
+        volMute.style.display = "none"
+        volUp.style.display = "block"
+      }
+    }
+      
+ </script>

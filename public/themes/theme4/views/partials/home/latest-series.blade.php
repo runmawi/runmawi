@@ -1,6 +1,6 @@
 @php
     $data->map(function($item){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes->take(15)
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                                         $item['season_name'] = App\SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
@@ -34,7 +34,7 @@
                                 @foreach ($data as $key => $latest_series)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}"  class="flickity-lazyloaded" alt="latest_series">
+                                            <img data-flickity-lazyload="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}"  class="flickity-lazyloaded" alt="{{ $latest_series->title }}">
                                         </div>
                                     </div>
                                 @endforeach
@@ -68,7 +68,7 @@
                                                 <div class="depend-items">
                                                 <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                     <div class=" position-relative">
-                                                        <img src="{{ $episode_details->image_url }}" class="img-fluid" alt="Videos">  
+                                                        <img data-flickity-lazyload="{{ $episode_details->image_url }}" class="img-fluid" alt="{{ $episode_details->title }}">  
                                                         <div class="controls">
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
@@ -164,13 +164,16 @@
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
-            groupCells: true,
+            groupCells: false,
             pageDots: false,
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload:true,
+            lazyLoad: 10,
         });
+
+        
+
         document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
             document.querySelectorAll('.latest-series-video .item').forEach(function(item) {
@@ -201,9 +204,12 @@
                         var flkty = new Flickity(selectedSlider, {
                             cellAlign: 'left',
                             contain: true,
-                            groupCells: true,
-                            adaptiveHeight: true,
+                            groupCells: false,
                             pageDots: false,
+                            draggable: true,
+                            freeScroll: true,
+                            imagesLoaded: true,
+                            lazyLoad: 10,
                         });
                     }, 0);
                 }
@@ -218,9 +224,8 @@
             document.getElementsByClassName('series-dropdown')[0].style.display = 'flex';
         });
     });
-    
+
     $('body').on('click', '.drp-close', function() {
         $('.series-dropdown').hide();
     });
     </script>
-    

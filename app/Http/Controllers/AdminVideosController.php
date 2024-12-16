@@ -13849,24 +13849,33 @@ class AdminVideosController extends Controller
             // Process failed jobs
             foreach ($failedJobs as $failedJob) {
                 $payload = json_decode($failedJob->payload);
-    
+            
                 if (isset($payload->data->command)) {
-                    $command = unserialize($payload->data->command);
-    
-                    // Separate based on the command class and store for display
-                    if ($command instanceof ConvertVideoForStreaming) {
-                        $failedVideoCommands[] = $command;
-                    }  elseif ($command instanceof ConvertEpisodeVideo) {
-                        $failedEpisodeCommands[] = $command;
-                    } elseif ($command instanceof ConvertSerieTrailer) {
-                        $failedSerieTrailerCommands[] = $command;
+                    try {
+                        $command = unserialize($payload->data->command);
+            
+                        if ($command instanceof ConvertVideoForStreaming) {
+                            $failedVideoCommands[] = $command;
+                        } elseif ($command instanceof ConvertEpisodeVideo) {
+                            if (App\Episode::find($command->episode_id)) {
+                                $failedEpisodeCommands[] = $command;
+                            } else {
+                                \Log::warning("Episode not found for command", ['episode_id' => $command->episode_id]);
+                                continue; // Skip this job
+                            }
+                        } elseif ($command instanceof ConvertSerieTrailer) {
+                            $failedSerieTrailerCommands[] = $command;
+                        }
+            
+                        // Re-dispatch the failed command to restart transcoding
+                        dispatch($command);
+                    } catch (\Exception $e) {
+                        // Log errors during unserialization or processing
+                        \Log::error("Failed to process job command", ['error' => $e->getMessage()]);
                     }
-    
-                    // Re-dispatch the failed command to restart transcoding
-                    dispatch($command);
                 }
             }
-
+            
             $data = [
                 'video'              => $videoCommands,
                 'episode'            => $episodeCommands,

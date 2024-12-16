@@ -495,9 +495,6 @@
             @elseif ($video->recurring_program == "weekly")
 
                 @switch($video->recurring_program_week_day)
-                    @case(0)
-                        @php $recurring_program_week_day = "Sunday"; @endphp
-                        @break
                     @case(1)
                         @php $recurring_program_week_day = "Monday"; @endphp
                         @break
@@ -515,6 +512,9 @@
                         @break
                     @case(6)
                         @php $recurring_program_week_day = "Saturday"; @endphp
+                        @break
+                    @case(7)
+                        @php $recurring_program_week_day = "Sunday"; @endphp
                         @break
                     @default
                         @php $recurring_program_week_day = "Unknown"; @endphp

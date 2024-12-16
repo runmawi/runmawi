@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -56,7 +56,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
+                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -119,7 +119,7 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 @if ($multiple_compress_image == 1)
-                                                    <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image ?  URL::to('public/uploads/images/'.$episode->player_image) : $default_vertical_image_url }}"
+                                                    <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ URL::to('public/uploads/images/'.$episode->player_image) }}"
                                                         srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : URL::to('public/uploads/images/'.$episode->player_image) }},
                                                         {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : URL::to('public/uploads/images/'.$episode->player_image) }},
                                                         {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : URL::to('public/uploads/images/'.$episode->player_image) }}" >
@@ -165,13 +165,15 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
-    });
+        lazyLoad: 10,
+        });
+
+       
 
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
@@ -206,12 +208,12 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: true,
+                        groupCells: false,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyload:true,
+                        lazyLoad: 10,
                     });
                 },0);
             }
@@ -227,12 +229,12 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
         });
     });
 });
-
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
         dropdown.style.display = 'none';
     });
 });
+
 </script>
 

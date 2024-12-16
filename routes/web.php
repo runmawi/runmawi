@@ -811,6 +811,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
+    
     Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
@@ -1214,6 +1215,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::PATCH('/Serie/Network-update/{id}', 'AdminNetworkController@Network_update')->name('admin.Network_update');
     Route::get('/Serie/Network-delete/{id}', 'AdminNetworkController@Network_delete')->name('admin.Network_delete');
     Route::Post('/Serie/Network/order', 'AdminNetworkController@Network_order')->name('admin.Network_order');
+    Route::Post('/Serie/Network-based/order', 'AdminNetworkController@NetworkBased_order')->name('admin.Network_series_order');
 
     //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
@@ -3072,3 +3074,9 @@ Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetail
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
+
+// Unassigned episodes assign
+Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
+Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
+Route::post('/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
+Route::post('datafree/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
