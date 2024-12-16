@@ -5267,7 +5267,7 @@ class ChannelController extends Controller
             if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'videodetail' => $videodetail ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                     'recomended' => $recomended ,
                     'videoURl' => $videoURl ,
@@ -5979,6 +5979,7 @@ class ChannelController extends Controller
    
     public function PartnerMonetization(Request $request)
     {
+        // dd('test');
         try {
             $video_id = $request->video_id;
             $video = Video::where('id', $video_id)->first();

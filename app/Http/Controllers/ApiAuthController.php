@@ -18312,6 +18312,11 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $this->Livestream_Pagelist();
                   $Page_List_Name = 'Livestream_Pagelist';
                   break;
+
+              case 'radio_station':
+                $data = $this->Radiostation_Pagelist();
+                $Page_List_Name = 'Radiostation_Pagelist';
+                break;
       
               case 'featured_videos':
                   $data = $this->Featured_videos_Pagelist();
@@ -18970,6 +18975,33 @@ public function QRCodeMobileLogout(Request $request)
         
     return $livestreams_sort->values();
   }
+
+
+  private static function Radiostation_Pagelist(){
+
+    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                      'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                      'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                      'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
+                                      'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                      ->where('active', '1')
+                                      ->where('stream_upload_via','radio_station')
+                                      ->where('status', 1)
+                                        ->get()->map(function ($item)  {
+                                          $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                          $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                          $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
+                                          $item['description'] = $item->description ;
+                                          $item['source']    = "RadioStation";
+                                          return $item;
+                                      });
+
+    
+        
+    return $livestreams->values();
+  }
+
+
 
   private static function Channel_Pagelist(){
 
@@ -28713,10 +28745,81 @@ public function SendVideoPushNotification(Request $request)
                             $item['trailer'] = null ;
                             $item['livestream_format'] =  $item->url_type ;
   
-                            $item['Share_URL'] = URL::to('live/'.$item->slug);
+                            $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
   
                             $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
-  
+
+                            $programDays = json_decode($item->scheduler_program_days);
+                            $programTitles = json_decode($item->scheduler_program_title);
+                            $programStartTimes = json_decode($item->scheduler_program_start_time);
+                            $programEndTimes = json_decode($item->scheduler_program_end_time);
+          
+                            $daysOfWeek = [
+                              0 => "Sunday",
+                              1 => "Monday",
+                              2 => "Tuesday",
+                              3 => "Wednesday",
+                              4 => "Thursday",
+                              5 => "Friday",
+                              6 => "Saturday",
+                          ];
+
+                        switch ($item->publish_type) {
+                            case 'publish_now':
+                                $daywisePrograms = array_map(function () use ($item) {
+                                    return [[
+                                        'title' => $item->title,
+                                        'start_time' => '00:00',
+                                        'end_time' => '23:59',
+                                    ]];
+                                }, array_flip($daysOfWeek));
+                                $item['program_schedule_daywise'] = $daywisePrograms;
+                                break;
+
+                                case 'publish_later':
+                                  $publishTime = $item->publish_time 
+                                      ? Carbon::parse($item->publish_time)->format('H:i') 
+                                      : '00:00';
+                              
+                                  $daywisePrograms = array_map(function () use ($publishTime, $item) {
+                                      return [[
+                                          'title' => $item->title,
+                                          'start_time' => $publishTime,
+                                          'end_time' => '23:59',
+                                      ]];
+                                  }, array_flip($daysOfWeek));
+                              
+                                  $item['program_schedule_daywise'] = $daywisePrograms;
+                                  break;
+
+                                case 'schedule_program':
+                                    $programDays = json_decode($item->scheduler_program_days, true) ?? [];
+                                    $programTitles = json_decode($item->scheduler_program_title, true) ?? [];
+                                    $programStartTimes = json_decode($item->scheduler_program_start_time, true) ?? [];
+                                    $programEndTimes = json_decode($item->scheduler_program_end_time, true) ?? [];
+
+                                    $daywisePrograms = array_fill_keys($daysOfWeek, []);
+                                    foreach ($programDays as $dayIndex) {
+                                        $dayName = $daysOfWeek[$dayIndex] ?? null;
+                                        if ($dayName) {
+                                            foreach ($programTitles as $i => $title) {
+                                                $daywisePrograms[$dayName][] = [
+                                                    'title' => $title,
+                                                    'start_time' => $programStartTimes[$i] ?? '',
+                                                    'end_time' => $programEndTimes[$i] ?? '',
+                                                ];
+                                            }
+                                        }
+                                    }
+                                    $item['program_schedule_daywise'] = $daywisePrograms;
+                                    break;
+
+                                default:
+                                    $item['program_schedule_daywise'] = array_fill_keys($daysOfWeek, []);
+                                    break;
+                            }
+
+
                             if( $item['livestream_format'] == "mp4"){
                               $item['livestream_url'] =  $item->mp4_url ;
                             }
@@ -28793,78 +28896,8 @@ public function SendVideoPushNotification(Request $request)
                                           $item['livestream_format'] =  $item->url_type ;
                                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
                 
-                                          $item['Share_URL'] = URL::to('live/'.$item->slug);
- 
-                                         $programDays = json_decode($item->scheduler_program_days);
-                                         $programTitles = json_decode($item->scheduler_program_title);
-                                         $programStartTimes = json_decode($item->scheduler_program_start_time);
-                                         $programEndTimes = json_decode($item->scheduler_program_end_time);
-                       
-                                         $daysOfWeek = [
-                                           0 => "Sunday",
-                                           1 => "Monday",
-                                           2 => "Tuesday",
-                                           3 => "Wednesday",
-                                           4 => "Thursday",
-                                           5 => "Friday",
-                                           6 => "Saturday",
-                                       ];
- 
-                                     switch ($item->publish_type) {
-                                         case 'publish_now':
-                                             $daywisePrograms = array_map(function () use ($item) {
-                                                 return [[
-                                                     'title' => $item->title,
-                                                     'start_time' => '00:00',
-                                                     'end_time' => '23:59',
-                                                 ]];
-                                             }, array_flip($daysOfWeek));
-                                             $item['program_schedule_daywise'] = $daywisePrograms;
-                                             break;
- 
-                                             case 'publish_later':
-                                               $publishTime = $item->publish_time 
-                                                   ? Carbon::parse($item->publish_time)->format('H:i') 
-                                                   : '00:00';
-                                           
-                                               $daywisePrograms = array_map(function () use ($publishTime, $item) {
-                                                   return [[
-                                                       'title' => $item->title,
-                                                       'start_time' => $publishTime,
-                                                       'end_time' => '23:59',
-                                                   ]];
-                                               }, array_flip($daysOfWeek));
-                                           
-                                               $item['program_schedule_daywise'] = $daywisePrograms;
-                                               break;
- 
-                                             case 'schedule_program':
-                                                 $programDays = json_decode($item->scheduler_program_days, true) ?? [];
-                                                 $programTitles = json_decode($item->scheduler_program_title, true) ?? [];
-                                                 $programStartTimes = json_decode($item->scheduler_program_start_time, true) ?? [];
-                                                 $programEndTimes = json_decode($item->scheduler_program_end_time, true) ?? [];
- 
-                                                 $daywisePrograms = array_fill_keys($daysOfWeek, []);
-                                                 foreach ($programDays as $dayIndex) {
-                                                     $dayName = $daysOfWeek[$dayIndex] ?? null;
-                                                     if ($dayName) {
-                                                         foreach ($programTitles as $i => $title) {
-                                                             $daywisePrograms[$dayName][] = [
-                                                                 'title' => $title,
-                                                                 'start_time' => $programStartTimes[$i] ?? '',
-                                                                 'end_time' => $programEndTimes[$i] ?? '',
-                                                             ];
-                                                         }
-                                                     }
-                                                 }
-                                                 $item['program_schedule_daywise'] = $daywisePrograms;
-                                                 break;
- 
-                                             default:
-                                                 $item['program_schedule_daywise'] = array_fill_keys($daysOfWeek, []);
-                                                 break;
-                                         }
- 
+                                          $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
+
                                           switch (true) {
   
                                             case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
@@ -28993,7 +29026,7 @@ public function SendVideoPushNotification(Request $request)
        } else {
            $response = [
                'status' => 'true',
-               'shareurl' => URL::to('live') . '/' . $request->liveid,
+               'shareurl' => URL::to('radio-station') . '/' . $request->liveid,
                'radiostationdetail' => $radiostaion_details,
                'like' => $like,
                'dislike' => $dislike,
@@ -29001,9 +29034,9 @@ public function SendVideoPushNotification(Request $request)
                'languages' => $languages,
                'categories' => $categories,
                'current_timezone' => current_timezone(),
-               'RentURL' => URL::to('live') . '/' . $radiostationSlug,
+               'RentURL' => URL::to('radio-station') . '/' . $radiostationSlug,
                'radiostations' => $radiostations,
-               'program_schedule_daywise' => $radiostations->pluck('program_schedule_daywise'), 
+               'program_schedule_daywise' => $radiostaion_details->pluck('program_schedule_daywise'), 
            ];
        }
        

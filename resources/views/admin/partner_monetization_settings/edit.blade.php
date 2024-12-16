@@ -107,6 +107,21 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="col-md-4">
+                                <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                        <div class="panel-title"><label>Video View Limit</label></div>
+                                        <div class="panel-options"> <a href="#" data-rel="collapse"><i
+                                                    class="entypo-down-open"></i></a> </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                        <input type="text" class="form-control" name="video_viewcount_limit"
+                                            id="video_viewcount_limit"
+                                            value="@if (!empty($partner_monetization_settings->video_viewcount_limit)) {{ $partner_monetization_settings->video_viewcount_limit }} @endif" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
                         <input type="hidden" name="id" value="<?= isset($partner_monetization_settings->id) ?>" />
