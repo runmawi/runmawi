@@ -1,14 +1,14 @@
 <script>
-
+    
+    
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
     var videoId = "<?php echo $videodetail->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
-    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
     var user_role = "<?php echo $user_role; ?>";
     var played_views = "<?php echo $videodetail->played_views; ?>";
-
     const skipForwardButton = document.querySelector('.custom-skip-forward-button');
     const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
     var remainingDuration = false;
@@ -72,10 +72,11 @@
 
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > 5 ) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > video_viewcount_limit ) {
                 viewCountSent = true;
                 countview = 1;
               
+                alert('ere')
                 $.ajax({
                     url: "<?php echo URL::to('PartnerMonetization');?>",
                     type: 'POST',
@@ -88,8 +89,8 @@
                 });
             }
 
-            // console.log('currentTime: ' + currentTime);
-            // console.log('countview: ' + countview);
+            console.log('currentTime: ' + currentTime);
+            console.log('countview: ' + countview);
         }
 
 

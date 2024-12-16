@@ -1,6 +1,5 @@
 <script>
-
-    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
     var played_views = "<?php echo $episode_details->played_views; ?>";
     var user_role = "<?php echo $user_role; ?>";
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
@@ -118,7 +117,7 @@
             currentTime = Math.floor(currentTime);
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > 5) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > video_viewcount_limit) {
                 viewCountSent = true;
                 countview = 1;
                 $.ajax({
