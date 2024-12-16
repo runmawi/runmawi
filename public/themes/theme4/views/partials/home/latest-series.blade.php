@@ -1,6 +1,6 @@
 @php
     $data->map(function($item){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes->take(15)
+        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
                                                     ->map(function ($item) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
                                                         $item['season_name'] = App\SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
