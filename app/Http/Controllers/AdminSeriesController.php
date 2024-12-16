@@ -2842,7 +2842,8 @@ class AdminSeriesController extends Controller
         $episode->mp4_url = !empty($episode->mp4_url) ? $episode->mp4_url : (!empty($data['mp4_url']) ? $data['mp4_url'] : null);
         $episode->embed_video_url = !empty($episode->embed_video_url) ? $episode->embed_video_url : (!empty($data['embed_video_url']) ? $data['embed_video_url'] : null);
         $episode->status =  1;
-
+        $episode->active =  empty($data['active']) ? 0 : 1;
+        // dd($episode->active);
         // {{--Ads Video.Js Player--}}
 
 
