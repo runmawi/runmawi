@@ -353,6 +353,7 @@ class FrontEndQueryController extends Controller
                             $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
                                 ? URL::to('public/uploads/images/' . $episode->image)
                                 : $this->default_vertical_image;
+                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? URL::to('public/uploads/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
     
                             $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
                                 ->pluck('series_seasons_name')
@@ -373,7 +374,6 @@ class FrontEndQueryController extends Controller
             return $item;
         });
     
-        // dd($Series_based_on_Networks);
 
         return $Series_based_on_Networks;
     }
