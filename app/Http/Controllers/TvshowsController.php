@@ -1360,10 +1360,10 @@ class TvshowsController extends Controller
                 $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
 
 
-                $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                $season_depends_episode = Episode::where('active',1)->where('series_id',$id)
                                                 ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
 
-                $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                $featured_season_depends_episode = Episode::where('active',1)->where('featured',1)
                                                 ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
                  
@@ -1900,15 +1900,16 @@ public function RemoveDisLikeEpisode(Request $request)
 
             $series_data = SeriesNetwork::where('slug',$slug)->orderBy('order')->get()->map(function ($item) {
 
-                $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                            ->whereJsonContains('network_id', [(string)$item->id])
-
-                            ->latest('series.created_at')->get()->map(function ($item) { 
+                $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                ->where('series.active', 1)
+                ->where('series_network_order.network_id', $item->id)
+                ->orderBy('series_network_order.order', 'asc')
+                ->get()->map(function ($item) { 
                     
                     $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                     $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
-                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                    $item['Series_depends_episodes'] = Episode::where('series_id', $item->id)->where('active',1)->get()
                                                             ->map(function ($item) {
                                                             $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                             return $item;
@@ -1936,7 +1937,7 @@ public function RemoveDisLikeEpisode(Request $request)
                 throw new \Exception('Series data not found');
             }
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }

@@ -307,20 +307,6 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                 @endif
             @endif   
             
-            @if($page == 'Edit' && $episodes->status == 0  && $episodes->type == "m3u8")
-                <div class="col-sm-12">
-                    Video Transcoding is under Progress
-                    <div class="progress">
-                        <div class="low_bar"></div >
-                    </div>
-                    <div class="low_percent">0%</div >
-                </div>
-
-                <!-- <div class="progress">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-               </div> -->
-               
-            @endif
 
             <div class="container">                
                 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
