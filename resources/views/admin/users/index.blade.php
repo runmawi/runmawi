@@ -105,7 +105,7 @@
                                           </td>
 
                                           <td> {{ !empty($user->username) ? $user->username : $user->name }} </td>
-                                          <td>{{ @$user->mobile}}</td>
+                                          <td>{{ @$user->ccode ." ". @$user->mobile}}</td>
                                           <td>{{ @$user->email}}</td>
                                           <td>{{ @$user->role}}</td>
 
