@@ -702,7 +702,10 @@ $settings  = App\Setting::first();?>
 			@foreach($seasons as $key=>$seasons_value)
 			<tr id="{{ $seasons_value->id }}">
 				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
-				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
+				<td valign="bottom">
+					<p>{{ $seasons_value->total_episode }} Episodes <br>
+						<span style="color:green;font-size:12px;">Active: {{ $seasons_value->active_episode }}</span>, <span style="color: red;font-size:12px;"> Draft:{{ $seasons_value->draft_episodes }}</span>
+					</p></td>
 				<td valign="bottom"><p>{{ $seasons_value->access }}</p></td>
 				<td>
 					<p>
