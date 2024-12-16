@@ -155,10 +155,6 @@ class AdminUsersController extends Controller
 
             return DataTables::of($query)
 
-                ->addColumn('mobile', function ($user) {
-                    return  $user->ccode." ".$user->mobile;
-                })
-
                 ->addColumn('select', function ($user) {
                     return '<input type="checkbox" class="user-checkbox" value="' . $user->id . '">';
                 })
