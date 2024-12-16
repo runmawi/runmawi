@@ -74,6 +74,7 @@ class AdminPartnerMonetizationSettings extends Controller
         $partner_monetization_settings = new PartnerMonetizationSetting;
         $partner_monetization_settings->viewcount_limit = $input['viewcount_limit'];
         $partner_monetization_settings->views_amount = $input['views_amount'];
+        $partner_monetization_settings->video_viewcount_limit = $input['video_viewcount_limit'];
         $partner_monetization_settings->user_id = Auth::User()->id;
         $partner_monetization_settings->save();
         return Redirect::back();
@@ -90,6 +91,7 @@ class AdminPartnerMonetizationSettings extends Controller
         }
         $partner_monetization_settings->viewcount_limit = $input['viewcount_limit'];
         $partner_monetization_settings->views_amount = $input['views_amount'];
+        $partner_monetization_settings->video_viewcount_limit = $input['video_viewcount_limit'];
         $partner_monetization_settings->user_id = Auth::User()->id;
         $partner_monetization_settings->save();
         return Redirect::back();

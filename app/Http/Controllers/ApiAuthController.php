@@ -1,157 +1,158 @@
 <?php
 
 namespace App\Http\Controllers;
-use \App\User as User;
-use \Redirect as Redirect;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use URL;
-use App\Test as Test;
-use App\RecentView as RecentView;
-use App\Setting as Setting;
-use App\Series as Series;
-use App\SeriesSeason as SeriesSeason;
-use App\Plan as Plan;
-use App\Page as Page;
-use App\Cast as Cast;
-use App\Slider as Slider;
-use App\Wishlist as Wishlist;
-use App\Favorite as Favorite;
-use App\Watchlater as Watchlater;
-use App\PpvVideo as PpvVideo;
-use App\PpvPurchase as PpvPurchase;
-use App\MobileSlider as MobileSlider;
-use App\PpvCategory as PpvCategory;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\LivePurchase as LivePurchase;
-use App\Subscription as Subscription;
-use App\VerifyNumber as VerifyNumber;
-use App\PaypalPlan as PaypalPlan;
-use App\PaymentSetting as PaymentSetting;
-use App\Episode as Episode;
-use App\Video as Video;
-use App\Country as Country;
-use App\State as State;
-use App\City as City;
-use Nexmo;
-use App\VideoCategory as VideoCategory;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\Subtitle as Subtitle;
-use App\CouponPurchase as CouponPurchase;
-use App\Coupon as Coupon;
-use App\Tag as Tag;
-use App\LikeDislike as Likedislike;
-use App\Comment as Comment;
-use Auth;
-use Hash;
 use DB;
-use Illuminate\Support\Facades\Cache;
-use Image;
-use View;
-use Validator;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
-use FFMpeg\Coordinate\TimeCode;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use Illuminate\Support\Str;
-use Unicodeveloper\Paystack\Exceptions\IsNullException;
-use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
-use Illuminate\Pagination\LengthAwarePaginator;
+use URL;
+use Auth;
+use File;
+use Hash;
 use Mail;
-use Carbon\Carbon as Carbon;
-use App\Playerui as Playerui;
-use App\Audio as Audio;
-use App\Artist as Artist;
-use App\AudioCategory as AudioCategory;
-use App\Audioartist as Audioartist;
-use App\ContinueWatching as ContinueWatching;
-use App\AudioAlbums as AudioAlbums;
-use App\EmailTemplate;
-use App\SubscriptionPlan;
-use App\Multiprofile;
-use App\LanguageVideo;
-use App\CategoryAudio;
-use App\LiveLanguage;
+use View;
+use Image;
+use Nexmo;
+use CPANEL;
 use Session;
-use Victorybiz\GeoIPLocation\GeoIPLocation;
-use App\Geofencing;
-use App\BlockVideo;
-use App\BlockAudio;
-use App\HomeSetting;
-use App\Videoartist;
-use App\Seriesartist;
-use App\WelcomeScreen;
-use App\CategoryVideo;
+use App\Menu;
+use Paystack;
+use Validator;
+use App\Deploy;
+use App\Channel;
+use App\AdsEvent;
+use App\AdsVideo;
+use App\TimeZone;
+use App\Currency ;
+use App\Document ;
 use App\MobileApp;
+use App\SiteTheme;
+use Stripe\Stripe;
+use App\BlockAudio;
+use App\BlockVideo;
+use App\Geofencing;
+use App\MyPlaylist;
+use App\Tag as Tag;
+use App\WebComment;
+use App\HomeSetting;
+use App\SeriesGenre;
+use App\TVLoginCode;
+use App\Videoartist;
+use App\Adsvariables;
+use App\Cast as Cast;
+use App\CategoryLive;
+use App\City as City;
+use App\LiveLanguage;
+use App\LoggedDevice;
+use App\Multiprofile;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\Seriesartist;
+use App\Test as Test;
+use Razorpay\Api\Api;
+use \App\User as User;
+use App\AdminVideoAds;
+use App\Advertisement;
+use App\CategoryAudio;
+use App\CategoryVideo;
+use App\EmailTemplate;
+use App\InappPurchase;
+use App\LanguageVideo;
+use App\M3UFileParser;
+use App\SeriesNetwork;
+use App\SystemSetting;
+use App\TvSearchData ;
+use App\VideoPlaylist;
+use App\WelcomeScreen;
+use App\Audio as Audio;
+use App\DocumentGenre ;
+use App\MobileSideMenu;
+use App\ModeratorsUser;
+use App\PlayerAnalytic;
 use App\SeriesCategory;
 use App\SeriesLanguage;
-use CPANEL;
-use App\Deploy;
-use App\LoggedDevice;
-use Razorpay\Api\Api;
-use App\AdsVideo;
-use App\AdvertisementView;
-use App\Advertisement;
-use App\OrderHomeSetting;
-use App\MobileHomeSetting;
-use App\SiteTheme;
-use App\PlayerAnalytic;
-use App\SystemSetting;
-use App\CurrencySetting;
-use App\MobileSideMenu;
-use App\CategoryLive;
-use App\TVLoginCode;
-use Paystack;
-use App\VideoCommission;
-use App\ModeratorsUser;
-use App\Paystack_Andriod_UserId;
-use App\AdsEvent;
-use App\VideoSchedules as VideoSchedules;
-use App\ScheduleVideos as ScheduleVideos;
-use App\ReSchedule as ReSchedule;
-use App\WebComment;
-use App\Channel;
-use App\ThumbnailSetting;
-use App\Menu;
-use App\SeriesGenre;
-use App\M3UFileParser;
-use File;
-use App\Users_Interest_Genres;
-use App\MyPlaylist;
-use App\AudioUserPlaylist;
-use App\VideoPlaylist;
-use App\AdminVideoPlaylist;
-use App\MusicStation as MusicStation;
-use App\UserMusicStation as UserMusicStation;
-use Stripe\Stripe;
-use App\TVSetting as TVSetting;
-use App\TvSearchData ;
-use App\Currency ;
-use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
-use App\ChannelVideoScheduler as ChannelVideoScheduler;
-use App\AdminEPGChannel as AdminEPGChannel;
-use App\UserTranslation as UserTranslation;
-use App\TranslationLanguage as TranslationLanguage;
-use App\AdminOTPCredentials ;
-use App\Document ;
-use App\DocumentGenre ;
-use App\AdminVideoAds;
-use App\TimeZone;
+use App\State as State;
 use App\StorageSetting;
-use App\SeriesNetwork;
-use App\Adsvariables;
 use App\TVSplashScreen;
+use App\Video as Video;
+use App\CurrencySetting;
+use App\VideoCommission;
+use App\Artist as Artist;
+use App\Coupon as Coupon;
+use App\OrderHomeSetting;
+use App\Series as Series;
+use App\Slider as Slider;
+use App\SubscriptionPlan;
+use App\ThumbnailSetting;
+use \Redirect as Redirect;
+use App\AdvertisementView;
+use App\AudioUserPlaylist;
+use App\MobileHomeSetting;
+use App\AdminVideoPlaylist;
+use App\Comment as Comment;
+use App\Country as Country;
+use App\Episode as Episode;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use Carbon\Carbon as Carbon;
+use Illuminate\Http\Request;
+use App\AdminOTPCredentials ;
+use App\Favorite as Favorite;
+use App\Language as Language;
+use App\Playerui as Playerui;
+use App\PpvVideo as PpvVideo;
+use App\Subtitle as Subtitle;
+use App\Wishlist as Wishlist;
+use FFMpeg\Format\Video\X264;
+use App\Users_Interest_Genres;
+use App\TVSetting as TVSetting;
+use FFMpeg\Coordinate\TimeCode;
+use App\Paystack_Andriod_UserId;
 use App\UserChannelSubscription;
-use App\InappPurchase;
+use FFMpeg\Coordinate\Dimension;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use App\RecentView as RecentView;
+use App\ReSchedule as ReSchedule;
+use App\Watchlater as Watchlater;
+use App\AudioAlbums as AudioAlbums;
+use App\Audioartist as Audioartist;
+use App\LikeDislike as Likedislike;
+use App\PartnerMonetizationSetting;
+use App\PpvCategory as PpvCategory;
+use App\PpvPurchase as PpvPurchase;
+use Illuminate\Support\Facades\Http;
+use App\LiveCategory as LiveCategory;
+use App\LivePurchase as LivePurchase;
+use App\MobileSlider as MobileSlider;
+use App\MusicStation as MusicStation;
+use App\SeriesSeason as SeriesSeason;
+use App\Subscription as Subscription;
+use App\VerifyNumber as VerifyNumber;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\VideoCategory as VideoCategory;
+use App\Http\Requests\StoreVideoRequest;
+use App\CouponPurchase as CouponPurchase;
+use App\PaymentSetting as PaymentSetting;
+use App\ScheduleVideos as ScheduleVideos;
+use App\VideoSchedules as VideoSchedules;
+use App\VideosSubtitle as VideosSubtitle;
+use App\AdminEPGChannel as AdminEPGChannel;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\UserTranslation as UserTranslation;
+use App\VideoResolution as VideoResolution;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
+use App\ContinueWatching as ContinueWatching;
+use App\UserMusicStation as UserMusicStation;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\TranslationLanguage as TranslationLanguage;
+use App\ChannelVideoScheduler as ChannelVideoScheduler;
+use Unicodeveloper\Paystack\Exceptions\IsNullException;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
+use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
+use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 
 
 class ApiAuthController extends Controller
@@ -4446,10 +4447,12 @@ public function verifyandupdatepassword(Request $request)
   {
     $settings = Setting::all()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/settings/'.$item->logo;
+        $item['video_viewcount_limit'] = PartnerMonetizationSetting::pluck('video_viewcount_limit')->first();
         return $item;
       });
     $response = array(
-      'settings' => $settings
+      'settings' => $settings,
+  
     );
     return response()->json($response, 200);
   }
@@ -18312,6 +18315,11 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $this->Livestream_Pagelist();
                   $Page_List_Name = 'Livestream_Pagelist';
                   break;
+
+              case 'radio_station':
+                $data = $this->Radiostation_Pagelist();
+                $Page_List_Name = 'Radiostation_Pagelist';
+                break;
       
               case 'featured_videos':
                   $data = $this->Featured_videos_Pagelist();
@@ -18973,6 +18981,30 @@ public function QRCodeMobileLogout(Request $request)
         
     return $livestreams_sort->values();
   }
+
+
+  private static function Radiostation_Pagelist(){
+
+    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                      'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                      'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                      'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
+                                      'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                      ->where('active', '1')
+                                      ->where('stream_upload_via','radio_station')
+                                      ->where('status', 1)
+                                        ->get()->map(function ($item)  {
+                                          $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                          $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                          $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
+                                          $item['description'] = $item->description ;
+                                          $item['source']    = "RadioStation";
+                                          return $item;
+                                      });
+    return $livestreams->values();
+  }
+
+
 
   private static function Channel_Pagelist(){
 
@@ -28716,10 +28748,81 @@ public function SendVideoPushNotification(Request $request)
                             $item['trailer'] = null ;
                             $item['livestream_format'] =  $item->url_type ;
   
-                            $item['Share_URL'] = URL::to('live/'.$item->slug);
+                            $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
   
                             $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
-  
+
+                            $programDays = json_decode($item->scheduler_program_days);
+                            $programTitles = json_decode($item->scheduler_program_title);
+                            $programStartTimes = json_decode($item->scheduler_program_start_time);
+                            $programEndTimes = json_decode($item->scheduler_program_end_time);
+          
+                            $daysOfWeek = [
+                              0 => "Sunday",
+                              1 => "Monday",
+                              2 => "Tuesday",
+                              3 => "Wednesday",
+                              4 => "Thursday",
+                              5 => "Friday",
+                              6 => "Saturday",
+                          ];
+
+                        switch ($item->publish_type) {
+                            case 'publish_now':
+                                $daywisePrograms = array_map(function () use ($item) {
+                                    return [[
+                                        'title' => $item->title,
+                                        'start_time' => '00:00',
+                                        'end_time' => '23:59',
+                                    ]];
+                                }, array_flip($daysOfWeek));
+                                $item['program_schedule_daywise'] = $daywisePrograms;
+                                break;
+
+                                case 'publish_later':
+                                  $publishTime = $item->publish_time 
+                                      ? Carbon::parse($item->publish_time)->format('H:i') 
+                                      : '00:00';
+                              
+                                  $daywisePrograms = array_map(function () use ($publishTime, $item) {
+                                      return [[
+                                          'title' => $item->title,
+                                          'start_time' => $publishTime,
+                                          'end_time' => '23:59',
+                                      ]];
+                                  }, array_flip($daysOfWeek));
+                              
+                                  $item['program_schedule_daywise'] = $daywisePrograms;
+                                  break;
+
+                                case 'schedule_program':
+                                    $programDays = json_decode($item->scheduler_program_days, true) ?? [];
+                                    $programTitles = json_decode($item->scheduler_program_title, true) ?? [];
+                                    $programStartTimes = json_decode($item->scheduler_program_start_time, true) ?? [];
+                                    $programEndTimes = json_decode($item->scheduler_program_end_time, true) ?? [];
+
+                                    $daywisePrograms = array_fill_keys($daysOfWeek, []);
+                                    foreach ($programDays as $dayIndex) {
+                                        $dayName = $daysOfWeek[$dayIndex] ?? null;
+                                        if ($dayName) {
+                                            foreach ($programTitles as $i => $title) {
+                                                $daywisePrograms[$dayName][] = [
+                                                    'title' => $title,
+                                                    'start_time' => $programStartTimes[$i] ?? '',
+                                                    'end_time' => $programEndTimes[$i] ?? '',
+                                                ];
+                                            }
+                                        }
+                                    }
+                                    $item['program_schedule_daywise'] = $daywisePrograms;
+                                    break;
+
+                                default:
+                                    $item['program_schedule_daywise'] = array_fill_keys($daysOfWeek, []);
+                                    break;
+                            }
+
+
                             if( $item['livestream_format'] == "mp4"){
                               $item['livestream_url'] =  $item->mp4_url ;
                             }
@@ -28796,78 +28899,8 @@ public function SendVideoPushNotification(Request $request)
                                           $item['livestream_format'] =  $item->url_type ;
                                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
                 
-                                          $item['Share_URL'] = URL::to('live/'.$item->slug);
- 
-                                         $programDays = json_decode($item->scheduler_program_days);
-                                         $programTitles = json_decode($item->scheduler_program_title);
-                                         $programStartTimes = json_decode($item->scheduler_program_start_time);
-                                         $programEndTimes = json_decode($item->scheduler_program_end_time);
-                       
-                                         $daysOfWeek = [
-                                           0 => "Sunday",
-                                           1 => "Monday",
-                                           2 => "Tuesday",
-                                           3 => "Wednesday",
-                                           4 => "Thursday",
-                                           5 => "Friday",
-                                           6 => "Saturday",
-                                       ];
- 
-                                     switch ($item->publish_type) {
-                                         case 'publish_now':
-                                             $daywisePrograms = array_map(function () use ($item) {
-                                                 return [[
-                                                     'title' => $item->title,
-                                                     'start_time' => '00:00',
-                                                     'end_time' => '23:59',
-                                                 ]];
-                                             }, array_flip($daysOfWeek));
-                                             $item['program_schedule_daywise'] = $daywisePrograms;
-                                             break;
- 
-                                             case 'publish_later':
-                                               $publishTime = $item->publish_time 
-                                                   ? Carbon::parse($item->publish_time)->format('H:i') 
-                                                   : '00:00';
-                                           
-                                               $daywisePrograms = array_map(function () use ($publishTime, $item) {
-                                                   return [[
-                                                       'title' => $item->title,
-                                                       'start_time' => $publishTime,
-                                                       'end_time' => '23:59',
-                                                   ]];
-                                               }, array_flip($daysOfWeek));
-                                           
-                                               $item['program_schedule_daywise'] = $daywisePrograms;
-                                               break;
- 
-                                             case 'schedule_program':
-                                                 $programDays = json_decode($item->scheduler_program_days, true) ?? [];
-                                                 $programTitles = json_decode($item->scheduler_program_title, true) ?? [];
-                                                 $programStartTimes = json_decode($item->scheduler_program_start_time, true) ?? [];
-                                                 $programEndTimes = json_decode($item->scheduler_program_end_time, true) ?? [];
- 
-                                                 $daywisePrograms = array_fill_keys($daysOfWeek, []);
-                                                 foreach ($programDays as $dayIndex) {
-                                                     $dayName = $daysOfWeek[$dayIndex] ?? null;
-                                                     if ($dayName) {
-                                                         foreach ($programTitles as $i => $title) {
-                                                             $daywisePrograms[$dayName][] = [
-                                                                 'title' => $title,
-                                                                 'start_time' => $programStartTimes[$i] ?? '',
-                                                                 'end_time' => $programEndTimes[$i] ?? '',
-                                                             ];
-                                                         }
-                                                     }
-                                                 }
-                                                 $item['program_schedule_daywise'] = $daywisePrograms;
-                                                 break;
- 
-                                             default:
-                                                 $item['program_schedule_daywise'] = array_fill_keys($daysOfWeek, []);
-                                                 break;
-                                         }
- 
+                                          $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
+
                                           switch (true) {
   
                                             case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
@@ -28996,7 +29029,7 @@ public function SendVideoPushNotification(Request $request)
        } else {
            $response = [
                'status' => 'true',
-               'shareurl' => URL::to('live') . '/' . $request->liveid,
+               'shareurl' => URL::to('radio-station') . '/' . $request->liveid,
                'radiostationdetail' => $radiostaion_details,
                'like' => $like,
                'dislike' => $dislike,
@@ -29004,9 +29037,9 @@ public function SendVideoPushNotification(Request $request)
                'languages' => $languages,
                'categories' => $categories,
                'current_timezone' => current_timezone(),
-               'RentURL' => URL::to('live') . '/' . $radiostationSlug,
+               'RentURL' => URL::to('radio-station') . '/' . $radiostationSlug,
                'radiostations' => $radiostations,
-               'program_schedule_daywise' => $radiostations->pluck('program_schedule_daywise'), 
+               'program_schedule_daywise' => $radiostaion_details->pluck('program_schedule_daywise'), 
            ];
        }
        

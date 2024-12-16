@@ -765,7 +765,7 @@ class LiveStreamController extends Controller
                     'Radio_station_lists'      => $RadioStation ,
                     'Related_radiostation' => $related_radiostation,
                     'media_url' => URL::to('/').'/radio-station/',
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
                     'setting'                => $settings,
                     'current_theme'          => $this->Theme,
