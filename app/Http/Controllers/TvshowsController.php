@@ -1360,10 +1360,10 @@ class TvshowsController extends Controller
                 $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
 
 
-                $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                $season_depends_episode = Episode::where('active',1)->where('series_id',$id)
                                                 ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
 
-                $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                $featured_season_depends_episode = Episode::where('active',1)->where('featured',1)
                                                 ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
                  
