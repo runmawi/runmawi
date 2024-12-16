@@ -1,8 +1,9 @@
 @php
-    $data->map(function($item){
+    $data->map(function($item) use($default_horizontal_image_url){
         $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
-                                                    ->map(function ($item) {
+                                                    ->map(function ($item) use ($default_horizontal_image_url) {
                                                         $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                                        $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_horizontal_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image)  : $default_horizontal_image_url;
                                                         $item['season_name'] = App\SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
                                                         return $item;
                                                 });
@@ -123,7 +124,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $episode_details->player_image ?  URL::to('public/uploads/images/'.$episode_details->player_image) : $default_horizontal_image_url }}" alt="series">
+                                                <img class="lazy" src="{{ $episode_details->player_image_url }}" alt="{{ $episode_details->title }}">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
