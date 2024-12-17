@@ -404,6 +404,7 @@ class HomeSettingsController extends Controller
         $settings->latest_episode_videos = !empty($request->latest_episode_videos) ?  "1" : "0" ;
         $settings->live_artist = !empty($request->live_artist) ?  "1" : "0" ;
         $settings->epg = !empty($request->epg) ?  "1" : "0" ;
+        $settings->radio_station = !empty($request->radio_station) ?  "1" : "0" ;
 
         $settings->mobile_pagination = !empty($request['mobile_pagination']) ? $request['mobile_pagination'] : '3';
         $settings->save();

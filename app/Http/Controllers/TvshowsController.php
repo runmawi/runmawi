@@ -1091,7 +1091,7 @@ class TvshowsController extends Controller
                         'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                         'category_name'             => $category_name ,
                         'episode_details'           => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                         'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
@@ -1148,8 +1148,8 @@ class TvshowsController extends Controller
                         'episodesubtitles' =>   $subtitle ,
                         'category_name'             => $category_name ,
                         'episode_details'  => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
+                        'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
                         'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1360,10 +1360,10 @@ class TvshowsController extends Controller
                 $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
 
 
-                $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                $season_depends_episode = Episode::where('active',1)->where('series_id',$id)
                                                 ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
 
-                $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                $featured_season_depends_episode = Episode::where('active',1)->where('featured',1)
                                                 ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
                  
@@ -1900,15 +1900,16 @@ public function RemoveDisLikeEpisode(Request $request)
 
             $series_data = SeriesNetwork::where('slug',$slug)->orderBy('order')->get()->map(function ($item) {
 
-                $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                            ->whereJsonContains('network_id', [(string)$item->id])
-
-                            ->latest('series.created_at')->get()->map(function ($item) { 
+                $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                ->where('series.active', 1)
+                ->where('series_network_order.network_id', $item->id)
+                ->orderBy('series_network_order.order', 'asc')
+                ->get()->map(function ($item) { 
                     
                     $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                     $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
-                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                    $item['Series_depends_episodes'] = Episode::where('series_id', $item->id)->where('active',1)->get()
                                                             ->map(function ($item) {
                                                             $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                             return $item;
@@ -1936,7 +1937,7 @@ public function RemoveDisLikeEpisode(Request $request)
                 throw new \Exception('Series data not found');
             }
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -2720,7 +2721,7 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'episode_play_access' => $episode_play_access,
-                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
 
                 ];
@@ -2769,7 +2770,7 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
-                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {

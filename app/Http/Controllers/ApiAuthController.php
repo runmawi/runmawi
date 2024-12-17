@@ -1,157 +1,158 @@
 <?php
 
 namespace App\Http\Controllers;
-use \App\User as User;
-use \Redirect as Redirect;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use URL;
-use App\Test as Test;
-use App\RecentView as RecentView;
-use App\Setting as Setting;
-use App\Series as Series;
-use App\SeriesSeason as SeriesSeason;
-use App\Plan as Plan;
-use App\Page as Page;
-use App\Cast as Cast;
-use App\Slider as Slider;
-use App\Wishlist as Wishlist;
-use App\Favorite as Favorite;
-use App\Watchlater as Watchlater;
-use App\PpvVideo as PpvVideo;
-use App\PpvPurchase as PpvPurchase;
-use App\MobileSlider as MobileSlider;
-use App\PpvCategory as PpvCategory;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\LivePurchase as LivePurchase;
-use App\Subscription as Subscription;
-use App\VerifyNumber as VerifyNumber;
-use App\PaypalPlan as PaypalPlan;
-use App\PaymentSetting as PaymentSetting;
-use App\Episode as Episode;
-use App\Video as Video;
-use App\Country as Country;
-use App\State as State;
-use App\City as City;
-use Nexmo;
-use App\VideoCategory as VideoCategory;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\Subtitle as Subtitle;
-use App\CouponPurchase as CouponPurchase;
-use App\Coupon as Coupon;
-use App\Tag as Tag;
-use App\LikeDislike as Likedislike;
-use App\Comment as Comment;
-use Auth;
-use Hash;
 use DB;
-use Illuminate\Support\Facades\Cache;
-use Image;
-use View;
-use Validator;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
-use FFMpeg\Coordinate\TimeCode;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use Illuminate\Support\Str;
-use Unicodeveloper\Paystack\Exceptions\IsNullException;
-use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
-use Illuminate\Pagination\LengthAwarePaginator;
+use URL;
+use Auth;
+use File;
+use Hash;
 use Mail;
-use Carbon\Carbon as Carbon;
-use App\Playerui as Playerui;
-use App\Audio as Audio;
-use App\Artist as Artist;
-use App\AudioCategory as AudioCategory;
-use App\Audioartist as Audioartist;
-use App\ContinueWatching as ContinueWatching;
-use App\AudioAlbums as AudioAlbums;
-use App\EmailTemplate;
-use App\SubscriptionPlan;
-use App\Multiprofile;
-use App\LanguageVideo;
-use App\CategoryAudio;
-use App\LiveLanguage;
+use View;
+use Image;
+use Nexmo;
+use CPANEL;
 use Session;
-use Victorybiz\GeoIPLocation\GeoIPLocation;
-use App\Geofencing;
-use App\BlockVideo;
-use App\BlockAudio;
-use App\HomeSetting;
-use App\Videoartist;
-use App\Seriesartist;
-use App\WelcomeScreen;
-use App\CategoryVideo;
+use App\Menu;
+use Paystack;
+use Validator;
+use App\Deploy;
+use App\Channel;
+use App\AdsEvent;
+use App\AdsVideo;
+use App\TimeZone;
+use App\Currency ;
+use App\Document ;
 use App\MobileApp;
+use App\SiteTheme;
+use Stripe\Stripe;
+use App\BlockAudio;
+use App\BlockVideo;
+use App\Geofencing;
+use App\MyPlaylist;
+use App\Tag as Tag;
+use App\WebComment;
+use App\HomeSetting;
+use App\SeriesGenre;
+use App\TVLoginCode;
+use App\Videoartist;
+use App\Adsvariables;
+use App\Cast as Cast;
+use App\CategoryLive;
+use App\City as City;
+use App\LiveLanguage;
+use App\LoggedDevice;
+use App\Multiprofile;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\Seriesartist;
+use App\Test as Test;
+use Razorpay\Api\Api;
+use \App\User as User;
+use App\AdminVideoAds;
+use App\Advertisement;
+use App\CategoryAudio;
+use App\CategoryVideo;
+use App\EmailTemplate;
+use App\InappPurchase;
+use App\LanguageVideo;
+use App\M3UFileParser;
+use App\SeriesNetwork;
+use App\SystemSetting;
+use App\TvSearchData ;
+use App\VideoPlaylist;
+use App\WelcomeScreen;
+use App\Audio as Audio;
+use App\DocumentGenre ;
+use App\MobileSideMenu;
+use App\ModeratorsUser;
+use App\PlayerAnalytic;
 use App\SeriesCategory;
 use App\SeriesLanguage;
-use CPANEL;
-use App\Deploy;
-use App\LoggedDevice;
-use Razorpay\Api\Api;
-use App\AdsVideo;
-use App\AdvertisementView;
-use App\Advertisement;
-use App\OrderHomeSetting;
-use App\MobileHomeSetting;
-use App\SiteTheme;
-use App\PlayerAnalytic;
-use App\SystemSetting;
-use App\CurrencySetting;
-use App\MobileSideMenu;
-use App\CategoryLive;
-use App\TVLoginCode;
-use Paystack;
-use App\VideoCommission;
-use App\ModeratorsUser;
-use App\Paystack_Andriod_UserId;
-use App\AdsEvent;
-use App\VideoSchedules as VideoSchedules;
-use App\ScheduleVideos as ScheduleVideos;
-use App\ReSchedule as ReSchedule;
-use App\WebComment;
-use App\Channel;
-use App\ThumbnailSetting;
-use App\Menu;
-use App\SeriesGenre;
-use App\M3UFileParser;
-use File;
-use App\Users_Interest_Genres;
-use App\MyPlaylist;
-use App\AudioUserPlaylist;
-use App\VideoPlaylist;
-use App\AdminVideoPlaylist;
-use App\MusicStation as MusicStation;
-use App\UserMusicStation as UserMusicStation;
-use Stripe\Stripe;
-use App\TVSetting as TVSetting;
-use App\TvSearchData ;
-use App\Currency ;
-use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
-use App\ChannelVideoScheduler as ChannelVideoScheduler;
-use App\AdminEPGChannel as AdminEPGChannel;
-use App\UserTranslation as UserTranslation;
-use App\TranslationLanguage as TranslationLanguage;
-use App\AdminOTPCredentials ;
-use App\Document ;
-use App\DocumentGenre ;
-use App\AdminVideoAds;
-use App\TimeZone;
+use App\State as State;
 use App\StorageSetting;
-use App\SeriesNetwork;
-use App\Adsvariables;
 use App\TVSplashScreen;
+use App\Video as Video;
+use App\CurrencySetting;
+use App\VideoCommission;
+use App\Artist as Artist;
+use App\Coupon as Coupon;
+use App\OrderHomeSetting;
+use App\Series as Series;
+use App\Slider as Slider;
+use App\SubscriptionPlan;
+use App\ThumbnailSetting;
+use \Redirect as Redirect;
+use App\AdvertisementView;
+use App\AudioUserPlaylist;
+use App\MobileHomeSetting;
+use App\AdminVideoPlaylist;
+use App\Comment as Comment;
+use App\Country as Country;
+use App\Episode as Episode;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use Carbon\Carbon as Carbon;
+use Illuminate\Http\Request;
+use App\AdminOTPCredentials ;
+use App\Favorite as Favorite;
+use App\Language as Language;
+use App\Playerui as Playerui;
+use App\PpvVideo as PpvVideo;
+use App\Subtitle as Subtitle;
+use App\Wishlist as Wishlist;
+use FFMpeg\Format\Video\X264;
+use App\Users_Interest_Genres;
+use App\TVSetting as TVSetting;
+use FFMpeg\Coordinate\TimeCode;
+use App\Paystack_Andriod_UserId;
 use App\UserChannelSubscription;
-use App\InappPurchase;
+use FFMpeg\Coordinate\Dimension;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use App\RecentView as RecentView;
+use App\ReSchedule as ReSchedule;
+use App\Watchlater as Watchlater;
+use App\AudioAlbums as AudioAlbums;
+use App\Audioartist as Audioartist;
+use App\LikeDislike as Likedislike;
+use App\PartnerMonetizationSetting;
+use App\PpvCategory as PpvCategory;
+use App\PpvPurchase as PpvPurchase;
+use Illuminate\Support\Facades\Http;
+use App\LiveCategory as LiveCategory;
+use App\LivePurchase as LivePurchase;
+use App\MobileSlider as MobileSlider;
+use App\MusicStation as MusicStation;
+use App\SeriesSeason as SeriesSeason;
+use App\Subscription as Subscription;
+use App\VerifyNumber as VerifyNumber;
+use Illuminate\Support\Facades\Cache;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\VideoCategory as VideoCategory;
+use App\Http\Requests\StoreVideoRequest;
+use App\CouponPurchase as CouponPurchase;
+use App\PaymentSetting as PaymentSetting;
+use App\ScheduleVideos as ScheduleVideos;
+use App\VideoSchedules as VideoSchedules;
+use App\VideosSubtitle as VideosSubtitle;
+use App\AdminEPGChannel as AdminEPGChannel;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\UserTranslation as UserTranslation;
+use App\VideoResolution as VideoResolution;
+use Victorybiz\GeoIPLocation\GeoIPLocation;
+use App\ContinueWatching as ContinueWatching;
+use App\UserMusicStation as UserMusicStation;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\TranslationLanguage as TranslationLanguage;
+use App\ChannelVideoScheduler as ChannelVideoScheduler;
+use Unicodeveloper\Paystack\Exceptions\IsNullException;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
+use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
+use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
+use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 
 
 class ApiAuthController extends Controller
@@ -2037,9 +2038,11 @@ public function verifyandupdatepassword(Request $request)
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
         ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query, $ios_plans_id)  {
-          $item['ppv_480p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
-          $item['ppv_720p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
+          $item['ppv_480p_price_ios']  = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
+          $item['ppv_720p_price_ios']  = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
           $item['ppv_1080p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_1080p)['plan_price'] ?? null;
+          $item['details']             = strip_tags(html_entity_decode($item->details));
+          $item['description']         = strip_tags(html_entity_decode($item->description));
   
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
@@ -2324,9 +2327,9 @@ public function verifyandupdatepassword(Request $request)
     $videodetailType = Video::where('id',$videoid)->pluck('type')->first();
     
     if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $videodetailType == 'VideoCipher'){
-        return $this->VideoCipher_Videodetail($data);
+      return $this->VideoCipher_Videodetail($data);
     }
-    
+        
     try {
 
       $current_date = date('Y-m-d h:i:s a', time());
@@ -4445,10 +4448,12 @@ public function verifyandupdatepassword(Request $request)
   {
     $settings = Setting::all()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/settings/'.$item->logo;
+        $item['video_viewcount_limit'] = PartnerMonetizationSetting::pluck('video_viewcount_limit')->first();
         return $item;
       });
     $response = array(
-      'settings' => $settings
+      'settings' => $settings,
+  
     );
     return response()->json($response, 200);
   }
@@ -16453,6 +16458,16 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if( $OrderHomeSetting['video_name'] == "radio_station" ){       // Radio Station
+          
+          $data = $this->All_Homepage_radio_stations($homepage_input_array);
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "radiostation" ;
+
+        }
+
         if( $OrderHomeSetting['video_name'] == "series" ){          // Series
           
           $data = $this->All_Homepage_series_videos($homepage_input_array);
@@ -16806,6 +16821,10 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'live_videos');
     }
 
+    if($Homesetting->radio_station == 1 && $this->All_Homepage_radio_stations($homepage_input_array)->isNotEmpty() ){
+      array_push($input,'radio_station');
+    }
+
     if($Homesetting->series == 1 && $this->All_Homepage_series_videos($homepage_input_array)->isNotEmpty() ){
       array_push($input,'series');
     }
@@ -17116,6 +17135,112 @@ public function QRCodeMobileLogout(Request $request)
 
       return $livestreams ;
   }
+
+    
+  private static function All_Homepage_radio_stations($homepage_input_array){
+    
+        $radio_station_status = $homepage_input_array['MobileHomeSetting']->radio_station;
+        $homepage_geofencing = $homepage_input_array['Geofencing'];
+        $homepage_default_image_url = array(
+          'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+          'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+        );
+
+          if( $radio_station_status == null || $radio_station_status == 0 ):   
+
+              $livestreams = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
+
+          else:
+
+            $current_timezone = current_timezone();
+
+            $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                                'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                                'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                                'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
+                                                'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                              ->where('active', '1')
+                                              ->where('stream_upload_via','radio_station')
+                                              ->where('status', 1)
+                                              ->get()->map(function ($item) use ($homepage_default_image_url) {
+                                                $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                                $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+                                                $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $homepage_default_image_url['homepage_default_horizontal_image_url']  ;
+                                                $item['description'] = $item->description ;
+                                                $item['source']    = "Radio Station";
+                                                return $item;
+                                            });
+        
+            
+              $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
+
+                $livestream->live_animation = 'true';
+            
+                $current_time = Carbon::now($current_timezone);
+            
+                if ($livestream->publish_type === 'publish_later') {
+            
+                    $publish_later_status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i') <= $current_time->format('Y-m-d\TH:i');
+                    $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i') <= $current_time->format('Y-m-d\TH:i');
+            
+                    $livestream->publish_later_live_animation = $publish_later_live_animation == true ? 'true' : 'false';
+            
+                    $livestream->live_animation = $publish_later_live_animation == true ? 'true' : 'false';
+            
+                    return $publish_later_status;
+                }
+            
+                if ($livestream->publish_type === 'schedule_program') {
+                    $program_start_times = json_decode($livestream->scheduler_program_start_time, true);
+                    $program_end_times = json_decode($livestream->scheduler_program_end_time, true);
+            
+                    if ($program_start_times && $program_end_times) {
+                        foreach ($program_start_times as $index => $start_time) {
+                            $end_time = $program_end_times[$index] ?? null;
+            
+                            if ($start_time && $end_time) {
+                                $start_datetime = Carbon::createFromFormat('H:i', $start_time, $current_timezone);
+                                $end_datetime = Carbon::createFromFormat('H:i', $end_time, $current_timezone);
+            
+                                if ($current_time->between($start_datetime, $end_datetime)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    return false;
+                }
+            
+                return $livestream->publish_type === 'publish_now';
+            });
+
+
+
+            $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) use ($current_timezone) {
+
+              if ($livestream->publish_type === 'publish_now') {
+                  return $livestream->created_at;
+              } elseif ($livestream->publish_type === 'publish_later') {
+                  return $livestream->publish_time;
+              } elseif ($livestream->publish_type === 'schedule_program') {
+                  $program_start_times = json_decode($livestream->scheduler_program_start_time, true);
+          
+                  if ($program_start_times) {
+                      return Carbon::createFromFormat('H:i', $program_start_times[0], $current_timezone)->timestamp;
+                  }
+                  return $livestream->publish_time;
+              }
+          
+              return $livestream->publish_type;
+          })->values();
+            
+            return $livestreams_sort->take($homepage_input_array['limit']);
+
+          endif;
+
+          return $livestreams ;
+      }
+
 
   private static function All_Homepage_series_videos($homepage_input_array){
 
@@ -18191,6 +18316,11 @@ public function QRCodeMobileLogout(Request $request)
                   $data = $this->Livestream_Pagelist();
                   $Page_List_Name = 'Livestream_Pagelist';
                   break;
+
+              case 'radio_station':
+                $data = $this->Radiostation_Pagelist();
+                $Page_List_Name = 'Radiostation_Pagelist';
+                break;
       
               case 'featured_videos':
                   $data = $this->Featured_videos_Pagelist();
@@ -18498,8 +18628,11 @@ public function QRCodeMobileLogout(Request $request)
       
         $this->validate($request, [ 'network_id'  => 'required|integer' ]);
 
-        $Networks_depends_series = Series::where('series.active', 1)->whereJsonContains('network_id', [(string)$request->network_id])
-                                      ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
+        $Networks_depends_series = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                                          ->where('series.active', 1)
+                                          ->where('series_network_order.network_id',[(string)$request->network_id])
+                                          ->orderBy('series_network_order.order', 'asc')
+                                          ->get()->map(function ($item) { 
                         
                                           $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                           $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
@@ -18849,6 +18982,30 @@ public function QRCodeMobileLogout(Request $request)
         
     return $livestreams_sort->values();
   }
+
+
+  private static function Radiostation_Pagelist(){
+
+    $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                      'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                      'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                      'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
+                                      'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                      ->where('active', '1')
+                                      ->where('stream_upload_via','radio_station')
+                                      ->where('status', 1)
+                                        ->get()->map(function ($item)  {
+                                          $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
+                                          $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                          $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
+                                          $item['description'] = $item->description ;
+                                          $item['source']    = "RadioStation";
+                                          return $item;
+                                      });
+    return $livestreams->values();
+  }
+
+
 
   private static function Channel_Pagelist(){
 
@@ -28512,303 +28669,394 @@ public function SendVideoPushNotification(Request $request)
    }
 
    public function radiostationdetail(Request $request)
-  { 
-    try {
-      
-       $validator = Validator::make($request->all(), [
-                     'liveid' => 'required', 
-                     // 'user_id' => 'required'
-                   ],
-                     [
-                       'liveid.required'  => 'Please enter your liveid',
-                       // 'user_id.required' => 'Please enter your user_id',
-                     ]);
- 
-       if ($validator->fails()) {
- 
-         return response()->json([
-             'status' => 'false',
-             'message'=> $validator->errors()->first(),
-           ], 400);
-       }
- 
-       $liveid = $request->liveid;
-       $user_id = $request->user_id;
- 
-       // Live Language
- 
-         $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
- 
-         foreach($languages as $value){
-           $language[] = $value['name'];
-         }
- 
-         $languages = !empty($language) ? implode(",",$language) : " ";
-         
-       // Category Live
- 
-         $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')->where('live_id',$liveid)->get('name');
- 
-         foreach($categorys as $value){
-           $category[] = $value['name'];
-         }
- 
-         $categories = !empty($category) ? implode(",",$category) : ' ' ;
- 
-       // PPV 
- 
-         $current_date = date('Y-m-d h:i:s a', time());
- 
-         $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
- 
-         if ($ppv_exist > 0) {
- 
-               $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->orderBy('created_at', 'desc')->pluck('to_time')->first();
- 
-               $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
- 
-         } else {
-               $ppv_video_status = "pay_now";
-         }
- 
-         //  Like & Dislike
- 
-         if($request->user_id != ''){
-           $like_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
-           $dislike_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
-           $like = ($like_data == 1) ? "true" : "false";
-           $dislike = ($dislike_data == 1) ? "true" : "false";
-         }
-         else{
- 
-           $like = 'false';
-           $dislike = 'false';
-         }
- 
-         $radiostaion_details = LiveStream::where('id',$request->liveid)->where('active',1)
-                       ->where('status',1)
-                       ->where('stream_upload_via', 'radio_station')
-                       ->get()
-                       ->map(function ($item) use ($user_id) {
-                           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-                           $item['live_description'] = $item->description ? $item->description : "" ;
-                           $item['trailer'] = null ;
-                           $item['livestream_format'] =  $item->url_type ;
- 
-                           $item['Share_URL'] = URL::to('live/'.$item->slug);
- 
-                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
- 
-                           if( $item['livestream_format'] == "mp4"){
-                             $item['livestream_url'] =  $item->mp4_url ;
-                           }
- 
-                           elseif( $item['livestream_format'] == "embed"){
-                             $item['livestream_url'] =  $item->embed_url ;
-                           }
- 
-                           elseif( $item['livestream_format'] == "live_stream_video"){
-                             $item['livestream_url'] =  $item->live_stream_video ;
-                           }
- 
-                           elseif( $item['livestream_format'] == "acc_audio_url"){
-                             $item['livestream_url'] =  $item->acc_audio_url ;
-                           }
- 
-                           elseif( $item['livestream_format'] == "acc_audio_file"){
-                             $item['livestream_url'] =  $item->acc_audio_file ;
-                           }
- 
-                           elseif( $item['livestream_format'] == "Encode_video"){
-                             $item['livestream_url'] =  $item->hls_url ;
-                           }
- 
-                           else{
-                             $item['livestream_url'] =  null ;
-                           }
- 
-                         // M3U_channels
-                         $parser       = new M3UFileParser( $item->m3u_url);
-                         $item['M3U_channel'] =   $parser->getGroup()  ;
- 
-           $plans_ads_enable = $this->plans_ads_enable($user_id);
- 
-           if( $plans_ads_enable == 1){
- 
-             $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-                                       // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-                                       // ->whereTime('start', '<=', $current_time)
-                                       // ->whereTime('end', '>=', $current_time)
-                                       ->where('ads_events.status',1)
-                                       ->where('advertisements.status',1)
-                                       ->where('advertisements.id',$item->live_ads)
-                                       ->pluck('ads_path')->first();
-                             
-           }else{
-             $item['live_ads_url'] = null;
-           }
-          
-           return $item;
-         });
- 
-       $radiostationSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
- 
-       // Reccuring Program 
- 
-       $current_timezone = current_timezone();
- 
-       $default_vertical_image_url = default_vertical_image_url();
-       $default_horizontal_image_url = default_horizontal_image_url();
- 
-       $radiostations = LiveStream::query()->where('active', 1)->where('status', 1)
-                                       ->where('id', $request->liveid)
-                                       ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url,$user_id) {
-                                         
-                                         $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                         $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                         $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
-                                         $item['description'] = $item->description ;
-                                         $item['source']    = "Livestream";
- 
-                                         $item['live_description'] = $item->description ? $item->description : "" ;
-                                         $item['trailer'] = null ;
-                                         $item['livestream_format'] =  $item->url_type ;
-                                         $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
-               
-                                         $item['Share_URL'] = URL::to('live/'.$item->slug);
- 
-                                           //  Livestream URL
- 
-                                         switch (true) {
- 
-                                           case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
-                                               $item['livestream_URL'] =  $item->mp4_url ;
-                                               $item['livestream_player_type'] =  'video/mp4' ;
-                                           break;
- 
-                                           case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
-                                             $item['livestream_URL'] =  $item->mp4_url; ;
-                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                                           break;
- 
-                                           case $item['url_type'] == "embed":
-                                               $item['livestream_URL'] =  $item->embed_url ;
-                                               $item['livestream_player_type'] =  'video/mp4' ;
-                                           break;
- 
-                                           case $item['url_type'] == "live_stream_video":
-                                               $item['livestream_URL'] = $item->live_stream_video; ;
-                                               $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                                           break;
- 
-                                           case $item['url_type'] == "m3u_url":
-                                               $item['livestream_URL'] =  $item->m3u_url ;
-                                               $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                                           break;
- 
-                                           case $item['url_type'] == "Encode_video":
-                                               $item['livestream_URL'] =  $item->hls_url; ;
-                                               $item['livestream_player_type'] =  'application/x-mpegURL'  ;
-                                           break;
- 
-                                           case $item['url_type'] == "acc_audio_url":
-                                             $item['livestream_URL'] =  $item->acc_audio_url ;
-                                             $item['livestream_player_type'] =  'audio/aac' ;
-                                           break;
- 
-                                           case $item['url_type'] == "acc_audio_file":
-                                               $item['livestream_URL'] =  $item->acc_audio_file ;
-                                               $item['livestream_player_type'] =  'audio/aac' ;
-                                           break;
- 
-                                           case $item['url_type'] == "aws_m3u8":
-                                             $item['livestream_URL'] =  $item->hls_url ;
-                                             $item['livestream_player_type'] =  'application/x-mpegURL' ;
-                                           break;
- 
-                                           default:
-                                               $item['livestream_URL'] =  null ;
-                                               $item['livestream_player_type'] =  null ;
-                                           break;
-                                       }
-               
-                                         // M3U Channels
- 
-                                         $parser  = new M3UFileParser( $item->m3u_url);
-                                         $item['M3U_channel'] =   $parser->getGroup()  ;
-                 
-                                         // Live Ads
-                                         $item['live_ads_url'] = null;
- 
-                                         $plans_ads_enable = $this->plans_ads_enable($user_id);
- 
-                                         if( $plans_ads_enable == 1){
-                               
-                                           $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
-                                                                     // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
-                                                                     // ->whereTime('start', '<=', $current_time)
-                                                                     // ->whereTime('end', '>=', $current_time)
-                                                                     ->where('ads_events.status',1)
-                                                                     ->where('advertisements.status',1)
-                                                                     ->where('advertisements.id',$item->live_ads)
-                                                                     ->pluck('ads_path')->first();
-                                         }
- 
-                                       return $item;
-                                     });
-   
-       $radiostations = $radiostations->filter(function ($livestream) use ($current_timezone) {
- 
-           $livestream->live_animation = 'true' ;
- 
-           if ($livestream->publish_type === 'publish_later') {
- 
-               $Current_time = Carbon::now($current_timezone);
-               
-               $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-               $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
- 
-               $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
- 
-               $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
- 
-               return $publish_later_Status;
-           }
+   { 
+     try {
        
-           return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || $livestream->publish_type === 'schedule_program';
-       });
- 
-        if ($radiostaion_details->isEmpty()) {
-          $response = [
+        $validator = Validator::make($request->all(), [
+                      'liveid' => 'required', 
+                      // 'user_id' => 'required'
+                    ],
+                      [
+                        'liveid.required'  => 'Please enter your liveid',
+                        // 'user_id.required' => 'Please enter your user_id',
+                      ]);
+  
+        if ($validator->fails()) {
+  
+          return response()->json([
               'status' => 'false',
-              'message' => 'The livestream is not uploaded via radio station.',
-          ];
-      } else {
-          $response = [
-              'status' => 'true',
-              'shareurl' => URL::to('live') . '/' . $request->liveid,
-              'radiostationdetail' => $radiostaion_details,
-              'like' => $like,
-              'dislike' => $dislike,
-              'ppv_video_status' => $ppv_video_status,
-              'languages' => $languages,
-              'categories' => $categories,
-              'current_timezone' => current_timezone(),
-              'RentURL' => URL::to('live') . '/' . $radiostationSlug,
-              'radiostations' => $radiostations,
-          ];
-      }
-      
-     } catch (\Throwable $th) {
- 
-         $response = array(
-           'status' => 'false',
-           'message' => $th->getMessage() ,
-         );
-     }
-     return response()->json($response, 200);
+              'message'=> $validator->errors()->first(),
+            ], 400);
+        }
+  
+        $liveid = $request->liveid;
+        $user_id = $request->user_id;
+  
+        // Live Language
+  
+          $languages = LiveLanguage::Join('languages','languages.id','=','live_languages.language_id')->where('live_languages.live_id',$liveid)->get('name');
+  
+          foreach($languages as $value){
+            $language[] = $value['name'];
+          }
+  
+          $languages = !empty($language) ? implode(",",$language) : " ";
+          
+        // Category Live
+  
+          $categorys = CategoryLive::join('live_categories','live_categories.id','=','livecategories.category_id')->where('live_id',$liveid)->get('name');
+  
+          foreach($categorys as $value){
+            $category[] = $value['name'];
+          }
+  
+          $categories = !empty($category) ? implode(",",$category) : ' ' ;
+  
+        // PPV 
+  
+          $current_date = date('Y-m-d h:i:s a', time());
+  
+          $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
+  
+          if ($ppv_exist > 0) {
+  
+                $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->orderBy('created_at', 'desc')->pluck('to_time')->first();
+  
+                $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+  
+          } else {
+                $ppv_video_status = "pay_now";
+          }
+  
+          //  Like & Dislike
+  
+          if($request->user_id != ''){
+            $like_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("liked","=",1)->count();
+            $dislike_data = LikeDisLike::where("live_id","=",$liveid)->where("user_id","=",$user_id)->where("disliked","=",1)->count();
+            $like = ($like_data == 1) ? "true" : "false";
+            $dislike = ($dislike_data == 1) ? "true" : "false";
+          }
+          else{
+  
+            $like = 'false';
+            $dislike = 'false';
+          }
+  
+          $radiostaion_details = LiveStream::where('id',$request->liveid)->where('active',1)
+                        ->where('status',1)
+                        ->where('stream_upload_via', 'radio_station')
+                        ->get()
+                        ->map(function ($item) use ($user_id) {
+                            $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                            $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+                            $item['live_description'] = $item->description ? $item->description : "" ;
+                            $item['trailer'] = null ;
+                            $item['livestream_format'] =  $item->url_type ;
+  
+                            $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
+  
+                            $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
+
+                            $programDays = json_decode($item->scheduler_program_days);
+                            $programTitles = json_decode($item->scheduler_program_title);
+                            $programStartTimes = json_decode($item->scheduler_program_start_time);
+                            $programEndTimes = json_decode($item->scheduler_program_end_time);
+          
+                            $daysOfWeek = [
+                              0 => "Sunday",
+                              1 => "Monday",
+                              2 => "Tuesday",
+                              3 => "Wednesday",
+                              4 => "Thursday",
+                              5 => "Friday",
+                              6 => "Saturday",
+                          ];
+
+                        switch ($item->publish_type) {
+                            case 'publish_now':
+                                $daywisePrograms = array_map(function () use ($item) {
+                                    return [[
+                                        'title' => $item->title,
+                                        'start_time' => '00:00',
+                                        'end_time' => '23:59',
+                                    ]];
+                                }, array_flip($daysOfWeek));
+                                $item['program_schedule_daywise'] = $daywisePrograms;
+                                break;
+
+                                case 'publish_later':
+                                  $publishTime = $item->publish_time 
+                                      ? Carbon::parse($item->publish_time)->format('H:i') 
+                                      : '00:00';
+                              
+                                  $daywisePrograms = array_map(function () use ($publishTime, $item) {
+                                      return [[
+                                          'title' => $item->title,
+                                          'start_time' => $publishTime,
+                                          'end_time' => '23:59',
+                                      ]];
+                                  }, array_flip($daysOfWeek));
+                              
+                                  $item['program_schedule_daywise'] = $daywisePrograms;
+                                  break;
+
+                                case 'schedule_program':
+                                    $programDays = json_decode($item->scheduler_program_days, true) ?? [];
+                                    $programTitles = json_decode($item->scheduler_program_title, true) ?? [];
+                                    $programStartTimes = json_decode($item->scheduler_program_start_time, true) ?? [];
+                                    $programEndTimes = json_decode($item->scheduler_program_end_time, true) ?? [];
+
+                                    $daywisePrograms = array_fill_keys($daysOfWeek, []);
+                                    foreach ($programDays as $dayIndex) {
+                                        $dayName = $daysOfWeek[$dayIndex] ?? null;
+                                        if ($dayName) {
+                                            foreach ($programTitles as $i => $title) {
+                                                $daywisePrograms[$dayName][] = [
+                                                    'title' => $title,
+                                                    'start_time' => $programStartTimes[$i] ?? '',
+                                                    'end_time' => $programEndTimes[$i] ?? '',
+                                                ];
+                                            }
+                                        }
+                                    }
+                                    $item['program_schedule_daywise'] = $daywisePrograms;
+                                    break;
+
+                                default:
+                                    $item['program_schedule_daywise'] = array_fill_keys($daysOfWeek, []);
+                                    break;
+                            }
+
+
+                            if( $item['livestream_format'] == "mp4"){
+                              $item['livestream_url'] =  $item->mp4_url ;
+                            }
+  
+                            elseif( $item['livestream_format'] == "embed"){
+                              $item['livestream_url'] =  $item->embed_url ;
+                            }
+  
+                            elseif( $item['livestream_format'] == "live_stream_video"){
+                              $item['livestream_url'] =  $item->live_stream_video ;
+                            }
+  
+                            elseif( $item['livestream_format'] == "acc_audio_url"){
+                              $item['livestream_url'] =  $item->acc_audio_url ;
+                            }
+  
+                            elseif( $item['livestream_format'] == "acc_audio_file"){
+                              $item['livestream_url'] =  $item->acc_audio_file ;
+                            }
+  
+                            elseif( $item['livestream_format'] == "Encode_video"){
+                              $item['livestream_url'] =  $item->hls_url ;
+                            }
+  
+                            else{
+                              $item['livestream_url'] =  null ;
+                            }
+  
+                          // M3U_channels
+                          $parser       = new M3UFileParser( $item->m3u_url);
+                          $item['M3U_channel'] =   $parser->getGroup()  ;
+  
+            $plans_ads_enable = $this->plans_ads_enable($user_id);
+  
+            if( $plans_ads_enable == 1){
+  
+              $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                        // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                        // ->whereTime('start', '<=', $current_time)
+                                        // ->whereTime('end', '>=', $current_time)
+                                        ->where('ads_events.status',1)
+                                        ->where('advertisements.status',1)
+                                        ->where('advertisements.id',$item->live_ads)
+                                        ->pluck('ads_path')->first();
+                              
+            }else{
+              $item['live_ads_url'] = null;
+            }
+           
+            return $item;
+          });
+  
+        $radiostationSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+  
+        // Reccuring Program 
+  
+        $current_timezone = current_timezone();
+  
+        $default_vertical_image_url = default_vertical_image_url();
+        $default_horizontal_image_url = default_horizontal_image_url();
+  
+        $radiostations = LiveStream::query()->where('active', 1)->where('status', 1)
+                                        ->where('id', $request->liveid)
+                                        ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url,$user_id) {
+                                          
+                                          $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
+                                          $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                          $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
+                                          $item['description'] = $item->description ;
+                                          $item['source']    = "Livestream";
+  
+                                          $item['live_description'] = $item->description ? $item->description : "" ;
+                                          $item['trailer'] = null ;
+                                          $item['livestream_format'] =  $item->url_type ;
+                                          $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
+                
+                                          $item['Share_URL'] = URL::to('radio-station/'.$item->slug);
+
+                                          switch (true) {
+  
+                                            case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4" :
+                                                $item['livestream_URL'] =  $item->mp4_url ;
+                                                $item['livestream_player_type'] =  'video/mp4' ;
+                                            break;
+  
+                                            case $item['url_type'] == "mp4" &&  pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "m3u8" :
+                                              $item['livestream_URL'] =  $item->mp4_url; ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                            break;
+  
+                                            case $item['url_type'] == "embed":
+                                                $item['livestream_URL'] =  $item->embed_url ;
+                                                $item['livestream_player_type'] =  'video/mp4' ;
+                                            break;
+  
+                                            case $item['url_type'] == "live_stream_video":
+                                                $item['livestream_URL'] = $item->live_stream_video; ;
+                                                $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                            break;
+  
+                                            case $item['url_type'] == "m3u_url":
+                                                $item['livestream_URL'] =  $item->m3u_url ;
+                                                $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                            break;
+  
+                                            case $item['url_type'] == "Encode_video":
+                                                $item['livestream_URL'] =  $item->hls_url; ;
+                                                $item['livestream_player_type'] =  'application/x-mpegURL'  ;
+                                            break;
+  
+                                            case $item['url_type'] == "acc_audio_url":
+                                              $item['livestream_URL'] =  $item->acc_audio_url ;
+                                              $item['livestream_player_type'] =  'audio/aac' ;
+                                            break;
+  
+                                            case $item['url_type'] == "acc_audio_file":
+                                                $item['livestream_URL'] =  $item->acc_audio_file ;
+                                                $item['livestream_player_type'] =  'audio/aac' ;
+                                            break;
+  
+                                            case $item['url_type'] == "aws_m3u8":
+                                              $item['livestream_URL'] =  $item->hls_url ;
+                                              $item['livestream_player_type'] =  'application/x-mpegURL' ;
+                                            break;
+  
+                                            default:
+                                                $item['livestream_URL'] =  null ;
+                                                $item['livestream_player_type'] =  null ;
+                                            break;
+                                        }
+                
+                                          // M3U Channels
+  
+                                          $parser  = new M3UFileParser( $item->m3u_url);
+                                          $item['M3U_channel'] =   $parser->getGroup()  ;
+                  
+                                          // Live Ads
+                                          $item['live_ads_url'] = null;
+  
+                                          $plans_ads_enable = $this->plans_ads_enable($user_id);
+  
+                                          if( $plans_ads_enable == 1){
+                                
+                                            $item['live_ads_url'] =  AdsEvent::Join('advertisements','advertisements.id','=','ads_events.ads_id')
+                                                                      // ->whereDate('start', '=', Carbon\Carbon::now()->format('Y-m-d'))
+                                                                      // ->whereTime('start', '<=', $current_time)
+                                                                      // ->whereTime('end', '>=', $current_time)
+                                                                      ->where('ads_events.status',1)
+                                                                      ->where('advertisements.status',1)
+                                                                      ->where('advertisements.id',$item->live_ads)
+                                                                      ->pluck('ads_path')->first();
+                                          }
+  
+                                        return $item;
+                                      });
     
-    }
+             $radiostations = $radiostations->filter(function ($livestream) use ($current_timezone) {
+             $livestream->live_animation = 'true';
+       
+             if ($livestream->publish_type === 'publish_later') {
+         
+                 $Current_time = Carbon::now($current_timezone);
+                
+                 $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i');
+                 $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i');
+                 $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false';
+                 $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false';
+                 return $publish_later_Status;
+             }
+         
+             if ($livestream->publish_type === 'schedule_program') {
+                 
+                 $Current_time = Carbon::now($current_timezone);
+         
+                 $program_start_times = json_decode($livestream->scheduler_program_start_time);
+                 $program_end_times = json_decode($livestream->scheduler_program_end_time);
+         
+                 $program_is_active = false;
+         
+                 if ($program_start_times && $program_end_times) {
+                     foreach ($program_start_times as $index => $start_time) {
+                         $end_time = $program_end_times[$index] ?? '';
+           
+                         $start_time = Carbon::parse($start_time);
+                         $end_time = Carbon::parse($end_time);
+         
+                         if ($Current_time->between($start_time, $end_time)) {
+                             $program_is_active = true;
+                             break;
+                         }
+                     }
+                 }
+                 $livestream->live_animation = $program_is_active ? 'true' : 'false';
+         
+                 return $program_is_active;
+             }
+             return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || $livestream->publish_type === 'schedule_program';
+         });
+         if ($radiostaion_details->isEmpty()) {
+           $response = [
+               'status' => 'false',
+               'message' => 'The livestream is not uploaded via radio station.',
+           ];
+       } else {
+           $response = [
+               'status' => 'true',
+               'shareurl' => URL::to('radio-station') . '/' . $request->liveid,
+               'radiostationdetail' => $radiostaion_details,
+               'like' => $like,
+               'dislike' => $dislike,
+               'ppv_video_status' => $ppv_video_status,
+               'languages' => $languages,
+               'categories' => $categories,
+               'current_timezone' => current_timezone(),
+               'RentURL' => URL::to('radio-station') . '/' . $radiostationSlug,
+               'radiostations' => $radiostations,
+               'program_schedule_daywise' => $radiostaion_details->pluck('program_schedule_daywise'), 
+           ];
+       }
+       
+      } catch (\Throwable $th) {
+  
+          $response = array(
+            'status' => 'false',
+            'message' => $th->getMessage() ,
+          );
+      }
+      return response()->json($response, 200);
+     
+     }
 
 }

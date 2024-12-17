@@ -882,6 +882,7 @@
                                 <label class="m-0">Publish Time</label>
                                 <div class="panel-body">
                                     <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
+                                    <span class="text-danger" style="display:none;">*This field is required</span>
                                 </div>
                             </div>
                         </div>
@@ -938,14 +939,14 @@
                         <div class="col-sm-2 program_time">
                             <label class="m-0">Program Start Time</label>
                             <div class="panel-body">
-                                <input type="time" class="form-control" name="program_start_time" />
+                                <input type="time" class="form-control prog-start-time" name="program_start_time" />
                             </div>
                         </div>
 
                         <div class="col-sm-2 program_time">
                             <label class="m-0">Program End Time </label>
                             <div class="panel-body">
-                                <input type="time" class="form-control" name="program_end_time" />
+                                <input type="time" class="form-control prog-end-time" name="program_end_time" />
                             </div>
                         </div>
 
@@ -1668,18 +1669,51 @@
 
             let publishType = $("input[name='publish_type']:checked").val();
 
+            if ( publishType == "publish_now" ) {
+                $('.add_video_btn').prop("disabled", false);
+            }
+
             if ( publishType == "publish_later" ) {
                 $("#publishlater").show();
+                $(".text-danger").show();
+                $('.add_video_btn').prop("disabled", true);
             }
 
             if( publishType == "recurring_program" ){
                 $("#recurring_program , .recurring_timezone").show();
+                $(".text-danger").show();
+                $('.add_video_btn').prop("disabled", true);
             }
 
             if( publishType == "schedule_program" ){
                 var modal = document.getElementById("schedule_program_modal");
                 modal.style.display = "block"; 
                 modal.style.background = 'rgba(0, 0, 0, 0.7)';
+            }
+        });
+
+        $("#publish_time").change(function(){
+            var publishLaterValue = $('#publish_time').val();
+            var publishLaterValue = $('.prog-end-time').val();
+            // console.log('value of publish later: ' + publishLaterValue);
+            if(publishLaterValue !== null && publishLaterValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
+            }
+        });
+
+        $(".prog-end-time").change(function(){
+            var startValue = $('.prog-start-time').val();
+            var endValue = $('.prog-end-time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
             }
         });
 

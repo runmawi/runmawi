@@ -1,4 +1,8 @@
 @php  include public_path('themes/theme4/views/header.php'); @endphp
+@php
+    $embed_media_url = URL::to('category/videos/embed/'.$videodetail->slug);
+    $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
+@endphp
 
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/theme4/assets/css/video-js/video-details.css') }}">
@@ -143,6 +147,13 @@
                                             <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
                                         </span>
                                     </li>
+
+                                    @if($videodetail->access == "guest")
+                                        <li>
+                                            <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i
+                                                        class="ri-links-fill mt-1"></i></span></a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -484,6 +495,10 @@
      body.light-theme .info span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
      body.light-theme ul.breadcrumb.p-0 a, body.light-theme ul.breadcrumb.p-0 li{color: <?php echo $GetLightText; ?>;}
 </style>
+
+<script>
+     
+</script>
 @php 
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');

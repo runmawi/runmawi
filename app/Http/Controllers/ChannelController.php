@@ -3486,33 +3486,7 @@ class ChannelController extends Controller
                 $regionName = $geoip->getregion();
                 $cityName = $geoip->getcity();
                 // dd($data);
-                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
-                    ->where('video_id', '=', $vid)
-                    ->orderBy('created_at', 'DESC')
-                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())
-                    ->first();
-                if (!empty($regionview)) {
-                    // dd($logged);
-                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
-                        ->where('video_id', '=', $vid)
-                        ->orderBy('created_at', 'DESC')
-                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())
-                        ->delete();
-                    // dd($data);
-                    $region = new RegionView();
-                    $region->user_id = Auth::User()->id;
-                    $region->user_ip = $userIp;
-                    $region->video_id = $vid;
-                    $region->countryname = $countryName;
-                    $region->save();
-                } else {
-                    $region = new RegionView();
-                    $region->user_id = Auth::User()->id;
-                    $region->user_ip = $userIp;
-                    $region->video_id = $vid;
-                    $region->countryname = $countryName;
-                    $region->save();
-                }
+                
                 $categoryVideos = \App\Video::where('id', $vid)->first();
                 $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
                 $recomended = \App\Video::where('video_category_id', '=', $category_id)
@@ -5267,7 +5241,7 @@ class ChannelController extends Controller
             if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'videodetail' => $videodetail ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                     'recomended' => $recomended ,
                     'videoURl' => $videoURl ,

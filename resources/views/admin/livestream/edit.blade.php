@@ -992,6 +992,7 @@ border-radius: 0px 4px 4px 0px;
                         <label class="m-0">Publish Time</label>
                         <div class="panel-body">
                             <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" style="display: block !important"/>
+                            <span class="text-danger" style="display:none;">*This field is required</span>
                         </div>
                     </div>
                 </div>
@@ -1070,14 +1071,14 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-sm-2 program_time"  style="{{ !empty($video->program_start_time)  ? '' : 'display: none' }}" >
                     <label class="m-0">Program Start Time   </label>
                     <div class="panel-body">
-                        <input type="time" class="form-control" name="program_start_time" value="{{ !empty($video->program_start_time) ? $video->program_start_time : null }}" />
+                        <input type="time" class="form-control prog-start-time" name="program_start_time" value="{{ !empty($video->program_start_time) ? $video->program_start_time : null }}" />
                     </div>
                 </div>
 
                 <div class="col-sm-2 program_time" style="{{ !empty($video->program_end_time)  ? '' : 'display: none' }}" >
                     <label class="m-0">Program End Time   </label>
                     <div class="panel-body">
-                        <input type="time" class="form-control" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
+                        <input type="time" class="form-control prog-end-time" name="program_end_time" value="{{ !empty($video->program_end_time) ? $video->program_end_time : null }}" />
                     </div>
                 </div>
 
@@ -1738,13 +1739,22 @@ $(document).ready(function(){
             $("#publishlater, #recurring_program , .custom_program_time , .program_time,.recurring_program_week_day, .recurring_program_month_day,.recurring_timezone").hide();
 
             let publishType = $("input[name='publish_type']:checked").val();
+            // console.log('type: ' + publishType);
+
+            if ( publishType == "publish_now" ) {
+                $('.pull-right').prop("disabled", false);
+            }
 
             if ( publishType == "publish_later" ) {
                 $("#publishlater").show();
+                $(".text-danger").show();
+                $('.pull-right').prop("disabled", true);
             }
 
             if( publishType == "recurring_program" ){
                 $("#recurring_program , .recurring_timezone").show();
+                $(".text-danger").show();
+                $('.pull-right').prop("disabled", true);
             }
 
             if( publishType == "schedule_program" ){
@@ -1753,6 +1763,33 @@ $(document).ready(function(){
                 modal.style.background = 'rgba(0, 0, 0, 0.7)';
             }
         });
+        
+        $("#publish_time").change(function(){
+            var publishLaterValue = $('#publish_time').val();
+            var publishLaterValue = $('.prog-end-time').val();
+            // console.log('value of publish later: ' + publishLaterValue);
+            if(publishLaterValue !== null && publishLaterValue !== '') { 
+                $('.pull-right').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.pull-right').prop("disabled", true);
+            }
+        });
+
+        $(".prog-end-time").change(function(){
+            var startValue = $('.prog-start-time').val();
+            var endValue = $('.prog-end-time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.pull-right').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.pull-right').prop("disabled", true);
+            }
+        });
+
+
 
         $("#recurring_program").change(function () {
 

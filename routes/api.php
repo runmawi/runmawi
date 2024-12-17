@@ -706,4 +706,8 @@ Route::group(
             Route::get('ugcvideolist', 'ApiAuthContinueController@ugcvideolist');
             Route::post('uploadugcvideo', 'ApiAuthContinueController@uploadugcvideo');
             Route::post('deleteugcvideo', 'ApiAuthContinueController@deleteugcvideo');
+            Route::post('revenueshare', 'ApiAuthContinueController@revenueshare');
+            Route::post('episoderevenueshare', 'ApiAuthContinueController@revenueshare');
+            Route::post('livestreamrevenueshare', 'ApiAuthContinueController@revenueshare');
+
         });
