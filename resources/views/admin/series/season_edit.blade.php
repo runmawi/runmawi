@@ -836,10 +836,10 @@
                                         </div>
                                     </td>
 
-                                    @if ( $episode->active != 1 )
-                                        <td> <p class = "bg-warning video_active">{{ "Draft" }}</p></td>
-                                    @else
+                                    @if ( $episode->active == 1 )
                                         <td> <p class = "bg-success video_active">{{ "Published" }} </p></td>
+                                    @else
+                                        <td> <p class = "bg-warning video_active">{{ "Draft" }}</p></td>
                                     @endif
 
                                     <td>
