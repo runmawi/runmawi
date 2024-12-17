@@ -2856,19 +2856,19 @@ class AdminSeriesController extends Controller
 
         if( admin_ads_pre_post_position() == 1){
 
-            $episode->pre_post_ads =  $data['pre_post_ads'];
-            $episode->post_ads     =  $data['pre_post_ads'];
-            $episode->pre_ads      =  $data['pre_post_ads'];
+            $episode->pre_post_ads =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+            $episode->post_ads     =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+            $episode->pre_ads      =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
         }
         else{
             
-            $episode->pre_ads      =  $data['pre_ads'];
-            $episode->post_ads     =  $data['post_ads'];
+            $episode->pre_ads      =  (!empty($data['pre_ads']) ? $data['pre_ads'] : null );
+            $episode->post_ads     =  (!empty($data['post_ads']) ? $data['post_ads'] : null );
             $episode->pre_post_ads =  null ;
         }
         
-        $episode->mid_ads  =  $data['mid_ads'];
-        $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+        $episode->mid_ads  =  (!empty($data['mid_ads']) ? $data['mid_ads'] : null );
+        $episode->video_js_mid_advertisement_sequence_time   =  (!empty($data['video_js_mid_advertisement_sequence_time']) ? $data['video_js_mid_advertisement_sequence_time'] : null );
 
 
         $episode->save();
