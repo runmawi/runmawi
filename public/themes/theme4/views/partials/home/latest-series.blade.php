@@ -170,7 +170,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: 10,
+            lazyLoad: 6,
         });
 
         
@@ -210,7 +210,7 @@
                             draggable: true,
                             freeScroll: true,
                             imagesLoaded: true,
-                            lazyLoad: 10,
+                            lazyLoad: 7,
                         });
                     }, 0);
                 }
