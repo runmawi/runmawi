@@ -2039,9 +2039,11 @@ public function verifyandupdatepassword(Request $request)
 
         $videodetail = Video::where('id',$data['videoid'])->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
         ->get()->map(function ($item) use ( $data ,$ppv_exists_check_query, $ios_plans_id)  {
-          $item['ppv_480p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
-          $item['ppv_720p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
+          $item['ppv_480p_price_ios']  = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_480p)['plan_price'] ?? null;
+          $item['ppv_720p_price_ios']  = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_720p)['plan_price'] ?? null;
           $item['ppv_1080p_price_ios'] = $ios_plans_id->firstWhere('product_id', $item->ios_ppv_price_1080p)['plan_price'] ?? null;
+          $item['details']             = strip_tags(html_entity_decode($item->details));
+          $item['description']         = strip_tags(html_entity_decode($item->description));
   
           $userrole = User::where('id',$data['user_id'])->pluck('role')->first();
           if( $userrole == "admin"){
@@ -2326,9 +2328,9 @@ public function verifyandupdatepassword(Request $request)
     $videodetailType = Video::where('id',$videoid)->pluck('type')->first();
     
     if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $videodetailType == 'VideoCipher'){
-        return $this->VideoCipher_Videodetail($data);
+      return $this->VideoCipher_Videodetail($data);
     }
-    
+        
     try {
 
       $current_date = date('Y-m-d h:i:s a', time());
