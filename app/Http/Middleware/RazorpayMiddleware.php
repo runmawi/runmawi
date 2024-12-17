@@ -26,7 +26,7 @@ class RazorpayMiddleware
             $userEmailId = $request->session()->get('register.email');
             $user_details =User::where('email',$userEmailId)->first();        
         }
-        if($user_details != null  ){
+        if( !is_null($user_details) ){
             if( $users_details->role == "admin" ){
                 return redirect('home');
             }
