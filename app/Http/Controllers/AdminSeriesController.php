@@ -560,7 +560,8 @@ class AdminSeriesController extends Controller
                                     ->map(function($item){
                                         $item['total_episode']= Episode::where('season_id',$item->id)->count();
                                         $item['active_episode']= Episode::where('season_id',$item->id)->where('active',1)->count();
-                                        $item['draft_episodes']= Episode::where('season_id',$item->id)->where('active',0)->count();
+                                        // $item['draft_episodes']= Episode::where('season_id',$item->id)->where('active',0)->count();
+                                        $item['draft_episodes'] = Episode::where('season_id', $item->id)->where(function ($query) {$query->where('active', '=', 0)->orWhereNull('active');})->count();
                                         return $item;
                                     });
 
