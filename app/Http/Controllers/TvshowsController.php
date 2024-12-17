@@ -1091,7 +1091,7 @@ class TvshowsController extends Controller
                         'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                         'category_name'             => $category_name ,
                         'episode_details'           => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                         'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
@@ -1148,8 +1148,8 @@ class TvshowsController extends Controller
                         'episodesubtitles' =>   $subtitle ,
                         'category_name'             => $category_name ,
                         'episode_details'  => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
+                        'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
                         'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -2721,7 +2721,7 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'episode_play_access' => $episode_play_access,
-                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
 
                 ];
@@ -2770,7 +2770,7 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
-                    'monetization_view_limit'    => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {

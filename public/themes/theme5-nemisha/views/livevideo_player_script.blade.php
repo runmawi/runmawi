@@ -3,7 +3,7 @@
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
     var videoId = "<?php echo $Livestream_details->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
-    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
     var played_views = "<?php echo $Livestream_details->played_views; ?>";
     var user_role = "<?php echo $user_role; ?>";
 
@@ -61,7 +61,7 @@
             currentTime = Math.floor(currentTime);
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > 5) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > video_viewcount_limit) {
                 viewCountSent = true;
                 countview = 1;
             

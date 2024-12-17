@@ -3,7 +3,7 @@
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
-    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
     var user_role = "<?php echo $user_role; ?>";
     var played_views = "<?php echo $videodetail->played_views; ?>";
 
@@ -75,7 +75,7 @@
 
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > 5) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > video_viewcount_limit) {
                 viewCountSent = true;
                 countview = 1;
               
