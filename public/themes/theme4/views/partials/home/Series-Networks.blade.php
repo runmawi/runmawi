@@ -9,7 +9,7 @@
                                 'details', 'description', 'network_id'
                             )
                             ->where('active', 1)
-                            ->whereJsonContains('network_id',["$item->id"])
+                            ->where('network_id', 'LIKE', '%"'.$item->id.'"%')
                             ->latest();
 
                             $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url) {
@@ -189,7 +189,7 @@ var elem = document.querySelector('.series-network-video');
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyLoad: 10,
+        lazyLoad: 7,
         });
 
 
@@ -228,7 +228,7 @@ var elem = document.querySelector('.series-network-video');
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 10,
+                        lazyLoad: 7,
                     });
                 }, 0);
             }

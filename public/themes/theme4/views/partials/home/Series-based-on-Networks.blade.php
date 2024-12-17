@@ -170,7 +170,7 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyLoad: 10,
+        lazyLoad: 7,
         });
 
        
@@ -213,7 +213,7 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 10,
+                        lazyLoad: 7,
                     });
                 },0);
             }
