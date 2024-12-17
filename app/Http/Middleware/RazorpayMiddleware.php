@@ -31,7 +31,7 @@ class RazorpayMiddleware
     
         if( !is_null($user_details) ){
 
-            if( $users_details->role == "admin" ){
+            if( $user_details->role == "admin" ){
                 return redirect('home');
             }
 
