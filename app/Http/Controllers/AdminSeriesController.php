@@ -68,6 +68,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 use App\CompressImage;
 use App\CountryCode;
+use Illuminate\Support\Facades\DB; 
 
 
 class AdminSeriesController extends Controller
@@ -521,6 +522,40 @@ class AdminSeriesController extends Controller
 
      
         }
+// dd($data['network_id']);
+    if(!empty($data['network_id'])){
+        $networkIds = json_decode($data['network_id'], true);
+
+        if (is_array($networkIds)) {
+            foreach ($networkIds as $networkId) {
+                // Check if the combination of series_id and network_id already exists
+                $exists = DB::table('series_network_order')
+                    ->where('series_id', $series->id)
+                    ->where('network_id', $networkId)
+                    ->exists();
+
+                if (!$exists) {
+                    $maxOrder = DB::table('series_network_order')
+                        ->where('network_id', $networkId)
+                        ->max('order');
+
+                    $nextOrder = $maxOrder ? $maxOrder + 1 : 1;
+
+                    DB::table('series_network_order')->insert([
+                        'series_id' => $series->id,    
+                        'network_id' => $networkId,
+                        'order' => $nextOrder,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        } else {
+            throw new Exception("Invalid network_id format. Expected a JSON array.");
+        }
+    }
+
+        
         /*Subtitle Upload*/
         // $files = $request->file('subtitle_upload');
         $shortcodes = $request->get('short_code');
@@ -867,6 +902,49 @@ class AdminSeriesController extends Controller
                 }
             }
         }
+        $networkIds = !empty($data['network_id']) ? $data['network_id'] : NULL;
+        // dd(!empty($networkIds));
+        if(!empty($networkIds)){
+            DB::table('series_network_order')
+                ->where('series_id', $data['id'])
+                ->whereNotIn('network_id', $networkIds)
+                ->delete();
+
+            // Step 2: Iterate through the current network IDs and insert missing rows
+            foreach ($networkIds as $networkId) {
+                // Check if the combination of series_id and network_id already exists
+                $exists = DB::table('series_network_order')
+                    ->where('series_id', $data['id'])
+                    ->where('network_id', $networkId)
+                    ->exists();
+
+                // If it doesn't exist, insert a new record
+                if (!$exists) {
+                    // Find the max order for the current network_id
+                    $maxOrder = DB::table('series_network_order')
+                        ->where('network_id', $networkId)
+                        ->max('order');
+
+                    // Calculate the next order number (max + 1)
+                    $nextOrder = $maxOrder ? $maxOrder + 1 : 1;
+
+                    // Insert a new record into the series_network_order table
+                    DB::table('series_network_order')->insert([
+                        'series_id' => $data['id'],
+                        'network_id' => $networkId,
+                        'order' => $nextOrder,
+                        'created_at' => now(), 
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }else{
+            DB::table('series_network_order')
+                ->where('series_id', $data['id'])
+                ->delete();
+        }
+
+
 
         return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Series!', 'note_type' => 'success') );
     }
