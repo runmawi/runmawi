@@ -8168,6 +8168,14 @@ return response()->json($response, 200);
   public function listcontinuewatchings(Request $request)
   {
     try {
+
+      $HomeSetting = MobileHomeSetting::first();
+      if($HomeSetting->continue_watching == 0){
+        $response = array(
+            'status' => "false",
+            'status_code' => 404,
+        );
+      }else{
       
       $user_id = $request->user_id;
       $multiuser_id = $request->multiuser_id;
@@ -8195,9 +8203,7 @@ return response()->json($response, 200);
                       ->groupBy('continue_watchings.videoid')
                       ->latest('continue_watchings.created_at');
 
-                  if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-                      $videos = $videos->whereNotIn('videos.id', $this->blockVideos);
-                  }
+                 
 
                   if ($this->videos_expiry_date_status == 1) {
                       $videos = $videos->where(function($query) {
@@ -8251,7 +8257,7 @@ return response()->json($response, 200);
           'videos' => $videos,
           'episodes' => $episodes,
       );
-      
+    }
     } catch (\Throwable $th) {
 
       $response = array(
@@ -19557,6 +19563,12 @@ public function QRCodeMobileLogout(Request $request)
 
   public function android_continue_watchings(Request $request)
   {
+    if($Homesetting->continue_watching == 0){
+      $response = array(
+          'status'=>'false',
+      );
+    }else{
+
       $user_id = $request->user_id;
       $current_duration = $request->current_duration;
       $watch_percentage = $request->watch_percentage;
@@ -19623,13 +19635,19 @@ public function QRCodeMobileLogout(Request $request)
             }
           }
 
+        }
 
       return response()->json($response, 200);
   }
 
   public function android_ContinueWatching(Request $request)
   {
-
+    $HomeSetting = MobileHomeSetting::first();
+    if($HomeSetting->continue_watching == 0){
+      $response = array(
+          'status'=>'false',
+      );
+    }else{
       $user_id = $request->user_id;
       $andriodId = $request->andriodId;
       // print_r($andriodId);exit;
@@ -19774,7 +19792,7 @@ public function QRCodeMobileLogout(Request $request)
         'episodes'=> [],
       );
     }
-
+  }
 
     // $response = array(
     //     'status'=>$status,

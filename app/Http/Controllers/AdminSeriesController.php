@@ -4750,7 +4750,7 @@ class AdminSeriesController extends Controller
                 $Episode->season_id = $season_id;
                 $Episode->url = $videoUrl;
                 $Episode->type = "bunny_cdn";
-                $Episode->active = 1;
+                $Episode->active = 0;
                 $Episode->image = default_vertical_image();
                 $Episode->tv_image = default_horizontal_image();
                 $Episode->player_image = default_horizontal_image();
