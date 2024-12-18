@@ -2222,7 +2222,7 @@ class AdminSeriesController extends Controller
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
             // $episodes->access =  $data['access'];
-            $episodes->active =  $active;
+            $episodes->active =  0;
             $episodes->search_tags =  $searchtags;
             $episodes->player_image =  $player_image;
             $episodes->series_id =  $data['series_id'];
@@ -4589,7 +4589,7 @@ class AdminSeriesController extends Controller
             $Episode->series_id = $data["series_id"];
             $Episode->season_id = $data["season_id"];
             $Episode->type = "bunny_cdn";
-            $Episode->active = 1;
+            $Episode->active = 0;
             $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
             $Episode->image = default_vertical_image();
             $Episode->tv_image = default_horizontal_image();
