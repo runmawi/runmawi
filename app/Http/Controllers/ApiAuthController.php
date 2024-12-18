@@ -17292,7 +17292,12 @@ public function QRCodeMobileLogout(Request $request)
                 $item['image_url'] = URL::to('/public/uploads/images/'.$item->image);
                 $item['Player_image_url'] = URL::to('/public/uploads/images/'.$item->player_image);
                 $item['tv_image_url'] = URL::to('/public/uploads/images/'.$item->tv_image);
-                $item['description'] = $item->description ;
+                $description = $item->description;
+                                do {
+                                    $previous = $description;
+                                    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                } while ($description !== $previous);
+                $item['description'] = strip_tags($description);
                 $item['season_count'] = SeriesSeason::where('series_id',$item->id)->count();
                 $item['episode_count'] = Episode::where('series_id',$item->id)->count();
                 $item['source']    = "Series";
@@ -18189,6 +18194,18 @@ public function QRCodeMobileLogout(Request $request)
                                                         $series['image_url']        = (!is_null($series->image) && $series->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->image) : default_vertical_image() ;
                                                         $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->player_image )  :  default_horizontal_image_url() ;
                                                         $series['tv_image_url'] = (!is_null($series->tv_image) && $series->tv_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$series->tv_image )  :  default_horizontal_image_url() ;  // Note - No TV Image
+                                                        $description = $series->description;
+                                                        do {
+                                                            $previous = $description;
+                                                            $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                        } while ($description !== $previous);
+                                                        $details = $series->details;
+                                                                    do {
+                                                                        $previous = $details;
+                                                                        $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                    } while ($details !== $previous);
+                                                        $series['details']             = strip_tags($details);
+                                                        $series['description']         = strip_tags($description);
 
                                                         $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY'); 
                                                 
@@ -18196,6 +18213,12 @@ public function QRCodeMobileLogout(Request $request)
                                                 
                                                         $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes
                                                                                                 ->map(function ($item) {
+                                                                                                  $description = $item->episode_description;
+                                                                                                                  do {
+                                                                                                                      $previous = $description;
+                                                                                                                      $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                                                  } while ($description !== $previous);
+                                                                                                $item['episode_description']= strip_tags($description);
                                                                                                 $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                                                                 return $item;
                                                                                             });
