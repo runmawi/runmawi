@@ -12952,6 +12952,18 @@ $cpanel->end();
           $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+            $description = $item->description;
+              do {
+                  $previous = $description;
+                  $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+              } while ($description !== $previous);
+            $details = $item->details;
+              do {
+                  $previous = $details;
+                  $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+              } while ($details !== $previous);
+            $item['details']             = strip_tags($details);
+            $item['description']         = strip_tags($description);
             unset($item['player_image']);
             unset($item['tv_image']);
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
@@ -12962,7 +12974,6 @@ $cpanel->end();
                                             ->orderBy('episode_order')
                                             ->get()
                                             ->map(function ($episode) {
-                                              $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
                                               // return $episode;
                                               if($this->Theme == 'theme4'){
                                                 if($episode->type == 'm3u8'){
@@ -12983,12 +12994,17 @@ $cpanel->end();
                                                   $url = $episode->url;
                                                 }
                                               }
+                                              $description = $episode->episode_description;
+                                                              do {
+                                                                  $previous = $description;
+                                                                  $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                              } while ($description !== $previous);
                                               return [
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
                                                 'slug'                     => $episode->slug,
                                                 'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
-                                                'description'              => $description,
+                                                'description'              => strip_tags($description),
                                                 'episodeNumber'            => $episode->episode_order,
                                                 'access'                   => $episode->access,
                                                 'content'                  => [
@@ -13055,6 +13071,18 @@ $cpanel->end();
                                                                                     ->map(function ($series) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
+                                                                                        $description = $series->description;
+                                                                                          do {
+                                                                                              $previous = $description;
+                                                                                              $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                          } while ($description !== $previous);
+                                                                                        $details = $series->details;
+                                                                                          do {
+                                                                                              $previous = $details;
+                                                                                              $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                          } while ($details !== $previous);
+                                                                                        $series['details']             = strip_tags($details);
+                                                                                        $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
                                                                                                                         ->map(function ($season) {
@@ -13062,7 +13090,6 @@ $cpanel->end();
                                                                                                                                 ->orderBy('episode_order')
                                                                                                                                 ->get()
                                                                                                                                 ->map(function ($episode) {
-                                                                                                                                  $description = strip_tags(str_replace(["\r", "\n"], '', htmlspecialchars_decode($episode->episode_description, ENT_QUOTES)));
                                                                                                                                   if($this->Theme == 'theme4'){
                                                                                                                                     if($episode->type == 'm3u8'){
                                                                                                                                       $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
@@ -13082,12 +13109,17 @@ $cpanel->end();
                                                                                                                                       $url = $episode->url;
                                                                                                                                     }
                                                                                                                                   }
+                                                                                                                                  $description = $episode->episode_description;
+                                                                                                                                              do {
+                                                                                                                                                  $previous = $description;
+                                                                                                                                                  $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                                                                              } while ($description !== $previous);
                                                                                                                                   return [
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
                                                                                                                                     'slug'                     => $episode->slug,
                                                                                                                                     'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
-                                                                                                                                    'description'              => $description,
+                                                                                                                                    'description'              => strip_tags($description),
                                                                                                                                     'episodeNumber'            => $episode->episode_order,
                                                                                                                                     'access'                   => $episode->access,
                                                                                                                                     'content'                  => [
