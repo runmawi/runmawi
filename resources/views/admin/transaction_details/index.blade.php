@@ -76,9 +76,9 @@
                                                 @endif
                                                 <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
                                                 @if ($transaction->payment_id)
-                                                <td>Success</td>
+                                                <td class = "bg-success" >Success</td>
                                                 @else
-                                                <td>Failed</td>
+                                                <td  class = "bg-danger" >Failed</td>
                                                 @endif 
                                                 @if ($transaction->transaction_type == 'Subscription')
                                                     <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
