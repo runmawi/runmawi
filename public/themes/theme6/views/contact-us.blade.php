@@ -87,7 +87,7 @@
 
                 <div class="row">
                     {{-- reCAPTCHA  --}}
-                    @if( get_enable_captcha()  == 1)  
+                    @if( get_enable_captcha_contactus()  == 1)  
                         <div class="col-md-6">
                             <div class="form-group text-left" style="  margin-top: 30px;">
                                 {!! NoCaptcha::renderJs('') !!}
