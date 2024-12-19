@@ -33,7 +33,9 @@
                                         <tr>
                                             <th>Id</th>
                                             <th>Phone</th>
+                                            <th>Content</th>
                                             <th>Transaction ID</th>
+                                            <th>Payment Status</th>
                                             <th>Amount</th>
                                             <th>Transaction Type</th>
                                             <th>Transaction Date</th>
@@ -50,9 +52,29 @@
                                                 @else
                                                 <td>-</td>
                                                 @endif
-                                               
+                                                @if ($transaction->transaction_type == 'Subscription')
+                                                <td>-</td>
+                                                @else
+                                                <td>
+                                                    @if ($transaction->video)
+                                                        <p>{{ $transaction->video->title }}</p>
+                                                    @elseif($transaction->series)
+                                                        <p>{{ $transaction->series->title }}</p>
+                                                        <p>{{ $transaction->SeriesSeason->series_seasons_name }}</p>                                                    
+                                                    @elseif($transaction->livestream)
+                                                        <p>{{ $transaction->livestream->title }}</p>
+                                                    @else
+                                                        <p>-</p>
+                                                        <p>-</p>
+                                                    @endif
+                                                </td>
+                                                @endif
                                                 <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
-                                               
+                                                @if ($transaction->payment_id)
+                                                <td>Success</td>
+                                                @else
+                                                <td>Failed</td>
+                                                @endif 
                                                 @if ($transaction->transaction_type == 'Subscription')
                                                     <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
                                                 @else
