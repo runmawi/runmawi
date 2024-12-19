@@ -20,6 +20,7 @@ use App\Channel;
 use App\AdsEvent;
 use App\AdsVideo;
 use App\TimeZone;
+use App\UGCVideo;
 use App\Currency ;
 use App\Document ;
 use App\MobileApp;
@@ -16864,6 +16865,12 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'radio_station');
     }
 
+    if($Homesetting->user_generated_content == 1 && $this->All_Homepage_user_generated_content($homepage_input_array)->isNotEmpty() ){
+      array_push($input,'user_generated_content');
+    }
+
+
+
     if($Homesetting->series == 1 && $this->All_Homepage_series_videos($homepage_input_array)->isNotEmpty() ){
       array_push($input,'series');
     }
@@ -17279,6 +17286,35 @@ public function QRCodeMobileLogout(Request $request)
 
           return $livestreams ;
       }
+
+
+      
+    private static function All_Homepage_user_generated_content($homepage_input_array){
+
+      $user_generated_content_status = $homepage_input_array['MobileHomeSetting']->user_generated_content;
+      $homepage_geofencing = $homepage_input_array['Geofencing'];
+
+
+        if( $user_generated_content_status == null || $user_generated_content_status == 0 ):    
+
+            $data = array();      // Note - if the home-setting (user_generated_content) is turned off in the admin panel
+
+        else:
+
+          $data = UGCVideo::where('active',1)->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) {
+              $item['image_url'] = $item->image;
+              $item['Player_image_url'] = $item->player_image; 
+              $item['tv_image_url'] = $item->player_image; 
+              $item['description'] = null ;
+              $item['source']    = "User Generated Content";
+              return $item;
+          });
+        
+        endif;
+
+      return $data ;
+    }
+
 
 
   private static function All_Homepage_series_videos($homepage_input_array){
@@ -18383,6 +18419,11 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Radiostation_Pagelist();
                 $Page_List_Name = 'Radiostation_Pagelist';
                 break;
+
+              case 'user_generated_content':
+                $data = $this->UGC_Pagelist();
+                $Page_List_Name = 'UGC_Pagelist';
+                break;
       
               case 'featured_videos':
                   $data = $this->Featured_videos_Pagelist();
@@ -19083,6 +19124,26 @@ public function QRCodeMobileLogout(Request $request)
         return $item;
       });
 
+      return $data;
+  }
+
+    private static function UGC_Pagelist(){
+
+      $query = UGCVideo::query()
+            ->select('id', 'title', 'slug', 'duration', 'image', 'player_image','type','description')
+            ->where('active', 1)
+            ->where('status', 1)
+            ->where('draft', 1);
+        
+      $data = $query->latest()->get();
+        
+      $data->transform(function ($item) {
+            $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+            $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+            $item->source = "Videos";
+            return $item;
+      });
+        
       return $data;
   }
 
