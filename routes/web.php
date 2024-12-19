@@ -82,6 +82,7 @@ Route::get('/storagelimit', 'AdminDashboardController@storagelimit');
 Route::get('/country_route_check', 'AdminDashboardController@testuserroute');
 
 Route::get('/moderator', 'ModeratorsUserController@index');
+Route::get('/admin/moderator-details', 'ModeratorsUserController@Contentdetails');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
