@@ -60,7 +60,11 @@
                                                         <p>{{ $transaction->video->title }}</p>
                                                     @elseif($transaction->series)
                                                         <p>{{ $transaction->series->title }}</p>
-                                                        <p>{{ $transaction->SeriesSeason->series_seasons_name }}</p>                                                    
+                                                        @if ($transaction->SeriesSeason)
+                                                            <p>{{ $transaction->SeriesSeason->series_seasons_name }}</p>
+                                                        @else
+                                                            <p>-</p>
+                                                        @endif
                                                     @elseif($transaction->livestream)
                                                         <p>{{ $transaction->livestream->title }}</p>
                                                     @else
@@ -68,6 +72,7 @@
                                                         <p>-</p>
                                                     @endif
                                                 </td>
+                                                
                                                 @endif
                                                 <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
                                                 @if ($transaction->payment_id)
