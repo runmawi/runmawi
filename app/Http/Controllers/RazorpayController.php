@@ -366,7 +366,7 @@ class RazorpayController extends Controller
        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
        $now = $d->format('Y-m-d h:i:s a');
        $time = date('h:i:s', strtotime($now));
-       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
 
         try {
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
@@ -385,14 +385,23 @@ class RazorpayController extends Controller
             $moderators_id = $video->user_id;
             }
 
+            $commission_btn = $setting->CPP_Commission_Status;
+            $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+            $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+            $commission_percentage_value = $video->CPP_commission_percentage;
+            // dd((600 * $commission_percentage_value)/100);
+            
+            if($commission_btn === 0){
+                $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+            }
             if(!empty($moderators_id)){
                 $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
                 $total_amount        = $video->ppv_price;
                 $title               =  $video->title;
                 $commssion           =  VideoCommission::where('type','CPP')->first();
                 $percentage          =  $moderator->commission_percentage; 
-                $ppv_price           =  $video->ppv_price;
-                $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                $ppv_price           =  $request->amount/100;
+                $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
                 $admin_commssion     =  $ppv_price - $moderator_commssion;
                 $moderator_id        =  $moderators_id;
             }
@@ -407,6 +416,7 @@ class RazorpayController extends Controller
                 $moderator_commssion = null;
                 $moderator_id = null;
             }
+            // dd($ppv_price);
 
             $purchase = new PpvPurchase;
             $purchase->user_id      = $request->user_id ;

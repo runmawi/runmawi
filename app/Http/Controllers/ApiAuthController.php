@@ -4593,6 +4593,9 @@ public function verifyandupdatepassword(Request $request)
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
+    $amount = $request->amount;
+    $platform = $request->platform;
+    $payment_id = $request->py_id;
 
     $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
     $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -4676,13 +4679,51 @@ public function verifyandupdatepassword(Request $request)
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
+      
+      $video_moderators_id = Video::where('id',$video_id)->pluck('user_id')->first();
+      $commission_percentage_value = Video::where('id',$video_id)->pluck('CPP_commission_percentage')->first();
+      $CppUser_details = ModeratorsUser::where('id',$video_moderators_id)->first();
+      $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+      $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
+      $series_moderators_id = Series::where('id',$series_id)->pluck('user_id')->first();
+      $series_commission_percentage_value = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
 
-      if ( $ppv_count == 0 && !empty($video_id) && $video_id != '') {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv,'ppv_plan'=> $ppv_plan ]
-        );
-      } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
+
+      if($commission_btn === 0){
+        $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+      }
+
+      if(!empty($video_moderators_id)){
+        $ppv_price           =  $request->amount;
+        $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+        $admin_commssion     =  $ppv_price - $moderator_commssion;
+        $moderator_id        =  $video_moderators_id;
+      }
+
+      if (!empty($video_id) && $video_id != '') {
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+          DB::table('ppv_purchases')->insert(
+            [
+              'user_id' => $user_id,
+              'video_id' => $video_id,
+              'to_time' => $date,
+              'total_amount'=> $amount,
+              'ppv_plan'=> $ppv_plan,
+              'moderator_commssion'=>$moderator_commssion,
+              'admin_commssion'=>$admin_commssion,
+              'payment_gateway'=>$payment_type,
+              'moderator_id'=>$moderator_id,
+              'platform' => $platform,
+              'payment_id' => $payment_id,
+              'created_at'=>now(),
+              'updated_at'=>now()
+              ]
+          );
+        }else{
+            DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id]
+          );
+        }
       }
 
       if ( $serie_ppv_count == 0 && !empty($series_id) && $series_id != '' && empty($season_id) && $season_id == '') {
@@ -4696,17 +4737,46 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date]);
       }
 
-      if ( $season_ppv_count == 0 && !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
-        );
-      } else {
-        DB::table('ppv_purchases')
-        ->where('series_id', $series_id)
-        ->where('season_id', $season_id)
-        ->where('user_id', $user_id)
-        ->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
+      if ( !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
+        $CppUser_details = ModeratorsUser::where('id',$series_moderators_id)->first();
+        $commission_percentage_value = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
+
+        if($commission_btn === 0){
+          $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+
+        if(!empty($series_moderators_id)){ 
+          $ppv_price           =  $request->amount;
+          $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+          $admin_commssion     =  $ppv_price - $moderator_commssion;
+          $moderator_id        =  $series_moderators_id;
       }
+
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+          DB::table('ppv_purchases')->insert(
+            [
+              'user_id' => $user_id,
+              'series_id' => $series_id,
+              'season_id' => $season_id,
+              'to_time' => $date,
+              'total_amount'=> $amount,
+              'ppv_plan'=> $ppv_plan,
+              'moderator_commssion'=>$moderator_commssion,
+              'admin_commssion'=>$admin_commssion,
+              'payment_gateway'=>$payment_type,
+              'moderator_id'=>$series_moderators_id,
+              'platform' => $platform,
+              'payment_id' => $payment_id,
+              'created_at'=>now(),
+              'updated_at'=>now()
+              ]
+          );
+        }else{
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id]
+          );
+        }
+      } 
     
       if ( $live_ppv_count == 0 && !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
