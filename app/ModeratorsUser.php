@@ -67,4 +67,28 @@ class ModeratorsUser extends Model
         return $this->belongsTo('App\ModeratorPayout','id','user_id');
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'user_id');
+    }
+
+    public function series()
+    {
+        return $this->hasMany(Series::class, 'user_id');
+    }
+
+    public function seasons()
+    {
+        return $this->hasMany(SeriesSeason::class, 'user_id');
+    }
+
+    public function episodes()
+    {
+        return $this->hasMany(Episode::class, 'user_id');
+    }
+
+    public function livestreams()
+    {
+        return $this->hasMany(LiveStream::class, 'user_id');
+    }
 }
