@@ -53,6 +53,7 @@ class ApiAuthContinueController extends Controller
             'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
+            'image' => 'nullable',
         ]);
 
         if ($validator->fails()) {
