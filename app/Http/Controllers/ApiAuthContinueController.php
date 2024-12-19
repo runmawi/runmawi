@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use URL;
-use Auth;
-use File;
-use getID3;
-use App\User;
-use App\Video;
-use Validator;
-use App\Setting;
-use App\UGCVideo;
-use FFMpeg\FFMpeg;
 use App\Geofencing;
 use App\HomeSetting;
-use Illuminate\Support\Str;
-use App\PartnerMonetization;
-use Illuminate\Http\Request;
-use App\VideoExtractedImages;
-use FFMpeg\Coordinate\TimeCode;
-use App\PartnerMonetizationSetting;
-use Intervention\Image\Facades\Image;
 use App\Jobs\ConvertUGCVideoForStreaming;
+use App\LikeDislike;
+use App\MoviesSubtitles;
+use App\PartnerMonetization;
+use App\PartnerMonetizationSetting;
+use App\Setting;
+use App\UGCSubscriber;
+use App\UGCVideo;
+use App\User;
+use App\Video;
+use App\VideoAnalytics;
+use App\VideoExtractedImages;
+use App\Watchlater;
+use App\Wishlist;
+use Auth;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
+use File;
+use getID3;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use URL;
+use Validator;
 
 class ApiAuthContinueController extends Controller
 {
@@ -41,12 +47,13 @@ class ApiAuthContinueController extends Controller
 
     public function uploadugcvideo(Request $request)
     {
-        // Validation
+
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:mp4,m4v,webm,ogv|max:102400',
             'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
+            'image' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -60,7 +67,8 @@ class ApiAuthContinueController extends Controller
             $video_description = $request->description;
             $video_slug = $request->slug ? $request->slug : $request->title;
             $file = $request->file;
-            
+            $image = $request->image;
+
             if ($request->hasFile('image')) {
                 $imagefile = $request->image;
                 if (compress_image_enable() == 1) {
@@ -68,27 +76,26 @@ class ApiAuthContinueController extends Controller
                     $video_image = 'pc-image-' . $image_filename;
                     $Mobile_image = 'Mobile-image-' . $image_filename;
                     $Tablet_image = 'Tablet-image-' . $image_filename;
-    
+
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $video_image, compress_image_resolution());
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Mobile_image, compress_image_resolution());
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Tablet_image, compress_image_resolution());
                 } else {
                     $image_filename = time() . '.' . $imagefile->getClientOriginalExtension();
-    
+
                     $video_image = 'pc-image-' . $image_filename;
                     $Mobile_image = 'Mobile-image-' . $image_filename;
                     $Tablet_image = 'Tablet-image-' . $image_filename;
-    
+
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $video_image);
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Mobile_image);
                     Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Tablet_image);
                 }
-    
+
                 $data["image"] = $video_image;
                 $data["mobile_image"] = $Mobile_image;
                 $data["tablet_image"] = $Tablet_image;
             }
-
 
             $original_name = $file->getClientOriginalName() ?: '';
             $extension = $file->getClientOriginalExtension();
@@ -103,20 +110,18 @@ class ApiAuthContinueController extends Controller
             $duration = $fileInfo['playtime_seconds'] ?? 0;
 
             $user = User::find($userId);
-            $package = $user->package;  
+            $package = $user->package;
             $settings = Setting::first();
-            
+
             if ($duration > 180) {
                 return response()->json(['success' => false, 'message' => 'Video duration exceeds 3 minutes'], 400);
             }
 
-
-            if ($file != "" && $package != "Business") {
+            if ($file != "") {
 
                 $path = $rand . "." . $extension;
                 $file->storeAs("public", $path);
 
-                // Get video duration and save video record
                 $getID3 = new getID3();
                 $videoStorePath = storage_path("app/public/" . $path);
                 $videoInfo = $getID3->analyze($videoStorePath);
@@ -136,9 +141,9 @@ class ApiAuthContinueController extends Controller
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
-                    $video->slug =  $video_slug;
-                    $video->type =  'mp4_url';
-                    $video->image = $video_image;
+                    $video->slug = $video_slug;
+                    $video->type = 'mp4_url';
+                    $video->image = !empty($video_image) ? $video_image : null;
                     $video->save();
 
                     return response()->json([
@@ -149,16 +154,13 @@ class ApiAuthContinueController extends Controller
                         'video_url' => $video->mp4_url,
                     ]);
 
-                }
-                else
-                {
+                } else {
                     return response()->json(['success' => false, 'message' => 'Video duration exceeds the limit of 3 minutes'], 400);
                 }
 
+            }
 
-            } 
-            
-            if ($package == "Business" && $settings->transcoding_access == 1) {
+            if ($settings->transcoding_access == 1) {
                 $path = $rand . "." . $extension;
                 $file->storeAs("public", $path);
 
@@ -182,14 +184,12 @@ class ApiAuthContinueController extends Controller
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
-                    $video->slug =  $video_slug;
+                    $video->slug = $video_slug;
                     $video->image = $video_image;
                     $video->save();
 
-                    // Dispatch video transcoding job
                     ConvertUGCVideoForStreaming::dispatch($video);
 
-                    // Extract images from the video if enabled
                     if (Enable_Extract_Image() == 1) {
                         $this->extractImagesFromVideo($video, $videoStorePath, $rand, $videoDuration);
                     }
@@ -205,11 +205,9 @@ class ApiAuthContinueController extends Controller
                     return response()->json(['success' => false, 'message' => 'Video duration exceeds the limit of 3 minutes'], 400);
                 }
             } elseif ($package == "Business" && $settings->transcoding_access == 0) {
-                // Video processing for Business package without transcoding access
                 $path = $rand . "." . $extension;
                 $file->storeAs("public", $path);
 
-                // Get video duration and save video record
                 $getID3 = new getID3();
                 $videoStorePath = storage_path("app/public/" . $path);
                 $videoInfo = $getID3->analyze($videoStorePath);
@@ -229,11 +227,10 @@ class ApiAuthContinueController extends Controller
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
-                    $video->slug =  $video_slug;
+                    $video->slug = $video_slug;
                     $video->image = $video_image;
                     $video->save();
 
-                    // Extract images if enabled
                     if (Enable_Extract_Image() == 1) {
                         $this->extractImagesFromVideo($video, $videoStorePath, $rand, $videoDuration);
                     }
@@ -313,11 +310,11 @@ class ApiAuthContinueController extends Controller
     public function deleteugcvideo(Request $request)
     {
         try {
-    
+
             $request->validate([
                 'ugc_video_id' => 'required|exists:ugc_videos,id',
             ]);
-    
+
             $video = UGCVideo::find($request->ugc_video_id);
 
             if (!$video) {
@@ -367,18 +364,24 @@ class ApiAuthContinueController extends Controller
     public function revenueshare(Request $request)
     {
         try {
-
-           $dd = Auth::user()->role;
-
-           return $dd;
-
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'location' => 'required|string',
+                'device' => 'required|string',
             ]);
 
             $video = Video::find($validated['video_id']);
             $video->played_views += 1;
             $video->save();
+
+            VideoAnalytics::create([
+                'source_id' => $validated['video_id'],
+                'source_type' => 'video',
+                'location' => $validated['location'],
+                'device' => $validated['device'],
+                'browser' => $validated['browser'],
+                'viewed_in' => 'App',
+            ]);
 
             if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
@@ -395,7 +398,7 @@ class ApiAuthContinueController extends Controller
                         $video->monetized_views += $new_monetizable_views;
                         $video->save();
 
-                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channeluser_commission = (float) $video->channeluser->commission;
                         $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
 
                         $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
@@ -441,11 +444,22 @@ class ApiAuthContinueController extends Controller
         try {
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'location' => 'required|string',
+                'device' => 'required|string',
             ]);
 
             $video = Episode::find($validated['video_id']);
             $video->played_views += 1;
             $video->save();
+
+            VideoAnalytics::create([
+                'source_id' => $validated['video_id'],
+                'source_type' => 'episode',
+                'location' => $validated['location'],
+                'device' => $validated['device'],
+                'browser' => $validated['browser'],
+                'viewed_in' => 'App',
+            ]);
 
             if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
@@ -462,7 +476,7 @@ class ApiAuthContinueController extends Controller
                         $video->monetized_views += $new_monetizable_views;
                         $video->save();
 
-                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channeluser_commission = (float) $video->channeluser->commission;
                         $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
 
                         $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
@@ -508,11 +522,22 @@ class ApiAuthContinueController extends Controller
         try {
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'location' => 'required|string',
+                'device' => 'required|string',
             ]);
 
             $video = LiveStream::find($validated['video_id']);
             $video->played_views += 1;
             $video->save();
+
+            VideoAnalytics::create([
+                'source_id' => $validated['video_id'],
+                'source_type' => 'livestream',
+                'location' => $validated['location'],
+                'device' => $validated['device'],
+                'browser' => $validated['browser'],
+                'viewed_in' => 'App',
+            ]);
 
             if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
@@ -529,7 +554,7 @@ class ApiAuthContinueController extends Controller
                         $video->monetized_views += $new_monetizable_views;
                         $video->save();
 
-                        $channeluser_commission = (float)$video->channeluser->commission;
+                        $channeluser_commission = (float) $video->channeluser->commission;
                         $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
 
                         $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
@@ -570,7 +595,415 @@ class ApiAuthContinueController extends Controller
         }
     }
 
+    public function UGCLike(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'ugc_video_id' => 'required|exists:ugc_videos,id',
+            'like' => 'required|boolean',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'false',
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $like = $request->like;
+
+        $existing_like = LikeDislike::where("ugc_video_id", $ugc_video_id)
+            ->where("user_id", $user_id)
+            ->first();
+
+        if ($existing_like) {
+            if ($like == 1) {
+                $existing_like->liked = 1;
+                $existing_like->disliked = 0;
+            } else {
+                $existing_like->liked = 0;
+                $existing_like->disliked = 1;
+            }
+            $existing_like->save();
+        } else {
+            $new_like = new LikeDislike();
+            $new_like->user_id = $user_id;
+            $new_like->ugc_video_id = $ugc_video_id;
+            $new_like->liked = $like == 1 ? 1 : 0;
+            $new_like->disliked = $like == 0 ? 1 : 0;
+            $new_like->save();
+            $existing_like = $new_like;
+        }
+
+        return response()->json([
+            'status' => 'true',
+            'liked' => $existing_like->liked,
+            'disliked' => $existing_like->disliked,
+            'message' => 'Success',
+        ], 200);
+    }
+
+    public function UGCDislike(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'ugc_video_id' => 'required|exists:ugc_videos,id',
+            'dislike' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'false',
+                'message' => 'Validation errors',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $dislike = $request->dislike;
+
+        $existing_dislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        if ($existing_dislike) {
+            if ($dislike == 1) {
+                $existing_dislike->liked = 0;
+                $existing_dislike->disliked = 1;
+            } else {
+                $existing_dislike->disliked = 0;
+            }
+            $existing_dislike->save();
+        } else {
+            $new_dislike = new LikeDislike();
+            $new_dislike->user_id = $user_id;
+            $new_dislike->ugc_video_id = $ugc_video_id;
+            $new_dislike->liked = 0;
+            $new_dislike->disliked = 1;
+            $new_dislike->save();
+
+            $existing_dislike = $new_dislike;
+        }
+
+        return response()->json([
+            'status' => 'true',
+            'liked' => $existing_dislike->liked,
+            'disliked' => $existing_dislike->disliked,
+            'message' => 'Success',
+        ], 200);
+    }
+
+    public function ugcsubscribe(Request $request)
+    {
+
+        $request->validate([
+            'ugc_user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id|different:user_id',
+        ]);
+
+        try {
+
+            $user = User::find($request->ugc_user_id);
+            $subscriber = User::find($request->user_id);
+
+            $exists = UGCSubscriber::where('user_id', $user->id)
+                ->where('subscriber_id', $subscriber->id)
+                ->exists();
+
+            if (!$exists) {
+                UGCSubscriber::create([
+                    'user_id' => $user->id,
+                    'subscriber_id' => $subscriber->id,
+                ]);
+            }
+
+            $subscriberCount = UGCSubscriber::where('user_id', $user->id)->count();
+
+            return response()->json([
+                'success' => true,
+                'count' => $subscriberCount,
+                'message' => 'Successfully subscribed.',
+            ]);
+
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database error occurred.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    public function ugcunsubscribe(Request $request)
+    {
+        $request->validate([
+            'ugc_user_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id|different:user_id',
+        ]);
+
+        try {
+
+            $user = User::find($request->ugc_user_id);
+            $subscriber = User::find($request->user_id);
+
+            $subscription = UGCSubscriber::where('user_id', $user->id)
+                ->where('subscriber_id', $subscriber->id);
+
+            if ($subscription->exists()) {
+                $subscription->delete();
+
+                $subscriberCount = UGCSubscriber::where('user_id', $user->id)->count();
+
+                return response()->json([
+                    'success' => true,
+                    'count' => $subscriberCount,
+                    'message' => 'Successfully unsubscribed.',
+                ]);
+            }
+
+            return response()->json([
+                'error' => 'Subscription not found.',
+            ], 404);
+
+        } catch (QueryException $e) {
+            return response()->json(['error' => 'Database error occurred.'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    public function ugcvideodetail(Request $request)
+    {
+        $data = $request->all();
+        $videoid = $request->videoid;
+        try {
+            $videodetail = UGCVideo::where('id', $videoid)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            if ($videodetail->isEmpty()) {
+                return response()->json(['message' => 'No video found'], 404);
+            }
+            $videodetail = $videodetail->map(function ($item) use ($request) {
+                $item['details'] = $item->details ? strip_tags($item->details) : null;
+                $item['description'] = $item->description ? strip_tags(html_entity_decode($item->description)) : null;
+                $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+                $item['player_image'] = URL::to('public/uploads/images/' . $item->player_image);
+                $item['mobile_image_url'] = URL::to('public/uploads/images/' . $item->mobile_image);
+                $item['tablet_image_url'] = URL::to('public/uploads/images/' . $item->tablet_image);
+                $item['video_url'] = URL::to('/') . '/storage/app/public/';
+                $item['transcoded_url'] = URL::to('/storage/app/public/') . '/' . $item->path . '.m3u8';
+                $item['movie_duration'] = gmdate('H:i:s', $item->duration);
+                switch (true) {
+                    case $item['type'] == "mp4_url":
+                        $item['videos_url'] = $item->mp4_url;
+                        $item['video_player_type'] = 'video/mp4';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == "m3u8_url":
+                        $item['videos_url'] = $item->m3u8_url;
+                        $item['video_player_type'] = 'application/x-mpegURL';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == "embed":
+                        $item['videos_url'] = $item->embed_code;
+                        $item['video_player_type'] = 'embed';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == null && pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mp4":
+                        $item['videos_url'] = URL::to('/storage/app/public/' . $item->path . '.m3u8');
+                        $item['video_player_type'] = 'application/x-mpegURL';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == null && pathinfo($item['mp4_url'], PATHINFO_EXTENSION) == "mov":
+                        $item['videos_url'] = $item->mp4_url;
+                        $item['video_player_type'] = 'video/mp4';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == null:
+                        $item['videos_url'] = URL::to('/storage/app/public/' . $item->path . '.m3u8');
+                        $item['video_player_type'] = 'application/x-mpegURL';
+                        $item['qualities'] = [];
+                        break;
+                    case $item['type'] == " " && !is_null($item->transcoded_url):
+                        $item['videos_url'] = $item->transcoded_url;
+                        $item['video_player_type'] = 'application/x-mpegURL';
+                        $item['qualities'] = [];
+                        break;
+                    default:
+                        $item['videos_url'] = null;
+                        $item['video_player_type'] = null;
+                        $item['qualities'] = [];
+                        break;
+                }
+                return $item;
+            });
+
+            if (isset($request->user_id) && $request->user_id != '') {
+                $user_id = $request->user_id;
+
+                $cnt = Wishlist::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
+                $wishliststatus = ($cnt == 1) ? "true" : "false";
+
+                //Watchlater
+                $cnt1 = Watchlater::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
+                $watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
+
+                $userrole = User::where('id', '=', $user_id)->first()->role;
+                $status = 'true';
+
+                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("user_id", "=", $user_id)->where("liked", "=", 1)->count();
+                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("user_id", "=", $user_id)->where("disliked", "=", 1)->count();
+                $like = ($like_data == 1) ? "true" : "false";
+                $dislike = ($dislike_data == 1) ? "true" : "false";
+            } else {
+                $wishliststatus = 'false';
+                $watchlaterstatus = 'false';
+                $userrole = '';
+                $status = 'true';
+                $like = "false";
+                $dislike = "false";
+            }
+
+            // andriodId  Wishlist , Watchlater
+            if (!empty($request->andriodId)) {
+                //Wishlilst
+                $Wishlist_cnt = Wishlist::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $andriod_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
+
+                // Watchlater
+                $cnt1 = Watchlater::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $andriod_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
+                $like_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
+                $dislike_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
+                $andriod_like = ($like_data == 1) ? "true" : "false";
+                $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
+            } else {
+                $andriod_wishliststatus = 'false';
+                $andriod_watchlaterstatus = 'false';
+                $andriod_like = "false";
+                $andriod_dislike = "false";
+            }
+
+            // IOS Wishlist , Watchlater
+            if (!empty($request->IOSId)) {
+
+                //Wishlilst
+                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
+                $IOS_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
+
+                // Watchlater
+                $cnt1 = Watchlater::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
+                $IOS_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
+
+                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("liked", "=", 1)->count();
+                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("disliked", "=", 1)->count();
+                $IOS_like = ($like_data == 1) ? "true" : "false";
+                $IOS_dislike = ($dislike_data == 1) ? "true" : "false";
+
+            } else {
+                $IOS_wishliststatus = 'false';
+                $IOS_watchlaterstatus = 'false';
+                $IOS_like = "false";
+                $IOS_dislike = "false";
+            }
+
+            // TVID Wishlist
+            if (!empty($request->tv_id)) {
+                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('tv_id', '=', $request->tv_id)->where('ugc_video_id', '=', $videoid)->count();
+                $tv_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
+            } else {
+                $tv_wishliststatus = 'false';
+            }
+
+            $moviesubtitles = MoviesSubtitles::where('movie_id', $videoid)->get();
+
+            $video = Video::find($request->videoid);
+
+            $response = array(
+                'status' => $status,
+                'wishlist' => $wishliststatus,
+                'andriod_wishliststatus' => $andriod_wishliststatus,
+                'andriod_like' => $andriod_like,
+                'andriod_dislike' => $andriod_dislike,
+                'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
+                'tv_wishliststatus' => $tv_wishliststatus,
+                'watchlater' => $watchlaterstatus,
+                'userrole' => $userrole,
+                'like' => $like,
+                'dislike' => $dislike,
+                'videodetail' => $videodetail,
+                'videossubtitles' => $moviesubtitles,
+                'IOS_wishliststatus' => $IOS_wishliststatus,
+                'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
+                'IOS_like' => $IOS_like,
+                'IOS_dislike' => $IOS_dislike,
+            );
+        } catch (\Throwable $th) {
+            $response = array(
+                'status' => 'false',
+                'message' => $th->getMessage(),
+            );
+        }
+
+        return response()->json($response, 200);
+    }
+
+
+    public function ugcwishlist(Request $request) {
+
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_vijdeo_id;
     
+        if (!empty($ugc_video_id)) {
+            $count = Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();
+    
+            if ($count > 0) {
+                Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->delete();
+    
+                $response = [
+                    'status' => 'false',
+                    'message' => 'Removed From Your Wishlist'
+                ];
+            } else {
+                $data = ['user_id' => $user_id, 'ugc_video_id' => $ugc_video_id];
+                Wishlist::insert($data);
+    
+                $response = [
+                    'status' => 'true',
+                    'message' => 'Added to Your Wishlist'
+                ];
+            }
+        }
+        return response()->json($response, 200);
+    
+    }
+
+    public function ugcwatchlater(Request $request) {
+
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        if($request->ugc_video_id != ''){
+          $count = Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->count();
+          if ( $count > 0 ) {
+            Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->delete();
+            $response = array(
+              'status'=>'false',
+              'message'=>'Removed From Your Watch Later'
+            );
+          } else {
+            $data = array('user_id' => $user_id, 'ugc_video_id' => $ugc_video_id );
+            Watchlater::insert($data);
+            $response = array(
+              'status'=>'true',
+              'message'=>'Added to Your Watch Later'
+            );
+    
+          }
+        }
+        return response()->json($response, 200);
+    }
+
 
 }

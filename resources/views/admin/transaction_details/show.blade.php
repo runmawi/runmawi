@@ -55,13 +55,20 @@
                     @if (!$isSubscription)
                         @if ($transaction->video)
                             <p><strong>Video:</strong> {{ $transaction->video->title }}</p>
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
                             <p><strong>Type:</strong> Video</p>
                         @elseif($transaction->series)
                             <p><strong>Series:</strong> {{ $transaction->series->title }}</p>
+                            @if ($transaction->SeriesSeason)
                             <p><strong>Season:</strong> {{ $transaction->SeriesSeason->series_seasons_name }}</p>
+                            @else
+                                <p>-</p>
+                            @endif
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
                             <p><strong>Type:</strong> Season</p>
                         @elseif($transaction->livestream)
                             <p><strong>Video:</strong> {{ $transaction->livestream->title }}</p>
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
                             <p><strong>Type:</strong> Livestream</p>
                         @else
                             <p><strong>Video:</strong> -</p>

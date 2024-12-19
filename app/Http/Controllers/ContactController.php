@@ -39,7 +39,7 @@ class ContactController extends Controller
             'phone_number' => ['string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:255'],
-            'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+            'g-recaptcha-response' => get_enable_captcha_contactus() == 1 ? 'required|captcha' : '',
         ]);
         $data = $request->all();
 

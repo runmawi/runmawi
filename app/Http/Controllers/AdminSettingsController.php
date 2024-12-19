@@ -1212,54 +1212,62 @@ class AdminSettingsController extends Controller
 
     public function captcha(Request $request)
     {
-        $Env_path = realpath('.env');
+        try {
+       
+        
 
-        $Captcha = Captcha::first();
-
-        if ($Captcha == null) {
-
-            Captcha::create([
+            $input = array(
                 'captcha_site_key' => $request->captcha_site_key,
                 'captcha_secret_key' => $request->captcha_secret_key,
                 'enable_captcha' => $request->enable_captcha == null ? '0' : '1',
-            ]);
+                'enable_captcha_signup' => $request->enable_captcha_signup == null ? '0' : '1',
+                'enable_captcha_contactus' => $request->enable_captcha_contactus == null ? '0' : '1',
+            );
 
-            // Create Recaptcha .env
-            $captcha_secret_key = 'NOCAPTCHA_SECRET=' . $request->captcha_secret_key . PHP_EOL;
-            $captcha_site_key = 'NOCAPTCHA_SITEKEY=' . $request->captcha_site_key . PHP_EOL;
+            $Env_path = realpath('.env');
 
-            $file_open = fopen($Env_path, 'a');
-            fwrite($file_open, $captcha_secret_key);
-            fwrite($file_open, $captcha_site_key);
-        } 
-        else {
-            Captcha::first()->update([
-                'captcha_site_key' => $request->captcha_site_key,
-                'captcha_secret_key' => $request->captcha_secret_key,
-                'enable_captcha' => $request->enable_captcha == null ? '0' : '1',
-            ]);
+            $Captcha = Captcha::first();
 
-            // Replace the Captcha in .env
+            if (is_null($Captcha)) {
 
-            $Replace_data = [
-                'NOCAPTCHA_SECRET' => $request->captcha_secret_key,
-                'NOCAPTCHA_SITEKEY' => $request->captcha_site_key,
-            ];
+                Captcha::create($input);
 
-            file_put_contents($Env_path, implode('', 
-              array_map(function($Env_path) use ($Replace_data) {
-                return   stristr($Env_path,'NOCAPTCHA_SECRET') ? "NOCAPTCHA_SECRET=".$Replace_data['NOCAPTCHA_SECRET']."\n" : $Env_path;
-              }, file($Env_path))
-             ));
+                // Create Recaptcha .env
+                $captcha_secret_key = 'NOCAPTCHA_SECRET=' . $request->captcha_secret_key . PHP_EOL;
+                $captcha_site_key = 'NOCAPTCHA_SITEKEY=' . $request->captcha_site_key . PHP_EOL;
 
-            file_put_contents($Env_path, implode('', 
+                $file_open = fopen($Env_path, 'a');
+                fwrite($file_open, $captcha_secret_key);
+                fwrite($file_open, $captcha_site_key);
+            } 
+            else {
+                Captcha::first()->update($input);
+
+                // Replace the Captcha in .env
+
+                $Replace_data = [
+                    'NOCAPTCHA_SECRET' => $request->captcha_secret_key,
+                    'NOCAPTCHA_SITEKEY' => $request->captcha_site_key,
+                ];
+
+                file_put_contents($Env_path, implode('', 
                 array_map(function($Env_path) use ($Replace_data) {
-                    return   stristr($Env_path,'NOCAPTCHA_SITEKEY') ? "NOCAPTCHA_SITEKEY=".$Replace_data['NOCAPTCHA_SITEKEY']."\n" : $Env_path;
+                    return   stristr($Env_path,'NOCAPTCHA_SECRET') ? "NOCAPTCHA_SECRET=".$Replace_data['NOCAPTCHA_SECRET']."\n" : $Env_path;
                 }, file($Env_path))
-            ));
-        }
+                ));
 
-        return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Re-captcha Settings!', 'note_type' => 'success']);
+                file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'NOCAPTCHA_SITEKEY') ? "NOCAPTCHA_SITEKEY=".$Replace_data['NOCAPTCHA_SITEKEY']."\n" : $Env_path;
+                    }, file($Env_path))
+                ));
+            }
+
+            return Redirect::to('admin/settings')->with(['message' => 'Successfully Updated Re-captcha Settings!', 'note_type' => 'success']);
+        
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function comment_section(Request $request)

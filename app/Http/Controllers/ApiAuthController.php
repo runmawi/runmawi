@@ -20,6 +20,7 @@ use App\Channel;
 use App\AdsEvent;
 use App\AdsVideo;
 use App\TimeZone;
+use App\UGCVideo;
 use App\Currency ;
 use App\Document ;
 use App\MobileApp;
@@ -4593,6 +4594,9 @@ public function verifyandupdatepassword(Request $request)
     $setting = Setting::first();
     $ppv_hours = $setting->ppv_hours;
     $date = Carbon::parse($daten)->addHour($ppv_hours);
+    $amount = $request->amount;
+    $platform = $request->platform;
+    $payment_id = $request->py_id;
 
     $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
     $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -4676,13 +4680,51 @@ public function verifyandupdatepassword(Request $request)
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
+      
+      $video_moderators_id = Video::where('id',$video_id)->pluck('user_id')->first();
+      $commission_percentage_value = Video::where('id',$video_id)->pluck('CPP_commission_percentage')->first();
+      $CppUser_details = ModeratorsUser::where('id',$video_moderators_id)->first();
+      $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+      $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
+      $series_moderators_id = Series::where('id',$series_id)->pluck('user_id')->first();
+      $series_commission_percentage_value = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
 
-      if ( $ppv_count == 0 && !empty($video_id) && $video_id != '') {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount_ppv,'ppv_plan'=> $ppv_plan ]
-        );
-      } else {
-        DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
+
+      if($commission_btn === 0){
+        $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+      }
+
+      if(!empty($video_moderators_id)){
+        $ppv_price           =  $request->amount;
+        $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+        $admin_commssion     =  $ppv_price - $moderator_commssion;
+        $moderator_id        =  $video_moderators_id;
+      }
+
+      if (!empty($video_id) && $video_id != '') {
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+          DB::table('ppv_purchases')->insert(
+            [
+              'user_id' => $user_id,
+              'video_id' => $video_id,
+              'to_time' => $date,
+              'total_amount'=> $amount,
+              'ppv_plan'=> $ppv_plan,
+              'moderator_commssion'=>$moderator_commssion,
+              'admin_commssion'=>$admin_commssion,
+              'payment_gateway'=>$payment_type,
+              'moderator_id'=>$moderator_id,
+              'platform' => $platform,
+              'payment_id' => $payment_id,
+              'created_at'=>now(),
+              'updated_at'=>now()
+              ]
+          );
+        }else{
+            DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id]
+          );
+        }
       }
 
       if ( $serie_ppv_count == 0 && !empty($series_id) && $series_id != '' && empty($season_id) && $season_id == '') {
@@ -4696,17 +4738,46 @@ public function verifyandupdatepassword(Request $request)
         ->update(['to_time' => $date]);
       }
 
-      if ( $season_ppv_count == 0 && !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
-        DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
-        );
-      } else {
-        DB::table('ppv_purchases')
-        ->where('series_id', $series_id)
-        ->where('season_id', $season_id)
-        ->where('user_id', $user_id)
-        ->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
+      if ( !empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
+        $CppUser_details = ModeratorsUser::where('id',$series_moderators_id)->first();
+        $commission_percentage_value = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
+
+        if($commission_btn === 0){
+          $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+
+        if(!empty($series_moderators_id)){ 
+          $ppv_price           =  $request->amount;
+          $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+          $admin_commssion     =  $ppv_price - $moderator_commssion;
+          $moderator_id        =  $series_moderators_id;
       }
+
+        if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1){
+          DB::table('ppv_purchases')->insert(
+            [
+              'user_id' => $user_id,
+              'series_id' => $series_id,
+              'season_id' => $season_id,
+              'to_time' => $date,
+              'total_amount'=> $amount,
+              'ppv_plan'=> $ppv_plan,
+              'moderator_commssion'=>$moderator_commssion,
+              'admin_commssion'=>$admin_commssion,
+              'payment_gateway'=>$payment_type,
+              'moderator_id'=>$series_moderators_id,
+              'platform' => $platform,
+              'payment_id' => $payment_id,
+              'created_at'=>now(),
+              'updated_at'=>now()
+              ]
+          );
+        }else{
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id]
+          );
+        }
+      } 
     
       if ( $live_ppv_count == 0 && !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
@@ -16864,6 +16935,12 @@ public function QRCodeMobileLogout(Request $request)
       array_push($input,'radio_station');
     }
 
+    if($Homesetting->user_generated_content == 1 && $this->All_Homepage_user_generated_content($homepage_input_array)->isNotEmpty() ){
+      array_push($input,'user_generated_content');
+    }
+
+
+
     if($Homesetting->series == 1 && $this->All_Homepage_series_videos($homepage_input_array)->isNotEmpty() ){
       array_push($input,'series');
     }
@@ -17279,6 +17356,35 @@ public function QRCodeMobileLogout(Request $request)
 
           return $livestreams ;
       }
+
+
+      
+    private static function All_Homepage_user_generated_content($homepage_input_array){
+
+      $user_generated_content_status = $homepage_input_array['MobileHomeSetting']->user_generated_content;
+      $homepage_geofencing = $homepage_input_array['Geofencing'];
+
+
+        if( $user_generated_content_status == null || $user_generated_content_status == 0 ):    
+
+            $data = array();      // Note - if the home-setting (user_generated_content) is turned off in the admin panel
+
+        else:
+
+          $data = UGCVideo::where('active',1)->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) {
+              $item['image_url'] = $item->image;
+              $item['Player_image_url'] = $item->player_image; 
+              $item['tv_image_url'] = $item->player_image; 
+              $item['description'] = null ;
+              $item['source']    = "User Generated Content";
+              return $item;
+          });
+        
+        endif;
+
+      return $data ;
+    }
+
 
 
   private static function All_Homepage_series_videos($homepage_input_array){
@@ -18383,6 +18489,11 @@ public function QRCodeMobileLogout(Request $request)
                 $data = $this->Radiostation_Pagelist();
                 $Page_List_Name = 'Radiostation_Pagelist';
                 break;
+
+              case 'user_generated_content':
+                $data = $this->UGC_Pagelist();
+                $Page_List_Name = 'UGC_Pagelist';
+                break;
       
               case 'featured_videos':
                   $data = $this->Featured_videos_Pagelist();
@@ -19083,6 +19194,26 @@ public function QRCodeMobileLogout(Request $request)
         return $item;
       });
 
+      return $data;
+  }
+
+    private static function UGC_Pagelist(){
+
+      $query = UGCVideo::query()
+            ->select('id', 'title', 'slug', 'duration', 'image', 'player_image','type','description')
+            ->where('active', 1)
+            ->where('status', 1)
+            ->where('draft', 1);
+        
+      $data = $query->latest()->get();
+        
+      $data->transform(function ($item) {
+            $item->image_url = URL::to('/public/uploads/images/'.$item->image);
+            $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+            $item->source = "Videos";
+            return $item;
+      });
+        
       return $data;
   }
 
