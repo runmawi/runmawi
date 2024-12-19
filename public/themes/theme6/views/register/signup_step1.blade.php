@@ -435,7 +435,7 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="form-group" >
 	                             {{-- reCAPTCHA  --}}
                             <div class="col-md-12" id="">
-                                @if( get_enable_captcha()  == 1)   
+                                @if( get_enable_captcha_signup()  == 1)   
                                     <div class="form-group" style="  margin-top: 30px;">
                                         {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
                                         {!! NoCaptcha::display() !!}

@@ -1843,7 +1843,7 @@ class HomeController extends Controller
             }
 
             $validatedData = $request->validate([
-                'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+                'g-recaptcha-response' => get_enable_captcha_signup() == 1 ? 'required|captcha' : '',
             ]);
         }else{
 
@@ -1854,7 +1854,7 @@ class HomeController extends Controller
                     // 'password_confirmation' => 'required',
                     'mobile' => ['required', 'numeric', 'min:8', 'unique:users'],
                     // 'password_confirmation' => 'required|confirmed',
-                    'g-recaptcha-response' => get_enable_captcha() == 1 ? 'required|captcha' : '',
+                    'g-recaptcha-response' => get_enable_captcha_signup() == 1 ? 'required|captcha' : '',
                  ]);
         }
 
