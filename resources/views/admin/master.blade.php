@@ -705,6 +705,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">Content Details</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
@@ -1155,6 +1156,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}">{{ (__('Add Content Partners')) }}</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">{{ (__('Content Details')) }}</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}">{{ (__('View Content Partners')) }}</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}">{{ (__('Content Partners For Approval')) }}</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}">{{ (__('Add Role')) }}</a></li>
@@ -1499,6 +1501,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">Content Details</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>

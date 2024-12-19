@@ -1,97 +1,98 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\ModeratorsPermission;
-use App\ModeratorsRole;
-use App\ModeratorsUser;
-use App\PpvPurchase;
-use App\CurrencySetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use URL;
-use App\UserAccess;
-use Hash;
-use Illuminate\Support\Facades\DB;
-use App\Video as Video;
-use App\VideoCategory as VideoCategory;
-use App\Menu as Menu;
-use App\Country as Country;
-use App\Slider as Slider;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\VideoLanguage as VideoLanguage;
-use App\Subtitle as Subtitle;
-use App\Setting as Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\SystemSetting as SystemSetting;
-use App\HomeSetting as HomeSetting;
-use Illuminate\Support\Str;
-use App\MobileApp as MobileApp;
-use App\MobileSlider as MobileSlider;
-use App\ThemeSetting as ThemeSetting;
-use App\SiteTheme as SiteTheme;
-use App\Page as Page;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\User as User;
 use Auth;
-use App\Role as Role;
-use App\Playerui as Playerui;
-use App\Plan as Plan;
-use App\PaypalPlan as PaypalPlan;
-use App\Coupon as Coupon;
-use App\Series as Series;
-use App\Genre as Genre;
-use App\Episode as Episode;
-use App\SeriesSeason as SeriesSeason;
-use App\Artist;
-use App\Seriesartist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ffmpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use App\Videoartist;
-use App\AudioCategory as AudioCategory;
-use App\AudioAlbums as AudioAlbums;
-use Illuminate\Support\Facades\Cache;
-use App\Audio as Audio;
 use File;
-use App\VideoCommission;
+use Hash;
 use Mail;
-use App\EmailTemplate;
-use App\PlayerAnalytic;
-use Session;
 use View;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
+use Session;
+use App\Video;
+use App\Artist;
 use App\Region;
-use App\RegionView;
-use App\ModeratorPayout;
-use App\SeriesGenre;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\Filters\DemoFilter;
-use App\RelatedVideo;
-use App\LanguageVideo;
+use App\Series;
+use App\Episode;
+use App\BlockAudio;
 use App\BlockVideo;
 use App\ReelsVideo;
-use App\CategoryVideo;
-use App\PlayerSeekTimeAnalytic;
-use App\VideoPlaylist;
+use App\RegionView;
+use App\UserAccess;
+use ffmpeg\FFProbe;
 use App\Audioartist;
+use App\PpvPurchase;
+use App\SeriesGenre;
+use App\Videoartist;
+use App\CategoryLive;
+use App\LiveLanguage;
+use App\Menu as Menu;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\RelatedVideo;
+use App\Role as Role;
+use App\Seriesartist;
+use App\SeriesSeason;
+use App\User as User;
 use App\AudioLanguage;
 use App\CategoryAudio;
-use App\BlockAudio;
-use App\LiveLanguage;
-use App\CategoryLive;
-use App\SeriesSubtitle;
-use App\SeriesLanguage;
+use App\CategoryVideo;
+use App\EmailTemplate;
+use App\LanguageVideo;
+use App\VideoPlaylist;
+use GuzzleHttp\Client;
+use App\Audio as Audio;
+use App\Genre as Genre;
+use App\ModeratorsRole;
+use App\ModeratorsUser;
+use App\PlayerAnalytic;
 use App\SeriesCategory;
+use App\SeriesLanguage;
+use App\SeriesSubtitle;
+use App\CurrencySetting;
+use App\ModeratorPayout;
+use App\VideoCommission;
+use App\Coupon as Coupon;
+use App\Slider as Slider;
+use App\Country as Country;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Language as Language;
+use App\ModeratorsPermission;
+use App\Playerui as Playerui;
+use App\Subtitle as Subtitle;
+use FFMpeg\Format\Video\X264;
+use App\MobileApp as MobileApp;
+use App\PlayerSeekTimeAnalytic;
+use App\SiteTheme as SiteTheme;
+use FFMpeg\Coordinate\Dimension;
+use GuzzleHttp\Message\Response;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use Illuminate\Support\Facades\DB;
+use App\AudioAlbums as AudioAlbums;
+use App\HomeSetting as HomeSetting;
+use App\LiveCategory as LiveCategory;
+use App\MobileSlider as MobileSlider;
+use App\ThemeSetting as ThemeSetting;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\SystemSetting as SystemSetting;
+use App\VideoCategory as VideoCategory;
+use App\VideoLanguage as VideoLanguage;
+use App\Http\Requests\StoreVideoRequest;
+use App\PaymentSetting as PaymentSetting;
+use App\VideosSubtitle as VideosSubtitle;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Filters\DemoFilter;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\VideoResolution as VideoResolution;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Pagination\LengthAwarePaginator;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
 
 class ModeratorsUserController extends Controller
 {
@@ -7676,4 +7677,88 @@ class ModeratorsUserController extends Controller
         return \Redirect::back()->with('message','Update User Profile');
 
     }
+
+
+    public function Contentdetails()
+    {
+        $users = ModeratorsUser::with([
+            'videos:id,title,user_id',
+            'series:id,title,user_id',
+            'seasons:id,series_seasons_name,user_id',
+            'episodes:id,title,user_id',
+            'livestreams:id,title,user_id',
+        ])->get();
+
+        $all_datas = [];
+
+        foreach ($users as $user) {
+            foreach ($user->videos as $video) {
+                $all_datas[] = [
+                    'id' => $video->id,
+                    'title' => $video->title,
+                    'type' => 'Video',
+                    'content_partner' => $user->username,
+                    'commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->series as $serie) {
+                $all_datas[] = [
+                    'id' => $serie->id,
+                    'title' => $serie->title,
+                    'type' => 'Series',
+                    'content_partner' => $user->username,
+                    'commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->seasons as $season) {
+                $all_datas[] = [
+                    'id' => $season->id,
+                    'title' => $season->series_seasons_name,
+                    'type' => 'Season',
+                    'content_partner' => $user->username,
+                    'commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->episodes as $episode) {
+                $all_datas[] = [
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'type' => 'Episode',
+                    'content_partner' => $user->username,
+                    'commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->livestreams as $livestream) {
+                $all_datas[] = [
+                    'id' => $livestream->id,
+                    'title' => $livestream->title,
+                    'type' => 'Live Stream',
+                    'content_partner' => $user->username,
+                    'commission_percentage' => $user->commission_percentage,
+                ];
+            }
+        }
+
+        $all_datas = collect($all_datas);
+        $perPage = 10; 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage(); 
+        $currentItems = $all_datas->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $paginatedData = new LengthAwarePaginator(
+            $currentItems, 
+            $all_datas->count(), 
+            $perPage, 
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        return view('moderator.cpp.contentdetails', ['all_datas' => $paginatedData]);
+    }
+
+
+    
 }

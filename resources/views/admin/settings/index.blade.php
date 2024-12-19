@@ -2139,65 +2139,100 @@ border-radius: 0px 4px 4px 0px;
 
                                 <div class="row mt-4">
 
-                                    <div class="col-sm-6" id="">
-                                        <div class="panel panel-primary" data-collapsed="0">
-                                            <div class="panel-heading">
-                                                <div class="panel-title"><label> {{ ucwords('Captcha Site Key') }}</label></div>
-                                            </div>
-
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <div class="make-switch" data-on="success" data-off="warning">
-                                                        <input type="text" class="form-control" name="captcha_site_key" id="captcha_site_key" required
-                                                        placeholder="Captcha Site Key"
-                                                            value="@if(!empty($captchas->captcha_site_key)){{ $captchas->captcha_site_key }}@endif" />
-                                                    </div>
+                                    <div class="row d-flex" > 
+                                        <div class="col-sm-6" id="">
+                                            <div class="panel panel-primary" data-collapsed="0">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title"><label> {{ ucwords('Captcha Site Key') }}</label></div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-sm-6" id="">
-                                        <div class="panel panel-primary" data-collapsed="0">
-                                            <div class="panel-heading">
-                                                <div class="panel-title"><label> Captcha Secret Key  </label> </div>
-                                            </div>
-
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <div class="make-switch" data-on="success" data-off="warning">
-                                                        <input type="text" class="form-control" name="captcha_secret_key" id="captcha_secret_key"
-                                                            placeholder="Captcha Secret Key" required
-                                                            value="@if(!empty($captchas->captcha_secret_key)){{ $captchas->captcha_secret_key }}@endif" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6" id="">
-                                        <div class="panel panel-primary" data-collapsed="0">
-                                            <div class="panel-heading">
-                                                <div class="panel-title"><label> {{ ucwords('Enable Captcha ') }}</label></div>
-                                            </div>
-
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div>OFF</div>
-                                                            <div class="mt-1">
-                                                                <label class="switch">
-                                                                    <input type="checkbox" @if( $captchas != null && $captchas->enable_captcha == "1" )checked="checked" value="1"@else value="0"@endif
-                                                                    name="enable_captcha" />
-                                                                    <span class="slider round"></span>
-                                                                </label>
-                                                            </div>
-                                                            <div>ON</div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <div >
+                                                            <input type="text" class="form-control" name="captcha_site_key" id="captcha_site_key" required
+                                                            placeholder="Captcha Site Key"
+                                                                value="@if(!empty($captchas->captcha_site_key)){{ $captchas->captcha_site_key }}@endif" />
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                        <div class="col-sm-6" id="">
+                                            <div class="panel panel-primary" data-collapsed="0">
+                                                <div class="panel-heading">
+                                                    <div class="panel-title"><label> Captcha Secret Key  </label> </div>
+                                                </div>
+
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <div >
+                                                            <input type="text" class="form-control" name="captcha_secret_key" id="captcha_secret_key"
+                                                                placeholder="Captcha Secret Key" required
+                                                                value="@if(!empty($captchas->captcha_secret_key)){{ $captchas->captcha_secret_key }}@endif" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <br>
+
+                                    <div class="row d-flex mb-2">
+                                        <div class="col-md-6">
+                                            <label for=""> {{ ucwords('Enable sign-in Captcha')}} :</label>
+                                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+                                                <div style="color:red;">Disable</div>
+        
+                                                <div class="mt-1">
+                                                    <label class="switch">
+                                                        <input type="checkbox" {{ ( $captchas != null && $captchas->enable_captcha == "1") ?  'checked' : null  }} name="enable_captcha"  />
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+        
+                                                <div style="color:green;">Enable</div>
+                                            </div>
+                                            <div class="make-switch" data-on="success" data-off="warning"></div>
+                                        </div>
+        
+                                        <div class="col-md-6">
+                                            <label for=""> {{ ucwords('Enable sign-up Captcha')}} :</label>
+                                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+        
+                                                <div style="color:red;">Disable</div>
+        
+                                                <div class="mt-1">
+                                                    <label class="switch">
+                                                        <input type="checkbox"  {{ $settings->enable_captcha_signup == 1 ? 'checked' : null }} name="enable_captcha_signup" id="enable_captcha_signup">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+        
+                                                <div style="color:green;">Enable</div>
+                                            </div>
+                                            <div class="make-switch" data-on="success" data-off="warning"></div>
+                                        </div> 
+                                    </div><br>
+
+                                    <div class="row d-flex">
+                                        <div class="col-md-6">
+                                            <label for=""> {{ ucwords('Enable contact-us Captcha')}} :</label>
+                                            <div class="d-flex justify-content-around align-items-center" style="width:50%;">
+        
+                                                <div style="color:red;">Disable</div>
+        
+                                                <div class="mt-1">
+                                                    <label class="switch">
+                                                        <input type="checkbox"  {{ $settings->enable_captcha_contactus == 1 ? 'checked' : null }} name="enable_captcha_contactus" id="enable_captcha_contactus">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+        
+                                                <div style="color:green;">Enable</div>
+                                            </div>
+                                            <div class="make-switch" data-on="success" data-off="warning"></div>
+                                        </div>
+                                    </div> <br>
 
                                     <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
 

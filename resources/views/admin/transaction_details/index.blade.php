@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 @endsection
 @section('content')
-   <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
-   <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
-   <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-   <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
+    <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
     <div id="content-page" class="content-page">
         <div class="container-fluid">
@@ -28,12 +28,15 @@
                         </div>
                         <div class="iq-card-body table-responsive p-0">
                             <div class="table-view">
-                                <table class="data-tables table table-striped table-bordered iq-card text-center" style="width:100%">
+                                <table class="data-tables table table-striped table-bordered iq-card text-center"
+                                    style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Id</th>
                                             <th>Phone</th>
+                                            <th>Content</th>
                                             <th>Transaction ID</th>
+                                            <th>Payment Status</th>
                                             <th>Amount</th>
                                             <th>Transaction Type</th>
                                             <th>Transaction Date</th>
@@ -42,43 +45,77 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($paginatedTransactions as $i => $transaction)
-                                        @if($transaction)
-                                            <tr>
-                                                <td>{{ $i + 1 }}</td>
-                                                @if($transaction->user)
-                                                <td>{{ $transaction->user->mobile }}</td>
-                                                @else
-                                                <td>-</td>
-                                                @endif
-                                               
-                                                <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}</td>
-                                               
-                                                @if ($transaction->transaction_type == 'Subscription')
-                                                    <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
-                                                @else
-                                                <td>{{ $transaction->total_amount ? $transaction->total_amount : 'N/A' }}</td>
-                                                @endif
-                                                <td>{{ $transaction->transaction_type }}</td>
-                                                <td> {{ $transaction->created_at ? $transaction->created_at->format('M d, Y H:i A') : '-' }}</td>
-                                                <td>
-                                                    <a class="iq-bg-warning pt-1" data-toggle="tooltip" data-placement="top" title=""
-                                                    data-original-title="View" href="{{ route('admin.transaction-details.show', $transaction->unique_id) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/view.svg';  ?>"></a>
-
-                                                    @if($transaction->created_at == $transaction->updated_at)
-                                                    <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
-                                                    data-original-title="Edit"  href="{{ route('admin.transaction-details.edit', $transaction->unique_id) }}"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
+                                            @if ($transaction)
+                                                <tr>
+                                                    <td>{{ $i + 1 }}</td>
+                                                    @if ($transaction->user)
+                                                        <td>{{ $transaction->user->mobile }}</td>
+                                                    @else
+                                                        <td>-</td>
                                                     @endif
-                                                </td>
-                                            </tr>
-                                        @else
-                                            <tr>
-                                                <td colspan="5">No valid transaction data available</td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
+                                                    @if ($transaction->transaction_type == 'Subscription')
+                                                        <td>-</td>
+                                                    @else
+                                                        <td>
+                                                            @if ($transaction->video)
+                                                                <p>{{ $transaction->video->title }}</p>
+                                                            @elseif($transaction->series)
+                                                                <p>{{ $transaction->series->title }}</p>
+                                                                @if ($transaction->SeriesSeason)
+                                                                    <p>{{ $transaction->SeriesSeason->series_seasons_name }}
+                                                                    </p>
+                                                                @else
+                                                                    <p>-</p>
+                                                                @endif
+                                                            @elseif($transaction->livestream)
+                                                                <p>{{ $transaction->livestream->title }}</p>
+                                                            @else
+                                                                <p>-</p>
+                                                                <p>-</p>
+                                                            @endif
+                                                        </td>
+                                                    @endif
+                                                    <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}
+                                                    </td>
+                                                    @if ($transaction->payment_id)
+                                                        <td class = "bg-success">Success</td>
+                                                    @else
+                                                        <td class = "bg-danger">Failed</td>
+                                                    @endif
+                                                    @if ($transaction->transaction_type == 'Subscription')
+                                                        <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
+                                                    @else
+                                                        <td>{{ $transaction->total_amount ? $transaction->total_amount : 'N/A' }}
+                                                        </td>
+                                                    @endif
+                                                    <td>{{ $transaction->transaction_type }}</td>
+                                                    <td> {{ $transaction->created_at ? $transaction->created_at->format('M d, Y H:i A') : '-' }}
+                                                    </td>
+                                                    <td>
+                                                        <a class="iq-bg-warning pt-1" data-toggle="tooltip"
+                                                            data-placement="top" title="" data-original-title="View"
+                                                            href="{{ route('admin.transaction-details.show', $transaction->unique_id) }}"><img
+                                                                class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/view.svg'; ?>"></a>
+
+                                                        @if ($transaction->created_at == $transaction->updated_at)
+                                                            <a class="iq-bg-success" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-original-title="Edit"
+                                                                href="{{ route('admin.transaction-details.edit', $transaction->unique_id) }}"><img
+                                                                    class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/edit.svg'; ?>"></a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <td colspan="5">No valid transaction data available</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
-		                        <div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right"><?= $paginatedTransactions->appends(Request::only('s'))->render(); ?></div>
+                                <div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right">
+                                    <?= $paginatedTransactions->appends(Request::only('s'))->render() ?></div>
                             </div>
                         </div>
                     </div>
@@ -116,8 +153,8 @@
         });
     </script> --}}
     <script>
-        $(document).ready(function(){
-             $('#DataTables_Table_0_paginate').hide();
-         });
-     </script>
+        $(document).ready(function() {
+            $('#DataTables_Table_0_paginate').hide();
+        });
+    </script>
 @stop
