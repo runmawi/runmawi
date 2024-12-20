@@ -385,8 +385,6 @@
                                 <div class="ppv-block">
                                     <h2 class="mb-3"><?php echo __('Pay now to watch'); ?> <?php echo $video->title; ?></h2>
 
-
-
                                         <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click here to purchase and watch this live'); ?></p></a></h4>
 
                                     <!-- PPV button -->
@@ -492,6 +490,18 @@
 
                 <h2>Live Streaming On {{ $video->recurring_program }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
             
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() )
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+                
             @elseif ($video->recurring_program == "weekly")
 
                 @switch($video->recurring_program_week_day)
@@ -521,11 +531,35 @@
                 @endswitch
             
                 <h2>Live Streaming On Every Week {{ $recurring_program_week_day }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
-            
+               
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() )
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+
             @elseif ($video->recurring_program == "monthly")
                     
                 <h2>Live Streaming On Every Month on Day {{ $video->recurring_program_month_day }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
             
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() )
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+
             @elseif ($video->recurring_program == "custom")
 
                 @php
@@ -535,6 +569,18 @@
 
                 <h3>Live Streaming On {{ $customStartTime }} - {{ $customEndTime }}</h3>
                 <h3>({{ $timezone }})</h3>
+
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() )
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
             @endif
         @endif
     </div>
@@ -813,7 +859,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
             <?php if (isset($videonext)) { ?>
                 <div class="next_video" style="display: none;"><?=$videonext->slug; ?></div>
