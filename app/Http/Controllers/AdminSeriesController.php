@@ -27,6 +27,7 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use View;
 use Validator;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
@@ -3102,6 +3103,7 @@ class AdminSeriesController extends Controller
         ]);
 
         $mp4_url = $data['file'];
+        // echo"<pre>";print_r($mp4_url);exit;
 
         $libraryid = $data['UploadlibraryID'];
         $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
@@ -4686,138 +4688,157 @@ class AdminSeriesController extends Controller
     }
 
     
-    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data,$season_id){
-
-        // Bunny Cdn get Videos 
-    
+    private function UploadEpisodeBunnyCDNStream($storage_settings, $libraryid, $data, $season_id)
+    {
+        // Bunny CDN get Videos
         $mp4_url = $data['file'];
 
-        $storage_settings = StorageSetting::first();
-    
-        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-        && !empty($storage_settings->bunny_cdn_access_key) ){
+        // Handle temporary file and move to permanent location
+        if ($mp4_url instanceof \Illuminate\Http\UploadedFile) {
+            // Retrieve the original name of the file
+            $originalName = $mp4_url->getClientOriginalName();
             
-            $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            // Replace spaces with underscores to avoid issues in URLs
+            $sanitizedOriginalName = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $originalName);
+
             
-            $ch = curl_init();
+            // Store the file with its original name
+            $filePath = $mp4_url->storeAs('uploads/videos', $sanitizedOriginalName, 'public');
             
-            $options = array(
-                CURLOPT_URL => $libraryurl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                    'Content-Type: application/json',
-                ),
-            );
-            
-            curl_setopt_array($ch, $options);
-            
-            $response = curl_exec($ch);
-            $librarys = json_decode($response, true);
-            curl_close($ch);
-    
-        }else{
-            $librarys = [];
-    
+            // Get the full path to the stored file
+            $mp4_url = public_path('../storage/app/public/' . $filePath);
         }
-        if(count($librarys) > 0){
-            foreach($librarys as $key => $value){
-                if( $value['Id'] == $libraryid){
+        // Validate the MP4 URL
+        if (empty($mp4_url) || !file_exists($mp4_url) || !is_readable($mp4_url)) {
+            \Log::error("Invalid file: {$mp4_url}");
+            return response()->json(['error' => 'The file does not exist or is not readable.'], 400);
+        }
+    
+        $storage_settings = StorageSetting::first();
+
+    if (!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+        && !empty($storage_settings->bunny_cdn_access_key)) {
+
+        $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+
+        $ch = curl_init();
+
+        $options = array(
+            CURLOPT_URL => $libraryurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                'Content-Type: application/json',
+            ),
+        );
+
+        curl_setopt_array($ch, $options);
+
+        $response = curl_exec($ch);
+        $librarys = json_decode($response, true);
+        curl_close($ch);
+
+    } else {
+        $librarys = [];
+    }
+    
+        if (count($librarys) > 0) {
+            foreach ($librarys as $key => $value) {
+                if ($value['Id'] == $libraryid) {
                     $library_id = $value['Id'];
-                    $library_ApiKey = $value['ApiKey']; 
-                    $library_PullZoneId = $value['PullZoneId']; 
+                    $library_ApiKey = $value['ApiKey'];
+                    $library_PullZoneId = $value['PullZoneId'];
                     break;
-                }else{
+                } else {
                     $library_id = null;
-                    $library_ApiKey = null; 
-                    $library_PullZoneId = null; 
+                    $library_ApiKey = null;
+                    $library_PullZoneId = null;
                 }
             }
-        }else{
+        } else {
             $library_id = null;
-            $library_ApiKey = null; 
-            $library_PullZoneId = null; 
+            $library_ApiKey = null;
+            $library_PullZoneId = null;
         }
-        
-        if($library_id != null && $library_ApiKey != null){
     
+        if ($library_id != null && $library_ApiKey != null) {
             $client = new \GuzzleHttp\Client();
-            
-            $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
-                'headers' => [
-                    'AccessKey' => $storage_settings->bunny_cdn_access_key,
-                    'accept' => 'application/json',
-                ],
-            ]);
     
-            $PullZoneData = json_decode($PullZone->getBody()->getContents());
+            try {
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
     
-                if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
-                    $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
-                }else{
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+    
+                if (!empty($PullZoneData) && !empty($PullZoneData->Name)) {
+                    $PullZoneURl = 'https://' . $PullZoneData->Name . '.b-cdn.net';
+                } else {
                     $PullZoneURl = null;
-                }    
+                }
+            } catch (\Exception $e) {
+                Log::error("Error fetching Pull Zone: " . $e->getMessage());
+                return response()->json(['error' => 'Failed to fetch Pull Zone'], 500);
             }
-            
-            $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename =  str_replace(' ', '_',$file_name);
+    
+            $file_name = pathinfo($mp4_url, PATHINFO_FILENAME);
+            $filename = str_replace(' ', '_', $file_name);
     
             // Step 1: Create the video entry in the library
             try {
                 $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
-                    'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                    'json' => ['title' => $filename],
                     'headers' => [
                         'AccessKey' => $library_ApiKey,
                         'Accept' => 'application/json',
                     ]
                 ]);
-            
+    
                 $responseData = json_decode($response->getBody(), true);
                 $guid = $responseData['guid'];
-            } catch (RequestException $e) {
-                echo "Error creating video entry: " . $e->getMessage();
-                exit;
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                Log::error("Error creating video entry: " . $e->getMessage());
+                return response()->json(['error' => 'Video entry creation failed'], 500);
             }
-            
+    
             // Step 2: Upload the video file
-    
             try {
-    
                 $context = stream_context_create([
                     'ssl' => [
                         'verify_peer' => false,
                         'verify_peer_name' => false,
                     ],
                 ]);
-                // Fetch video file content using file_get_contents with SSL context
-                $videoData = file_get_contents($mp4_url, false, $context);
-                
+    
+                $videoData = @file_get_contents($mp4_url, false, $context);
+    
+                if ($videoData === false) {
+                    Log::error("Unable to fetch video data from: " . $mp4_url);
+                    return response()->json(['error' => 'Failed to fetch video data'], 400);
+                }
+    
                 $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
                     'headers' => [
                         'AccessKey' => $library_ApiKey,
-                        'Content-Type' => 'video/mp4' 
+                        'Content-Type' => 'video/mp4'
                     ],
-                    'body' => $videoData 
+                    'body' => $videoData
                 ]);
     
                 $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $videoUrl;
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $guid;
-                // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
-    
                 $responseuploaded = json_decode($response->getBody(), true);
                 $statusCode = $responseuploaded['statusCode'];
-    
-            } catch (RequestException $e) {
-                echo "Error uploading video: " . $e->getMessage();
-                exit;
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                Log::error("Error uploading video: " . $e->getMessage());
+                return response()->json(['error' => 'Video upload failed'], 500);
             }
-            $value = [];
-            if($statusCode == 200){
-                
-
+    
+            if ($statusCode == 200) {
+                // Proceed with saving Episode and extracting frames (if required)
+                // Frame extraction logic stays the same, add similar validations where needed.
                 $series_id = $data['series_id'];
                 $season_id = $data['season_id'];
                     
@@ -4898,19 +4919,18 @@ class AdminSeriesController extends Controller
                     }
                 
                 }
-    
-
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["Episode_id"] = $Episode_id;
-        
-    
                 return $value ;
-            }else{
-                $value["success"] = 2;
+                return response()->json(["success" => 1, "message" => "Uploaded Successfully!"]);
+            } else {
                 return $value ;
+                Log::error("Unexpected status code: " . $statusCode);
+                return response()->json(["success" => 2, "error" => "Upload failed"], 500);
             }
         }
+    }
         public function deleteSelected(Request $request)
         {
             $ids = $request->input('ids');
