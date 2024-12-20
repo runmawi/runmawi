@@ -31,7 +31,7 @@
                                 <table class="data-tables table table-striped table-bordered iq-card text-center" style="width:100%">
                                     <thead>
                                         <tr>
-                                       
+                                            <th>ID</th>
                                             <th>Title</th>
                                             <th>Type</th>
                                             <th>Content Partner Name</th>
@@ -43,11 +43,15 @@
                                         @foreach ($all_datas as $data)
                                         @if($all_datas)
                                             <tr>
-                                                
+                                                <td>{{ $data['id'] }}</td>
                                                 <td>{{ $data['title'] }}</td>
                                                 <td>{{ $data['type'] }}</td>
                                                 <td>{{ $data['content_partner'] }}</td>
-                                                <td>{{ $data['commission_percentage'] }}%</td>
+                                                @if($data['video_commission_percentage'])
+                                                <td>{{ $data['video_commission_percentage'] }}%</td>
+                                                @else
+                                                <td>{{ $data['moderator_commission_percentage'] }}%</td>
+                                                @endif
                                                 <td>
                                                     @if ($data['type'] === 'Video')
                                                         <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title=""
@@ -86,8 +90,6 @@
                                     </tbody>
                                 </table>
                                 <div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right"><?= $all_datas->appends(Request::only('s'))->render(); ?></div>
-
-		                       
                             </div>
                         </div>
                     </div>
@@ -96,34 +98,6 @@
         </div>
     </div>
 
-    {{-- <script>
-        $(document).ready(function() {
-
-            $('#transaction_detials').DataTable();
-
-            fetch_customer_data();
-
-            function fetch_customer_data(query = '') {
-                $.ajax({
-                    url: "{{ URL::to('/live_search') }}",
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $('tbody').html(data.table_data);
-                        $('#total_records').text(data.total_data);
-                    }
-                })
-            }
-
-            $(document).on('keyup', '#search', function() {
-                var query = $(this).val();
-                fetch_customer_data(query);
-            });
-        });
-    </script> --}}
     <script>
         $(document).ready(function(){
              $('#DataTables_Table_0_paginate').hide();

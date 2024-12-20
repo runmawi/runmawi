@@ -15224,6 +15224,9 @@ public function QRCodeMobileLogout(Request $request)
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
+        elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
+        }
     
         $inputs = array(
             'user_id'   => $request->user_id ,
@@ -15298,8 +15301,11 @@ public function QRCodeMobileLogout(Request $request)
       elseif( $request->source == 'play_episode' ){
           $source = "App\Episode";
       }
-      elseif( $request->source == 'play_audios' ){
-          $source = "App\Audio";
+      elseif($request->source == 'play_audios'){
+        $source = "App\Audio";
+      }
+      elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
       }
 
       $inputs = array(
@@ -15380,7 +15386,10 @@ public function QRCodeMobileLogout(Request $request)
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
-    
+        elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
+      }
+  
         $inputs = array(
             'user_id'   => $request->user_id ,
             'user_role' => User::where('id',$request->user_id)->pluck('role')->first() ,
