@@ -747,7 +747,6 @@
                                         <?php  echo $stripe_payment_setting->payment_type ;  ?>
                                     </label>      
                                 <?php } ?>
-
                             
                                     <!-- Razorpay Button -->
                                 <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
@@ -781,7 +780,11 @@
                 <div class="modal-footer">
 
                 <div class="Stripe_button">  <!-- Stripe Button -->
-                    <button class="btn2  btn-outline-primary" onclick="pay(<?php echo $video->ppv_price; ?>)"> <?php echo __('Continue'); ?> </button>
+
+                    <button class="btn2 btn-outline-primary" 
+                            onclick="location.href='<?php echo route('Stripe_payment_live_PPV_Purchase', ['live_id' => $video->id, 'amount' => $video->ppv_price]); ?>'">
+                        <?php echo __('Continue'); ?>
+                    </button>
                 </div>
                                     
                 <div class="Razorpay_button">   <!-- Razorpay Button -->
