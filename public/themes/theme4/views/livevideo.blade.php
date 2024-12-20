@@ -756,8 +756,8 @@
         @endif
             
     </div>
-    
 
+    
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -825,13 +825,16 @@
 
                 <div class="modal-footer">
 
-                <div class="Stripe_button">  <!-- Stripe Button -->
+                    <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
+                        <div class="Stripe_button">  <!-- Stripe Button -->
 
-                    <button class="btn2 btn-outline-primary" 
-                            onclick="location.href='<?php echo route('Stripe_payment_live_PPV_Purchase', ['live_id' => $video->id, 'amount' => $video->ppv_price]); ?>'">
-                        <?php echo __('Continue'); ?>
-                    </button>
-                </div>
+                            <button class="btn2 btn-outline-primary" 
+                                    onclick="location.href='<?php echo route('Stripe_payment_live_PPV_Purchase', ['live_id' => $video->id, 'amount' => $video->ppv_price]); ?>'">
+                                <?php echo __('Continue'); ?>
+                            </button>
+                        </div>
+                    <?php } ?>
+
                                     
                 <div class="Razorpay_button">   <!-- Razorpay Button -->
                     <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
