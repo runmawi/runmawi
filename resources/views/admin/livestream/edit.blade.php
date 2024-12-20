@@ -1085,14 +1085,14 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_start_program_time) ? '' : 'display: none' }}" >
                     <label class="m-0">Custom Start Program Time </label>
                     <div class="panel-body">
-                        <input type="datetime-local" class="form-control" name="custom_start_program_time" value="{{ !empty($video->custom_start_program_time) ? $video->custom_start_program_time : null }}"  />
+                        <input type="datetime-local" class="form-control" id="custom_start_program_time" name="custom_start_program_time" value="{{ !empty($video->custom_start_program_time) ? $video->custom_start_program_time : null }}"  />
                     </div>
                 </div>
 
                 <div class="col-sm-3 custom_program_time"  style="{{  !empty($video->custom_end_program_time) ? '' : 'display: none' }}" >
                     <label class="m-0">Custom End Program Time </label>
                     <div class="panel-body">
-                        <input type="datetime-local" class="form-control" name="custom_end_program_time" value="{{ !empty($video->custom_end_program_time) ? $video->custom_end_program_time : null }}"  />
+                        <input type="datetime-local" class="form-control" id="custom_end_program_time" name="custom_end_program_time" value="{{ !empty($video->custom_end_program_time) ? $video->custom_end_program_time : null }}"  />
                     </div>
                 </div>
 
@@ -1766,7 +1766,6 @@ $(document).ready(function(){
         
         $("#publish_time").change(function(){
             var publishLaterValue = $('#publish_time').val();
-            var publishLaterValue = $('.prog-end-time').val();
             // console.log('value of publish later: ' + publishLaterValue);
             if(publishLaterValue !== null && publishLaterValue !== '') { 
                 $('.pull-right').prop("disabled", false);
@@ -1779,6 +1778,19 @@ $(document).ready(function(){
         $(".prog-end-time").change(function(){
             var startValue = $('.prog-start-time').val();
             var endValue = $('.prog-end-time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.pull-right').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.pull-right').prop("disabled", true);
+            }
+        });
+
+        $("#custom_end_program_time").change(function(){
+            var startValue = $('#custom_start_program_time').val();
+            var endValue = $('#custom_end_program_time').val();
             // console.log('value of startValue: ' + startValue);
             // console.log('value of endValue: ' + endValue);
             if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
