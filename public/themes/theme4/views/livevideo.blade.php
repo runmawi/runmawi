@@ -710,8 +710,8 @@
         @endif
             
     </div>
-
     
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -744,7 +744,7 @@
                                 <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
                                     <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                         <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
-                                        <?php  echo $stripe_payment_setting->payment_type ;  ?>
+                                        <?php  echo $stripe_payment_setting->stripe_lable ;  ?>
                                     </label>      
                                 <?php } ?>
 
