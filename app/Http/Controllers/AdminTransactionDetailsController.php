@@ -44,13 +44,8 @@ class AdminTransactionDetailsController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        // Return the view with the paginated transactions
         return view('admin.transaction_details.index', compact('paginatedTransactions'));
     }
-
-
-
-   
 
     public function live_search(Request $request)
     {
@@ -169,11 +164,6 @@ class AdminTransactionDetailsController extends Controller
         }
         }
     }
-    
-
-
-
-
 
     public function edit($unique_id)
     {
