@@ -13469,7 +13469,7 @@ $cpanel->end();
                   $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                   $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                   $midnight = $convert_time->copy()->startOfDay();
-          
+
                   switch ($livestream->recurring_program) {
                       case 'custom':
                           $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
@@ -13528,8 +13528,9 @@ $cpanel->end();
                   return $livestream->publish_time;
   
               } elseif ($livestream->publish_type === 'recurring_program') {
-  
-                  return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+                  $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
+                  
+                  return $custom_start_time ?? $livestream->program_start_time;
               }
   
               return $livestream->publish_type;
@@ -17267,7 +17268,9 @@ public function QRCodeMobileLogout(Request $request)
 
             } elseif ($livestream->publish_type === 'recurring_program') {
 
-                return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+              $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
+             
+              return $custom_start_time ?? $livestream->program_start_time;
             }
 
             return $livestream->publish_type;
@@ -19176,7 +19179,9 @@ public function QRCodeMobileLogout(Request $request)
 
           } elseif ($livestream->publish_type === 'recurring_program') {
 
-              return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+              $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
+              
+              return $custom_start_time ?? $livestream->program_start_time;
           }
 
           return $livestream->publish_type;
