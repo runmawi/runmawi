@@ -1937,7 +1937,7 @@ public function RemoveDisLikeEpisode(Request $request)
                 throw new \Exception('Series data not found');
             }
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
