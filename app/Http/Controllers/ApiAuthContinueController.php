@@ -366,10 +366,14 @@ class ApiAuthContinueController extends Controller
         try {
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'user_id' => 'required|integer|exists:users,id',
+                'browser' => 'nullable|string',
                 'location' => 'required|string',
                 'device' => 'required|string',
             ]);
 
+            $user = User::where('id', $validated['user_id'])->firstOrFail();
+            $user_role = $user->role;
             $video = Video::find($validated['video_id']);
             $video->played_views += 1;
             $video->save();
@@ -383,7 +387,7 @@ class ApiAuthContinueController extends Controller
                 'viewed_in' => 'App',
             ]);
 
-            if ($video->uploaded_by === 'Channel') {
+            if ($video->uploaded_by === 'Channel' && ($user_role === 'registered' || $user_role === 'subscriber' || $user_role === 'guest')) {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
                 $monetization_view_limit = $monetizationSettings->viewcount_limit;
                 $monetization_view_amount = $monetizationSettings->views_amount;
@@ -950,7 +954,6 @@ class ApiAuthContinueController extends Controller
         return response()->json($response, 200);
     }
 
-
     public function ugcwishlist(Request $request) {
 
         $user_id = $request->user_id;
@@ -1004,6 +1007,38 @@ class ApiAuthContinueController extends Controller
         }
         return response()->json($response, 200);
     }
+
+
+    public function showUgcProfileApi(Request $request)
+    {
+        $user_id = $request->input('user_id');
+    
+        if (!$user_id) {
+            return response()->json(['error' => 'User ID is required.'], 400);
+        }
+        $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
+    
+        $ugcvideos = UGCVideo::where('user_id', $user->id)
+            ->where('active', 1)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+    
+        $ugc_total = $user->ugcVideos();
+        $totalViews = $ugc_total->sum('views');
+        $totalVideos = $ugc_total->where('active', 1)->count();
+        
+     
+        $data = [
+            'user' => $user,
+            'ugcvideos' => $ugcvideos,
+            'totalViews' => $totalViews,
+            'totalVideos' => $totalVideos,
+        ];
+    
+        return response()->json($data);
+    }
+    
 
 
 }
