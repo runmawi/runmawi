@@ -705,6 +705,7 @@ Route::group(
             Route::post('radiostationdetail', 'ApiAuthController@radiostationdetail');
             Route::get('ugcvideolist', 'ApiAuthContinueController@ugcvideolist');
             Route::post('uploadugcvideo', 'ApiAuthContinueController@uploadugcvideo');
+            Route::post('editugcvideo', 'ApiAuthContinueController@editugcvideo');
             Route::post('deleteugcvideo', 'ApiAuthContinueController@deleteugcvideo');
             Route::post('revenueshare', 'ApiAuthContinueController@revenueshare');
             Route::post('episoderevenueshare', 'ApiAuthContinueController@episoderevenueshare');
@@ -716,4 +717,5 @@ Route::group(
             Route::post('ugcvideodetail', 'ApiAuthContinueController@ugcvideodetail');
             Route::post('ugcwishlist', 'ApiAuthContinueController@ugcwishlist');
             Route::post('ugcwatchlater', 'ApiAuthContinueController@ugcwatchlater');
+            Route::get('showUgcProfileApi', 'ApiAuthContinueController@showUgcProfileApi');
         });
