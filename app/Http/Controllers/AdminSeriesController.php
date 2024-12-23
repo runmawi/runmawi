@@ -2858,9 +2858,9 @@ class AdminSeriesController extends Controller
 
             $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->slug)->first();
 
-            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->slug )  : preg_replace("![^a-z0-9]+!i", "-",  $request->slug.'-'.$id ) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->title )  : preg_replace("![^a-z0-9]+!i", "-",  $request->title ) ;
         }
-
+        // dd($data['slug']);
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
