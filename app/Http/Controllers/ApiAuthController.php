@@ -13436,7 +13436,7 @@ $cpanel->end();
             $live_videos = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'url_type', 'hls_url', 'live_stream_video', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                           'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                          'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                          'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
                                       ->map(function ($item) {
@@ -13450,6 +13450,8 @@ $cpanel->end();
                                         $video_url = $item['url_type'];
                                         if($video_url == "live_stream_video"){
                                           $item['url'] = $item->live_stream_video;
+                                        }elseif($video_url == "mp4"){
+                                          $item['url'] = $item->mp4_url;
                                         }
                                         else{
                                           $item['url'] = $item->hls_url;
