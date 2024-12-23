@@ -6,7 +6,6 @@ use App\User;
 use App\PpvPurchase;
 use App\Subscription;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -15,21 +14,28 @@ class AdminTransactionDetailsController extends Controller
     public function index()
     {
         $subscriptions = Subscription::with('user')
-            ->select('*', DB::raw("'Subscription' as transaction_type"), DB::raw("CONCAT('sub_', id) as unique_id"))
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc') 
+            ->get()
+            ->map(function ($transaction) {
+                $transaction->transaction_type = 'Subscription';
+                $transaction->unique_id = 'sub_' . $transaction->id;
+                return $transaction;
+            });
 
         $payPerView = PpvPurchase::with('user')
-            ->select('*', DB::raw("'PPV Purchase' as transaction_type"), DB::raw("CONCAT('ppv_', id) as unique_id"))
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc') 
+            ->get()
+            ->map(function ($transaction) {
+                $transaction->transaction_type = 'PPV Purchase';
+                $transaction->unique_id = 'ppv_' . $transaction->id;
+                return $transaction;
+            });
 
         $transactions = $subscriptions->concat($payPerView)->sortByDesc('created_at');
 
         $perPage = 10; 
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $currentItems = $transactions->forPage($currentPage, $perPage);
-
         $paginatedTransactions = new LengthAwarePaginator(
             $currentItems, 
             $transactions->count(), 
@@ -40,8 +46,6 @@ class AdminTransactionDetailsController extends Controller
 
         return view('admin.transaction_details.index', compact('paginatedTransactions'));
     }
-
-
 
     public function live_search(Request $request)
     {
