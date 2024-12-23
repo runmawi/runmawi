@@ -260,6 +260,53 @@ class ApiAuthContinueController extends Controller
         }
     }
 
+    public function editugcvideo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'video_id' => 'required|exists:ugc_videos,id',
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $video = UGCVideo::find($request->video_id);
+
+            if (!$video) {
+                return response()->json(['success' => false, 'message' => 'Video not found.'], 404);
+            }
+
+            $video->title = $request->input('title');
+            $video->description = $request->input('description', $video->description);
+
+            if ($request->hasFile('image')) {
+                $imageFile = $request->file('image');
+                $imageFilename = time() . '.' . $imageFile->getClientOriginalExtension();
+                $videoImage = 'pc-image-' . $imageFilename;
+                $imageFile->move(public_path('uploads/images'), $videoImage);
+                $video->image = $videoImage;
+            }
+
+            $video->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Video details updated successfully.',
+                'video' => $video,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update video details.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     private function extractImagesFromVideo($video, $videoStorePath, $rand, $videoDuration)
     {
         $ffmpeg = FFMpeg::create();
@@ -367,7 +414,6 @@ class ApiAuthContinueController extends Controller
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
                 'user_id' => 'required|integer|exists:users,id',
-                'browser' => 'nullable|string',
                 'location' => 'required|string',
                 'device' => 'required|string',
             ]);
@@ -383,7 +429,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'video',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
@@ -433,6 +478,7 @@ class ApiAuthContinueController extends Controller
 
             return response()->json([
                 'message' => 'View count incremented and monetization updated',
+                'video_id' => $video->id,
                 'played_view' => $video->played_views,
             ], 200);
 
@@ -448,6 +494,7 @@ class ApiAuthContinueController extends Controller
         try {
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'user_id' => 'required|integer|exists:users,id',
                 'location' => 'required|string',
                 'device' => 'required|string',
             ]);
@@ -461,7 +508,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'episode',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
@@ -539,7 +585,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'livestream',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
@@ -954,91 +999,152 @@ class ApiAuthContinueController extends Controller
         return response()->json($response, 200);
     }
 
-    public function ugcwishlist(Request $request) {
+    public function ugcwishlist(Request $request)
+    {
 
         $user_id = $request->user_id;
         $ugc_video_id = $request->ugc_vijdeo_id;
-    
+
         if (!empty($ugc_video_id)) {
             $count = Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();
-    
+
             if ($count > 0) {
                 Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->delete();
-    
+
                 $response = [
                     'status' => 'false',
-                    'message' => 'Removed From Your Wishlist'
+                    'message' => 'Removed From Your Wishlist',
                 ];
             } else {
                 $data = ['user_id' => $user_id, 'ugc_video_id' => $ugc_video_id];
                 Wishlist::insert($data);
-    
+
                 $response = [
                     'status' => 'true',
-                    'message' => 'Added to Your Wishlist'
+                    'message' => 'Added to Your Wishlist',
                 ];
             }
         }
         return response()->json($response, 200);
-    
+
     }
 
-    public function ugcwatchlater(Request $request) {
+    public function ugcwatchlater(Request $request)
+    {
 
         $user_id = $request->user_id;
         $ugc_video_id = $request->ugc_video_id;
-        if($request->ugc_video_id != ''){
-          $count = Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->count();
-          if ( $count > 0 ) {
-            Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->delete();
-            $response = array(
-              'status'=>'false',
-              'message'=>'Removed From Your Watch Later'
-            );
-          } else {
-            $data = array('user_id' => $user_id, 'ugc_video_id' => $ugc_video_id );
-            Watchlater::insert($data);
-            $response = array(
-              'status'=>'true',
-              'message'=>'Added to Your Watch Later'
-            );
-    
-          }
+        if ($request->ugc_video_id != '') {
+            $count = Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->count();
+            if ($count > 0) {
+                Watchlater::where('user_id', '=', $user_id)->where('ugc_video_id', '=', $ugc_video_id)->delete();
+                $response = array(
+                    'status' => 'false',
+                    'message' => 'Removed From Your Watch Later',
+                );
+            } else {
+                $data = array('user_id' => $user_id, 'ugc_video_id' => $ugc_video_id);
+                Watchlater::insert($data);
+                $response = array(
+                    'status' => 'true',
+                    'message' => 'Added to Your Watch Later',
+                );
+
+            }
         }
         return response()->json($response, 200);
     }
 
-
     public function showUgcProfileApi(Request $request)
     {
         $user_id = $request->input('user_id');
-    
+
         if (!$user_id) {
             return response()->json(['error' => 'User ID is required.'], 400);
         }
         $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
-    
+
         $ugcvideos = UGCVideo::where('user_id', $user->id)
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->get();
 
-    
         $ugc_total = $user->ugcVideos();
         $totalViews = $ugc_total->sum('views');
         $totalVideos = $ugc_total->where('active', 1)->count();
-        
-     
+
         $data = [
             'user' => $user,
             'ugcvideos' => $ugcvideos,
             'totalViews' => $totalViews,
             'totalVideos' => $totalVideos,
         ];
-    
+
         return response()->json($data);
     }
-    
 
+    public function EpisodePartnerMonetization(Request $request)
+    {
+        try {
+            $video_id = $request->video_id;
+            $video = Episode::where('id', $video_id)->first();
+            if ($video) {
+                $video->played_views += 1;
+                $video->save();
+                $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+
+                if ($monetizationSettings) {
+                    $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                    $monetization_view_amount = $monetizationSettings->views_amount;
+
+                    if ($video->played_views > $monetization_view_limit) {
+                        $previously_monetized_views = $video->monetized_views ?? 0;
+                        $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+
+                        if ($new_monetizable_views > 0) {
+
+                            $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                            $video->monetization_amount += $additional_amount;
+                            $video->monetized_views += $new_monetizable_views;
+                            $video->save();
+
+                            $channeluser_commission = (float) $video->channeluser->commission;
+                            $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+
+                            $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                                ->where('type_id', $video->id)
+                                ->where('type', 'episode')->first();
+
+                            $monetization_data = [
+                                'total_views' => $video->played_views,
+                                'title' => $video->title,
+                                'monetization_amount' => $video->monetization_amount,
+                                'admin_commission' => $video->monetization_amount - $channel_commission,
+                                'partner_commission' => $channel_commission,
+                            ];
+
+                            if ($partner_monetization) {
+                                $partner_monetization->update($monetization_data);
+                            } else {
+                                PartnerMonetization::create(array_merge($monetization_data, [
+                                    'user_id' => $video->user_id,
+                                    'type_id' => $video->id,
+                                    'type' => 'episode',
+                                ]));
+                            }
+                        }
+                    }
+
+                    return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
+                } else {
+                    return response()->json(['error' => 'Video not found'], 404);
+                }
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 }
