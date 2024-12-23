@@ -260,6 +260,53 @@ class ApiAuthContinueController extends Controller
         }
     }
 
+    public function editugcvideo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'video_id' => 'required|exists:ugc_videos,id',
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $video = UGCVideo::find($request->video_id);
+
+            if (!$video) {
+                return response()->json(['success' => false, 'message' => 'Video not found.'], 404);
+            }
+
+            $video->title = $request->input('title');
+            $video->description = $request->input('description', $video->description);
+
+            if ($request->hasFile('image')) {
+                $imageFile = $request->file('image');
+                $imageFilename = time() . '.' . $imageFile->getClientOriginalExtension();
+                $videoImage = 'pc-image-' . $imageFilename;
+                $imageFile->move(public_path('uploads/images'), $videoImage);
+                $video->image = $videoImage;
+            }
+
+            $video->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Video details updated successfully.',
+                'video' => $video,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update video details.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     private function extractImagesFromVideo($video, $videoStorePath, $rand, $videoDuration)
     {
         $ffmpeg = FFMpeg::create();
@@ -367,7 +414,6 @@ class ApiAuthContinueController extends Controller
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
                 'user_id' => 'required|integer|exists:users,id',
-                'browser' => 'nullable|string',
                 'location' => 'required|string',
                 'device' => 'required|string',
             ]);
@@ -383,7 +429,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'video',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
@@ -433,6 +478,7 @@ class ApiAuthContinueController extends Controller
 
             return response()->json([
                 'message' => 'View count incremented and monetization updated',
+                'video_id' => $video->id,
                 'played_view' => $video->played_views,
             ], 200);
 
@@ -448,6 +494,7 @@ class ApiAuthContinueController extends Controller
         try {
             $validated = $request->validate([
                 'video_id' => 'required|integer|exists:videos,id',
+                'user_id' => 'required|integer|exists:users,id',
                 'location' => 'required|string',
                 'device' => 'required|string',
             ]);
@@ -1018,6 +1065,7 @@ class ApiAuthContinueController extends Controller
         }
         $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
     
+
         $ugcvideos = UGCVideo::where('user_id', $user->id)
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
