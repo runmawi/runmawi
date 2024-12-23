@@ -7685,11 +7685,11 @@ class ModeratorsUserController extends Controller
     public function Contentdetails()
     {
         $users = ModeratorsUser::with([
-            'videos:id,title,user_id',
-            'series:id,title,user_id',
+            'videos:id,title,user_id,CPP_commission_percentage',
+            'series:id,title,user_id,CPP_commission_percentage',
             'seasons:id,series_seasons_name,user_id',
             'episodes:id,title,user_id',
-            'livestreams:id,title,user_id',
+            'livestreams:id,title,user_id,CPP_commission_percentage',
         ])->get();
 
         $all_datas = [];
@@ -7699,9 +7699,10 @@ class ModeratorsUserController extends Controller
                 $all_datas[] = [
                     'id' => $video->id,
                     'title' => $video->title,
+                    'video_commission_percentage' => $video->CPP_commission_percentage,
                     'type' => 'Video',
                     'content_partner' => $user->username,
-                    'commission_percentage' => $user->commission_percentage,
+                    'moderator_commission_percentage' => $user->commission_percentage,
                 ];
             }
 
@@ -7709,9 +7710,10 @@ class ModeratorsUserController extends Controller
                 $all_datas[] = [
                     'id' => $serie->id,
                     'title' => $serie->title,
+                    'video_commission_percentage' => $serie->CPP_commission_percentage,
                     'type' => 'Series',
                     'content_partner' => $user->username,
-                    'commission_percentage' => $user->commission_percentage,
+                    'moderator_commission_percentage' => $user->commission_percentage,
                 ];
             }
 
@@ -7721,7 +7723,7 @@ class ModeratorsUserController extends Controller
                     'title' => $season->series_seasons_name,
                     'type' => 'Season',
                     'content_partner' => $user->username,
-                    'commission_percentage' => $user->commission_percentage,
+                    'moderator_commission_percentage' => $user->commission_percentage,
                 ];
             }
 
@@ -7731,7 +7733,7 @@ class ModeratorsUserController extends Controller
                     'title' => $episode->title,
                     'type' => 'Episode',
                     'content_partner' => $user->username,
-                    'commission_percentage' => $user->commission_percentage,
+                    'moderator_commission_percentage' => $user->commission_percentage,
                 ];
             }
 
@@ -7739,9 +7741,10 @@ class ModeratorsUserController extends Controller
                 $all_datas[] = [
                     'id' => $livestream->id,
                     'title' => $livestream->title,
+                    'video_commission_percentage' => $livestream->CPP_commission_percentage,
                     'type' => 'Live Stream',
                     'content_partner' => $user->username,
-                    'commission_percentage' => $user->commission_percentage,
+                    'moderator_commission_percentage' => $user->commission_percentage,
                 ];
             }
         }

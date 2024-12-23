@@ -953,14 +953,14 @@
                         <div class="col-sm-3 custom_program_time" >
                             <label class="m-0">Custom Start Program Time </label>
                             <div class="panel-body">
-                                <input type="datetime-local" class="form-control" name="custom_start_program_time"  />
+                                <input type="datetime-local" class="form-control" id="custom_start_program_time" name="custom_start_program_time"  />
                             </div>
                         </div>
 
                         <div class="col-sm-3 custom_program_time" >
                             <label class="m-0">Custom End Program Time </label>
                             <div class="panel-body">
-                                <input type="datetime-local" class="form-control" name="custom_end_program_time"  />
+                                <input type="datetime-local" class="form-control" id="custom_end_program_time" name="custom_end_program_time"  />
                             </div>
                         </div>
 
@@ -1694,7 +1694,6 @@
 
         $("#publish_time").change(function(){
             var publishLaterValue = $('#publish_time').val();
-            var publishLaterValue = $('.prog-end-time').val();
             // console.log('value of publish later: ' + publishLaterValue);
             if(publishLaterValue !== null && publishLaterValue !== '') { 
                 $('.add_video_btn').prop("disabled", false);
@@ -1707,6 +1706,19 @@
         $(".prog-end-time").change(function(){
             var startValue = $('.prog-start-time').val();
             var endValue = $('.prog-end-time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
+            }
+        });
+
+        $("#custom_end_program_time").change(function(){
+            var startValue = $('#custom_start_program_time').val();
+            var endValue = $('#custom_end_program_time').val();
             // console.log('value of startValue: ' + startValue);
             // console.log('value of endValue: ' + endValue);
             if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 

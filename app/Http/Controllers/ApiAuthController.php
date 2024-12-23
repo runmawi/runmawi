@@ -3842,6 +3842,10 @@ public function verifyandupdatepassword(Request $request)
             'gender'   => $request->gender,
             'DOB'      => $request->DOB,
             'country'      => $request->country,
+            'ugc_about'      => $request->ugc_about,
+            'ugc_facebook'      => $request->ugc_facebook,
+            'ugc_instagram'      => $request->ugc_instagram,
+            'ugc_twitter'      => $request->ugc_twitter,
           );
 
           if($request->hasFile('avatar')){
@@ -3859,6 +3863,20 @@ public function verifyandupdatepassword(Request $request)
 
           }
         
+          if($request->hasFile('ugc_banner')){
+
+            $file = $request->ugc_banner;
+            
+            if (File::exists(base_path('public/uploads/ugc-banner/'.$user->ugc_banner))) {
+                File::delete(base_path('public/uploads/ugc-banner/'.$user->ugc_banner));
+            }
+
+            $filename   = 'user-banner-'.time().'.'.$file->getClientOriginalExtension();
+            Image::make($file)->save(base_path().'/public/uploads/ugc-banner/'.$filename );
+
+            $input+= [ 'ugc_banner' => $filename ] ;
+
+          }
           if(!empty($request->user_password)){
             $input+= [ 'password' => Hash::make($request->user_password) ] ;
           }
@@ -13417,7 +13435,7 @@ $cpanel->end();
             $live_videos = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'url_type', 'hls_url', 'live_stream_video', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                           'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                           'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                          'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                          'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
                                       ->map(function ($item) {
@@ -13431,6 +13449,8 @@ $cpanel->end();
                                         $video_url = $item['url_type'];
                                         if($video_url == "live_stream_video"){
                                           $item['url'] = $item->live_stream_video;
+                                        }elseif($video_url == "mp4"){
+                                          $item['url'] = $item->mp4_url;
                                         }
                                         else{
                                           $item['url'] = $item->hls_url;
@@ -15223,6 +15243,9 @@ public function QRCodeMobileLogout(Request $request)
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
+        elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
+        }
     
         $inputs = array(
             'user_id'   => $request->user_id ,
@@ -15297,8 +15320,11 @@ public function QRCodeMobileLogout(Request $request)
       elseif( $request->source == 'play_episode' ){
           $source = "App\Episode";
       }
-      elseif( $request->source == 'play_audios' ){
-          $source = "App\Audio";
+      elseif($request->source == 'play_audios'){
+        $source = "App\Audio";
+      }
+      elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
       }
 
       $inputs = array(
@@ -15379,7 +15405,10 @@ public function QRCodeMobileLogout(Request $request)
         elseif( $request->source == 'play_audios' ){
             $source = "App\Audio";
         }
-    
+        elseif( $request->source == 'play_ugc_videos' ){
+          $source = "App\UGCVideo";
+      }
+  
         $inputs = array(
             'user_id'   => $request->user_id ,
             'user_role' => User::where('id',$request->user_id)->pluck('role')->first() ,

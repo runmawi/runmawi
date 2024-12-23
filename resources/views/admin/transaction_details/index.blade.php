@@ -1,10 +1,21 @@
 @extends('admin.master')
-
 @section('css')
     <link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 @endsection
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+</style>
 @section('content')
+    @php
+    $index = ($paginatedTransactions->currentPage() - 1) * $paginatedTransactions->perPage();
+    @endphp
     <script src="//cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css"></script>
     <script src="//cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -22,13 +33,13 @@
 
                             <div class="iq-card-header-toolbar d-flex align-items-baseline">
                                 <div class="form-group mr-2">
-                                    <!-- <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" /> -->
+                                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                                 </div>
                             </div>
                         </div>
                         <div class="iq-card-body table-responsive p-0">
                             <div class="table-view">
-                                <table class="data-tables table table-striped table-bordered iq-card text-center"
+                                <table class="table table-striped table-bordered iq-card text-center"
                                     style="width:100%">
                                     <thead>
                                         <tr>
@@ -44,10 +55,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($paginatedTransactions as $i => $transaction)
+                                        @foreach ($paginatedTransactions as $transaction)
                                             @if ($transaction)
                                                 <tr>
-                                                    <td>{{ $i + 1 }}</td>
+                                                    <td>{{ ++$index }}</td>
                                                     @if ($transaction->user)
                                                         <td>{{ $transaction->user->mobile }}</td>
                                                     @else
@@ -123,6 +134,32 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+
+            fetch_customer_data();
+
+            function fetch_customer_data(query = '') {
+                $.ajax({
+                    url: "{{ URL::to('/admin/transaction_live_search') }}",
+                    method: 'GET',
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                    }
+                })
+            }
+
+            $(document).on('keyup', '#search', function() {
+                var query = $(this).val();
+                fetch_customer_data(query);
+            });
+        });
+    </script>
 
     {{-- <script>
         $(document).ready(function() {
