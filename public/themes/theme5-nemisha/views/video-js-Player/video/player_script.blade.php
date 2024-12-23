@@ -1,6 +1,4 @@
 <script>
-    
-    
     let video_url = "<?php echo $videodetail->videos_url; ?>";
     let users_video_visibility_free_duration_status = "<?php echo $videodetail->users_video_visibility_free_duration_status; ?>";
     let free_duration_seconds   = "<?php echo $videodetail->free_duration; ?>";
@@ -75,8 +73,7 @@
             if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest' ) && !viewCountSent && currentTime > video_viewcount_limit ) {
                 viewCountSent = true;
                 countview = 1;
-              
-                alert('ere')
+            
                 $.ajax({
                     url: "<?php echo URL::to('PartnerMonetization');?>",
                     type: 'POST',

@@ -5962,6 +5962,7 @@ class ChannelController extends Controller
 
                 if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                 if ($monetizationSettings) {
                 $monetization_view_limit = $monetizationSettings->viewcount_limit;
                 $monetization_view_amount = $monetizationSettings->views_amount;
 
@@ -6005,7 +6006,8 @@ class ChannelController extends Controller
                 }
             }
                 return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-            } else {
+            }
+         } else {
                 return response()->json(['error' => 'Video not found'], 404);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
