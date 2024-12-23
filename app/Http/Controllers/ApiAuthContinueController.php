@@ -508,7 +508,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'episode',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
@@ -586,7 +585,6 @@ class ApiAuthContinueController extends Controller
                 'source_type' => 'livestream',
                 'location' => $validated['location'],
                 'device' => $validated['device'],
-                'browser' => $validated['browser'],
                 'viewed_in' => 'App',
             ]);
 
