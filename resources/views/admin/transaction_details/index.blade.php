@@ -39,7 +39,7 @@
                         </div>
                         <div class="iq-card-body table-responsive p-0">
                             <div class="table-view">
-                                <table class="data-tables table table-striped table-bordered iq-card text-center"
+                                <table class="table table-striped table-bordered iq-card text-center"
                                     style="width:100%">
                                     <thead>
                                         <tr>
