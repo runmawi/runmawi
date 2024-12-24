@@ -3201,7 +3201,7 @@ public function verifyandupdatepassword(Request $request)
 
         $current_date = date('Y-m-d h:i:s a', time());
 
-        $ppv_exist = LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count();
+        $ppv_exist =!empty($user_id) ? LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count() : 0;
 
         if ($ppv_exist > 0) {
 
