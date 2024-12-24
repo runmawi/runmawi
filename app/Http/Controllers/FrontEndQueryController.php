@@ -471,7 +471,7 @@ class FrontEndQueryController extends Controller
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
-        
+
                 switch ($livestream->recurring_program) {
                     case 'custom':
                         $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
@@ -524,7 +524,7 @@ class FrontEndQueryController extends Controller
         });
 
         $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-        
+
             if ($livestream->publish_type === 'publish_now') {
 
                 return $livestream->created_at;
@@ -534,14 +534,16 @@ class FrontEndQueryController extends Controller
                 return $livestream->publish_time;
 
             } elseif ($livestream->publish_type === 'recurring_program') {
-
-                return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+                
+                $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
+                
+                return $custom_start_time ?? $livestream->program_start_time;
             }
 
             return $livestream->publish_type;
         })
         ->values();  
-        
+        // dd($livestreams_sort);
         return $livestreams_sort;
     }
 
