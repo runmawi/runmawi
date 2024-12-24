@@ -4796,16 +4796,14 @@ public function verifyandupdatepassword(Request $request)
         }
       } 
     
-      if ( $live_ppv_count == 0 && !empty($live_id) && $live_id != '') {
+      if (  !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type ]
         );
-        
-      } else {
-        DB::table('live_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+        DB::table('ppv_purchases')->insert(
+          ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, ]
         );
-      }
+      } 
   
       if ( $audio_ppv_count == 0 && !empty($audio_id) && $audio_id != '' ) {
         DB::table('ppv_purchases')->insert(
