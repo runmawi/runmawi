@@ -496,7 +496,7 @@
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
 
-                @elseif( Auth::guest() )
+                @elseif( Auth::guest() && $video->access == "ppv")
                     <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
@@ -538,7 +538,7 @@
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
 
-                @elseif( Auth::guest() )
+                @elseif( Auth::guest() && $video->access == "ppv")
                     <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
@@ -554,7 +554,7 @@
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
 
-                @elseif( Auth::guest() )
+                @elseif( Auth::guest() && $video->access == "ppv" )
                     <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
@@ -576,7 +576,7 @@
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
 
-                @elseif( Auth::guest() )
+                @elseif( Auth::guest() && $video->access == "ppv")
                     <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
                         {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
                     </button>
