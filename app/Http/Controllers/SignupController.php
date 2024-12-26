@@ -174,6 +174,11 @@ class SignupController extends Controller
 //            if ( $signup_status == 1 ) {
 //                return redirect('/signup');
 //            }
+
+        $request->validate([
+            'honeypot' => 'max:0', // Ensure the honeypot field is empty
+        ]);
+
             if ($request->has('ref')) {
                 session(['referrer' => $request->query('ref')]);
             }

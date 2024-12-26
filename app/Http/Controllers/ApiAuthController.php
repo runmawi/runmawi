@@ -7693,7 +7693,7 @@ return response()->json($response, 200);
     $user = User::where('id', $user_id)->first();
     $episode = Episode::where('id','=',$episode_id)->first();
 
-    if($Seasons_access && $user){
+    if($Seasons_access ){
         $data = $request->all();
               
         if(Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1 && $series_seasons_type == 'VideoCipher'){
@@ -7702,49 +7702,16 @@ return response()->json($response, 200);
           
         $season = SeriesSeason::where('series_id','=',$episode->series_id)->where('id','=',$season_id)
         ->with('episodes')->orderBy('created_at', 'desc')->get();
-        if(!empty($season)){
-          $ppv_price = $season[0]->ppv_price;
-          $ppv_interval = $season[0]->ppv_interval;
-          $season_id = $season[0]->id;
-        }
-        // echo "<pre>";
-        // print_r($season);exit;
-        // Free Interval Episodes
+        
         $PpvPurchaseCount = PpvPurchase::where('series_id','=',$episode->series_id)->where('season_id','=',$season_id)
         ->where('user_id','=',$user_id)->count();
-
-        if(!empty($ppv_price) && !empty($ppv_interval)){
-          foreach($season as $key => $seasons):
-              foreach($seasons->episodes as $key => $episodes):
-                      if($seasons->ppv_interval > $key):
-                          $free_episode[$episodes->id] = Episode::where('id','=',$episode_id)->count();
-                      else :
-                          $paid_episode[] = Episode::where('slug','=',$episodes->slug)->orderBy('id', 'DESC')->count();
-                      endif;
-              endforeach;
-          endforeach;
-          if($PpvPurchaseCount > 0){
+        if($PpvPurchaseCount > 0){
+          $free_episode = 'guest';
+        }elseif($Seasons_access == 'free'){
             $free_episode = 'guest';
-          }else if (array_key_exists($episode_id,$free_episode)){
-            $free_episode = 'guest';
-          }else{
-            $free_episode = 'PPV';
-          }
-          if(empty($free_episode)){
-
-            $free_episode = 'PPV';
-          }
-        }else if($ppv_interval == 0){
-            $free_episode = 'PPV';
         }else{
-            $free_episode = 'guest';
+            $free_episode = 'PPV';
         }
-
-        // if($Seasons_access == 'free'){
-        //   $Seasons_access = 'guest';
-        // }else{
-        //   $Seasons_access = $Seasons_access;
-        // }
 
         $response = array(
           'status' => 'true',
