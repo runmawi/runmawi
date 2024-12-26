@@ -37,6 +37,29 @@ var options = {
     }
 };
 var rzp1 = new Razorpay(options);
+
+
+rzp1.on('payment.failed', function (response) {
+    fetch("{{ url('/RazorpayVideoRent_Paymentfailure') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+            user_id: "{{ $response['user_id'] }}",
+            video_id: "{{ $response['video_id'] }}",
+            amount: "{{ $response['amount'] }}",
+            order_id: response.error.metadata.order_id,
+            payment_id: response.error.metadata.payment_id,
+            error_code: response.error.code,
+            error_description: response.error.description,
+            failure_reason: response.error.reason 
+        })
+    })
+});
+
+
 window.onload = function(){
     document.getElementById('rzp-button1').click();
 };
