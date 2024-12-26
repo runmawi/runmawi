@@ -378,6 +378,8 @@ class RazorpayController extends Controller
             );
             $order  = $api->utility->verifyPaymentSignature($attributes);
 
+            $payment = $api->payment->fetch($request->rzp_paymentid);
+            $payment_status = $payment->status; 
 
             $video = Video::where('id','=',$request->video_id)->first();
 
@@ -399,7 +401,7 @@ class RazorpayController extends Controller
                 $total_amount        = $video->ppv_price;
                 $title               =  $video->title;
                 $commssion           =  VideoCommission::where('type','CPP')->first();
-                $percentage          =  $moderator->commission_percentage; 
+                $percentage          =  $moderator->commission_percentage ? $moderator->commission_percentage : 0 ; 
                 $ppv_price           =  $request->amount/100;
                 $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
                 $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -424,13 +426,13 @@ class RazorpayController extends Controller
             $purchase->total_amount = $request->amount /100 ;
             $purchase->admin_commssion = $admin_commssion;
             $purchase->moderator_commssion = $moderator_commssion;
-            $purchase->status = 'active';
+            $purchase->status = $payment_status;
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
             $purchase->payment_id = $request->rzp_paymentid;
-            $purchase->payment_gateway= 'Razorpay';
+            $purchase->payment_gateway= 'razorpay';
             $purchase->save();
 
             $respond=array(
@@ -441,12 +443,92 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
+            dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
 
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
+    }
+
+    public function RazorpayVideoRent_Paymentfailure(Request $request)
+    {
+
+        try {
+
+        $setting = Setting::first();  
+        $ppv_hours = $setting->ppv_hours;
+ 
+        $d = new \DateTime('now');
+        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        $now = $d->format('Y-m-d h:i:s a');
+        $time = date('h:i:s', strtotime($now));
+        $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
+ 
+        $failureData = $request->all();
+
+        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+
+        if ($existingPurchase) {
+            return response()->json(['status' => 'already_logged']);
+        }
+
+        $video = Video::where('id','=', $failureData['video_id'] )->first();
+
+        if(!empty($video)){
+        $moderators_id = $video->user_id;
+        }
+
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $video->CPP_commission_percentage;
+
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            $total_amount        = $video->ppv_price;
+            $title               =  $video->title;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  $moderator->commission_percentage; 
+            $ppv_price           =  $request->amount/100;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount = $video->ppv_price;
+            $title =  $video->title;
+            $commssion  =  VideoCommission::where('type','CPP')->first();
+            $percentage = null; 
+            $ppv_price = $video->ppv_price;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+
+        $purchase = new PpvPurchase;
+        $purchase->user_id = $failureData['user_id'];
+        $purchase->video_id = $failureData['video_id'];
+        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->status = 'failed';
+        $purchase->platform = 'website';
+        $purchase->to_time = $to_time;
+        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_gateway = 'razorpay';
+        $purchase->save();
+
+        return response()->json(['status' => 'failure_logged']);
+    }catch (\Exception $e) {
+        
+        return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
+    }
     }
 
     public function RazorpayLiveRent(Request $request,$live_id,$amount){
@@ -573,6 +655,86 @@ class RazorpayController extends Controller
 
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
+    }
+
+    public function RazorpayLiveRent_Paymentfailure(Request $request)
+    {
+
+        
+        try {
+        $setting = Setting::first();  
+        $ppv_hours = $setting->ppv_hours;
+ 
+        $d = new \DateTime('now');
+        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        $now = $d->format('Y-m-d h:i:s a');
+        $time = date('h:i:s', strtotime($now));
+        $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+ 
+ 
+        $failureData = $request->all();
+
+        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+
+        if ($existingPurchase) {
+            return response()->json(['status' => 'already_logged']);
+        }
+
+        $video = LiveStream::where('id','=', $failureData['live_id'] )->first();
+
+        if(!empty($video)){
+        $moderators_id = $video->user_id;
+        }
+
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $video->CPP_commission_percentage;
+
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            $total_amount        = $video->ppv_price;
+            $title               =  $video->title;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  $moderator->commission_percentage; 
+            $ppv_price           =  $request->amount/100;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount = $video->ppv_price;
+            $title =  $video->title;
+            $commssion  =  VideoCommission::where('type','CPP')->first();
+            $percentage = null; 
+            $ppv_price = $video->ppv_price;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+
+        $purchase = new PpvPurchase;
+        $purchase->user_id = $failureData['user_id'];
+        $purchase->live_id = $failureData['live_id'];
+        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->status = 'failed';
+        $purchase->platform = 'website';
+        $purchase->to_time = $to_time;
+        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_gateway = 'razorpay';
+        $purchase->save();
+
+        return response()->json(['status' => 'failure_logged']);
+    } catch (\Exception $e) {
+      
+        return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
+    }
     }
 
 
@@ -990,6 +1152,92 @@ class RazorpayController extends Controller
 
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
+    }
+
+    
+    public function RazorpaySeriesSeasonRent_Paymentfailure(Request $request)
+    {
+
+        try{
+
+        $setting = Setting::first();  
+        $ppv_hours = $setting->ppv_hours;
+ 
+        $d = new \DateTime('now');
+        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        $now = $d->format('Y-m-d h:i:s a');
+        $time = date('h:i:s', strtotime($now));
+        $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+
+        $failureData = $request->all();
+
+        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+
+        if ($existingPurchase) {
+            return response()->json(['status' => 'already_logged']);
+        }
+
+
+        $SeriesSeason = SeriesSeason::where('id',$failureData['SeriesSeason_id'])->first();
+        $series_id = SeriesSeason::where('id', $failureData['SeriesSeason_id'])->pluck('series_id')->first();
+        $Series = Series::where('id',$series_id)->first();
+
+
+        if(!empty($Series && $Series->uploaded_by == 'CPP' )){
+        $moderators_id = $Series->user_id;
+        }
+
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $video->CPP_commission_percentage;
+
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            $total_amount        = $SeriesSeason->ppv_price;
+            $title               =  $SeriesSeason->series_seasons_name;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  $moderator->commission_percentage; 
+            $ppv_price           =  $request->amount/100;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount        =  $SeriesSeason->ppv_price;
+            $title               =  $SeriesSeason->series_seasons_name;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $percentage          =  null; 
+            $ppv_price           =  $SeriesSeason->ppv_price;
+            $admin_commssion     =  null;
+            $moderator_commssion =  null;
+            $moderator_id        =  null;
+        }
+
+        $purchase = new PpvPurchase;
+        $purchase->user_id = $failureData['user_id'];
+        $purchase->season_id     = $failureData['SeriesSeason_id'] ;
+        $purchase->series_id    = $series_id ;
+        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->status = 'failed';
+        $purchase->platform = 'website';
+        $purchase->to_time = $to_time;
+        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_gateway = 'razorpay';
+        $purchase->save();
+
+        return response()->json(['status' => 'failure_logged']);
+
+        } catch (\Exception $e) {
+        return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
+    }
+
     }
 
     public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
