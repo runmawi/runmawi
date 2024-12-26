@@ -443,6 +443,7 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
+            dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
