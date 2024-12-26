@@ -212,12 +212,12 @@
       z-index: 99;
    }
    .scroller-status {
-            display: none;
-        }
-        .pagination {
-            display: none;
-        }
-        .s-margin{display:none;}
+      display: none;
+   }
+   .pagination {
+      display: none;
+   }
+   .s-margin{display:none;}
 
 
    @media screen and (max-height: 450px) {

@@ -49,7 +49,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img data-flickity-lazyload="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
+                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
                                     </div>
                                 @endforeach
@@ -190,7 +190,7 @@ var elem = document.querySelector('.series-network-video');
         freeScroll: true,
         imagesLoaded: true,
         lazyLoad: 7,
-        });
+    });
 
 
     document.querySelectorAll('.series-network-video .item').forEach(function(item) {

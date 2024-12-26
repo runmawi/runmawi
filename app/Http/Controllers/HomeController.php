@@ -495,7 +495,7 @@ class HomeController extends Controller
                 'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
             );
 
-            if($this->HomeSetting->theme_choosen == "theme5" || $this->HomeSetting->theme_choosen == "default"){
+            if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                 if($request->ajax()) {
                     return $data = [
                         "view" => Theme::watchPartial('home_sections', $data ),
@@ -1246,7 +1246,7 @@ class HomeController extends Controller
                         'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
                         'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
                     );
-                    if($this->HomeSetting->theme_choosen == "theme5" || $this->HomeSetting->theme_choosen == "default"){
+                    if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                         if($request->ajax()) {
                             return $data = [
                                 "view" => Theme::watchPartial('home_sections', $data ),
@@ -1719,7 +1719,7 @@ class HomeController extends Controller
                     'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
                 );
 
-                if($this->HomeSetting->theme_choosen == "theme5" || $this->HomeSetting->theme_choosen == "default"){
+                if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                     if($request->ajax()) {
                         return $data = [
                             "view" => Theme::watchPartial('home_sections', $data ),
