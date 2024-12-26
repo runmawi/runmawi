@@ -74,6 +74,9 @@
                             <p><strong>Video:</strong> -</p>
                             <p><strong>Type:</strong> -</p>
                         @endif
+                        @if ($transaction->status == 'failed')
+                            <p><strong>Failure Reason:</strong> {{ $transaction->payment_failure_reason }}</p>
+                        @endif
                     @endif
                 </div>
 
