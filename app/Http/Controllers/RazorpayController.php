@@ -518,6 +518,7 @@ class RazorpayController extends Controller
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
+        $purchase->payment_failure_reason = $failureData['error_description'];
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
         $purchase->payment_id = $failureData['payment_id'] ?? null;
@@ -724,6 +725,7 @@ class RazorpayController extends Controller
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
+        $purchase->payment_failure_reason = $failureData['error_description'];
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
         $purchase->payment_id = $failureData['payment_id'] ?? null;
@@ -1212,6 +1214,7 @@ class RazorpayController extends Controller
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
+        $purchase->payment_failure_reason = $failureData['error_description'];
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
         $purchase->payment_id = $failureData['payment_id'] ?? null;
