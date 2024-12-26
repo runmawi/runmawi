@@ -390,6 +390,9 @@ class RazorpayController extends Controller
             $commission_btn = $setting->CPP_Commission_Status;
             $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
             $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+            if ($CppUser_details) {
+                $commission_percentage_value = $CppUser_details->commission_percentage;
+            }
             $commission_percentage_value = $video->CPP_commission_percentage;
             // dd((600 * $commission_percentage_value)/100);
             
