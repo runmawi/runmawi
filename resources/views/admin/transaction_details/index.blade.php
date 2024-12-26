@@ -88,11 +88,22 @@
                                                     @endif
                                                     <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}
                                                     </td>
-                                                    @if ($transaction->payment_id)
-                                                        <td class = "bg-success">Success</td>
+                                                    @if ($transaction->transaction_type == 'Subscription')
+                                                        @if ($transaction->payment_id)
+                                                            <td class="bg-success">Success</td>
+                                                        @else
+                                                            <td class="bg-danger">Failed</td>
+                                                        @endif
                                                     @else
-                                                        <td class = "bg-danger">Failed</td>
+                                                        @if ($transaction->status == 1)
+                                                        <td class="bg-success">Success</td>
+                                                        @else
+                                                            <td class="{{ $transaction->status == 'captured' || $transaction->status == 'authorised' ? 'bg-success' : ($transaction->status == 'failed' || $transaction->status == 'inactive'  ? 'bg-danger' : '') }}">
+                                                                {{ $transaction->status ?: 'N/A' }}
+                                                            </td>
+                                                        @endif
                                                     @endif
+                                                
                                                     @if ($transaction->transaction_type == 'Subscription')
                                                         <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
                                                     @else
@@ -125,7 +136,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <div style="position: relative;top: -50px;" class="pagination-outter mt-3 pull-right">
+                                <div style="position: relative;top: -50px;" class="pagination-outter mt-5 pull-right">
                                     <?= $paginatedTransactions->appends(Request::only('s'))->render() ?></div>
                             </div>
                         </div>

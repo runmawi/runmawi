@@ -16573,6 +16573,17 @@ public function QRCodeMobileLogout(Request $request)
 
         }
 
+        if( $OrderHomeSetting['video_name'] == "user_generated_content" ){       // Radio Station
+          
+          $data = $this->All_Homepage_user_generated_content($homepage_input_array);
+          $source = $OrderHomeSetting['video_name'] ;
+          $header_name = $OrderHomeSetting['header_name'] ;
+          $header_name_IOS = $OrderHomeSetting['header_name'] ;
+          $source_type = "user_generated_content" ;
+
+        }
+
+
         if( $OrderHomeSetting['video_name'] == "series" ){          // Series
           
           $data = $this->All_Homepage_series_videos($homepage_input_array);
