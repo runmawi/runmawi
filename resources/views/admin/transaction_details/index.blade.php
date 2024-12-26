@@ -88,11 +88,18 @@
                                                     @endif
                                                     <td>{{ $transaction->payment_id ? $transaction->payment_id : 'N/A' }}
                                                     </td>
-                                                    @if ($transaction->payment_id)
-                                                        <td class = "bg-success">Success</td>
+                                                    @if ($transaction->transaction_type == 'Subscription')
+                                                        @if ($transaction->payment_id)
+                                                            <td class="bg-success">Success</td>
+                                                        @else
+                                                            <td class="bg-danger">Failed</td>
+                                                        @endif
                                                     @else
-                                                        <td class = "bg-danger">Failed</td>
+                                                        <td class="{{ $transaction->status == 'captured'|| $transaction->status == 'active' || $transaction->status == 'authorised' ? 'bg-success' : ($transaction->status == 'failed' || $transaction->status == 'inactive'  ? 'bg-danger' : '') }}">
+                                                            {{ $transaction->status ? $transaction->status : 'N/A' }}
+                                                        </td>
                                                     @endif
+                                                
                                                     @if ($transaction->transaction_type == 'Subscription')
                                                         <td>{{ $transaction->price ? $transaction->price : 'N/A' }}</td>
                                                     @else
