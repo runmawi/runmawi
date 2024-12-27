@@ -209,6 +209,7 @@
 <!-- JavaScript -->
    <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async></script>
    <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>"></script>
+   <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
 
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
    <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
@@ -276,6 +277,7 @@
     <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-animation.css') ?>" as="style">
 
     <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
+
     
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
