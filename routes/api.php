@@ -718,4 +718,5 @@ Route::group(
             Route::post('ugcwishlist', 'ApiAuthContinueController@ugcwishlist');
             Route::post('ugcwatchlater', 'ApiAuthContinueController@ugcwatchlater');
             Route::get('showUgcProfileApi', 'ApiAuthContinueController@showUgcProfileApi');
+            Route::post('relatedradiostations', 'ApiAuthContinueController@relatedradiostations');
         });
