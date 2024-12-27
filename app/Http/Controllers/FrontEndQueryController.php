@@ -374,7 +374,7 @@ class FrontEndQueryController extends Controller
             return $item;
         });
     
-
+        // dd(count($Series_based_on_Networks));
         return $Series_based_on_Networks;
     }
 
