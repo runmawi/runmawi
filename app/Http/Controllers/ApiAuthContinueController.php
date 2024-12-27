@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Geofencing;
-use App\HomeSetting;
-use App\Jobs\ConvertUGCVideoForStreaming;
-use App\LikeDislike;
-use App\MoviesSubtitles;
-use App\PartnerMonetization;
-use App\PartnerMonetizationSetting;
-use App\Setting;
-use App\UGCSubscriber;
-use App\UGCVideo;
-use App\User;
-use App\Video;
-use App\VideoAnalytics;
-use App\VideoExtractedImages;
-use App\Watchlater;
-use App\Wishlist;
+use URL;
 use Auth;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
 use File;
 use getID3;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
-use URL;
+use App\User;
+use App\Video;
 use Validator;
+use App\Setting;
+use App\UGCVideo;
+use App\Wishlist;
+use FFMpeg\FFMpeg;
+use App\Geofencing;
+use App\LiveStream;
+use App\Watchlater;
+use App\HomeSetting;
+use App\LikeDislike;
+use App\UGCSubscriber;
+use App\VideoAnalytics;
+use App\MoviesSubtitles;
+use Illuminate\Support\Str;
+use App\PartnerMonetization;
+use Illuminate\Http\Request;
+use App\VideoExtractedImages;
+use FFMpeg\Coordinate\TimeCode;
+use App\PartnerMonetizationSetting;
+use Intervention\Image\Facades\Image;
+use App\Jobs\ConvertUGCVideoForStreaming;
 
 class ApiAuthContinueController extends Controller
 {
@@ -1147,4 +1148,28 @@ class ApiAuthContinueController extends Controller
         }
     }
 
+    public function relatedradiostations(Request $request)
+    {
+
+        $validated = $request->validate([
+            'radio_station_id' => 'required|integer|exists:live_streams,id',
+        ]);
+
+        $radio_station_id = $validated['radio_station_id'];
+
+        $radiostation = LiveStream::where('id', '!=', $radio_station_id)
+                                ->where('stream_upload_via', 'radio_station')
+                                ->get()
+                                ->map(function ($item) {
+                                    $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                                    return $item;
+                                });
+
+        $response = [
+            'status' => true,
+            'radiostation' => $radiostation,
+        ];
+
+        return response()->json($response, 200);
+    }
 }
