@@ -218,7 +218,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
                 $moderatorsuser->commission_percentage = $request->commission_percentage;
-
+                $moderatorsuser->otp = 12345;
 
                 $logopath = URL::to("/public/uploads/moderator_albums/");
                 $path = public_path() . "/uploads/moderator_albums/";
