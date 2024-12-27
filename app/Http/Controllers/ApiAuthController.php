@@ -2082,7 +2082,7 @@ public function verifyandupdatepassword(Request $request)
               $videoId = $item['videos_url']; 
               $apiKey = videocipher_Key();
               $curl = curl_init();
-              $watermarkText = Auth::user()->mobile; 
+              $watermarkText = User::where('id',$data['user_id'])->pluck('mobile')->first(); 
               $annotateJson = json_encode([
                   [
                       "type" => "rtext",
@@ -7624,7 +7624,7 @@ return response()->json($response, 200);
          $videoId = $item['Episode_url']; 
          $apiKey = videocipher_Key();
          $curl = curl_init();
-          $watermarkText = Auth::user()->mobile; 
+         $watermarkText = User::where('id',$data['user_id'])->pluck('mobile')->first(); 
           $annotateJson = json_encode([
               [
                   "type" => "rtext",
