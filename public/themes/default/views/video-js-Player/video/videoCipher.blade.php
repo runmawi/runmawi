@@ -1,5 +1,4 @@
-@php include public_path('themes/default/views/header.php');  @endphp
-
+ 
     <div class="container-fluid p-0" style="position:relative">
         <button class="staticback-btn" onclick="history.back()" title="Back Button">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
