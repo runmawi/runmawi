@@ -1004,7 +1004,7 @@ class ApiAuthContinueController extends Controller
     {
 
         $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_vijdeo_id;
+        $ugc_video_id = $request->ugc_video_id;
 
         if (!empty($ugc_video_id)) {
             $count = Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();

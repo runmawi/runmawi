@@ -1496,10 +1496,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/payment/subscription', 'AdminPaymentManagementController@SubscriptionIndex');
     Route::get('/payment/PayPerView', 'AdminPaymentManagementController@PayPerViewIndex');
     Route::post('payment/', 'AdminPaymentManagementController@Update');
-    Route::get('/subscription/view/{id}', 'AdminPaymentManagementController@SubscriptionView');
+    Route::get('/subscription/view/{id}', 'AdminPaymentManagementController@SubscriptionView')->name('admin.ppvpayment.view');
     Route::get('/ppvpayment/view/{id}', 'AdminPaymentManagementController@PayPerView');
     Route::get('/subscription_search', 'AdminPaymentManagementController@Subscription_search');
-    Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search');
+    Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search')->name('PayPerView_search');
     Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
 
     // Revenue Settings
