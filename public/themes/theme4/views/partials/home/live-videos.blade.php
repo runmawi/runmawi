@@ -175,7 +175,7 @@
 
 <script>
     
-    var elem = document.querySelector('.flickity-slider');
+    var elem = document.querySelector('.live-stream-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
             contain: true,

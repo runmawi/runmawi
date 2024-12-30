@@ -480,7 +480,7 @@
    .sliderk.round:before {
    border-radius: 50%;
    }
-   .s-margin,.flickity-lazyloaded{display:none;}
+   /* .s-margin{display:none;} */
 
    /* Dark mode and light Mode */
 

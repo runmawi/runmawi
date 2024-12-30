@@ -8,6 +8,7 @@
     $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
     $theme = App\SiteTheme::first();
     $app_settings = App\AppSetting::where('id', '=', 1)->first(); 
+    $css = App\Css::pluck('custom_css')->toArray();
 
 ?>
 <style>
@@ -56,6 +57,13 @@
 
 
 </style>
+<?php
+      if(count($css) > 0){
+         foreach($css as $customCss){   ?>
+            <?= $customCss ?>
+         <?php }
+      } 
+   ?>
 <footer class="mb-3" style="margin-top:5rem;">
         <div class="logo-content">
             
@@ -63,7 +71,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 col-3">
                     <div class="text-center">
                         <a class="navbar-brand" href="<?= URL::to('/home') ?>"> <img class="img-fluid logo" src="<?= front_end_logo() ?>" width="80%"/> </a>
-                        <p class="music-text" style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                        <p class="music-text logo-text" style="font-size:11px;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9 col-9 text-right m-0">
