@@ -148,6 +148,10 @@ class ModeratorsLoginController extends Controller
 
                     if (!empty($user))
                     {
+
+                        if(!empty($user->parent_moderator_id) || $user->parent_moderator_id != null){
+                            $user->id = $user->parent_moderator_id;
+                        }
                         $id = $user->id;
                         $userrolepermissiom = DB::table('user_accesses')->select('user_accesses.permissions_id', 'moderators_permissions.name', 'moderators_permissions.url')
                             ->join('moderators_permissions', 'moderators_permissions.id', '=', 'user_accesses.permissions_id')

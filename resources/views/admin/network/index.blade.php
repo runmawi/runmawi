@@ -10,9 +10,12 @@
         z-index: 2;
     }
 
-    .iq-card {
+    #nestable1 .iq-card {
         padding: 15px;
+        margin-bottom: 0 !important;
+        box-shadow: none !important;
     }
+    /* #nestable1 table td{padding: 0;} */
 
     .black {
         color: #000;
@@ -156,7 +159,7 @@
                                         <th><label>S.No</label></th>
                                         <th><label>Networks Name</label></th>
                                         <th><label>Networks Image</label></th>
-                                        <th><label>Networks Banner Image</label></th>
+                                        <th><label>Series Order</label></th>
                                         <th><label>Operation</label></th>
                                     </tr>
 
@@ -165,7 +168,11 @@
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $network_data->name }}</td>
                                             <td valign="bottom"><img src="{{ $network_data->image_url }}" width="50" height="50"></td>
-                                            <td valign="bottom"><img src="{{ $network_data->banner_image_url }}" width="50" height="50"></td>
+                                            <td valign="bottom">
+                                                <button type="button" class="" data-toggle="modal" data-target="{{'#SeriesList-'.$key}}" style="border:none;background-color:transparent;">
+                                                   Order your Shows
+                                                </button>
+                                            </td>
 
                                             <td>
                                                 <div class=" align-items-center list-user-action" style="display: inline !important;">
@@ -194,6 +201,57 @@
                     </div>
                 </div>
             </div>
+
+            @foreach ($Series_Network as $key => $network_data )
+                <div class="modal fade network-container" id="{{'SeriesList-'.$key}}" tabindex="-1" role="dialog" aria-labelledby="SeriesListTitle" aria-hidden="true" data-network-id="{{ $network_data->id }}">
+                    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 90%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Series List for {{ $network_data->name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="nestable1" class="table table-bordered iq-card text-center">
+                                    <table class="table table-bordered iq-card text-center" id="nerwork_series_order">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Series Name</th>
+                                                <th>Series Image</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $order_no = 0;
+                                            @endphp
+                                            @foreach ($network_data->series as $series_key => $series)
+                                                <tr data-id="{{ $series->id }}">
+                                                    <td>{{ $order_no + 1 }}</td>
+                                                    <td>{{ $series->title }}</td>
+                                                    <td>
+                                                        <img src="{{ URL::to('public/uploads/images/'.$series->player_image) }}" width="50" height="50">
+                                                    </td>
+                                                </tr>
+                                                @php
+                                                    $order_no = $order_no + 1
+                                                @endphp
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" onClick="savenetworkOrder()" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
 
             <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />
         </div>
@@ -266,6 +324,62 @@
                     form.submit();
                 }
             });
+        </script>
+
+        <!-- network series order-->
+        <script>
+            $(function () {
+                $(".network-container").each(function () {
+                    const networkContainer = $(this); // Reference to the current network container
+
+                    // Make the series list sortable for each network
+                    networkContainer.find("#nerwork_series_order tbody").sortable({
+                        cursor: "move",
+                        axis: "y",
+                        update: function (event, ui) {
+                            let sortedData = [];
+                            
+                            // Collect the IDs of the sorted rows
+                            networkContainer.find("#nerwork_series_order tbody tr").each(function () {
+                                sortedData.push($(this).data("id"));
+                            });
+
+                            // Pass the sorted data and the current network container to the function
+                            updateSeriesOrder(sortedData, networkContainer);
+                        }
+                    });
+                });
+
+                function updateSeriesOrder(data, element) {
+                    const networkId = $(element).data('network-id'); // Get the network ID from the current container
+                    console.log('network id: ' + networkId);
+
+                    $.ajax({
+                        url: '{{ route("admin.Network_series_order") }}',
+                        type: 'POST',
+                        data: {
+                            position: data,
+                            network_id: networkId,
+                            _token: $('#_token').val()
+                        },
+                        success: function () {
+                            // alert("Position changed successfully.");
+                            // location.reload();
+                        },
+                        error: function (xhr) {
+                            console.error(xhr.responseText);
+                            alert("An error occurred.");
+                        }
+                    });
+                }
+            });
+
+
+            function savenetworkOrder(){
+                // alert('submit');
+                location.reload();
+            };
+
         </script>
     @stop
 @stop

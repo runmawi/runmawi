@@ -1,5 +1,7 @@
 <script>
-
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
+    var played_views = "<?php echo $episode_details->played_views; ?>";
+    var user_role = "<?php echo $user_role; ?>";
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -28,11 +30,53 @@
             }
         });
 
+        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const skipForwardButton = document.querySelector('.custom-skip-forward-button');
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
-        const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        const titleButton = document.querySelector('.vjs-title-bar');
         var hovered = false;
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(titleButton);
+        player.el().appendChild(backButton); 
+
+        function updateControls() {
+            var isMobile = window.innerWidth <= 768;
+            var controlBar = player.controlBar;
+
+            if (controlBar.getChild('subtitlesButton')) {
+                controlBar.removeChild('subtitlesButton');
+            }
+            if (controlBar.getChild('playbackRateMenuButton')) {
+                controlBar.removeChild('playbackRateMenuButton');
+            }
+            if (controlBar.getChild('settingsMenuButton')) {
+                controlBar.removeChild('settingsMenuButton');
+            }
+
+            if (!isMobile){
+                controlBar.addChild('subtitlesButton');
+                controlBar.addChild('playbackRateMenuButton');
+            } 
+            else{
+                controlBar.addChild('settingsMenuButton', {
+                    entries: [
+                        'subtitlesButton',
+                        'playbackRateMenuButton',
+                    ]
+                });
+            }
+        }
+
+        player.on('loadedmetadata', function() {
+            updateControls();
+        });
+
+        window.addEventListener('resize', function() {
+            updateControls();
+        });
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
@@ -128,6 +172,51 @@
                 });
             }
         });
+
+        let viewCountSent = false;
+
+        function EpisodePartnerMonetization(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            var countview;
+
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > video_viewcount_limit) {
+                viewCountSent = true;
+                countview = 1;
+                $.ajax({
+                    url: "<?php echo URL::to('EpisodePartnerMonetization');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                });
+            }
+        }
+
+
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                EpisodePartnerMonetization(videoId, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                EpisodePartnerMonetization(videoId, currentTime);
+            });
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                var currentTime = player.currentTime();
+                EpisodePartnerMonetization(videoId, currentTime);
+            }
+        });
+
+
+
 
         // Ads Marker
 

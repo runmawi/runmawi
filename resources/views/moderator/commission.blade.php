@@ -41,6 +41,22 @@
                     <div class="iq-card-body">
                         <form method="POST" action="{{ URL::to('admin/add/commission') }}"  >
 						@csrf
+
+                            <div class="row mt-8 align-items-center">
+                                <label>{{ ucfirst(trans('Enable Percentage Commission :')) }}</label>
+
+                                <div class="d-flex col-md-12 " style="width:50%;justify-content: space-evenly;">
+                                    <div style="color:#006AFF;">Commission Percentage(%) for CPP</div>
+                                    <div class="mt-1">
+                                        <label class="switch">
+                                            <input name="CPP_Commission_Status" class="CPP_Commission_Status" id="CPP_Commission_Status" type="checkbox" {{ ($settings->CPP_Commission_Status) == "1" ? 'checked' : ''  }}   >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div style="color:green;">Commission Percentage(%) for CPP Individual Content </div>
+                                </div>
+                            </div><br>
+
                             <div class="row mt-12 align-items-center">
                                 <div class="col-md-4 p-0">
                                     <div class="panel panel-primary " data-collapsed="0">
@@ -80,13 +96,50 @@
 </div>
 @stop
 
-<script>
-    $(document).ready(function() {
-        setTimeout(function() {
-            $('#successMessage').fadeOut('fast');
-        }, 3000);
-    })
-</script>
+@section('javascript')
+
+    <script>
+
+        $("#CPP_Commission_Status").click(function(ele) {
+
+            var Status = $('#CPP_Commission_Status').prop("checked");
+
+            var CPP_Commission_Status = Status ? '1' : '0';
+
+            var confirmationMessage = "Are you sure you want to Change the CPP Commission Status?";
+            var check = confirm(confirmationMessage);
+
+            if (check) {
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    url: "{{ route('admin.CPP_commission_status_update') }}",
+                    data: {
+                        CPP_Commission_Status:  CPP_Commission_Status,
+                    },
+                    success: function (data) {
+                        if (data.message == 'false') {
+
+                            alert('Please try again later; the status has not yet updated');
+
+                            location.href = "{{ URL::to('admin/moderator/commission') }}";
+                        }else{
+                            location.href = "{{ URL::to('admin/moderator/commission') }}";
+                        }
+                    },
+                });
+            } else {
+                $(ele).prop('checked', !Status);
+            }
+        });
+
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('#successMessage').fadeOut('fast');
+            }, 3000);
+        })
+    </script>
+@stop
 
 <style>
 	input[type="number"]::-webkit-outer-spin-button,
@@ -98,5 +151,4 @@
 	input[type="number"] {
 		-moz-appearance: textfield;
 	}
-
 </style>

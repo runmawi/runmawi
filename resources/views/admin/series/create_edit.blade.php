@@ -43,6 +43,8 @@ border-radius: 0px 4px 4px 0px;
     cursor: pointer;
 }
 
+.form-select{border: 1px solid #ced4da;border-radius: .25rem;font-size: 14px;padding: 10px;height: 38px;}
+#unassignedepisodes .modal-dialog{max-width: 900px;}
 </style>
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -53,6 +55,7 @@ $settings  = App\Setting::first();?>
 <?php $message = "Title Already Exits";  ?>
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div id="content-page" class="content-page">
     <div class="d-flex">
@@ -693,12 +696,17 @@ $settings  = App\Setting::first();?>
 		<tr class="table-header">
 			<th>Seasons</th>
 			<th>Episodes</th>
+			<th>Access</th>
 			<th>Operation</th>
 			
 			@foreach($seasons as $key=>$seasons_value)
 			<tr id="{{ $seasons_value->id }}">
 				<td valign="bottom"><p> {{ optional($seasons_value)->series_seasons_name }}</p></td>
-				<td valign="bottom"><p>{{count($seasons[$key]['episodes'])}} Episodes</p></td>
+				<td valign="bottom">
+					<p>{{ $seasons_value->total_episode }} Episodes <br>
+						<span style="color:green;font-size:12px;">Active: {{ $seasons_value->active_episode }}</span>, <span style="color: red;font-size:12px;"> Draft:{{ $seasons_value->draft_episodes }}</span>
+					</p></td>
+				<td valign="bottom"><p>{{ $seasons_value->access }}</p></td>
 				<td>
 					<p>
 						<a href="{{ URL::to('admin/season/edit') . '/' . $series->id. '/' . $seasons_value->id }}" class="btn btn-xs btn-black"><span class="fa fa-edit"></span> Manage Episodes</a>
@@ -709,12 +717,92 @@ $settings  = App\Setting::first();?>
 			</tr>
 			@endforeach
 	</table>
+
             </div>
-	
+			@if(!empty($unassigned_episodes->toArray()))
+				<div class="unassigned_episodes">
+					@if(!empty($seasons->toArray()))
+					<p>We found some unassigned episodes <span class="text-primary" data-toggle="modal" data-target="#unassignedepisodes" style="cursor: pointer;">Click here to assign now.</span></p>
+					@else
+						<p>We found some unassigned episodes <span class="text-primary" onclick="jQuery('#add-new').modal('show');" style="cursor: pointer;">Create a season to assign now.</span></p>
+					@endif
+				</div>
+
+				<div class="modal fade" id="unassignedepisodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+					  <div class="modal-content">
+						<div class="modal-header" style="border-bottom: none;">
+						  <h5 class="modal-title" id="exampleModalLongTitle">Unassigned Episodes</h5>
+						  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+						<div class="modal-body">
+						  <div class="row">
+							<div class="col-12">
+								<div class="episodes-details">
+									<table class="table">
+										<thead>
+										  <tr>
+											<th scope="col" class="text-center">Episode ID</th>
+											<th scope="col" class="text-center">Episode Name</th>
+											<th scope="col" class="text-center">Season</th>
+										  </tr>
+										</thead>
+										<tbody>
+											<form id="assigning_episodes" method="POST" action="{{ route('season.unassigned_episodes') }}">
+												@csrf
+												@foreach($unassigned_episodes as $item)
+													<tr>
+														<th scope="row" class="text-center">
+															{{$item->id}}
+															<input type="hidden" name="episodes[{{ $loop->index }}][id]" value="{{ $item->id }}">
+														</th>
+														<td class="text-center">{{$item->title}}</td>
+														<td class="text-center">
+															<select name="episodes[{{ $loop->index }}][season_id]" class="form-select" aria-label="Default select example">
+																<option value="{{ $item->season_id }}" selected>{{ optional($item)->season->series_seasons_name ?? 'Select season' }}</option>
+																@foreach($seasons as $seasons_value)
+																	<option value="{{ optional($seasons_value)->id }}">
+																		{{ optional($seasons_value)->series_seasons_name }}
+																	</option>
+																@endforeach
+															</select>
+														</td>
+													</tr>
+												@endforeach
+											</form>
+										</tbody>
+									  </table>
+								</div>
+							</div>
+						  </div>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						  <button type="button" class="btn btn-primary" id="submit-assigning-episodes">Save changes</button>
+						</div>
+					  </div>
+					</div>
+				</div>
+
+
+			@endif
 
 		<div class="clear"></div>
 
-		
+		@if(session('success'))
+			<script>
+				console.log('SweetAlert is being triggered!');
+				Swal.fire({
+					icon: 'success',
+					title: 'Success',
+					text: '{{ session('success') }}',
+					confirmButtonText: 'OK'
+				});
+			</script>
+		@endif
+
 		</div>
 		</div>
 		@endif
@@ -723,6 +811,15 @@ $settings  = App\Setting::first();?>
 <script src="<?= URL::to('/assets/js/jquery.mask.min.js');?>"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$('#submit-assigning-episodes').click(function(){
+			console.log('un assinged episodes submit form');
+			$('#assigning_episodes').submit();
+		});
+	});
+</script>
 
 <script type="text/javascript">
    $ = jQuery;

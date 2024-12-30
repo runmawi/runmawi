@@ -13,6 +13,7 @@ use App\User ;
 use \Redirect ;
 use App\Channel;
 use App\Setting;
+use App\Favorite;
 use App\Language;
 use App\TimeZone;
 use App\Wishlist;
@@ -42,8 +43,8 @@ use Jenssegers\Agent\Agent;
 use App\PartnerMonetization;
 use Illuminate\Http\Request;
 use App\AdminAccessPermission;
-use App\PartnerMonetizationSetting;
 use App\UserChannelSubscription;
+use App\PartnerMonetizationSetting;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -698,6 +699,40 @@ class LiveStreamController extends Controller
                 }
             }
             
+            $RadioStation = LiveStream::where('stream_upload_via','radio_station')->get()->map(function ($item) {
+                switch (true) {
+                    case $item['url_type'] == "embed":
+                        $item['livestream_URL'] = $item->embed_url;
+                        $item['livestream_player_type'] = 'video/mp4';
+                        break;
+            
+                    case $item['url_type'] == "m3u_url":
+                        $item['livestream_URL'] = $item->m3u_url;
+                        $item['livestream_player_type'] = 'application/x-mpegURL';
+                        break;
+            
+                    case $item['url_type'] == "acc_audio_url":
+                        $item['livestream_URL'] = $item->acc_audio_url;
+                        $item['livestream_player_type'] = 'audio/aac';
+                        break;
+            
+                    case $item['url_type'] == "acc_audio_file":
+                        $item['livestream_URL'] = $item->acc_audio_file;
+                        $item['livestream_player_type'] = 'audio/aac';
+                        break;
+            
+                    default:
+                        $item['livestream_URL'] = null;
+                        $item['livestream_player_type'] = null;
+                        break;
+                }
+            
+                return $item; // Important: return the modified item
+            });
+
+            $related_radiostation = LiveStream::where('stream_upload_via','radio_station')->whereNotIn('id',[$vid])->inRandomOrder()->get();
+
+            
             if($Livestream_details->active == 1 || ($Livestream_details->active == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'currency'     => $currency,
@@ -727,7 +762,10 @@ class LiveStreamController extends Controller
                     'live_purchase_status' => $live_purchase_status ,
                     'free_duration_condition' => $free_duration_condition ,
                     'Livestream_details'      => $Livestream_details ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'Radio_station_lists'      => $RadioStation ,
+                    'Related_radiostation' => $related_radiostation,
+                    'media_url' => URL::to('/').'/radio-station/',
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role'               => Auth::check() ? Auth::user()->role : 'guest',
                     'setting'                => $settings,
                     'current_theme'          => $this->Theme,
@@ -757,9 +795,26 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
+        }
+
+        public function getEpgContent(Request $request)
+        {
+            $liveId = $request->query('live_id');
+    
+            $LivestreamDetails = Livestream::find($liveId);
+            $current_theme = $this->Theme;
+            
+            if (!$LivestreamDetails) {
+                return response('No details found', 404);
+            }
+    
+            return Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg", [
+                'Livestream_details' => $LivestreamDetails,
+                'current_theme' => $current_theme,
+            ])->content();
         }
 
         public function videojs_live_watchlater(Request $request)
@@ -1309,6 +1364,9 @@ class LiveStreamController extends Controller
 
                 if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+              
+                if ($monetizationSettings) {
+              
                 $monetization_view_limit = $monetizationSettings->viewcount_limit;
                 $monetization_view_amount = $monetizationSettings->views_amount;
 
@@ -1352,7 +1410,8 @@ class LiveStreamController extends Controller
                 }
             }
                 return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-            } else {
+            }
+         } else {
                 return response()->json(['error' => 'Video not found'], 404);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -1384,5 +1443,21 @@ class LiveStreamController extends Controller
         }   
     }
 
+    public function add_favorite(Request $request)
+    {
+        $audio_id = $request->get('audio_id');
+        if($audio_id){
+            $favorite = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
+            if(isset($favorite->id)){ 
+                $favorite->delete();
+            } else {
+                $favorite = new Favorite;
+                $favorite->user_id = Auth::user()->id;
+                $favorite->audio_id = $audio_id;
+                $favorite->save();
+                echo $favorite;
+            }
+        }
+    }
 
 }

@@ -16,20 +16,25 @@ class RazorpayMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
+
     public function handle($request, Closure $next)
     {
-        $users_details =Auth::User();
-
-        if($users_details != null){
-            $user_details = Auth::User();
-        }else{
+        $user_details = Auth::user();
+    
+        if (is_null($user_details)) {
             $userEmailId = $request->session()->get('register.email');
-            $user_details =User::where('email',$userEmailId)->first();        
+    
+            if ($userEmailId) {
+                $user_details = User::where('email', $userEmailId)->first();
+            }
         }
-        if($user_details != null  ){
-            if( $users_details->role == "admin" ){
+    
+        if( !is_null($user_details) ){
+
+            if( $user_details->role == "admin" ){
                 return redirect('home');
             }
+
             return $next($request);
         }
         else{

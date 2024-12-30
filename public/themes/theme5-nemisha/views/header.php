@@ -208,23 +208,10 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
-    <!-- DNS Prefetch for the Plyr CDN -->
-    <link rel="dns-prefetch" href="https://cdn.plyr.io">
-
-    <!-- Preconnect to the Plyr CDN -->
-    <link rel="preconnect" href="https://cdn.plyr.io" crossorigin>
-
     <!-- Bootstrap CSS -->
     <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/bootstrap.min.css' ?>" />
     <!-- Typography CSS -->
-    <link rel="preload" href="<?= typography_link();?>" as="style"/>
-    <link rel="stylesheet" href="<?= typography_link();?>" />
-    <!-- Style -->
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="preload" as="style">
-    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="preload" as="style">
     <link rel="preload" href="<?= URL::to('assets/css/variable-boots-flick.css') ;?>" as="style">
     <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style">
     <link rel="preload" href="<?= URL::to('assets/css/all.min.css') ;?>" as="style">
@@ -235,6 +222,14 @@
     <link rel="preload" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style">
     <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
     
+    <link rel="preload" href="<?= typography_link();?>" as="style"/>
+    <link rel="stylesheet" href="<?= typography_link();?>" />
+    <!-- Style -->
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="preload" as="style">
+    <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/fonts/font.css'); ?>" rel="preload" as="style">
+    
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/style.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/typography.css'); ?>" rel="stylesheet">
     <link href="<?php echo URL::to('public/themes/theme5-nemisha/assets/css/responsive.css'); ?>" rel="stylesheet">
@@ -243,11 +238,9 @@
 
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <link rel="prelaod" as="style" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css"> -->
-    <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="preload" as="style">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet"> -->
-    <link href="https://cdn.plyr.io/3.4.6/plyr.css" rel="stylesheet">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <!--Flickity CSS -->
@@ -259,10 +252,8 @@
 
     <!-- Responsive -->
     <!-- <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
-    <link rel="preload" as="style" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
     <!-- <link rel="stylesheet" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css" />
 
     <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" as="script">
     <link rel="preload" href="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" as="script">
@@ -973,9 +964,9 @@
                                           ?>
 
             <li class="dropdown menu-item">
-                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
+                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
+                    <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -985,7 +976,7 @@
                     <?php foreach ( $cat->take(4) as $category) { ?>
                     <li>
                         <a class="dropdown-item cont-item" style="text-decoration: none!important;"
-                            href="<?php echo URL::to('/') . '/category/' . $category->slug; ?>">
+                            href="<?php echo URL::to('/') . '/category/' . $category->slug; ?>" aria-label="<?php echo __($category->name); ?>">
                             <?php echo $category->name; ?>
                         </a>
                     </li>
@@ -993,7 +984,7 @@
 
                     <li>
                         <a class="dropdown-item cont-item" style="text-decoration: none!important;"
-                            href="<?php echo URL::to('/categoryList'); ?>">
+                            href="<?php echo URL::to('/categoryList'); ?>" aria-label="More">
                             <?php echo 'More...'; ?>
                         </a>
                     </li>
@@ -1004,16 +995,16 @@
                                         $cat = App\VideoCategory::orderBy('order', 'asc')->get();
                                         ?>
             <li class="dropdown menu-item">
-                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!--<i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
                 <ul class="dropdown-menu categ-head">
                     <?php foreach ( $languages as $language){ ?>
                     <li>
-                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/') . '/language/' . $language->id . '/' . $language->name; ?>">
+                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/') . '/language/' . $language->id . '/' . $language->name; ?>" aria-label="<?php echo __($language->name); ?>">
                             <?php echo $language->name; ?>
                         </a>
                     </li>
@@ -1025,16 +1016,16 @@
                                        $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                         ?>
             <li class="dropdown menu-item">
-                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown">
-                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>"> 
-                        <img class="" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
+                    <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
                 <ul class="dropdown-menu categ-head">
                     <?php foreach ( $LiveCategory as $category){ ?>
                     <li>
-                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>">
+                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->slug; ?>" aria-label="<?php echo __($category->name); ?>">
                             <?php echo $category->name; ?>
                         </a>
                     </li>
@@ -1047,13 +1038,13 @@
                                  ?>
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" style="height:45px;" id="dn" href="<?php echo URL::to('/') . $menu->url; ?>"
-                    data-toggle="dropdown">
+                    data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu categ-head">
                     <?php foreach ( $AudioCategory as $category){ ?>
                     <li>
-                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>">
+                        <a class="dropdown-item cont-item" href="<?php echo URL::to('/live/category') . '/' . $category->name; ?>" aria-label="<?php echo __($category->name); ?>">
                             <?php echo $category->name; ?>
                         </a>
                     </li>
@@ -1066,8 +1057,8 @@
                                              $tv_shows_series = App\Series::get();
                                           ?>
             <li class="dropdown menu-item">
-                <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>"> <a
-                        class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>"> <?php echo __($menu->name); ?>
+                <a class="" id="" href="<?php echo URL::to('/') . $menu->url; ?>" aria-label="<?php echo __($menu->name); ?>"> <a
+                        class="d-flex justify-content-between" href="<?php echo URL::to('/Movie-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> <?php echo __($menu->name); ?>
 
                         <?php echo __($menu->name); ?> <i class="fa fa-angle-down"></i>
                     </a>
@@ -1076,11 +1067,11 @@
                         <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series){ ?>
                             <li>
                                 <?php if($key < 5): ?>
-                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>">
+                                    <a class="dropdown-item cont-item" href="<?php echo URL::to('/play_series') . '/' . $tvshows_series->slug; ?>" aria-label="<?php echo __($tvshows_series->name); ?>">
                                         <?php echo $tvshows_series->title; ?>
                                     </a>
                                 <?php else: ?>
-                                    <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>"> 
+                                    <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>" aria-label="More"> 
                                         <?php echo 'More...';?> 
                                     </a>
                                 <?php endif; ?>
@@ -1096,9 +1087,9 @@
                     echo URL::to('/') . $menu->url;
                 } elseif ($menu->select_url == 'add_Custom_url') {
                     echo $menu->custom_url;
-                } ?>">
+                } ?>" aria-label="<?php echo __($menu->name); ?>">
                     <!-- <img class=""  src="<?php echo URL::to('/assets/img/home.png'); ?>" /> <span class="mt-2" ><?php echo __($menu->name); ?></span> -->
-                    <img class="" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
+                    <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
                         class=""><?php echo __($menu->name); ?></span>
 
                 </a>
@@ -1599,34 +1590,28 @@
                                 <div class="navbar-right menu-right d-flex">
                                     <ul class="d-flex align-items-center list-inline m-0">
                                         <?php if(Auth::guest()): ?>
-                                        <div class="iq-search-bar ml-auto" id="hid">
-                                            <a href="<?php echo URL::to('channel/login') ?>">
-                                                <button class="btn btn-primary" ><?= __('Visit Channel Portal') ?></button>
-                                            </a>
-                                        </div> 
-                                        <div class="bg-primary text-right p-1" style="border-radius:10px; font-size: 15px; font-weight:bold; margin:0px 10px; " >
-                                        <a href="<?php echo URL::to('login'); ?>">Upload Your Own Content</a>  
-                                        </div>
+                                            <div class="iq-search-bar ml-auto" id="hid">
+                                                <a href="<?php echo URL::to('channel/login') ?>">
+                                                    <button class="btn btn-primary" ><?= __('Visit Channel Portal') ?></button>
+                                                </a>
+                                            </div> 
+                                            <div class="bg-primary text-right p-1" style="border-radius:20px; font-size: 15px; font-weight:bold; margin:0px 10px; " >
+                                                <a href="<?php echo URL::to('login'); ?>" style="padding: 15px;">Upload Your Own Content</a>  
+                                            </div>
                                         <?php endif ; ?>
                                         
                                         <li class="nav-item nav-icon">
-
                                             <div class="search-box iq-search-bar d-search">
-                                                <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="post"
-                                                    class="searchbox">
+                                                <form id="searchResult" action="<?php echo URL::to('searchResult'); ?>" method="post" class="searchbox">
                                                     <input name="_token" type="hidden"
                                                         value="<?php echo csrf_token(); ?>" />
                                                     <div class="form-group position-relative" style="background-color: #8080807d;padding-bottom: 2px;">
-                                                        <input type="text" name="search"
-                                                            class="text search-input font-size-12 searches"
+                                                        <input type="text" name="search" class="text search-input font-size-12 searches"
                                                             placeholder="Type Here" />
-                                                            <!-- <i class="fa fa-search" aria-hidden="true"></i> -->
-
                                                         <?php include 'public/themes/theme5-nemisha/partials/Search_content.php'; ?>
-
                                                     </div>
                                                 </form>
-                                                 <div class="iq-card-body" style="margin-top: -15px;background-color: #000;">
+                                                <div class="iq-card-body" style="margin-top: -15px;background-color: #000;">
                                                     <div id="search_list"
                                                         class="search_list search-toggle device-search">
                                                     </div>
@@ -1634,31 +1619,26 @@
                                             </div>
 
                                             <a href="<?php echo URL::to('/') . '/searchResult'; ?>" class="search-toggle device-search" aria-label="Search-Toogle">
-
-                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                <i class="fa fa-search" aria-hidden="true"></i>
                                             </a>
 
-                                            <div class="iq-sub-dropdown search_content overflow-auto"
-                                                id="sidebar-scrollbar">
-                                               
-                                            </div>
+                                            <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar"></div>
                                         </li>
                                         <li>
-                                    
-                                        <?php if(!Auth::guest()): ?>
-                                        <?php if( $home_settings->user_generated_content == '1' ): ?>
-                                        <div class="bg-primary text-right p-1" style="border-radius:10px;" >
-                                            <a href="<?php echo URL::to('ugc-create'); ?>" >
-                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <g>
-                                            <path fill="none" d="M0 0H24V24H0z"/>
-                                            <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
-                                            </g>
-                                            </svg>
-                                            </a>
-                                        </div>
-                                        <?php endif ; ?>
-                                        <?php endif ; ?>
+                                            <?php if(!Auth::guest()): ?>
+                                                <?php if( $home_settings->user_generated_content == '1' ): ?>
+                                                    <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                                        <a href="<?php echo URL::to('ugc-create'); ?>" >
+                                                            <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                <g>
+                                                                    <path fill="none" d="M0 0H24V24H0z"/>
+                                                                    <path d="M16 4c.552 0 1 .448 1 1v4.2l5.213-3.65c.226-.158.538-.103.697.124.058.084.09.184.09.286v12.08c0 .276-.224.5-.5.5-.103 0-.203-.032-.287-.09L17 14.8V19c0 .552-.448 1-1 1H2c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h14zm-1 2H3v12h12V6zM9 8l4 4h-3v4H8v-4H5l4-4zm12 .841l-4 2.8v.718l4 2.8V8.84z"/>
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                <?php endif ; ?>
+                                            <?php endif ; ?>
                                    
                                         </li>
  
@@ -1701,6 +1681,7 @@
                                                 </div>
                                             </div>
                                         </li>
+
                                         <?php if(Auth::guest()): ?>
                                             <?php if( $theme->signin_header == 1 ): ?>
                                                 <li class="nav-item nav-icon">
@@ -1780,180 +1761,113 @@
                                                 </p>
                                             </a>                                            
                                             <?php if(Auth::user()->role == 'registered'): ?>
-                                            <div class="iq-sub-dropdown iq-user-dropdown">
-                                                <div class="iq-card shadow-none m-0">
-                                                    <div class="iq-card-body p-0 pl-3 pr-3">
+                                                <div class="iq-sub-dropdown iq-user-dropdown">
+                                                    <div class="iq-card shadow-none m-0">
+                                                        <div class="iq-card-body p-0 pl-3 pr-3">
 
-                                                        <a href="#" class="p-0" aria-label="dark-light-mode-toggle">
-                                                            <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
-                                                                <i class="fa fa-moon-o" aria-hidden="true"></i>
-                                                                <label class="switch toggle mt-2">
-                                                                    <input type="checkbox" id="toggle" value=<?php echo $theme_mode; ?>
-                                                                        <?php if ($theme_mode == 'light') {
-                                                                            echo 'checked';
-                                                                        } ?> />
-                                                                    <span class="sliderk round"></span>
-                                                                </label>
-                                                                <i class="fa fa-sun-o" aria-hidden="true"></i>
-                                                            </div>
-                                                        </a>
+                                                            <a href="#" class="p-0" aria-label="dark-light-mode-toggle">
+                                                                <div class=" mt-3 d-flex align-items-center justify-content-between col-lg-7 ">
+                                                                    <i class="fa fa-moon-o" aria-hidden="true"></i>
+                                                                    <label class="switch toggle mt-2">
+                                                                        <input type="checkbox" id="toggle" value=<?php echo $theme_mode; ?>
+                                                                            <?php if ($theme_mode == 'light') {
+                                                                                echo 'checked';
+                                                                            } ?> />
+                                                                        <span class="sliderk round"></span>
+                                                                    </label>
+                                                                    <i class="fa fa-sun-o" aria-hidden="true"></i>
+                                                                </div>
+                                                            </a>
 
-                                                        <a href="<?php echo URL::to('myprofile'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
+                                                            <a href="<?php echo URL::to('myprofile'); ?>"
+                                                                class="iq-sub-card setting-dropdown">
+                                                                <div class="media align-items-center">
+                                                                    <div class="right-icon">
+                                                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                            x="0px" y="0px" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                                            <style type="text/css">
+                                                                                .st0 {}
+                                                                            </style>
+                                                                            <g>
+                                                                                <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z" />
+                                                                                <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.5,8.4,1.1,11.5,3.6c0.1,0.1,0.5,0.1,0.4,0l1.8-1.8c0.5-0.5,0.5-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z" />
+                                                                                <path class="st0" d="M62.2,48.6v-2.4c0-0.5-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.5-0.7-0.4-1.1C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1c-0.5-0.2-0.7-0.5-1-0.4c-0.2-0.1-0.4-0.5-0.4-0.5v-2.8c0-0.5-0.2-0.5-0.5-0.5h-2.4c-0.5,0-0.5,0.2-0.5,0.5v2.8c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.5-0.5,0.7-0.4,1.1c-0.1,0.2-0.5,0.4-0.5,0.4h-2.7c-0.5,0-0.5,0.2-0.5,0.5v2.4c0,0.5,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.5,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.5,0.2,0.7,0.5,1.1,0.4c0.2,0.1,0.4,0.5,0.4,0.5V57c0,0.5,0.2,0.5,0.5,0.5h2.4c0.5,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.5,1-0.4c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6c0.2-0.5,0.5-0.7,0.4-1c0.1-0.2,0.5-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4L48.7,47.4z" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="media-body ml-3">
+                                                                        <h6 class="mb-0 ">Manage Profile</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
 
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                        x="0px" y="0px"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70;"
-                                                                        xml:space="preserve">
-                                                                        <style type="text/css">
-                                                                            .st0 {}
-                                                                        </style>
-                                                                        <g>
-                                                                            <path class="st0"
-                                                                                d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
-		c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z" />
-                                                                            <path class="st0"
-                                                                                d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.5,8.4,1.1,11.5,3.6c0.1,0.1,0.5,0.1,0.4,0l1.8-1.8
-		c0.5-0.5,0.5-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
-		l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z" />
-                                                                            <path class="st0"
-                                                                                d="M62.2,48.6v-2.4c0-0.5-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.5-0.7-0.4-1.1
-		C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
-		c-0.5-0.2-0.7-0.5-1-0.4c-0.2-0.1-0.4-0.5-0.4-0.5v-2.8c0-0.5-0.2-0.5-0.5-0.5h-2.4c-0.5,0-0.5,0.2-0.5,0.5v2.8
-		c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
-		c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.5-0.5,0.7-0.4,1.1c-0.1,0.2-0.5,0.4-0.5,0.4h-2.7
-		c-0.5,0-0.5,0.2-0.5,0.5v2.4c0,0.5,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.5,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
-		L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.5,0.2,0.7,0.5,1.1,0.4
-		c0.2,0.1,0.4,0.5,0.4,0.5V57c0,0.5,0.2,0.5,0.5,0.5h2.4c0.5,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.5,1-0.4
-		c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
-		c0.2-0.5,0.5-0.7,0.4-1c0.1-0.2,0.5-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
-		c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
-		L48.7,47.4z" />
-                                                                        </g>
-                                                                    </svg>
+                                                            <a href="<?php echo URL::to('watchlater'); ?>"
+                                                                class="iq-sub-card setting-dropdown">
+                                                                <div class="media align-items-center">
+                                                                    <div class="right-icon">
+                                                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0"
+                                                                            viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                                            <style>
+                                                                                .st0 { fill: #198fcf; stroke: #198fcf; stroke-width: .75; stroke-miterlimit: 10 }
+                                                                            </style>
+                                                                            <path class="st0" d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.5h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z" />
+                                                                            <path class="st1" d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z"
+                                                                                style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10" />
+                                                                            <path class="st2" d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z"
+                                                                                style="fill:#198fcf" />
+                                                                            <path class="st3" d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2"
+                                                                                style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10" />
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="media-body ml-3">
+                                                                        <h6 class="mb-0 ">Watch Later</h6>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Manage Profile</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
+                                                            </a>
 
-                                                        <a href="<?php echo URL::to('watchlater'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        x="0" y="0"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70"
-                                                                        xml:space="preserve">
-                                                                        <style>
-                                                                            .st0 {
-                                                                                fill: #198fcf;
-                                                                                stroke: #198fcf;
-                                                                                stroke-width: .75;
-                                                                                stroke-miterlimit: 10
-                                                                            }
-                                                                        </style>
-                                                                        <path class="st0"
-                                                                            d="M21.5 23.7h14c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4h-14c-.2 0-.3-.2-.3-.4V24c0-.1.2-.3.3-.3zM21.5 32h13.4c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.2.2-.4.3-.4zM21.5 40.5h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.7c0-.3.2-.5.3-.5zM21.5 48.7h23.1c.2 0 .3.2.3.4v.8c0 .2-.1.4-.3.4H21.5c-.2 0-.3-.2-.3-.4v-.8c0-.3.2-.4.3-.4z" />
-                                                                        <path class="st1"
-                                                                            d="M48.4 37c-5.1 0-9.2-4.1-9.2-9.2s4.1-9.2 9.2-9.2 9.2 4.1 9.2 9.2-4.1 9.2-9.2 9.2zm0-16.7c-4.2 0-7.5 3.3-7.5 7.5s3.3 7.5 7.5 7.5 7.5-3.3 7.5-7.5-3.3-7.5-7.5-7.5z"
-                                                                            style="fill:#198fcf;stroke:#198fcf;stroke-width:.5;stroke-miterlimit:10" />
-                                                                        <path class="st2"
-                                                                            d="M52.1 28.7h-3.8c-.4 0-.7-.3-.7-.7v-3.8c0-.2.2-.4.4-.4h.8c.2 0 .4.2.4.4v2.2c0 .4.3.7.7.7h2.2c.2 0 .4.2.4.4v.8c.1.2-.1.4-.4.4z"
-                                                                            style="fill:#198fcf" />
-                                                                        <path class="st3"
-                                                                            d="M54.3 34v20.1c0 1-.8 1.9-1.9 1.9H17.3c-1 0-1.9-.8-1.9-1.9V17.5c0-1 .8-1.9 1.9-1.9h35.1c1 0 1.9.8 1.9 1.9v4.2"
-                                                                            style="fill:none;stroke:#198fcf;stroke-width:2;stroke-miterlimit:10" />
-                                                                    </svg>
+                                                            <a href="<?php echo URL::to('mywishlists'); ?>"
+                                                                class="iq-sub-card setting-dropdown">
+                                                                <div class="media align-items-center">
+                                                                    <div class="right-icon">
+                                                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                                            <style type="text/css"> .st0 {} </style>
+                                                                            <g>
+                                                                                <path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z" />
+                                                                                <path class="st0" d="M43.5,18.3H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,18.3,43.5,18.3z" />
+                                                                                <path class="st0" d="M20.9,25.4h-1.2c-0.7,0-1.2-0.5-1.2-1.2S19,23,19.7,23h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,25.4,20.9,25.4z" />
+                                                                                <path class="st0" d="M43.5,25.4H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,25.4,43.5,25.4z" />
+                                                                                <path class="st0" d="M20.9,32.5h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,32.5,20.9,32.5z" />
+                                                                                <path class="st0" d="M43.5,32.5H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,32.5,43.5,32.5z" />
+                                                                                <path class="st0" d="M20.9,39.7h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,39.7,20.9,39.7z" />
+                                                                                <path class="st0" d="M43.5,39.7H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,39.7,43.5,39.7z" />
+                                                                                <path class="st0" d="M20.9,46.8h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,46.8,20.9,46.8z" />
+                                                                                <path class="st0" d="M56.7,42.9c-1.5-1.5-3.5-2.2-5.5-2.2c-0.5,0-0.5-0.2-0.5-0.5V8.7c0-0.5-0.1-0.6-0.5-0.8s-0.5-0.5-0.8-0.5H13.5 c-0.6,0-1,0.4-1,1V54c0,0.5,0.1,0.6,0.5,0.8s0.5,0.5,0.8,0.5H39c0.1,0,0.5,0.1,0.4,0.1l6.8,6.8c0.5,0.5,1.2,0.5,1.7,0l8.8-8.8l0,0 c1.4-1.4,2.2-3.3,2.2-5.2C58.8,46.1,58.1,44.2,56.7,42.9L56.7,42.9z M36.2,44.4H25.6c-0.7,0-1.2,0.5-1.2,1.2s0.5,1.2,1.2,1.2h9.7 c-0.1,0.4-0.1,0.9-0.1,1.3c0,1.4,0.4,2.7,1.1,3.9c0.2,0.5,0,0.8-0.4,0.8c-3.8,0-17.7,0-20.5,0c-0.5,0-0.5-0.2-0.5-0.5V10.4 c0-0.5,0.2-0.5,0.5-0.5h32.3c0.5,0,0.5,0.2,0.5,0.5v30.7c0,0.2-0.1,0.5-0.5,0.4c-0.5,0.2-0.6,0.4-0.9,0.6c-1.7-1.3-3.9-1.7-5.9-1.3 C39,41.3,37.3,42.6,36.2,44.4L36.2,44.4z M55,51.6l-7.6,7.6c-0.2,0.2-0.5,0.2-0.7,0l-7.6-7.6l0,0c-1.3-1.3-1.8-3.1-1.3-4.9 c0.5-1.7,1.8-3.1,3.6-3.6c2-0.5,4.1,0.2,5.3,1.8c0.2,0.5,0.6,0.5,0.8,0c1.3-1.7,3.4-2.4,5.3-1.8c1.7,0.5,3.1,1.8,3.6,3.6 C56.8,48.5,56.3,50.4,55,51.6L55,51.6z" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="media-body ml-3">
+                                                                        <h6 class="mb-0 ">Wish List</h6>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Watch Later</h6>
+                                                            </a>
+                                                
+                                                            <a href="<?php echo URL::to('logout'); ?>" class="iq-sub-card setting-dropdown">
+                                                                <div class="media align-items-center">
+                                                                    <div class="right-icon">
+                                                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                                            <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
+                                                                            <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="media-body ml-3">
+                                                                        <h6 class="mb-0 ">Sign Out</h6>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </a>
-                                                        <a href="<?php echo URL::to('mywishlists'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                        x="0px" y="0px"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70;"
-                                                                        xml:space="preserve">
-                                                                        <style type="text/css">
-                                                                            .st0 {}
-                                                                        </style>
-                                                                        <g>
-                                                                            <path class="st0"
-                                                                                d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,18.3H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,18.3,43.5,18.3z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,25.4h-1.2c-0.7,0-1.2-0.5-1.2-1.2S19,23,19.7,23h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,25.4,20.9,25.4z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,25.4H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,25.4,43.5,25.4z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,32.5h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,32.5,20.9,32.5z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,32.5H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,32.5,43.5,32.5z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,39.7h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,39.7,20.9,39.7z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,39.7H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,39.7,43.5,39.7z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,46.8h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,46.8,20.9,46.8z" />
-                                                                            <path class="st0"
-                                                                                d="M56.7,42.9c-1.5-1.5-3.5-2.2-5.5-2.2c-0.5,0-0.5-0.2-0.5-0.5V8.7c0-0.5-0.1-0.6-0.5-0.8s-0.5-0.5-0.8-0.5H13.5
-		c-0.6,0-1,0.4-1,1V54c0,0.5,0.1,0.6,0.5,0.8s0.5,0.5,0.8,0.5H39c0.1,0,0.5,0.1,0.4,0.1l6.8,6.8c0.5,0.5,1.2,0.5,1.7,0l8.8-8.8l0,0
-		c1.4-1.4,2.2-3.3,2.2-5.2C58.8,46.1,58.1,44.2,56.7,42.9L56.7,42.9z M36.2,44.4H25.6c-0.7,0-1.2,0.5-1.2,1.2s0.5,1.2,1.2,1.2h9.7
-		c-0.1,0.4-0.1,0.9-0.1,1.3c0,1.4,0.4,2.7,1.1,3.9c0.2,0.5,0,0.8-0.4,0.8c-3.8,0-17.7,0-20.5,0c-0.5,0-0.5-0.2-0.5-0.5V10.4
-		c0-0.5,0.2-0.5,0.5-0.5h32.3c0.5,0,0.5,0.2,0.5,0.5v30.7c0,0.2-0.1,0.5-0.5,0.4c-0.5,0.2-0.6,0.4-0.9,0.6c-1.7-1.3-3.9-1.7-5.9-1.3
-		C39,41.3,37.3,42.6,36.2,44.4L36.2,44.4z M55,51.6l-7.6,7.6c-0.2,0.2-0.5,0.2-0.7,0l-7.6-7.6l0,0c-1.3-1.3-1.8-3.1-1.3-4.9
-		c0.5-1.7,1.8-3.1,3.6-3.6c2-0.5,4.1,0.2,5.3,1.8c0.2,0.5,0.6,0.5,0.8,0c1.3-1.7,3.4-2.4,5.3-1.8c1.7,0.5,3.1,1.8,3.6,3.6
-		C56.8,48.5,56.3,50.4,55,51.6L55,51.6z" />
-                                                                        </g>
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Wish List</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                              
-                                                        <a href="<?php echo URL::to('logout'); ?>"
-                                                            class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        x="0" y="0"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70"
-                                                                        xml:space="preserve">
-                                                                        <path class="st6"
-                                                                            d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7" />
-                                                                        <path class="st6"
-                                                                            d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3" />
-                                                                    </svg>
-                                                                </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Sign Out</h6>
-                                                                </div>
-                                                            </div>
-                                                        </a>
+                                                            </a>
+                                                            
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             <?php else: ?>
                                             <div class="iq-sub-dropdown iq-user-dropdown">
                                                 <div class="iq-card shadow-none m-0">
@@ -1971,41 +1885,17 @@
                                                                 <i class="fa fa-sun-o" aria-hidden="true"></i>
                                                             </div>
                                                         </a>
+
                                                         <a href="<?php echo URL::to('myprofile'); ?>"
                                                             class="iq-sub-card  setting-dropdown">
                                                             <div class="media align-items-center">
                                                                 <div class="right-icon">
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                        x="0px" y="0px"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70;"
-                                                                        xml:space="preserve">
-                                                                        <style type="text/css">
-                                                                            .st0 {}
-                                                                        </style>
+                                                                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
+                                                                        <style type="text/css"> .st0 {} </style>
                                                                         <g>
-                                                                            <path class="st0"
-                                                                                d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5
-		c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z" />
-                                                                            <path class="st0"
-                                                                                d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.5,8.4,1.1,11.5,3.6c0.1,0.1,0.5,0.1,0.4,0l1.8-1.8
-		c0.5-0.5,0.5-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1
-		l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z" />
-                                                                            <path class="st0"
-                                                                                d="M62.2,48.6v-2.4c0-0.5-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.5-0.7-0.4-1.1
-		C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1
-		c-0.5-0.2-0.7-0.5-1-0.4c-0.2-0.1-0.4-0.5-0.4-0.5v-2.8c0-0.5-0.2-0.5-0.5-0.5h-2.4c-0.5,0-0.5,0.2-0.5,0.5v2.8
-		c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41
-		c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.5-0.5,0.7-0.4,1.1c-0.1,0.2-0.5,0.4-0.5,0.4h-2.7
-		c-0.5,0-0.5,0.2-0.5,0.5v2.4c0,0.5,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.5,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6
-		L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.5,0.2,0.7,0.5,1.1,0.4
-		c0.2,0.1,0.4,0.5,0.4,0.5V57c0,0.5,0.2,0.5,0.5,0.5h2.4c0.5,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.5,1-0.4
-		c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6
-		c0.2-0.5,0.5-0.7,0.4-1c0.1-0.2,0.5-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4
-		c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4
-		L48.7,47.4z" />
+                                                                            <path class="st0" d="M32,34c-7.4,0-13.4-6-13.4-13.4S24.6,7.1,32,7.1s13.4,6,13.4,13.4S39.4,34,32,34z M32,10.5 c-5.6,0-10.1,4.5-10.1,10.1S26.4,30.7,32,30.7s10.1-4.5,10.1-10.1S37.6,10.5,32,10.5z" />
+                                                                            <path class="st0" d="M38.5,54.2H15.3l0,0v-2.8c0-9,6.8-16.7,15.8-17.2c4.3-0.5,8.4,1.1,11.5,3.6c0.1,0.1,0.5,0.1,0.4,0l1.8-1.8 c0.5-0.5,0.5-0.5,0.1-0.6c-3.8-3.1-8.6-4.8-13.9-4.5c-10.7,0.6-19,9.9-19,20.6v5.1c0,0.6,0.5,1.1,1.1,1.1h28.8c0.5,0,0.8-0.6,0.4-1 l-1.4-1.4C40.2,54.5,39.3,54.2,38.5,54.2z" />
+                                                                            <path class="st0" d="M62.2,48.6v-2.4c0-0.5-0.2-0.5-0.5-0.5H59c-0.2,0-0.4-0.1-0.5-0.4c-0.1-0.4-0.5-0.7-0.4-1.1 C58,44,58,43.8,58.2,43.6l1.9-1.9c0.2-0.2,0.2-0.5,0-0.7l-1.7-1.7c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.4,0.2-0.6,0.1 c-0.5-0.2-0.7-0.5-1-0.4c-0.2-0.1-0.4-0.5-0.4-0.5v-2.8c0-0.5-0.2-0.5-0.5-0.5h-2.4c-0.5,0-0.5,0.2-0.5,0.5v2.8 c0,0.2-0.1,0.4-0.4,0.5c-0.4,0.1-0.7,0.2-1,0.4c-0.2,0.1-0.4,0.1-0.6-0.1l-2-2c-0.2-0.2-0.5-0.2-0.7,0L43.9,41 c-0.2,0.2-0.2,0.5,0,0.7l1.9,1.9c0.2,0.2,0.2,0.4,0.1,0.6c-0.2,0.5-0.5,0.7-0.4,1.1c-0.1,0.2-0.5,0.4-0.5,0.4h-2.7 c-0.5,0-0.5,0.2-0.5,0.5v2.4c0,0.5,0.2,0.5,0.5,0.5H45c0.2,0,0.4,0.1,0.5,0.4c0.1,0.4,0.5,0.7,0.4,1c0.1,0.2,0.1,0.4-0.1,0.6 L44.1,53c-0.2,0.2-0.2,0.5,0,0.7l1.7,1.7c0.2,0.2,0.5,0.2,0.7,0l1.9-1.9c0.2-0.2,0.4-0.2,0.6-0.1c0.5,0.2,0.7,0.5,1.1,0.4 c0.2,0.1,0.4,0.5,0.4,0.5V57c0,0.5,0.2,0.5,0.5,0.5h2.4c0.5,0,0.5-0.2,0.5-0.5v-2.7c0-0.2,0.1-0.4,0.4-0.5c0.4-0.1,0.7-0.5,1-0.4 c0.2-0.1,0.4-0.1,0.6,0.1l1.9,1.9c0.2,0.2,0.5,0.2,0.7,0l1.7-1.7c0.2-0.2,0.2-0.5,0-0.7l-1.9-1.9c-0.2-0.2-0.2-0.4-0.1-0.6 c0.2-0.5,0.5-0.7,0.4-1c0.1-0.2,0.5-0.4,0.5-0.4h2.7C62,49.1,62.2,48.9,62.2,48.6z M48.7,47.4c0-0.9,0.4-1.7,1-2.4 c0.6-0.6,1.5-1,2.4-1s1.7,0.4,2.4,1c0.6,0.6,1,1.5,1,2.4c0,1.7-1.2,3.2-3.3,3.5c-0.1,0-0.1,0-0.2,0C50,50.6,48.7,49.1,48.7,47.4 L48.7,47.4z" />
                                                                         </g>
                                                                     </svg>
                                                                 </div>
@@ -2051,6 +1941,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
+
                                                         <a href="<?php echo URL::to('mywishlists'); ?>"
                                                             class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
@@ -2066,33 +1957,16 @@
                                                                             .st0 {}
                                                                         </style>
                                                                         <g>
-                                                                            <path class="st0"
-                                                                                d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,18.3H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,18.3,43.5,18.3z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,25.4h-1.2c-0.7,0-1.2-0.5-1.2-1.2S19,23,19.7,23h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,25.4,20.9,25.4z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,25.4H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,25.4,43.5,25.4z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,32.5h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,32.5,20.9,32.5z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,32.5H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,32.5,43.5,32.5z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,39.7h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,39.7,20.9,39.7z" />
-                                                                            <path class="st0"
-                                                                                d="M43.5,39.7H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,39.7,43.5,39.7z" />
-                                                                            <path class="st0"
-                                                                                d="M20.9,46.8h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,46.8,20.9,46.8z" />
-                                                                            <path class="st0"
-                                                                                d="M56.7,42.9c-1.5-1.5-3.5-2.2-5.5-2.2c-0.5,0-0.5-0.2-0.5-0.5V8.7c0-0.5-0.1-0.6-0.5-0.8s-0.5-0.5-0.8-0.5H13.5
-		c-0.6,0-1,0.4-1,1V54c0,0.5,0.1,0.6,0.5,0.8s0.5,0.5,0.8,0.5H39c0.1,0,0.5,0.1,0.4,0.1l6.8,6.8c0.5,0.5,1.2,0.5,1.7,0l8.8-8.8l0,0
-		c1.4-1.4,2.2-3.3,2.2-5.2C58.8,46.1,58.1,44.2,56.7,42.9L56.7,42.9z M36.2,44.4H25.6c-0.7,0-1.2,0.5-1.2,1.2s0.5,1.2,1.2,1.2h9.7
-		c-0.1,0.4-0.1,0.9-0.1,1.3c0,1.4,0.4,2.7,1.1,3.9c0.2,0.5,0,0.8-0.4,0.8c-3.8,0-17.7,0-20.5,0c-0.5,0-0.5-0.2-0.5-0.5V10.4
-		c0-0.5,0.2-0.5,0.5-0.5h32.3c0.5,0,0.5,0.2,0.5,0.5v30.7c0,0.2-0.1,0.5-0.5,0.4c-0.5,0.2-0.6,0.4-0.9,0.6c-1.7-1.3-3.9-1.7-5.9-1.3
-		C39,41.3,37.3,42.6,36.2,44.4L36.2,44.4z M55,51.6l-7.6,7.6c-0.2,0.2-0.5,0.2-0.7,0l-7.6-7.6l0,0c-1.3-1.3-1.8-3.1-1.3-4.9
-		c0.5-1.7,1.8-3.1,3.6-3.6c2-0.5,4.1,0.2,5.3,1.8c0.2,0.5,0.6,0.5,0.8,0c1.3-1.7,3.4-2.4,5.3-1.8c1.7,0.5,3.1,1.8,3.6,3.6
-		C56.8,48.5,56.3,50.4,55,51.6L55,51.6z" />
+                                                                            <path class="st0" d="M20.9,18.3h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,18.3,20.9,18.3z" />
+                                                                            <path class="st0" d="M43.5,18.3H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,18.3,43.5,18.3z" />
+                                                                            <path class="st0" d="M20.9,25.4h-1.2c-0.7,0-1.2-0.5-1.2-1.2S19,23,19.7,23h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,25.4,20.9,25.4z" />
+                                                                            <path class="st0" d="M43.5,25.4H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,25.4,43.5,25.4z" />
+                                                                            <path class="st0" d="M20.9,32.5h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,32.5,20.9,32.5z" />
+                                                                            <path class="st0" d="M43.5,32.5H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,32.5,43.5,32.5z" />
+                                                                            <path class="st0" d="M20.9,39.7h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,39.7,20.9,39.7z" />
+                                                                            <path class="st0" d="M43.5,39.7H25.6c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h17.9c0.7,0,1.2,0.5,1.2,1.2S44.1,39.7,43.5,39.7z" />
+                                                                            <path class="st0" d="M20.9,46.8h-1.2c-0.7,0-1.2-0.5-1.2-1.2s0.5-1.2,1.2-1.2h1.2c0.7,0,1.2,0.5,1.2,1.2S21.5,46.8,20.9,46.8z" />
+                                                                            <path class="st0" d="M56.7,42.9c-1.5-1.5-3.5-2.2-5.5-2.2c-0.5,0-0.5-0.2-0.5-0.5V8.7c0-0.5-0.1-0.6-0.5-0.8s-0.5-0.5-0.8-0.5H13.5 c-0.6,0-1,0.4-1,1V54c0,0.5,0.1,0.6,0.5,0.8s0.5,0.5,0.8,0.5H39c0.1,0,0.5,0.1,0.4,0.1l6.8,6.8c0.5,0.5,1.2,0.5,1.7,0l8.8-8.8l0,0 c1.4-1.4,2.2-3.3,2.2-5.2C58.8,46.1,58.1,44.2,56.7,42.9L56.7,42.9z M36.2,44.4H25.6c-0.7,0-1.2,0.5-1.2,1.2s0.5,1.2,1.2,1.2h9.7 c-0.1,0.4-0.1,0.9-0.1,1.3c0,1.4,0.4,2.7,1.1,3.9c0.2,0.5,0,0.8-0.4,0.8c-3.8,0-17.7,0-20.5,0c-0.5,0-0.5-0.2-0.5-0.5V10.4 c0-0.5,0.2-0.5,0.5-0.5h32.3c0.5,0,0.5,0.2,0.5,0.5v30.7c0,0.2-0.1,0.5-0.5,0.4c-0.5,0.2-0.6,0.4-0.9,0.6c-1.7-1.3-3.9-1.7-5.9-1.3 C39,41.3,37.3,42.6,36.2,44.4L36.2,44.4z M55,51.6l-7.6,7.6c-0.2,0.2-0.5,0.2-0.7,0l-7.6-7.6l0,0c-1.3-1.3-1.8-3.1-1.3-4.9 c0.5-1.7,1.8-3.1,3.6-3.6c2-0.5,4.1,0.2,5.3,1.8c0.2,0.5,0.6,0.5,0.8,0c1.3-1.7,3.4-2.4,5.3-1.8c1.7,0.5,3.1,1.8,3.6,3.6 C56.8,48.5,56.3,50.4,55,51.6L55,51.6z" />
                                                                         </g>
                                                                     </svg>
                                                                 </div>
@@ -2101,92 +1975,34 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                        <!-- <a href="<?php echo URL::to('purchased-media'); ?>" class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
- viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
- .st0{stroke-width:0.5;stroke-miterlimit:10;}
-</style>
-<g>
- <path class="st0" d="M45.8,28.7c-0.5,0-0.9-0.4-0.9-0.9V17.5c0-2.4-1.9-4.3-4.3-4.3H30.2c-2.4,0-4.3,1.9-4.3,4.3v10.4
-		c0,0.5-0.4,0.9-0.9,0.9s-0.9-0.4-0.9-0.9V17.5c0-3.3,2.7-6,6-6h10.4c3.3,0,6,2.7,6,6v10.4C46.6,28.4,46.2,28.7,45.8,28.7z"/>
- <path class="st0" d="M42.3,23.6H28.5c-0.5,0-0.9-0.4-0.9-0.9s0.4-0.9,0.9-0.9h13.8c0.5,0,0.9,0.4,0.9,0.9
-		C43.2,23.2,42.8,23.6,42.3,23.6L42.3,23.6z"/>
- <path class="st0" d="M54.4,52.9h-37c-1,0-1.9-0.8-1.9-1.9V23.7c0-1,0.8-1.9,1.9-1.9h4.2c0.5,0,0.9,0.4,0.9,0.9s-0.4,0.9-0.9,0.9
-		h-3.3c-0.6,0-1,0.5-1,1v25.6c0,0.6,0.5,1,1,1h34.2c0.6,0,1-0.5,1-1V24.6c0-0.6-0.5-1-1-1h-3.3c-0.5,0-0.9-0.4-0.9-0.9
-		s0.4-0.9,0.9-0.9h4.2c1,0,1.9,0.8,1.9,1.9V52C55.3,52.5,54.9,52.9,54.4,52.9L54.4,52.9z"/>
- <path class="st0" d="M30.2,46c-0.2,0-0.5,0-0.4-0.1c-0.5-0.2-0.4-0.4-0.4-0.7V31.3c0-0.5,0.2-0.6,0.4-0.7c0.5-0.2,0.6-0.2,0.9,0
-		l12.1,6.9c0.5,0.2,0.4,0.4,0.4,0.7s-0.2,0.6-0.4,0.7l-12.1,6.9C30.5,46,30.4,46,30.2,46L30.2,46z M31.1,32.8v10.8l9.5-5.4
-		L31.1,32.8z"/>
-</g>
-</svg>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Purchased Medias</h6>
-                                                </div>
-                                             </div>
-                                          </a>-->
-                                                        <?php if(Auth::User()->role == "admin"){ ?>
-                                                        <!-- <a href="<?php echo URL::to('admin/subscription-plans'); ?>"  class="iq-sub-card setting-dropdown">
-                                             <div class="media align-items-center">
-                                                <div class="right-icon">
-                                                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
- viewBox="0 0 70 70" style="enable-background:new 0 0 70 70;" xml:space="preserve">
-<style type="text/css">
- .st0{}
-</style>
-<path class="st0" d="M11.2,22.1v23.2c0,1.4,0.5,2.7,1.5,3.6c1,1,2.3,1.5,3.6,1.5h37.7c1.4,0,2.7-0.5,3.6-1.5c1-1,1.5-2.3,1.5-3.6
-	V22.1c0-1.4-0.5-2.7-1.5-3.6c-1-1-2.3-1.5-3.6-1.5H16.4c-1.4,0-2.7,0.5-3.6,1.5C11.8,19.5,11.2,20.8,11.2,22.1L11.2,22.1z
-	 M16.8,32.3v-3c1.9,0.2,3.7-0.4,5.1-1.7c1.3-1.3,2-3.2,1.7-5.1h23.3c0,0.2,0,0.5,0,0.7c0,1.8,0.7,3.4,2.1,4.6
-	c1.3,1.2,3.1,1.7,4.8,1.5v8.8c-1.9-0.2-3.7,0.4-5.1,1.7c-1.3,1.3-2,3.2-1.7,5.1H23.6c0.2-1.9-0.4-3.7-1.7-5.1
-	c-1.3-1.3-3.2-2-5.1-1.7L16.8,32.3z M28.4,33.7c0-1.8,0.7-3.5,2-4.8c1.3-1.3,3-2,4.8-2s3.5,0.7,4.8,2c1.3,1.3,2,3,2,4.8
-	c0,1.8-0.7,3.5-2,4.8c-1.3,1.3-3,2-4.8,2s-3.5-0.7-4.8-2C29.1,37.3,28.4,35.5,28.4,33.7z"/>
-</svg>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                   <h6 class="mb-0 ">Pricing Plan</h6>
-                                                </div>
-                                             </div>
-                                          </a>-->
 
                                                         <a href="<?php echo URL::to('admin');
-                                                        if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){  ?>"
+                                                            if(Auth::user()->package != 'Channel' && Auth::user()->package != 'CPP'){  ?>"
                                                             class="iq-sub-card setting-dropdown">
-                                                            <div class="media align-items-center">
-                                                                <div class="right-icon">
-                                                                    <svg version="1.1" id="Layer_1"
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                        x="0px" y="0px"
-                                                                        viewBox="0 0 70 70"
-                                                                        style="enable-background:new 0 0 70 70;"
-                                                                        xml:space="preserve">
-                                                                        <style type="text/css">
-                                                                            .st0 {}
-                                                                        </style>
-                                                                        <g>
-                                                                            <path class="st0"
-                                                                                d="M52.5,37.8c-1.7,0-3.2,0.5-4.5,1.2c-2.4-2-5-3.7-8-4.6c4.5-3,7.2-8.2,6.4-13.8c-0.8-6.4-6.1-11.7-12.5-12.4
-		c-4.1-0.5-8.1,0.8-11.2,3.6c-3.1,2.7-4.8,6.6-4.8,10.7c0,4.9,2.5,9.4,6.6,12c-5,1.7-9.3,5.1-12.3,9.5c-1.7,2.6-1.1,6.2,1.3,8
-		C19,55.9,25.4,58,32.2,58c4.9,0,9.8-1.2,14.2-3.5c1.7,1.4,3.7,2.3,6.1,2.3c5.2,0,9.5-4.3,9.5-9.5S57.7,37.8,52.5,37.8L52.5,37.8z
-		 M20.5,22.3c0-3.3,1.4-6.7,3.9-8.9c2.3-2,5-3,7.9-3c0.5,0,1,0,1.4,0.1c5.4,0.6,9.8,4.9,10.4,10.2c0.7,5.6-2.5,10.8-7.9,12.8
-		l-3.8,1.4l-3.9-1.4C23.5,31.8,20.5,27.3,20.5,22.3L20.5,22.3z M15.1,49.9c-1.4-1.1-1.8-3.2-0.8-4.8c3.1-4.8,8.2-8.2,13.8-9.3
-		l4.2-0.8l4.2,0.8c3.6,0.7,6.8,2.3,9.7,4.5c-1.9,1.7-3.1,4.2-3.1,6.9c0,2,0.6,3.9,1.8,5.5c-3.9,1.9-8.2,2.9-12.5,2.9
-		C26,55.6,20.1,53.6,15.1,49.9L15.1,49.9z M52.5,54.5c-3.9,0-7.2-3.2-7.2-7.2s3.2-7.2,7.2-7.2s7.2,3.2,7.2,7.2S56.4,54.5,52.5,54.5z
-		 M57.5,45.6L55,48l0.6,3.5l-3.1-1.7l-3.1,1.7L50,48l-2.5-2.4l3.5-0.5l1.5-3.1l1.5,3.1L57.5,45.6z" />
-                                                                        </g>
-                                                                    </svg>
+                                                                <div class="media align-items-center">
+                                                                    <div class="right-icon">
+                                                                        <svg version="1.1" id="Layer_1"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                            x="0px" y="0px" viewBox="0 0 70 70"
+                                                                            style="enable-background:new 0 0 70 70;"
+                                                                            xml:space="preserve">
+                                                                            <style type="text/css">
+                                                                                .st0 {}
+                                                                            </style>
+                                                                            <g>
+                                                                                <path class="st0" d="M52.5,37.8c-1.7,0-3.2,0.5-4.5,1.2c-2.4-2-5-3.7-8-4.6c4.5-3,7.2-8.2,6.4-13.8c-0.8-6.4-6.1-11.7-12.5-12.4 c-4.1-0.5-8.1,0.8-11.2,3.6c-3.1,2.7-4.8,6.6-4.8,10.7c0,4.9,2.5,9.4,6.6,12c-5,1.7-9.3,5.1-12.3,9.5c-1.7,2.6-1.1,6.2,1.3,8 C19,55.9,25.4,58,32.2,58c4.9,0,9.8-1.2,14.2-3.5c1.7,1.4,3.7,2.3,6.1,2.3c5.2,0,9.5-4.3,9.5-9.5S57.7,37.8,52.5,37.8L52.5,37.8z M20.5,22.3c0-3.3,1.4-6.7,3.9-8.9c2.3-2,5-3,7.9-3c0.5,0,1,0,1.4,0.1c5.4,0.6,9.8,4.9,10.4,10.2c0.7,5.6-2.5,10.8-7.9,12.8 l-3.8,1.4l-3.9-1.4C23.5,31.8,20.5,27.3,20.5,22.3L20.5,22.3z M15.1,49.9c-1.4-1.1-1.8-3.2-0.8-4.8c3.1-4.8,8.2-8.2,13.8-9.3 l4.2-0.8l4.2,0.8c3.6,0.7,6.8,2.3,9.7,4.5c-1.9,1.7-3.1,4.2-3.1,6.9c0,2,0.6,3.9,1.8,5.5c-3.9,1.9-8.2,2.9-12.5,2.9 C26,55.6,20.1,53.6,15.1,49.9L15.1,49.9z M52.5,54.5c-3.9,0-7.2-3.2-7.2-7.2s3.2-7.2,7.2-7.2s7.2,3.2,7.2,7.2S56.4,54.5,52.5,54.5z M57.5,45.6L55,48l0.6,3.5l-3.1-1.7l-3.1,1.7L50,48l-2.5-2.4l3.5-0.5l1.5-3.1l1.5,3.1L57.5,45.6z" />
+                                                                            </g>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="media-body ml-3">
+                                                                        <h6 class="mb-0 ">Admin</h6>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="media-body ml-3">
-                                                                    <h6 class="mb-0 ">Admin</h6>
-                                                                </div>
-                                                            </div>
                                                         </a>
                                                         <!-- Multiuser Profile -->
                                                         <?php
-                                          } }
+                                          } 
                                           if(Auth::user()->role == "subscriber"){
 
                                           ?>
@@ -2311,13 +2127,13 @@
 
                 function toggleSidebar() {
                     if (mini) {
-                        console.log("opening sidebar");
+                        //console.log("opening sidebar");
                         document.getElementById("mySidebar").style.width = "250px";
                         document.getElementById("main").style.marginLeft = "250px";
 
                         this.mini = false;
                     } else {
-                        console.log("closing sidebar");
+                        //console.log("closing sidebar");
                         document.getElementById("mySidebar").style.width = "50px";
                         document.getElementById("main").style.marginLeft = "50px";
 
@@ -2363,6 +2179,18 @@
                     required: "This Search field is required",
                 }
                 }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                //  width and height set dynamically
+                var images = document.querySelectorAll('.menu-items');
+                images.forEach(function(image) {
+                    var renderedWidth = image.clientWidth;
+                    var renderedHeight = image.clientHeight;
+
+                    image.setAttribute('width', renderedWidth);
+                    image.setAttribute('height', renderedHeight);
+                });
             });
 
         </script>

@@ -40,15 +40,6 @@
                                                 </a>
                                             @endif  
                                             
-                                            <div class="movie-time d-flex align-items-center pt-1">
-
-                                                @if ($ThumbnailSetting->duration == 1) <!-- Duration -->
-                                                    <span class="text-white">
-                                                        <i class="fa fa-clock-o"></i> {{ gmdate('H:i:s', $category_video->duration) }}
-                                                    </span>
-                                                @endif
-                                            </div>
-
                                             @if ($ThumbnailSetting->published_year == 1 || $ThumbnailSetting->rating == 1)
                                                 <div class="movie-time d-flex align-items-center pt-1">
                                                     @if ($ThumbnailSetting->rating == 1) <!-- Rating -->

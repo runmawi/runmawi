@@ -105,6 +105,7 @@ use App\EPGSchedulerData;
 use App\Jobs\VideoCompression;
 use App\Jobs\ConvertEpisodeVideo;
 use App\Jobs\ConvertSerieTrailer;
+use App\UploadErrorLog;
 
 class AdminVideosController extends Controller
 {
@@ -1797,6 +1798,7 @@ class AdminVideosController extends Controller
         }
 
         $data = $request->all();
+        // dd($data);
 
         $validatedData = $request->validate([
             "title" => "required|max:255",
@@ -2790,6 +2792,7 @@ class AdminVideosController extends Controller
         $languages = $request["sub_language"];
         $video->mp4_url = $data["mp4_url"];
         $video->trailer = $data["trailer"];
+        $video->trailer_type = $data["trailer_type"];
         $video->duration = $data["duration"];
         $video->language = $request["language"];
         $video->skip_recap = $request["skip_recap"];
@@ -8250,18 +8253,26 @@ class AdminVideosController extends Controller
 
     public function indexCPPPartner(Request $request)
     {
+        try {
+         
         $ModeratorsUser = ModeratorsUser::get();
+
         $video = Video::where("uploaded_by", "!=", "CPP")
             ->orWhere("uploaded_by", null)
             ->get();
-        // dd($video);
 
         $data = [
+            'setting' => Setting::first(),
             "ModeratorsUser" => $ModeratorsUser,
             "video" => $video,
         ];
 
         return view("admin.videos.move_videos.move_cpp_index", $data);
+          
+        } catch (\Throwable $th) {
+            
+            return abort(404);
+        }
     }
 
     public function MoveCPPPartner(Request $request)
@@ -8275,6 +8286,7 @@ class AdminVideosController extends Controller
         $video = Video::where("id", $vid)->first();
         $video->user_id = $cpp_id;
         $video->uploaded_by = "CPP";
+        $video->CPP_commission_percentage = $request->CPP_commission_percentage;
         $video->save();
 
         // CPP
@@ -13837,24 +13849,33 @@ class AdminVideosController extends Controller
             // Process failed jobs
             foreach ($failedJobs as $failedJob) {
                 $payload = json_decode($failedJob->payload);
-    
+            
                 if (isset($payload->data->command)) {
-                    $command = unserialize($payload->data->command);
-    
-                    // Separate based on the command class and store for display
-                    if ($command instanceof ConvertVideoForStreaming) {
-                        $failedVideoCommands[] = $command;
-                    }  elseif ($command instanceof ConvertEpisodeVideo) {
-                        $failedEpisodeCommands[] = $command;
-                    } elseif ($command instanceof ConvertSerieTrailer) {
-                        $failedSerieTrailerCommands[] = $command;
+                    try {
+                        $command = unserialize($payload->data->command);
+            
+                        if ($command instanceof ConvertVideoForStreaming) {
+                            $failedVideoCommands[] = $command;
+                        } elseif ($command instanceof ConvertEpisodeVideo) {
+                            if (App\Episode::find($command->episode_id)) {
+                                $failedEpisodeCommands[] = $command;
+                            } else {
+                                \Log::warning("Episode not found for command", ['episode_id' => $command->episode_id]);
+                                continue; // Skip this job
+                            }
+                        } elseif ($command instanceof ConvertSerieTrailer) {
+                            $failedSerieTrailerCommands[] = $command;
+                        }
+            
+                        // Re-dispatch the failed command to restart transcoding
+                        dispatch($command);
+                    } catch (\Exception $e) {
+                        // Log errors during unserialization or processing
+                        \Log::error("Failed to process job command", ['error' => $e->getMessage()]);
                     }
-    
-                    // Re-dispatch the failed command to restart transcoding
-                    dispatch($command);
                 }
             }
-
+            
             $data = [
                 'video'              => $videoCommands,
                 'episode'            => $episodeCommands,
@@ -13917,6 +13938,31 @@ class AdminVideosController extends Controller
         return $value;
     }
 
+
+    public function UploadErrorLog(Request $request)
+    {
+        // try {
+
+            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+            $userIp = $geoip->getip();
+
+            UploadErrorLog::create([
+                'user_id' => 1,
+                'user_ip' => $userIp,
+                'socure_title' => $request->filename,
+                // 'socure_type' => 'Video',
+                'socure_type' => $request->socure_type,
+                'error_message' => $request->error,
+            ]);
+
+            return response()->json(['status' => 'success'], 200);
+
+        // } catch (\Throwable $th) {
+        //     return response()->json(['status' => 'failed'], 501);
+
+        // }
+    }
+    
 
 }
     

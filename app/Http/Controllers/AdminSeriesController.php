@@ -27,6 +27,7 @@ use Hash;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use View;
 use Validator;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
@@ -68,6 +69,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 use App\CompressImage;
 use App\CountryCode;
+use Illuminate\Support\Facades\DB; 
 
 
 class AdminSeriesController extends Controller
@@ -521,6 +523,40 @@ class AdminSeriesController extends Controller
 
      
         }
+// dd($data['network_id']);
+    if(!empty($data['network_id'])){
+        $networkIds = json_decode($data['network_id'], true);
+
+        if (is_array($networkIds)) {
+            foreach ($networkIds as $networkId) {
+                // Check if the combination of series_id and network_id already exists
+                $exists = DB::table('series_network_order')
+                    ->where('series_id', $series->id)
+                    ->where('network_id', $networkId)
+                    ->exists();
+
+                if (!$exists) {
+                    $maxOrder = DB::table('series_network_order')
+                        ->where('network_id', $networkId)
+                        ->max('order');
+
+                    $nextOrder = $maxOrder ? $maxOrder + 1 : 1;
+
+                    DB::table('series_network_order')->insert([
+                        'series_id' => $series->id,    
+                        'network_id' => $networkId,
+                        'order' => $nextOrder,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        } else {
+            throw new Exception("Invalid network_id format. Expected a JSON array.");
+        }
+    }
+
+        
         /*Subtitle Upload*/
         // $files = $request->file('subtitle_upload');
         $shortcodes = $request->get('short_code');
@@ -544,16 +580,32 @@ class AdminSeriesController extends Controller
 
             $compress_image_settings = CompressImage::first();
 
-            $blockedCountries = json_decode($series->blocked_countries, true);
+            if ($series && isset($series->blocked_countries)) {
+                $blockedCountries = json_decode($series->blocked_countries, true);
+            } else {
+                $blockedCountries = [];
+            }
+            // $blockedCountries = json_decode($series->blocked_countries, true);
 
             $blcok_CountryName = CountryCode::whereIn('id', (!empty($blockedCountries) ? $blockedCountries : []))->pluck('country_name')->toArray();
 
             // dd($blockedCountries);
 
             //$episode = Episode::all();
-            $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get();
+            $seasons = SeriesSeason::orderBy('order')->where('series_id','=',$id)->with('episodes')->get()
+                                    ->map(function($item){
+                                        $item['total_episode']= Episode::where('season_id',$item->id)->count();
+                                        $item['active_episode']= Episode::where('season_id',$item->id)->where('active',1)->count();
+                                        // $item['draft_episodes']= Episode::where('season_id',$item->id)->where('active',0)->count();
+                                        $item['draft_episodes'] = Episode::where('season_id', $item->id)->where(function ($query) {$query->where('active', '=', 0)->orWhereNull('active');})->count();
+                                        return $item;
+                                    });
+
             // $books = SeriesSeason::with('episodes')->get();   
                     // dd(SeriesLanguage::where('series_id', $id)->pluck('language_id')->toArray());
+            $season_ids = SeriesSeason::where('series_id', $id)->pluck('id');
+            $unassigned_episodes = Episode::where('series_id',$id)->whereNotIn('season_id', $season_ids)->get();
+            // dd($seasons);
         $data = array(
             'headline' => '<i class="fa fa-edit"></i> Edit Series',
             'series' => $series,
@@ -577,6 +629,7 @@ class AdminSeriesController extends Controller
             'theme_settings' => SiteTheme::first(),
             "countries"      => CountryCode::all(),
             "blcok_CountryName" => $blcok_CountryName,
+            "unassigned_episodes" => $unassigned_episodes,
             );
 
         return View::make('admin.series.create_edit', $data);
@@ -850,6 +903,49 @@ class AdminSeriesController extends Controller
                 }
             }
         }
+        $networkIds = !empty($data['network_id']) ? $data['network_id'] : NULL;
+        // dd(!empty($networkIds));
+        if(!empty($networkIds)){
+            DB::table('series_network_order')
+                ->where('series_id', $data['id'])
+                ->whereNotIn('network_id', $networkIds)
+                ->delete();
+
+            // Step 2: Iterate through the current network IDs and insert missing rows
+            foreach ($networkIds as $networkId) {
+                // Check if the combination of series_id and network_id already exists
+                $exists = DB::table('series_network_order')
+                    ->where('series_id', $data['id'])
+                    ->where('network_id', $networkId)
+                    ->exists();
+
+                // If it doesn't exist, insert a new record
+                if (!$exists) {
+                    // Find the max order for the current network_id
+                    $maxOrder = DB::table('series_network_order')
+                        ->where('network_id', $networkId)
+                        ->max('order');
+
+                    // Calculate the next order number (max + 1)
+                    $nextOrder = $maxOrder ? $maxOrder + 1 : 1;
+
+                    // Insert a new record into the series_network_order table
+                    DB::table('series_network_order')->insert([
+                        'series_id' => $data['id'],
+                        'network_id' => $networkId,
+                        'order' => $nextOrder,
+                        'created_at' => now(), 
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }else{
+            DB::table('series_network_order')
+                ->where('series_id', $data['id'])
+                ->delete();
+        }
+
+
 
         return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Updated Series!', 'note_type' => 'success') );
     }
@@ -1651,8 +1747,11 @@ class AdminSeriesController extends Controller
             $series_id = SeriesSeason::find($id)->series_id;
 
             $season = SeriesSeason::find($id); 
-            $episodes = $season->episodes->pluck('id'); 
-            
+            $episodes = Episode::where('season_id',$season->id)->pluck('id');
+            $SeriesId = $season->series_id;
+
+            // $episodes = $season->episodes->pluck('id');
+            // dd($episodes);
             foreach($episodes as $episode_id ){
 
                 $Episode   = Episode::find($episode_id);
@@ -1720,7 +1819,7 @@ class AdminSeriesController extends Controller
             return abort (404);
         }
 
-        return Redirect::to('admin/series/edit' . '/' . $id)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
+        return Redirect::to('admin/series/edit' . '/' . $SeriesId)->with(array('note' => 'Successfully Deleted Season', 'note_type' => 'success') );
     }
 
     public function manage_season($series_id,$season_id)
@@ -2098,7 +2197,9 @@ class AdminSeriesController extends Controller
             $data['views'] = 0;
         }
 
-        if(empty($data['featured'])){
+        if(!empty($data['featured'])){
+            $data['featured'] = 1;
+        }else{
             $data['featured'] = 0;
         }
         if(empty($data['skip_recap'])){
@@ -2195,11 +2296,12 @@ class AdminSeriesController extends Controller
             $episodes->episode_description =  $data['episode_description'];
             $episodes->type =  $type;
             $episodes->banner =  $banner;
+            $episodes->featured =  $data['featured'];
 
             // $episodes->age_restrict =  $data['age_restrict'];
             $episodes->duration =  $data['duration'];
             // $episodes->access =  $data['access'];
-            $episodes->active =  $active;
+            $episodes->active =  0;
             $episodes->search_tags =  $searchtags;
             $episodes->player_image =  $player_image;
             $episodes->series_id =  $data['series_id'];
@@ -2223,19 +2325,19 @@ class AdminSeriesController extends Controller
 
             if( admin_ads_pre_post_position() == 1){
                 
-                $episodes->pre_post_ads =  $data['pre_post_ads'];
-                $episodes->post_ads     =  $data['pre_post_ads'];
-                $episodes->pre_ads      =  $data['pre_post_ads'];
+                $episodes->pre_post_ads =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+                $episodes->post_ads     =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+                $episodes->pre_ads      =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
             }
             else{
                 
-                $episodes->pre_ads      =  $data['pre_ads'];
-                $episodes->post_ads     =  $data['post_ads'];
+                $episodes->pre_ads      =  (!empty($data['pre_ads']) ? $data['pre_ads'] : null );
+                $episodes->post_ads     =  (!empty($data['post_ads']) ? $data['post_ads'] : null );
                 $episodes->pre_post_ads =  null ;
             }
 
-            $episodes->mid_ads  =  $data['mid_ads'];
-            $episodes->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+            $episodes->mid_ads  =  (!empty($data['mid_ads']) ? $data['mid_ads'] : null );
+            $episodes->video_js_mid_advertisement_sequence_time   =  (!empty($data['video_js_mid_advertisement_sequence_time']) ? $data['video_js_mid_advertisement_sequence_time'] : null );
 
             $episodes->save();
 
@@ -2541,14 +2643,14 @@ class AdminSeriesController extends Controller
         }else{
             $image = (isset($input['image'])) ? $input['image'] : '';
         }
-
+        
         if(empty($input['player_image']) && !empty($episode->player_image)){
             $player_image = $episode->player_image ;
 
         }else{
             $player_image = (isset($input['player_image'])) ? $input['player_image'] : '';
         }
-       
+
         if(!empty($input['ppv_price'])){
             $ppv_price = $input['ppv_price'];
             $ppv_price = null;
@@ -2705,7 +2807,7 @@ class AdminSeriesController extends Controller
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image,compress_image_resolution() );
                 }else{
 
-                    $episode_player_filename  = time().'.'.$image->getClientOriginalExtension();
+                    $episode_player_filename  = time().'.'.$player_image->getClientOriginalExtension();
                     $episode_player_image     =  'episode-player-'.$episode_player_filename ;
                     Image::make($player_image)->save(base_path().'/public/uploads/images/'.$episode_player_image );
                 }  
@@ -2756,9 +2858,9 @@ class AdminSeriesController extends Controller
 
             $slug = Episode::whereNotIn('id',[$id])->where('slug',$request->slug)->first();
 
-            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->slug )  : preg_replace("![^a-z0-9]+!i", "-",  $request->slug.'-'.$id ) ;
+            $data['slug']  = $slug == null ?  preg_replace("![^a-z0-9]+!i", "-",  $request->title )  : preg_replace("![^a-z0-9]+!i", "-",  $request->title ) ;
         }
-
+        // dd($data['slug']);
         if(empty($data['featured'])){
             $data['featured'] = 0;
         }
@@ -2827,25 +2929,26 @@ class AdminSeriesController extends Controller
         $episode->mp4_url = !empty($episode->mp4_url) ? $episode->mp4_url : (!empty($data['mp4_url']) ? $data['mp4_url'] : null);
         $episode->embed_video_url = !empty($episode->embed_video_url) ? $episode->embed_video_url : (!empty($data['embed_video_url']) ? $data['embed_video_url'] : null);
         $episode->status =  1;
-
+        $episode->active =  empty($data['active']) ? 0 : 1;
+        // dd($episode->active);
         // {{--Ads Video.Js Player--}}
 
 
         if( admin_ads_pre_post_position() == 1){
 
-            $episode->pre_post_ads =  $data['pre_post_ads'];
-            $episode->post_ads     =  $data['pre_post_ads'];
-            $episode->pre_ads      =  $data['pre_post_ads'];
+            $episode->pre_post_ads =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+            $episode->post_ads     =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
+            $episode->pre_ads      =  (!empty($data['pre_post_ads']) ? $data['pre_post_ads'] : null );
         }
         else{
             
-            $episode->pre_ads      =  $data['pre_ads'];
-            $episode->post_ads     =  $data['post_ads'];
+            $episode->pre_ads      =  (!empty($data['pre_ads']) ? $data['pre_ads'] : null );
+            $episode->post_ads     =  (!empty($data['post_ads']) ? $data['post_ads'] : null );
             $episode->pre_post_ads =  null ;
         }
         
-        $episode->mid_ads  =  $data['mid_ads'];
-        $episode->video_js_mid_advertisement_sequence_time   =  $data['video_js_mid_advertisement_sequence_time'];
+        $episode->mid_ads  =  (!empty($data['mid_ads']) ? $data['mid_ads'] : null );
+        $episode->video_js_mid_advertisement_sequence_time   =  (!empty($data['video_js_mid_advertisement_sequence_time']) ? $data['video_js_mid_advertisement_sequence_time'] : null );
 
 
         $episode->save();
@@ -3000,6 +3103,7 @@ class AdminSeriesController extends Controller
         ]);
 
         $mp4_url = $data['file'];
+        // echo"<pre>";print_r($mp4_url);exit;
 
         $libraryid = $data['UploadlibraryID'];
         $FlussonicUploadlibraryID = $data['FlussonicUploadlibraryID'];
@@ -4017,19 +4121,22 @@ class AdminSeriesController extends Controller
 
         public function indexCPPPartner(Request $request)
         {
-
+            try {
+           
             $ModeratorsUser = ModeratorsUser::get();
             $Series = Series::where("uploaded_by","!=","CPP")->orWhere("uploaded_by",null)->get();
-            // dd($Series);
 
             $data = array(
-                
+                'setting'   => Setting::first(), 
                 'ModeratorsUser' => $ModeratorsUser,
                 'Series' => $Series,
-
             );
 
             return view('admin.series.move_series.move_cpp_series',$data);
+               
+            } catch (\Throwable $th) {
+                return abort(404);
+            }
         }
 
         public function MoveCPPPartner(Request $request)
@@ -4043,9 +4150,8 @@ class AdminSeriesController extends Controller
             $Series = Series::where("id",$Seriesid)->first();
             $Series->user_id = $cpp_id;
             $Series->uploaded_by = 'CPP';
+            $Series->CPP_commission_percentage = $request->CPP_commission_percentage;
             $Series->save();
-
-            // CPP
 
             return Redirect::back()->with('message','Your video moved to selected partner');
         }
@@ -4563,7 +4669,7 @@ class AdminSeriesController extends Controller
             $Episode->series_id = $data["series_id"];
             $Episode->season_id = $data["season_id"];
             $Episode->type = "bunny_cdn";
-            $Episode->active = 1;
+            $Episode->active = 0;
             $Episode->episode_order = Episode::where('season_id',$data["season_id"])->max('episode_order') + 1 ;
             $Episode->image = default_vertical_image();
             $Episode->tv_image = default_horizontal_image();
@@ -4582,138 +4688,157 @@ class AdminSeriesController extends Controller
     }
 
     
-    private  function UploadEpisodeBunnyCDNStream(  $storage_settings,$libraryid,$data,$season_id){
-
-        // Bunny Cdn get Videos 
-    
+    private function UploadEpisodeBunnyCDNStream($storage_settings, $libraryid, $data, $season_id)
+    {
+        // Bunny CDN get Videos
         $mp4_url = $data['file'];
 
-        $storage_settings = StorageSetting::first();
-    
-        if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
-        && !empty($storage_settings->bunny_cdn_access_key) ){
+        // Handle temporary file and move to permanent location
+        if ($mp4_url instanceof \Illuminate\Http\UploadedFile) {
+            // Retrieve the original name of the file
+            $originalName = $mp4_url->getClientOriginalName();
             
-            $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            // Replace spaces with underscores to avoid issues in URLs
+            $sanitizedOriginalName = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $originalName);
+
             
-            $ch = curl_init();
+            // Store the file with its original name
+            $filePath = $mp4_url->storeAs('uploads/videos', $sanitizedOriginalName, 'public');
             
-            $options = array(
-                CURLOPT_URL => $libraryurl,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    "AccessKey: {$storage_settings->bunny_cdn_access_key}",
-                    'Content-Type: application/json',
-                ),
-            );
-            
-            curl_setopt_array($ch, $options);
-            
-            $response = curl_exec($ch);
-            $librarys = json_decode($response, true);
-            curl_close($ch);
-    
-        }else{
-            $librarys = [];
-    
+            // Get the full path to the stored file
+            $mp4_url = public_path('../storage/app/public/' . $filePath);
         }
-        if(count($librarys) > 0){
-            foreach($librarys as $key => $value){
-                if( $value['Id'] == $libraryid){
+        // Validate the MP4 URL
+        if (empty($mp4_url) || !file_exists($mp4_url) || !is_readable($mp4_url)) {
+            \Log::error("Invalid file: {$mp4_url}");
+            return response()->json(['error' => 'The file does not exist or is not readable.'], 400);
+        }
+    
+        $storage_settings = StorageSetting::first();
+
+    if (!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 
+        && !empty($storage_settings->bunny_cdn_access_key)) {
+
+        $libraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+
+        $ch = curl_init();
+
+        $options = array(
+            CURLOPT_URL => $libraryurl,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                "AccessKey: {$storage_settings->bunny_cdn_access_key}",
+                'Content-Type: application/json',
+            ),
+        );
+
+        curl_setopt_array($ch, $options);
+
+        $response = curl_exec($ch);
+        $librarys = json_decode($response, true);
+        curl_close($ch);
+
+    } else {
+        $librarys = [];
+    }
+    
+        if (count($librarys) > 0) {
+            foreach ($librarys as $key => $value) {
+                if ($value['Id'] == $libraryid) {
                     $library_id = $value['Id'];
-                    $library_ApiKey = $value['ApiKey']; 
-                    $library_PullZoneId = $value['PullZoneId']; 
+                    $library_ApiKey = $value['ApiKey'];
+                    $library_PullZoneId = $value['PullZoneId'];
                     break;
-                }else{
+                } else {
                     $library_id = null;
-                    $library_ApiKey = null; 
-                    $library_PullZoneId = null; 
+                    $library_ApiKey = null;
+                    $library_PullZoneId = null;
                 }
             }
-        }else{
+        } else {
             $library_id = null;
-            $library_ApiKey = null; 
-            $library_PullZoneId = null; 
+            $library_ApiKey = null;
+            $library_PullZoneId = null;
         }
-        
-        if($library_id != null && $library_ApiKey != null){
     
+        if ($library_id != null && $library_ApiKey != null) {
             $client = new \GuzzleHttp\Client();
-            
-            $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
-                'headers' => [
-                    'AccessKey' => $storage_settings->bunny_cdn_access_key,
-                    'accept' => 'application/json',
-                ],
-            ]);
     
-            $PullZoneData = json_decode($PullZone->getBody()->getContents());
+            try {
+                $PullZone = $client->request('GET', 'https://api.bunny.net/pullzone/' . $library_PullZoneId . '?includeCertificate=false', [
+                    'headers' => [
+                        'AccessKey' => $storage_settings->bunny_cdn_access_key,
+                        'accept' => 'application/json',
+                    ],
+                ]);
     
-                if(!empty($PullZoneData) && !empty($PullZoneData->Name)){
-                    $PullZoneURl = 'https://'. $PullZoneData->Name. '.b-cdn.net';
-                }else{
+                $PullZoneData = json_decode($PullZone->getBody()->getContents());
+    
+                if (!empty($PullZoneData) && !empty($PullZoneData->Name)) {
+                    $PullZoneURl = 'https://' . $PullZoneData->Name . '.b-cdn.net';
+                } else {
                     $PullZoneURl = null;
-                }    
+                }
+            } catch (\Exception $e) {
+                Log::error("Error fetching Pull Zone: " . $e->getMessage());
+                return response()->json(['error' => 'Failed to fetch Pull Zone'], 500);
             }
-            
-            $file_name = pathinfo($mp4_url->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename =  str_replace(' ', '_',$file_name);
+    
+            $file_name = pathinfo($mp4_url, PATHINFO_FILENAME);
+            $filename = str_replace(' ', '_', $file_name);
     
             // Step 1: Create the video entry in the library
             try {
                 $response = $client->request('POST', "https://video.bunnycdn.com/library/{$libraryid}/videos", [
-                    'json' => ['title' => $filename], // Use 'json' directly to set headers and body
+                    'json' => ['title' => $filename],
                     'headers' => [
                         'AccessKey' => $library_ApiKey,
                         'Accept' => 'application/json',
                     ]
                 ]);
-            
+    
                 $responseData = json_decode($response->getBody(), true);
                 $guid = $responseData['guid'];
-            } catch (RequestException $e) {
-                echo "Error creating video entry: " . $e->getMessage();
-                exit;
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                Log::error("Error creating video entry: " . $e->getMessage());
+                return response()->json(['error' => 'Video entry creation failed'], 500);
             }
-            
+    
             // Step 2: Upload the video file
-    
             try {
-    
                 $context = stream_context_create([
                     'ssl' => [
                         'verify_peer' => false,
                         'verify_peer_name' => false,
                     ],
                 ]);
-                // Fetch video file content using file_get_contents with SSL context
-                $videoData = file_get_contents($mp4_url, false, $context);
-                
+    
+                $videoData = @file_get_contents($mp4_url, false, $context);
+    
+                if ($videoData === false) {
+                    Log::error("Unable to fetch video data from: " . $mp4_url);
+                    return response()->json(['error' => 'Failed to fetch video data'], 400);
+                }
+    
                 $response = $client->request('PUT', "https://video.bunnycdn.com/library/{$libraryid}/videos/{$guid}", [
                     'headers' => [
                         'AccessKey' => $library_ApiKey,
-                        'Content-Type' => 'video/mp4' 
+                        'Content-Type' => 'video/mp4'
                     ],
-                    'body' => $videoData 
+                    'body' => $videoData
                 ]);
     
                 $videoUrl = $PullZoneURl . '/' . $guid . '/playlist.m3u8';
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $videoUrl;
-                // echo "<pre>";
-                // echo "Video uploaded successfully: " . $guid;
-                // echo "<pre>";  echo "Video uploaded successfully: " . $response->getBody();
-    
                 $responseuploaded = json_decode($response->getBody(), true);
                 $statusCode = $responseuploaded['statusCode'];
-    
-            } catch (RequestException $e) {
-                echo "Error uploading video: " . $e->getMessage();
-                exit;
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                Log::error("Error uploading video: " . $e->getMessage());
+                return response()->json(['error' => 'Video upload failed'], 500);
             }
-            $value = [];
-            if($statusCode == 200){
-                
-
+    
+            if ($statusCode == 200) {
+                // Proceed with saving Episode and extracting frames (if required)
+                // Frame extraction logic stays the same, add similar validations where needed.
                 $series_id = $data['series_id'];
                 $season_id = $data['season_id'];
                     
@@ -4724,7 +4849,7 @@ class AdminSeriesController extends Controller
                 $Episode->season_id = $season_id;
                 $Episode->url = $videoUrl;
                 $Episode->type = "bunny_cdn";
-                $Episode->active = 1;
+                $Episode->active = 0;
                 $Episode->image = default_vertical_image();
                 $Episode->tv_image = default_horizontal_image();
                 $Episode->player_image = default_horizontal_image();
@@ -4794,19 +4919,18 @@ class AdminSeriesController extends Controller
                     }
                 
                 }
-    
-
                 $value["success"] = 1;
                 $value["message"] = "Uploaded Successfully!";
                 $value["Episode_id"] = $Episode_id;
-        
-    
                 return $value ;
-            }else{
-                $value["success"] = 2;
+                return response()->json(["success" => 1, "message" => "Uploaded Successfully!"]);
+            } else {
                 return $value ;
+                Log::error("Unexpected status code: " . $statusCode);
+                return response()->json(["success" => 2, "error" => "Upload failed"], 500);
             }
         }
+    }
         public function deleteSelected(Request $request)
         {
             $ids = $request->input('ids');
@@ -5631,6 +5755,17 @@ class AdminSeriesController extends Controller
     {
         return Episode::where("id", "=", $id)->first();
     }
+
+    public function UnassignedEpisodes(Request $request)
+    {
+        // dd($request);
+       
+        foreach ($request['episodes'] as $episode) {
+            $updated = Episode::where('id', $episode['id'])->update(['season_id' => !empty($episode['season_id']) ? ($episode['season_id']) : Null ]);
+        }
+        return redirect()->back()->with('success', 'Episodes updated successfully.');
+    }
+
 
 
 }

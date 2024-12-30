@@ -310,20 +310,24 @@ class ChannelHomeController extends Controller
         }
             
         } catch (\Throwable $th) {
+            // return $th->getMessage();
             return abort(404);
         }
     }
 
     public function ChannelList()
     {
-        // if (Auth::guest() && !isset($data['user']))
-        // {
-        //     return Theme::view('auth.login');
-        // }
-        $settings = Setting::first();
-        $channels = Channel::get(); 
-        $currency = CurrencySetting::first();
-        $ThumbnailSetting = ThumbnailSetting::first();
+        try{
+
+            // if (Auth::guest() && !isset($data['user']))
+            // {
+            //     return Theme::view('auth.login');
+            // }
+
+            $settings = Setting::first();
+            $channels = Channel::get(); 
+            $currency = CurrencySetting::first();
+            $ThumbnailSetting = ThumbnailSetting::first();
           
             $data = array(
                 'currency' => $currency,
@@ -336,6 +340,11 @@ class ChannelHomeController extends Controller
             );
             
             return Theme::view('ChannelList', $data);
+            
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return abort(404);
+        }
         
     }
 

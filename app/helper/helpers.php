@@ -795,11 +795,20 @@ function get_coupon_code(){
     return $get_coupon_code;
 }
 
- function get_enable_captcha()
+function get_enable_captcha()
 {
     $get_enable_captcha = App\Captcha::pluck('enable_captcha')->first() ?  App\Captcha::pluck('enable_captcha')->first() : "0" ;
-
     return $get_enable_captcha;
+}
+
+function get_enable_captcha_signup()
+{
+    return $get_enable_captcha_signup = App\Captcha::pluck('enable_captcha_signup')->first() ?  App\Captcha::pluck('enable_captcha_signup')->first() : "0" ;
+}
+
+function get_enable_captcha_contactus()
+{
+    return $get_enable_captcha_contactus = App\Captcha::pluck('enable_captcha_contactus')->first() ?  App\Captcha::pluck('enable_captcha_contactus')->first() : "0" ;
 }
 
 function get_image_loader(){

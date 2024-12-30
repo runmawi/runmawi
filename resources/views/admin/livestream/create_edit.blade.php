@@ -275,11 +275,11 @@
 
                                     @if ( $currentRouteName == "admin.livestream.create")
                                         <option value="mp4"> MP4/M3U8 URL </option>
-                                        <option value="embed"> Embed URL</option>
                                         <option value="live_stream_video"> {{ $inputs_details_array['text_main_name']  }} Video</option>
                                         <option value="m3u_url"> M3U URL </option>
                                     @endif
-
+                                        
+                                    <option value="embed"> Embed URL</option>
                                     <option value="acc_audio_file"> Mp3/AAC Audio File </option>
                                     <option value="acc_audio_url"> Mp3/AAC Audio URL </option>
                                     @foreach($Rtmp_urls as $key => $urls)
@@ -604,6 +604,7 @@
                     @else    
 
                                                 {{-- Ads Position --}}
+                        @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )                        
                         <div class="row mt-3">
                             <div class="col-sm-6"  >
                                 <label class="m-0">Choose Ads Position</label>
@@ -623,8 +624,10 @@
                                 </select>
                             </div>
                         </div>
+                        @endif
                     @endif
 
+                    @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
                     <div class="row mt-3">
                         <div class="col-sm-6">
                             <label class="m-0">Enable Free Duration</label>
@@ -647,8 +650,10 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="row mt-3">
+                        @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )   
                         <div class="col-sm-6">
                             <label class="m-0">Duration</label>
                             <p class="p1">Enter the {{ $inputs_details_array['text_main_name']  }} duration in (HH : MM : SS)</p>
@@ -656,6 +661,7 @@
                                 <input class="form-control" name="duration" placeholder="HH:MM:SS" id="duration" value="@if(!empty($video->duration)){{ gmdate('H:i:s', $video->duration) }}@endif" />
                             </div>
                         </div>
+                        @endif
                         
                         <div class="col-sm-6">
                             <label class="m-0">Block Country</label>
@@ -673,6 +679,7 @@
 
                     {{-- Macros --}}
 
+                    @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
                     <div class="row mt-3">
 
                         <div class="col-sm-6">
@@ -720,6 +727,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="row mt-3">
                         <div class="col-sm-6">
@@ -762,15 +770,15 @@
                         <div class="col-sm-6">
                             <label class="m-0">Publish Type</label>
                             <div class="panel-body p2" style="color: black;">
-                                <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> Publish Now&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> Publish Later <br />
+                                <input type="radio" id="publish_now"   name="publish_type"  value="publish_now" checked /> <label for="publish_now" style="font-weight: 500; font-size:14px;"> {{ __('Publish Now')}}</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
+                                <input type="radio" id="publish_later" name="publish_type"  value="publish_later" /> <label for="publish_later" style="font-weight: 500; font-size:14px;"> {{ __('Publish Later')}}</label> <br />
                                
                                 @if ( $inputs_details_array['stream_upload_via'] != "radio_station" )
-                                    <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> {{ __('Recurring Program')}} <br />
+                                    <input type="radio" id="recurring"     name="publish_type"  value="recurring_program" /> <label for="recurring" style="font-weight: 500; font-size:14px;"> {{ __('Recurring Program')}}</label> <br />
                                 @endif
 
                                 @if ( $inputs_details_array['stream_upload_via'] == "radio_station" )
-                                    <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> {{ __('Schedule Program')}} <br />
+                                    <input type="radio" id="scheduleprogram" name="publish_type" value="schedule_program" /> <label for="scheduleprogram" style="font-weight: 500; font-size:14px;"> {{ __('Schedule Program')}}</label> <br />
                                 @endif
                             </div>
                         </div>
@@ -874,6 +882,7 @@
                                 <label class="m-0">Publish Time</label>
                                 <div class="panel-body">
                                     <input type="datetime-local" class="form-control" id="publish_time" name="publish_time" value="@if(!empty($video->publish_time)){{ $video->publish_time }}@endif" />
+                                    <span class="text-danger" style="display:none;">*This field is required</span>
                                 </div>
                             </div>
                         </div>
@@ -908,13 +917,13 @@
                         <div class="col-sm-2 recurring_program_week_day"  >
                             <label class="m-0">{{ __('Week Days ')}} </label>
                             <select class="form-control" name="recurring_program_week_day" >
-                                <option value="0" > Sunday </option>
                                 <option value="1">  Monday </option>
                                 <option value="2">  Tuesday </option>
                                 <option value="3"> Wednesday </option>
                                 <option value="4" > Thrusday</option>
                                 <option value="5" > Friday</option>
                                 <option value="6" > Saturday</option>
+                                <option value="7" > Sunday </option>
                             </select>
                         </div>
 
@@ -930,28 +939,28 @@
                         <div class="col-sm-2 program_time">
                             <label class="m-0">Program Start Time</label>
                             <div class="panel-body">
-                                <input type="time" class="form-control" name="program_start_time" />
+                                <input type="time" class="form-control prog-start-time" name="program_start_time" />
                             </div>
                         </div>
 
                         <div class="col-sm-2 program_time">
                             <label class="m-0">Program End Time </label>
                             <div class="panel-body">
-                                <input type="time" class="form-control" name="program_end_time" />
+                                <input type="time" class="form-control prog-end-time" name="program_end_time" />
                             </div>
                         </div>
 
                         <div class="col-sm-3 custom_program_time" >
                             <label class="m-0">Custom Start Program Time </label>
                             <div class="panel-body">
-                                <input type="datetime-local" class="form-control" name="custom_start_program_time"  />
+                                <input type="datetime-local" class="form-control" id="custom_start_program_time" name="custom_start_program_time"  />
                             </div>
                         </div>
 
                         <div class="col-sm-3 custom_program_time" >
                             <label class="m-0">Custom End Program Time </label>
                             <div class="panel-body">
-                                <input type="datetime-local" class="form-control" name="custom_end_program_time"  />
+                                <input type="datetime-local" class="form-control" id="custom_end_program_time" name="custom_end_program_time"  />
                             </div>
                         </div>
 
@@ -1328,7 +1337,6 @@
         rules: {
             title: "required",
             url_type: "required",
-            duration: "required",
             'language[]': {
                 required: true
             },
@@ -1661,18 +1669,63 @@
 
             let publishType = $("input[name='publish_type']:checked").val();
 
+            if ( publishType == "publish_now" ) {
+                $('.add_video_btn').prop("disabled", false);
+            }
+
             if ( publishType == "publish_later" ) {
                 $("#publishlater").show();
+                $(".text-danger").show();
+                $('.add_video_btn').prop("disabled", true);
             }
 
             if( publishType == "recurring_program" ){
                 $("#recurring_program , .recurring_timezone").show();
+                $(".text-danger").show();
+                $('.add_video_btn').prop("disabled", true);
             }
 
             if( publishType == "schedule_program" ){
                 var modal = document.getElementById("schedule_program_modal");
                 modal.style.display = "block"; 
                 modal.style.background = 'rgba(0, 0, 0, 0.7)';
+            }
+        });
+
+        $("#publish_time").change(function(){
+            var publishLaterValue = $('#publish_time').val();
+            // console.log('value of publish later: ' + publishLaterValue);
+            if(publishLaterValue !== null && publishLaterValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
+            }
+        });
+
+        $(".prog-end-time").change(function(){
+            var startValue = $('.prog-start-time').val();
+            var endValue = $('.prog-end-time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
+            }
+        });
+
+        $("#custom_end_program_time").change(function(){
+            var startValue = $('#custom_start_program_time').val();
+            var endValue = $('#custom_end_program_time').val();
+            // console.log('value of startValue: ' + startValue);
+            // console.log('value of endValue: ' + endValue);
+            if(startValue !== null && startValue !== '' && endValue !== null && endValue !== '') { 
+                $('.add_video_btn').prop("disabled", false);
+                $(".text-danger").hide();
+            } else {
+                $('.add_video_btn').prop("disabled", true);
             }
         });
 
@@ -1847,50 +1900,61 @@
             showErrorMessage($schedulerProgramDaysInput, "Scheduler program days is required.");
         }
 
-        $(".program-fields").each(function() {
+        $(".program-fields").each(function () {
+            let $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
+            let $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
+            let $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
 
-            var $titleInput = $(this).find('input[name="scheduler_program_title[]"]');
-            var $startTimeInput = $(this).find('input[name="scheduler_program_start_time[]"]');
-            var $endTimeInput = $(this).find('input[name="scheduler_program_end_time[]"]');
+            let title = $titleInput.val();
+            let startTime = $startTimeInput.val(); // Expecting "HH:mm" format (e.g., "14:30")
+            let endTime = $endTimeInput.val();
 
-            var title = $titleInput.val();
-            var startTime = $startTimeInput.val();
-            var endTime = $endTimeInput.val();
-           
             if (!title) {
                 isValid = false;
                 showErrorMessage($titleInput, "Program title is required.");
             }
-            
+
             if (!startTime) {
                 isValid = false;
                 showErrorMessage($startTimeInput, "Start time is required.");
             }
-         
+
             if (!endTime) {
                 isValid = false;
                 showErrorMessage($endTimeInput, "End time is required.");
             }
-           
+
             if (startTime && endTime) {
+                // Validate time order
                 if (startTime >= endTime) {
                     isValid = false;
                     showErrorMessage($startTimeInput, "Start time must be earlier than end time.");
                     showErrorMessage($endTimeInput, "End time must be later than start time.");
                 }
 
-                if (isValid && timeSlots.some(slot => slot.startTime === startTime && slot.endTime === endTime)) {
-                    isValid = false;
-                    showErrorMessage($startTimeInput, "A program with the same start and end time already exists.");
-                    showErrorMessage($endTimeInput, "A program with the same start and end time already exists.");
+                if (isValid) {
+                    // Check for overlapping time slots
+                    const hasOverlap = timeSlots.some(slot => {
+                        return (
+                            (startTime >= slot.startTime && startTime < slot.endTime) || 
+                            (endTime > slot.startTime && endTime <= slot.endTime) || 
+                            (startTime <= slot.startTime && endTime >= slot.endTime)
+                        );
+                    });
+
+                    if (hasOverlap) {
+                        isValid = false;
+                        showErrorMessage($startTimeInput, "This time range overlaps with an existing program.");
+                        showErrorMessage($endTimeInput, "This time range overlaps with an existing program.");
+                    }
                 }
 
                 if (isValid) {
                     timeSlots.push({ startTime: startTime, endTime: endTime });
                 }
             }
-
         });
+
 
         if (isValid) {
             $("#schedule_program_modal").hide();

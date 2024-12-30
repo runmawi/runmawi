@@ -119,7 +119,7 @@ class TvshowsController extends Controller
 
             $pages = Page::all();
 
-            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,32])->orderBy('id', 'asc')->get();
+            $OrderHomeSetting = OrderHomeSetting::whereIn('id',[20,21,30,32])->orderBy('id', 'asc')->get();
             $Slider_array_data = array(
                 'Episode_sliders'    => (new FrontEndQueryController)->Episode_sliders(), 
                 'series_sliders'     => (new FrontEndQueryController)->series_sliders(), 
@@ -269,7 +269,7 @@ class TvshowsController extends Controller
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $ppv_series_description = Setting::pluck('series')->first();
-
+        
         $Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($Theme);
 
@@ -280,6 +280,8 @@ class TvshowsController extends Controller
         $subscribe_btn = $buttons_pay->subscribe_btn;
 
         $episodess = Episode::where('slug', $episode_name)->orderBy('id', 'DESC')->first();
+        $season_access = SeriesSeason::where('id', $episodess->season_id)->pluck('access')->first();
+        $series_access = Series::where('id', $episodess->series_id)->pluck('access')->first();
     
         $series_seasons_type = SeriesSeason::where('id', $episodess->season_id)->pluck('series_seasons_type')->first();
 
@@ -942,8 +944,8 @@ class TvshowsController extends Controller
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
             if(!Auth::guest()){
-                $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
-
+                $ppv_purchase_user = PpvPurchase::where('season_id','=',$season_ide)->where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
+                // dd($ppv_purchase_user);
                 $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
                 ->where('user_id', Auth::user()->id)
                 ->first();
@@ -1089,7 +1091,7 @@ class TvshowsController extends Controller
                         'CinetPay_payment_settings' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
                         'category_name'             => $category_name ,
                         'episode_details'           => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                         'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
@@ -1102,8 +1104,11 @@ class TvshowsController extends Controller
                         'purchase_btn'             => $purchase_btn,
                         'subscribe_btn'            => $subscribe_btn,
                         'next_episode'             => $next_episode,
-                        'UserChannelSubscription'  => $UserChannelSubscription
+                        'UserChannelSubscription'  => $UserChannelSubscription,
+                        'Season_access'            => $season_access, 
+                        'Series_access'            => $series_access, 
                     ];
+                    // dd($data);
                     
                     if (Auth::guest() && $settings->access_free == 1) {
                         return Theme::view('beforloginepisode', $data);
@@ -1143,8 +1148,8 @@ class TvshowsController extends Controller
                         'episodesubtitles' =>   $subtitle ,
                         'category_name'             => $category_name ,
                         'episode_details'  => $episode_details ,
-                        'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
-                    'user_role' => Auth::check() ? Auth::user()->role : 'guest',
+                        'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
+                        'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                         'episode_PpvPurchase'  => $episode_PpvPurchase,
                         'episode_play_access'  => $episode_play_access,
                         'Razorpay_payment_setting' => $Razorpay_payment_setting,
@@ -1157,7 +1162,9 @@ class TvshowsController extends Controller
                         'purchase_btn'             => $purchase_btn,
                         'subscribe_btn'            => $subscribe_btn,
                         'next_episode'             => $next_episode,
-                        'UserChannelSubscription'  => $UserChannelSubscription
+                        'UserChannelSubscription'  => $UserChannelSubscription,
+                        'Season_access'            => $season_access, 
+                        'Series_access'            => $series_access, 
                     ];
         
                     if (Auth::guest() && $settings->access_free == 1) {
@@ -1353,10 +1360,10 @@ class TvshowsController extends Controller
                 $series_season_first = SeriesSeason::where('series_id',$id)->Pluck('id')->first();
 
 
-                $season_depends_episode = Episode::where('active',1)->where('status',1)->where('series_id',$id)
+                $season_depends_episode = Episode::where('active',1)->where('series_id',$id)
                                                 ->where('season_id',$series_season_first)->orderBy('episode_order')->get();
 
-                $featured_season_depends_episode = Episode::where('active',1)->where('status',1)->where('featured',1)
+                $featured_season_depends_episode = Episode::where('active',1)->where('featured',1)
                                                 ->where('season_id',$series_season_first)->where('series_id',$id)->orderBy('episode_order')->get();
             
                  
@@ -1893,15 +1900,16 @@ public function RemoveDisLikeEpisode(Request $request)
 
             $series_data = SeriesNetwork::where('slug',$slug)->orderBy('order')->get()->map(function ($item) {
 
-                $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                            ->whereJsonContains('network_id', [(string)$item->id])
-
-                            ->latest('series.created_at')->get()->map(function ($item) { 
+                $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                ->where('series.active', 1)
+                ->where('series_network_order.network_id', $item->id)
+                ->orderBy('series_network_order.order', 'asc')
+                ->get()->map(function ($item) { 
                     
                     $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                     $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
-                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
+                    $item['Series_depends_episodes'] = Episode::where('series_id', $item->id)->where('active',1)->get()
                                                             ->map(function ($item) {
                                                             $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                                             return $item;
@@ -1929,7 +1937,6 @@ public function RemoveDisLikeEpisode(Request $request)
                 throw new \Exception('Series data not found');
             }
         } catch (\Throwable $th) {
-            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -2529,7 +2536,17 @@ public function RemoveDisLikeEpisode(Request $request)
             //    dd($videoId);
                $apiKey = videocipher_Key();
                $curl = curl_init();
-               
+               $watermarkText = Auth::user()->mobile; 
+               $annotateJson = json_encode([
+                   [
+                       "type" => "rtext",
+                       "text" => $watermarkText,
+                       "alpha" => "0.60",
+                       "color" => "0xFF0000", 
+                       "size" => "15",
+                       "interval" => "5000",
+                   ]
+               ]);
                curl_setopt_array($curl, array(
                    CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
                    CURLOPT_RETURNTRANSFER => true,
@@ -2540,6 +2557,7 @@ public function RemoveDisLikeEpisode(Request $request)
                    CURLOPT_CUSTOMREQUEST => "POST",
                    CURLOPT_POSTFIELDS => json_encode([
                        "ttl" => 30000, 
+                       "annotate" => $annotateJson
                    ]),
                    CURLOPT_HTTPHEADER => array(
                        "Accept: application/json",
@@ -2713,6 +2731,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'episode_play_access' => $episode_play_access,
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
 
                 ];
                 
@@ -2760,6 +2780,8 @@ public function RemoveDisLikeEpisode(Request $request)
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
                     'SeasonSeriesPpvPurchaseCount'  => $SeasonSeriesPpvPurchaseCount,
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
+                    'user_role'                  => Auth::check() ? Auth::user()->role : 'guest',
                 ];
                 if (Auth::guest() && $settings->access_free == 1) {
                     return Theme::view('beforloginepisode', $data);
@@ -2849,53 +2871,55 @@ public function RemoveDisLikeEpisode(Request $request)
             $video = Episode::where('id', $video_id)->first();
             if ($video) {
                 $video->played_views += 1;
-                $video->save(); 
+                $video->save();
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
-                $monetization_view_limit = $monetizationSettings->viewcount_limit;
-                $monetization_view_amount = $monetizationSettings->views_amount;
 
-                if ($video->played_views > $monetization_view_limit) {
-                    $previously_monetized_views = $video->monetized_views ?? 0;
-                    $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
+                if ($monetizationSettings) {
+                    $monetization_view_limit = $monetizationSettings->viewcount_limit;
+                    $monetization_view_amount = $monetizationSettings->views_amount;
 
-                    if ($new_monetizable_views > 0) {
-                        
-                        $additional_amount = $new_monetizable_views * $monetization_view_amount;
-                        $video->monetization_amount += $additional_amount;
-                        $video->monetized_views += $new_monetizable_views;
-                        $video->save(); 
+                    if ($video->played_views > $monetization_view_limit) {
+                        $previously_monetized_views = $video->monetized_views ?? 0;
+                        $new_monetizable_views = $video->played_views - $monetization_view_limit - $previously_monetized_views;
 
-        
-                        $channeluser_commission = (float) $video->channeluser->commission;
-                        $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
-                        
-                        $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
-                            ->where('type_id', $video->id)
-                            ->where('type', 'episode')->first();
+                        if ($new_monetizable_views > 0) {
 
-                        $monetization_data = [
-                            'total_views' => $video->played_views,
-                            'title' => $video->title,
-                            'monetization_amount' => $video->monetization_amount,
-                            'admin_commission' => $video->monetization_amount - $channel_commission,
-                            'partner_commission' => $channel_commission,
-                        ];
+                            $additional_amount = $new_monetizable_views * $monetization_view_amount;
+                            $video->monetization_amount += $additional_amount;
+                            $video->monetized_views += $new_monetizable_views;
+                            $video->save();
 
-                        if ($partner_monetization) {
-                            $partner_monetization->update($monetization_data);
-                        } else {
-                            PartnerMonetization::create(array_merge($monetization_data, [
-                                'user_id' => $video->user_id,
-                                'type_id' => $video->id,
-                                'type' => 'episode',
-                            ]));
+                            $channeluser_commission = (float) $video->channeluser->commission;
+                            $channel_commission = ($channeluser_commission / 100) * $video->monetization_amount;
+
+                            $partner_monetization = PartnerMonetization::where('user_id', $video->user_id)
+                                ->where('type_id', $video->id)
+                                ->where('type', 'episode')->first();
+
+                            $monetization_data = [
+                                'total_views' => $video->played_views,
+                                'title' => $video->title,
+                                'monetization_amount' => $video->monetization_amount,
+                                'admin_commission' => $video->monetization_amount - $channel_commission,
+                                'partner_commission' => $channel_commission,
+                            ];
+
+                            if ($partner_monetization) {
+                                $partner_monetization->update($monetization_data);
+                            } else {
+                                PartnerMonetization::create(array_merge($monetization_data, [
+                                    'user_id' => $video->user_id,
+                                    'type_id' => $video->id,
+                                    'type' => 'episode',
+                                ]));
+                            }
                         }
                     }
-                }
 
-                return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-            } else {
-                return response()->json(['error' => 'Video not found'], 404);
+                    return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
+                } else {
+                    return response()->json(['error' => 'Video not found'], 404);
+                }
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);

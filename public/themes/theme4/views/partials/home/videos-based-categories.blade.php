@@ -10,7 +10,7 @@
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title mar-left"><a href="{{ route('video_categories', [$video_category->slug]) }}">{{ $video_category->name }}</a></h4>
-                            <h4 class="main-title "><a href="{{ route('video_categories', [$video_category->slug]) }}">{{ "View All" }}</a></h4>
+                            <h4 class="main-title "><a href="{{ route('video_categories', [$video_category->slug]) }}">{{ "View all" }}</a></h4>
                         </div>
 
                         <div id="based-videos" class="channels-list">

@@ -715,6 +715,30 @@
                         
                     </div>
 
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <label class="m-0">Status Settings</label>
+                            <div class="panel-body">
+                                <div>
+                                    <label class="m-0" >Is this episode Featured:</label>
+                                    <input type="checkbox" @if(!empty($episodes->featured) && $episodes->featured == 1){{ 'checked="checked"' }}@endif name="featured" value="1" id="featured" />
+                                </div>
+                                <div class="clear"></div>
+                                <div>
+                                    <label class="m-0">Is this episode Active:</label>
+                                    <input type="checkbox" @if(!empty($episodes->active) && $episodes->active == 1){{ 'checked="checked"' }}@endif name="active" value="1"
+                                    id="active" />
+                                </div>
+                                <div class="clear"></div>
+                                <div>
+                                    <label class="m-0">Is this episode display in Banner:</label>
+                                    <input type="checkbox" @if(!empty($episodes->banner) && $episodes->banner == 1){{ 'checked="checked"' }}@endif name="banner" value="1" id="banner" />
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row align-items-center">
                         <!-- <div class="col-sm-4" id="ppv_price"> 
 				<div class="panel panel-primary" data-collapsed="0"> 
@@ -812,11 +836,12 @@
                                         </div>
                                     </td>
 
-                                    <?php if($episode->active == null){ ?>
-                                    <td > <p class = "bg-warning video_active"><?php echo "Draft"; ?></p></td>
-                                             <?php }elseif($episode->active == 1){ ?>
-                                    <td > <p class = "bg-success video_active"><?php  echo "Published"; ?></p></td>
-                                             <?php } ?>
+                                    @if ( $episode->active == 1 )
+                                        <td> <p class = "bg-success video_active">{{ "Published" }} </p></td>
+                                    @else
+                                        <td> <p class = "bg-warning video_active">{{ "Draft" }}</p></td>
+                                    @endif
+
                                     <td>
                                         <div class="d-flex justify-content-between align-items-center" style="gap:5px;">
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit Meta"><img class="ply" src="<?php echo URL::to('/').'/assets/img/icon/edit.svg';  ?>"></a>
@@ -852,13 +877,15 @@
     @section('javascript')
     
     <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::to('/assets/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::to('/assets/admin/js/tagsinput/jquery.tagsinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::to('/assets/js/jquery.mask.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
    
 
      {{-- image validation --}}
@@ -1011,15 +1038,14 @@ document.getElementById('select-all').addEventListener('change', function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
     <script>
-         ClassicEditor
-            .create( document.querySelector( '#description_editor' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+             ClassicEditor
+                .create( document.querySelector( '#description_editor' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
     </script>
     <script>
             $('#episode_uploads').show();
@@ -1413,15 +1439,6 @@ document.getElementById('select-all').addEventListener('change', function() {
         });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{asset('dropzone/dist/min/dropzone.min.js')}}" type="text/javascript"></script>
-    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
-    <script>
-        CKEDITOR.replace("summary-ckeditor", {
-            filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: "form",
-        });
-    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -1473,6 +1490,7 @@ document.getElementById('select-all').addEventListener('change', function() {
             // Add cancel button event listener
             file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
                 console.log("Cancel button clicked for file: " + file.name);
+                sendErrorLog(file.name, "Cancel button clicked for file");
                 file.userCanceled = true; 
                 xhr.abort(); // Abort the current upload
                 file.status = Dropzone.CANCELED; // Mark the file as canceled
@@ -1498,10 +1516,12 @@ document.getElementById('select-all').addEventListener('change', function() {
 
         this.on("success", function(file, value) {
             if (value.error == 3) {
+                sendErrorLog(file.name, value.error);
                 console.log(value.error);
                 alert("File not uploaded. Choose Library!");
                 location.reload();
             } else {
+                sendErrorLog(file.name, "File Updated");
                 $("#buttonNext").show();
                 $("#episode_id").val(value.Episode_id);
                 $("#title").val(value.episode_title);
@@ -1518,8 +1538,10 @@ document.getElementById('select-all').addEventListener('change', function() {
                     myDropzone.addFile(file);     // Requeue the file for upload
                 }, 1000); 
             } else if (file.userCanceled) {
-                console.log("File upload canceled by user: " + file.name);
+                    sendErrorLog(file.name, "File upload canceled by user");
+                    console.log("File upload canceled by user: " + file.name);
             } else {
+                sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
             }
 
@@ -1528,8 +1550,36 @@ document.getElementById('select-all').addEventListener('change', function() {
         });
 
         this.on("queuecomplete", function() {
+            const files = this.files;
+            files.forEach(function (file) {
+               if (file.status === Dropzone.SUCCESS) {
+                     sendErrorLog(file.name, "File processed successfully.");
+               } else if (file.status === Dropzone.ERROR) {
+                  if (file.xhr) {
+                     const serverResponse = file.xhr.response;
+                     sendErrorLog(file.name, `Error: ${serverResponse}`);
+                  } else {
+                     sendErrorLog(file.name, "Unknown error occurred.");
+                  }
+               }
+            });
             console.log("All uploads in the queue have been processed.");
         });
+
+        function sendErrorLog(filename, errorMessage) {
+            $.post("<?php echo URL::to('/admin/UploadErrorLog'); ?>", {
+                _token: CSRF_TOKEN,
+                filename: filename,
+                socure_type: "Episode",
+                error: errorMessage
+            }, function(response) {
+                // console.log("Error log submitted:", response);
+            }).fail(function(xhr) {
+                // console.error("Failed to log error:", xhr.response/Text);
+            });
+        }
+
+
     }
 });
 

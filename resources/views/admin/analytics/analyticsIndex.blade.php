@@ -401,6 +401,7 @@ tr td:nth-last-child(9) {
                             <th scope="col">Date</th>
                             <th scope="col">Video Name</th>
                             <th scope="col">Type</th>
+                            <th scope="col">Transaction ID</th>
                             <th scope="col">Amount</th>
                         </tr>
                         </thead>
@@ -413,8 +414,11 @@ tr td:nth-last-child(9) {
                                   {{ $data->user->username ?? 'N/A' }}
                                 </td>
                                 <td>{{ $data->created_at ? $data->created_at->format('M-d-Y') : 'N/A' }}</td>
-                                <td><a class="video-redirect" href="{{ URL::to('category/videos/'.$data->slug)}}">{{ $data->video_name ?? 'N/A' }}</a></td>
+                                <td>{{ !empty($data->season_id) 
+                                  ? $data->series_name . ' - ' . $data->season_name 
+                                  : $data->video_name ?? 'N/A' }}</td>
                                 <td>{{ $data->payment_gateway ? $data->payment_gateway : 'N/A' }}</td>
+                                <td>{{ $data->payment_id ? $data->payment_id : 'N/A' }}</td>
                                 <td>${{ number_format($data->total_amount, 2) }}</td>
                             </tr>
                         @empty

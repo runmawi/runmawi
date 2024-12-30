@@ -705,6 +705,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">Content Details</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
@@ -858,7 +859,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   {{-- Clear cache  --}}
                   <li><p class="lnk">Configurations</p></li>
 
-                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                  <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                         <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Management </span>
                      </a>
@@ -1155,6 +1156,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}">{{ (__('Add Content Partners')) }}</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">{{ (__('Content Details')) }}</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}">{{ (__('View Content Partners')) }}</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}">{{ (__('Content Partners For Approval')) }}</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}">{{ (__('Add Role')) }}</a></li>
@@ -1214,20 +1216,21 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         class="ri-arrow-right-s-line iq-arrow-right"></i>
                      </a>
                      <ul id="analytics_managements" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                        <li><a href="{{ URL::to('admin/analytics') }}">Revenue Analytics </a></li>
                         <li><a href="{{ URL::to('admin/analytics/revenue') }}">{{ (__('Users Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/users/revenue') }}">{{ (__('Users Revenue')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"></i>{{ (__('Purchased Video Analytics')) }} </a></li>
+                        {{-- <li><a href="{{ URL::to('admin/users/revenue') }}">{{ (__('Users Revenue')) }} </a></li> --}}
+                        {{-- <li><a href="{{ URL::to('admin/video/purchased-analytics') }}"></i>{{ (__('Purchased Video Analytics')) }} </a></li> --}}
                         <li><a href="{{ URL::to('admin/cpp/analytics') }}">{{ (__('CPP Analytics')) }} </a></li>
                         <li><a href="{{ URL::to('admin/cpp/video-analytics') }}">{{ (__('CPP Video Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/cpp/revenue') }}">{{ (__('CPP Revenue')) }} </a></li>
+                        {{-- <li><a href="{{ URL::to('admin/cpp/revenue') }}">{{ (__('CPP Revenue')) }} </a></li> --}}
                         <li><a href="{{ URL::to('admin/analytics/ViewsRegion') }}">{{ (__('Views By Region')) }}</a></li>
-                         <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}">{{ (__('Revenue by Region')) }}</a></li>
+                         {{-- <li><a href="{{ URL::to('admin/analytics/RevenueRegion') }}">{{ (__('Revenue by Region')) }}</a></li> --}}
                          <li><a href="{{ URL::to('admin/analytics/PlayerVideoAnalytics') }}">{{ (__('Player Video Analytics')) }}</a></li>
                          <li><a href="{{ URL::to('admin/analytics/RegionVideoAnalytics') }}">{{ (__('Region Video Analytics')) }}</a></li>
                          <li><a href="{{ URL::to('admin/analytics/PlayerUserAnalytics') }}">{{ (__('Player User Analytics')) }}</a></li>
                         <li><a href="{{ URL::to('admin/livestream-analytics') }}">{{ (__('CPP Live Video')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">{{ (__('Purchased LiveStream Analytics')) }} </a></li>
-                        <li><a href="{{ URL::to('admin/purchased-analytics') }}">{{ (__('Purchased Content Analytics')) }}</a></li>
+                        {{-- <li><a href="{{ URL::to('admin/live/purchased-analytics') }}">{{ (__('Purchased LiveStream Analytics')) }} </a></li> --}}
+                        {{-- <li><a href="{{ URL::to('admin/purchased-analytics') }}">{{ (__('Purchased Content Analytics')) }}</a></li> --}}
                         <li><a href="{{ URL::to('admin/Content-Analytics') }}">{{ (__('Content Analytics')) }}</a></li>
 
                      </ul>
@@ -1319,7 +1322,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                  {{-- Clear cache  --}}
                  <li><p class="lnk">{{ (__('Configurations')) }} </p></li>
 
-                 <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                 <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/E360_icons/Cache Management.svg')?>">
                      <span>{{ (__('Cache Management')) }}  </span>
                      </a>
@@ -1498,6 +1501,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                      <ul id="moderators" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                         <li><a href="{{ URL::to('moderator') }}"><i class="las la-user-plus"></i>Add Content Partners</a></li>
+                        <li><a href="{{ URL::to('admin/moderator-details') }}">Content Details</a></li>
                         <li><a href="{{ URL::to('admin/allmoderator') }}"><i class="las la-eye"></i>View Content Partners</a></li>
                         <li><a href="{{ URL::to('admin/cpp/pendingusers/') }}"><i class="las la-eye"></i>Content Partners For Approval</a></li>
                          <li><a href="{{ URL::to('admin/moderator/role') }}"><i class="las la-eye"></i>Add Role</a></li>
@@ -1649,7 +1653,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   {{-- Clear cache  --}}
                   <li><p class="lnk">Configurations </p></li>
 
-                  <li><a href="{{ URL::to('admin/clear_cache') }}" class="iq-waves-effect">
+                  <li><a href="{{ route('clear_cache') }}" class="iq-waves-effect">
                      <img height="30" width="30" class="ply" src="<?php echo  URL::to('/assets/img/icon/cc.svg')?>">
                         <span> Cache Management </span>
                      </a>

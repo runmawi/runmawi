@@ -64,6 +64,8 @@ use App\Subscription;
 use \App\MobileSlider;
 use App\SystemSetting;
 use App\VideoCategory;
+use App\SeriesSeason;
+use App\Series;
 
 
 class AdminUsersController extends Controller
@@ -152,6 +154,7 @@ class AdminUsersController extends Controller
             $query = User::query();
 
             return DataTables::of($query)
+
                 ->addColumn('select', function ($user) {
                     return '<input type="checkbox" class="user-checkbox" value="' . $user->id . '">';
                 })
@@ -183,7 +186,7 @@ class AdminUsersController extends Controller
                            
                         </div>';
                 })
-                ->rawColumns(['select', 'profile', 'status', 'action'])
+                ->rawColumns(['select', 'profile', 'status', 'action','mobile'])
                 ->make(true);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
@@ -5158,6 +5161,8 @@ class AdminUsersController extends Controller
                 $ppvData->getCollection()->transform(function ($item) {
                     $item['video_name'] = Video::where('id', $item->video_id)->pluck('title')->first();
                     $item['slug'] = Video::where('id', $item->video_id)->pluck('slug')->first();
+                    $item['series_name'] = Series::where('id', $item->series_id)->pluck('title')->first();
+                    $item['season_name'] = SeriesSeason::where('id', $item->season_id)->pluck('series_seasons_name')->first();
                     $item['user_name'] = User::where('id',$item->user_id)->pluck('name')->first();
                     return $item;
                 });

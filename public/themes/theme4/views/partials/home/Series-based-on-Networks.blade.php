@@ -1,4 +1,4 @@
-@if (!empty($data) && $data->isNotEmpty())
+@if (!empty($data) )
 
     @foreach($data as $section_key => $series_networks)
         @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty())
@@ -10,16 +10,16 @@
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks', [$series_networks->slug]) }}">{{ optional($series_networks)->name }}</a></h4>
-                            <h4 class="main-title"><a href="{{ route('Specific_Series_Networks', [$series_networks->slug]) }}">{{ "view all" }}</a></h4>
+                            <h4 class="main-title"><a href="{{ route('Specific_Series_Networks', [$series_networks->slug]) }}">{{ "View all" }}</a></h4>
                         </div>
 
                         <div id="based-networks" class="channels-list">
                             <div class="channel-row">
-                                <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video" data-flickity>
+                                <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video flickity-slider">
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200">
+                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -47,14 +47,7 @@
                                             </div>
 
                                             <div class="thumbnail" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
-                                                @if ($multiple_compress_image == 1)
-                                                    <img class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200" src="{{ $series->player_image ? URL::to('public/uploads/images/'.$series->player_image) : $default_horizontal_image_url }}"
-                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
-                                                                {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
-                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}">
-                                                @else
-                                                    <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
-                                                @endif
+                                                <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
 
                                             <div id="network-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }}" class="network-based-depends-slider networks-depends-series-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }} content-list" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
@@ -63,7 +56,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img src="{{ $episode->image_url }}" class="img-fluid lazy" alt="Videos">
+                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -77,15 +70,11 @@
                                                                             $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first();
                                                                         @endphp
 
-                                                                        <p class="trending-dec">
-                                                                            @if (!is_null($series_seasons_name))
-                                                                                {{ "Season - ". $series_seasons_name }}<br>
-                                                                            @endif
-
-                                                                            {{ "Episode - " . optional($episode)->title }}<br>
-
-                                                                            {!! (strip_tags(substr(optional($episode)->episode_description, 0, 50))) !!}
+                                                                        <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                            <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $episode->season_name ." - Episode ".$episode->episode_order  }}</span> <br>
+                                                                            {!! (strip_tags(substr(optional($episode)->title, 0, 150))) !!}
                                                                         </p>
+
                                                                     </div>
                                                                 </div>
                                                             </a>
@@ -97,7 +86,7 @@
                                                             <a href="{{ route('network.play_series', $series->slug) }}">
                                                             <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
                                                                 <div class=" position-relative">
-                                                                    <p class="text-white">{{ "View All" }}</p>
+                                                                    <p class="text-white">{{ "View all" }}</p>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -117,46 +106,48 @@
         @endif
     @endforeach
 
-    {{-- Networks depends Episode Modal --}}
-    @foreach($data as $section_key => $series_networks)
-        @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
-            @foreach ($series->Series_depends_episodes as $episode_key => $episode)
-                <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                        <div class="container">
-                            <div class="modal-content" style="border:none; background:transparent;">
-                                <div class="modal-body">
-                                    <div class="col-lg-12">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                @if ($multiple_compress_image == 1)
-                                                    <img alt="latest_series" src="{{ $episode->player_image ? URL::to('public/uploads/images/'.$episode->player_image) : $default_horizontal_image_url }}"
-                                                        srcset="{{ URL::to('public/uploads/PCimages/'.$series->responsive_player_image.' 860w') }},
-                                                                {{ URL::to('public/uploads/Tabletimages/'.$series->responsive_player_image.' 640w') }},
-                                                                {{ URL::to('public/uploads/mobileimages/'.$series->responsive_player_image.' 420w') }}">
-                                                @else
-                                                    <img src="{{ URL::to('public/uploads/images/'. $episode->player_image)  }}" alt="Videos">
-                                                @endif
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="row">
-                                                    <div class="col-lg-10 col-md-10 col-sm-10">
-                                                        <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
-                                                    </div>
-
-                                                    <div class="col-lg-2 col-md-2 col-sm-2">
-                                                        <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
-                                                            <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                        </button>
-                                                    </div>
+    <div class="depend-episode-modal-demd" style="display: none;">
+        {{-- Networks depends Episode Modal --}}
+        @foreach($data as $section_key => $series_networks)
+            @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
+                @foreach ($series->Series_depends_episodes as $episode_key => $episode)
+                    <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                            <div class="container">
+                                <div class="modal-content" style="border:none; background:transparent;">
+                                    <div class="modal-body">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    @if ($multiple_compress_image == 1)
+                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                    @else
+                                                        <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                    @endif
                                                 </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="col-lg-10 col-md-10 col-sm-10">
+                                                            <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
+                                                        </div>
 
-                                                @if (optional($episode)->episode_description)
-                                                    <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
-                                                @endif
+                                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                                            <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
+                                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
-                                                <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                    @if (optional($episode)->episode_description)
+                                                        <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
+                                                    @endif
 
+                                                    <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -164,25 +155,28 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             @endforeach
         @endforeach
-    @endforeach
+    </div>
 @endif
 
 
 <script>
-document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7,
+        });
     });
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
+
 
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
@@ -217,12 +211,12 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: true,
+                        groupCells: false,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyload:true,
+                        lazyLoad: 7,
                     });
                 },0);
             }
@@ -232,18 +226,19 @@ document.querySelectorAll('.series-based-network-video').forEach(function(elem) 
             if (selectedCaption && selectedThumbnail) {
                 selectedCaption.style.display = 'block';
                 selectedThumbnail.style.display = 'block';
+                $('.depend-episode-modal-demd').show();
             }
 
             document.getElementById('videoInfo-' + sectionIndex).style.display = 'flex';
         });
     });
 });
-
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
         dropdown.style.display = 'none';
     });
 });
+
 </script>
 

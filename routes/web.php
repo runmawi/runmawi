@@ -82,6 +82,7 @@ Route::get('/storagelimit', 'AdminDashboardController@storagelimit');
 Route::get('/country_route_check', 'AdminDashboardController@testuserroute');
 
 Route::get('/moderator', 'ModeratorsUserController@index');
+Route::get('/admin/moderator-details', 'ModeratorsUserController@Contentdetails');
 Route::post('/moderatoruser/create', 'ModeratorsUserController@store');
 Route::post('/Dashboard_Revenue', 'ModeratorsUserController@Dashboard_Revenue');
 Route::post('/upgadeSubscription', 'PaymentController@UpgadeSubscription');
@@ -300,6 +301,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/', 'HomeController@FirstLanging')->name('FirstLanging');
 
     Route::get('choose-profile', 'HomeController@Multipleprofile');
+    Route::get('subcriberuser/{id}', 'HomeController@subcriberuser')->name('subcriberuser');
     Route::get('subuser/{id}', 'HomeController@subuser')->name('subuser');
     Route::get('kidsMode', 'HomeController@kidsMode')->name('kidsMode');
     Route::get('FamilyMode', 'HomeController@FamilyMode')->name('FamilyMode');
@@ -350,6 +352,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
     Route::get('shorts_minis', 'PageListController@ShortsMinis')->name('pagelist.shorts-minis');
     Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    Route::get('latest_episodes', 'PageListController@Latest_episodes')->name('pagelist.latest_episodes');
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
 
@@ -577,6 +580,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('datafree/radio-station/{id}', 'LiveStreamController@Play')->name('Radio_station_play');
     Route::get('/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
+    Route::get('datafree/radio-station-list', 'LiveStreamController@RadioStationList')->name('Radio_station_List');
 
     Route::post('purchase-live', 'PaymentController@StoreLive')->name('stripe.store');
     Route::post('purchase-video', 'PaymentController@purchaseVideo');
@@ -614,6 +618,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     //        });
 
     Route::get('/', 'AdminDashboardController@index');
+    Route::get('get-storage-data', 'AdminDashboardController@getStorageData');
+
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
     Route::post('/episodes/deleteSelected','AdminSeriesController@deleteSelected')->name('admin.episodes.deleteSelected');
@@ -806,10 +812,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/Slider/set_slider', 'AdminSliderSettingController@set_slider')->name('admin_slider_set');
 
     // Cache clear
-    Route::get('/clear_cache', 'ClearCacheController@index')->name('clear_cache');
+    
+    Route::get('/clear-cache', 'ClearCacheController@index')->name('clear_cache');
     Route::post('/clear_caches', 'ClearCacheController@clear_caches')->name('clear_caches');
     Route::post('/clear_view_cache', 'ClearCacheController@clear_view_cache')->name('clear_view_cache');
-
+    Route::post('/view-buffer-cache', 'ClearCacheController@view_buffer_cache')->name('view_buffer_cache');
+    Route::post('/clear-buffer-cache', 'ClearCacheController@clear_buffer_cache')->name('clear_buffer_cache');
+    Route::get('/testing_command', 'ClearCacheController@testing_command')->name('testing_command');
+    
     // ENV APP DEBUG
     Route::get('/debug', 'ClearCacheController@Env_index')->name('env_index');
     Route::Post('/Env_AppDebug', 'ClearCacheController@Env_AppDebug')->name('env_appdebug');
@@ -1068,7 +1078,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/Multi_limit_store', 'AdminMultiUserController@Multi_limit_store')->name('Multi_limit_store');
 
     // Theme Integration
-    Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegration');
+    // Route::get('ThemeIntegration', 'ThemeIntegrationController@index')->name('ThemeIntegratiofn');
 
     // Compress Image
     Route::get('/compress-image-setting', 'AdminSettingsController@compress_image')->name('compress_image');
@@ -1206,6 +1216,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::PATCH('/Serie/Network-update/{id}', 'AdminNetworkController@Network_update')->name('admin.Network_update');
     Route::get('/Serie/Network-delete/{id}', 'AdminNetworkController@Network_delete')->name('admin.Network_delete');
     Route::Post('/Serie/Network/order', 'AdminNetworkController@Network_order')->name('admin.Network_order');
+    Route::Post('/Serie/Network-based/order', 'AdminNetworkController@NetworkBased_order')->name('admin.Network_series_order');
 
     //Admin Series Season Manage
     // Route::get('/season/create/{id}', 'AdminSeriesController@create_season');
@@ -1415,6 +1426,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::post('/UpdateEmbededcode', 'AdminVideosController@UpdateEmbededcode');
     Route::post('/Updatemp4url', 'AdminVideosController@Updatemp4url');
 
+    Route::post('/UploadErrorLog', 'AdminVideosController@UploadErrorLog');
 
     Route::post('/FlussonicUploadlibrary', 'AdminVideosController@FlussonicUploadlibrary');
     Route::post('/Flussonic_Storage_UploadURL', 'AdminVideosController@Flussonic_Storage_UploadURL');
@@ -1436,6 +1448,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderator/Allview', 'ModeratorsUserController@AllRoleView');
     Route::get('/moderator/commission', 'ModeratorsUserController@Commission');
     Route::post('/add/commission', 'ModeratorsUserController@AddCommission');
+    Route::get('/CPP-commission-status-update', 'ModeratorsUserController@CPP_Commission_Status_update')->name('admin.CPP_commission_status_update');
     Route::get('/moderatorsrole/edit/{id}', 'ModeratorsUserController@RoleEdit');
     Route::get('/moderatorsrole/delete/{id}', 'ModeratorsUserController@RoleDelete');
     Route::post('/moderatorsrole/update', 'ModeratorsUserController@RoleUpdate');
@@ -1514,6 +1527,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/moderatorsuser/delete/{id}', 'ModeratorsUserController@delete');
     Route::post('/moderatoruser/update', 'ModeratorsUserController@update');
     Route::get('/live_search', 'AdminVideosController@live_search');
+    Route::get('/moderatorsuser-get-CPP-Commission', 'ModeratorsUserController@getCPPCommission')->name('ModeratorsUser.getCPPCommission');
 
     Route::get('/devices', 'AdminPlansController@DevicesIndex');
     Route::post('/devices/store', 'AdminPlansController@DevicesStore');
@@ -2320,9 +2334,9 @@ Route::get('/welcome-screen/edit/{id}', 'WelcomeScreenController@edit')->name('w
 Route::post('/welcome-screen/update/{id}', 'WelcomeScreenController@update')->name('welcomescreen_update');
 
 //    Theme Integration
-// Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
-// Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
-// Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
+Route::post('admin/ThemeIntegration/create', 'ThemeIntegrationController@create')->name('ThemeIntegration/create');
+Route::get('admin/ThemeIntegration/set_theme', 'ThemeIntegrationController@set_theme')->name('ThemeIntegration/set_theme');
+Route::post('admin/ThemeIntegration/uniquevalidation', 'ThemeIntegrationController@uniquevalidation')->name('ThemeIntegration/uniquevalidation');
 
 Route::group(['middleware' => ['CheckAuthTheme5']], function () {
     Route::get('Movie-Description', 'HomeController@Movie_description');
@@ -2489,15 +2503,18 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
 
     Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
     Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
+    Route::post('/RazorpayVideoRent_Paymentfailure', 'RazorpayController@RazorpayVideoRent_Paymentfailure')->name('RazorpayVideoRent_Paymentfailure');
 
     Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
 
     Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
+    Route::post('/RazorpayLiveRent_Paymentfailure', 'RazorpayController@RazorpayLiveRent_Paymentfailure')->name('RazorpayLiveRent_Paymentfailure');
 
 
     Route::get('/RazorpaySeriesSeasonRent/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent')->name('RazorpaySeriesSeasonRent');
     Route::POST('/RazorpaySeriesSeasonRent_Payment', 'RazorpayController@RazorpaySeriesSeasonRent_Payment')->name('RazorpaySeriesSeasonRent_Payment');
+    Route::POST('/RazorpaySeriesSeasonRent_Paymentfailure', 'RazorpayController@RazorpaySeriesSeasonRent_Paymentfailure')->name('RazorpaySeriesSeasonRent_Paymentfailure');
 
     Route::get('/RazorpaySeriesSeasonRent_PPV/{ppv_plan}/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent_PPV')->name('RazorpaySeriesSeasonRent_PPV');
 
@@ -3058,6 +3075,13 @@ Route::get('admin/transaction_details', 'AdminTransactionDetailsController@index
 Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetailsController@edit')->name('admin.transaction-details.edit');
 Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
 Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
+Route::get('admin/transaction_live_search', 'AdminTransactionDetailsController@live_search');
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');
+
+// Unassigned episodes assign
+Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
+Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
+Route::post('/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
+Route::post('datafree/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');

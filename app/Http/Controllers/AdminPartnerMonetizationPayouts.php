@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use View;
 use \App\User as User;
+use Auth;
 
 class AdminPartnerMonetizationPayouts extends Controller
 {

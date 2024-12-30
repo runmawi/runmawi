@@ -236,6 +236,7 @@ i.fa.fa-google-plus {
                                 @if (!empty($SignupMenu) && $SignupMenu->username == 1)
                                     <div class="col-md-12">
                                         <input id="username" type="text"  class="form-control alphaonly  @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="{{ __('Username') }}" required autocomplete="off" autofocus>
+                                        <input type="text" name="honeypot" style="display: none;">
 
                                         @error('username')
                                             <span class="invalid-feedback" role="alert">
@@ -421,7 +422,7 @@ i.fa.fa-google-plus {
                         <div class="form-group" >
 	                             {{-- reCAPTCHA  --}}
                             <div class="col-md-12" id="">
-                                @if( get_enable_captcha()  == 1)   
+                                @if( get_enable_captcha_signup()  == 1)   
                                     <div class="form-group" style="  margin-top: 30px;">
                                         {!! NoCaptcha::renderJs('en', false, 'onloadCallback') !!}
                                         {!! NoCaptcha::display() !!}

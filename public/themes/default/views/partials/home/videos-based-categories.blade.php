@@ -239,19 +239,16 @@
 @endif
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('.video-based-categories');
-        elems.forEach(function (elem) {
-            new Flickity(elem, {
-                cellAlign: 'left',
-                contain: true,
-                groupCells: true,
-                pageDots: false,
-                draggable: true,
-                freeScroll: true,
-                imagesLoaded: true,
-                lazyLoad: true,
-            });
+    document.querySelectorAll('.video-based-categories').forEach(function(elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: true,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyload:true,
         });
     });
 </script>

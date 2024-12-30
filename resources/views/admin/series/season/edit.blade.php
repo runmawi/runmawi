@@ -104,9 +104,9 @@
                     </div>
                     
                     <div class="form-group {{ $errors->has('ppv_price') ? 'has-error' : '' }}" id="ppv_price_group">
-                        <label class="m-0">PPV Price:</label>
+                        <label class="m-0">PPV Price ($):</label>
                         <input type="text" class="form-control" placeholder="PPV Price" name="ppv_price" id="ppv_price_input" value="@if(!empty($season->ppv_price)){{ $season->ppv_price }}@endif" />
-                        <p id="ppv_error_req" style="color: red !important;">*This field is required</p>
+                        <p id="ppv_error_req" style="color: red !important;display:none;">*This field is required</p>
                     </div>
                     
 
@@ -133,14 +133,14 @@
                     </div>
 
                     <div class="form-group ios_ppv_price_old" id='ios_ppv_price_old' >
-                        <label class="m-0">IOS PPV Price:</label>
+                        <label class="m-0">IOS PPV Price ($):</label>
                         <select  name="ios_ppv_price" class="form-control" id="ios_ppv_price">
                             <option value= "" >Select IOS PPV Price: </option>
                             @foreach($InappPurchase as $Inapp_Purchase)
                                 <option value="{{ $Inapp_Purchase->product_id }}"  @if(!empty($season->ios_product_id) && $season->ios_product_id == $Inapp_Purchase->product_id){{ 'selected' }} @endif > {{ $Inapp_Purchase->plan_price }} </option>
                             @endforeach
                         </select>
-                        <p id="ios_error_req" style="color: red !important;">*This field is required</p>
+                        <p id="ios_error_req" style="color: red !important;display:none;">*This field is required</p>
                     </div>
 
                     <div class="form-group ios_ppv_price_plan" id='ios_ppv_price_plan'>
@@ -201,6 +201,33 @@
 @section('javascript')
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#ppv_price_input").change(function(){
+            var priceValue = $('#ppv_price_input').val();
+            if(priceValue.length === 0){
+                $('#ppv_error_req').show();
+                $('#submit-update-cat').prop("disabled", true);
+
+            }else{
+                $('#ppv_error_req').hide();
+                $('#submit-update-cat').prop("disabled", false);
+            }
+        });
+        $("#ios_ppv_price").change(function(){
+            var priceValue = $('#ios_ppv_price').val();
+            if(priceValue.length === 0){
+                $('#ios_error_req').show();
+                $('#submit-update-cat').prop("disabled", true);
+
+            }else{
+                $('#ios_error_req').hide();
+                $('#submit-update-cat').prop("disabled", false);
+            }
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {

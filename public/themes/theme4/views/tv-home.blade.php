@@ -13,6 +13,15 @@
         'multiple_compress_image' => $multiple_compress_image,
     ];
 
+    $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
+                                'multiple_compress_image' => $multiple_compress_image, 
+                                'settings' => $settings,
+                                'ThumbnailSetting' => $ThumbnailSetting,
+                                'currency' => $currency,
+                                'default_vertical_image_url' => $default_vertical_image_url,
+                                'default_horizontal_image_url' => $default_horizontal_image_url,
+                            ]; 
+
 @endphp
 
 @if (count($errors) > 0)
@@ -68,11 +77,6 @@
     </div>
 
     @foreach ($order_settings as $key => $value)
-        @if ( ($value->video_name == 'Series_Genre' && $home_settings->SeriesGenre == 1) || ($value->video_name == 'Series_Genre_videos' && $home_settings->SeriesGenre_videos == 1))
-            <section id="iq-favorites">
-                <div class="container-fluid overflow-hidden pl-0">
-                    <div class="row">
-                        <div class="col-sm-12">
 
                             @if( $value->video_name == 'Series_Networks')      {{-- Series Networks --}} 
                                 {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
@@ -83,18 +87,13 @@
                             @endif
 
                             @if ($value->video_name == 'Series_Genre')
-                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], ])->content() !!}
+                                {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/SeriesGenre', [ 'data' => !empty($SeriesGenre) ? $SeriesGenre->slice(0,15) : $SeriesGenre , 'order_settings_list' => [$order_settings_list,$data], 'order_settings_list_header' => $order_settings_list,'default_horizontal_image_url' => $default_horizontal_image_url,'default_vertical_image_url' => $default_vertical_image_url, 'multiple_compress_image' => $multiple_compress_image])->content() !!}
                             @endif
 
                             @if ($value->video_name == 'Series_Genre_videos')
                                 {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/series-based-categories', ['order_settings_list' => $order_settings_list, ])->content() !!}
                             @endif
 
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
     @endforeach
 </div>
 

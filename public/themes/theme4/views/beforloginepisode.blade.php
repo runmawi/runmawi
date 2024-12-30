@@ -72,9 +72,9 @@
         <div class="">
             <?php
                 if (Auth::guest()) {
-                    if ($free_episode > 0 ){
+                    if ($episode_play_access > 0 ){
 
-                        if ($series->access == 'guest' ||  $free_episode > 0): ?>
+                        if ($series->access == 'guest' ||  $episode_play_access > 0): ?>
 
                             <div id="series_container" class="fitvid" style="position: relative;">
                                 <button class="staticback-btn" onclick="history.back()" title="Back Button">
@@ -131,7 +131,7 @@
                             <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title ; ?></h4>
-                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;><?php echo ($episode->episode_description) ; ?></p>
+                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;>{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                                     
                                     <h4 class=""><?php echo __('Subscribe to view more'); ?>
                                         <?php if ($series->access == 'subscriber'): ?>
@@ -190,7 +190,7 @@
 
                                 <?php elseif( !Auth::guest() && $series->access == 'subscriber'):  ?>
 
-                                    <div class="container mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('/signup') ?>">
                                             <button class="btn btn-primary"
                                                 id="button"><?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?></button>
@@ -199,7 +199,7 @@
 
                                 <?php else: ?>
 
-                                    <div class="container mt-3">
+                                    <div class="container-fluid mt-3">
                                         <form method="get" action="<?= URL::to('signup') ?>" class="mt-4">
                                             <button id="button" class="btn bd"><?php echo __('Signup Now'); ?>
                                                 <?php if($series->access == 'subscriber'): ?><?php echo __('to Become a Subscriber'); ?>
@@ -296,7 +296,7 @@
                         </p>
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                     ?></p>
-                        <p class="desc"><?php echo $series->details;?></p>
+                        <p class="desc">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
                     </div>
                     <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
                     ?>

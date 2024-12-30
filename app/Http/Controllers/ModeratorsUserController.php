@@ -1,97 +1,98 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\ModeratorsPermission;
-use App\ModeratorsRole;
-use App\ModeratorsUser;
-use App\PpvPurchase;
-use App\CurrencySetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use URL;
-use App\UserAccess;
-use Hash;
-use Illuminate\Support\Facades\DB;
-use App\Video as Video;
-use App\VideoCategory as VideoCategory;
-use App\Menu as Menu;
-use App\Country as Country;
-use App\Slider as Slider;
-use App\MoviesSubtitles as MoviesSubtitles;
-use App\VideoResolution as VideoResolution;
-use App\VideosSubtitle as VideosSubtitle;
-use App\Language as Language;
-use App\VideoLanguage as VideoLanguage;
-use App\Subtitle as Subtitle;
-use App\Setting as Setting;
-use App\PaymentSetting as PaymentSetting;
-use App\SystemSetting as SystemSetting;
-use App\HomeSetting as HomeSetting;
-use Illuminate\Support\Str;
-use App\MobileApp as MobileApp;
-use App\MobileSlider as MobileSlider;
-use App\ThemeSetting as ThemeSetting;
-use App\SiteTheme as SiteTheme;
-use App\Page as Page;
-use App\LiveStream as LiveStream;
-use App\LiveCategory as LiveCategory;
-use App\User as User;
 use Auth;
-use App\Role as Role;
-use App\Playerui as Playerui;
-use App\Plan as Plan;
-use App\PaypalPlan as PaypalPlan;
-use App\Coupon as Coupon;
-use App\Series as Series;
-use App\Genre as Genre;
-use App\Episode as Episode;
-use App\SeriesSeason as SeriesSeason;
-use App\Artist;
-use App\Seriesartist;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
-use ffmpeg\FFProbe;
-use FFMpeg\Coordinate\Dimension;
-use FFMpeg\Format\Video\X264;
-use App\Http\Requests\StoreVideoRequest;
-use App\Jobs\ConvertVideoForStreaming;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use FFMpeg\Filters\Video\VideoFilters;
-use App\Videoartist;
-use App\AudioCategory as AudioCategory;
-use App\AudioAlbums as AudioAlbums;
-use Illuminate\Support\Facades\Cache;
-use App\Audio as Audio;
 use File;
-use App\VideoCommission;
+use Hash;
 use Mail;
-use App\EmailTemplate;
-use App\PlayerAnalytic;
-use Session;
 use View;
-use GuzzleHttp\Client;
-use GuzzleHttp\Message\Response;
+use Session;
+use App\Video;
+use App\Artist;
 use App\Region;
-use App\RegionView;
-use App\ModeratorPayout;
-use App\SeriesGenre;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\Filters\DemoFilter;
-use App\RelatedVideo;
-use App\LanguageVideo;
+use App\Series;
+use App\Episode;
+use App\BlockAudio;
 use App\BlockVideo;
 use App\ReelsVideo;
-use App\CategoryVideo;
-use App\PlayerSeekTimeAnalytic;
-use App\VideoPlaylist;
+use App\RegionView;
+use App\UserAccess;
+use ffmpeg\FFProbe;
 use App\Audioartist;
+use App\PpvPurchase;
+use App\SeriesGenre;
+use App\Videoartist;
+use App\CategoryLive;
+use App\LiveLanguage;
+use App\Menu as Menu;
+use App\Page as Page;
+use App\Plan as Plan;
+use App\RelatedVideo;
+use App\Role as Role;
+use App\Seriesartist;
+use App\SeriesSeason;
+use App\User as User;
 use App\AudioLanguage;
 use App\CategoryAudio;
-use App\BlockAudio;
-use App\LiveLanguage;
-use App\CategoryLive;
-use App\SeriesSubtitle;
-use App\SeriesLanguage;
+use App\CategoryVideo;
+use App\EmailTemplate;
+use App\LanguageVideo;
+use App\VideoPlaylist;
+use GuzzleHttp\Client;
+use App\Audio as Audio;
+use App\Genre as Genre;
+use App\ModeratorsRole;
+use App\ModeratorsUser;
+use App\PlayerAnalytic;
 use App\SeriesCategory;
+use App\SeriesLanguage;
+use App\SeriesSubtitle;
+use App\CurrencySetting;
+use App\ModeratorPayout;
+use App\VideoCommission;
+use App\Coupon as Coupon;
+use App\Slider as Slider;
+use App\Country as Country;
+use App\Setting as Setting;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Language as Language;
+use App\ModeratorsPermission;
+use App\Playerui as Playerui;
+use App\Subtitle as Subtitle;
+use FFMpeg\Format\Video\X264;
+use App\MobileApp as MobileApp;
+use App\PlayerSeekTimeAnalytic;
+use App\SiteTheme as SiteTheme;
+use FFMpeg\Coordinate\Dimension;
+use GuzzleHttp\Message\Response;
+use App\LiveStream as LiveStream;
+use App\PaypalPlan as PaypalPlan;
+use Illuminate\Support\Facades\DB;
+use App\AudioAlbums as AudioAlbums;
+use App\HomeSetting as HomeSetting;
+use App\LiveCategory as LiveCategory;
+use App\MobileSlider as MobileSlider;
+use App\ThemeSetting as ThemeSetting;
+use Illuminate\Support\Facades\Cache;
+use Intervention\Image\Facades\Image;
+use App\Jobs\ConvertVideoForStreaming;
+use FFMpeg\Filters\Video\VideoFilters;
+use App\AudioCategory as AudioCategory;
+use App\SystemSetting as SystemSetting;
+use App\VideoCategory as VideoCategory;
+use App\VideoLanguage as VideoLanguage;
+use App\Http\Requests\StoreVideoRequest;
+use App\PaymentSetting as PaymentSetting;
+use App\VideosSubtitle as VideosSubtitle;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Filters\DemoFilter;
+use App\MoviesSubtitles as MoviesSubtitles;
+use App\VideoResolution as VideoResolution;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Pagination\LengthAwarePaginator;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
 
 class ModeratorsUserController extends Controller
 {
@@ -150,6 +151,7 @@ class ModeratorsUserController extends Controller
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "CPP_commission_percentage" => $CPP_commission_percentage ,
+                        "moderatorsuser" => $moderatorsuser ,
                     ];
 
                     return view("moderator.index", $data);
@@ -217,6 +219,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
                 $moderatorsuser->commission_percentage = $request->commission_percentage;
+                $moderatorsuser->parent_moderator_id = $request->parent_moderator_id;
 
 
                 $logopath = URL::to("/public/uploads/moderator_albums/");
@@ -660,18 +663,39 @@ class ModeratorsUserController extends Controller
                 ) {
                     $moderators = ModeratorsUser::find($id);
                     $useraccess = UserAccess::where("user_id", "=", $id)->get();
-                    // $permission=DB::table('user_accesses')->where('user_id', '=', $id)->get();
                     $moderatorsrole = ModeratorsRole::all();
                     $moderatorspermission = ModeratorsPermission::all();
                     $moderatorsuser = ModeratorsUser::all();
+
+                    $videos = Video::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Videos";
+                        return $item;
+                    });
+
+                    $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Livestream";
+                        return $item;
+                    });
+
+                    $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->get()->map(function($item){
+                        $item['source'] = "Series";
+                        return $item;
+                    });
+
+                    $all_data = $videos->concat($livestream)->concat($series);
 
                     $data = [
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "moderatorsuser" => $moderatorsuser,
                         "moderators" => $moderators,
-                        // 'moderatorspermission' => $permission,
                         "useraccess" => $useraccess,
+                        "videos" => $videos,
+                        "livestream" => $livestream,
+                        "series" => $series,
+                        "setting" => Setting::first(),
+                        "all_data" => $all_data ,
+                        'Allmoderatorsuser' => ModeratorsUser::select('id','username')->where('id','!=',$id)->get(),
                     ];
 
                     return view("moderator.create_edit", $data);
@@ -775,6 +799,7 @@ class ModeratorsUserController extends Controller
             $package = $user_package->package;
 
             if ($package == "Pro" ||$package == "Business" ||($package == "" && Auth::User()->role == "admin")) {
+                
                 $data = $request->all();
                 $role = ModeratorsRole::where("id", "=",$request->user_role)->get();
                 $permission = $role[0]->user_permission;
@@ -792,13 +817,15 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser = ModeratorsUser::find($id);
                 $moderatorsuser["username"] = $data["username"];
                 $moderatorsuser["email"] = $data["email_id"];
+                $moderatorsuser["password"] = $data["password"];
                 $moderatorsuser["mobile_number"] = $data["mobile_number"];
                 $moderatorsuser["description"] = $data["description"];
                 $moderatorsuser["user_role"] = $data["user_role"];
                 $moderatorsuser["status"] = $status;
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
-                $moderatorsuser["commission_percentage"] = $data["commission_percentage"];
+                $moderatorsuser["commission_percentage"] = !empty($data["commission_percentage"]) ?? $data["commission_percentage"] ;
+                $moderatorsuser["parent_moderator_id"] = $data["parent_moderator_id"];
 
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";
@@ -832,6 +859,25 @@ class ModeratorsUserController extends Controller
                     $userrolepermissiom->role_id = $request->user_role;
                     $userrolepermissiom->permissions_id = $value;
                     $userrolepermissiom->save();
+                }
+
+                // Commission Percentage
+                $videos = Video::where('user_id', $id)->where('uploaded_by', 'CPP')->where('id', $request->video_id)->first();
+                
+                if (!is_null($videos)) {
+                    $videos->update(['CPP_commission_percentage' => $request->videos_commission]);
+                }
+
+                $livestream = LiveStream::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->livestream_id)->first();
+
+                if( !is_null($livestream)){
+                    $livestream->update(['CPP_commission_percentage' => $request->live_commission]);
+                }
+
+                $series = Series::where('user_id',$id)->where('uploaded_by','CPP')->where('id',$request->series_id)->first();
+
+                if( !is_null($series)){
+                    $series->update(['CPP_commission_percentage' => $request->series_commission]);
                 }
 
                      // Partner Content Update - admin
@@ -874,6 +920,7 @@ class ModeratorsUserController extends Controller
                 return back()->with("message", "Successfully User Updated!.");
 
                 return \Redirect::back();
+
             } elseif ($package == "Basic") {
                 return view("blocked");
             }
@@ -882,6 +929,42 @@ class ModeratorsUserController extends Controller
             $user = User::where("id", "=", 1)->first();
             return view("auth.login", compact("system_settings", "user"));
         }
+    }
+
+    public function getCPPCommission(Request $request)
+    {
+
+        if( $request->sourceName == "videos"  ){
+
+            $query = Video::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+            ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "livestream"  ){
+
+            $query = LiveStream::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if( $request->sourceName == "series" ){
+
+            $query = Series::where('user_id', $request->moderator_id)->where('uploaded_by', 'CPP')
+                ->where('id', $request->sourceID)->first();
+        }
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'sourceName' => $request->sourceName ,
+                'commission' => $query->CPP_commission_percentage, 
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'sourceName' => $request->sourceName ,
+            'message' => 'Commission not found',
+        ]);
     }
 
     public function RoleUpdate(Request $request)
@@ -1108,6 +1191,7 @@ class ModeratorsUserController extends Controller
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "moderatorsuser" => $moderatorsuser,
+                        'setting' => Setting::first(),
                     ];
                     return view("moderator.view", $data);
                 } elseif ($package == "Basic") {
@@ -4912,6 +4996,7 @@ class ModeratorsUserController extends Controller
 
             $data = [
                 "commission" => $commission,
+                "settings" => Setting::first()  ,
             ];
             
             return view("moderator.commission", $data);
@@ -4939,6 +5024,20 @@ class ModeratorsUserController extends Controller
             "message",
             "Successfully Updated Percentage!"
         );
+    }
+
+    public function CPP_Commission_Status_update(Request $request)
+    {
+        try {
+
+            Setting::first()->update(['CPP_Commission_Status' => $request->CPP_Commission_Status]);
+
+            return response()->json(["message" => "true"]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json(["message" => "false"]);
+        }
     }
 
     public function Dashboard_Revenue(Request $request)
@@ -7583,4 +7682,91 @@ class ModeratorsUserController extends Controller
         return \Redirect::back()->with('message','Update User Profile');
 
     }
+
+
+    public function Contentdetails()
+    {
+        $users = ModeratorsUser::with([
+            'videos:id,title,user_id,CPP_commission_percentage',
+            'series:id,title,user_id,CPP_commission_percentage',
+            'seasons:id,series_seasons_name,user_id',
+            'episodes:id,title,user_id',
+            'livestreams:id,title,user_id,CPP_commission_percentage',
+        ])->get();
+
+        $all_datas = [];
+
+        foreach ($users as $user) {
+            foreach ($user->videos as $video) {
+                $all_datas[] = [
+                    'id' => $video->id,
+                    'title' => $video->title,
+                    'video_commission_percentage' => $video->CPP_commission_percentage,
+                    'type' => 'Video',
+                    'content_partner' => $user->username,
+                    'moderator_commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->series as $serie) {
+                $all_datas[] = [
+                    'id' => $serie->id,
+                    'title' => $serie->title,
+                    'video_commission_percentage' => $serie->CPP_commission_percentage,
+                    'type' => 'Series',
+                    'content_partner' => $user->username,
+                    'moderator_commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->seasons as $season) {
+                $all_datas[] = [
+                    'id' => $season->id,
+                    'title' => $season->series_seasons_name,
+                    'type' => 'Season',
+                    'content_partner' => $user->username,
+                    'moderator_commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->episodes as $episode) {
+                $all_datas[] = [
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'type' => 'Episode',
+                    'content_partner' => $user->username,
+                    'moderator_commission_percentage' => $user->commission_percentage,
+                ];
+            }
+
+            foreach ($user->livestreams as $livestream) {
+                $all_datas[] = [
+                    'id' => $livestream->id,
+                    'title' => $livestream->title,
+                    'video_commission_percentage' => $livestream->CPP_commission_percentage,
+                    'type' => 'Live Stream',
+                    'content_partner' => $user->username,
+                    'moderator_commission_percentage' => $user->commission_percentage,
+                ];
+            }
+        }
+
+        $all_datas = collect($all_datas);
+        $perPage = 10; 
+        $currentPage = LengthAwarePaginator::resolveCurrentPage(); 
+        $currentItems = $all_datas->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $paginatedData = new LengthAwarePaginator(
+            $currentItems, 
+            $all_datas->count(), 
+            $perPage, 
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        return view('moderator.cpp.contentdetails', ['all_datas' => $paginatedData]);
+    }
+
+
+    
 }

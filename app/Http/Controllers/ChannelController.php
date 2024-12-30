@@ -3219,7 +3219,7 @@ class ChannelController extends Controller
         $data['password_hash'] = '';
         $data = session()->all();
 
-        if (!Auth::guest()) {
+        // if (!Auth::guest()) {
             $get_video_id = \App\Video::where('slug', $slug)->first();
 
             $vid = $get_video_id->id;
@@ -3477,6 +3477,7 @@ class ChannelController extends Controller
                     'ppv_video_play' => $ppv_video_play,
                     'ads' => \App\AdsVideo::where('video_id', $vid)->first(),
                     'category_name' => $category_name,
+                    'settings' => Setting::first(),
                 ];
             } else {
                 $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -3485,33 +3486,7 @@ class ChannelController extends Controller
                 $regionName = $geoip->getregion();
                 $cityName = $geoip->getcity();
                 // dd($data);
-                $regionview = RegionView::where('user_id', '=', Auth::User()->id)
-                    ->where('video_id', '=', $vid)
-                    ->orderBy('created_at', 'DESC')
-                    ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())
-                    ->first();
-                if (!empty($regionview)) {
-                    // dd($logged);
-                    $regionview = RegionView::where('user_id', '=', Auth::User()->id)
-                        ->where('video_id', '=', $vid)
-                        ->orderBy('created_at', 'DESC')
-                        ->whereDate('created_at', '>=', \Carbon\Carbon::now()->today())
-                        ->delete();
-                    // dd($data);
-                    $region = new RegionView();
-                    $region->user_id = Auth::User()->id;
-                    $region->user_ip = $userIp;
-                    $region->video_id = $vid;
-                    $region->countryname = $countryName;
-                    $region->save();
-                } else {
-                    $region = new RegionView();
-                    $region->user_id = Auth::User()->id;
-                    $region->user_ip = $userIp;
-                    $region->video_id = $vid;
-                    $region->countryname = $countryName;
-                    $region->save();
-                }
+                
                 $categoryVideos = \App\Video::where('id', $vid)->first();
                 $category_id = \App\Video::where('id', $vid)->pluck('video_category_id');
                 $recomended = \App\Video::where('video_category_id', '=', $category_id)
@@ -3531,17 +3506,17 @@ class ChannelController extends Controller
                     'artists' => $artists,
                     'watched_time' => 0,
                     'ads' => \App\AdsVideo::where('video_id', $vid)->first(),
+                    'settings' => Setting::first(),
                 ];
             }
-
-            return Theme::view('embedvideo', $data);
-        } else {
-            $data = [
-                'video' => \App\Video::where('slug', $slug)->first(),
-                'settings' => Setting::first(),
-            ];
             return Theme::view('iframeembedvideo', $data);
-        }
+        // } else {
+        //     $data = [
+        //         'video' => \App\Video::where('slug', $slug)->first(),
+        //         'settings' => Setting::first(),
+        //     ];
+        //     return Theme::view('iframeembedvideo', $data);
+        // }
     }
 
     public function Reals_videos(Request $request, $slug)
@@ -4819,7 +4794,7 @@ class ChannelController extends Controller
             }
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -5266,7 +5241,7 @@ class ChannelController extends Controller
             if($videodetail->status == 1 || ($videodetail->status == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'videodetail' => $videodetail ,
-                    'monetization_view_limit' => PartnerMonetizationSetting::pluck('viewcount_limit')->first(),
+                    'video_viewcount_limit' => PartnerMonetizationSetting::pluck('video_viewcount_limit')->first(),
                     'user_role' => Auth::check() ? Auth::user()->role : 'guest',
                     'recomended' => $recomended ,
                     'videoURl' => $videoURl ,
@@ -5710,6 +5685,17 @@ class ChannelController extends Controller
                 $videoId = $item['videos_url']; 
                 $apiKey = videocipher_Key();
                 $curl = curl_init();
+                $watermarkText = Auth::user()->mobile; 
+                $annotateJson = json_encode([
+                    [
+                        "type" => "rtext",
+                        "text" => $watermarkText,
+                        "alpha" => "0.60",
+                        "color" => "0xFF0000", 
+                        "size" => "15",
+                        "interval" => "5000",
+                    ]
+                ]);
 
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
@@ -5721,6 +5707,7 @@ class ChannelController extends Controller
                     CURLOPT_CUSTOMREQUEST => "POST",
                     CURLOPT_POSTFIELDS => json_encode([
                         "ttl" => 30000, 
+                        "annotate" => $annotateJson
                     ]),
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
@@ -5987,6 +5974,7 @@ class ChannelController extends Controller
 
                 if ($video->uploaded_by === 'Channel') {
                 $monetizationSettings = PartnerMonetizationSetting::select('viewcount_limit', 'views_amount')->first();
+                 if ($monetizationSettings) {
                 $monetization_view_limit = $monetizationSettings->viewcount_limit;
                 $monetization_view_amount = $monetizationSettings->views_amount;
 
@@ -6030,7 +6018,8 @@ class ChannelController extends Controller
                 }
             }
                 return response()->json(['message' => 'View count incremented and monetization updated', 'played_view' => $video->played_views, 'monetization_amount' => $video->monetization_amount], 200);
-            } else {
+            }
+         } else {
                 return response()->json(['error' => 'Video not found'], 404);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {

@@ -46,22 +46,44 @@
                     @if ($isSubscription)
                         <p><strong>Days:</strong> {{ $transaction->days ?? '-' }}</p>
                         @if ($transaction->user)
-                        <p><strong>Start Date:</strong> {{ $transaction->user->subscription_start ?? '-' }}</p>
+                            <p><strong>Start Date:</strong> {{ $transaction->user->subscription_start ?? '-' }}</p>
                         @endif
                         @if ($transaction->user)
-                        <p><strong>End date:</strong> {{ $transaction->subscription_ends_at ?? '-' }}</p>
+                            <p><strong>End date:</strong> {{ $transaction->user->subscription_ends_at ?? '-' }}</p>
                         @endif
                     @endif
                     @if (!$isSubscription)
-                        <p><strong>Video:</strong> {{ $transaction->video->title ?? '-' }}</p>
-                        <p><strong>Resolution:</strong> {{ $transaction->video->ppv_plan ?? '-' }}</p>
+                        @if ($transaction->video)
+                            <p><strong>Video:</strong> {{ $transaction->video->title }}</p>
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
+                            <p><strong>Type:</strong> Video</p>
+                        @elseif($transaction->series)
+                            <p><strong>Series:</strong> {{ $transaction->series->title }}</p>
+                            @if ($transaction->SeriesSeason)
+                            <p><strong>Season:</strong> {{ $transaction->SeriesSeason->series_seasons_name }}</p>
+                            @else
+                                <p>-</p>
+                            @endif
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
+                            <p><strong>Type:</strong> Season</p>
+                        @elseif($transaction->livestream)
+                            <p><strong>Video:</strong> {{ $transaction->livestream->title }}</p>
+                            <p><strong>Resolution:</strong> {{ $transaction->ppv_plan ? $transaction->ppv_plan : '-' }}</p>
+                            <p><strong>Type:</strong> Livestream</p>
+                        @else
+                            <p><strong>Video:</strong> -</p>
+                            <p><strong>Type:</strong> -</p>
+                        @endif
+                        @if ($transaction->status == 'failed')
+                            <p><strong>Failure Reason:</strong> {{ $transaction->payment_failure_reason }}</p>
+                        @endif
                     @endif
                 </div>
 
                 <div class="col-lg-6">
                     <h5 class="text-secondary border-bottom pb-2 mb-3">User Information</h5>
                     @if ($transaction->user)
-                        <p><strong>Name:</strong> {{ $transaction->user->name }}</p>
+                        <p><strong>Name:</strong> {{ $transaction->user->username }}</p>
                     @endif
                     @if ($transaction->user)
                         <p><strong>Email:</strong> {{ $transaction->user->email }}</p>

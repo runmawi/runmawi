@@ -115,17 +115,17 @@ entertainment.</p>
                       <p>Follow us :</p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" target="_blank" class="ml-1" aria-label="insta">
-                        <img class="web-image" width="40px" height="40px" src="<?php echo URL::to('/assets/img/lan/i.webp'); ?>" alt="instagram"/>
+                        <img class="web-image" width="35px" height="35px" src="<?php echo URL::to('/assets/img/lan/i.webp'); ?>" alt="instagram"/>
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" target="_blank" class="ml-1" aria-label="twitter">
-                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" alt="twitter"/>
+                          <img class="web-image" width="35px" height="35px" src="<?php echo  URL::to('/assets/img/lan/t.webp')?>" alt="twitter"/>
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" target="_blank" class="ml-1" aria-label="face">
-                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="facebook" />
+                          <img class="web-image" width="35px" height="35px" src="<?php echo  URL::to('/assets/img/lan/f.webp')?>" alt="facebook" />
                       </a>
                       <?php } ?>
 
@@ -137,7 +137,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" target="_blank" class="ml-1" aria-label="linkedIN">
-                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="linkedin"/>
+                          <img class="web-image" width="35px" height="35px" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="linkedin"/>
                       </a>
                       <?php } ?>
 
@@ -149,7 +149,7 @@ entertainment.</p>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" target="_blank" class="ml-1" aria-label="tube">
-                          <img class="web-image" width="40px" height="40px" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" alt="youtube"/>
+                          <img class="web-image" width="35px" height="35px" src="<?php echo  URL::to('/assets/img/lan/y.webp')?>" alt="youtube"/>
                       </a>
                       <?php } ?>
 
@@ -301,22 +301,11 @@ function about(evt , id) {
 <link rel="preload" href="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>" as="script">
 <script defer src="<?= URL::to('/'). '/assets/js/lazysizes.min.js';?>"></script>
  
-<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>" as="script">
-<script defer src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- 
 <link rel="preload" href="<?= URL::to('/'). '/assets/js/hls.min.js';?>" as="script">
 <script defer src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
 
-<link rel="preload" href="<?= URL::to('/'). '/assets/js/plyr.js';?>" as="script">
-<script defer src="<?= URL::to('/'). '/assets/js/plyr.js';?>"></script>
-
 <script defer src="<?= URL::to('/'). '/assets/js/hls.js';?>"></script>
- <!-- <script defer src="<?= URL::to('/'). '/assets/js/.js';?>"></script> -->
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
-
-<link rel="preload" href="https://cdn.plyr.io/3.4.6/plyr.js" as="script">
-<script src="https://cdn.plyr.io/3.4.6/plyr.js"></script>
-        
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>        
 
 <?php
 
@@ -331,8 +320,7 @@ try {
     include('episode_player_script.blade.php');
   }
   else{
-
-    include('footerPlayerScript.blade.php');
+    // include('footerPlayerScript.blade.php');
   }
 
 } catch (\Throwable $th) {

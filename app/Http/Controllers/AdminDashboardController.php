@@ -12,6 +12,7 @@ use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNAdapter;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNClient;
 use PlatformCommunity\Flysystem\BunnyCDN\BunnyCDNRegion;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
 use Mail;
 use URL;
 use Auth;
@@ -260,21 +261,6 @@ class AdminDashboardController extends Controller
         $GuestLoggedDevice = GuestLoggedDevice::count();
         $total_visitors = $LoggedDevice + $GuestLoggedDevice ;
 
-        $storage_vai_symfony = null ;
-
-        try {
-            $process = new Process(['du', '-sh']);
-            $process->run();
-        
-            if (!$process->isSuccessful()) {
-                throw new ProcessFailedException($process);
-            }
-
-            $storage_vai_symfony =  $process->getOutput();
-
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
         
         $data = array(
                 'settings' => $settings,
@@ -296,12 +282,30 @@ class AdminDashboardController extends Controller
                 'VideoCategory' => $VideoCategory,
                 'Language' => $Language,
                 'total_visitors' => $total_visitors,
-                'storage_vai_symfony' => $storage_vai_symfony ,
         );
         
 		return View::make('admin.dashboard', $data);
     }
         
+    }
+
+    public function getStorageData(): JsonResponse
+    {
+        try {
+            $process = new Process(['du', '-sh']);
+            $process->run();
+
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+
+            $storage_vai_symfony = $process->getOutput();
+
+            return response()->json(['storage_vai_symfony' => "Total Storage : ".$storage_vai_symfony]);
+
+        } catch (\Throwable $th) {
+            return response()->json(['storage_vai_symfony' => 'An error occurred while fetching storage data.'], 500);
+        }
     }
 
     public function Masterlist()

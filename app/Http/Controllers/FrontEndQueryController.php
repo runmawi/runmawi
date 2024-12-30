@@ -47,6 +47,7 @@ use App\CategoryVideo;
 use App\Videoartist;
 use App\ContinueWatching;
 use App\CountryCode;
+use App\SeriesSeason;
 
 class FrontEndQueryController extends Controller
 {
@@ -322,34 +323,58 @@ class FrontEndQueryController extends Controller
 
     public function Series_based_on_Networks()
     {
-        $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
+        $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
+        ->orderBy('order')
+        ->get()
+        ->map(function ($item) {
+            $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                ->where('series.active', 1)
+                ->where('series_network_order.network_id', $item->id)
+                ->orderBy('series_network_order.order', 'asc')
+                ->get()
+                ->map(function ($series) {
+                    $series->id = $series->series_id;
+                    $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+                        ? URL::to('public/uploads/images/' . $series->image)
+                        : $this->default_vertical_image;
+    
+                    $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
+                        ? URL::to('public/uploads/images/' . $series->player_image)
+                        : $this->default_horizontal_image_url;
+    
+                    $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY');
+                    $series['duration_format'] = !is_null($series->duration)
+                        ? Carbon::parse($series->duration)->format('G\H i\M')
+                        : null;
+    
+                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->where('active',1)
+                        ->get()->take(15)
+                        ->map(function ($episode) {
+                            $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
+                                ? URL::to('public/uploads/images/' . $episode->image)
+                                : $this->default_vertical_image;
+                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? URL::to('public/uploads/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
+    
+                            $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
+                                ->pluck('series_seasons_name')
+                                ->first();
+    
+                            return $episode;
+                        });
+    
+                        $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
 
-            $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                        ->whereJsonContains('network_id', [(string)$item->id])
-        
-                        ->latest('series.created_at')->get()->map(function ($item) { 
-                
-                $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  $this->default_horizontal_image_url ;
-        
-                $item['upload_on'] = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
-        
-                $item['duration_format'] =  !is_null($item->duration) ?  Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-        
-                $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes->take(15)
-                                                        ->map(function ($item) {
-                                                        $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                                                        return $item;
-                                                    });
-                $item['has_more'] = Series::find($item->id)->Series_depends_episodes->count() > 14;
-        
-                $item['source'] = 'Series';
-                return $item;
-                                                                    
-            });
+                        // Check if there are more than 14 episodes
+                        $series['has_more'] = $totalEpisodes > 14;
+                    $series['source'] = 'Series';
+    
+                    return $series;
+                });
+    
             return $item;
         });
-
+    
+        // dd(count($Series_based_on_Networks));
         return $Series_based_on_Networks;
     }
 
@@ -446,7 +471,7 @@ class FrontEndQueryController extends Controller
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
-        
+
                 switch ($livestream->recurring_program) {
                     case 'custom':
                         $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
@@ -499,7 +524,7 @@ class FrontEndQueryController extends Controller
         });
 
         $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-        
+
             if ($livestream->publish_type === 'publish_now') {
 
                 return $livestream->created_at;
@@ -509,14 +534,16 @@ class FrontEndQueryController extends Controller
                 return $livestream->publish_time;
 
             } elseif ($livestream->publish_type === 'recurring_program') {
-
-                return $livestream->custom_start_program_time ?? $livestream->program_start_time;
+                
+                $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
+                
+                return $custom_start_time ?? $livestream->program_start_time;
             }
 
             return $livestream->publish_type;
         })
         ->values();  
-        
+        // dd($livestreams_sort);
         return $livestreams_sort;
     }
 
@@ -1377,6 +1404,12 @@ class FrontEndQueryController extends Controller
                                 ->get();
 
         return $top_ten_videos;
+    }
+
+    public function RadioStation()
+    {
+        $radiostations = LiveStream::where('stream_upload_via','radio_station')->limit(15)->get();
+        return $radiostations ;
     }
 
     // public function continueWatching(){

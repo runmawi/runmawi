@@ -385,8 +385,6 @@
                                 <div class="ppv-block">
                                     <h2 class="mb-3"><?php echo __('Pay now to watch'); ?> <?php echo $video->title; ?></h2>
 
-
-
                                         <h4 class="text-center" style="margin-top:40px;"><a href="<?=URL::to('/') . '/stripe/billings-details' ?>"><p><?php echo __('Click here to purchase and watch this live'); ?></p></a></h4>
 
                                     <!-- PPV button -->
@@ -492,12 +490,21 @@
 
                 <h2>Live Streaming On {{ $video->recurring_program }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
             
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() && $video->access == "ppv")
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+                
             @elseif ($video->recurring_program == "weekly")
 
                 @switch($video->recurring_program_week_day)
-                    @case(0)
-                        @php $recurring_program_week_day = "Sunday"; @endphp
-                        @break
                     @case(1)
                         @php $recurring_program_week_day = "Monday"; @endphp
                         @break
@@ -516,16 +523,43 @@
                     @case(6)
                         @php $recurring_program_week_day = "Saturday"; @endphp
                         @break
+                    @case(7)
+                        @php $recurring_program_week_day = "Sunday"; @endphp
+                        @break
                     @default
                         @php $recurring_program_week_day = "Unknown"; @endphp
                 @endswitch
             
                 <h2>Live Streaming On Every Week {{ $recurring_program_week_day }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
-            
+               
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() && $video->access == "ppv")
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+
             @elseif ($video->recurring_program == "monthly")
                     
                 <h2>Live Streaming On Every Month on Day {{ $video->recurring_program_month_day }} from {{ $startTime }} to {{ $endTime }} - {{ $timezone }}</h2>
             
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() && $video->access == "ppv" )
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
+
             @elseif ($video->recurring_program == "custom")
 
                 @php
@@ -535,6 +569,18 @@
 
                 <h3>Live Streaming On {{ $customStartTime }} - {{ $customEndTime }}</h3>
                 <h3>({{ $timezone }})</h3>
+
+                @if ( !Auth::guest() && Auth::user()->role != "admin" && ($ppv_exist == 0 ) && ($video->access == "ppv"))
+                    
+                    <button data-toggle="modal" data-target="#exampleModalCenter" style="width: 32%;margin-left: 36%; margin-top:19px"  class="view-count btn btn-primary btn-block rent-video">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+
+                @elseif( Auth::guest() && $video->access == "ppv")
+                    <button style="width: 32%;margin-left: 36%; margin-top:19px" class="btn btn-primary btn-block" onclick="window.location.href='<?php echo route('login'); ?>'">
+                        {{ __('Purchase Now '). ' ' . $currency->symbol.' '.$video->ppv_price  }} 
+                    </button>
+                @endif  
             @endif
         @endif
     </div>
@@ -744,10 +790,9 @@
                                 <?php if( $stripe_payment_setting != null && $stripe_payment_setting->payment_type == "Stripe" ){?>
                                     <label class="radio-inline mb-0 mt-2 mr-2 d-flex align-items-center ">
                                         <input type="radio" class="payment_btn" id="tres_important" checked name="payment_method" value= <?= $stripe_payment_setting->payment_type ?>  data-value="stripe">
-                                        <?php  echo $stripe_payment_setting->payment_type ;  ?>
+                                        <?php  echo $stripe_payment_setting->stripe_lable ;  ?>
                                     </label>      
                                 <?php } ?>
-
                             
                                     <!-- Razorpay Button -->
                                 <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
@@ -780,9 +825,16 @@
 
                 <div class="modal-footer">
 
-                <div class="Stripe_button">  <!-- Stripe Button -->
-                    <button class="btn2  btn-outline-primary" onclick="pay(<?php echo $video->ppv_price; ?>)"> <?php echo __('Continue'); ?> </button>
-                </div>
+                    <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
+                        <div class="Stripe_button">  <!-- Stripe Button -->
+
+                            <button class="btn2 btn-outline-primary" 
+                                    onclick="location.href='<?php echo route('Stripe_payment_live_PPV_Purchase', ['live_id' => $video->id, 'amount' => $video->ppv_price]); ?>'">
+                                <?php echo __('Continue'); ?>
+                            </button>
+                        </div>
+                    <?php } ?>
+
                                     
                 <div class="Razorpay_button">   <!-- Razorpay Button -->
                     <?php if( $Razorpay_payment_setting != null && $Razorpay_payment_setting->payment_type == "Razorpay" ){?>
@@ -810,7 +862,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
             <?php if (isset($videonext)) { ?>
                 <div class="next_video" style="display: none;"><?=$videonext->slug; ?></div>
@@ -1099,47 +1151,47 @@ document.getElementById("demo").innerHTML = "EXPIRED";
 
     var ppv_exits = <?= $ppv_exists ?>;
 
-    if( ppv_exits == 1 ){
+    // if( ppv_exits == 1 ){
 
-        var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
+    //     var i = setInterval(function() { PPV_live_PurchaseUpdate(); }, 60 * 1000);
 
-        window.onload = unseen_expirydate_checking();
+    //     window.onload = unseen_expirydate_checking();
         
-        function PPV_live_PurchaseUpdate() {
+    //     function PPV_live_PurchaseUpdate() {
 
-        $.ajax({
-                type:'post',
-                url:'<?= route('PPV_live_PurchaseUpdate') ?>',
-                data: {
-                        "_token"   : "<?= csrf_token(); ?>",
-                        "live_id" : "<?php echo $video->id; ?>", 
-                    },
-                success:function(data) {
-                    if(data.status == true){
-                        window.location.reload();
-                    }
-                }
-                });
-        }
+    //     $.ajax({
+    //             type:'post',
+    //             url:'<?= route('PPV_live_PurchaseUpdate') ?>',
+    //             data: {
+    //                     "_token"   : "<?= csrf_token(); ?>",
+    //                     "live_id" : "<?php echo $video->id; ?>", 
+    //                 },
+    //             success:function(data) {
+    //                 if(data.status == true){
+    //                     window.location.reload();
+    //                 }
+    //             }
+    //             });
+    //     }
 
-        function unseen_expirydate_checking() {
+    //     function unseen_expirydate_checking() {
 
-            $.ajax({
-                type:'post',
-                url:'<?= route('unseen_expirydate_checking') ?>',
-                data: {
-                        "_token"   : "<?= csrf_token(); ?>",
-                        "live_id" : "<?php echo $video->id; ?>", 
-                    },
-                success:function(data) {
-                    console.log(data);
-                    if(data.status == true){
-                        window.location.reload();
-                    }
-                }
-            });
-        }
-    }
+    //         $.ajax({
+    //             type:'post',
+    //             url:'<?= route('unseen_expirydate_checking') ?>',
+    //             data: {
+    //                     "_token"   : "<?= csrf_token(); ?>",
+    //                     "live_id" : "<?php echo $video->id; ?>", 
+    //                 },
+    //             success:function(data) {
+    //                 console.log(data);
+    //                 if(data.status == true){
+    //                     window.location.reload();
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
 </script>
 
 <script>

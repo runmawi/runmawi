@@ -3,7 +3,7 @@
     let video_url = "<?php echo $episode_details->Episode_url; ?>";
     var videoId = "<?php echo $episode_details->id; ?>";
     var userId = "<?php echo auth()->id(); ?>";
-    var monetization_view_limit = "<?php echo $monetization_view_limit; ?>";
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>";
     var played_views = "<?php echo $episode_details->played_views; ?>";
     var user_role = "<?php echo $user_role; ?>";
     
@@ -151,7 +151,7 @@
             currentTime = Math.floor(currentTime);
             var countview;
 
-            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent) {
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSen && currentTime > video_viewcount_limit) {
                 viewCountSent = true;
                 countview = 1;
                 $.ajax({

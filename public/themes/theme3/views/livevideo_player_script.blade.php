@@ -1,5 +1,7 @@
 <script>
-
+    var video_viewcount_limit = "<?php echo $video_viewcount_limit; ?>"; 
+    var played_views = "<?php echo $Livestream_details->played_views; ?>";
+    var user_role = "<?php echo $user_role; ?>";
     let video_url = "<?php echo $Livestream_details->livestream_URL; ?>";
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -90,6 +92,51 @@
                 }
             }
         });
+
+        
+        
+        let viewCountSent = false;
+
+        function LivestreamPartnerMonetization(videoId, currentTime) {
+            currentTime = Math.floor(currentTime);
+            var countview;
+
+            if ((user_role === 'registered' || user_role === 'subscriber' || user_role === 'guest') && !viewCountSent && currentTime > video_viewcount_limit) {
+                viewCountSent = true;
+                countview = 1;
+            
+                $.ajax({
+                    url: "<?php echo URL::to('LivestreamPartnerMonetization');?>",
+                    type: 'POST',
+                    data: {
+                        _token: '<?= csrf_token() ?>',
+                        video_id: videoId,
+                        currentTime: currentTime,
+                        countview: countview,
+                    },
+                });
+            }
+        }
+
+        if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
+            player.on('timeupdate', function() {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            });
+
+            player.on('pause', function() {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            });
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                var currentTime = player.currentTime();
+                LivestreamPartnerMonetization(videoId, currentTime);
+            }
+        });
+
 
         
         player.controlBar.el().appendChild(Back_button);

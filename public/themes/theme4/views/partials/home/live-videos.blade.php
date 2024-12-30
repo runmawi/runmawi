@@ -7,16 +7,16 @@
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
                         <h4 class="main-title mar-left"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ optional($order_settings_list[3])->header_name }}</a></h4>
-                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ 'view all' }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[3]->url) : null }} ">{{ 'View all' }}</a></h4>
                     </div>
 
                     <div class="channels-list">
                         <div class="channel-row">
-                            <div id="trending-slider-nav" class="video-list live-stream-video">
+                            <div id="trending-slider-nav" class="video-list live-stream-video flickity-slider">
                                 @foreach ($data as $key => $livestream_videos)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
+                                            <img data-flickity-lazyload="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                                 <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                             @elseif( $livestream_videos->recurring_program_live_animation  == true )
@@ -49,10 +49,6 @@
                                             @php
                                                 switch ($livestream_videos->recurring_program_week_day) {
 
-                                                    case 0:
-                                                        $recurring_program_week_day = 'Sunday' ;
-                                                    break;
-
                                                     case 1 :
                                                         $recurring_program_week_day =  'Monday' ;
                                                     break;
@@ -75,6 +71,10 @@
 
                                                     case 6:
                                                         $recurring_program_week_days =  'Saturday' ;
+                                                    break;
+
+                                                    case 7:
+                                                        $recurring_program_week_day = 'Sunday' ;
                                                     break;
 
                                                     default:
@@ -178,14 +178,15 @@
     var elem = document.querySelector('.live-stream-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload:true,
-    });
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7,
+        });
+
     document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
             document.querySelectorAll('.live-stream-video .item').forEach(function(item) {

@@ -1,4 +1,8 @@
 @php  include public_path('themes/theme4/views/header.php'); @endphp
+@php
+    $embed_media_url = URL::to('category/videos/embed/'.$videodetail->slug);
+    $url_path = '<iframe width="853" height="480" src="' . $embed_media_url . '"  allowfullscreen></iframe>';
+@endphp
 
 {{-- Style Link--}}
     <link rel="stylesheet" href="{{ asset('public/themes/theme4/assets/css/video-js/video-details.css') }}">
@@ -143,71 +147,104 @@
                                             <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
                                         </span>
                                     </li>
+
+                                    @if($videodetail->access == "guest")
+                                        <li>
+                                            <a href="#" onclick="EmbedCopy();" class="share-ico"><span><i
+                                                        class="ri-links-fill mt-1"></i></span></a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
                         <div class="row pl-3">  
-                                @if ( $videodetail->PPV_Exits == 1 && $videodetail->access == 'ppv' ||  !Auth::guest() && Auth::user()->role =="admin" 
-                                || !Auth::guest() &&  settings_enable_rent() == 1 && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' 
-                                || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'subscriber' || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'registered' || Auth::guest() ||  !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'guest' )  
-                                    <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                            </svg>
-                                            <span class="text pr-2"> {{ __('Watch Now') }} </span>
+                            @if ( $videodetail->users_video_visibility_status == false && $videodetail->type == 'VideoCipher')
+
+                                @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) && $videodetail->access == 'ppv'
+                                || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) && $videodetail->access == 'ppv'
+                                || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) && $videodetail->access == 'ppv') 
+                                    <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2 text-white"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
                                         </div>
                                     </a>
-                                @elseif(  !Auth::guest() &&  Auth::user()->role == 'subscriber' &&  settings_enable_rent() == 0  && $videodetail->access == 'ppv' 
-                                    || !Auth::guest() && Auth::user()->role == 'subscriber' && $videodetail->access == 'ppv' || !Auth::guest() &&  Auth::user()->role == 'registered' && $videodetail->access == 'ppv')
-
-                                        <a class="btn" onclick="pay(<?php if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 1){ echo PPV_CurrencyConvert($videodetail->ppv_price); }else if($videodetail->access == 'ppv' && $videodetail->ppv_price != null && $CurrencySetting == 0){ echo __(@$videodetail->ppv_price) ; } ?>)">
-                                                <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
-                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                    </svg>
-                                                    <span class="text pr-2"> {{ __('Purchase Now') }} </span>
-                                                </div>
-                                        </a>
-                                @elseif(  !Auth::guest() && Auth::user()->role != 'subscriber' && $videodetail->access == 'subscriber')
-
-                                        <a class="btn" href="{{ URL::to('/becomesubscriber') }}">
-                                                <div class="playbtn" style="gap:5px">    {{-- Rent Play --}}
-                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                    </svg>
-                                                    <span class="text pr-2"> {{ __('Subscribe Now') }} </span>
-                                                </div>
-                                        </a>
-
-                                @elseif(  Auth::guest() && $videodetail->access == 'guest')
-
-                                        <a class="btn" href="{{ route('video-js-fullplayer',[ optional($videodetail)->slug ])}}">
-                                                <div class="playbtn" style="gap:5px">    {{-- Play --}}
-                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                        <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                        <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                    </svg>
-                                                    <span class="text pr-2"> {{ __('Watch Now') }} </span>
-                                                </div>
-                                        </a>
-
                                 @else
-
-                                    <a class="btn"  href="{{ URL::to('/login') }}" >
-                                            <div class="playbtn" style="gap:5px">    
-                                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
-                                                    <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
-                                                    <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
-                                                </svg>
-                                                <span class="text pr-2"> {{ __('Purchase Now') }} </span>
+                                
+                                    @if ( $videodetail->users_video_visibility_Rent_button || $videodetail->users_video_visibility_becomesubscriber_button || $videodetail->users_video_visibility_register_button || $videodetail->users_video_visibility_block_button )
+                                        <a class="btn play_button" {{ $videodetail->users_video_visibility_Rent_button ? 'data-toggle=modal data-target=#video-purchase-now-modal' : 'href=' . $videodetail->users_video_visibility_redirect_url }}>
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
                                             </div>
-                                    </a>
+                                        </a>
 
+                                        @if( Auth::guest() && $videodetail->access == "ppv" && $subscribe_btn == 1 || Auth::check() && Auth::user()->role == "registered" && $videodetail->access == "ppv" && $subscribe_btn == 1)
+                                            <a class="btn play_button" href="{{ URL::to('/becomesubscriber') }}">
+                                                <div class="playbtn" style="gap:5px">
+                                                    {!! $play_btn_svg !!}
+                                                    <span class="text pr-2 text-white"> {{ __( !empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now' ) }} </span>
+                                                </div>
+                                            </a>
+                                        @endif
+
+                                    @endif
                                 @endif
+
+                                {{-- subscriber & PPV  --}}
+
+                                {{-- @if ( $videodetail->access == "subscriber" && !is_null($videodetail->ppv_price) )
+                                    <a class="btn" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2"> {{ __( 'Purchase Now' ) }} </span>
+                                        </div>
+                                    </a>
+                                @endif  --}}
+
+                            @else
+                                @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' && $videodetail->type == 'VideoCipher'
+                                || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' && $videodetail->type == 'VideoCipher'
+                                || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'subscriber' && $videodetail->type == 'VideoCipher'
+                                || !Auth::guest() && Auth::user()->role == 'admin' && Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'ppv' && $videodetail->type == 'VideoCipher')
+                                    
+                                <div class="dropdown btn" id="guest-qualitys-selct">
+                                    <div class="playbtn" style="gap:5px;">
+                                        {!! $play_btn_svg !!}
+                                        <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ __( $videodetail->users_video_visibility_status_button ) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div id="guest-qualitys">
+                                    <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
+                                        @if(!empty($videodetail->video_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
+                                        @if(!empty($videodetail->video_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
+                                        @if(!empty($videodetail->video_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                    </div>
+                                </div>
+                                
+                                @else
+                                    <a class="btn play_button" href="{{ $videodetail->users_video_visibility_redirect_url }}">
+                                        <div class="playbtn" style="gap:5px">
+                                            {!! $play_btn_svg !!}
+                                            <span class="text pr-2 text-white"> {{ __( $videodetail->users_video_visibility_status_button ) }} </span>
+                                        </div>
+                                    </a>
+                                @endif
+                                
+                                @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
+                                    @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
+                                        <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
+                                @endif
+                                
+                            @endif
 
 
                             @php include public_path('themes/theme4/views/partials/social-share.php'); @endphp 
@@ -458,6 +495,10 @@
      body.light-theme .info span {color: <?php echo $GetLightText; ?>;opacity:1 !important;}
      body.light-theme ul.breadcrumb.p-0 a, body.light-theme ul.breadcrumb.p-0 li{color: <?php echo $GetLightText; ?>;}
 </style>
+
+<script>
+     
+</script>
 @php 
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-file.blade.php');
     include public_path('themes/theme4/views/video-js-Player/video/videos-details-script-stripe.blade.php');
