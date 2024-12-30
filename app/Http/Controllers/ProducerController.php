@@ -73,7 +73,11 @@ class ProducerController extends Controller
             if ($ModeratorsUser->otp != $request->otp) {
                 return back()->withErrors(['Password' => 'Invalid Password.']);
             }
-        
+
+            if(!empty($ModeratorsUser->parent_moderator_id) || $ModeratorsUser->parent_moderator_id != null){
+                $ModeratorsUser->id = $ModeratorsUser->parent_moderator_id;
+            }
+
             $request->session()->put('cpp_user_id', $ModeratorsUser->id);
 
             return redirect()->route('producer.home');
