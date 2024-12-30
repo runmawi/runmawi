@@ -81,6 +81,23 @@
                         </div>
 
                         <div class="col-md-6" >
+                            <div class="form-group">
+                                <label for="password" class=" col-form-label text-md-right">{{ __('Password') }}</label>
+                                <div class="d-flex position-relative">
+                                    <input id="password" type="password" class="form-control " name="password" value="{{ $moderators->password }}"  autocomplete="password">
+                                    <div class="position-absolute" style="right:0;">
+                                        <span class="input-group-btn" id="eyeSlash">
+                                            <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                        </span>
+                                        <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                            <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" >
                             <div class="form-group row">
                                 <label for="mobile_number" class=" col-form-label text-md-right">{{ __('Mobile Number') }}</label>
                                 <input id="mobile_number" type="text" class="form-control " name="mobile_number" value="{{ $moderators->mobile_number }}"  autocomplete="email">
@@ -288,6 +305,21 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function visibility1() {
+        var x = document.getElementById('password');
+        if (x.type === 'password') {
+            x.type = "text";
+            $('#eyeShow').show();
+            $('#eyeSlash').hide();
+        } else {
+            x.type = "password";
+            $('#eyeShow').hide();
+            $('#eyeSlash').show();
+        }
+    }
+</script>
 
 <script>
 

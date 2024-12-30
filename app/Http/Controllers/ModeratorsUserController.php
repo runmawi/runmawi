@@ -814,6 +814,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser = ModeratorsUser::find($id);
                 $moderatorsuser["username"] = $data["username"];
                 $moderatorsuser["email"] = $data["email_id"];
+                $moderatorsuser["password"] = $data["password"];
                 $moderatorsuser["mobile_number"] = $data["mobile_number"];
                 $moderatorsuser["description"] = $data["description"];
                 $moderatorsuser["user_role"] = $data["user_role"];
