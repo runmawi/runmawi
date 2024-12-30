@@ -2082,6 +2082,17 @@ public function verifyandupdatepassword(Request $request)
               $videoId = $item['videos_url']; 
               $apiKey = videocipher_Key();
               $curl = curl_init();
+              $watermarkText = User::where('id',$data['user_id'])->pluck('mobile')->first(); 
+              $annotateJson = json_encode([
+                  [
+                      "type" => "rtext",
+                      "text" => $watermarkText,
+                      "alpha" => "0.60",
+                      "color" => "0xFF0000", 
+                      "size" => "15",
+                      "interval" => "5000",
+                  ]
+              ]);
 
               curl_setopt_array($curl, array(
                   CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
@@ -2093,6 +2104,7 @@ public function verifyandupdatepassword(Request $request)
                   CURLOPT_CUSTOMREQUEST => "POST",
                   CURLOPT_POSTFIELDS => json_encode([
                       "ttl" => 30000, 
+                      "annotate" => $annotateJson
                   ]),
                   CURLOPT_HTTPHEADER => array(
                       "Accept: application/json",
@@ -7612,6 +7624,17 @@ return response()->json($response, 200);
          $videoId = $item['Episode_url']; 
          $apiKey = videocipher_Key();
          $curl = curl_init();
+         $watermarkText = User::where('id',$data['user_id'])->pluck('mobile')->first(); 
+          $annotateJson = json_encode([
+              [
+                  "type" => "rtext",
+                  "text" => $watermarkText,
+                  "alpha" => "0.60",
+                  "color" => "0xFF0000", 
+                  "size" => "15",
+                  "interval" => "5000",
+              ]
+          ]);
 
          curl_setopt_array($curl, array(
              CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
@@ -7623,7 +7646,8 @@ return response()->json($response, 200);
              CURLOPT_CUSTOMREQUEST => "POST",
              CURLOPT_POSTFIELDS => json_encode([
                  "ttl" => 30000, 
-             ]),
+                 "annotate" => $annotateJson
+            ]),
              CURLOPT_HTTPHEADER => array(
                  "Accept: application/json",
                  "Authorization: Apisecret $apiKey",

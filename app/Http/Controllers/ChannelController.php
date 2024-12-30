@@ -5685,6 +5685,17 @@ class ChannelController extends Controller
                 $videoId = $item['videos_url']; 
                 $apiKey = videocipher_Key();
                 $curl = curl_init();
+                $watermarkText = Auth::user()->mobile; 
+                $annotateJson = json_encode([
+                    [
+                        "type" => "rtext",
+                        "text" => $watermarkText,
+                        "alpha" => "0.60",
+                        "color" => "0xFF0000", 
+                        "size" => "15",
+                        "interval" => "5000",
+                    ]
+                ]);
 
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
@@ -5696,6 +5707,7 @@ class ChannelController extends Controller
                     CURLOPT_CUSTOMREQUEST => "POST",
                     CURLOPT_POSTFIELDS => json_encode([
                         "ttl" => 30000, 
+                        "annotate" => $annotateJson
                     ]),
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
