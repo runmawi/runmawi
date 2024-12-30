@@ -154,6 +154,21 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6" style="width: 50%; float: left;">
+                            <div class="form-group row">
+                            <label for="parent_moderator_id" class=" col-form-label text-md-right">{{ __('Assign to Partner') }}</label>
+                               <select class="form-control" name="parent_moderator_id" id="parent_moderator_id">
+                                    <option value="">Select Partner</option>
+                                    @if($moderatorsuser->count() > 0)
+                                        @foreach($moderatorsuser as $value)
+                                        <option value="{{ $value->id }}">{{ $value->username }}</option>
+                                        @endForeach
+                                    @else
+                                        No Record Found
+                                    @endif  
+                               </select>
+                            </div>
+                        </div>
                        
                         <!-- <div class="col-md-6" style="width: 50%; float: left;">
 
