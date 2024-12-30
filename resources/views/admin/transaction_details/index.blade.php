@@ -98,7 +98,7 @@
                                                         @if ($transaction->status == 1)
                                                         <td class="bg-success">Success</td>
                                                         @else
-                                                            <td class="{{ $transaction->status == 'captured' || $transaction->status == 'authorised' ? 'bg-success' : ($transaction->status == 'failed' || $transaction->status == 'inactive'  ? 'bg-danger' : '') }}">
+                                                            <td class="{{ $transaction->status == 'captured' || $transaction->status == 'authorized' ? 'bg-success' : ($transaction->status == 'failed'  ? 'bg-danger' : '') }}">
                                                                 {{ $transaction->status ?: 'N/A' }}
                                                             </td>
                                                         @endif
