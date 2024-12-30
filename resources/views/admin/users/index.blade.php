@@ -89,6 +89,7 @@
                                        <th style="width: 20%;">Mobile No</th>
                                        <th style="width: 20%;">Email</th>
                                        <th style="width: 10%;">Role</th>
+                                       <th style="width: 10%;">OTP</th>
                                        <th style="width: 10%;">Status</th>
                                        <th style="width: 10%;">Action</th>
                                     </tr>
@@ -106,10 +107,11 @@
                                           </td>
 
                                           <td> {{ !empty($user->username) ? $user->username : $user->name }} </td>
-                                          <td>{{ @$user->ccode ." ". @$user->mobile}}</td>
+                                          <td>{{ @$user->ccode }}</td>
+                                          <td>{{  @$user->mobile}}</td>
                                           <td>{{ @$user->email}}</td>
                                           <td>{{ @$user->role}}</td>
-
+                                          <td>{{ @$user->otp}}</td>
                                           <td>
                                              @if($user->active)
                                                 <span class="badge iq-bg-success">Active</span>
@@ -198,6 +200,7 @@
                { data: 'mobile' },
                { data: 'email' },
                { data: 'role' },
+               { data: 'otp' },
                { data: 'status' },
                { data: 'action',}
             ],

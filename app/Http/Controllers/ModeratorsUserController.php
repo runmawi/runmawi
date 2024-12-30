@@ -220,7 +220,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->user_permission = $permission;
                 $moderatorsuser->commission_percentage = $request->commission_percentage;
                 $moderatorsuser->parent_moderator_id = $request->parent_moderator_id;
-
+                $moderatorsuser->otp = 12345;
 
                 $logopath = URL::to("/public/uploads/moderator_albums/");
                 $path = public_path() . "/uploads/moderator_albums/";
@@ -804,6 +804,7 @@ class ModeratorsUserController extends Controller
                 $role = ModeratorsRole::where("id", "=",$request->user_role)->get();
                 $permission = $role[0]->user_permission;
                 $userrolepermissioms = explode(",", $permission);
+                $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
                 // $data_delete = UserAccess::destroy('user_id', '=', $id);
                 // $user_permission = $data['user_permission'];
                 // $permission = implode(",",$user_permission);
@@ -812,6 +813,8 @@ class ModeratorsUserController extends Controller
                 } else {
                     $status = 0;
                 }
+                
+                $commission_percentage_value = !empty($data["commission_percentage"]) ? $data["commission_percentage"]: null;
                 $updated_at = date("Y-m-d h:i:s");
                 $id = $data["id"];
                 $moderatorsuser = ModeratorsUser::find($id);
@@ -824,9 +827,9 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser["status"] = $status;
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
-                $moderatorsuser["commission_percentage"] = !empty($data["commission_percentage"]) ?? $data["commission_percentage"] ;
+                $moderatorsuser["commission_percentage"] = $commission_percentage_value;
                 $moderatorsuser["parent_moderator_id"] = $data["parent_moderator_id"];
-
+                // dd( $moderatorsuser["commission_percentage"]);
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";
                 $picture = $data["picture"];

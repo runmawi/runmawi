@@ -51,7 +51,6 @@
                 @if (Session::has('message'))
                     <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                 @endif
-
                 @if(count($errors) > 0)
                     @foreach( $errors->all() as $message )
                         <div class="alert alert-danger display-hide" id="successMessage">

@@ -137,12 +137,16 @@
                         <td> {{ @$item->source_id }} </td>
                         <td> {{ $item->source_name }}</td>
                         <td> {{ number_format(@$item->total_amount_without_gst, 2) }} </td>
-                        <td> {{ number_format(@$item->gst_value, 2) }} </td>
                         <td> {{ number_format(@$item->total_amount_with_gst, 2) }} </td>
+                        <td> {{ number_format(@$item->gst_value, 2) }} </td>
                         <td> <b> {{ currency_symbol() . ' ' . number_format($item->moderator_commission_sum, 2) }}
-                                ({{ number_format($item->moderator_commission_percentage, 2) }}%) </b></td>
+                                ({{ number_format($item->moderator_commission_percentage, 2) }}%) 
+                            </b>
+                        </td>
                         <td> <b> {{ currency_symbol() . ' ' . number_format($item->admin_commission_sum, 2) }}
-                                ({{ number_format($item->admin_commission_percentage, 2) }}%) </b></td>
+                                ({{ number_format($item->admin_commission_percentage, 2) }}%) 
+                            </b>
+                        </td>
                     </tr>
 
                     @php
