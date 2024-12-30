@@ -163,7 +163,7 @@
 
 
 <script>
-    document.querySelectorAll('.flickity-slider').forEach(function(elem) {
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,

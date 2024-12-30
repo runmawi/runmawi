@@ -3,6 +3,7 @@
    $Script = App\Script::pluck('header_script')->toArray();
    $theme_mode = App\SiteTheme::pluck('theme_mode')->first();
    $theme = App\SiteTheme::first();
+   $css = App\Css::pluck('custom_css')->toArray();
 
    $signin_header = App\SiteTheme::pluck('signin_header')->first();
 
@@ -393,6 +394,14 @@
          <?= $Scriptheader ?>
       <?php }
    } ?>
+
+   <?php
+      if(count($css) > 0){
+         foreach($css as $customCss){   ?>
+            <?= $customCss ?>
+         <?php }
+      } 
+   ?>
 </head>
 
 <style>

@@ -85,21 +85,21 @@
 
            
 
-   <div class="main-content" id="home_sections">
+            <!-- MainContent -->
+   <div class="main-content" id="home_sections" next-page-url="{{ $order_settings->nextPageUrl() }} ">
                               
-            {{-- continue watching videos --}}
+                           {{-- continue watching videos --}}
       @if( !Auth::guest() &&  $home_settings->continue_watching == 1 )
          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/continue-watching', array_merge($continue_watching, [
-         'order_settings_list' => $order_settings_list ,
-         'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ,
-         'default_horizontal_image_url' => $default_horizontal_image_url , 'default_vertical_image_url' => $default_vertical_image_url 
-         ]))->content() !!}
+            'order_settings_list' => $order_settings_list ,
+            'multiple_compress_image' => $multiple_compress_image ,'videos_expiry_date_status' => $videos_expiry_date_status ,
+            'default_horizontal_image_url' => $default_horizontal_image_url , 'default_vertical_image_url' => $default_vertical_image_url 
+             ]))->content() !!}
       @endif
-
+      
       @partial('home_sections')
 
-      </div>
-  
+   </div>
 
    <div class="auto-load text-center d-flex align-items-center justify-content-center" style="display: none; width:35px; height:35px;margin-right:auto;margin-left:auto;" >
 
@@ -203,14 +203,6 @@
       bottom: 0;
       z-index: 99;
    }
-   .scroller-status {
-      display: none;
-   }
-   .pagination {
-      display: none;
-   }
-   .s-margin{display:none;}
-
 
    @media screen and (max-height: 450px) {
       .sidenav {padding-top: 15px;}
@@ -221,76 +213,6 @@
 </style>
 
 <script>
-   $(document).ready(function () {
-       const $sMargins = $('.s-margin');
-       let currentIndex = 0;
-       const batchSize = 1;
-       $('.flickity-lazyloaded').show();
-
-       function initializeFlickity() {
-           $sMargins.find('.flickity-slider').each(function () {
-               const flickityInstance = $(this).data('flickity');
-               if (flickityInstance) {
-                   console.log('resize');
-                   flickityInstance.resize();
-
-                   let maxHeight = 0;
-                   $(this).find('.flickity-lazyloaded').each(function() {
-                       const imgHeight = $(this).height();
-                       if (imgHeight > maxHeight) {
-                           maxHeight = imgHeight;
-                       }
-                   });
-
-                   $(this).find('.flickity-viewport').css('min-height', maxHeight + 'px');
-               } else {
-                   console.log('loading');
-                   $(this).flickity({
-                       cellAlign: 'left',
-                       contain: true,
-                       groupCells: false,
-                       pageDots: false,
-                       draggable: true,
-                       freeScroll: true,
-                       imagesLoaded: true,
-                       lazyLoad: 10,
-                   });
-               }
-           });
-       }
-
-       function loadNextDivs() {
-           const batchEnd = currentIndex + batchSize;
-           $sMargins.slice(currentIndex, batchEnd).css('display', 'block');
-           currentIndex = batchEnd;
-
-           $sMargins.find('.flickity-slider').imagesLoaded()
-               .done(function() {
-                  initializeFlickity();
-            });
-
-           if (currentIndex >= $sMargins.length) {
-               $(window).off('scroll');
-           }
-       }
-
-       loadNextDivs();
-
-       $(window).scroll(function () {
-           if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
-               loadNextDivs();
-           }
-       });
-   });
-</script>
-
-
-
-<script>
-
-   
-
-
    window.onload = function() {
       const sidenav = document.querySelector('.sidenav');
       const rightnav = document.querySelector('.rightnav');
@@ -316,7 +238,41 @@
       }
    };
       
-   
+   var isFetching = false; 
+   var scrollFetch; 
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         var page_url = $("#home_sections").attr('next-page-url');
+         // console.log("scrolled");
+
+         if (page_url != null && !isFetching) {
+            isFetching = true;
+            $("#loader").removeClass("hidden-loader");
+
+            $.ajax({
+               url: page_url,
+               success: function (data) {
+                  if (data.view) {
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  } else {
+                     $("#home_sections").removeAttr('next-page-url');
+                  }
+               },
+               complete: function () {
+                  isFetching = false;
+                  if ($("#home_sections").attr('next-page-url') == null) {
+                     $("#loader").addClass("hidden-loader");
+                  }
+               }
+            });
+         }
+      }, 10);
+   });
+
    // width and height set dynamically
    document.addEventListener('DOMContentLoaded', function() {
       var images = document.querySelectorAll('.flickity-lazyloaded');
