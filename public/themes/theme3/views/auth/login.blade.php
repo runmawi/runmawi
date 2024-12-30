@@ -199,7 +199,7 @@ footer.mb-3{margin-top: 0 !important;}
                         <?php }else { ?> 
                             <img alt="apps-logo" class="apps"  src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>"  style="margin-bottom:0.3rem;"></div></div>
                         <?php } ?>
-                        <p class="text-center text-white mb-3" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
+                        <p class="text-center text-white mb-3 logo-text" style="font-size:11px;margin:0;"> <?= 'Created by Music Fans for Music Fans' ?></p>
                     <div class="row justify-content-center">
                         <h4><?= "Login to your Cad3nce account" ?></h4>
                         <div class="col-md-12">
