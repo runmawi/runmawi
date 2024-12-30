@@ -645,120 +645,18 @@ class ApiAuthContinueController extends Controller
         }
     }
 
-    public function UGCLike(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'ugc_video_id' => 'required|exists:ugc_videos,id',
-            'like' => 'required|boolean',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'false',
-                'message' => 'Validation errors',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_video_id;
-        $like = $request->like;
-
-        $existing_like = LikeDislike::where("ugc_video_id", $ugc_video_id)
-            ->where("user_id", $user_id)
-            ->first();
-
-        if ($existing_like) {
-            if ($like == 1) {
-                $existing_like->liked = 1;
-                $existing_like->disliked = 0;
-            } else {
-                $existing_like->liked = 0;
-                $existing_like->disliked = 1;
-            }
-            $existing_like->save();
-        } else {
-            $new_like = new LikeDislike();
-            $new_like->user_id = $user_id;
-            $new_like->ugc_video_id = $ugc_video_id;
-            $new_like->liked = $like == 1 ? 1 : 0;
-            $new_like->disliked = $like == 0 ? 1 : 0;
-            $new_like->save();
-            $existing_like = $new_like;
-        }
-
-        return response()->json([
-            'status' => 'true',
-            'liked' => $existing_like->liked,
-            'disliked' => $existing_like->disliked,
-            'message' => 'Success',
-        ], 200);
-    }
-
-    public function UGCDislike(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'ugc_video_id' => 'required|exists:ugc_videos,id',
-            'dislike' => 'required|boolean',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'false',
-                'message' => 'Validation errors',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_video_id;
-        $dislike = $request->dislike;
-
-        $existing_dislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
-            ->where('user_id', $user_id)
-            ->first();
-
-        if ($existing_dislike) {
-            if ($dislike == 1) {
-                $existing_dislike->liked = 0;
-                $existing_dislike->disliked = 1;
-            } else {
-                $existing_dislike->disliked = 0;
-            }
-            $existing_dislike->save();
-        } else {
-            $new_dislike = new LikeDislike();
-            $new_dislike->user_id = $user_id;
-            $new_dislike->ugc_video_id = $ugc_video_id;
-            $new_dislike->liked = 0;
-            $new_dislike->disliked = 1;
-            $new_dislike->save();
-
-            $existing_dislike = $new_dislike;
-        }
-
-        return response()->json([
-            'status' => 'true',
-            'liked' => $existing_dislike->liked,
-            'disliked' => $existing_dislike->disliked,
-            'message' => 'Success',
-        ], 200);
-    }
-
     public function ugcsubscribe(Request $request)
     {
 
         $request->validate([
-            'ugc_user_id' => 'required|exists:users,id',
-            'user_id' => 'required|exists:users,id|different:user_id',
+            'user_id' => 'required|exists:users,id',
+            'subscriber_id' => 'required',
         ]);
 
         try {
 
-            $user = User::find($request->ugc_user_id);
-            $subscriber = User::find($request->user_id);
+            $user = User::find($request->user_id);
+            $subscriber = User::find($request->subscriber_id);
 
             $exists = UGCSubscriber::where('user_id', $user->id)
                 ->where('subscriber_id', $subscriber->id)
@@ -789,17 +687,17 @@ class ApiAuthContinueController extends Controller
     public function ugcunsubscribe(Request $request)
     {
         $request->validate([
-            'ugc_user_id' => 'required|exists:users,id',
-            'user_id' => 'required|exists:users,id|different:user_id',
+            'user_id' => 'required|exists:users,id',
+            'unsubscriber_id' => 'required',
         ]);
 
         try {
 
-            $user = User::find($request->ugc_user_id);
-            $subscriber = User::find($request->user_id);
+            $user = User::find($request->user_id);
+            $unsubscriber = User::find($request->unsubscriber_id);
 
             $subscription = UGCSubscriber::where('user_id', $user->id)
-                ->where('subscriber_id', $subscriber->id);
+                ->where('subscriber_id', $unsubscriber->id);
 
             if ($subscription->exists()) {
                 $subscription->delete();
@@ -1172,4 +1070,88 @@ class ApiAuthContinueController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function ugclike(Request $request)
+    {
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $likeDislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                    ->where('user_id', $user_id)
+                                    ->first();
+
+        if ($likeDislike) {
+            if ($likeDislike->liked == 1) {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 0,
+                ]);
+            } else {
+                $likeDislike->update([
+                    'liked' => 1,
+                    'disliked' => 0,
+                ]);
+            }
+        } else {
+            LikeDislike::create([
+                'user_id' => $user_id,
+                'ugc_video_id' => $ugc_video_id,
+                'liked' => 1,
+                'disliked' => 0,
+            ]);
+        }
+
+        $status = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                ->where('user_id', $user_id)
+                                ->select('liked', 'disliked')
+                                ->first();
+        return response()->json([
+            'status' => 'true',
+            'like' => $status->liked,
+            'dislike' => $status->disliked,
+        ], 200);
+    }
+
+  
+    public function ugcdislike(Request $request)
+    {
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $likeDislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                  ->where('user_id', $user_id)
+                                  ->first();
+    
+        if ($likeDislike) {
+            if ($likeDislike->disliked == 1) {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 0,
+                ]);
+            } else {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 1,
+                ]);
+            }
+        } else {
+            LikeDislike::create([
+                'user_id' => $user_id,
+                'ugc_video_id' => $ugc_video_id,
+                'liked' => 0,
+                'disliked' => 1,
+            ]);
+        }
+    
+        $status = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                             ->where('user_id', $user_id)
+                             ->select('liked', 'disliked')
+                             ->first();
+    
+        return response()->json([
+            'status' => 'true',
+            'like' => $status->liked,
+            'dislike' => $status->disliked,
+        ], 200);
+    }
+    
+
 }
