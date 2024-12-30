@@ -19,24 +19,24 @@
                             </div>
 
 
-                            {{-- <div class="iq-card-header-toolbar d-flex align-items-baseline">
+                            <div class="iq-card-header-toolbar d-flex align-items-baseline">
                                 <div class="form-group mr-2">
                                     <input type="text" name="search" id="search" class="form-control"
                                         placeholder="Search Data" />
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                         
                         <div class="iq-card-body table-responsive">
                             <div class="table-view">
-                                <table id="ppv_payment_view_table" class="table table-striped table-bordered table movie_table " style="width:100%">
+                                <table class="table table-striped table-bordered table movie_table " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
                                             <th>Username</th>
                                             <th>Video Title</th>
                                             <th>Payment ID</th>
-                                            <th>Payment Mode</th>
+                                            {{-- <th>Payment Mode</th> --}}
                                             <th>Paid Amount</th>
                                             <th>Admin Amount</th>
                                             <th>Moderator Amount</th>
@@ -51,8 +51,8 @@
                                                 <td><p class="mb-0">{{ $key+1 }}</p></td>
                                                 <td> <p class="mb-0"></p>{{ $payment->username }}</td>
                                                 <td> <p class="mb-0">{{ $payment->title }}</p></td>
-                                                <td> <p class="mb-0">{{ $payment->stripe_id }}</p></td>
-                                                <td> <p class="mb-0">{{ $payment->card_type }}</p></td>
+                                                <td> <p class="mb-0">{{ $payment->payment_id }}</p></td>
+                                                {{-- <td> <p class="mb-0">{{ $payment->card_type }}</p></td> --}}
                                                 <td> <p class="mb-0">₹ {{ $payment->total_amount }}</p></td>
                                                 <td> <p class="mb-0">₹ {{ $payment->admin_commssion }}</p></td>
                                                 <td> <p class="mb-0">₹ {{ $payment->moderator_commssion }}</p></td>
@@ -72,7 +72,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <!-- <div class="clear"></div> -->
+                                <div style="position: relative;top: -50px;" class="pagination-outter mt-5 pull-right">
+                                    <?= $payperView->appends(Request::only('s'))->render() ?></div>
+                             
                             </div>
                         </div>
                     </div>
@@ -82,36 +84,30 @@
     </div>
 
     <script>
-
         $(document).ready(function() {
-            $('#ppv_payment_view_table').DataTable();
+            fetch_customer_data();
+    
+            function fetch_customer_data(query = '') {
+                $.ajax({
+                    url: "{{ route('PayPerView_search') }}", 
+                    method: 'GET',
+                    data: { query: query },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('tbody').html(data.table_data);
+                        $('#total_records').text(data.total_data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
+                });
+            }
+    
+            $(document).on('keyup', '#search', function() {
+                var query = $(this).val();
+                fetch_customer_data(query);
+            });
         });
-
-      // $(document).ready(function() {
-
-      //    fetch_customer_data();
-
-      //       function fetch_customer_data(query = '') {
-      //           $.ajax({
-      //               url: "{{ URL::to('admin/PayPerView_search') }}",
-      //               method: 'GET',
-      //               data: {
-      //                   query: query
-      //               },
-      //               dataType: 'json',
-      //               success: function(data) {
-      //                   $('tbody').html(data.table_data);
-      //                   $('#total_records').text(data.total_data);
-      //               }
-      //           })
-      //       }
-
-      //       $(document).on('keyup', '#search', function() {
-      //           var query = $(this).val();
-      //           fetch_customer_data(query);
-      //       });
-      // });
-
     </script>
 
 @stop
