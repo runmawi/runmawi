@@ -710,8 +710,6 @@ Route::group(
             Route::post('revenueshare', 'ApiAuthContinueController@revenueshare');
             Route::post('episoderevenueshare', 'ApiAuthContinueController@episoderevenueshare');
             Route::post('livestreamrevenueshare', 'ApiAuthContinueController@livestreamrevenueshare');
-            Route::post('UGCLike', 'ApiAuthContinueController@UGCLike');
-            Route::post('UGCDisLike', 'ApiAuthContinueController@UGCDisLike');
             Route::post('ugcsubscribe', 'ApiAuthContinueController@ugcsubscribe');
             Route::post('ugcunsubscribe', 'ApiAuthContinueController@ugcunsubscribe');
             Route::post('ugcvideodetail', 'ApiAuthContinueController@ugcvideodetail');
@@ -719,4 +717,6 @@ Route::group(
             Route::post('ugcwatchlater', 'ApiAuthContinueController@ugcwatchlater');
             Route::get('showUgcProfileApi', 'ApiAuthContinueController@showUgcProfileApi');
             Route::post('relatedradiostations', 'ApiAuthContinueController@relatedradiostations');
+            Route::post('ugclike', 'ApiAuthContinueController@ugclike');
+            Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
         });
