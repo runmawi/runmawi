@@ -4657,6 +4657,7 @@ public function verifyandupdatepassword(Request $request)
     $platform = $request->platform;
     $payment_id = $request->py_id;
     $status = $request->py_status;
+    $payment_failure_reason = $request->py_failure_reason;
 
     $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
     $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -4777,13 +4778,14 @@ public function verifyandupdatepassword(Request $request)
               'platform' => $platform,
               'payment_id' => $payment_id,
               'status' => $status,
+              'payment_failure_reason' => $payment_failure_reason,
               'created_at'=>now(),
               'updated_at'=>now()
               ]
           );
         }else{
             DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id, 'status' => $status]
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason   ]
           );
         }
       }
@@ -4829,6 +4831,7 @@ public function verifyandupdatepassword(Request $request)
               'moderator_id'=>$series_moderators_id,
               'platform' => $platform,
               'payment_id' => $payment_id,
+              'payment_failure_reason' => $payment_failure_reason,
               'status' => $status,
               'created_at'=>now(),
               'updated_at'=>now()
@@ -4836,7 +4839,7 @@ public function verifyandupdatepassword(Request $request)
           );
         }else{
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status]
+            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason ]
           );
         }
       } 
@@ -4846,7 +4849,8 @@ public function verifyandupdatepassword(Request $request)
           ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type ]
         );
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status]
+          
+          ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
         );
       } 
   
