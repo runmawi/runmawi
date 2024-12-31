@@ -10,6 +10,7 @@ use App\User;
 use App\Video;
 use Validator;
 use App\Setting;
+use App\Favorite;
 use App\UGCVideo;
 use App\Wishlist;
 use FFMpeg\FFMpeg;
@@ -726,6 +727,7 @@ class ApiAuthContinueController extends Controller
     {
         $data = $request->all();
         $videoid = $request->videoid;
+        $user_id = $request->user_id;
         try {
             $videodetail = UGCVideo::where('id', $videoid)
                 ->orderBy('created_at', 'desc')
@@ -799,6 +801,7 @@ class ApiAuthContinueController extends Controller
                 $watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
 
                 $userrole = User::where('id', '=', $user_id)->first()->role;
+                $username = User::where('id', '=', $user_id)->first()->username;
                 $status = 'true';
 
                 $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("user_id", "=", $user_id)->where("liked", "=", 1)->count();
@@ -867,8 +870,6 @@ class ApiAuthContinueController extends Controller
 
             $moviesubtitles = MoviesSubtitles::where('movie_id', $videoid)->get();
 
-            $video = Video::find($request->videoid);
-
             $response = array(
                 'status' => $status,
                 'wishlist' => $wishliststatus,
@@ -879,6 +880,8 @@ class ApiAuthContinueController extends Controller
                 'tv_wishliststatus' => $tv_wishliststatus,
                 'watchlater' => $watchlaterstatus,
                 'userrole' => $userrole,
+                'username' => $username,
+                'shareurl' => URL::to('ugc/video-player').'/'.$videodetail[0]->slug,
                 'like' => $like,
                 'dislike' => $dislike,
                 'videodetail' => $videodetail,
@@ -1151,6 +1154,44 @@ class ApiAuthContinueController extends Controller
             'like' => $status->liked,
             'dislike' => $status->disliked,
         ], 200);
+    }
+
+    public function add_favorite_ugcvideo(Request $request) {
+
+        try {
+          
+          $user_id = $request->user_id;
+          $ugc_video_id = $request->ugc_video_id;
+    
+          if (!empty($ugc_video_id)) {
+              $count = Favorite::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();
+    
+              if ($count > 0) {
+                  Favorite::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->delete();
+    
+                  $response = [
+                      'status' => 'false',
+                      'message' => 'Removed From Your Favorite'
+                  ];
+              } else {
+                  $data = ['user_id' => $user_id, 'ugc_video_id' => $ugc_video_id];
+                  Favorite::insert($data);
+    
+                  $response = [
+                        'status' => 'true',
+                        'message' => 'Added to Your Favorite'
+                    ];
+                }
+          }
+        } catch (\Throwable $th) {
+            $response = [
+              'status' => 'false',
+              'message' => $th->getMessage(),
+            ];
+        }
+    
+        return response()->json($response, 200);
+    
     }
     
 
