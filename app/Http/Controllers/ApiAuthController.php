@@ -4229,9 +4229,38 @@ public function verifyandupdatepassword(Request $request)
       $audios = [];
     }
 
+
+    /*UGC videos*/
+    $ugc_video_ids = Favorite::select('ugc_video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $ugc_video_ids_count = Favorite::select('ugc_video_id')->where('user_id',$user_id)->count();
+
+    if ( $ugc_video_ids_count  > 0) {
+
+      foreach ($ugc_video_ids as $key => $value) {
+        $k2[] = $value->ugc_video_id;
+      }
+      $ugc_videos = UGCVideo::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'ugc_videos';
+        return $item;
+      });
+
+      if(count($ugc_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+    }else{
+            $status = "false";
+      $ugc_videos = [];
+    }
+
+
     $response = array(
         'status'=>$status,
         'channel_videos'  => $channel_videos,
+        'ugc_videos'  => $ugc_videos,
         'episode_videos'  => $episode,
         'audios'          => $audios,
       );

@@ -719,4 +719,5 @@ Route::group(
             Route::post('relatedradiostations', 'ApiAuthContinueController@relatedradiostations');
             Route::post('ugclike', 'ApiAuthContinueController@ugclike');
             Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
+            Route::post('add_favorite_ugcvideo', 'ApiAuthContinueController@add_favorite_ugcvideo');
         });
