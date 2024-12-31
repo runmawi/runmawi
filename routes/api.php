@@ -715,7 +715,7 @@ Route::group(
             Route::post('ugcvideodetail', 'ApiAuthContinueController@ugcvideodetail');
             Route::post('ugcwishlist', 'ApiAuthContinueController@ugcwishlist');
             Route::post('ugcwatchlater', 'ApiAuthContinueController@ugcwatchlater');
-            Route::get('showUgcProfileApi', 'ApiAuthContinueController@showUgcProfileApi');
+            Route::post('showUgcProfileApi', 'ApiAuthContinueController@showUgcProfileApi');
             Route::post('relatedradiostations', 'ApiAuthContinueController@relatedradiostations');
             Route::post('ugclike', 'ApiAuthContinueController@ugclike');
             Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
