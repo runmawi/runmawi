@@ -50,10 +50,9 @@ class ApiAuthContinueController extends Controller
 
     public function uploadugcvideo(Request $request)
     {
-
         \Log::info('Request Data: ', $request->all());
         \Log::info('Files: ', $request->file());
-
+    
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:mp4,m4v,webm,ogv|max:102400',
             'user_id' => 'required|exists:users,id',
@@ -61,14 +60,12 @@ class ApiAuthContinueController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable',
         ]);
-
+    
         if ($validator->fails()) {
             Log::error('Validation failed: ', $validator->errors()->toArray());
             return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
         }
-
-        
-        
+    
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             \Log::info('File details: ', [
@@ -80,50 +77,42 @@ class ApiAuthContinueController extends Controller
         } else {
             \Log::error('No file found in the request');
         }
-
-
+    
         try {
-
             $userId = $request->user_id;
             $video_title = $request->title;
             $video_description = $request->description;
-            $video_slug = $request->slug ? $request->slug : $request->title;
+            $video_slug = $request->slug ?: $request->title; // If slug is empty, use title
             $file = $request->file;
             $image = $request->image;
-
+    
             if ($request->hasFile('image')) {
                 $imagefile = $request->image;
+                $image_filename = time() . '.' . ($compress_image_enable() ? compress_image_format() : $imagefile->getClientOriginalExtension());
+                $video_image = 'pc-image-' . $image_filename;
+                $Mobile_image = 'Mobile-image-' . $image_filename;
+                $Tablet_image = 'Tablet-image-' . $image_filename;
+    
                 if (compress_image_enable() == 1) {
-                    $image_filename = time() . '.' . compress_image_format();
-                    $video_image = 'pc-image-' . $image_filename;
-                    $Mobile_image = 'Mobile-image-' . $image_filename;
-                    $Tablet_image = 'Tablet-image-' . $image_filename;
-
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $video_image, compress_image_resolution());
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Mobile_image, compress_image_resolution());
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Tablet_image, compress_image_resolution());
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $video_image), compress_image_resolution());
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $Mobile_image), compress_image_resolution());
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $Tablet_image), compress_image_resolution());
                 } else {
-                    $image_filename = time() . '.' . $imagefile->getClientOriginalExtension();
-
-                    $video_image = 'pc-image-' . $image_filename;
-                    $Mobile_image = 'Mobile-image-' . $image_filename;
-                    $Tablet_image = 'Tablet-image-' . $image_filename;
-
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $video_image);
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Mobile_image);
-                    Image::make($imagefile)->save(base_path() . '/public/uploads/images/' . $Tablet_image);
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $video_image));
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $Mobile_image));
+                    Image::make($imagefile)->save(public_path('uploads/images/' . $Tablet_image));
                 }
-
+    
                 $data["image"] = $video_image;
                 $data["mobile_image"] = $Mobile_image;
                 $data["tablet_image"] = $Tablet_image;
             }
-
+    
             $original_name = $file->getClientOriginalName() ?: '';
             $extension = $file->getClientOriginalExtension();
             $rand = Str::random(16);
-            $randomName = $rand . '.' . $extension;
-
+            $randomName = strtolower($rand . '.' . $extension); // Force lowercase name
+    
             $file->storeAs('videos', $randomName, 'public');
             $storepath = URL::to("/storage/app/public/" . $randomName);
 
@@ -138,13 +127,10 @@ class ApiAuthContinueController extends Controller
             if ($duration > 180) {
                 return response()->json(['success' => false, 'message' => 'Video duration exceeds 3 minutes'], 400);
             }
-
-            if ($file != "") {
-
-                $path = $rand . "." . $extension;
+            if ($file) {
+                $path = strtolower($rand . "." . $extension); // Consistent lowercase file path
                 $file->storeAs("public", $path);
 
-                $getID3 = new getID3();
                 $videoStorePath = storage_path("app/public/" . $path);
                 $videoInfo = $getID3->analyze($videoStorePath);
                 $videoDuration = $videoInfo["playtime_seconds"];
@@ -158,14 +144,14 @@ class ApiAuthContinueController extends Controller
                     $video->title = $video_title;
                     $video->mp4_url = $storepath;
                     $video->draft = 0;
-                    $video->image = default_vertical_image();
+                    $video->image = !empty($video_image) ? $video_image : default_vertical_image();
                     $video->video_tv_image = default_horizontal_image();
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
                     $video->slug = $video_slug;
                     $video->type = 'mp4_url';
-                    $video->image = !empty($video_image) ? $video_image : null;
+                    $video->image = $video_image ?? null;
                     $video->save();
 
                     return response()->json([
@@ -175,18 +161,15 @@ class ApiAuthContinueController extends Controller
                         'video_title' => $video->title,
                         'video_url' => $video->mp4_url,
                     ]);
-
                 } else {
                     return response()->json(['success' => false, 'message' => 'Video duration exceeds the limit of 3 minutes'], 400);
                 }
-
             }
 
             if ($settings->transcoding_access == 1) {
-                $path = $rand . "." . $extension;
+                $path = strtolower($rand . "." . $extension); // Force lowercase name
                 $file->storeAs("public", $path);
 
-                // Get video duration and save video record
                 $getID3 = new getID3();
                 $videoStorePath = storage_path("app/public/" . $path);
                 $videoInfo = $getID3->analyze($videoStorePath);
@@ -201,13 +184,13 @@ class ApiAuthContinueController extends Controller
                     $video->title = $video_title;
                     $video->mp4_url = $storepath;
                     $video->draft = 0;
-                    $video->image = default_vertical_image();
+                    $video->image = $video_image ?? default_vertical_image();
                     $video->video_tv_image = default_horizontal_image();
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
                     $video->slug = $video_slug;
-                    $video->image = $video_image;
+                    $video->image = $video_image ?? null;
                     $video->save();
 
                     ConvertUGCVideoForStreaming::dispatch($video);
@@ -215,7 +198,6 @@ class ApiAuthContinueController extends Controller
                     if (Enable_Extract_Image() == 1) {
                         $this->extractImagesFromVideo($video, $videoStorePath, $rand, $videoDuration);
                     }
-
                     return response()->json([
                         'success' => true,
                         'message' => 'Video uploaded and processing started.',
@@ -227,7 +209,7 @@ class ApiAuthContinueController extends Controller
                     return response()->json(['success' => false, 'message' => 'Video duration exceeds the limit of 3 minutes'], 400);
                 }
             } elseif ($package == "Business" && $settings->transcoding_access == 0) {
-                $path = $rand . "." . $extension;
+                $path = strtolower($rand . "." . $extension); // Force lowercase name
                 $file->storeAs("public", $path);
 
                 $getID3 = new getID3();
@@ -244,13 +226,13 @@ class ApiAuthContinueController extends Controller
                     $video->mp4_url = $storepath;
                     $video->type = "mp4_url";
                     $video->draft = 0;
-                    $video->image = default_vertical_image();
+                    $video->image = $video_image ?? default_vertical_image();
                     $video->video_tv_image = default_horizontal_image();
                     $video->player_image = default_horizontal_image();
                     $video->user_id = $userId;
                     $video->duration = $videoDuration;
                     $video->slug = $video_slug;
-                    $video->image = $video_image;
+                    $video->image = $video_image ?? null;
                     $video->save();
 
                     if (Enable_Extract_Image() == 1) {
