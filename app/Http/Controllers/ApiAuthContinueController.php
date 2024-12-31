@@ -796,8 +796,7 @@ class ApiAuthContinueController extends Controller
                 $cnt1 = Watchlater::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
                 $watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
 
-                $userrole = User::where('id', '=', $user_id)->first()->role;
-                $username = User::where('id', '=', $user_id)->first()->username;
+                $userdata = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
                 $status = 'true';
 
                 $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("user_id", "=", $user_id)->where("liked", "=", 1)->count();
@@ -875,8 +874,7 @@ class ApiAuthContinueController extends Controller
                 'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
                 'tv_wishliststatus' => $tv_wishliststatus,
                 'watchlater' => $watchlaterstatus,
-                'userrole' => $userrole,
-                'username' => $username,
+                'userdata' => $userdata,
                 'shareurl' => URL::to('ugc/video-player').'/'.$videodetail[0]->slug,
                 'like' => $like,
                 'dislike' => $dislike,
