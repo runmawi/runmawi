@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use URL;
 use Auth;
 use File;
@@ -50,6 +51,9 @@ class ApiAuthContinueController extends Controller
     public function uploadugcvideo(Request $request)
     {
 
+        \Log::info('Request Data: ', $request->all());
+        \Log::info('Files: ', $request->file());
+
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:mp4,m4v,webm,ogv|max:102400',
             'user_id' => 'required|exists:users,id',
@@ -59,8 +63,24 @@ class ApiAuthContinueController extends Controller
         ]);
 
         if ($validator->fails()) {
+            Log::error('Validation failed: ', $validator->errors()->toArray());
             return response()->json(['success' => false, 'errors' => $validator->errors()], 400);
         }
+
+        
+        
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            \Log::info('File details: ', [
+                'isValid' => $file->isValid(),
+                'originalName' => $file->getClientOriginalName(),
+                'mimeType' => $file->getMimeType(),
+                'size' => $file->getSize(),
+            ]);
+        } else {
+            \Log::error('No file found in the request');
+        }
+
 
         try {
 
