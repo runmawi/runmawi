@@ -15,7 +15,7 @@
 
                         <div id="based-networks" class="channels-list">
                             <div class="channel-row">
-                                <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video" data-flickity>
+                                <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video flickity-slider">
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
@@ -163,17 +163,19 @@
 
 
 <script>
-document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyLoad: 7,
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7,
         });
+    });
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
 
     elem.querySelectorAll('.item').forEach(function(item) {

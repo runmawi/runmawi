@@ -480,6 +480,7 @@
    .sliderk.round:before {
    border-radius: 50%;
    }
+   /* .s-margin{display:none;} */
 
    /* Dark mode and light Mode */
 

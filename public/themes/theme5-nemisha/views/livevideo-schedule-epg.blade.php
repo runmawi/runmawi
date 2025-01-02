@@ -31,47 +31,19 @@
     }
 
     .epg-grid{margin-top:25px;background-color:#000;border-radius:8px;padding:10px;height:50vh!important;overflow:overlay}
-    .epg-timeline-container{overflow-x:auto;white-space:nowrap;position:relative;top:-37px}
-    .epg-timeline{display:flex;justify-content:flex-start;padding:10px;color:#ccc;font-size:12px; position: relative;width:100%; white-space: nowrap;scroll-behavior: smooth;}
-    /* .timeline{margin:0 10px} */
-    .epg-timeline div{flex:0 0 100px;text-align:center;}
+
     .epg-channels{padding-right:10px}
     .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px;text-align: center;}
-    .epg-programs{overflow-x:auto;white-space:nowrap; padding-bottom: 20px;}
     .epg-program-row{display:flex;margin-bottom:10px}
     .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
-    .clearfix::after{content:"";display:table;clear:both}
-    .epg-navigation{height:38px;z-index:0;position:relative;overflow-x:auto; background-color: #333; scrollbar-width: none; }
+    .epg-navigation{z-index:0;position:relative;overflow-x:auto; background-color: #333; border-radius: 5px;}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
-    .day-nav{margin:0 50px; cursor: pointer;}
-    .date-nav{align-items:center;background-color:#333;padding:7px 0 0 0;display:flex; }
+    .day-nav{margin:0 10px; cursor: pointer;  transition: background-color 0.3s ease, color 0.3s ease;}
+    .day-nav.active {background-color: #ed563c; color: white; border-radius: 5px; padding: 10px;}
+    .date-nav{align-items:center;background-color:#333;display:flex; height:50px;  }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
     .epg-channel {width: 100%; white-space: nowrap; overflow: auto;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
 
-    /* .timeline-slot:last-child{border-left: 1px solid;} */
-    .epg-arrow-buttons {
-        display: flex;
-        justify-content: space-between;
-        position: absolute;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        /* padding-bottom: 50px; */
-        top: 20px;  
-    }
-
-
-    .timeline-slot {
-        width: calc(100% / 96);
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-    }
-
-
-    .epg-timeline-container {
-        position: relative;
-    }
 
 
     .epg-program {
@@ -87,9 +59,31 @@
         color: white;
         padding: 12px 0px;
     }
-    #data{margin: 0 20px;overflow: hidden;}
-    .fa-chevron-right:before{font-size: 22px}
-    .fa-chevron-left:before{font-size: 22px}
+    .program-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+
+    .time-section {
+        width: 20%;
+        height: 55px;
+        text-align: center;
+        border-radius: 5px;
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white; 
+        font-size: 14px;
+    }
+
+    .title-section {
+        width: 80%;
+        text-align: left;
+    }
+
 </style>
 
 @php
@@ -117,87 +111,32 @@
         </div>
     </div>
 
-    <div class="row epg-grid clearfix m-1">
-
-        <div class="epg-left">
-
-
-        <div class="epg-navigation">
-            <div class="date-nav">
-                @for ($i = 0; $i < 7; $i++)
-                    @php $day = $now->copy()->addDays($i); @endphp
-                    <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
-                        {{ $day->format('l') }} 
-                    </div>
-                @endfor
-            </div>
-        </div>
-
-        <div class="epg-channels mt-2">
-            <div class="epg-channel" id="epg-channel-title"></div>
-        </div>
-        </div>
-
-        <div class="epg-right" style="margin-top:25px;">
-        <div class="epg-timeline-container">
-            <div class="epg-programs">
-
-                <div class="epg-arrow-buttons">
-                    <div class="left-arrow">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
-                    <div class="right-arrow">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </div>
+    <div class="epg-navigation mx-2">
+        <div class="date-nav">
+            @for ($i = 0; $i < 7; $i++)
+                @php $day = $now->copy()->addDays($i); @endphp
+                <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
+                    {{ $day->format('l') }} ({{ $day->format('d-m-Y') }})
                 </div>
-
-                <div id="data">
-                    {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
-                    ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
-                </div>
-
-            </div>
+            @endfor
         </div>
+    </div>
+    <div class="">
+        <div id="data" class="mx-2" >
+            {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
+            ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
         </div>
     </div>
 </div>
-
-{{-- <script>
-    $(document).ready(function(){
-        $('.day-nav').click(function() {
-            var selectedDay = $(this).data('day'); 
-            var selectedDate = $(this).data('date'); 
-            $.ajax({
-                url: "{{ route('livestream-fetch-timeline') }}", 
-                type: "GET",
-                data: {
-                    day: selectedDay ,
-                    date: selectedDate ,
-                    publish_type  : "<?php echo $Livestream_details->publish_type ?>",
-                    Livestream_id : "<?php echo $Livestream_details->id ?>"
-                },
-                success: function(response) {
-                    $('#data').html(response);
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseText); 
-                }
-            });
-        });
-    });
-</script> --}}
 
 <script>
     $(document).ready(function () {
         var scheduleDays = {!! json_encode($Livestream_details->scheduler_program_days) !!};
         var programTitle = "{{ ucwords(@$Livestream_details->title) }}";
         var currentDay = new Date().getDay();
-        var scrollAmount = 100;
-        var currentOffset = 0;
-
+       
         function checkProgramAvailability(day) {
             if (scheduleDays.includes(String(day))) {
-                $('#epg-channel-title').html('<p>' + programTitle + '</p>');
                 $.ajax({
                     url: "{{ route('livestream-fetch-timeline') }}",
                     type: "GET",
@@ -209,7 +148,7 @@
                     },
                     success: function (response) {
                         if (response.trim() === '' || response === null) {
-                            $('#data').html('<p style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+                            $('#data').html('<h2 style="text-align:center; padding-top:50%;" >No program scheduled.</h2>');
                         } else {
                             $('#data').html(response);
                         }
@@ -220,8 +159,7 @@
                     }
                 });
             } else {
-                $('#epg-channel-title').html('<p>No program scheduled.</p>');
-                $('#data').html('<p  style="text-align:center; padding-top:10%;" >No program scheduled.</p>');
+                $('#data').html('<h2  style="text-align:center; padding-top:10%;" >No program scheduled.</h2>');
             }
         }
 
@@ -232,27 +170,32 @@
             checkProgramAvailability(selectedDay);
         });
 
-        function scrollEPG(offset) {
-            const timeSlots = $('.epg-timeline');
-            const maxScroll = timeSlots[0].scrollWidth - timeSlots.parent().width();
-            currentOffset += offset;
+    });
+</script>
 
-            if (currentOffset > 0) {
-                currentOffset = 0;
-            } else if (currentOffset < -maxScroll) {
-                currentOffset = -maxScroll;
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dayNavElements = document.querySelectorAll('.day-nav');
+        const currentDate = new Date();
+        const currentDateFormatted = currentDate.toISOString().slice(0, 10); // Format as 'YYYY-MM-DD'
+
+        dayNavElements.forEach(element => {
+            // Extract the date from the data-date attribute in 'YYYY-MM-DD' format
+            const elementDate = element.getAttribute('data-date').split('T')[0]; 
+
+            // Check if the element corresponds to today's date
+            if (elementDate === currentDateFormatted) {
+                element.classList.add('active'); // Highlight the current day
             }
 
-            timeSlots.css('transition', 'transform 0.3s ease-in-out');
-            timeSlots.css('transform', 'translateX(' + currentOffset + 'px)');
-        }
-
-        $('.left-arrow').click(function () {
-            scrollEPG(scrollAmount);
-        });
-
-        $('.right-arrow').click(function () {
-            scrollEPG(-scrollAmount);
+            // Add click event for changing the active day
+            element.addEventListener('click', () => {
+                dayNavElements.forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            });
         });
     });
 </script>

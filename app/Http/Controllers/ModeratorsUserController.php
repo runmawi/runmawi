@@ -151,6 +151,7 @@ class ModeratorsUserController extends Controller
                         "roles" => $moderatorsrole,
                         "permission" => $moderatorspermission,
                         "CPP_commission_percentage" => $CPP_commission_percentage ,
+                        "moderatorsuser" => $moderatorsuser ,
                     ];
 
                     return view("moderator.index", $data);
@@ -218,7 +219,8 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser->user_role = $request->user_role;
                 $moderatorsuser->user_permission = $permission;
                 $moderatorsuser->commission_percentage = $request->commission_percentage;
-                $moderatorsuser->otp = 12345;
+                $moderatorsuser->parent_moderator_id = $request->parent_moderator_id;
+                $moderatorsuser->otp = $moderatorsuser->password;
 
                 $logopath = URL::to("/public/uploads/moderator_albums/");
                 $path = public_path() . "/uploads/moderator_albums/";
@@ -693,6 +695,7 @@ class ModeratorsUserController extends Controller
                         "series" => $series,
                         "setting" => Setting::first(),
                         "all_data" => $all_data ,
+                        'Allmoderatorsuser' => ModeratorsUser::select('id','username')->where('id','!=',$id)->get(),
                     ];
 
                     return view("moderator.create_edit", $data);
@@ -817,6 +820,7 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser = ModeratorsUser::find($id);
                 $moderatorsuser["username"] = $data["username"];
                 $moderatorsuser["email"] = $data["email_id"];
+                $moderatorsuser["password"] = $data["password"];
                 $moderatorsuser["mobile_number"] = $data["mobile_number"];
                 $moderatorsuser["description"] = $data["description"];
                 $moderatorsuser["user_role"] = $data["user_role"];
@@ -824,6 +828,8 @@ class ModeratorsUserController extends Controller
                 $moderatorsuser["updated_at"] = $updated_at;
                 $moderatorsuser["user_permission"] = $permission;
                 $moderatorsuser["commission_percentage"] = $commission_percentage_value;
+                $moderatorsuser["parent_moderator_id"] = $data["parent_moderator_id"];
+                $moderatorsuser["otp"] = $data["password"];
                 // dd( $moderatorsuser["commission_percentage"]);
                 $logopath = URL::to("/public/uploads/picture/");
                 $path = public_path() . "/uploads/picture/";

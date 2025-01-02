@@ -45,7 +45,7 @@
 
                     <div id="tv-networks" class="channels-list">
                         <div class="channel-row">
-                            <div id="trending-slider-nav" class="video-list series-network-video" data-flickity>
+                            <div id="trending-slider-nav" class="video-list series-network-video flickity-slider">
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
@@ -180,20 +180,20 @@
 
 <script>
 
-var elem = document.querySelector('.series-network-video');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyLoad: 7,
-    });
+    var elem = document.querySelector('.series-network-video');
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7,
+        });
 
 
-    document.querySelectorAll('.series-network-video .item').forEach(function(item) {
+document.querySelectorAll('.series-network-video .item').forEach(function(item) {
     item.addEventListener('click', function() {
         document.querySelectorAll('.series-network-video .item').forEach(function(item) {
             item.classList.remove('current');

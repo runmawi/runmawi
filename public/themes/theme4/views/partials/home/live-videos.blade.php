@@ -12,7 +12,7 @@
 
                     <div class="channels-list">
                         <div class="channel-row">
-                            <div id="trending-slider-nav" class="video-list live-stream-video">
+                            <div id="trending-slider-nav" class="video-list live-stream-video flickity-slider">
                                 @foreach ($data as $key => $livestream_videos)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
@@ -184,10 +184,9 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: 10,
+            lazyLoad: 7,
         });
 
-        flkty.reloadCells();
     document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
             document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
