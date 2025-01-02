@@ -10,6 +10,7 @@ use App\User;
 use App\Video;
 use Validator;
 use App\Setting;
+use App\Favorite;
 use App\UGCVideo;
 use App\Wishlist;
 use FFMpeg\FFMpeg;
@@ -645,120 +646,18 @@ class ApiAuthContinueController extends Controller
         }
     }
 
-    public function UGCLike(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'ugc_video_id' => 'required|exists:ugc_videos,id',
-            'like' => 'required|boolean',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'false',
-                'message' => 'Validation errors',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_video_id;
-        $like = $request->like;
-
-        $existing_like = LikeDislike::where("ugc_video_id", $ugc_video_id)
-            ->where("user_id", $user_id)
-            ->first();
-
-        if ($existing_like) {
-            if ($like == 1) {
-                $existing_like->liked = 1;
-                $existing_like->disliked = 0;
-            } else {
-                $existing_like->liked = 0;
-                $existing_like->disliked = 1;
-            }
-            $existing_like->save();
-        } else {
-            $new_like = new LikeDislike();
-            $new_like->user_id = $user_id;
-            $new_like->ugc_video_id = $ugc_video_id;
-            $new_like->liked = $like == 1 ? 1 : 0;
-            $new_like->disliked = $like == 0 ? 1 : 0;
-            $new_like->save();
-            $existing_like = $new_like;
-        }
-
-        return response()->json([
-            'status' => 'true',
-            'liked' => $existing_like->liked,
-            'disliked' => $existing_like->disliked,
-            'message' => 'Success',
-        ], 200);
-    }
-
-    public function UGCDislike(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'ugc_video_id' => 'required|exists:ugc_videos,id',
-            'dislike' => 'required|boolean',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'false',
-                'message' => 'Validation errors',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_video_id;
-        $dislike = $request->dislike;
-
-        $existing_dislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
-            ->where('user_id', $user_id)
-            ->first();
-
-        if ($existing_dislike) {
-            if ($dislike == 1) {
-                $existing_dislike->liked = 0;
-                $existing_dislike->disliked = 1;
-            } else {
-                $existing_dislike->disliked = 0;
-            }
-            $existing_dislike->save();
-        } else {
-            $new_dislike = new LikeDislike();
-            $new_dislike->user_id = $user_id;
-            $new_dislike->ugc_video_id = $ugc_video_id;
-            $new_dislike->liked = 0;
-            $new_dislike->disliked = 1;
-            $new_dislike->save();
-
-            $existing_dislike = $new_dislike;
-        }
-
-        return response()->json([
-            'status' => 'true',
-            'liked' => $existing_dislike->liked,
-            'disliked' => $existing_dislike->disliked,
-            'message' => 'Success',
-        ], 200);
-    }
-
     public function ugcsubscribe(Request $request)
     {
 
         $request->validate([
-            'ugc_user_id' => 'required|exists:users,id',
-            'user_id' => 'required|exists:users,id|different:user_id',
+            'user_id' => 'required|exists:users,id',
+            'subscriber_id' => 'required',
         ]);
 
         try {
 
-            $user = User::find($request->ugc_user_id);
-            $subscriber = User::find($request->user_id);
+            $user = User::find($request->user_id);
+            $subscriber = User::find($request->subscriber_id);
 
             $exists = UGCSubscriber::where('user_id', $user->id)
                 ->where('subscriber_id', $subscriber->id)
@@ -789,17 +688,17 @@ class ApiAuthContinueController extends Controller
     public function ugcunsubscribe(Request $request)
     {
         $request->validate([
-            'ugc_user_id' => 'required|exists:users,id',
-            'user_id' => 'required|exists:users,id|different:user_id',
+            'user_id' => 'required|exists:users,id',
+            'unsubscriber_id' => 'required',
         ]);
 
         try {
 
-            $user = User::find($request->ugc_user_id);
-            $subscriber = User::find($request->user_id);
+            $user = User::find($request->user_id);
+            $unsubscriber = User::find($request->unsubscriber_id);
 
             $subscription = UGCSubscriber::where('user_id', $user->id)
-                ->where('subscriber_id', $subscriber->id);
+                ->where('subscriber_id', $unsubscriber->id);
 
             if ($subscription->exists()) {
                 $subscription->delete();
@@ -828,6 +727,7 @@ class ApiAuthContinueController extends Controller
     {
         $data = $request->all();
         $videoid = $request->videoid;
+        $user_id = $request->user_id;
         try {
             $videodetail = UGCVideo::where('id', $videoid)
                 ->orderBy('created_at', 'desc')
@@ -896,6 +796,9 @@ class ApiAuthContinueController extends Controller
                 $cnt = Wishlist::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
                 $wishliststatus = ($cnt == 1) ? "true" : "false";
 
+                $favcnt = Favorite::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
+                $favouritestatus = ($favcnt == 1) ? "true" : "false";
+
                 //Watchlater
                 $cnt1 = Watchlater::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
                 $watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
@@ -910,85 +813,26 @@ class ApiAuthContinueController extends Controller
             } else {
                 $wishliststatus = 'false';
                 $watchlaterstatus = 'false';
+                $favouritestatus = 'false';
                 $userrole = '';
                 $status = 'true';
                 $like = "false";
                 $dislike = "false";
             }
 
-            // andriodId  Wishlist , Watchlater
-            if (!empty($request->andriodId)) {
-                //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
-                $andriod_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-
-                // Watchlater
-                $cnt1 = Watchlater::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
-                $andriod_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-                $like_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
-                $andriod_like = ($like_data == 1) ? "true" : "false";
-                $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
-            } else {
-                $andriod_wishliststatus = 'false';
-                $andriod_watchlaterstatus = 'false';
-                $andriod_like = "false";
-                $andriod_dislike = "false";
-            }
-
-            // IOS Wishlist , Watchlater
-            if (!empty($request->IOSId)) {
-
-                //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
-                $IOS_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-
-                // Watchlater
-                $cnt1 = Watchlater::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
-                $IOS_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-
-                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("disliked", "=", 1)->count();
-                $IOS_like = ($like_data == 1) ? "true" : "false";
-                $IOS_dislike = ($dislike_data == 1) ? "true" : "false";
-
-            } else {
-                $IOS_wishliststatus = 'false';
-                $IOS_watchlaterstatus = 'false';
-                $IOS_like = "false";
-                $IOS_dislike = "false";
-            }
-
-            // TVID Wishlist
-            if (!empty($request->tv_id)) {
-                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('tv_id', '=', $request->tv_id)->where('ugc_video_id', '=', $videoid)->count();
-                $tv_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-            } else {
-                $tv_wishliststatus = 'false';
-            }
-
             $moviesubtitles = MoviesSubtitles::where('movie_id', $videoid)->get();
-
-            $video = Video::find($request->videoid);
 
             $response = array(
                 'status' => $status,
                 'wishlist' => $wishliststatus,
-                'andriod_wishliststatus' => $andriod_wishliststatus,
-                'andriod_like' => $andriod_like,
-                'andriod_dislike' => $andriod_dislike,
-                'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
-                'tv_wishliststatus' => $tv_wishliststatus,
                 'watchlater' => $watchlaterstatus,
+                'favourite' => $favouritestatus,
                 'userrole' => $userrole,
+                'shareurl' => URL::to('ugc/video-player').'/'.$videodetail[0]->slug,
                 'like' => $like,
                 'dislike' => $dislike,
                 'videodetail' => $videodetail,
                 'videossubtitles' => $moviesubtitles,
-                'IOS_wishliststatus' => $IOS_wishliststatus,
-                'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
-                'IOS_like' => $IOS_like,
-                'IOS_dislike' => $IOS_dislike,
             );
         } catch (\Throwable $th) {
             $response = array(
@@ -1004,7 +848,7 @@ class ApiAuthContinueController extends Controller
     {
 
         $user_id = $request->user_id;
-        $ugc_video_id = $request->ugc_vijdeo_id;
+        $ugc_video_id = $request->ugc_video_id;
 
         if (!empty($ugc_video_id)) {
             $count = Wishlist::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();
@@ -1058,17 +902,26 @@ class ApiAuthContinueController extends Controller
 
     public function showUgcProfileApi(Request $request)
     {
+        $ugc_user_id = $request->input('ugc_user_id');
         $user_id = $request->input('user_id');
 
-        if (!$user_id) {
+        if (!$ugc_user_id) {
             return response()->json(['error' => 'User ID is required.'], 400);
         }
-        $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
+        $user = User::where('id', $ugc_user_id)->withCount('subscribers')->firstOrFail();
 
         $ugcvideos = UGCVideo::where('user_id', $user->id)
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->get();
+
+        if (isset($request->user_id) && $request->user_id != '') {
+            $user_id = $request->user_id;
+            $cnt = UGCSubscriber::where('user_id', '=', $ugc_user_id)->where('subscriber_id', '=', $user_id)->count();
+            $subscribed = ($cnt == 1) ? "true" : "false";
+        } else {
+            $subscribed = "false";
+        }
 
         $ugc_total = $user->ugcVideos();
         $totalViews = $ugc_total->sum('views');
@@ -1079,6 +932,7 @@ class ApiAuthContinueController extends Controller
             'ugcvideos' => $ugcvideos,
             'totalViews' => $totalViews,
             'totalVideos' => $totalVideos,
+            'subscribed' => $subscribed,
         ];
 
         return response()->json($data);
@@ -1172,4 +1026,126 @@ class ApiAuthContinueController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function ugclike(Request $request)
+    {
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $likeDislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                    ->where('user_id', $user_id)
+                                    ->first();
+
+        if ($likeDislike) {
+            if ($likeDislike->liked == 1) {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 0,
+                ]);
+            } else {
+                $likeDislike->update([
+                    'liked' => 1,
+                    'disliked' => 0,
+                ]);
+            }
+        } else {
+            LikeDislike::create([
+                'user_id' => $user_id,
+                'ugc_video_id' => $ugc_video_id,
+                'liked' => 1,
+                'disliked' => 0,
+            ]);
+        }
+
+        $status = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                ->where('user_id', $user_id)
+                                ->select('liked', 'disliked')
+                                ->first();
+        return response()->json([
+            'status' => 'true',
+            'like' => $status->liked,
+            'dislike' => $status->disliked,
+        ], 200);
+    }
+
+  
+    public function ugcdislike(Request $request)
+    {
+        $user_id = $request->user_id;
+        $ugc_video_id = $request->ugc_video_id;
+        $likeDislike = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                                  ->where('user_id', $user_id)
+                                  ->first();
+    
+        if ($likeDislike) {
+            if ($likeDislike->disliked == 1) {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 0,
+                ]);
+            } else {
+                $likeDislike->update([
+                    'liked' => 0,
+                    'disliked' => 1,
+                ]);
+            }
+        } else {
+            LikeDislike::create([
+                'user_id' => $user_id,
+                'ugc_video_id' => $ugc_video_id,
+                'liked' => 0,
+                'disliked' => 1,
+            ]);
+        }
+    
+        $status = LikeDislike::where('ugc_video_id', $ugc_video_id)
+                             ->where('user_id', $user_id)
+                             ->select('liked', 'disliked')
+                             ->first();
+    
+        return response()->json([
+            'status' => 'true',
+            'like' => $status->liked,
+            'dislike' => $status->disliked,
+        ], 200);
+    }
+
+    public function add_favorite_ugcvideo(Request $request) {
+
+        try {
+          
+          $user_id = $request->user_id;
+          $ugc_video_id = $request->ugc_video_id;
+    
+          if (!empty($ugc_video_id)) {
+              $count = Favorite::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->count();
+    
+              if ($count > 0) {
+                  Favorite::where('user_id', $user_id)->where('ugc_video_id', $ugc_video_id)->delete();
+    
+                  $response = [
+                      'status' => 'false',
+                      'message' => 'Removed From Your Favorite'
+                  ];
+              } else {
+                  $data = ['user_id' => $user_id, 'ugc_video_id' => $ugc_video_id];
+                  Favorite::insert($data);
+    
+                  $response = [
+                        'status' => 'true',
+                        'message' => 'Added to Your Favorite'
+                    ];
+                }
+          }
+        } catch (\Throwable $th) {
+            $response = [
+              'status' => 'false',
+              'message' => $th->getMessage(),
+            ];
+        }
+    
+        return response()->json($response, 200);
+    
+    }
+    
+
 }

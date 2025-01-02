@@ -700,6 +700,12 @@ div#video-js-trailer-player {
                                     </div>
 
                                     <div class="mb-0 mt-3 p-0 text-left">
+                                        <input type="radio" id="stripe_radio" name="roku_tvcode" value="Stripe">
+                                        <label for="roku_tvcode">Roku Tvcode</label><br>
+                                        <input type="text" id="roku_tvcode_input" name="roku_tvcode" placeholder="Enter Roku TV code" style="display: none;">
+                                    </div>
+
+                                    <div class="mb-0 mt-3 p-0 text-left">
                                         <h5 style="font-size:17px;line-height: 23px;" class="text-white mb-2">Select payment method:</h5>
                                     </div>
 
@@ -738,9 +744,9 @@ div#video-js-trailer-player {
 
                                 <div class="becomesubs-page">
                                     <div class="Stripe_button row mt-3 justify-content-around">  
-                                        <div class="Stripe_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('Stripe_payment_series_season_PPV_Purchase/'.$seasons->id.'/'.$seasons->ppv_price) ?>' ;"> <!-- Stripe Button -->
-                                            <?= ("Continue") ?>
-                                        </div>
+                                        <div class="Stripe_button col-md-6 col-6 btn text-white stripe_season_value" data-season-id="<?= $seasons->id ?>" data-ppv-price="<?= $seasons->ppv_price ?>">
+                                           <?= ("Continue") ?>
+                                       </div>
                                         <div class="Stripe_button col-md-5 col-5 btn text-white" type="button" data-dismiss="modal" aria-label="Close">
                                             <?= ("Cancel") ?>
                                         </div>
@@ -803,6 +809,34 @@ div#video-js-trailer-player {
         <input type="hidden" id="publishable_key" name="publishable_key" value="<?php echo $publishable_key; ?>">
         <script src="https://checkout.stripe.com/checkout.js"></script>
 
+
+        
+<script>
+    $(document).ready(function () {
+        $('#roku_tvcode_input').hide();
+
+        $(document).on('change', '#stripe_radio', function () {
+            const paymentMethod = $(this).val();
+
+            if (paymentMethod === 'Stripe') {
+                $('#roku_tvcode_input').show();
+            } else {
+                $('#roku_tvcode_input').hide();
+            }
+        });
+        $(document).on('click', '.stripe_season_value', function () {
+            const tvCode = $('#roku_tvcode_input').val();
+            const seriesSeasonId = $(this).data('season-id'); // Use $(this) to get the correct season ID
+            const ppvPrice = $(this).data('ppv-price'); // Use $(this) to get the correct price
+
+            // console.log('seriesSeasonId :' + seriesSeasonId);
+            // console.log('ppvPrice :' + ppvPrice);
+
+            const url = `<?= URL::to('Stripe_payment_series_season_PPV_Purchase') ?>/${seriesSeasonId}/${ppvPrice}?roku_tvcode=${tvCode}`;
+            window.location.href = url;
+        });
+    });
+</script>
 
 
 <script>
@@ -1214,7 +1248,6 @@ amount: amount * 100
     
   });
 
-// Need to Change - 2 (Manivel)
 
   $('#season_id').change(function(){
 

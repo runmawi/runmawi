@@ -784,6 +784,11 @@
                         <span class="badge badge-secondary  mb-2 ml-1"><?php echo __($video->duration);?></span><br>
                     
                         <a type="button" class="mb-3 mt-3"  data-dismiss="modal" style="font-weight:400;"><?php echo __('Amount'); ?>:   <span class="pl-2" style="font-size:20px;font-weight:700;"> <?php echo __($currency->symbol.' '.$video->ppv_price);?></span></a><br>
+                        <div class="mb-0 mt-3 p-0 text-left">
+                            <input type="radio" id="stripe_radio" name="roku_tvcode" value="Stripe">
+                            <label for="roku_tvcode">Roku Tvcode</label><br>
+                            <input type="text" id="roku_tvcode_input" name="roku_tvcode" placeholder="Enter Roku TV code" style="display: none;">
+                        </div>
                         <label class="mb-0 mt-3 p-0" for="method"><h5 style="font-size:20px;line-height: 23px;" class="font-weight-bold text-black mb-2"><?php echo __('Payment Method'); ?> : </h5></label>
                     
                                     <!-- Stripe Button -->
@@ -828,8 +833,7 @@
                     <?php if( $video->ppv_price != null &&  $video->ppv_price != " " ) {?>
                         <div class="Stripe_button">  <!-- Stripe Button -->
 
-                            <button class="btn2 btn-outline-primary" 
-                                    onclick="location.href='<?php echo route('Stripe_payment_live_PPV_Purchase', ['live_id' => $video->id, 'amount' => $video->ppv_price]); ?>'">
+                            <button class="btn2 btn-outline-primary" data-ppv-price="<?= $video->ppv_price ?>" data-live-id="<?= $video->id ?>" id="stripe_submit">
                                 <?php echo __('Continue'); ?>
                             </button>
                         </div>
@@ -894,6 +898,33 @@
         </div>
     </div>
 </div>
+
+     
+<script>
+    $(document).ready(function () {
+        $('#roku_tvcode_input').hide();
+
+        $('#stripe_radio').click(function () {
+            const paymentMethod = $('#stripe_radio').val();
+            if (paymentMethod === 'Stripe') {
+                $('#roku_tvcode_input').show();
+            } else {
+                $('#roku_tvcode_input').hide();
+            }
+        });
+        $('#stripe_submit').click( function () {
+            const tvCode = $('#roku_tvcode_input').val();
+            const liveId = $('#stripe_submit').data('live-id'); // Use $(this) to get the correct season ID
+            const ppvPrice = $('#stripe_submit').data('ppv-price'); // Use $(this) to get the correct price
+
+            // console.log('liveId :' + liveId);
+            // console.log('ppvPrice :' + ppvPrice);
+
+            const url = `<?= URL::to('Stripe_payment_live_PPV_Purchase') ?>/${liveId}/${ppvPrice}?roku_tvcode=${tvCode}`;
+            window.location.href = url;
+        });
+    });
+</script>
 
 <script type="text/javascript">
 

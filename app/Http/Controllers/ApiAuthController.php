@@ -4228,9 +4228,38 @@ public function verifyandupdatepassword(Request $request)
       $audios = [];
     }
 
+
+    /*UGC videos*/
+    $ugc_video_ids = Favorite::select('ugc_video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $ugc_video_ids_count = Favorite::select('ugc_video_id')->where('user_id',$user_id)->count();
+
+    if ( $ugc_video_ids_count  > 0) {
+
+      foreach ($ugc_video_ids as $key => $value) {
+        $k2[] = $value->ugc_video_id;
+      }
+      $ugc_videos = UGCVideo::whereIn('id', $k2)->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'ugc_videos';
+        return $item;
+      });
+
+      if(count($ugc_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+    }else{
+            $status = "false";
+      $ugc_videos = [];
+    }
+
+
     $response = array(
         'status'=>$status,
         'channel_videos'  => $channel_videos,
+        'ugc_videos'  => $ugc_videos,
         'episode_videos'  => $episode,
         'audios'          => $audios,
       );
@@ -4627,6 +4656,7 @@ public function verifyandupdatepassword(Request $request)
     $platform = $request->platform;
     $payment_id = $request->py_id;
     $status = $request->py_status;
+    $payment_failure_reason = $request->py_failure_reason;
 
     $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
     $date = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -4747,13 +4777,14 @@ public function verifyandupdatepassword(Request $request)
               'platform' => $platform,
               'payment_id' => $payment_id,
               'status' => $status,
+              'payment_failure_reason' => $payment_failure_reason,
               'created_at'=>now(),
               'updated_at'=>now()
               ]
           );
         }else{
             DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id, 'status' => $status]
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $amount, 'moderator_id'=>$moderator_id, 'payment_gateway'=>$payment_type,'platform' => $platform,'updated_at'=>now(),'created_at'=>now(),'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason   ]
           );
         }
       }
@@ -4799,6 +4830,7 @@ public function verifyandupdatepassword(Request $request)
               'moderator_id'=>$series_moderators_id,
               'platform' => $platform,
               'payment_id' => $payment_id,
+              'payment_failure_reason' => $payment_failure_reason,
               'status' => $status,
               'created_at'=>now(),
               'updated_at'=>now()
@@ -4806,7 +4838,7 @@ public function verifyandupdatepassword(Request $request)
           );
         }else{
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status]
+            ['user_id' => $user_id ,'moderator_id'=>$series_moderators_id,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason ]
           );
         }
       } 
@@ -4816,7 +4848,8 @@ public function verifyandupdatepassword(Request $request)
           ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type ]
         );
         DB::table('ppv_purchases')->insert(
-          ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status]
+          
+          ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
         );
       } 
   
@@ -12829,6 +12862,9 @@ $cpanel->end();
 
       try{
 
+        $roku_tvcode = $request->query('roku_tvcode');
+        // return $roku_tvcode;
+
         $HomeSetting = MobileHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
@@ -13035,7 +13071,7 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($roku_tvcode) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
             $description = $item->description;
@@ -13055,7 +13091,22 @@ $cpanel->end();
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) {
+                                    ->map(function ($season) use($roku_tvcode) {
+                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                        $ppv_exists_check_query = 0;
+                                        if($ppv_purchase){
+                                          $new_date = Carbon::parse($ppv_purchase->to_time);
+                                          $currentdate = Carbon::now();
+                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        }
+
+                                        if($season->access == 'free'){
+                                          $season_access = 'guest';
+                                        }elseif( $ppv_exists_check_query > 0){
+                                          $season_access = 'guest';
+                                        }else{
+                                          $season_access = 'PPV';
+                                        }
                                         $episodes = Episode::where('season_id', $season->id)
                                             ->orderBy('episode_order')
                                             ->get()
@@ -13112,6 +13163,7 @@ $cpanel->end();
                                         if ($episodes->isNotEmpty()) {
                                             return [
                                                 'title' => $season->series_seasons_name,
+                                                'access' => $season_access,
                                                 'episodes' => $episodes,
                                             ];
                                         }
@@ -13430,7 +13482,23 @@ $cpanel->end();
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
-                                      ->map(function ($item) {
+                                      ->map(function ($item) use($roku_tvcode) {
+                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('live_id',$item->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                        $ppv_exists_check_query = 0;
+                                        if($ppv_purchase){
+                                          $new_date = Carbon::parse($ppv_purchase->to_time);
+                                          $currentdate = Carbon::now();
+                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        }
+
+                                        if($item['access'] == 'free'){
+                                          $item['access'] = 'guest';
+                                        }elseif( $ppv_exists_check_query > 0){
+                                          $item['access'] = 'guest';
+                                        }else{
+                                          $item['access'] = 'PPV';
+                                        }
+
                                         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
                                         $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                                         $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
