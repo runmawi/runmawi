@@ -6,8 +6,8 @@ $media_url = $radio_station_url . '/' . $Livestream_detail->slug;
 <style type="text/css">
 
     body {
-    background-color: #000; /* Replace with your desired fallback color */
-    transition: background-color 0.5s ease; /* Smooth transition */
+    background-color: #000;
+    transition: background-color 0.5s ease;
     }
 
     #myProgress {
@@ -278,13 +278,40 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
 .icon-circle {
     background-color: #ED563C;
-    padding: 18px;
+    padding: 13px;
     border-radius: 50%;
     color: white;
     font-size: 15px;
     display: inline-block; 
 }
 
+.icon-mute {
+    background-color: #ED563C;
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    font-size: 15px;
+    display: inline-block; 
+}
+
+
+.play-radio{
+    background-color: #ED563C;
+    color: white;
+    margin-top: 10px;
+}
+
+
+.show-more-btn {
+        all: unset; 
+        display: inline-block; 
+        color: white;
+        text-align: center; 
+        cursor: pointer; 
+        font-size: 14px;
+        text-decoration: underline;
+        transition: background-color 0.3s ease; 
+    }
 
 
     .modal{
@@ -333,56 +360,38 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
             <div class="col-lg-8">
                 <div class="player-ctn" id="player-ctn"
                     style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
-                    <div class="row align-items-center">
+                    <div class="row">
                         <div class="col-sm-3 col-md-3 col-xs-3 ">
                             <img height="150" width="150" id="audio_img" >
+                            <div onclick="toggleAudio()">
+                                <button class="btn btn-action play-radio" id="vidbutton"
+                                    style="width:85%;"><i class="fa fa-play "
+                                        aria-hidden="true"></i> Play</button>
+                            </div>
                         </div>
                         <div class="col-sm-9 col-md-9 col-xs-9">
                             <div class="album_bg">
                                 <div class="album_container">
                                     <div class="blur"></div>
                                     <div class="overlay_blur">
-                                        <h2 class="hero-title album">
-                                            <div class="title"></div>
-                                        </h2>
-                                        </p>
-                                        <div class="d-flex"
-                                            style="justify-content: space-between;width: auto;align-items: center;">
-                                            <ul class="p-0 share-icon-aud">
-                                                <li>
-                                                    <div onclick="toggleAudio()">
-                                                        <button class="btn bd btn-action" id="vidbutton"
-                                                            style="width:100%;"><i class="fa fa-play mr-2"
-                                                                aria-hidden="true"></i> Play</button>
+                                        <div class="row justify-content-between" style="padding:0px 12px;" >
+                                            <div class="">
+                                                <h2 class="hero-title album">
+                                                    <div class="title"></div>
+                                                </h2>
+                                            </div>
+                                            <div class="">
+                                                <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+                                                    <div id="btn-faws-volume">
+                                                        <i id="icon-vol-up" class='fas fa-volume-up icon-mute'></i>
+                                                        <i id="icon-vol-mute" class='fas fa-volume-mute icon-mute' style="display: none"></i>
                                                     </div>
-                                                </li>
-                                                <li>
-                                                    <a aria-hidden="true" 
-                                                    class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
-                                                    data-authenticated="<?= !Auth::guest() ?>" 
-                                                    data-audio_id="<?= $Livestream_detail->id ?>"
-                                                    onclick="toggleFavorite(this)">
-                                                     <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
-                                                         <i id="ff" class="fa fa-heart"></i>
-                                                     <?php else: ?>
-                                                         <i id="ff" class="fa fa-heart-o"></i>
-                                                     <?php endif; ?>
-                                                 </a>
-                                                </li>
-                                                <li>
-                                                    <div class="dropdown">
-                                                       <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
-                                                          <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
-                                                          <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
-                                                          </a>
-                                                          <div class="divider" style="border:1px solid white"></div>
-                                                          <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
-                                                       </div>
-                                                    </div>
-                                                 </li>                                        
-                                            </ul>
-                                            <!-- Share -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                     
+                                        <div class="">
+                                            <div class="description"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -397,30 +406,46 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                     </div>
                    
                     <div class="btn-ctn">
-                        <div class="btn-action first-btn" style="padding:0px 40px;" onclick="previous()">
-                            <div id="btn-faws-back">
-                                <i class='fas fa-step-backward icon-circle' id="prev-button"></i>
-                            </div>
-                        </div>
-                      
-                        <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
-                            <div id="btn-faws-play-pause">
-                                <i class='fas fa-play icon-circle' id="icon-play"></i>
-                                <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
-                            </div>
-                        </div>
                        
-                        <div class="btn-action" style="padding:0px 40px;" onclick="next()">
-                            <div id="btn-faws-next">
-                                <i class='fas fa-step-forward icon-circle' id="next-button"></i>
+                        <div class="d-flex"
+                        style="justify-content: space-between;width: auto;align-items: center;">
+                        <ul class="p-0 share-icon-aud">
+                           <li>
+                            <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
+                                <div id="btn-faws-play-pause">
+                                    <i class='fas fa-play icon-circle' id="icon-play"></i>
+                                    <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="btn-mute" id="toggleMute" style="padding:0px 40px;" onclick="toggleMute()">
-                            <div id="btn-faws-volume">
-                                <i id="icon-vol-up" class='fas fa-volume-up icon-circle'></i>
-                                <i id="icon-vol-mute" class='fas fa-volume-mute icon-circle' style="display: none"></i>
-                            </div>
-                        </div>
+                           </li>
+                            <li>
+                                <a aria-hidden="true" 
+                                class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
+                                data-authenticated="<?= !Auth::guest() ?>" 
+                                data-audio_id="<?= $Livestream_detail->id ?>"
+                                onclick="toggleFavorite(this)">
+                                 <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
+                                     <i id="ff" class="fa fa-heart"></i>
+                                 <?php else: ?>
+                                     <i id="ff" class="fa fa-heart-o"></i>
+                                 <?php endif; ?>
+                             </a>
+                            </li>
+                            <li>
+                                <div class="dropdown">
+                                   <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
+                                      <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                                      <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
+                                      </a>
+                                      <div class="divider" style="border:1px solid white"></div>
+                                      <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
+                                   </div>
+                                </div>
+                             </li>                                        
+                        </ul>
+                        <!-- Share -->
+                    </div>
                     </div>
                     <div class="title"></div>
                 </div>
@@ -645,10 +670,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     }
     
     
-    for (var i = 0; i < listAudio.length; i++) {
-        createTrackItem(i,listAudio[i].title,listAudio[i].duration,listAudio[i].id);
-    }
-    
     var indexAudio = 0;
 
     function getCurrentProgram(index) {
@@ -737,6 +758,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         var player = document.querySelector('#source-audio');
         player.src = listAudio[index].livestream_URL; 
         document.querySelector('.title').innerHTML = listAudio[index].title; 
+        document.querySelector('.description').innerHTML = listAudio[index].description; 
         document.querySelector('.program-name').innerHTML = listAudio[index].title; 
 
         var currentProgram = getCurrentProgram(index); 
@@ -764,6 +786,32 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     document.querySelector('#source-audio').src = <?php echo json_encode(@$Livestream_detail->livestream_URL) ; ?>  
     document.querySelector('.title').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
     document.querySelector('.program-name').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
+
+    const descriptionText = <?php echo json_encode(@$Livestream_detail->description); ?> || '-'; 
+    const descriptionElement = document.querySelector('.description');
+   
+    if (!descriptionText.trim() || descriptionText === '-') {
+        descriptionElement.innerHTML = ''; 
+    } else {
+        const charLimit = 250;
+        if (descriptionText.length > charLimit) {
+            const truncatedText = descriptionText.substring(0, charLimit) + '...';
+            descriptionElement.innerHTML = truncatedText;
+            const showMoreButton = document.createElement('button');
+            showMoreButton.textContent = 'Show More';
+            showMoreButton.classList.add('show-more-btn'); 
+            descriptionElement.parentElement.appendChild(showMoreButton);
+            let isExpanded = false;
+            showMoreButton.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+                descriptionElement.innerHTML = isExpanded ? descriptionText : truncatedText;
+                showMoreButton.textContent = isExpanded ? 'Show Less' : 'Show More';
+            });
+        } else {
+            descriptionElement.innerHTML = descriptionText;
+        }
+    }
+
     
     var player_images = '<?php echo URL::to('/public/uploads/images/');?>'; 
     var audio_images = player_images +'/' + <?php echo json_encode(@$Livestream_detail->image) ; ?>;

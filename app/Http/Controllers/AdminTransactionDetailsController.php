@@ -203,7 +203,10 @@ class AdminTransactionDetailsController extends Controller
 
         $transaction->payment_id = $request->payment_id;
 
-        $transaction->save();
+        if ($transactionType === 'ppv') {
+            $transaction->status = 'captured';
+        }
+        $transaction->save();   
 
         return redirect()->route('admin.transaction-details.index')->with('success', 'Transaction updated successfully.');
     }
