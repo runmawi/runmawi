@@ -796,6 +796,9 @@ class ApiAuthContinueController extends Controller
                 $cnt = Wishlist::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
                 $wishliststatus = ($cnt == 1) ? "true" : "false";
 
+                $favcnt = Favorite::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
+                $favouritestatus = ($favcnt == 1) ? "true" : "false";
+
                 //Watchlater
                 $cnt1 = Watchlater::select('ugc_video_id')->where('user_id', '=', $user_id)->where('ugc_video_id', '=', $videoid)->count();
                 $watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
@@ -810,61 +813,11 @@ class ApiAuthContinueController extends Controller
             } else {
                 $wishliststatus = 'false';
                 $watchlaterstatus = 'false';
+                $favouritestatus = 'false';
                 $userrole = '';
                 $status = 'true';
                 $like = "false";
                 $dislike = "false";
-            }
-
-            // andriodId  Wishlist , Watchlater
-            if (!empty($request->andriodId)) {
-                //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
-                $andriod_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-
-                // Watchlater
-                $cnt1 = Watchlater::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
-                $andriod_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
-                $andriod_like = ($like_data == 1) ? "true" : "false";
-                $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
-            } else {
-                $andriod_wishliststatus = 'false';
-                $andriod_watchlaterstatus = 'false';
-                $andriod_like = "false";
-                $andriod_dislike = "false";
-            }
-
-            // IOS Wishlist , Watchlater
-            if (!empty($request->IOSId)) {
-
-                //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
-                $IOS_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-
-                // Watchlater
-                $cnt1 = Watchlater::select('ugc_video_id')->where('IOSId', '=', $request->IOSId)->where('ugc_video_id', '=', $videoid)->count();
-                $IOS_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-
-                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("IOSId", "=", $request->IOSId)->where("disliked", "=", 1)->count();
-                $IOS_like = ($like_data == 1) ? "true" : "false";
-                $IOS_dislike = ($dislike_data == 1) ? "true" : "false";
-
-            } else {
-                $IOS_wishliststatus = 'false';
-                $IOS_watchlaterstatus = 'false';
-                $IOS_like = "false";
-                $IOS_dislike = "false";
-            }
-
-            // TVID Wishlist
-            if (!empty($request->tv_id)) {
-                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('tv_id', '=', $request->tv_id)->where('ugc_video_id', '=', $videoid)->count();
-                $tv_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
-            } else {
-                $tv_wishliststatus = 'false';
             }
 
             $moviesubtitles = MoviesSubtitles::where('movie_id', $videoid)->get();
@@ -872,22 +825,14 @@ class ApiAuthContinueController extends Controller
             $response = array(
                 'status' => $status,
                 'wishlist' => $wishliststatus,
-                'andriod_wishliststatus' => $andriod_wishliststatus,
-                'andriod_like' => $andriod_like,
-                'andriod_dislike' => $andriod_dislike,
-                'andriod_watchlaterstatus' => $andriod_watchlaterstatus,
-                'tv_wishliststatus' => $tv_wishliststatus,
                 'watchlater' => $watchlaterstatus,
+                'favourite' => $favouritestatus,
                 'userrole' => $userrole,
                 'shareurl' => URL::to('ugc/video-player').'/'.$videodetail[0]->slug,
                 'like' => $like,
                 'dislike' => $dislike,
                 'videodetail' => $videodetail,
                 'videossubtitles' => $moviesubtitles,
-                'IOS_wishliststatus' => $IOS_wishliststatus,
-                'IOS_watchlaterstatus' => $IOS_watchlaterstatus,
-                'IOS_like' => $IOS_like,
-                'IOS_dislike' => $IOS_dislike,
             );
         } catch (\Throwable $th) {
             $response = array(
