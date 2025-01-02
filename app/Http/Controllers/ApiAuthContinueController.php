@@ -957,17 +957,26 @@ class ApiAuthContinueController extends Controller
 
     public function showUgcProfileApi(Request $request)
     {
+        $ugc_user_id = $request->input('ugc_user_id');
         $user_id = $request->input('user_id');
 
-        if (!$user_id) {
+        if (!$ugc_user_id) {
             return response()->json(['error' => 'User ID is required.'], 400);
         }
-        $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
+        $user = User::where('id', $ugc_user_id)->withCount('subscribers')->firstOrFail();
 
         $ugcvideos = UGCVideo::where('user_id', $user->id)
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->get();
+
+        if (isset($request->user_id) && $request->user_id != '') {
+            $user_id = $request->user_id;
+            $cnt = UGCSubscriber::where('user_id', '=', $ugc_user_id)->where('subscriber_id', '=', $user_id)->count();
+            $subscribed = ($cnt == 1) ? "true" : "false";
+        } else {
+            $subscribed = "false";
+        }
 
         $ugc_total = $user->ugcVideos();
         $totalViews = $ugc_total->sum('views');
@@ -978,6 +987,7 @@ class ApiAuthContinueController extends Controller
             'ugcvideos' => $ugcvideos,
             'totalViews' => $totalViews,
             'totalVideos' => $totalVideos,
+            'subscribed' => $subscribed,
         ];
 
         return response()->json($data);
