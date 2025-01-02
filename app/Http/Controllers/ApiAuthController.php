@@ -12863,6 +12863,9 @@ $cpanel->end();
 
       try{
 
+        $roku_tvcode = $request->query('roku_tvcode');
+        // return $roku_tvcode;
+
         $HomeSetting = MobileHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
@@ -13069,7 +13072,7 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($roku_tvcode) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
             $description = $item->description;
@@ -13089,7 +13092,22 @@ $cpanel->end();
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) {
+                                    ->map(function ($season) use($roku_tvcode) {
+                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                        $ppv_exists_check_query = 0;
+                                        if($ppv_purchase){
+                                          $new_date = Carbon::parse($ppv_purchase->to_time);
+                                          $currentdate = Carbon::now();
+                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        }
+
+                                        if($season->access == 'free'){
+                                          $season_access = 'guest';
+                                        }elseif( $ppv_exists_check_query > 0){
+                                          $season_access = 'guest';
+                                        }else{
+                                          $season_access = 'PPV';
+                                        }
                                         $episodes = Episode::where('season_id', $season->id)
                                             ->orderBy('episode_order')
                                             ->get()
@@ -13146,6 +13164,7 @@ $cpanel->end();
                                         if ($episodes->isNotEmpty()) {
                                             return [
                                                 'title' => $season->series_seasons_name,
+                                                'access' => $season_access,
                                                 'episodes' => $episodes,
                                             ];
                                         }
@@ -13464,7 +13483,23 @@ $cpanel->end();
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
-                                      ->map(function ($item) {
+                                      ->map(function ($item) use($roku_tvcode) {
+                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('live_id',$item->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                        $ppv_exists_check_query = 0;
+                                        if($ppv_purchase){
+                                          $new_date = Carbon::parse($ppv_purchase->to_time);
+                                          $currentdate = Carbon::now();
+                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        }
+
+                                        if($item['access'] == 'free'){
+                                          $item['access'] = 'guest';
+                                        }elseif( $ppv_exists_check_query > 0){
+                                          $item['access'] = 'guest';
+                                        }else{
+                                          $item['access'] = 'PPV';
+                                        }
+
                                         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
                                         $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                                         $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;

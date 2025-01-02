@@ -298,6 +298,9 @@ class StripePaymentController extends Controller
             if( Auth::guest()){
                 return redirect('login');
             }
+
+            $rokuTvCode = request()->get('roku_tvcode');
+            session(['roku_tvcode' => $rokuTvCode]);
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$live_id ) ;
@@ -422,6 +425,10 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+
+            $rokuTvCode = session('roku_tvcode');
+
+            // dd($rokuTvCode);
             
             if( $stripe_payment_session->status == "complete"){
         
@@ -471,6 +478,7 @@ class StripePaymentController extends Controller
                     'payment_in'       => 'website',
                     'platform'       => 'website',
                     'payment_id' => $stripe_payment_id ,
+                    'roku_tvcode'    =>  $rokuTvCode,
                 ]);
  
                 LivePurchase::create([
@@ -485,6 +493,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    // 'roku_tvcode'    =>  $rokuTvCode,
                 ]);
 
                 $respond = array(
@@ -497,7 +506,7 @@ class StripePaymentController extends Controller
         } catch (\Exception $e) {
 
             $video = LiveStream::where('id',$live_id)->first();
-
+            // return $e->getMessage();
             $respond = array(
                 'status'  => 'false',
                 'redirect_url' => URL::to('live/'. $video->slug) ,
@@ -718,10 +727,14 @@ class StripePaymentController extends Controller
             if( Auth::guest()){
                 return redirect('login');
             }
+
+            $rokuTvCode = request()->get('roku_tvcode');
+            session(['roku_tvcode' => $rokuTvCode]);
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_series_season_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$SeriesSeason_id ) ;
 
+            // dd($SeriesSeason_id);
             $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
             $series_id = $SeriesSeason->series_id;
             $series = Series::find($series_id);
@@ -844,6 +857,10 @@ class StripePaymentController extends Controller
             $series_id = $SeriesSeason->series_id;
             $series = Series::find($series_id);
 
+            $rokuTvCode = session('roku_tvcode');
+            
+            // dd($rokuTvCode);
+
             if( $stripe_payment_session->status == "complete"){
         
                 $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
@@ -888,6 +905,7 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'roku_tvcode'    =>  $rokuTvCode,
                     'payment_id' =>   $stripe_payment_id,
                 ]);
 

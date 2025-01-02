@@ -819,14 +819,14 @@ class ApiAuthContinueController extends Controller
             // andriodId  Wishlist , Watchlater
             if (!empty($request->andriodId)) {
                 //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
                 $andriod_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
 
                 // Watchlater
-                $cnt1 = Watchlater::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $cnt1 = Watchlater::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
                 $andriod_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-                $like_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
+                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
+                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
                 $andriod_like = ($like_data == 1) ? "true" : "false";
                 $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
             } else {
@@ -957,17 +957,26 @@ class ApiAuthContinueController extends Controller
 
     public function showUgcProfileApi(Request $request)
     {
+        $ugc_user_id = $request->input('ugc_user_id');
         $user_id = $request->input('user_id');
 
-        if (!$user_id) {
+        if (!$ugc_user_id) {
             return response()->json(['error' => 'User ID is required.'], 400);
         }
-        $user = User::where('id', $user_id)->withCount('subscribers')->firstOrFail();
+        $user = User::where('id', $ugc_user_id)->withCount('subscribers')->firstOrFail();
 
         $ugcvideos = UGCVideo::where('user_id', $user->id)
             ->where('active', 1)
             ->orderBy('created_at', 'DESC')
             ->get();
+
+        if (isset($request->user_id) && $request->user_id != '') {
+            $user_id = $request->user_id;
+            $cnt = UGCSubscriber::where('user_id', '=', $ugc_user_id)->where('subscriber_id', '=', $user_id)->count();
+            $subscribed = ($cnt == 1) ? "true" : "false";
+        } else {
+            $subscribed = "false";
+        }
 
         $ugc_total = $user->ugcVideos();
         $totalViews = $ugc_total->sum('views');
@@ -978,6 +987,7 @@ class ApiAuthContinueController extends Controller
             'ugcvideos' => $ugcvideos,
             'totalViews' => $totalViews,
             'totalVideos' => $totalVideos,
+            'subscribed' => $subscribed,
         ];
 
         return response()->json($data);
