@@ -819,14 +819,14 @@ class ApiAuthContinueController extends Controller
             // andriodId  Wishlist , Watchlater
             if (!empty($request->andriodId)) {
                 //Wishlilst
-                $Wishlist_cnt = Wishlist::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $Wishlist_cnt = Wishlist::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
                 $andriod_wishliststatus = ($Wishlist_cnt == 1) ? "true" : "false";
 
                 // Watchlater
-                $cnt1 = Watchlater::select('ug_video_id')->where('andriodId', '=', $request->andriodId)->where('ug_video_id', '=', $videoid)->count();
+                $cnt1 = Watchlater::select('ugc_video_id')->where('andriodId', '=', $request->andriodId)->where('ugc_video_id', '=', $videoid)->count();
                 $andriod_watchlaterstatus = ($cnt1 == 1) ? "true" : "false";
-                $like_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
-                $dislike_data = LikeDisLike::where("ug_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
+                $like_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("liked", "=", 1)->count();
+                $dislike_data = LikeDisLike::where("ugc_video_id", "=", $videoid)->where("andriodId", "=", $request->andriodId)->where("disliked", "=", 1)->count();
                 $andriod_like = ($like_data == 1) ? "true" : "false";
                 $andriod_dislike = ($dislike_data == 1) ? "true" : "false";
             } else {
