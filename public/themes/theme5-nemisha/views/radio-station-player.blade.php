@@ -459,7 +459,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                 <div class="play-border" style="margin: 0px; 10px;" >
                     <div class="playlist-ctn">
                         
-                        <div class="row align-items-center">
+                        <div class="row align-items-center pt-1">
                             <div class="col-12 col-md-6 mb-4">
                                 <h6 class="mb-0 font-weight-bold">
                                     <span class="program-name"></span> 
@@ -480,15 +480,27 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
                             </div>
                         </div>
 
-                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                        <p>
-                            <span class="current-program">
-                        </p>
+                       
+                        <?php if ($Livestream_detail->publish_type == 'publish_now' || $Livestream_detail->publish_type == 'publish_later'): ?>
+                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                            <p>
+                                <?php echo $Livestream_detail->title; ?>
+                            </p>
+                        <?php elseif ($Livestream_detail->publish_type == 'schedule_program'): ?>
+                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                            <p>
+                                <span id="current-program"></span>
+                            </p>
 
-                        <h6 class="mb-2 font-weight-bold">Next Program</h6>
-                        <p>
-                            <span class="next-program">
-                        </p>
+                            <h6 class="mb-2 font-weight-bold">Next Program</h6>
+                            <p>
+                                <span id="next-program"></span>
+                            </p>
+                        <?php endif; ?>
+
+                    
+
+                       
                     </div>
                 </div>
             </div>
@@ -760,13 +772,6 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         document.querySelector('.title').innerHTML = listAudio[index].title; 
         document.querySelector('.description').innerHTML = listAudio[index].description; 
         document.querySelector('.program-name').innerHTML = listAudio[index].title; 
-
-        var currentProgram = getCurrentProgram(index); 
-        document.querySelector('.current-program').innerHTML = currentProgram;
-
-        var nextProgram = getNextProgram(index);
-        document.querySelector('.next-program').innerHTML = nextProgram;
-
         var image = document.querySelector('#audio_img');
         image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image;
         var divElement = document.getElementById("player-ctn");
@@ -938,3 +943,80 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     }
       
  </script>
+
+ <script>
+    var LivestreamDetail = <?php echo json_encode($Livestream_detail); ?>;
+    console.log(LivestreamDetail);
+
+    function getProgramDetails() {    
+        try {
+            var startTimes = LivestreamDetail.epg_program_start_time;
+            var endTimes = LivestreamDetail.epg_program_end_time;
+            var programTitles = LivestreamDetail.epg_program_title;
+            var scheduledDays = LivestreamDetail.scheduler_program_days;
+            var currentDay = new Date().getDay();
+
+            if (!scheduledDays.includes(currentDay.toString())) {
+                document.getElementById("current-program").textContent = "No program scheduled for today.";
+                document.getElementById("next-program").textContent = "No program scheduled for today.";
+                return;
+            }
+
+            if (!startTimes.length || !programTitles.length || !endTimes.length) {
+                document.getElementById("current-program").textContent = "No schedule available.";
+                document.getElementById("next-program").textContent = "No upcoming programs.";
+                return;
+            }
+
+            var currentTime = new Date();
+            var currentProgram = "No current program.";
+            var nextProgram = "No upcoming programs.";
+
+            for (var i = 0; i < startTimes.length; i++) {
+                var [startHour, startMinute] = startTimes[i].split(":").map(Number);
+                var [endHour, endMinute] = endTimes[i].split(":").map(Number);
+
+                var startDate = new Date(currentTime);
+                startDate.setHours(startHour, startMinute, 0, 0);
+
+                var endDate = new Date(currentTime);
+                endDate.setHours(endHour, endMinute, 0, 0);
+
+                if (currentTime >= startDate && currentTime < endDate) {
+                    currentProgram = `${programTitles[i]}`;
+                    nextProgram = (i + 1 < startTimes.length) 
+                        ? `${programTitles[i + 1]} (Starts at ${formatTime(new Date(startDate.setMinutes(startDate.getMinutes() + 60)))}.)` 
+                        : "No upcoming programs.";
+                    break;
+                }
+
+                if (currentTime < startDate) {
+                    nextProgram = `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
+                    break;
+                }
+            }
+
+            document.getElementById("current-program").textContent = currentProgram;
+            document.getElementById("next-program").textContent = nextProgram;
+
+        } catch (error) {
+            console.error("Error parsing schedule data:", error);
+            document.getElementById("current-program").textContent = "Invalid schedule data.";
+            document.getElementById("next-program").textContent = "Invalid schedule data.";
+        }
+    }
+
+    function formatTime(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+        minutes = minutes.toString().padStart(2, "0");
+        return `${hours}:${minutes} ${ampm}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        getProgramDetails();
+    });
+</script>
+
