@@ -47,15 +47,7 @@
 
    $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
 
-   $Slider_array_data = array(
-      'sliders'            => $sliders, 
-      'live_banner'        => $live_banner , 
-      'video_banners'      => $video_banner ,
-      'series_sliders'     => $series_sliders ,
-      'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->latest()->limit(15)->get(),
-      'Episode_sliders'    => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
-      'VideoCategory_banner' => $VideoCategory_banner ,
-   );    
+     
 
    $continue_watching = array(
                               'Video_cnt'    => $VideoJsContinueWatching,
@@ -119,7 +111,7 @@
 
       @if (optional($admin_advertistment_banners)->bottom_image_url )
          <div class="col-sm-9 mx-auto ">
-            <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" /> 
+            <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" width="857" height="32"/> 
          </div>
       @endif
 
