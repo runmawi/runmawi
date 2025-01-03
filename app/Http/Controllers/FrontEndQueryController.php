@@ -346,8 +346,9 @@ class FrontEndQueryController extends Controller
                     $series['duration_format'] = !is_null($series->duration)
                         ? Carbon::parse($series->duration)->format('G\H i\M')
                         : null;
+                    $season_ids = SeriesSeason::where('series_id',$series->id)->pluck('id');
     
-                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->where('active',1)
+                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->whereIn('season_id',$season_ids)->where('active',1)
                         ->get()->take(15)
                         ->map(function ($episode) {
                             $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')

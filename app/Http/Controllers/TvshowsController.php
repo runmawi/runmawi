@@ -222,6 +222,27 @@ class TvshowsController extends Controller
                     ];
                     return Theme::view('tv-home', $data);
 
+            }elseif($this->Theme == "theme4"){
+                $data = [
+                    'current_page'   => 1,
+                    'pagination_url' => '/series',
+                    'settings'       => Setting::first(),
+                    'currency'      => CurrencySetting::first(),
+                    'pages'         => $pages,
+                    'current_theme' => $this->Theme,
+                    'latest_episodes'   =>  (new FrontEndQueryController)->latest_episodes()->take(15) ,
+                    'featured_episodes' =>  (new FrontEndQueryController)->featured_episodes()->take(15),
+                    'latest_series'     =>  (new FrontEndQueryController)->latest_Series()->take(15),
+                    'multiple_compress_image' => (new FrontEndQueryController)->multiple_compress_image(),
+                    'Series_based_on_Networks' => (new FrontEndQueryController)->Series_based_on_Networks(),
+                    'ThumbnailSetting'  => ThumbnailSetting::first(),
+                    'default_vertical_image_url' => default_vertical_image_url(),
+                    'default_horizontal_image_url' => default_horizontal_image_url(),
+                    'order_settings_list' => $OrderHomeSetting, 
+                    'home_settings'  => HomeSetting::first() ,
+                ];
+    
+                return Theme::view('tv-home', $data);
             }
             else{
                 $data = [
