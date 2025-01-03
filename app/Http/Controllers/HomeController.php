@@ -193,24 +193,7 @@ class HomeController extends Controller
                                         ->limit(15)->get();
 
 
-            $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                            'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
-
-                                    ->where('active',1)->where('status', 1)->where('draft',1);
-
-                                    if( $getfeching !=null && $getfeching->geofencing == 'ON'){
-                                        $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
-                                    }
-
-                                    if ($videos_expiry_date_status == 1 ) {
-                                        $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                                    }
-
-                                    if ($check_Kidmode == 1) {
-                                        $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
-                                    }
-
-            $latest_videos = $latest_videos->latest()->limit(15)->get();
+            
 
             $trending_audios = Audio::select('id','title','slug','ppv_status','year','rating','access','ppv_price',
                 'duration','rating','image','featured','player_image','details','description')
@@ -232,43 +215,8 @@ class HomeController extends Controller
                 ->limit(15)
                 ->get();
 
-            $latest_episode = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                                        'duration','rating','image','featured','tv_image','player_image')
-                                        ->where('active', '1')->latest()->limit(15)
-                                        ->get()->map(function($item){
-                                            $item['series'] = Series::where('id',$item->series_id)->first();
-                                            return $item ;
-                                        });
-
-            $latest_series = Series::select('id','title','slug','year','rating','access',
-                'duration','rating','image','featured','tv_image','player_image','details','description')
-                ->where('active', '1')->latest()->limit(15)
-                ->get();
-
-            $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
-
-                            ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
-
-                            if( $getfeching !=null && $getfeching->geofencing == 'ON'){
-                                $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
-                            }
-
-                            if ($videos_expiry_date_status == 1 ) {
-                                $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                            }
-
-                            if ($check_Kidmode == 1) {
-                                $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [0, 12]);
-                            }
-
-            $featured_videos = $featured_videos->latest()->limit(15)->get();
-
-            $featured_episodes = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image',
-                'duration','rating','image','featured','tv_image','player_image')
-                ->where('active', '1')->where('featured', '1')
-                ->latest()->limit(15)
-                ->get();
+          
+            
 
             $pages = Page::all();
 
@@ -295,205 +243,121 @@ class HomeController extends Controller
 
             $currency = CurrencySetting::first();
 
-            $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                            'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                    ->where('active', 1)
-                                    ->where('status', 1)
-                                    ->latest()
-                                    ->limit(15)
-                                    ->get();
+           
 
-            $livestreams = $livestreams->filter(function ($livestream) use ($current_timezone) {
-                if ($livestream->publish_type === 'recurring_program') {
-
-                    $Current_time = Carbon\Carbon::now($current_timezone);
-                    $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                    $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                    $midnight = $convert_time->copy()->startOfDay();
-
-                    switch ($livestream->recurring_program) {
-                        case 'custom':
-                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon\Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                            break;
-                        case 'daily':
-                            $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        case 'weekly':
-                            $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                            break;
-                        case 'monthly':
-                            $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        default:
-                            $recurring_program_Status = false;
-                            break;
-                    }
-
-                    switch ($livestream->recurring_program) {
-                        case 'custom':
-                            $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                            break;
-                        case 'daily':
-                            $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        case 'weekly':
-                            $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        case 'monthly':
-                            $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                            break;
-                        default:
-                            $recurring_program_live_animation = false;
-                            break;
-                    }
-
-                    $livestream->recurring_program_live_animation = $recurring_program_live_animation;
-
-                    return $recurring_program_Status;
-                }
-                return true;
-            });
-
-            $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
-
-                $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                ->whereJsonContains('network_id', [(string)$item->id])
-
-                            ->latest('series.created_at')->get()->map(function ($item) {
-
-                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
-
-                    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
-
-                    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-
-                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                            ->map(function ($item) {
-                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                            return $item;
-                                                        });
-
-                    $item['has_more'] = count($item['Series_depends_episodes']) > 14;
-                    $item['source'] = 'Series';
-                    return $item;
-
-                });
-                return $item;
-            });
-
-            $Series_based_on_category = SeriesGenre::query()->whereHas('category_series', function ($query) {})
-                    ->with([
-                        'category_series' => function ($series) {
-                            $series->select('series.*')->where('series.active', 1)->latest('series.created_at');
-                        },
-                    ])
-                    ->select('series_genre.id', 'series_genre.name', 'series_genre.slug', 'series_genre.order')
-                    ->orderBy('series_genre.order')
-                    ->limit(15)
-                    ->get();
-
-            $Series_based_on_category->each(function ($category) {
-                $category->category_series->transform(function ($item) {
-
-                    $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                    $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
-
-                    $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
-
-                    $item['duration_format'] =  !is_null($item->duration) ?  Carbon\Carbon::parse( $item->duration)->format('G\H i\M'): null ;
-
-                    $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
-                                                            ->map(function ($item) {
-                                                                $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                                return $item;
-                                                        });
-
-                    $item['source'] = 'Series';
-                    return $item;
-                });
-                $category->source = 'Series_Genre';
-                return $category;
-            });
+            
 
             $FrontEndQueryController = new FrontEndQueryController();
             $button_text = ButtonText::first();
 
-            $data = array(
+            if($this->HomeSetting->theme_choosen == "theme4"){
 
-                'currency' => $currency,
-                'videos' => $latest_videos ,
-                'current_theme'     => $this->HomeSetting->theme_choosen,
-                'sliders'            => $FrontEndQueryController->sliders(),
-                'live_banner'        => $FrontEndQueryController->live_banners(),
-                'video_banners'      => $FrontEndQueryController->video_banners(),
-                'series_sliders'     => $FrontEndQueryController->series_sliders(),
-                'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
-                'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
-                'Epg'                 => $FrontEndQueryController->Epg()->take(15),
-                'current_page'      => 1,
-                'pagination_url' => '/videos',
-                'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                'cnt_watching'      => $cnt_watching,
-                'trendings'         => $trending_videos,
-                'latest_video'      => $latest_videos,
-                'latest_videos'     => $latest_videos,
-                'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                'latest_movies'     => $latest_videos,
-                'trending_audios'   => $trending_audios,
-                'latest_audios'     => $latest_audios,
-                'featured_videos'   => $featured_videos,
-                'featured_episodes' => $featured_episodes,
-                'genre_video_display' => $genre_video_display,
-                'genres'              => $genre_video_display ,
-                'settings'            => $settings,
-                'pages'               => $pages,
-                'trending_videos'     => $trending_videos,
-                'suggested_videos'    => $trending_videos,
-                'video_categories'    => $genre_video_display ,
-                'home_settings'       => $this->HomeSetting ,
-                'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                'audios'              => $latest_audios ,
-                'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
-                'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
-                'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
-                'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
-                'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                'Family_Mode'           => $Family_Mode = 2,
-                'Kids_Mode'             => $Kids_Mode = 2,
-                'ThumbnailSetting'      => $ThumbnailSetting,
-                'artist'                => Artist::all(),
-                'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                'Series_based_on_category' => $Series_based_on_category ,
-                'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
-                'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
-                'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
-                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
-                'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
-                'order_settings_list' => OrderHomeSetting::get(),
-                'order_settings'  => $order_settings ,
-                'getfeching'      => $getfeching ,
-                'videos_expiry_date_status' => $videos_expiry_date_status,
-                'Series_Networks_Status' => Series_Networks_Status(),
-                'latest_episode'  => $latest_episode ,
-                'default_vertical_image_url' => $default_vertical_image_url,
-                'default_horizontal_image_url' => $default_horizontal_image_url,
-                'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
-                'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                'ugc_users'         => $FrontEndQueryController->UGCUsers(),
-                'button_text'         => $button_text,
-                'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
-                'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
-            );
+                $data = array(
+                    'currency' => $currency,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'Epg'                 => $FrontEndQueryController->Epg()->take(15),
+                    'current_page'      => 1,
+                    'pagination_url' => '/videos',
+                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                    'featured_episodes' => $FrontEndQueryController->featured_episodes(),
+                    'settings'            => $settings,
+                    'pages'               => $pages,
+                    'home_settings'       => $this->HomeSetting ,
+                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'Family_Mode'           => $Family_Mode = 2,
+                    'Kids_Mode'             => $Kids_Mode = 2,
+                    'ThumbnailSetting'      => $ThumbnailSetting,
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                    'order_settings_list' => OrderHomeSetting::get(),
+                    'order_settings'  => $order_settings ,
+                    'getfeching'      => $getfeching ,
+                    'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'Series_Networks_Status' => Series_Networks_Status(),
+                    'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                    'button_text'         => $button_text,
+                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                );
+            }else{
+                $data = array(
+                    'currency' => $currency,
+                    'videos' => $latest_videos ,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'sliders'            => $FrontEndQueryController->sliders(),
+                    'live_banner'        => $FrontEndQueryController->live_banners(),
+                    'video_banners'      => $FrontEndQueryController->video_banners(),
+                    'series_sliders'     => $FrontEndQueryController->series_sliders(),
+                    'live_event_banners' => $FrontEndQueryController->live_event_banners(),
+                    'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
+                    'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
+                    'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
+                    'Epg'                 => $FrontEndQueryController->Epg()->take(15),
+                    'current_page'      => 1,
+                    'pagination_url' => '/videos',
+                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                    'cnt_watching'      => $cnt_watching,
+                    'trendings'         => $trending_videos,
+                    'latest_video'      => $FrontEndQueryController->Latest_videos(),
+                    'latest_videos'     => $FrontEndQueryController->Latest_videos(),
+                    'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
+                    'latest_movies'     => $latest_videos,
+                    'trending_audios'   => $trending_audios,
+                    'latest_audios'     => $latest_audios,
+                    'featured_videos'   => $FrontEndQueryController->featured_videos(),
+                    'featured_episodes' => $FrontEndQueryController->featured_episodes(),
+                    'genre_video_display' => $genre_video_display,
+                    'genres'              => $genre_video_display ,
+                    'settings'            => $settings,
+                    'pages'               => $pages,
+                    'trending_videos'     => $trending_videos,
+                    'suggested_videos'    => $trending_videos,
+                    'video_categories'    => $genre_video_display ,
+                    'home_settings'       => $this->HomeSetting ,
+                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'audios'              => $latest_audios ,
+                    'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get() ,
+                    'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
+                    'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
+                    'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
+                    'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
+                    'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
+                    'Family_Mode'           => $Family_Mode = 2,
+                    'Kids_Mode'             => $Kids_Mode = 2,
+                    'ThumbnailSetting'      => $ThumbnailSetting,
+                    'artist'                => Artist::all(),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category(),
+                    'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
+                    'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
+                    'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
+                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                    'order_settings_list' => OrderHomeSetting::get(),
+                    'order_settings'  => $order_settings ,
+                    'getfeching'      => $getfeching ,
+                    'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'Series_Networks_Status' => Series_Networks_Status(),
+                    'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                    'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                    'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                    'ugc_users'         => $FrontEndQueryController->UGCUsers(),
+                    'button_text'         => $button_text,
+                    'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
+                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+                );
+            }
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                 if($request->ajax()) {
@@ -1643,82 +1507,123 @@ class HomeController extends Controller
                 $FrontEndQueryController = new FrontEndQueryController();
                 $button_text = ButtonText::first();
 
-                $data = array(
+                if($this->HomeSetting->theme_choosen == "theme4"){
+                    $data = array(
 
-                    'currency'          => $currency,
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
-                    'settings'          => $settings,
-                    'pages'             => Page::all(),
-                    'current_page'      => 1,
-                    'pagination_url'    => '/videos',
-                    'cnt_watching'      => $cnt_watching,
-                    'ppv_gobal_price'   => $ppv_gobal_price,
-                    'countryName'       => $countryName,
-                    'Family_Mode'       => 2,
-                    'Kids_Mode'         => $Mode['Kids_Mode'],
-                    'Mode'              => $Mode,
-                    'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
-                    'order_settings_list' => OrderHomeSetting::get(),
-                    'order_settings'      => $order_settings ,
-                    'getfeching'          => $getfeching ,
-                    'home_settings'       => $this->HomeSetting ,
-                    'videos_expiry_date_status'    => videos_expiry_date_status(),
-                    'Series_Networks_Status'       => Series_Networks_Status(),
-                    'default_vertical_image_url'   => $default_vertical_image_url,
-                    'default_horizontal_image_url' => $default_horizontal_image_url,
-                    'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                    'videos'            => $FrontEndQueryController->Latest_videos()->take(15),
-                    'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
-                    'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
-                    'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                    'trendings'         => $FrontEndQueryController->trending_videos()->take(15),
-                    'trending_videos'   => $FrontEndQueryController->trending_videos()->take(15),
-                    'suggested_videos'  => $FrontEndQueryController->trending_videos()->take(15),
-                    'latest_audios'     => $FrontEndQueryController->latest_audios()->take(15),
-                    'audios'            => $FrontEndQueryController->latest_audios()->take(15),
-                    'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
-                    'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
-                    'genre_video_display' => $FrontEndQueryController->genre_video_display()->take(15),
-                    'genres'              => $FrontEndQueryController->genre_video_display()->take(15),
-                    'video_categories'    => $FrontEndQueryController->genre_video_display()->take(15),
-                    'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15),
-                    'albums'              => $FrontEndQueryController->AudioAlbums()->take(15),
-                    'latest_episode'      => $FrontEndQueryController->latest_episodes()->take(15),
-                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                    'artist'                 => $FrontEndQueryController->artist()->take(15),
-                    'VideoSchedules'         => $FrontEndQueryController->VideoSchedules()->take(15),
-                    'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
-                    'AudioCategory'          => $FrontEndQueryController->AudioCategory()->take(15),
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                    'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
-                    'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
-                    'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
-                    'trending_audios'           => $FrontEndQueryController->trending_audios()->take(15),
-                    'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
-                    'sliders'            => $FrontEndQueryController->sliders(),
-                    'live_banner'        => $FrontEndQueryController->live_banners(),
-                    'video_banners'      => $FrontEndQueryController->video_banners(),
-                    'series_sliders'     => $FrontEndQueryController->series_sliders(),
-                    'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                    'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
-                    'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                    'most_watch_user'      => $FrontEndQueryController->Most_watched_videos_users(),
-                    'top_most_watched'     => $FrontEndQueryController->Most_watched_videos_site(),
-                    'Most_watched_country'   =>  $FrontEndQueryController->Most_watched_videos_country(),
-                    'preference_genres'      => $FrontEndQueryController->preference_genres(),
-                    'preference_Language'    => $FrontEndQueryController->preference_language(),
-                    'Epg'                 => $FrontEndQueryController->Epg(),
-                    'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
-                    'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                    'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
-                    'button_text'         => $button_text, 
-                    'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(), 
-                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
-                );
+                        'currency'          => $currency,
+                        'current_theme'     => $this->HomeSetting->theme_choosen,
+                        'settings'          => $settings,
+                        'pages'             => Page::all(),
+                        'current_page'      => 1,
+                        'pagination_url'    => '/videos',
+                        'cnt_watching'      => $cnt_watching,
+                        'ppv_gobal_price'   => $ppv_gobal_price,
+                        'countryName'       => $countryName,
+                        'Family_Mode'       => 2,
+                        'Kids_Mode'         => $Mode['Kids_Mode'],
+                        'Mode'              => $Mode,
+                        'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                        'order_settings_list' => OrderHomeSetting::get(),
+                        'order_settings'      => $order_settings ,
+                        'getfeching'          => $getfeching ,
+                        'home_settings'       => $this->HomeSetting ,
+                        'videos_expiry_date_status'    => videos_expiry_date_status(),
+                        'Series_Networks_Status'       => Series_Networks_Status(),
+                        'default_vertical_image_url'   => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                        'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
+                        'latest_episode'      => $FrontEndQueryController->latest_episodes()->take(15),
+                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                        'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                        'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
+                        'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
+                        'Epg'                 => $FrontEndQueryController->Epg(),
+                        'button_text'         => $button_text, 
+                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    );
+                }else{
 
+                    $data = array(
+
+                        'currency'          => $currency,
+                        'current_theme'     => $this->HomeSetting->theme_choosen,
+                        'settings'          => $settings,
+                        'pages'             => Page::all(),
+                        'current_page'      => 1,
+                        'pagination_url'    => '/videos',
+                        'cnt_watching'      => $cnt_watching,
+                        'ppv_gobal_price'   => $ppv_gobal_price,
+                        'countryName'       => $countryName,
+                        'Family_Mode'       => 2,
+                        'Kids_Mode'         => $Mode['Kids_Mode'],
+                        'Mode'              => $Mode,
+                        'ThumbnailSetting'  => $FrontEndQueryController->ThumbnailSetting(),
+                        'order_settings_list' => OrderHomeSetting::get(),
+                        'order_settings'      => $order_settings ,
+                        'getfeching'          => $getfeching ,
+                        'home_settings'       => $this->HomeSetting ,
+                        'videos_expiry_date_status'    => videos_expiry_date_status(),
+                        'Series_Networks_Status'       => Series_Networks_Status(),
+                        'default_vertical_image_url'   => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                        'videos'            => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
+                        'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
+                        'trendings'         => $FrontEndQueryController->trending_videos()->take(15),
+                        'trending_videos'   => $FrontEndQueryController->trending_videos()->take(15),
+                        'suggested_videos'  => $FrontEndQueryController->trending_videos()->take(15),
+                        'latest_audios'     => $FrontEndQueryController->latest_audios()->take(15),
+                        'audios'            => $FrontEndQueryController->latest_audios()->take(15),
+                        'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
+                        'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
+                        'genre_video_display' => $FrontEndQueryController->genre_video_display()->take(15),
+                        'genres'              => $FrontEndQueryController->genre_video_display()->take(15),
+                        'video_categories'    => $FrontEndQueryController->genre_video_display()->take(15),
+                        'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15),
+                        'albums'              => $FrontEndQueryController->AudioAlbums()->take(15),
+                        'latest_episode'      => $FrontEndQueryController->latest_episodes()->take(15),
+                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                        'artist'                 => $FrontEndQueryController->artist()->take(15),
+                        'VideoSchedules'         => $FrontEndQueryController->VideoSchedules()->take(15),
+                        'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
+                        'AudioCategory'          => $FrontEndQueryController->AudioCategory()->take(15),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                        'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
+                        'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
+                        'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
+                        'trending_audios'           => $FrontEndQueryController->trending_audios()->take(15),
+                        'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
+                        'sliders'            => $FrontEndQueryController->sliders(),
+                        'live_banner'        => $FrontEndQueryController->live_banners(),
+                        'video_banners'      => $FrontEndQueryController->video_banners(),
+                        'series_sliders'     => $FrontEndQueryController->series_sliders(),
+                        'live_event_banners' => $FrontEndQueryController->live_event_banners(),
+                        'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
+                        'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
+                        'most_watch_user'      => $FrontEndQueryController->Most_watched_videos_users(),
+                        'top_most_watched'     => $FrontEndQueryController->Most_watched_videos_site(),
+                        'Most_watched_country'   =>  $FrontEndQueryController->Most_watched_videos_country(),
+                        'preference_genres'      => $FrontEndQueryController->preference_genres(),
+                        'preference_Language'    => $FrontEndQueryController->preference_language(),
+                        'Epg'                 => $FrontEndQueryController->Epg(),
+                        'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                        'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                        'ugc_users'         => $FrontEndQueryController->UGCUsers(),  
+                        'button_text'         => $button_text, 
+                        'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(), 
+                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+                    );
+                }
+                // dd($data);
                 if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                     if($request->ajax()) {
                         return $data = [
