@@ -70,6 +70,7 @@ use Maatwebsite\Excel\HeadingRowImport;
 use App\CompressImage;
 use App\CountryCode;
 use Illuminate\Support\Facades\DB; 
+use App\DeleteLog;
 
 
 class AdminSeriesController extends Controller
@@ -964,6 +965,15 @@ class AdminSeriesController extends Controller
             
             $Seasons_depend_series = $series->Series_depends_seasons->pluck('id'); 
 
+            // dd(Auth::user()->id);
+            DeleteLog::create([
+                'series_id'       => $series->id,
+                'user_id'         => Auth::user()->id,
+                'deleted_item'    => 'series',
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
+
             // Seasons depend series
 
             foreach($Seasons_depend_series as $season_id ){
@@ -1750,6 +1760,18 @@ class AdminSeriesController extends Controller
             $episodes = Episode::where('season_id',$season->id)->pluck('id');
             $SeriesId = $season->series_id;
 
+            // dd(Auth::user()->id);
+            DeleteLog::create([
+                                'series_id'     =>$series_id,
+                                'season_id'     =>$season->id,
+                                'user_id'       => Auth::user()->id,
+                                'deleted_item'  => 'season',
+                                'updated_at'    =>now(),
+                                'created_at'    =>now()
+                            ]);
+
+
+
             // $episodes = $season->episodes->pluck('id');
             // dd($episodes);
             foreach($episodes as $episode_id ){
@@ -2482,6 +2504,18 @@ class AdminSeriesController extends Controller
             $series_id = Episode::find($id)->series_id;
             $season_id = Episode::find($id)->season_id;
             $Episode   = Episode::find($id);
+
+            // dd(Auth::user()->id);
+
+            DeleteLog::create([
+                'episode_id'      => $Episode->id,
+                'series_id'       => $series_id,
+                'season_id'       => $season_id,
+                'user_id'         => Auth::user()->id,
+                'deleted_item'    => 'episode',
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ]);
 
                     //  Delete Existing  Image
             if (File::exists(base_path('public/uploads/images/'.$Episode->image))) {
