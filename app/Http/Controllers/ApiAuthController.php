@@ -13491,7 +13491,7 @@ $cpanel->end();
                                           $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
                                         }
 
-                                        if($item['access'] == 'free'){
+                                        if($item['access'] == 'guest'){
                                           $item['access'] = 'guest';
                                         }elseif( $ppv_exists_check_query > 0){
                                           $item['access'] = 'guest';
