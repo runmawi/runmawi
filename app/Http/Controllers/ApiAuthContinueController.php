@@ -43,8 +43,20 @@ class ApiAuthContinueController extends Controller
 
     public function ugcvideolist()
     {
-        $ugcvideos = UGCVideo::where('active', 1)->get();
-        return $ugcvideos;
+        try {
+            $ugcvideos = UGCVideo::where('active', 1)->get();
+
+            return response()->json([
+                'success' => true,
+                'ugcvideos' => $ugcvideos,
+            ], 200); 
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to fetch UGC videos. Please try again later.',
+            ], 500); 
+        }
     }
 
     public function uploadugcvideo(Request $request)
