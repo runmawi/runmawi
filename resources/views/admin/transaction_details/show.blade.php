@@ -77,6 +77,7 @@
                         @if ($transaction->status == 'failed')
                             <p><strong>Failure Reason:</strong> {{ $transaction->payment_failure_reason }}</p>
                         @endif
+                        <p><strong>Payment Status:</strong> {{ $transaction->status ?  $transaction->status  : 'N/A' }}</p>
                     @endif
                 </div>
 
