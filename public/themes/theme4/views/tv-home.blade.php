@@ -8,11 +8,6 @@
     $ThumbnailSetting = App\ThumbnailSetting::first();
     $SeriesGenre = App\SeriesGenre::all();
 
-    $Slider_array_data = [
-        'Episode_sliders' => App\Episode::where('active', '1')->where('status', '1')->where('banner', '1')->latest()->limit(15)->get(),
-        'multiple_compress_image' => $multiple_compress_image,
-    ];
-
     $homepage_array_data = [ 'order_settings_list' => $order_settings_list, 
                                 'multiple_compress_image' => $multiple_compress_image, 
                                 'settings' => $settings,
@@ -37,40 +32,18 @@
     <div id="successMessage" class="alert alert-info"><?php echo Session::get('message'); ?></div>
 @endif
 
-<section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
-        {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/slider-1', $Slider_array_data)->content() !!}
-    </div>
-</section>
 
 <div class="main-content">
 
     @php
         $sections = array(
                         ['view' => 'latest-series','data' => !empty($latest_series) ? $latest_series->slice(0,15) : $latest_series  ],
-                        ['view' => 'free_content', 'data' => !empty($free_Contents) ? $free_Contents->slice(0,15) : $free_Contents ], 
                         ['view' => 'latest-episodes', 'data' => !empty($latest_episodes) ? $latest_episodes->slice(0,15) : $latest_episodes  ], 
                         ['view' => 'featured-episodes', 'data' => !empty($featured_episodes) ? $featured_episodes->slice(0,15): $featured_episodes ]
                     );
                     
     @endphp
 
-
-    <!-- @foreach ($sections as $section)
-        <section id="iq-favorites">
-            <div class="container-fluid overflow-hidden pl-0">
-                <div class="row">
-                    <div class="col-sm-12">
-                        {!! Theme::uses('theme4')->load("public/themes/theme4/views/partials/home/{$section['view']}", [
-                                'data' => $section['data'],
-                                'order_settings_list' => $order_settings_list,
-                                'multiple_compress_image' => $multiple_compress_image,
-                            ])->content() !!}
-                    </div>
-                </div>
-            </div>
-        </section>
-    @endforeach -->
 
     <div>
         {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/latest-episodes", array_merge(['data' => $latest_episodes, 'multiple_compress_image' => $multiple_compress_image]) )->content() !!}
