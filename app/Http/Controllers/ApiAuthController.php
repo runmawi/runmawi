@@ -2705,7 +2705,7 @@ public function verifyandupdatepassword(Request $request)
 
         if ( isset($request->user_id) && $request->user_id != '' ) {
               $user_id = $request->user_id;
-              $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->count();
+              $ppv_exist = PpvPurchase::where('video_id',$videoid)->where('user_id',$user_id)->where('to_time','>',$current_date)->where('status','captured')->count();
         
               //Wishlilst
             $cnt = Wishlist::select('video_id')->where('user_id','=',$user_id)->where('video_id','=',$videoid)->count();
