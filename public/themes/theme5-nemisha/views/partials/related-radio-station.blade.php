@@ -13,17 +13,13 @@
                                             <div class="img-box">
                                                 <img src="<?php echo URL::to('/') . '/public/uploads/images/' . $radiostation->image; ?>" class="img-fluid" alt="">
                                             </div>
-                                        </div>
-                                        <div class="block-description"></div>
-                              
-                                <div>
-
+                                        </div>                
                                         <div class="mt-2">
                                             <h6><?php echo __($radiostation->title); ?></h6>
                                         </div>
                                     </a>
                                 </li>
-                        <?php 
+                            <?php 
                             endforeach; 
                         endif; ?>
                     </ul>
