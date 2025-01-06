@@ -1,7 +1,7 @@
 <?php
-$Livestream_detail = $Livestream_details;
-$radio_station_url = URL::to('/radio-station');
-$media_url = $radio_station_url . '/' . $Livestream_detail->slug;
+    $Livestream_detail = $Livestream_details;
+    $radio_station_url = URL::to('/radio-station');
+    $media_url = $radio_station_url . '/' . $Livestream_detail->slug;
 ?>
 <style type="text/css">
 
@@ -80,8 +80,8 @@ $media_url = $radio_station_url . '/' . $Livestream_detail->slug;
 
     .title {
         /*margin-left: 10px;
-text-align: center;
-border-top:1px solid rgba(255, 255, 255,0.1)*/
+    text-align: center;
+    border-top:1px solid rgba(255, 255, 255,0.1)*/
     }
 
     .player-ctn {
@@ -273,36 +273,37 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
 
 
     .hidden {
-    display: none !important;
-}
+        display: none !important;
+    }
 
-.icon-circle {
-    background-color: #ED563C;
-    padding: 13px;
-    border-radius: 50%;
-    color: white;
-    font-size: 15px;
-    display: inline-block; 
-}
+    .icon-circle {
+        background-color: #ED563C;
+        padding: 13px;
+        border-radius: 50%;
+        color: white;
+        font-size: 15px;
+        display: inline-block; 
+    }
 
-.icon-mute {
-    background-color: #ED563C;
-    padding: 10px;
-    border-radius: 50%;
-    color: white;
-    font-size: 15px;
-    display: inline-block; 
-}
-
-
-.play-radio{
-    background-color: #ED563C;
-    color: white;
-    margin-top: 10px;
-}
+    .icon-mute {
+        background-color: #ED563C;
+        padding: 10px;
+        border-radius: 50%;
+        color: white;
+        font-size: 15px;
+        display: inline-block; 
+    }
 
 
-.show-more-btn {
+    .play-radio{
+        background-color: #ED563C;
+        color: white;
+        margin-top: 10px;
+        width: 85%;
+    }
+
+
+    .show-more-btn {
         all: unset; 
         display: inline-block; 
         color: white;
@@ -328,236 +329,232 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     background-color: transparent;
     }
 
-   
+    @media (max-width: 768px) {
+        .play-radio {
+            width: 150px;
+        }
+    }
 
+    @media (max-width: 480px) {
+        .play-radio {
+            width: 150px;
+        }
+
+        .title{
+            font-size: 25px;
+            padding-top: 10px;
+        }
+    }
 </style>
+
 <?php if (Session::has('message')): ?>
-<div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
-    <?php echo Session::get('message'); ?></div>
+    <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
+        <?php echo Session::get('message'); ?>
+    </div>
 <?php endif ;?>
 
 <?php if (isset($error)) { ?>
-<div class="col-md-12 text-center mt-4"
-    style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
-    <p>
-    <h3 class="text-center"><?php echo $message; ?></h3>
-</div>
+    <div class="col-md-12 text-center mt-4"
+        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
+        <p>
+        <h3 class="text-center"><?php echo $message; ?></h3>
+    </div>
 <?php } else { ?>
-
-<input type="hidden" value="<?php echo URL('/'); ?>" id="base_url">
-<div id="audio_bg">
-    <div id="audio_bg_dim" <?php if($Livestream_detail->access == 'guest' || ($Livestream_detail->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
-    <div class="container-fluid">
-        <?php if($Livestream_detail->access == 'guest' || ( ($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $Livestream_detail->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && $ppv_status == 1)): ?>
-       
-        <?php if($Livestream_detail): ?>
-        <?php if (  !Auth::guest() && $Livestream_detail->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' ) { ?>
-        <div id="subscribers_only">
-            <a class="text-center btn btn-success" id="paynowbutton"> Pay for View </a>
-        </div>
-        <?php } else { ?>
-        <div class="row album-top-30 my-4 ">
-            <div class="col-lg-8">
-                <div class="player-ctn" id="player-ctn"
-                    style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
-                    <div class="row">
-                        <div class="col-sm-3 col-md-3 col-xs-3 ">
-                            <img height="150" width="150" id="audio_img" >
-                            <div onclick="toggleAudio()">
-                                <button class="btn btn-action play-radio" id="vidbutton"
-                                    style="width:85%;"><i class="fa fa-play "
-                                        aria-hidden="true"></i> Play</button>
-                            </div>
-                        </div>
-                        <div class="col-sm-9 col-md-9 col-xs-9">
-                            <div class="album_bg">
-                                <div class="album_container">
-                                    <div class="blur"></div>
-                                    <div class="overlay_blur">
-                                        <div class="row justify-content-between" style="padding:0px 12px;" >
-                                            <div class="">
-                                                <h2 class="hero-title album">
-                                                    <div class="title"></div>
-                                                </h2>
-                                            </div>
-                                            <div class="">
-                                                <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
-                                                    <div id="btn-faws-volume">
-                                                        <i id="icon-vol-up" class='fas fa-volume-up icon-mute'></i>
-                                                        <i id="icon-vol-mute" class='fas fa-volume-mute icon-mute' style="display: none"></i>
+    <input type="hidden" value="<?php echo URL('/'); ?>" id="base_url">
+    <div id="audio_bg">
+        <div id="audio_bg_dim" <?php if($Livestream_detail->access == 'guest' || ($Livestream_detail->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
+        <div class="container-fluid">
+            <?php if($Livestream_detail->access == 'guest' || ( ($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $Livestream_detail->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && $ppv_status == 1)): ?>
+        
+            <?php if($Livestream_detail): ?>
+            <?php if (  !Auth::guest() && $Livestream_detail->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' ) { ?>
+            <div id="subscribers_only">
+                <a class="text-center btn btn-success" id="paynowbutton"> Pay for View </a>
+            </div>
+            <?php } else { ?>
+                    <div class="row album-top-30 my-4 ">
+                        <div class="col-lg-8">
+                            <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-3 col-xs-3 ">
+                                        <img height="150" width="150" id="audio_img" >
+                                        <div onclick="toggleAudio()">
+                                            <button class="btn btn-action play-radio" id="vidbutton"><i class="fa fa-play" aria-hidden="true"></i> Play</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-9 col-md-9 col-xs-9">
+                                        <div class="album_bg">
+                                            <div class="album_container">
+                                                <div class="blur"></div>
+                                                <div class="overlay_blur">
+                                                    <div class="row justify-content-between" style="padding:0px 12px;" >
+                                                        <div class="">
+                                                            <h2 class="hero-title album">
+                                                                <div class="title"></div>
+                                                            </h2>
+                                                        </div>
+                                                        <div class="">
+                                                            <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+                                                                <div id="btn-faws-volume">
+                                                                    <i id="icon-vol-up" class='fas fa-volume-up icon-mute'></i>
+                                                                    <i id="icon-vol-mute" class='fas fa-volume-mute icon-mute' style="display: none"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="">
+                                                        <div class="description"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                     
-                                        <div class="">
-                                            <div class="description"></div>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="infos-ctn d-flex justify-space-between">
-                        
-                    </div>
-                    <div id="myProgress">
-                        <div id="myBar"></div>
-                    </div>
-                   
-                    <div class="btn-ctn">
-                       
-                        <div class="d-flex"
-                        style="justify-content: space-between;width: auto;align-items: center;">
-                        <ul class="p-0 share-icon-aud">
-                           <li>
-                            <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
-                                <div id="btn-faws-play-pause">
-                                    <i class='fas fa-play icon-circle' id="icon-play"></i>
-                                    <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
+                                <div class="infos-ctn d-flex justify-space-between"></div>
+                                <div id="myProgress">
+                                    <div id="myBar"></div>
                                 </div>
-                            </div>
-                           </li>
-                            <li>
-                                <a aria-hidden="true" 
-                                class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
-                                data-authenticated="<?= !Auth::guest() ?>" 
-                                data-audio_id="<?= $Livestream_detail->id ?>"
-                                onclick="toggleFavorite(this)">
-                                 <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
-                                     <i id="ff" class="fa fa-heart"></i>
-                                 <?php else: ?>
-                                     <i id="ff" class="fa fa-heart-o"></i>
-                                 <?php endif; ?>
-                             </a>
-                            </li>
-                            <li>
-                                <div class="dropdown">
-                                   <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
-                                      <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
-                                      <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
-                                      </a>
-                                      <div class="divider" style="border:1px solid white"></div>
-                                      <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
-                                   </div>
-                                </div>
-                             </li>                                        
-                        </ul>
-                        <!-- Share -->
-                    </div>
-                    </div>
-                    <div class="title"></div>
-                </div>
-        
-            </div>
-            <div class="col-lg-4 p-0">
-                <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-                    <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
-                    Your browser does not support the audio element.
-                </audio>
-                <div class="play-border" style="margin: 0px; 10px;" >
-                    <div class="playlist-ctn">
-                        
-                        <div class="row align-items-center pt-1">
-                            <div class="col-12 col-md-6 mb-4">
-                                <h6 class="mb-0 font-weight-bold">
-                                    <span class="program-name"></span> 
-                                    <i class="fa fa-music" aria-hidden="true"></i>
-                                </h6>
-                            </div>
-                            <div class="col-12 col-md-6 mb-4">
-                                <div class="moreinfo text-md-right">
-                                    <button 
-                                        type="button" 
-                                        class="btn btn-primary w-100" 
-                                        data-toggle="modal" 
-                                        data-target="#Epg_schedule_modal"  
-                                        data-live-id="<?php echo $Livestream_detail->id; ?>"> 
-                                        VIEW SCHEDULE
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                       
-                        <?php if ($Livestream_detail->publish_type == 'publish_now' || $Livestream_detail->publish_type == 'publish_later'): ?>
-                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                            <p>
-                                <?php echo $Livestream_detail->title; ?>
-                            </p>
-                        <?php elseif ($Livestream_detail->publish_type == 'schedule_program'): ?>
-                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                            <p>
-                                <span id="current-program"></span>
-                            </p>
-
-                            <h6 class="mb-2 font-weight-bold">Next Program</h6>
-                            <p>
-                                <span id="next-program"></span>
-                            </p>
-                        <?php endif; ?>
-
                     
+                                <div class="btn-ctn">
+                                    <div class="d-flex" style="justify-content: space-between;width: auto;align-items: center;">
+                                        <ul class="p-0 share-icon-aud">
+                                            <li>
+                                                <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
+                                                    <div id="btn-faws-play-pause">
+                                                        <i class='fas fa-play icon-circle' id="icon-play"></i>
+                                                        <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a aria-hidden="true" 
+                                                class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
+                                                data-authenticated="<?= !Auth::guest() ?>" 
+                                                data-audio_id="<?= $Livestream_detail->id ?>"
+                                                onclick="toggleFavorite(this)">
+                                                <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
+                                                    <i id="ff" class="fa fa-heart"></i>
+                                                <?php else: ?>
+                                                    <i id="ff" class="fa fa-heart-o"></i>
+                                                <?php endif; ?>
+                                            </a>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown">
+                                                <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
+                                                    <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                                                    <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
+                                                    </a>
+                                                    <div class="divider" style="border:1px solid white"></div>
+                                                    <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
+                                                </div>
+                                                </div>
+                                            </li>                                        
+                                        </ul>
+                                        <!-- Share -->
+                                    </div>
+                                </div>
+                                <div class="title"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 p-0">
+                            <audio id="myAudio" ontimeupdate="onTimeUpdate()">
+                                <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
+                                Your browser does not support the audio element.
+                            </audio>
+                            <div class="play-border" style="margin: 0px; 10px;" >
+                                <div class="playlist-ctn">
+                            
+                                    <div class="row align-items-center pt-1">
+                                        <div class="col-12 col-md-6 mb-4">
+                                            <h6 class="mb-0 font-weight-bold">
+                                                <span class="program-name"></span> 
+                                                <i class="fa fa-music" aria-hidden="true"></i>
+                                            </h6>
+                                        </div>
+                                        <div class="col-12 col-md-6 mb-4">
+                                            <div class="moreinfo text-md-right">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-primary w-100" 
+                                                    data-toggle="modal" 
+                                                    data-target="#Epg_schedule_modal"  
+                                                    data-live-id="<?php echo $Livestream_detail->id; ?>"> 
+                                                    VIEW SCHEDULE
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                       
+                                    <?php if ($Livestream_detail->publish_type == 'publish_now' || $Livestream_detail->publish_type == 'publish_later'): ?>
+                                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                        <p>
+                                            <?php echo $Livestream_detail->title; ?>
+                                        </p>
+                                    <?php elseif ($Livestream_detail->publish_type == 'schedule_program'): ?>
+                                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                        <p>
+                                            <span id="current-program"></span>
+                                        </p>
+
+                                        <h6 class="mb-2 font-weight-bold">Next Program</h6>
+                                        <p>
+                                            <span id="next-program"></span>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="clear"></div>
+            <?php } ?>
+        </div>
+        <!-- Playlist  -->
+        <div class="container-fluid">
+        </div>
+
+        <div class="container-fluid">
+            <?php endif; ?>
+            <div class="">
+                <?php else: ?>
+                <div id="subscribers_only">
+                    <h2>Sorry, this audio is only available to <?php if($Livestream_detail->access == 'subscriber'): ?>Subscribers<?php elseif($Livestream_detail->access == 'registered'): ?>Registered
+                        Users<?php endif; ?>
+                    </h2>
+                    <div class="clear"></div>
+                    <?php if(!Auth::guest() && $Livestream_detail->access == 'subscriber'): ?>
+                    <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
+                        <button id="button">Become a subscriber to watch this audio</button>
+                    </form>
+                    <?php else: ?>
+                    <form method="get" action="/signup">
+                        <button id="button">Signup Now <?php if($Livestream_detail->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($Livestream_detail->access == 'registered'): ?>for
+                            Free!<?php endif; ?></button>
+                    </form>
+                    <?php endif; ?>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-
-</div>
-<div class="clear"></div>
 <?php } ?>
-<!-- Playlist  -->
-<div class="container-fluid">
-</div>
-
-<div class="container-fluid">
-    <?php endif; ?>
-    <div class="">
-        <?php else: ?>
-        <div id="subscribers_only">
-            <h2>Sorry, this audio is only available to <?php if($Livestream_detail->access == 'subscriber'): ?>Subscribers<?php elseif($Livestream_detail->access == 'registered'): ?>Registered
-                Users<?php endif; ?></h2>
-            <div class="clear"></div>
-            <?php if(!Auth::guest() && $Livestream_detail->access == 'subscriber'): ?>
-            <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
-                <button id="button">Become a subscriber to watch this audio</button>
-            </form>
-            <?php else: ?>
-            <form method="get" action="/signup">
-                <button id="button">Signup Now <?php if($Livestream_detail->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($Livestream_detail->access == 'registered'): ?>for
-                    Free!<?php endif; ?></button>
-            </form>
-            <?php endif; ?>
-        </div>
-        <?php endif; ?>
-    </div>
-</div>
-</div>
-<?php } ?>
-</div>
 
 <?php if ($Livestream_detail->stream_upload_via == 'radio_station') { ?>
     <div class="container">
-    <div class="row">
-        <div class=" container-fluid video-list you-may-like overflow-hidden">
-            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-            <div class="slider">
-                <?php
-                    include public_path(
-                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
-                    );
-                ?>
+        <div class="row">
+            <div class=" container-fluid overflow-hidden">
+                <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+                <div class="">
+                    <?php
+                        include public_path('themes/theme5-nemisha/views/partials/related-radio-station.blade.php');
+                    ?>
+                </div>
             </div>
         </div>
     </div>
-    </div>
 <?php }?>
-
-
 
 <script type="text/javascript">
     $('#store-play-list').click(function(){
@@ -606,7 +603,7 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
     
     });
     
- </script>
+</script>
 <script type="text/javascript">
     function toggleFavorite(element) {
       if ($(element).data('authenticated')) {
@@ -1019,4 +1016,3 @@ border-top:1px solid rgba(255, 255, 255,0.1)*/
         getProgramDetails();
     });
 </script>
-

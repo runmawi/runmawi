@@ -37,13 +37,17 @@
     .epg-program-row{display:flex;margin-bottom:10px}
     .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
     .epg-navigation{z-index:0;position:relative;overflow-x:auto; background-color: #333; border-radius: 5px;}
-    .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;margin-left:3px}
+    .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;time-section-left:3px}
     .day-nav{margin:0 10px; cursor: pointer;  transition: background-color 0.3s ease, color 0.3s ease;}
     .day-nav.active {background-color: #ed563c; color: white; border-radius: 5px; padding: 10px;}
     .date-nav{align-items:center;background-color:#333;display:flex; height:50px;  }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
     .epg-channel {width: 100%; white-space: nowrap; overflow: auto;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
-
+    @media (max-width: 480px) {
+        .day-nav {
+            font-size: 8px;
+        }
+    }
 
 
     .epg-program {
@@ -78,7 +82,12 @@
         color: white; 
         font-size: 14px;
     }
-
+    @media (max-width: 480px) {
+        .time-section{
+            font-size: 8px;
+        }
+    }
+  
     .title-section {
         width: 80%;
         text-align: left;
