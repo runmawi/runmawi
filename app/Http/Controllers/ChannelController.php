@@ -4924,7 +4924,7 @@ class ChannelController extends Controller
 
                     if( !Auth::guest() ){
 
-                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->where('status','captured')->latest()->count();
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
 
