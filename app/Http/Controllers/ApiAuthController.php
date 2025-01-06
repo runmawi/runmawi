@@ -6716,9 +6716,26 @@ public function checkEmailExists(Request $request)
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
 
-       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+       $ios_plans_id = InappPurchase::get();
 
-       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+        $Season = SeriesSeason::where('series_id', $series_id)
+                                  ->where('id', $season_id)->get()
+                                  ->map(function($item) use ($ios_plans_id) {
+                                      $iosPlan = $ios_plans_id->firstWhere('product_id', $item->ios_product_id);
+                                      
+                                      $item['ios_ppv_price'] = $iosPlan ? $iosPlan->plan_price : null;
+                                      
+                                      return $item;
+                                  });
+
+       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get()
+                                      ->map(function($item) use ($ios_plans_id){
+                                          $ios_plan = $ios_plans_id->firstwhere('product_id',$item->ios_product_id);
+
+                                          $item['ios_ppv_price'] = $ios_plan ? $ios_plan->plan_price: null;
+
+                                          return $item;
+                                      });
 
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
 
