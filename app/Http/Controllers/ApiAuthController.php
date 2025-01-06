@@ -13197,7 +13197,7 @@ $cpanel->end();
                                                       ->orderBy('order')
                                                       ->limit(15)
                                                       ->get()
-                                                      ->map(function ($item) {
+                                                      ->map(function ($item) use($roku_tvcode) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
@@ -13207,7 +13207,7 @@ $cpanel->end();
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
-                                                                                    ->map(function ($series) {
+                                                                                    ->map(function ($series) use($roku_tvcode) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
                                                                                         $description = $series->description;
@@ -13224,7 +13224,22 @@ $cpanel->end();
                                                                                         $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
-                                                                                                                        ->map(function ($season) {
+                                                                                                                        ->map(function ($season) use($roku_tvcode) {
+                                                                                                                            $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                                                                                                            $ppv_exists_check_query = 0;
+                                                                                                                            if($ppv_purchase){
+                                                                                                                              $new_date = Carbon::parse($ppv_purchase->to_time);
+                                                                                                                              $currentdate = Carbon::now();
+                                                                                                                              $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                                                                            }
+
+                                                                                                                            if($season->access == 'free'){
+                                                                                                                              $season_access = 'guest';
+                                                                                                                            }elseif( $ppv_exists_check_query > 0){
+                                                                                                                              $season_access = 'guest';
+                                                                                                                            }else{
+                                                                                                                              $season_access = 'PPV';
+                                                                                                                            }
                                                                                                                             $episodes = Episode::where('season_id', $season->id)
                                                                                                                                 ->orderBy('episode_order')
                                                                                                                                 ->get()
@@ -13280,6 +13295,7 @@ $cpanel->end();
                                                                                                                             if ($episodes->isNotEmpty()) {
                                                                                                                                 return [
                                                                                                                                     'title' => $season->series_seasons_name,
+                                                                                                                                    'access' => $season_access,
                                                                                                                                     'episodes' => $episodes,
                                                                                                                                 ];
                                                                                                                             }
