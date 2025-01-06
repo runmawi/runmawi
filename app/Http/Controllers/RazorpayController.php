@@ -382,14 +382,8 @@ class RazorpayController extends Controller
 
             if ($payment->status !== 'captured') {
                 $payment->capture(['amount' => $payment->amount]);
-            } else {
-                return response()->json([
-                    'message' => "Payment {$payment->id} has already been captured.",
-                    'status' => 'already_captured',
-                    'payment_id' => $payment->id,
-                ], 200);
-            }
-
+            } 
+            
             $payment_status = $payment->status; 
 
             $video = Video::where('id','=',$request->video_id)->first();

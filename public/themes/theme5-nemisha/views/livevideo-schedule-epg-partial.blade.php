@@ -40,27 +40,30 @@
             @endisset
         @elseif ($Livestream_details->publish_type == 'publish_now')
             <div class="program-item d-flex align-items-center mb-3">
-                <div class="time-section text-left me-3">
-                    <p class="mb-1">Start: {{ $epg_program_start_time }}</p>
-                    <p class="mb-0">End: {{ $epg_program_end_time }}</p>
+                <div class="time-section">
+                    <p>12:00 AM to 11:59 PM </p>
                 </div>
                 <div class="title-section text-left">
-                    <h3 class="mb-0">{{ $epg_program_title }}</h3>
+                    <h3 class="px-3">{{ $epg_program_title }}</h3>
                 </div>
             </div>
-        @elseif ($Livestream_details->publish_type == 'publish_later')
+            @elseif ($Livestream_details->publish_type == 'publish_later')
             <div class="program-item d-flex align-items-center mb-3">
                 <div class="time-section text-left me-3">
-                    <p class="mb-1">Start: {{ $epg_program_start_time }}</p>
-                    <p class="mb-0">End: {{ $epg_program_end_time }}</p>
+                    <div class="time-section">
+                        @php
+                            $startTime = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $epg_program_start_time);
+                        @endphp
+                        <p>{{ $startTime->format('h:i A') }} to 11:59 PM </p>
+                    </div>
                 </div>
                 <div class="title-section text-left">
-                    <h3 class="mb-0">{{ $epg_program_title }}</h3>
+                    <h3 class="px-3">{{ $epg_program_title }}</h3>
                 </div>
             </div>
         @else
             <p>No programs scheduled for today.</p>
-        @endif
+        @endif        
     </div>
 
 @else

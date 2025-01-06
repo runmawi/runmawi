@@ -135,15 +135,7 @@
    <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
    
-   
-   <!-- Slick JS -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/slick.min.js') ?>"></script>
 
-   <!-- owl carousel Js -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/owl.carousel.min.js') ?>"></script>
-   
    <!-- select2 Js -->
    <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>"></script>
@@ -151,10 +143,6 @@
    <!-- Magnific Popup-->
    <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>" as="script">
    <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>"></script>
-   
-   <!-- Slick Animation-->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/slick-animation.min.js') ?>"></script>
    
 
     <!-- Custom JS-->

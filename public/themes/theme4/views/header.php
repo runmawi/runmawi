@@ -203,79 +203,57 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
   
-   <!-- CSS -->
-   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style">
-   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>">
-<!-- JavaScript -->
-   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async></script>
-   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>"></script>
-   <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style" onload="this.rel='stylesheet'">
+   <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>"></noscript>
+
+   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style" onload="this.rel='stylesheet'">
+   <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>"></noscript>
+
+   <!-- Preload Font -->
+   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" crossorigin="anonymous">
+
+   <!-- JavaScript -->
+   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async ></script>
 
    <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
-   <!-- <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/seriesNetwork/series-Network-1715274484.webp" as="image"> -->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-    <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" as="style" 
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
-    <link async rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
-
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" as="style" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
-    <link rel="shortcut icon" type="image/png" href="<?= URL::to('public/uploads/settings/'.$settings->favicon); ?>" />
-    
-    
+ 
    <!-- Bootstrap CSS -->
-         <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style">
-         <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>"></noscript>
 
    <!-- Typography CSS -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style">
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>">
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>"></noscript>
 
-   <!-- Style -->
-   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style">
-   <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>">
 
-   <link fetchpriority="high" rel="preload" href="<?= URL::to('assets/css/style.css') ;?>" as="style"/>
-   <link rel="stylesheet" href="<?= URL::to('assets/css/style.css') ;?>" />
-      
    <!-- Responsive -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style">
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>">
-
-   <!-- slick -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>" as="style">
-      <link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/slick.css') ?>">
-
-   <!-- Font Awesome -->
-      <!-- <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" as="style">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>"></noscript>
 
    <!-- Remixicon -->
-   <link rel="preload" fetchpriority="low" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/remixicon.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-theme.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/owl.carousel.min.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/select2.min.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>" as="style">
-    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/slick-animation.css') ?>" as="style">
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"></noscript>
 
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>"></noscript>
+      
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>"></noscript>
+      
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>"></noscript>
+      
+      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>"></noscript>
+
+   
     <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
 
     
@@ -1041,7 +1019,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                      <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
                         <link rel="preload" href="<?= $admin_advertistment_banners->top_image_url ?>" as="image">
                         <div class="col-sm-9 mx-auto header_top_position_img">
-                           <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" /> 
+                           <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="857" height="32" /> 
                         </div>
                      <?php endif ;?>
                      
@@ -2553,6 +2531,17 @@ window.onload = function () {
       var navbarList = document.getElementById('navbarList');
       navbarList.classList.toggle('navbar-list-flex');
       }
+</script>
+
+<script>
+    window.addEventListener('load', function () {
+        const fontAwesomeLink = document.createElement('link');
+        fontAwesomeLink.rel = 'stylesheet';
+        fontAwesomeLink.href = 'https://pro.fontawesome.com/releases/v5.10.0/css/all.css';
+        fontAwesomeLink.integrity = 'sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p';
+        fontAwesomeLink.crossOrigin = 'anonymous';
+        document.head.appendChild(fontAwesomeLink);
+    });
 </script>
 
 <!-- <script>
