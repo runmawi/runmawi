@@ -383,7 +383,6 @@ class RazorpayController extends Controller
             if ($payment->status !== 'captured') {
                 $payment->capture(['amount' => $payment->amount]);
             } 
-            
             $payment_status = $payment->status; 
 
             $video = Video::where('id','=',$request->video_id)->first();
@@ -448,7 +447,7 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
-            dd($e->getMessage());
+            // dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
