@@ -287,7 +287,7 @@ class HomeController extends Controller
             }else{
                 $data = array(
                     'currency' => $currency,
-                    'videos' => $latest_videos ,
+                    'videos'    =>$FrontEndQueryController->Latest_videos(),
                     'current_theme'     => $this->HomeSetting->theme_choosen,
                     'sliders'            => $FrontEndQueryController->sliders(),
                     'live_banner'        => $FrontEndQueryController->live_banners(),
@@ -1005,7 +1005,7 @@ class HomeController extends Controller
 
                     $data = array(
                         'currency' => $currency,
-                        'videos' => $latest_videos ,
+                        'videos' => $FrontEndQueryController->Latest_videos() ,
                         'current_theme'     => $this->HomeSetting->theme_choosen,
                         'sliders'            => $FrontEndQueryController->sliders(),
                         'live_banner'        => $FrontEndQueryController->live_banners(),
