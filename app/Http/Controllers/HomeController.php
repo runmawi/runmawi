@@ -287,7 +287,7 @@ class HomeController extends Controller
             }else{
                 $data = array(
                     'currency' => $currency,
-                    'videos' => $latest_videos ,
+                    'videos'    =>$FrontEndQueryController->Latest_videos(),
                     'current_theme'     => $this->HomeSetting->theme_choosen,
                     'sliders'            => $FrontEndQueryController->sliders(),
                     'live_banner'        => $FrontEndQueryController->live_banners(),
@@ -306,7 +306,7 @@ class HomeController extends Controller
                     'latest_video'      => $FrontEndQueryController->Latest_videos(),
                     'latest_videos'     => $FrontEndQueryController->Latest_videos(),
                     'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                    'latest_movies'     => $latest_videos,
+                    'latest_movies'     => $FrontEndQueryController->Latest_videos(),
                     'trending_audios'   => $trending_audios,
                     'latest_audios'     => $latest_audios,
                     'featured_videos'   => $FrontEndQueryController->featured_videos(),
@@ -621,43 +621,9 @@ class HomeController extends Controller
                     $check_Kidmode = 0 ;
                     // $Multiuser = Multiprofile::where('id', $multiuser)->first();
 
-                    $latest_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                                    'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
+                   
 
-                                            ->where('active',1)->where('status', 1)->where('draft',1);
-
-                                            if( $getfeching !=null && $getfeching->geofencing == 'ON'){
-                                                $latest_videos = $latest_videos->whereNotIn('videos.id',Block_videos());
-                                            }
-
-                                            if ($videos_expiry_date_status == 1 ) {
-                                                $latest_videos = $latest_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                                            }
-
-                                            if ($check_Kidmode == 1) {
-                                                $latest_videos = $latest_videos->whereBetween('videos.age_restrict', [0, 12]);
-                                            }
-
-                    $latest_videos = $latest_videos->latest()->limit(15)->get();
-
-                    $featured_videos = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price', 'duration','rating','image','featured','age_restrict','video_tv_image','description',
-                                                        'player_image','expiry_date','responsive_image','responsive_player_image','responsive_tv_image')
-
-                                                    ->where('active',1)->where('status', 1)->where('draft',1)->where('featured', '1');
-
-                                                    if( $getfeching !=null && $getfeching->geofencing == 'ON'){
-                                                        $featured_videos = $featured_videos->whereNotIn('videos.id',Block_videos());
-                                                    }
-
-                                                    if ($videos_expiry_date_status == 1 ) {
-                                                        $featured_videos = $featured_videos->whereNull('expiry_date')->orwhere('expiry_date', '>=', Carbon\Carbon::now()->format('Y-m-d\TH:i') );
-                                                    }
-
-                                                    if ($check_Kidmode == 1) {
-                                                        $featured_videos = $featured_videos->whereBetween('videos.age_restrict', [0, 12]);
-                                                    }
-
-                    $featured_videos = $featured_videos->latest()->limit(15)->get();
+                   
 
                     // Most watched videos By user
 
@@ -1039,7 +1005,7 @@ class HomeController extends Controller
 
                     $data = array(
                         'currency' => $currency,
-                        'videos' => $latest_videos ,
+                        'videos' => $FrontEndQueryController->Latest_videos() ,
                         'current_theme'     => $this->HomeSetting->theme_choosen,
                         'sliders'            => $FrontEndQueryController->sliders(),
                         'live_banner'        => $FrontEndQueryController->live_banners(),
@@ -1052,12 +1018,12 @@ class HomeController extends Controller
                         'current_page'      => 1,
                         'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
                         'cnt_watching'      => $cnt_watching,
-                        'latest_videos'     => $latest_videos,
-                        'latest_video'      => $latest_videos,
+                        'latest_videos'     => $FrontEndQueryController->Latest_videos(),
+                        'latest_video'      => $FrontEndQueryController->Latest_videos(),
                         'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
                         'trending_audios'   => $trending_audios,
                         'latest_audios'     => $latest_audios,
-                        'featured_videos'   => $featured_videos,
+                        'featured_videos'   => $FrontEndQueryController->featured_videos(),
                         'featured_episodes' => $featured_episodes,
                         'genre_video_display' => $genre_video_display,
                         'genres'              => $genre_video_display  ,
