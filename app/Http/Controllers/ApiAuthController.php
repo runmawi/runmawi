@@ -2351,8 +2351,10 @@ public function verifyandupdatepassword(Request $request)
       $setting = Setting::first();
 
       $choose_player = SiteTheme::pluck('choose_player')->first();
+
+      $ios_plans_id = InappPurchase::get();
   
-      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player , $setting){
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player , $setting, $ios_plans_id){
 
           $item['details']        = strip_tags($item->details);
           $item['description']    = strip_tags($item->description);
@@ -2367,6 +2369,9 @@ public function verifyandupdatepassword(Request $request)
           $item['transcoded_url']   = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
           $item['description']      = strip_tags(html_entity_decode($item->description));
           $item['movie_duration']   = gmdate('H:i:s', $item->duration);
+          $ios_plan                 = $ios_plans_id->firstwhere('product_id',$item->ios_ppv_price);
+          $item['ios_price']        = $ios_plan ? $ios_plan->plan_price : null;
+
           $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
               ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
               ->first();
@@ -3240,13 +3245,18 @@ public function verifyandupdatepassword(Request $request)
           $dislike = 'false';
         }
 
+        $ios_plans_id = InappPurchase::get();
+
         $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)
-                      ->where('status',1)->get()->map(function ($item) use ($user_id , $settings) {
+                      ->where('status',1)->get()->map(function ($item) use ($user_id , $settings, $ios_plans_id) {
                           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+                          $ios_plan = $ios_plans_id->firstwhere('product_id',$item->ios_ppv_price);
+
+                          $item['ios_price'] = $ios_plan ? $ios_plan->plan_price : null;
 
                           $item['Share_URL'] = URL::to('live/'.$item->slug);
 
