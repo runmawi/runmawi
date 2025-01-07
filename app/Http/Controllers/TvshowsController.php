@@ -300,13 +300,15 @@ class TvshowsController extends Controller
         $purchase_btn = $buttons_pay->purchase_btn;
         $subscribe_btn = $buttons_pay->subscribe_btn;
 
-        $episodess = Episode::where('slug', $episode_name)->orderBy('id', 'DESC')->first();
+        $series_id = Series::where('slug',$series_name)->pluck('id')->first();
+
+        $episodess = Episode::where('slug', $episode_name)->where('series_id',$series_id)->orderBy('id', 'DESC')->first();
         $season_access = SeriesSeason::where('id', $episodess->season_id)->pluck('access')->first();
         $series_access = Series::where('id', $episodess->series_id)->pluck('access')->first();
     
         $series_seasons_type = SeriesSeason::where('id', $episodess->season_id)->pluck('series_seasons_type')->first();
 
-        $source_id = Episode::where('slug', $episode_name)->pluck('id')->first();
+        $source_id = Episode::where('slug', $episode_name)->where('series_id',$series_id)->pluck('id')->first();
 
         
        // Check Channel Purchase 
@@ -377,7 +379,7 @@ class TvshowsController extends Controller
             return Redirect::to('/login');
         endif;
     
-        $episode = Episode::where('slug', '=', $episode_name)
+        $episode = Episode::where('slug', $episode_name)->where('series_id',$series_id)
             ->orderBy('id', 'DESC')
             ->first();
     
@@ -388,6 +390,7 @@ class TvshowsController extends Controller
             ->get();
     
         $series = Series::find($episode->series_id);
+        // dd($series);
     
         $episodenext = Episode::where('id', '>', $id)
             ->where('series_id', '=', $episode->series_id)
@@ -1998,6 +2001,8 @@ public function RemoveDisLikeEpisode(Request $request)
         $purchase_btn = $buttons_pay->purchase_btn;
         $subscribe_btn = $buttons_pay->subscribe_btn;
 
+        $series_id = Series::where('slug',$series_name)->pluck('id')->first();
+
         $ppv_series_description = Setting::pluck('series')->first();
 
         $button_text = ButtonText::first();
@@ -2010,11 +2015,11 @@ public function RemoveDisLikeEpisode(Request $request)
             $auth_user_id = Auth::user()->id;
         }
     
-        $episodess = Episode::where('slug', '=', $episode_name)
+        $episodess = Episode::where('slug', '=', $episode_name)->where('series_id',$series_id)
             ->orderBy('id', 'DESC')
             ->first();
     
-        $source_id = Episode::where('slug', '=', $episode_name)
+        $source_id = Episode::where('slug', '=', $episode_name)->where('series_id',$series_id)
             ->pluck('id')
             ->first();
     
@@ -2048,7 +2053,7 @@ public function RemoveDisLikeEpisode(Request $request)
             return Redirect::to('/login');
         endif;
     
-        $episode = Episode::where('slug', '=', $episode_name)
+        $episode = Episode::where('slug', '=', $episode_name)->where('series_id',$series_id)
             ->orderBy('id', 'DESC')
             ->first();
     
