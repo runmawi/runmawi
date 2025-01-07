@@ -38,8 +38,8 @@
 
 
 <script>
-    var elem = document.querySelector('.other-episodes-videos');
-    var flkty = new Flickity( elem, {
+var elem = document.querySelector('.other-episodes-videos');
+    var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
         groupCells: true,
@@ -47,7 +47,7 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyLoad: true,
     });
 </script>
 
