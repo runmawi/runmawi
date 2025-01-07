@@ -752,7 +752,7 @@ class LiveStreamController extends Controller
                     'Paystack_payment_setting' => $Paystack_payment_setting ,
                     'stripe_payment_setting'   => $stripe_payment_setting ,
                     'paydunya_payment_setting' => $paydunya_payment_setting ,
-                    'Related_videos' => LiveStream::whereNotIn('id',[$vid])->inRandomOrder()->get(),
+                    'Related_videos' => LiveStream::whereNotIn('id',[$vid])->where('active','1')->inRandomOrder()->get(),
                     'Paystack_payment_settings' => PaymentSetting::where('payment_type','Paystack')->first() ,
                     'M3U_channels' => $M3U_channels ,
                     'M3U_files'    => $M3U_files ,
