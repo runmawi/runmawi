@@ -187,7 +187,9 @@
         <h5>MONTHLY SUMMARY (After all deductions)</h5>
 
         @foreach ($monthly_Summary as $item)
-            <h5>{{ @$item->source_name }} (  {{ number_format(@$item->moderator_commission_percentage, 2 )}}% )</h5>
+            {{-- <h5>{{ @$item->source_name }} (  {{ number_format(@$item->moderator_commission_percentage, 2 )}}% )</h5> --}}
+            <h5>{{ @$item->source_name }} </h5>
+            
             <table width=100%>
                 <tr>
                     <td>Month/Year</td>
