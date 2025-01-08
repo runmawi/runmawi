@@ -4266,11 +4266,15 @@ public function verifyandupdatepassword(Request $request)
       $ugc_videos = [];
     }
 
-
+  if(count($channel_videos) > 0 || count($ugc_videos) > 0 || count($episode) > 0 || count($audios) > 0){
+    $status = "true";
+  }else{
+    $status = "false";
+  }
     $response = array(
-        'status'=>$status,
+        'status'          =>$status,
         'channel_videos'  => $channel_videos,
-        'ugc_videos'  => $ugc_videos,
+        'ugc_videos'      => $ugc_videos,
         'episode_videos'  => $episode,
         'audios'          => $audios,
       );
@@ -18658,7 +18662,7 @@ public function QRCodeMobileLogout(Request $request)
                   $Page_List_Name = 'Recommended_videos_users_Pagelist';
                   break;
 
-              case 'Audios_album':
+              case 'Audios_albums_Pagelist':
                     $data = $this->Audios_albums_Pagelist();
                     $Page_List_Name = 'Audios_albums_Pagelist';
                     break;
