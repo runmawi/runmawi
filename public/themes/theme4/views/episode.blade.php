@@ -136,6 +136,19 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
       transform: translate(-50%, -50%);
   }
 
+  @media only screen and (max-width: 600px) {
+    .my-video.vjs-fluid {
+      padding-top: 0 !important;
+      height: 45vh !important;
+  }
+}
+@media (max-width: 767px) {
+    .my-video.vjs-fluid {
+      padding-top: 0 !important;
+      height: 45vh !important;
+  }
+}
+
 </style>
 
 @if (Session::has('message'))
@@ -374,7 +387,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         @endforeach
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
-                    <p class="">{{ html_entity_decode(strip_tags($episode->episode_description)) }}</p>
+                    <p class="">{!! $episode->episode_description !!}</p>
 
                     <?php
                     $media_url = URL::to('episode') . '/' . $series->slug . '/' . $episode->slug;
@@ -475,9 +488,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         </ul>
                     </div>
                     
-                    <div class="description">
+                    {{-- <div class="description">
                         {!! strlen($series->description) > 400 ?  html_entity_decode(substr($series->description, 0, 400 )) . "..." . " <span class='text-primary' data-bs-toggle='modal' data-bs-target='#video-details-description'>See More</span>" :  html_entity_decode($series->description)  !!}
-                    </div>
+                    </div> --}}
 
                     <!-- <div class="desc">
                         @if (strlen($series->description) > 500)

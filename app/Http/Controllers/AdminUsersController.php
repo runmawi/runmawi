@@ -5151,7 +5151,7 @@ class AdminUsersController extends Controller
             
 
             if ($revenueType === 'overall' || $revenueType === 'ppv') {
-                $ppvQuery = PpvPurchase::query()->with(['video', 'user']);
+                $ppvQuery = PpvPurchase::with(['video', 'user'])->orderBy('created_at','DESC');
                 if ($startDate) {
                     $ppvQuery->whereBetween('created_at', [$startDate, $endDate]);
                 }
@@ -5170,7 +5170,7 @@ class AdminUsersController extends Controller
             }
             
             if ($revenueType === 'overall' || $revenueType === 'subscription') {
-                $subscriptionQuery = Subscription::query()->with('user');
+                $subscriptionQuery = Subscription::with('user')->orderBy('created_at','DESC');
                 if ($startDate) {
                     $subscriptionQuery->whereBetween('created_at', [$startDate, $endDate]);
                 }

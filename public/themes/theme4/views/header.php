@@ -223,15 +223,13 @@
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
+    <!-- Typography CSS -->
+       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" onload="this.rel='stylesheet'">
+       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>"></noscript>
  
    <!-- Bootstrap CSS -->
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>"></noscript>
-
-   <!-- Typography CSS -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>"></noscript>
-
 
    <!-- Responsive -->
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style" onload="this.rel='stylesheet'">
@@ -240,6 +238,10 @@
    <!-- Remixicon -->
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"></noscript>
+      
+      <!-- Font awesome -->
+      <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"></noscript>
 
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>"></noscript>
@@ -826,6 +828,7 @@ header#main-header.menu-sticky{
    height:100vh;
    position:absolute;
 }
+a:hover{text-decoration:none !important;}
 </style>
 
 <style type="text/css">
@@ -2015,7 +2018,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                 <a href="#" class="iq-user-dropdown search-toggle p-0 d-flex align-items-center"
                                                    data-toggle="search-toggle">
                                                          <img src="<?= !Auth::guest() && Auth::user()->avatar ? URL::to('public/uploads/avatars/'.Auth::user()->avatar ) : URL::to('/public/themes/theme4/assets/images/user/user.jpg') ?>"
-                                                         class="img-fluid avatar-40 rounded-circle" alt="user">
+                                                         class="img-fluid avatar-40 rounded-circle" alt="user" style="width: 40px;height: 40px;">
                                                 </a>
 
                                              <?php endif; ?>
@@ -2533,16 +2536,6 @@ window.onload = function () {
       }
 </script>
 
-<script>
-    window.addEventListener('load', function () {
-        const fontAwesomeLink = document.createElement('link');
-        fontAwesomeLink.rel = 'stylesheet';
-        fontAwesomeLink.href = 'https://pro.fontawesome.com/releases/v5.10.0/css/all.css';
-        fontAwesomeLink.integrity = 'sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p';
-        fontAwesomeLink.crossOrigin = 'anonymous';
-        document.head.appendChild(fontAwesomeLink);
-    });
-</script>
 
 <!-- <script>
         document.addEventListener('DOMContentLoaded', (event) => {

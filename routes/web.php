@@ -191,7 +191,7 @@ Route::post('/admin/purchased-analytics_startdate_revenue', 'AdminVideosControll
 Route::post('/admin/purchased-analytics_enddate_revenue', 'AdminVideosController@PurchasedContentEndDateRevenue');
 Route::post('/admin/purchased-analytics_exportCsv', 'AdminVideosController@PurchasedContentExportCsv');
 
-Route::get('admin/Content-Analytics', 'AdminContentAnalyticsController@ContentAnalytics');
+Route::get('admin/Content-Analytics', 'AdminContentAnalyticsController@ContentAnalytics')->name('admin.content.analytics');
 
 
 // CPP revenue

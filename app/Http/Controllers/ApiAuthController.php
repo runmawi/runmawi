@@ -2350,8 +2350,10 @@ public function verifyandupdatepassword(Request $request)
       $setting = Setting::first();
 
       $choose_player = SiteTheme::pluck('choose_player')->first();
+
+      $ios_plans_id = InappPurchase::get();
   
-      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player , $setting){
+      $videodetail = Video::where('id',$videoid)->orderBy('created_at', 'desc')->get()->map(function ($item) use ($request, $choose_player , $setting, $ios_plans_id){
 
           $item['details']        = strip_tags($item->details);
           $item['description']    = strip_tags($item->description);
@@ -2366,6 +2368,9 @@ public function verifyandupdatepassword(Request $request)
           $item['transcoded_url']   = URL::to('/storage/app/public/').'/'.$item->path . '.m3u8';
           $item['description']      = strip_tags(html_entity_decode($item->description));
           $item['movie_duration']   = gmdate('H:i:s', $item->duration);
+          $ios_plan                 = $ios_plans_id->firstwhere('product_id',$item->ios_ppv_price);
+          $item['ios_price']        = $ios_plan ? $ios_plan->plan_price : null;
+
           $ads_videos = AdsVideo::where('ads_videos.video_id',$item->id)
               ->join('advertisements', 'ads_videos.ads_id', '=', 'advertisements.id')
               ->first();
@@ -3239,13 +3244,18 @@ public function verifyandupdatepassword(Request $request)
           $dislike = 'false';
         }
 
+        $ios_plans_id = InappPurchase::get();
+
         $livestream_details = LiveStream::findorfail($request->liveid)->where('id',$request->liveid)->where('active',1)
-                      ->where('status',1)->get()->map(function ($item) use ($user_id , $settings) {
+                      ->where('status',1)->get()->map(function ($item) use ($user_id , $settings, $ios_plans_id) {
                           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
                           $item['player_image'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
                           $item['live_description'] = $item->description ? $item->description : "" ;
                           $item['trailer'] = null ;
                           $item['livestream_format'] =  $item->url_type ;
+                          $ios_plan = $ios_plans_id->firstwhere('product_id',$item->ios_ppv_price);
+
+                          $item['ios_price'] = $ios_plan ? $ios_plan->plan_price : null;
 
                           $item['Share_URL'] = URL::to('live/'.$item->slug);
 
@@ -4677,16 +4687,16 @@ public function verifyandupdatepassword(Request $request)
       $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
       $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
       $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
-      if ( $ppv_count == 0 || $live_ppv_count == 0 || $audio_ppv_count == 0 || $season_ppv_count == 0) {
+      
         if(!empty($video_id) && $video_id != ''){
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'total_amount'=> $request->amount,'ppv_plan'=> $ppv_plan ]
+            ['user_id' => $user_id ,'video_id' => $video_id,'to_time' => $date,'ppv_plan'=> $ppv_plan,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date, ]
+            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
@@ -4699,29 +4709,11 @@ public function verifyandupdatepassword(Request $request)
         }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
 
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
+            ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason ]
           );
         }
 
-      } else {
-        
-        if(!empty($video_id) && $video_id != ''){
-          DB::table('ppv_purchases')->where('video_id', $video_id)->where('user_id', $user_id)->update(['to_time' => $date,'ppv_plan'=> $ppv_plan]);
-
-        }else if(!empty($audio_id) && $audio_id != ''){
-          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-
-        }else if(!empty($live_id) && $live_id != ''){
-          DB::table('live_purchases')->where('video_id', $live_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-
-        }else if(!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != ''){
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan]
-            );
-        }
       
-
-    }
 
       $response = array(
         'status' => 'true',
@@ -6733,9 +6725,26 @@ public function checkEmailExists(Request $request)
        $series_id =  $episode[0]->series_id;
        $season_id = $episode[0]->season_id;
 
-       $Season = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->first();
+       $ios_plans_id = InappPurchase::get();
 
-       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get();
+        $Season = SeriesSeason::where('series_id', $series_id)
+                                  ->where('id', $season_id)->get()
+                                  ->map(function($item) use ($ios_plans_id) {
+                                      $iosPlan = $ios_plans_id->firstWhere('product_id', $item->ios_product_id);
+                                      
+                                      $item['ios_ppv_price'] = $iosPlan ? $iosPlan->plan_price : null;
+                                      
+                                      return $item;
+                                  });
+
+       $Season_array = SeriesSeason::where('series_id',$series_id)->where('id',$season_id)->get()
+                                      ->map(function($item) use ($ios_plans_id){
+                                          $ios_plan = $ios_plans_id->firstwhere('product_id',$item->ios_product_id);
+
+                                          $item['ios_ppv_price'] = $ios_plan ? $ios_plan->plan_price: null;
+
+                                          return $item;
+                                      });
 
        $AllSeason = SeriesSeason::where('series_id',$series_id)->get();
 
@@ -13196,7 +13205,7 @@ $cpanel->end();
                                                       ->orderBy('order')
                                                       ->limit(15)
                                                       ->get()
-                                                      ->map(function ($item) {
+                                                      ->map(function ($item) use($roku_tvcode) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
@@ -13206,7 +13215,7 @@ $cpanel->end();
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
-                                                                                    ->map(function ($series) {
+                                                                                    ->map(function ($series) use($roku_tvcode) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
                                                                                         $description = $series->description;
@@ -13223,7 +13232,22 @@ $cpanel->end();
                                                                                         $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
-                                                                                                                        ->map(function ($season) {
+                                                                                                                        ->map(function ($season) use($roku_tvcode) {
+                                                                                                                            $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                                                                                                            $ppv_exists_check_query = 0;
+                                                                                                                            if($ppv_purchase){
+                                                                                                                              $new_date = Carbon::parse($ppv_purchase->to_time);
+                                                                                                                              $currentdate = Carbon::now();
+                                                                                                                              $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                                                                            }
+
+                                                                                                                            if($season->access == 'free'){
+                                                                                                                              $season_access = 'guest';
+                                                                                                                            }elseif( $ppv_exists_check_query > 0){
+                                                                                                                              $season_access = 'guest';
+                                                                                                                            }else{
+                                                                                                                              $season_access = 'PPV';
+                                                                                                                            }
                                                                                                                             $episodes = Episode::where('season_id', $season->id)
                                                                                                                                 ->orderBy('episode_order')
                                                                                                                                 ->get()
@@ -13279,6 +13303,7 @@ $cpanel->end();
                                                                                                                             if ($episodes->isNotEmpty()) {
                                                                                                                                 return [
                                                                                                                                     'title' => $season->series_seasons_name,
+                                                                                                                                    'access' => $season_access,
                                                                                                                                     'episodes' => $episodes,
                                                                                                                                 ];
                                                                                                                             }

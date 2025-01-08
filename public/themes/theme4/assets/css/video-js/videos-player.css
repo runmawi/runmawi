@@ -105,7 +105,7 @@ body.light-theme span{
 
 .my-video.vjs-fluid {
   padding-top: 0 !important;
-  height: 98vh !important;
+  height: calc(100vh - 20px) !important;
 }
 
 .my-video.video-js .vjs-tech {
@@ -1028,7 +1028,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
       padding-top: 0 !important;
-      height: 45vh !important;
+      height: 45vh;
   }
   .live_dot {
       color: red;
@@ -1155,7 +1155,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
       padding-top: 0 !important;
-      height: 45vh !important;
+      height: 45vh;
   }
   .live_dot {
       color: red;

@@ -2787,12 +2787,13 @@ class AdminVideosController extends Controller
         } else {
             $video->ppv_price = !empty($data["ppv_price"]) ? $data["ppv_price"] : null;
         }
-        
+
+        // dd($request["trailer_type"] );
         $shortcodes = $request["short_code"];
         $languages = $request["sub_language"];
         $video->mp4_url = $data["mp4_url"];
-        $video->trailer = $data["trailer"];
-        $video->trailer_type = $data["trailer_type"];
+        $video->trailer = ($request["trailer_type"] == "null") ? null : $data["trailer"];
+        $video->trailer_type = ($request["trailer_type"] == "null") ? null : $data["trailer_type"];
         $video->duration = $data["duration"];
         $video->language = $request["language"];
         $video->skip_recap = $request["skip_recap"];

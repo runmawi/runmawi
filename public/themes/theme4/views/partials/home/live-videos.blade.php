@@ -178,13 +178,13 @@
     var elem = document.querySelector('.live-stream-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7,
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 7,
         });
 
     document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
