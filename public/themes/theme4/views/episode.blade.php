@@ -136,6 +136,19 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
       transform: translate(-50%, -50%);
   }
 
+  @media only screen and (max-width: 600px) {
+    .my-video.vjs-fluid {
+      padding-top: 0 !important;
+      height: 45vh !important;
+  }
+}
+@media (max-width: 767px) {
+    .my-video.vjs-fluid {
+      padding-top: 0 !important;
+      height: 45vh !important;
+  }
+}
+
 </style>
 
 @if (Session::has('message'))
