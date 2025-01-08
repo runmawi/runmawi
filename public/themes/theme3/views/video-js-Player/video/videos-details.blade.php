@@ -275,96 +275,48 @@
 
                     <div class="col-sm-9 col-12 p-0 mt-5">
                         <div>
-                            <?php if ($video->trailer != '' && $ThumbnailSetting->trailer == 1) { ?>
-
+                            @if( optional($videodetail)->trailer )
                                 <div class="img__wrap">
-                                    <img class="img__img "
-                                        src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>"
-                                        class="img-fluid" alt="" height="200" width="300">
-                                    <div class="img__description_layer">
-                                        <a data-video="<?php echo $video->trailer; ?>" data-toggle="modal"
-                                            data-target="#videoModal" data-backdrop="static"
-                                            data-keyboard="false">
-                                            <p class="img__description">
-                                                <h6 class="text-center">
-                                                    {{ \Illuminate\Support\Str::limit($video->title,25) }}
-                                                </h6>
-
-                                                <div class="movie-time  align-items-center my-2">
-                                                    <p class="text-center">
-                                                        <?php echo strlen($video->trailer_description) > 60 ? substr($video->trailer_description, 0, 61) . '...' : $video->trailer_description; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="hover-buttons text-center">
-                                                    <a data-video="<?php echo $video->trailer; ?>"
-                                                        data-toggle="modal" data-target="#videoModal"
-                                                        data-backdrop="static" data-keyboard="false">
-                                                        <span class="text-white">
-                                                            <i class="fa fa-play mr-1" aria-hidden="true"></i>
-                                                            Play Now
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </p>
-                                        </a>
+                                    <img class="img__img " src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>" class="img-fluid" alt="" height="200" width="300">
+                                    <div class="img__description_layer" data-bs-toggle="modal" data-bs-target="#trailermodal">
+                                        <h6 class="text-center">{{ "Trailer" }}</h6>
+                                        <div class="hover-buttons text-center" data-bs-toggle="modal" data-bs-target="#trailermodal">
+                                            <span class="text-white mt-2">
+                                                <i class="fa fa-play mr-1" aria-hidden="true"></i>
+                                                Play Now
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            <?php ?>
+                            @endif
                         </div>
-                        <div class="modal fade modal-xl" id="videoModal" tabindex="-1" role="dialog"
-                            aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content" style="background-color: transparent;border:none;">
-                                    <button type="button" class="close" data-dismiss="modal"
-                                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
                                     <div class="modal-body">
-
-                                        <?php if ($video->trailer_type != null && $video->trailer_type == "video_mp4" || $video->trailer_type == "mp4_url") { ?>
-
-                                            <video id="videoPlayer1" class=""
-                                                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                controls
-                                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                type="video/mp4" src="<?php echo $video->trailer; ?>">
-                                            </video>
-                                        <?php } elseif ($video->trailer_type != null && $video->trailer_type == "m3u8") { ?>
-
-                                            <video id="videos" class=""
-                                                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                controls
-                                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                type="application/x-mpegURL">
-                                                <source type="application/x-mpegURL"
-                                                    src="<?php echo $video->trailer; ?>">
-                                            </video>
-
-                                        <?php } elseif ($video->trailer_type != null && $video->trailer_type == "m3u8_url") { ?>
-
-                                            <video id="videoPlayer1" class=""
-                                                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>"
-                                                controls
-                                                data-setup='{"controls": true, "aspectRatio":"16:9", "fluid": true}'
-                                                type="application/x-mpegURL">
-                                            </video>
-
-                                        <?php } elseif ($video->trailer_type != null && $video->trailer_type == "embed_url") { ?>
-
-                                            <div id="videoPlayer1" class=""
-                                                poster="<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>">
-                                                <iframe src="<?php echo $video->trailer; ?>" allowfullscreen
-                                                    allowtransparency allow="<?= $autoplay ?>">
-                                                </iframe>
-                                            </div>
-
-                                        <?php } ?>
-
+                                        <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                            <?php if($videodetail->trailer_type == "embed_url" ) : ?>
+                                                <iframe width="100%" height="auto"  src="{{ $videodetail->trailer }}" frameborder="0" allowfullscreen></iframe>
+                                            <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                    <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                                                </video>
+                                            <?php elseif($videodetail->trailer_type == "m3u8_url" ): ?>
+                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                    <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                                                </video>
+                                            <?php else: ?>
+                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                    <source src="<?= $videodetail->trailer ?>" type="video/mp4">
+                                                </video>                 
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <?php } ?>
                     </div>
 
                     <!-- Trailer End  -->
@@ -642,6 +594,58 @@
 </script>
 
 
+<script>
+    $(document).ready(function() {
+        
+        var Url_type = '<?php echo @$videodetail->trailer_type ; ?>';
+        var originalSrc = '<?php echo @$videodetail->trailer ; ?>';
+
+        if(Url_type === 'embed_url'){
+            console.log('Url_type ' + Url_type);
+            var iframeplayer = videojs('video-js-trailer_embed');
+            $('#trailermodal').on('hidden.bs.modal', function () {
+                console.log('modal close');
+                $('#video-js-trailer_embed_html5_api').attr('src', '');
+            });
+
+            $('#trailermodal').on('shown.bs.modal', function () {
+                console.log('modal open');
+                $('#video-js-trailer_embed_html5_api').attr('src', originalSrc);
+            });
+            $(".video-js-trailer-modal-close").click(function() {
+                console.log('close btn');
+                $('#trailermodal').modal('hide');
+            });
+        }else{
+            var player = videojs('video-js-trailer', {
+                aspectRatio: '16:9',
+                fluid: true,
+                controlBar: {
+                    volumePanel: { inline: false },
+                    children: {
+                        'playToggle': {},
+                        'liveDisplay': {},
+                        'flexibleWidthSpacer': {},
+                        'progressControl': {},
+                        // 'remainingTimeDisplay': {},
+                        'fullscreenToggle': {}, 
+                    }
+                }
+            });
+
+            // Close button functionality
+            $(".btn-close").click(function() {
+                player.pause();
+                console.log('player closed');
+                $('#trailermodal').modal('hide');
+            });
+        }
+    });
+
+    
+</script>
+
+
 
 <style>
       body.light-theme .descrption-video-details p {color: <?php echo GetLightText(); ?>!important;}
@@ -649,6 +653,25 @@
       body.light-theme ul.breadcrumb.breadcrumb-csp.p-0 a {color: <?php echo GetLightText(); ?>!important;}
       body.dark-theme .cate-lang-status-details {color: <?php echo GetDarkText(); ?>!important;}
       body.dark-theme ul.breadcrumb.breadcrumb-csp.p-0 a {color: <?php echo GetDarkText(); ?>!important;}
+
+    #trailermodal .my-video.vjs-fluid, #trailermodal .modal-content{height: 68vh !important;}
+    #trailermodal .embed-responsive{height: 100%;}
+    @media screen and (min-width: 1900px){
+        #trailermodal .my-video.vjs-fluid{height: 35vh !important;}
+        .modal-dialog-centered{align-items: unset;top: 15%;}
+        .modal-dialog{max-width: 700px;}
+        .trailer-img:hover .trailer-play{left: 1%;}
+    }
+    @media only screen and (min-height: 2160px){
+        #trailermodal .my-video.vjs-fluid{height: 20vh !important;}
+        .modal-dialog{max-width: 1000px;}
+    }
+    @media (max-width:768px){
+        .video-js-trailer-modal-close{right: 0;}
+        #trailermodal .my-video.vjs-fluid{height: 42vh !important;}
+    }
+    .embed-responsive::before{display: none;}
+    .modal-content{background-color: transparent;}
 </style>
 
 @php 
