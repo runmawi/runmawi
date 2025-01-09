@@ -84,6 +84,7 @@
         const titleButton = document.querySelector('.vjs-title-bar');
         const nextEpisodeButton = document.querySelector('.next-episode');
         const cancelCard = document.querySelector('.cancel_card');
+        var controlBar = player.getChild('controlBar');
 
         $(nextEpisodeButton).hide();
 
@@ -91,8 +92,10 @@
         player.el().appendChild(skipBackwardButton);
         player.el().appendChild(titleButton);
         player.el().appendChild(backButton); 
-        player.el().appendChild(nextEpisodeButton); 
-        player.el().appendChild(cancelCard); 
+        if(next_episode_slug){
+            player.el().appendChild(nextEpisodeButton); 
+            player.el().appendChild(cancelCard);
+        } 
         
         // Continue watching script
         function EpisodeContinueWatching(episodeId, duration, currentTime) {
@@ -285,17 +288,25 @@
             titleButton.style.display = 'block';
         }
         });
-        player.on('enterpictureinpicture', function() {
-            console.log('Entered Picture-in-Picture mode');
-            player.controlBar.hide();
-            playPauseButton.style.display = "none";
-        });
+        
+        console.log('Entered Picture-in-Picture mode');
+            player.on('enterpictureinpicture', function() {
+                console.log('Entered Picture-in-Picture mode');
+                player.controlBar.hide();
+                playPauseButton.style.visibility = "hidden";
+                skipForwardButton.style.visibility = 'hidden';
+                skipBackwardButton.style.visibility = 'hidden';
+                titleButton.style.visibility = 'hidden';
+            });
 
-        player.on('leavepictureinpicture', function() {
-            console.log('Exited Picture-in-Picture mode');
-            player.controlBar.show();
-            playPauseButton.style.display = "block";
-        });
+            player.on('leavepictureinpicture', function() {
+                console.log('Exited Picture-in-Picture mode');
+                player.controlBar.show();
+                playPauseButton.style.visibility = "visible";
+                skipForwardButton.style.visibility = 'visible';
+                skipBackwardButton.style.visibility = 'visible';
+                titleButton.style.visibility = 'visible';
+            });
 
         // Skip Intro & Skip Recap
 

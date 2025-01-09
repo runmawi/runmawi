@@ -425,13 +425,11 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+            $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
 
             $rokuTvCode = session('roku_tvcode');
 
             // dd($rokuTvCode);
-            
-            if( $stripe_payment_session->status == "complete"){
-        
                 $video = LiveStream::where('id',$live_id)->first();
 
                 $setting = Setting::first();  
@@ -444,11 +442,12 @@ class StripePaymentController extends Controller
                 }
 
                 if(!empty($moderators_id)){
-                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();
+                    $percentage = $moderator ? $moderator->commission_percentage : 0; 
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::where('type','CPP')->first();
-                    $percentage          =  $moderator->commission_percentage; 
+                    // $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $video->ppv_price;
                     $moderator_commssion =  ($percentage/100) * $ppv_price ;
                     $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -470,7 +469,7 @@ class StripePaymentController extends Controller
                     'total_amount'  =>  (integer) $stripe_payment_session->amount_total / 100 , 
                     'admin_commssion'     => $admin_commssion,
                     'moderator_commssion' => $moderator_commssion,
-                    'status'     => 'active',
+                    'status'     => $paymentIntent->status,
                     'to_time'    => $to_time,
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s'),
                     'moderator_id' => $moderator_id,
@@ -493,6 +492,8 @@ class StripePaymentController extends Controller
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
                     'platform'       => 'website',
+                    'payment_id' => $stripe_payment_id ,
+                    'payment_status' => $paymentIntent->status,
                     // 'roku_tvcode'    =>  $rokuTvCode,
                 ]);
 
@@ -501,7 +502,6 @@ class StripePaymentController extends Controller
                     'redirect_url' => URL::to('live/'. $video->slug) ,
                     'message'   => 'Live Payment Purchase Successfully !!' ,
                 );
-            }
 
         } catch (\Exception $e) {
 
@@ -640,71 +640,69 @@ class StripePaymentController extends Controller
 
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
 
-                            // Retrieve Payment Session
+            // Retrieve Payment Session
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+            $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
 
             $video = Video::where('id',$video_id)->first();
 
-            if( $stripe_payment_session->status == "complete"){
-        
-                $setting = Setting::first();  
-                $ppv_hours = $setting->ppv_hours;
     
-                $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
-                $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+            $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
+            $to_time = $ppv_expirytime_started != null  ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
 
-                if(!empty($video)){
-                    $moderators_id = $video->user_id;
-                }
-
-                if(!empty($moderators_id)){
-                    $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                    $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
-                    $title               =  $video->title;
-                    $commssion           =  VideoCommission::where('type','CPP')->first();
-                    $percentage          =  $moderator->commission_percentage; 
-                    $ppv_price           =  $video->ppv_price;
-                    $moderator_commssion =  ($percentage/100) * $ppv_price ;
-                    $admin_commssion     =  $ppv_price - $moderator_commssion;
-                    $moderator_id        =  $moderators_id;
-                }else{
-                    $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
-                    $title              =   $video->title;
-                    $commssion          =  VideoCommission::where('type','CPP')->first();
-                    $ppv_price          =   $video->ppv_price;
-                    $percentage         =   null; 
-                    $admin_commssion    =   null;
-                    $moderator_commssion =  null;
-                    $moderator_id        =  null;
-                }
-
-
-
-                PpvPurchase::create([
-                    'user_id'       =>  Auth::user()->id ,
-                    'video_id'       => $video->id ,
-                    'total_amount'  =>  (integer) $stripe_payment_session->amount_total / 100 , 
-                    'admin_commssion'     => $admin_commssion,
-                    'moderator_commssion' => $moderator_commssion,
-                    'status'     => 'active',
-                    'to_time'    => $to_time,
-                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s'),
-                    'moderator_id' => $moderator_id,
-                    'payment_gateway'  => 'Stripe',
-                    'payment_in'       => 'website',
-                    'platform'       => 'website',
-                    'payment_id' => $stripe_payment_id,
-                ]);
-
-
-                $respond = array(
-                    'status'  => 'true',
-                    'redirect_url' => URL::to('category/videos/'. $video->slug) ,
-                    'message'   => 'Video Payment Purchase Successfully !!' ,
-                );
+            if(!empty($video)){
+                $moderators_id = $video->user_id;
             }
+
+            if(!empty($moderators_id)){
+                $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                $percentage = $moderator ? $moderator->commission_percentage : 0; 
+                $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
+                $title               =  $video->title;
+                $commssion           =  VideoCommission::where('type','CPP')->first();
+                $ppv_price           =  $video->ppv_price;
+                $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                $admin_commssion     =  $ppv_price - $moderator_commssion;
+                $moderator_id        =  $moderators_id;
+            }else{
+                $total_amount       =    (integer) $stripe_payment_session->amount_total / 100;
+                $title              =   $video->title;
+                $commssion          =  VideoCommission::where('type','CPP')->first();
+                $ppv_price          =   $video->ppv_price;
+                $percentage         =   null; 
+                $admin_commssion    =   null;
+                $moderator_commssion =  null;
+                $moderator_id        =  null;
+            }
+
+
+
+            PpvPurchase::create([
+                'user_id'       =>  Auth::user()->id ,
+                'video_id'       => $video->id ,
+                'total_amount'  =>  (integer) $stripe_payment_session->amount_total / 100 , 
+                'admin_commssion'     => $admin_commssion,
+                'moderator_commssion' => $moderator_commssion,
+                'status'     => $paymentIntent->status,
+                'to_time'    => $to_time,
+                'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
+                'moderator_id' => $moderator_id,
+                'payment_gateway'  => 'Stripe',
+                'payment_in'       => 'website',
+                'platform'       => 'website',
+                'payment_id' => $stripe_payment_id,
+            ]);
+
+
+            $respond = array(
+                'status'  => 'true',
+                'redirect_url' => URL::to('category/videos/'. $video->slug) ,
+                'message'   => 'Video Payment Purchase Successfully !!' ,
+            );
 
         } catch (\Exception $e) {
 
@@ -852,6 +850,7 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+            $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
 
             $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
             $series_id = $SeriesSeason->series_id;
@@ -872,10 +871,10 @@ class StripePaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $percentage = $moderator ? $moderator->commission_percentage : 0; 
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::where('type','CPP')->first();
-                    $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $video->ppv_price;
                     $moderator_commssion =  ($percentage/100) * $ppv_price ;
                     $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -898,7 +897,7 @@ class StripePaymentController extends Controller
                     'total_amount'        =>   (integer) $stripe_payment_session->amount_total / 100,
                     'admin_commssion'     => $admin_commssion,
                     'moderator_commssion' => $moderator_commssion,
-                    'status'     => 'active',
+                    'status'     =>  $paymentIntent->status,
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'to_time'    => $to_time,
                     'moderator_id' => $moderator_id,
@@ -1060,6 +1059,7 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+            $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
             $Series = Series::where('id',$Series_id)->first();
 
             if( $stripe_payment_session->status == "complete"){
@@ -1073,10 +1073,10 @@ class StripePaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $percentage = $moderator ? $moderator->commission_percentage : 0; 
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::where('type','CPP')->first();
-                    $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $video->ppv_price;
                     $moderator_commssion =  ($percentage/100) * $ppv_price ;
                     $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -1098,7 +1098,7 @@ class StripePaymentController extends Controller
                     'total_amount'        =>   (integer) $stripe_payment_session->amount_total / 100,
                     'admin_commssion'     => $admin_commssion,
                     'moderator_commssion' => $moderator_commssion,
-                    'status'     => 'active',
+                    'status'     => $paymentIntent->status,
                     'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'to_time'    => $to_time,
                     'moderator_id' => $moderator_id,
@@ -1261,6 +1261,7 @@ class StripePaymentController extends Controller
             $stripe_payment_session_id = $stripe_payment_session_id ;
             $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
             $stripe_payment_id = $stripe_payment_session->payment_intent;
+            $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
             $video = Video::where('id',$video_id)->first();
 
             if( $stripe_payment_session->status == "complete"){
@@ -1282,10 +1283,10 @@ class StripePaymentController extends Controller
 
                 if(!empty($moderators_id)){
                     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                    $percentage = $moderator ? $moderator->commission_percentage : 0; 
                     $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                     $title               =  $video->title;
                     $commssion           =  VideoCommission::where('type','CPP')->first();
-                    $percentage          =  $moderator->commission_percentage; 
                     $ppv_price           =  $ppv_price;
                     $moderator_commssion =  ($percentage/100) * $ppv_price ;
                     $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -1307,9 +1308,9 @@ class StripePaymentController extends Controller
                     'total_amount'  =>  (integer) $stripe_payment_session->amount_total / 100 , 
                     'admin_commssion'     => $admin_commssion,
                     'moderator_commssion' => $moderator_commssion,
-                    'status'     => 'active',
+                    'status'     => $paymentIntent->status,
                     'to_time'    => $to_time,
-                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s'),
+                    'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                     'moderator_id' => $moderator_id,
                     'payment_gateway'  => 'Stripe',
                     'payment_in'       => 'website',
@@ -1471,6 +1472,7 @@ class StripePaymentController extends Controller
                 $stripe_payment_session_id = $stripe_payment_session_id ;
                 $stripe_payment_session = $stripe->checkout->sessions->retrieve( $stripe_payment_session_id );
                 $stripe_payment_id = $stripe_payment_session->payment_intent;
+                $paymentIntent = $stripe->paymentIntents->retrieve($stripe_payment_id);
                 $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
                 $series_id = $SeriesSeason->series_id;
                 $series = Series::find($series_id);
@@ -1490,10 +1492,10 @@ class StripePaymentController extends Controller
     
                     if(!empty($moderators_id)){
                         $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                        $percentage = $moderator ? $moderator->commission_percentage : 0; 
                         $total_amount        =   (integer) $stripe_payment_session->amount_total / 100;
                         $title               =  $video->title;
                         $commssion           =  VideoCommission::where('type','CPP')->first();
-                        $percentage          =  $moderator->commission_percentage; 
                         $ppv_price           =  $ppv_price;
                         $moderator_commssion =  ($percentage/100) * $ppv_price ;
                         $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -1516,7 +1518,7 @@ class StripePaymentController extends Controller
                         'total_amount'        =>   (integer) $stripe_payment_session->amount_total / 100,
                         'admin_commssion'     => $admin_commssion,
                         'moderator_commssion' => $moderator_commssion,
-                        'status'     => 'active',
+                        'status'     => $paymentIntent->status,
                         'from_time'  => Carbon::now()->format('Y-m-d H:i:s a'),
                         'to_time'    => $to_time,
                         'moderator_id' => $moderator_id,
