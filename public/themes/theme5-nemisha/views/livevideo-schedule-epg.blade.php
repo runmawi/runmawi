@@ -1,6 +1,6 @@
 <style>
     body{background-color:#000;color:#fff;font-family:Arial,sans-serif}
-    .epg-header {display: flex; align-items: center; background-color: #1c1c1c; padding: 15px; border-radius: 8px; gap: 15px;}
+    .epg-header {display: flex; align-items: center; background-color: #1c1c1c; padding: 10px;  border-top-left-radius: 5px; border-top-right-radius: 5px; gap: 15px;}
     .epg-header img { width: 120px; height: auto; border-radius: 8px; flex-shrink: 0;}
     .epg-info { flex-grow: 1; flex-basis: 60%;}
     .epg-info h2 {font-size: 22px;font-weight: 700;margin: 0 0 10px;color: #ffffff;}
@@ -36,11 +36,11 @@
     .epg-channels div{margin-bottom:10px;padding:10px;background-color:#333;border-radius:8px;height:75px;text-align: center;}
     .epg-program-row{display:flex;margin-bottom:10px}
     .epg-program{position:relative;color:#fff;text-align:center;line-height:75px; height: 75px; width: 100%;}
-    .epg-navigation{z-index:0;position:relative;overflow-x:auto; background-color: #333; border-radius: 5px;}
+    .epg-navigation{z-index:0;position:relative;overflow-x:auto; background-color: #333; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;time-section-left:3px}
-    .day-nav{margin:0 10px; cursor: pointer;  transition: background-color 0.3s ease, color 0.3s ease;}
+    .day-nav{margin:0 10px; cursor: pointer;  transition: background-color 0.3s ease, color 0.3s ease; font-size: 15px;}
     .day-nav.active {background-color: #ed563c; color: white; border-radius: 5px; padding: 10px;}
-    .date-nav{align-items:center;background-color:#333;display:flex; height:50px;  }
+    .date-nav{align-items:center;background-color:#1c1c1c;display:flex; height:50px;  }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
     .epg-channel {width: 100%; white-space: nowrap; overflow: auto;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
     @media (max-width: 480px) {
@@ -67,14 +67,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 5px 0;
     }
 
     .time-section {
         width: 20%;
         height: 55px;
         text-align: center;
-        border-radius: 5px;
         background-color: #333;
         display: flex;
         justify-content: center;
@@ -106,7 +104,7 @@
 @endphp
 <div class="epg-container mt-3">
 
-    <div class="epg-header m-1">
+    <div class="epg-header">
         <p>  {!! html_entity_decode( @$Livestream_details->details) !!} </p>
 
 
@@ -120,18 +118,18 @@
         </div>
     </div>
 
-    <div class="epg-navigation mx-2">
+    <div class="epg-navigation">
         <div class="date-nav">
             @for ($i = 0; $i < 7; $i++)
                 @php $day = $now->copy()->addDays($i); @endphp
-                <div class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
+                <h6 class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
                     {{ $day->format('l') }} ({{ $day->format('d-m-Y') }})
-                </div>
+                </h6>
             @endfor
         </div>
     </div>
     <div class="">
-        <div id="data" class="mx-2" >
+        <div id="data" class="" >
             {!! Theme::uses("{$current_theme}")->load("public/themes/{$current_theme}/views/livevideo-schedule-epg-partial",  
             ['Livestream_details' => $Livestream_details ,'current_theme' => $current_theme, 'now' => $now])->content() !!}
         </div>

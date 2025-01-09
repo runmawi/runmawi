@@ -315,7 +315,6 @@
         {{ Session::get('message') }}
     </div>
 @endif
-
                {{-- Message Note --}}
 <div id="message-note" ></div>
 
@@ -432,7 +431,7 @@
         <div class="container-fluid video-list you-may-like overflow-hidden">
             <h4 style="color:#fffff;">{{ __('Related Videos') }}</h4>
             <div class="slider">
-            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/live_related_video", ['data' => $Related_videos, 'ThumbnailSetting' => $ThumbnailSetting] )->content() !!}
+            {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/live_related_video", ['data' => $Related_videos, 'ThumbnailSetting' => $ThumbnailSetting, 'default_vertical_image_url' => $default_vertical_image_url] )->content() !!}
 
             </div>
         </div>
