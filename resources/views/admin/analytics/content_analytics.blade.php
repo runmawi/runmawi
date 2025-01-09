@@ -23,8 +23,36 @@
         <div class="iq-card">
         <div class="col-md-12">
             <div class="iq-card-header  justify-content-between">
-                <div class="iq-header-title">
-                    <h4 class="card-title">Content Analytics :</h4>
+                <div class="row">
+
+                    <div class="col-7">
+                        <div class="iq-header-title">
+                            <h4 class="card-title">Content Analytics :</h4>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <form method="GET" action="{{ route('admin.content.analytics') }}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select name="month_filter" id="month_filter" class="form-control">
+                                        <option value="">All Months</option>
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}" {{ request('month_filter') == $month ? 'selected' : '' }}>
+                                                {{ date('F', mktime(0, 0, 0, $month, 1)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </form> 
+                    </div>
                 </div>
             </div>
              
