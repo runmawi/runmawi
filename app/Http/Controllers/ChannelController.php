@@ -4407,8 +4407,26 @@ class ChannelController extends Controller
                         else{
                             $ppv_exists_check_query = null;
                         }
- 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+
+
+                        //uncomment
+
+                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                        //                             ->where('user_id', Auth::user()->id)
+                        //                             ->where('to_time','>',$current_date)
+                        //                             ->orderBy('created_at', 'desc')
+                        //                             ->get()->map(function ($item){
+                        //                                 $payment_status = payment_status($item);
+                                                        
+                        //                                 if($item->status == $payment_status){
+                        //                                     return $item;
+                        //                                 }
+                        //                             })->isNotEmpty();
+ 
+                        // $PPV_exists = $ppv_exists_check_query ;
 
                                 // free PPV access for subscriber status Condition
 
@@ -4927,6 +4945,24 @@ class ChannelController extends Controller
                         $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                        
+                        //uncomment
+
+                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                        //                             ->where('user_id', Auth::user()->id)
+                        //                             ->where('to_time','>',$current_date)
+                        //                             ->orderBy('created_at', 'desc')
+                        //                             ->get()->map(function ($item){
+                        //                                 $payment_status = payment_status($item);
+                                                        
+                        //                                 if($item->status == $payment_status){
+                        //                                     return $item;
+                        //                                 }
+                        //                             })->isNotEmpty();
+ 
+                        // $PPV_exists = $ppv_exists_check_query ;
 
                                 // free PPV access for subscriber status Condition
 
@@ -5536,6 +5572,23 @@ class ChannelController extends Controller
                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+
+                    //    uncomment
+                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                        //                             ->where('user_id', Auth::user()->id)
+                        //                             ->where('to_time','>',$current_date)
+                        //                             ->orderBy('created_at', 'desc')
+                        //                             ->get()->map(function ($item){
+                        //                                 $payment_status = payment_status($item);
+                        //                                 if($item->status == $payment_status){
+                        //                                     return $item;
+                        //                                 }
+                        //                             })->isNotEmpty();
+ 
+                        // $PPV_exists = $ppv_exists_check_query ;
+
 
                        // free PPV access for subscriber status Condition
 

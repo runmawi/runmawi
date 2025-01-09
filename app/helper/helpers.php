@@ -2113,3 +2113,20 @@ function videocipher_Key(){
     $videocipher_ApiKey = App\StorageSetting::pluck('videocipher_ApiKey')->first();
     return  $videocipher_ApiKey; 
 }
+
+
+function payment_status($item){
+    switch ($item->payment_gateway) {
+        case 'razorpay':
+        $payment_status = 'captured';
+        break;
+
+        case 'Stripe':
+        $payment_status = 'succeeded';
+        break;
+
+        default:
+        $payment_status = null;
+        break;
+    }
+}

@@ -202,6 +202,25 @@
             }
         });
 
+        
+        player.on('enterpictureinpicture', function() {
+            console.log('Entered Picture-in-Picture mode');
+            player.controlBar.hide();
+            playPauseButton.style.visibility = "hidden";
+            skipForwardButton.style.visibility = 'hidden';
+            skipBackwardButton.style.visibility = 'hidden';
+            titleButton.style.visibility = 'hidden';
+        });
+
+        player.on('leavepictureinpicture', function() {
+            console.log('Exited Picture-in-Picture mode');
+            player.controlBar.show();
+            playPauseButton.style.visibility = "visible";
+            skipForwardButton.style.visibility = 'visible';
+            skipBackwardButton.style.visibility = 'visible';
+            titleButton.style.visibility = 'visible';
+        });
+
 
         player.hlsQualitySelector({ // Hls Quality Selector - M3U8 
             displayCurrentQuality: true,

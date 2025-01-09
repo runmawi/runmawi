@@ -603,7 +603,7 @@ i.fa.fa-google-plus {
             <p ><?php echo $terms_page[0];?></p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close');?></button>
+          <button type="button" class="btn btn-default btn-hover" data-dismiss="modal"><?php echo __('Close');?></button>
         </div>
       </div>
     </div>
