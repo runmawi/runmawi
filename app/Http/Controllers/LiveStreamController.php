@@ -386,7 +386,27 @@ class LiveStreamController extends Controller
                 $live_purchase_exists = LivePurchase::where('video_id', $vid)->where('user_id', Auth::user()->id)
                     ->where('status', 1)->latest()->first();
 
-                $live_purchase_status = $live_purchase_exists != null ? 1 : 0;
+               //uncomment
+
+                    //     $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                //     $ppv_exists_check_query = LivePurchase::where('video_id',$vid)
+                //     ->where('user_id', Auth::user()->id)
+                //     ->where('to_time','>',$current_date)
+                //     ->where('status', 1)
+                //     ->orderBy('created_at', 'desc')
+                //     ->get()->map(function ($item){
+                //         $payment_status = payment_status($item);
+                        
+                //         if($item->payment_status == $payment_status){
+                //             return $item;
+                //         }
+                //     });
+                   
+                // $live_purchase_status = !empty($live_purchase_exists) ? 1 : 0;
+
+
+                $live_purchase_status = !empty($live_purchase_exists) ? 1 : 0;
 
             } elseif ($categoryVideos->access == "guest") {
 
@@ -467,6 +487,27 @@ class LiveStreamController extends Controller
                         $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
 
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+
+                        //uncomment
+
+                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                        // $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])
+                        // ->where('user_id', Auth::user()->id)
+                        // ->where('to_time','>',$current_date)
+                        // ->where('status',1)
+                        // ->orderBy('created_at', 'desc')
+                        // ->get()->map(function ($item){
+                        //     $payment_status = payment_status($item);
+                            
+                        //     if($item->payment_status == $payment_status){
+                        //         return $item;
+                        //     }
+                        // })->isNotEmpty();
+
+                        // $PPV_exists = $ppv_exists_check_query ;
+
+
+
 
                         if( $item->access == "ppv" && Auth::user()->role == 'subscriber' && $settings->enable_ppv_rent_live == 1 ) {
                             $PPV_exists = true ;
@@ -732,8 +773,8 @@ class LiveStreamController extends Controller
             });
 
             $related_radiostation = LiveStream::where('stream_upload_via','radio_station')->whereNotIn('id',[$vid])->inRandomOrder()->get();
+            $default_vertical_image_url = default_vertical_image_url();
 
-            
             if($Livestream_details->active == 1 || ($Livestream_details->active == 0 && Auth::user()->role == 'admin')){
                 $data = array(
                     'currency'     => $currency,
@@ -776,6 +817,7 @@ class LiveStreamController extends Controller
                     'button_text'          => $button_text,
                     'purchase_btn'                    => $purchase_btn,
                     'subscribe_btn'                    => $subscribe_btn,
+                    'default_vertical_image_url'                    => $default_vertical_image_url,
                     'play_btn_svg'  => '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
                                             <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
                                             <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
@@ -787,6 +829,7 @@ class LiveStreamController extends Controller
                 );           
 
                 if(  $Theme == "default" || $Theme == "theme6" ){
+                    // dd($data['default_vertical_image_url ']);
                     return Theme::view('video-js-Player.Livestream.live', $data);
                 }else{
                     return Theme::view('livevideo', $data);
@@ -796,7 +839,7 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
         }
