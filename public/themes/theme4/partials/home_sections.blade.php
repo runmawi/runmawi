@@ -134,9 +134,11 @@
      @if( $Series_Networks_Status == 1 &&  $item->video_name == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
      @endif
-     
-     @if(  $Series_Networks_Status == 1 &&   $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data , ['data' => $Series_based_on_Networks ]) )->content() !!}
+
+     @if($Series_Networks_Status == 1 && $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1)
+          <div id="based-network-container">
+               {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data, ['data' => $Series_based_on_Networks]))->content() !!}
+          </div>
      @endif
      
      @if(   $item->video_name == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
@@ -150,3 +152,4 @@
 @empty
 
 @endforelse
+

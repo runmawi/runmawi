@@ -1686,6 +1686,7 @@ Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/load-more-series-networks',  'HomeController@loadMore')->name('load.more.series.networks');
 Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
 
     // CPP Payment
