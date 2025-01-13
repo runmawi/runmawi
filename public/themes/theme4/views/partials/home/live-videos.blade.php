@@ -185,7 +185,8 @@
         freeScroll: true,
         imagesLoaded: true,
         lazyLoad: true,
-        });
+    });
+    flkty.reloadCells();
 
     document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
