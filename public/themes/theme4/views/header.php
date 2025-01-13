@@ -216,7 +216,6 @@
    <!-- JavaScript -->
    <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async ></script>
 
-   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
