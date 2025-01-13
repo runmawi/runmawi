@@ -217,10 +217,7 @@
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style" onload="this.rel='stylesheet'">
    <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>"></noscript>
 
-   <!-- Preload Font -->
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style" crossorigin="anonymous">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" crossorigin="anonymous">
-
+ 
    <!-- JavaScript -->
    <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async ></script>
 
@@ -253,10 +250,6 @@
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>"></noscript>
       
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>"></noscript>
-      
-     
    
     <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
 

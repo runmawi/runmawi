@@ -170,6 +170,8 @@
             lazyLoad: 7,
         });
     });
+
+    flkty.reloadCells();
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
 
