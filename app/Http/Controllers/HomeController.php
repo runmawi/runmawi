@@ -267,7 +267,7 @@ class HomeController extends Controller
                     'Family_Mode'           => $Family_Mode = 2,
                     'Kids_Mode'             => $Kids_Mode = 2,
                     'ThumbnailSetting'      => $ThumbnailSetting,
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(1),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                     'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                     'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
                     'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
@@ -331,7 +331,7 @@ class HomeController extends Controller
                     'Kids_Mode'             => $Kids_Mode = 2,
                     'ThumbnailSetting'      => $ThumbnailSetting,
                     'artist'                => Artist::all(),
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(1),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                     'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category(),
                     'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
                     'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
@@ -1053,7 +1053,7 @@ class HomeController extends Controller
                         'VideoSchedules'         => VideoSchedules::where('in_home',1)->limit(15)->get(),
                         'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
                         'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
-                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(1),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $Series_based_on_category ,
                         'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
                         'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
@@ -1503,7 +1503,7 @@ class HomeController extends Controller
                         'livetream'              => $FrontEndQueryController->livestreams()->take(15),
                         'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
                         'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
-                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(1),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
                         'admin_advertistment_banners' => $FrontEndQueryController->admin_advertistment_banners(),
                         'Epg'                 => $FrontEndQueryController->Epg(),
@@ -1560,7 +1560,7 @@ class HomeController extends Controller
                         'VideoSchedules'         => $FrontEndQueryController->VideoSchedules()->take(15),
                         'LiveCategory'           => $FrontEndQueryController->LiveCategory()->take(15),
                         'AudioCategory'          => $FrontEndQueryController->AudioCategory()->take(15),
-                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks()->take(1),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
                         'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category()->take(15),
                         'artist_live_event'         => $FrontEndQueryController->LiveEventArtist()->take(15),
                         'SeriesGenre'               =>  $FrontEndQueryController->SeriesGenre()->take(15),
@@ -1605,35 +1605,35 @@ class HomeController extends Controller
         }
     }
 
-    public function loadMore(Request $request)
-    {
+    // public function loadMore(Request $request)
+    // {
 
-        $theme = Theme::uses($this->HomeSetting->theme_choosen);
+    //     $theme = Theme::uses($this->HomeSetting->theme_choosen);
 
-        $FrontEndQueryController = new FrontEndQueryController();
-        $default_vertical_image_url = default_vertical_image_url();
-        $default_horizontal_image_url = default_horizontal_image_url();
-        $offset = $request->input('index', 0);
-        $name = $FrontEndQueryController->Series_based_on_Networks()->skip($offset)->pluck('name');
-        $count = ($offset == $FrontEndQueryController->Series_based_on_Networks()->count()) ? true : false;
+    //     $FrontEndQueryController = new FrontEndQueryController();
+    //     $default_vertical_image_url = default_vertical_image_url();
+    //     $default_horizontal_image_url = default_horizontal_image_url();
+    //     $offset = $request->input('index', 0);
+    //     $name = $FrontEndQueryController->Series_based_on_Networks()->skip($offset)->pluck('name');
+    //     $count = ($offset == $FrontEndQueryController->Series_based_on_Networks()->count()) ? true : false;
 
-        $data = [
-                'data' => $FrontEndQueryController->Series_based_on_Networks()->skip($offset)->first(),
-                'default_vertical_image_url'   => $default_vertical_image_url,
-                'default_horizontal_image_url' => $default_horizontal_image_url,
-                'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-        ];
-        // dd($data['data']);
+    //     $data = [
+    //             'data' => $FrontEndQueryController->Series_based_on_Networks()->skip($offset)->first(),
+    //             'default_vertical_image_url'   => $default_vertical_image_url,
+    //             'default_horizontal_image_url' => $default_horizontal_image_url,
+    //             'multiple_compress_image'      => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+    //     ];
+    //     // dd($data['data']);
 
-        $viewContent = $theme->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', compact('data'))->content(); // or ->content()
+    //     $viewContent = $theme->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', compact('data'))->content(); // or ->content()
 
-        return response()->json([
-            'view'        => $viewContent,
-            'count'       => $count,
-            'name'        => $name
-        ]);
+    //     return response()->json([
+    //         'view'        => $viewContent,
+    //         'count'       => $count,
+    //         'name'        => $name
+    //     ]);
 
-    }
+    // }
 
 
     public function social()
