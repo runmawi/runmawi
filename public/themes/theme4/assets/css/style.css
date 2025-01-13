@@ -664,7 +664,7 @@ img{max-width:100%;height: auto;}
   display: block;
   position: absolute;
   background-color: #555;
-  background-image: url(https://watch.e360tv.com/img/placeholder.jpg);
+  background-image: url(../img/gradient.webp);
   background-size: cover;
   background-position: center;
   top: 2px;
