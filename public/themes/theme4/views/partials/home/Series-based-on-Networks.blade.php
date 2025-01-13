@@ -56,7 +56,14 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
+                                                                    @if ($multiple_compress_image == 1)
+                                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                                    @else
+                                                                        <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                                    @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -120,7 +127,14 @@
                                             <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
+                                                        @if ($multiple_compress_image == 1)
+                                                            <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                        @else
                                                             <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                        @endif
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="row">
