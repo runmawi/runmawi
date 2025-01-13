@@ -202,6 +202,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+   <?php 
+      $series_img = App\Series::where('active', '1')->pluck('image');
+
+      foreach($series_img as $img) {
+         echo '<link rel="preload" fetchpriority="high" href="' . url('public/uploads/images/' . $img) . '" as="image">';
+      }
+   ?>
+
   
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style" onload="this.rel='stylesheet'">
    <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>"></noscript>
@@ -216,7 +224,7 @@
    <!-- JavaScript -->
    <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async ></script>
 
-
+   
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
@@ -248,12 +256,7 @@
       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>"></noscript>
       
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>"></noscript>
-      
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>"></noscript>
-
+     
    
     <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
 
