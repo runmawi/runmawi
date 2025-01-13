@@ -2627,7 +2627,7 @@ public function verifyandupdatepassword(Request $request)
                                           ->pluck('ads_path')->map(function ($item) {
                                             return (object) ['ads_path' => $item];
                                         });
-
+                                                                                                                                        
                   // Post-advertisement 
 
                 $item['video_js_post_position_ads_url'] = Advertisement::select('advertisements.*','ads_events.ads_id','ads_events.status','ads_events.end','ads_events.start')
@@ -4155,7 +4155,7 @@ public function verifyandupdatepassword(Request $request)
 
     if(count($audio_id) > 0 ){
 
-        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
+        $audios = Audio::whereIn('id',$audio_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
           $item['source'] = 'audio';
           return $item;
@@ -4189,7 +4189,7 @@ public function verifyandupdatepassword(Request $request)
       foreach ($video_ids as $key => $value) {
         $k2[] = $value->video_id;
       }
-      $channel_videos = Video::whereIn('id', $k2)->get()->map(function ($item) {
+      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['source'] = 'videos';
@@ -4249,7 +4249,7 @@ public function verifyandupdatepassword(Request $request)
       foreach ($ugc_video_ids as $key => $value) {
         $k2[] = $value->ugc_video_id;
       }
-      $ugc_videos = UGCVideo::whereIn('id', $k2)->get()->map(function ($item) {
+      $ugc_videos = UGCVideo::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         $item['video_url'] = URL::to('/').'/storage/app/public/';
         $item['source'] = 'ugc_videos';
@@ -8328,6 +8328,7 @@ return response()->json($response, 200);
                               'continue_watchings.currentTime')
                       ->whereIn('videos.id', $video_id_query)
                       ->groupBy('continue_watchings.videoid')
+                      ->orderBy('created_at', 'desc')
                       ->latest('continue_watchings.created_at');
 
                  
@@ -8369,6 +8370,7 @@ return response()->json($response, 200);
                                 ->where('episodes.status', '1')
                                 ->latest('continue_watchings.created_at')
                                 ->groupBy('continue_watchings.episodeid')
+                                ->orderBy('created_at', 'desc')
                                 ->get()
                                 ->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();
@@ -19344,7 +19346,7 @@ public function QRCodeMobileLogout(Request $request)
       $data->transform(function ($item) {
             $item->image_url = URL::to('/public/uploads/images/'.$item->image);
             $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
-            $item->source = "Videos";
+            $item->source = "User Generated Content";
             return $item;
       });
         
