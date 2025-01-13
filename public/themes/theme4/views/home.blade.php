@@ -205,30 +205,16 @@
 </style>
 
 <script>
-   let currentIndex = 1;
-   let loading = false;
-   let hasMoreData = true;
    let isFetching = false; 
    let scrollFetch;
-   let limitcount = false;
-
-   console.log('Initial limitcount: ' + limitcount);
-
-
 
    $(window).scroll(function () {
       clearTimeout(scrollFetch);
 
       scrollFetch = setTimeout(function () {
-         // First script logic
-         
-
-         console.log('Current limitcount: ' + limitcount);
-
-         // Second script logic
          let page_url = $("#home_sections").attr('next-page-url');
 
-         if (page_url != null && !isFetching && limitcount === false) {
+         if (page_url != null && !isFetching) {
             isFetching = true;
             $("#loader").removeClass("hidden-loader");
             console.log("second loader...");
@@ -255,43 +241,6 @@
             });
          }
       }, 10);
-   });
-
-   $(window).scroll(function () {
-      if (hasMoreData && !loading) {
-         loading = true;
-         limitcount = true;
-         $("#loader").removeClass("hidden-loader");
-
-
-         $.ajax({
-            url: '{{ route('load.more.series.networks') }}',
-            method: 'GET',
-            data: { index: currentIndex },
-            success: function (response) {
-               console.log("limit count: "+response.count);
-               if(response.count === true){
-                  console.log("limit count inside condition: "+response.count);
-                  limitcount = false;
-                  hasMoreData = false;
-                  $("#loader").addClass("hidden-loader");
-               }else{
-                  console.log("second ajax is loading..");
-                  $('#based-network-container').append(response.view);
-                  currentIndex += 1;
-                  limitcount = true;
-                  // $("#loader").removeClass("hidden-loader");
-               }
-            },
-            error: function () {
-               console.log('Error loading more series networks.');
-            },
-            complete: function () {
-               // console.log('success.');
-               loading = false;
-            }
-         });
-      }
    });
 </script>
 
