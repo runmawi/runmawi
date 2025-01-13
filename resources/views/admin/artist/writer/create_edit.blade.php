@@ -67,7 +67,7 @@ border-radius: 0px 4px 4px 0px;
 
         <div class="clear"></div>
 
-        <form id="artist_form" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
+        <form id="" method="POST" action="{{ $post_route }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data">
 
             <div class="@if(!empty($artist->created_at)) col-sm-12 @else col-sm-12 @endif">
                 <div class="row mt-3 p-0">

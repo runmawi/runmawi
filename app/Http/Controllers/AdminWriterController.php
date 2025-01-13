@@ -26,15 +26,18 @@ class AdminWriterController extends Controller
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
+        }
+
         $data = Session::all();
+
         if (!Auth::guest()) {
-        $package_id = auth()->user()->id;
-        $user_package =     User::where('id', $package_id)->first();
-        $package = $user_package->package;
-        $user =  User::where('id',1)->first();
-        $duedate = $user->package_ends;
-        $current_date = date('Y-m-d');
+            $package_id = auth()->user()->id;
+            $user_package =     User::where('id', $package_id)->first();
+            $package = $user_package->package;
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+
         if ($current_date > $duedate)
         {
             $client = new Client();
@@ -53,11 +56,12 @@ class AdminWriterController extends Controller
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
+            $settings = Setting::first();
+
            $data = array(
             'settings' => $settings,
             'responseBody' => $responseBody,
-    );
+            );
             return View::make('admin.expired_dashboard', $data);
         }else if(check_storage_exist() == 0){
             $settings = Setting::first();
@@ -67,45 +71,46 @@ class AdminWriterController extends Controller
             );
 
             return View::make('admin.expired_storage', $data);
-        }else{
-        if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
+        }
+        else{
 
-      $search_value = $request->get('s');
-        
-        if(!empty($search_value)):
-            $artists = Artist::where('artist_type','Writer')->where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
-        else:
-            $artists = Artist::where('artist_type','Writer')->orderBy('created_at', 'DESC')->paginate(9);
-        endif;
-        
-        $user = Auth::user();
+            if($package == "Pro" || $package == "Business" || $package == "" && Auth::User()->role =="admin"){
 
-        $data = array(
-            'artists' => $artists,
-            'user' => $user,
-            'admin_user' => Auth::user()
+                $search_value = $request->get('s');
+            
+                if(!empty($search_value)):
+                    $artists = Artist::where('artist_type','Writer')->where('artist_name', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->paginate(9);
+                else:
+                    $artists = Artist::where('artist_type','Writer')->orderBy('created_at', 'DESC')->paginate(9);
+                endif;
+            
+            $user = Auth::user();
+
+            $data = array(
+                'artists' => $artists,
+                'user' => $user,
+                'admin_user' => Auth::user()
             );
 
-        return View::make('admin.artist.writer.index', $data);
-    }else if($package == "Basic"){
+            return View::make('admin.artist.writer.index', $data);
+        }else if($package == "Basic"){
 
-        return view('blocked');
+            return view('blocked');
+        }
+    }
+    }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
 
     }
-}
-}else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
-
-  }
     }
 
     public function create()
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
             return redirect('/admin/restrict');
-    }
+        }
         $data = Session::all();
         if (!Auth::guest()) {
         $package_id = auth()->user()->id;
@@ -132,11 +137,11 @@ class AdminWriterController extends Controller
             ]);
     
             $responseBody = json_decode($response->getBody());
-           $settings = Setting::first();
-           $data = array(
-            'settings' => $settings,
-            'responseBody' => $responseBody,
-    );
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+            );
             return View::make('admin.expired_dashboard', $data);
         }else if(check_storage_exist() == 0){
             $settings = Setting::first();
@@ -155,18 +160,16 @@ class AdminWriterController extends Controller
             'admin_user' => Auth::user(),
             );
         return View::make('admin.artist.writer.create_edit', $data);
-    }else if($package == "Basic"){
-
-        return view('blocked');
+        }else if($package == "Basic"){
+            return view('blocked');
+        }
+    }
+    }else{
+        $system_settings = SystemSetting::first();
+        $user = User::where('id','=',1)->first();
+        return view('auth.login',compact('system_settings','user'));
 
     }
-}
-}else{
-    $system_settings = SystemSetting::first();
-    $user = User::where('id','=',1)->first();
-    return view('auth.login',compact('system_settings','user'));
-
-  }
     }
 
      public function store(Request $request)
@@ -441,7 +444,7 @@ class AdminWriterController extends Controller
             $button_type = $request->get('button_type');
 
 
-            if($button_type == "Update Artist"){
+            if($button_type == "Update Writer"){
 
                 $artist_slug = Artist::where('artist_slug',$artist_slug)->get();
 
