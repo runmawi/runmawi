@@ -2008,6 +2008,7 @@ public function verifyandupdatepassword(Request $request)
 
       $ppv_purchase = PpvPurchase::where('video_id', $data['videoid'])->orderBy('created_at', 'desc')
                       ->where('user_id', $data['user_id'])
+                      ->where('status','captured')
                       ->first();
 
       if (!empty($ppv_purchase) && !empty($ppv_purchase->to_time)) {
