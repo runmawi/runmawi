@@ -295,41 +295,49 @@ class ProducerController extends Controller
 
             $ppv_purchases_today = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereDate('created_at', $today)
+                                                    ->where('status','captured')
                                                     ->get();
 
             $ppv_purchases_current_month = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $current_year)
                                                     ->whereMonth('created_at', $current_month)
+                                                    ->where('status','captured')
                                                     ->get();
 
             $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                 ->whereYear('created_at', $current_year)
                                                 ->whereMonth('created_at', $last_month)
+                                                ->where('status','captured')
                                                 ->get();
 
                                                 
             $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                 ->whereYear('created_at', $current_year)
                                                 ->whereMonth('created_at', $last2ndmonth)
+                                                ->where('status','captured')
                                                 ->get();
 
                                                 
             $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                 ->whereYear('created_at', $current_year)
                                                 ->whereMonth('created_at', $last3ndmonth)
+                                                ->where('status','captured')
                                                 ->get();
 
             $ppv_purchases_current_year = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $current_year)
+                                                    ->where('status','captured')
                                                     ->get();
 
             $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                 ->whereYear('created_at', $last_year)
+                                                ->where('status','captured')
                                                 ->get();
 
-            $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)->get();
+            $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)->where('status','captured')->get();
 
             $Sales_Summary = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                            ->where('status','captured')
                                             ->select([
                                                 'video_id', 
                                                 'live_id', 
@@ -396,6 +404,7 @@ class ProducerController extends Controller
 
                                             
             $monthly_Summary  = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                            ->where('status','captured')
                                             ->select([
                                                 'video_id', 
                                                 'live_id', 
@@ -432,6 +441,7 @@ class ProducerController extends Controller
 
                                                 $item['monthly_Summary'] = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                             ->whereBetween('created_at', [Carbon::now()->subMonths(6), Carbon::now()]) 
+                                                            ->where('status','captured')
                                                             ->select([
                                                                 DB::raw('DATE_FORMAT(created_at, "%M, %Y") as month_year'),  
                                                                 DB::raw('COUNT(*) as units_sold'), 
@@ -541,7 +551,6 @@ class ProducerController extends Controller
                 'monthly_Summary' => $monthly_Summary
 
             );
-            // dd($data);
 
             return view('producer.home', $data);
 
@@ -573,6 +582,7 @@ class ProducerController extends Controller
 
             $ppv_purchases_today = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereDate('created_at', $today)
+                                                    ->where('status','captured')
                                                     ->when($source === 'video', function($query) use ($source_id) {
                                                         return $query->where('video_id', $source_id);
                                                     })
@@ -593,6 +603,7 @@ class ProducerController extends Controller
                 $ppv_purchases_current_month = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                         ->whereYear('created_at', $current_year)
                                                         ->whereMonth('created_at', $current_month)
+                                                        ->where('status','captured')
                                                         ->when($source === 'video', function($query) use ($source_id) {
                                                             return $query->where('video_id', $source_id);
                                                         })
@@ -613,6 +624,7 @@ class ProducerController extends Controller
                 $ppv_purchases_last_month = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $current_year)
                                                     ->whereMonth('created_at', $last_month)
+                                                    ->where('status','captured')
                                                     ->when($source === 'video', function($query) use ($source_id) {
                                                         return $query->where('video_id', $source_id);
                                                     })
@@ -634,6 +646,7 @@ class ProducerController extends Controller
                 $ppv_purchases_last2ndmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $current_year)
                                                     ->whereMonth('created_at', $last2ndmonth)
+                                                    ->where('status','captured')
                                                     ->when($source === 'video', function($query) use ($source_id) {
                                                         return $query->where('video_id', $source_id);
                                                     })
@@ -655,6 +668,7 @@ class ProducerController extends Controller
                 $ppv_purchases_last3rdmonth = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $current_year)
                                                     ->whereMonth('created_at', $last3ndmonth)
+                                                    ->where('status','captured')
                                                     ->when($source === 'video', function($query) use ($source_id) {
                                                         return $query->where('video_id', $source_id);
                                                     })
@@ -674,6 +688,7 @@ class ProducerController extends Controller
 
                 $ppv_purchases_current_year = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                         ->whereYear('created_at', $current_year)
+                                                        ->where('status','captured')
                                                         ->when($source === 'video', function($query) use ($source_id) {
                                                             return $query->where('video_id', $source_id);
                                                         })
@@ -693,6 +708,7 @@ class ProducerController extends Controller
 
                 $ppv_purchases_last_year = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                     ->whereYear('created_at', $last_year)
+                                                    ->where('status','captured')
                                                     ->when($source === 'video', function($query) use ($source_id) {
                                                         return $query->where('video_id', $source_id);
                                                     })
@@ -711,6 +727,7 @@ class ProducerController extends Controller
                                                     ->get();
 
                 $ppv_purchases_total = PpvPurchase::where('moderator_id', $cpp_user_id)
+                                                            ->where('status','captured')
                                                             ->when($source === 'video', function($query) use ($source_id) {
                                                                 return $query->where('video_id', $source_id);
                                                             })
@@ -822,13 +839,10 @@ class ProducerController extends Controller
                 'currency_symbol'  => currency_symbol(),
                 'cpp_user_id' => $cpp_user_id,
             );
-            // dd($data);
 
             return view('producer.stats', $data);
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
-
             return abort(404);
         }
     }
