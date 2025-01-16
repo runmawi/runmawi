@@ -127,21 +127,21 @@
 
 
    <!-- jQuery, Popper JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>" async></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/popper.min.js" async></script>
    
    <!-- Bootstrap JS -->
-   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>" async></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/bootstrap.min.js" async></script>
    
 
    <!-- select2 Js -->
-   <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>" async></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/select2.min.js" async></script>
    
    <!-- Magnific Popup-->
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>" async></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery.magnific-popup.min.js" async></script>
    
 
     <!-- Custom JS-->
-    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>" async></script>
+    <script src="https://e360tvmain.b-cdn.net/css/assets/js/custom.js" async></script>
 
 
 <script>
