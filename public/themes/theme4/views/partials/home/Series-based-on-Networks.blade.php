@@ -5,7 +5,7 @@
         <section id="iq-trending-{{ $section_key }}" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12">
                                         
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -66,11 +66,12 @@
                                                                     @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                            <button class="playBTN"><i class="fas fa-play"></i></button>
+                                                                            <i class="playBTN fas fa-play"></i>
                                                                         </a>
 
                                                                         <nav>
-                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}">
+                                                                                <i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                         </nav>
 
                                                                         @php
@@ -182,6 +183,8 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 7,
+            setGallerySize: true,
+            resize: true, 
         });
     });
 

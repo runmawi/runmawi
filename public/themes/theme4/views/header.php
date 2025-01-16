@@ -202,14 +202,6 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-   <?php 
-      $series_img = App\Series::where('active', '1')->pluck('image');
-
-      foreach($series_img as $img) {
-         echo '<link rel="preload" fetchpriority="high" href="' . url('public/uploads/images/' . $img) . '" as="image">';
-      }
-   ?>
-
   
    <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style" onload="this.rel='stylesheet'">
    <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>"></noscript>

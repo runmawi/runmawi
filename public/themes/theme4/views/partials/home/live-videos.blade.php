@@ -2,7 +2,7 @@
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0" id="home-live-videos-container">
             <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+                <div class="col-sm-12">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -185,6 +185,8 @@
         freeScroll: true,
         imagesLoaded: true,
         lazyLoad: true,
+        setGallerySize: true,
+        resize: true, 
     });
     flkty.reloadCells();
 
