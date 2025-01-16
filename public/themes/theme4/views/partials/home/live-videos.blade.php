@@ -184,9 +184,7 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyLoad: true,
-        setGallerySize: true,
-        resize: true, 
+        lazyLoad: 7
     });
     flkty.reloadCells();
 
