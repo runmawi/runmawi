@@ -49,7 +49,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
+                                            <img data-flickity-lazyload="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
                                     </div>
                                 @endforeach

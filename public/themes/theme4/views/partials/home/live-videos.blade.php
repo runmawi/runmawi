@@ -16,7 +16,7 @@
                                 @foreach ($data as $key => $livestream_videos)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
+                                            <img data-flickity-lazyload="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
                                                 <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                             @elseif( $livestream_videos->recurring_program_live_animation  == true )

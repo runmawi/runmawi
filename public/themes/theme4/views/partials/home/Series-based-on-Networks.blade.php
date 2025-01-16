@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -62,7 +62,7 @@
                                                                             {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
                                                                             {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
                                                                     @else
-                                                                        <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                                        <img data-flickity-lazyload="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
                                                                     @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
