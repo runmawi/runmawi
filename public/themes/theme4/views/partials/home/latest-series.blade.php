@@ -17,7 +17,7 @@
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+                <div class="col-sm-12">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -80,7 +80,7 @@
                                                         <div class="controls">
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
-                                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                <i class="playBTN fas fa-play"></i>
                                                             </a>
 
                                                             <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
@@ -185,6 +185,8 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 6,
+            setGallerySize: true,
+            resize: true,   
         });
 
         
