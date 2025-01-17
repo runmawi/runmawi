@@ -66,6 +66,7 @@ class ThemeAudioController extends Controller{
         $this->audios_per_page = $settings->audios_per_page;
         $this->movies_per_page = $settings->audios_per_page;
         $this->series_per_page = $settings->audios_per_page;
+        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses(  $this->Theme );
@@ -242,7 +243,23 @@ class ThemeAudioController extends Controller{
                 // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
 
                 if (!Auth::guest()) {
-                    $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+                    // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)
+                                                ->where('user_id', Auth::user()->id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
+
+                    $ppv_status = $ppv_status ? 1 : 0; 
+
                 }else{
                     $ppv_status = 0 ;
                 }
@@ -265,8 +282,21 @@ class ThemeAudioController extends Controller{
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
                     $LikeDislike            = LikeDislike::where('audio_id',$item->id)->first();
+                    $current_date           = Carbon::now()->format('Y-m-d H:i:s a');
                     if(!Auth::guest()){
-                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        // $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['PpvPurchase_Status'] =  PpvPurchase::where('audio_id',$item->id)
+                                                                    ->where('user_id', Auth::user()->id)
+                                                                    ->where('to_time','>',$current_date)
+                                                                    ->orderBy('created_at', 'desc')
+                                                                    ->get()->map(function ($item){
+                                                                        $payment_status = payment_status($item);
+                                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                                            return $item;
+                                                                        }
+                                                                            return null;
+                                                                    })->count();
+                    
                         $item['role'] = Auth::user()->role;
                     }else{
                         $item['PpvPurchase_Status'] = 0;
@@ -315,9 +345,23 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $current_date           = Carbon::now()->format('Y-m-d H:i:s a');
 
                     if(!Auth::guest()){
-                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        // $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['PpvPurchase_Status'] =  PpvPurchase::where('audio_id',$item->id)
+                                                                    ->where('user_id', Auth::user()->id)
+                                                                    ->where('to_time','>',$current_date)
+                                                                    ->orderBy('created_at', 'desc')
+                                                                    ->get()->map(function ($item){
+                                                                        $payment_status = payment_status($item);
+                                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                                            return $item;
+                                                                        }
+                                                                            return null;
+                                                                    })->count();
+
+
                         $item['role'] = Auth::user()->role;
                     }else{
                         $item['PpvPurchase_Status'] = 0;
@@ -671,8 +715,21 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $current_date           = Carbon::now()->format('Y-m-d H:i:s a');
                     if(!Auth::guest()){
-                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        // $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['PpvPurchase_Status'] =  PpvPurchase::where('audio_id',$item->id)
+                                                                    ->where('user_id', Auth::user()->id)
+                                                                    ->where('to_time','>',$current_date)
+                                                                    ->orderBy('created_at', 'desc')
+                                                                    ->get()->map(function ($item){
+                                                                        $payment_status = payment_status($item);
+                                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                                            return $item;
+                                                                        }
+                                                                            return null;
+                                                                    })->count();
+                    
                         $item['role'] = Auth::user()->role;
                     }else{
                         $item['PpvPurchase_Status'] = 0;
@@ -716,8 +773,20 @@ class ThemeAudioController extends Controller{
                     $item['albumart']      = URL::to('public/uploads/images/'.$item->image );
                     $item['image_url']      = URL::to('public/uploads/images/'.$item->image );
                     $item['player_image']   = URL::to('public/uploads/images/'.$item->player_image );
+                    $current_date           = Carbon::now()->format('Y-m-d H:i:s a');
                     if(!Auth::guest()){
-                        $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        // $item['PpvPurchase_Status'] = PpvPurchase::where('audio_id','=',$item->id)->where('user_id','=',Auth::user()->id)->count();
+                        $item['PpvPurchase_Status'] =  PpvPurchase::where('audio_id',$item->id)
+                                                                    ->where('user_id', Auth::user()->id)
+                                                                    ->where('to_time','>',$current_date)
+                                                                    ->orderBy('created_at', 'desc')
+                                                                    ->get()->map(function ($item){
+                                                                        $payment_status = payment_status($item);
+                                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                                            return $item;
+                                                                        }
+                                                                            return null;
+                                                                    })->count();
                         $item['role'] = Auth::user()->role;
                     }else{
                         $item['PpvPurchase_Status'] = 0;
@@ -760,7 +829,25 @@ class ThemeAudioController extends Controller{
             // dd($first_album_access);
             if(!Auth::guest()){
                 if($first_album_access == 'ppv' ){
-                    $ppv_status = PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$album_audios->first() ? $album_audios->first()->id : null)->count() ;
+                    // $ppv_status = PpvPurchase::where('user_id',Auth::user()->id)->where('audio_id',$album_audios->first() ? $album_audios->first()->id : null)->count() ;
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $ppv_status =  PpvPurchase::where('user_id', Auth::user()->id)
+                                                ->where('audio_id', $album_audios->first() ? $album_audios->first()->id : null)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
+
+                    $ppv_status = $ppv_status ? 1 : 0; 
+
+
                 }else{
                     $ppv_status = 0 ;
                 }
@@ -1252,7 +1339,26 @@ class ThemeAudioController extends Controller{
           if (!empty($audio_details)) {
               // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
 
-              $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+            //   $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+
+              $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+              $ppv_status =  PpvPurchase::with('audio')->where('audio_id','=',$audio)
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
+
+                $ppv_status = $ppv_status ? 1 : 0; 
+
+
+
 
               // dd($ppv_status);
 
@@ -1489,7 +1595,24 @@ class ThemeAudioController extends Controller{
         if (!empty($audio_details)) {
             // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
 
-            $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+            // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->count();
+
+            $current_date           = Carbon::now()->format('Y-m-d H:i:s a');
+            $ppv_status =  PpvPurchase::with('audio')->where('audio_id','=',$audio)
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+
+            $ppv_status = $ppv_status ? 1 : 0; 
+
 
             // dd($ppv_status);
 

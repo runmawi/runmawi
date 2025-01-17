@@ -509,11 +509,28 @@ class ChannelController extends Controller
                         $watchtime = 0;
                     }
 
+                    // $ppvexist = PpvPurchase::where('video_id', $vid)
+                    //     ->where('user_id', $user_id)
+                    //     // ->where('status','active')
+                    //     // ->where('to_time','>',$current_date)
+                    //     ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                     $ppvexist = PpvPurchase::where('video_id', $vid)
-                        ->where('user_id', $user_id)
-                        // ->where('status','active')
-                        // ->where('to_time','>',$current_date)
-                        ->count();
+                                            ->where('user_id', $user_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+    
+                    $ppvexist = $ppvexist ? 1 : 0; 
+
+
 
                     $ppv_video = PpvPurchase::where('video_id', $vid)
                         ->where('user_id', $user_id)
@@ -522,17 +539,50 @@ class ChannelController extends Controller
                     $user_id = Auth::user()->id;
 
                     if ($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null) {
+                        // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                        //     ->where('user_id', $user_id)
+                        //     ->where('status', 'active')
+                        //     ->where('to_time', '>', $current_date)
+                        //     ->count();
+
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                         $ppv_exist = PpvPurchase::where('video_id', $vid)
-                            ->where('user_id', $user_id)
-                            ->where('status', 'active')
-                            ->where('to_time', '>', $current_date)
-                            ->count();
+                                                ->where('user_id', $user_id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
+
+                        $ppv_exist = $ppv_exist ? 1 : 0; 
+
                     } elseif ($ppvexist > 0 && $ppv_video->view_count == null) {
+                        // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                        //     ->where('user_id', $user_id)
+                        //     // ->where('status','active')
+                        //     // ->where('to_time','>',$current_date)
+                        //     ->count();
+
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                         $ppv_exist = PpvPurchase::where('video_id', $vid)
-                            ->where('user_id', $user_id)
-                            // ->where('status','active')
-                            // ->where('to_time','>',$current_date)
-                            ->count();
+                                                ->where('user_id', $user_id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
+                        $ppv_exist = $ppv_exist ? 1 : 0; 
+
                     } else {
                         $ppv_exist = 0;
                     }
@@ -755,9 +805,20 @@ class ChannelController extends Controller
 
                     $ppv_video_play = [];
 
+                    // $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                    //     ->where('status', 'active')
+                    //     ->get();
+
+
                     $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
-                        ->where('status', 'active')
-                        ->get();
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                });
+
                     $ppv_setting = Setting::first();
                     $ppv_setting_hours = $ppv_setting->ppv_hours;
 
@@ -1252,10 +1313,25 @@ class ChannelController extends Controller
                         $watchtime = 0;
                     }
 
+                    // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                    //     ->where('user_id', $user_id)
+                    //     ->where('to_time', '>', $current_date)
+                    //     ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                     $ppv_exist = PpvPurchase::where('video_id', $vid)
-                        ->where('user_id', $user_id)
-                        ->where('to_time', '>', $current_date)
-                        ->count();
+                                            ->where('user_id', $user_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                    $ppv_exist = $ppv_exist ? 1 : 0; 
                     $user_id = Auth::user()->id;
 
                     $categoryVideos = \App\Video::where('id', $vid)->first();
@@ -1873,9 +1949,26 @@ class ChannelController extends Controller
                     $watchtime = 0;
                 }
 
+                // $ppvexist = PpvPurchase::where('video_id', $vid)
+                //     ->where('user_id', $user_id)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $ppvexist = PpvPurchase::where('video_id', $vid)
-                    ->where('user_id', $user_id)
-                    ->count();
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppvexist = $ppvexist ? 1 : 0; 
+
+
 
                 $ppv_video = PpvPurchase::where('video_id', $vid)
                     ->where('user_id', $user_id)
@@ -1884,15 +1977,48 @@ class ChannelController extends Controller
                 $user_id = Auth::user()->id;
 
                 if ($ppvexist > 0 && $ppv_video->view_count > 0 && $ppv_video->view_count != null) {
+                    // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                    //     ->where('user_id', $user_id)
+                    //     ->where('status', 'active')
+                    //     ->where('to_time', '>', $current_date)
+                    //     ->count();
+                        
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                     $ppv_exist = PpvPurchase::where('video_id', $vid)
-                        ->where('user_id', $user_id)
-                        ->where('status', 'active')
-                        ->where('to_time', '>', $current_date)
-                        ->count();
+                                            ->where('user_id', $user_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                    $ppv_exist = $ppv_exist ? 1 : 0; 
+
+
+
                 } elseif ($ppvexist > 0 && $ppv_video->view_count == null) {
+                    // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                    //     ->where('user_id', $user_id)
+                    //     ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                     $ppv_exist = PpvPurchase::where('video_id', $vid)
-                        ->where('user_id', $user_id)
-                        ->count();
+                                            ->where('user_id', $user_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                    $ppv_exist = $ppv_exist ? 1 : 0; 
                 } else {
                     $ppv_exist = 0;
                 }
@@ -2080,9 +2206,22 @@ class ChannelController extends Controller
 
                 $ppv_video_play = [];
 
+                // $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                //     ->where('status', 'active')
+                //     ->get();
+
                 $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
-                    ->where('status', 'active')
-                    ->get();
+                                            ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        });
+
+
+                
+
                 $ppv_setting = Setting::first();
                 $ppv_setting_hours = $ppv_setting->ppv_hours;
 
@@ -2470,10 +2609,26 @@ class ChannelController extends Controller
                     $watchtime = 0;
                 }
 
+                // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                //     ->where('user_id', $user_id)
+                //     ->where('to_time', '>', $current_date)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $ppv_exist = PpvPurchase::where('video_id', $vid)
-                    ->where('user_id', $user_id)
-                    ->where('to_time', '>', $current_date)
-                    ->count();
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppv_exist = $ppv_exist ? 1 : 0; 
+
                 $user_id = Auth::user()->id;
 
                 $categoryVideos = \App\Video::where('id', $vid)->first();
@@ -2845,9 +3000,25 @@ class ChannelController extends Controller
         $categoryVideos = \App\PpvVideo::where('id', $vid)->first();
         $user_id = Auth::user()->id;
         $settings = Setting::first();
+        // $ppv_exist = PpvPurchase::where('video_id', $vid)
+        //     ->where('user_id', $user_id)
+        //     ->count();
+
+        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
         $ppv_exist = PpvPurchase::where('video_id', $vid)
-            ->where('user_id', $user_id)
-            ->count();
+                                ->where('user_id', $user_id)
+                                ->where('to_time','>',$current_date)
+                                ->orderBy('created_at', 'desc')
+                                ->get()->map(function ($item){
+                                    $payment_status = payment_status($item);
+                                    if ($payment_status === null || $item->status === $payment_status) {
+                                        return $item;
+                                    }
+                                        return null;
+                                })->first();
+
+        $ppv_exist = $ppv_exist ? 1 : 0; 
+
 
         $wishlisted = false;
         if (!Auth::guest()):
@@ -2988,10 +3159,26 @@ class ChannelController extends Controller
                 } else {
                     $watchtime = 0;
                 }
+                // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                //     ->where('user_id', $user_id)
+                //     ->where('to_time', '>', $current_date)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $ppv_exist = PpvPurchase::where('video_id', $vid)
-                    ->where('user_id', $user_id)
-                    ->where('to_time', '>', $current_date)
-                    ->count();
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppv_exist = $ppv_exist ? 1 : 0; 
+
                 $user_id = Auth::user()->id;
 
                 $categoryVideos = \App\Video::where('id', $vid)->first();
@@ -3025,9 +3212,20 @@ class ChannelController extends Controller
 
                 $ppv_video_play = [];
 
+                // $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                //     ->where('status', 'active')
+                //     ->get();
+
                 $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
-                    ->where('status', 'active')
-                    ->get();
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        });
+
+
                 $ppv_setting = Setting::first();
                 $ppv_setting_hours = $ppv_setting->ppv_hours;
                 // dd($ppv_hours);
@@ -3141,10 +3339,26 @@ class ChannelController extends Controller
                 } else {
                     $watchtime = 0;
                 }
+                // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                //     ->where('user_id', $user_id)
+                //     ->where('to_time', '>', $current_date)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $ppv_exist = PpvPurchase::where('video_id', $vid)
-                    ->where('user_id', $user_id)
-                    ->where('to_time', '>', $current_date)
-                    ->count();
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppv_exist = $ppv_exist ? 1 : 0; 
+
                 $user_id = Auth::user()->id;
 
                 $categoryVideos = \App\Video::where('id', $vid)->first();
@@ -3327,10 +3541,26 @@ class ChannelController extends Controller
                     $watchtime = 0;
                 }
 
+                // $ppv_exist = PpvPurchase::where('video_id', $vid)
+                //     ->where('user_id', $user_id)
+                //     ->where('to_time', '>', $current_date)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $ppv_exist = PpvPurchase::where('video_id', $vid)
-                    ->where('user_id', $user_id)
-                    ->where('to_time', '>', $current_date)
-                    ->count();
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppv_exist = $ppv_exist ? 1 : 0; 
+
                 $user_id = Auth::user()->id;
 
                 $categoryVideos = Video::with('category.categoryname')
@@ -3401,9 +3631,19 @@ class ChannelController extends Controller
 
                 $ppv_video_play = [];
 
+                // $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
+                //     ->where('status', 'active')
+                //     ->get();
+
                 $ppv_video = PpvPurchase::where('user_id', Auth::user()->id)
-                    ->where('status', 'active')
-                    ->get();
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            });
+
                 $ppv_setting = Setting::first();
                 $ppv_setting_hours = $ppv_setting->ppv_hours;
                 // dd($ppv_hours);
@@ -4387,46 +4627,43 @@ class ChannelController extends Controller
 
                     if( !Auth::guest()  ){
 
-                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
-
-                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
-
-                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
-                        ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
-                        ->count();
-
-                        $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
-                        ->where('user_id', Auth::user()->id)
-                        ->first();
-
-                        if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
-                            $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
-                            $currentdate = date("M d , y H:i:s");
-                            $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
-                        }
-                        else{
-                            $ppv_exists_check_query = null;
-                        }
-                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-
-
-                        //uncomment
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
                         // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
-                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
-                        //                             ->where('user_id', Auth::user()->id)
-                        //                             ->where('to_time','>',$current_date)
-                        //                             ->orderBy('created_at', 'desc')
-                        //                             ->get()->map(function ($item){
-                        //                                 $payment_status = payment_status($item);
-                                                        
-                        //                                 if($item->status == $payment_status){
-                        //                                     return $item;
-                        //                                 }
-                        //                             })->isNotEmpty();
- 
-                        // $PPV_exists = $ppv_exists_check_query ;
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])->where('user_id',Auth::user()->id)
+                        // ->where('to_time','>',$current_date)->orderBy('created_at', 'desc')
+                        // ->count();
+
+                        // $ppv_purchase = PpvPurchase::where('video_id', $item['id'])->orderBy('created_at', 'desc')
+                        // ->where('user_id', Auth::user()->id)
+                        // ->first();
+
+                        // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                        //     $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                        //     $currentdate = date("M d , y H:i:s");
+                        //     $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                        // }
+                        // else{
+                        //     $ppv_exists_check_query = null;
+                        // }
+                        // $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                            $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                                                        ->where('user_id', Auth::user()->id)
+                                                        ->where('to_time','>',$current_date)
+                                                        ->orderBy('created_at', 'desc')
+                                                        ->get()->map(function ($item){
+                                                            $payment_status = payment_status($item);
+                                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                                return $item;
+                                                            }
+                                                                return null;
+                                                        })->first();
+
+                        $PPV_exists = $ppv_exists_check_query ? true : false; 
 
                                 // free PPV access for subscriber status Condition
 
@@ -4636,7 +4873,18 @@ class ChannelController extends Controller
                 // Rent Video Exits
 
                 if($item['access'] == 'ppv' && !Auth::guest()){
-                    $item['PPV_Exits'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->count();
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $item['PPV_Exits'] = PpvPurchase::where('video_id',  $item['id'])
+                                                    ->where('user_id', Auth::user()->id)
+                                                    ->where('to_time','>',$current_date)
+                                                    ->get()->map(function ($item){
+                                                        $payment_status = payment_status($item);
+                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                            return $item;
+                                                        }
+                                                            return null;
+                                                    })->count();
+                                                  
                     $item['PPV_Access'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->pluck('ppv_plan')->first();
                 }else{
                     $item['PPV_Exits'] = 0 ;
@@ -4942,27 +5190,26 @@ class ChannelController extends Controller
 
                     if( !Auth::guest() ){
 
-                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+                        // $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
-                        $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
-                        
-                        //uncomment
+                        // $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                     
 
-                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
-                        // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
-                        //                             ->where('user_id', Auth::user()->id)
-                        //                             ->where('to_time','>',$current_date)
-                        //                             ->orderBy('created_at', 'desc')
-                        //                             ->get()->map(function ($item){
-                        //                                 $payment_status = payment_status($item);
-                                                        
-                        //                                 if($item->status == $payment_status){
-                        //                                     return $item;
-                        //                                 }
-                        //                             })->isNotEmpty();
- 
-                        // $PPV_exists = $ppv_exists_check_query ;
+                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                                                    ->where('user_id', Auth::user()->id)
+                                                    ->where('to_time','>',$current_date)
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->get()->map(function ($item){
+                                                        $payment_status = payment_status($item);
+                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                            return $item;
+                                                        }
+                                                            return null;
+                                                    })->first();
+
+                        $PPV_exists = $ppv_exists_check_query ? true : false; 
 
                                 // free PPV access for subscriber status Condition
 
@@ -5569,12 +5816,12 @@ class ChannelController extends Controller
                 
                    if( !Auth::guest() ){
 
-                       $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
+                    //    $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])->where('user_id', Auth::user()->id)->latest()->count();
 
-                       $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                    //    $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
 
-                    //    uncomment
-                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
                         // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
                         //                             ->where('user_id', Auth::user()->id)
@@ -5586,8 +5833,21 @@ class ChannelController extends Controller
                         //                                     return $item;
                         //                                 }
                         //                             })->isNotEmpty();
+
+                        $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
+                                                            ->where('user_id', Auth::user()->id)
+                                                            ->where('to_time','>',$current_date)
+                                                            ->orderBy('created_at', 'desc')
+                                                            ->get()->map(function ($item){
+                                                                $payment_status = payment_status($item);
+                                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                                    return $item;
+                                                                }
+                                                                    return null;
+                                                            })->first();
+
  
-                        // $PPV_exists = $ppv_exists_check_query ;
+                        $PPV_exists = $ppv_exists_check_query ? true : false; 
 
 
                        // free PPV access for subscriber status Condition

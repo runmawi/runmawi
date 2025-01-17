@@ -27,7 +27,7 @@
                                     <p>{{ $startTime->format('h:i A') }} to {{ $endTime->format('h:i A') }} </p>
                                 </div>
                                 <div class="title-section text-left">
-                                    <h6 class="px-3" >{{ $title }}</h6>
+                                    <h6 style="color: #ffffff !important;" class="px-3" >{{ $title }}</h6>
                                 </div>
                             </div>
                         @endif
