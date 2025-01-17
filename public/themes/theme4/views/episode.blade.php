@@ -75,6 +75,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
     body.light-theme span { color: white !important;}
     .my-video.video-js .vjs-big-play-button span{ color: black !important;}
     .my-video.vjs-fluid{height: calc(100vh - 70px)!important;}
+    .vjs-loading-spinner {top: 52%;left: 49.85%;}
     @media only screen and (max-width: 600px) {
         .custom-skip-forward-button, .custom-skip-backward-button {
             top: 46% !important;
