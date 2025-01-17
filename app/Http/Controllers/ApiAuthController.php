@@ -8355,7 +8355,7 @@ return response()->json($response, 200);
                               'continue_watchings.currentTime')
                       ->whereIn('videos.id', $video_id_query)
                       ->groupBy('continue_watchings.videoid')
-                      ->orderBy('created_at', 'desc')
+                      ->orderBy('continue_watchings.created_at', 'desc') 
                       ->latest('continue_watchings.created_at');
 
                  
@@ -8397,7 +8397,7 @@ return response()->json($response, 200);
                                 ->where('episodes.status', '1')
                                 ->latest('continue_watchings.created_at')
                                 ->groupBy('continue_watchings.episodeid')
-                                ->orderBy('created_at', 'desc')
+                                ->orderBy('continue_watchings.created_at', 'desc') 
                                 ->get()
                                 ->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();

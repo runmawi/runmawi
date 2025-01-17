@@ -141,7 +141,7 @@ class TvshowsController extends Controller
 
                     $item['Series_depends_Networks'] = Series::where('series.active', 1)
                                 ->whereJsonContains('network_id', [(string)$item->id])
-                
+
                                 ->latest('series.created_at')->get()->map(function ($item) { 
                         
                         $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
@@ -424,17 +424,52 @@ class TvshowsController extends Controller
         // use App\PpvPurchase as PpvPurchase;
     
         if (!empty($episode->ppv_price) && $settings->access_free == 0) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('episode_id', '=', $id)
-                ->count();
+            // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+            //     ->where('episode_id', '=', $id)
+            //     ->count();
+
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+            $ppv_exits = PpvPurchase::where('episode_id',$id)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->where('to_time','>',$current_date)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get()->map(function ($item){
+                                        $payment_status = payment_status($item);
+                                        if ($payment_status === null || $item->status === $payment_status) {
+                                            return $item;
+                                        }
+                                            return null;
+                                    })->first();
+
+            $ppv_exits = $ppv_exits ? 1 : 0; 
+  
+
+
         } else {
             $ppv_exits = 0;
         }
     
         if ($series->ppv_status == 1 && $settings->access_free == 0) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('series_id', '=', $series->id)
-                ->count();
+            // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+            //     ->where('series_id', '=', $series->id)
+            //     ->count();
+
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+            $ppv_exits = PpvPurchase::where('series_id',$series->id)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->where('to_time','>',$current_date)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get()->map(function ($item){
+                                        $payment_status = payment_status($item);
+                                        if ($payment_status === null || $item->status === $payment_status) {
+                                            return $item;
+                                        }
+                                            return null;
+                                    })->first();
+
+            $ppv_exits = $ppv_exits ? 1 : 0; 
+
+
         } else {
             $ppv_exits = 0;
         }
@@ -475,13 +510,49 @@ class TvshowsController extends Controller
 
             if (!Auth::guest() ):
 
-            $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                            ->where('series_id', '=', $episode->series_id)
-                            ->where('season_id', '=', $episode->season_id)
-                            ->count();
-            $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                ->where('series_id', '=', $episode->series_id)
-                                ->count();
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+            // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+            //                 ->where('series_id', '=', $episode->series_id)
+            //                 ->where('season_id', '=', $episode->season_id)
+            //                 ->count();
+
+
+            $PpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                        ->where('season_id', $episode->season_id)
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+            $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+            // $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+            //                     ->where('series_id', '=', $episode->series_id)
+            //                     ->count();
+
+            $SeriesPpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+    
+            $SeriesPpvPurchase = $SeriesPpvPurchase ? 1 : 0; 
+    
+
+
             else:
                 $PpvPurchase = 0;
                 $SeriesPpvPurchase =0;
@@ -503,10 +574,30 @@ class TvshowsController extends Controller
                 endforeach;
                 // exit;
 
-                $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                ->where('series_id', '=', $episode->series_id)
-                                ->where('season_id', '=', $episode->season_id)
-                                ->count();
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                //                 ->where('series_id', '=', $episode->series_id)
+                //                 ->where('season_id', '=', $episode->season_id)
+                //                 ->count();
+
+                $PpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                            ->where('season_id', '=', $episode->season_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+    
+                $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
+
                 $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
                     
@@ -563,13 +654,48 @@ class TvshowsController extends Controller
                     endforeach;
                     // exit;
 
-                    $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                                ->where('series_id', '=', $episode->series_id)
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                    // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                    //                             ->where('series_id', '=', $episode->series_id)
+                    //                             ->where('season_id', '=', $episode->season_id)
+                    //                             ->count();
+
+                    $PpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
                                                 ->where('season_id', '=', $episode->season_id)
-                                                ->count();
-                    $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                    ->where('series_id', '=', $episode->series_id)
-                                    ->count();
+                                                ->where('user_id', Auth::user()->id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+        
+                    $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
+                    // $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                    //                 ->where('series_id', '=', $episode->series_id)
+                    //                 ->count();
+
+                    $SeriesPpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                                    ->where('user_id', Auth::user()->id)
+                                                    ->where('to_time','>',$current_date)
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->get()->map(function ($item){
+                                                        $payment_status = payment_status($item);
+                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                            return $item;
+                                                        }
+                                                            return null;
+                                                    })->first();
+
+                    $SeriesPpvPurchase = $SeriesPpvPurchase ? 1 : 0; 
+
+
                     $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                         ->first();
                         if (!Auth::guest() && !empty($free_episodes)):
@@ -686,14 +812,48 @@ class TvshowsController extends Controller
                 // dd($season_id);
                     // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
-                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                    // ->where('season_id', '=', $season_id)
-                    ->where('series_id', '=', $episode->series_id)
-                    ->count();
+                    // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                    // // ->where('season_id', '=', $season_id)
+                    // ->where('series_id', '=', $episode->series_id)
+                    // ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $ppv_exits = PpvPurchase::where('season_id',$season_id)
+                                            ->where('series_id', '=', $episode->series_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                    $ppv_exits = $ppv_exits ? 1 : 0; 
+
+                    
+                    // $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                    // ->where('season_id', '=', $episode->season_id)
+                    // ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $PpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                                ->where('season_id', '=', $episode->season_id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
     
-                    $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
-                    ->where('season_id', '=', $episode->season_id)
-                    ->count();
+                    $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
                     // dd($PpvPurchase);
                     $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
@@ -723,9 +883,25 @@ class TvshowsController extends Controller
                 $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                 ->first();
     
-                $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
-                ->where('season_id', '=', $episode->season_id)
-                ->count();
+                // $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                // ->where('season_id', '=', $episode->season_id)
+                // ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $PpvPurchase = PpvPurchase::where('series_id',$episode->series_id)
+                                            ->where('season_id', '=', $episode->season_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+    
+                $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
                 
                 if ($checkseasonppv->access == "ppv" ) {
         
@@ -952,11 +1128,30 @@ class TvshowsController extends Controller
             })->first();
 
             if(!Auth::guest()){
+                // $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                //                         ->where('series_id', '=', $episode->series_id)
+                //                         ->where('season_id', '=', $episode->season_id)
+                //                         ->where('episode_id', '=', $episode->id)
+                //                         ->count();
+
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
                 $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                                        ->where('series_id', '=', $episode->series_id)
-                                        ->where('season_id', '=', $episode->season_id)
-                                        ->where('episode_id', '=', $episode->id)
-                                        ->count();
+                                            ->where('series_id',$episode->series_id)
+                                            ->where('season_id', '=', $episode->season_id)
+                                            ->where('episode_id', '=', $episode->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                $episode_PpvPurchase = $episode_PpvPurchase ? 1 : 0; 
+
 
             }else{
                 $episode_PpvPurchase = 0;
@@ -968,20 +1163,46 @@ class TvshowsController extends Controller
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
             if(!Auth::guest()){
-                $ppv_purchase_user = PpvPurchase::where('season_id','=',$season_ide)->where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
+                $ppv_purchase_user = PpvPurchase::where('season_id','=',$season_ide)
+                                                ->where('user_id',Auth::user()->id)
+                                                ->select('user_id','season_id')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+
                 // dd($ppv_purchase_user);
-                $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
-                ->where('user_id', Auth::user()->id)
-                ->first();
+                // $ppv_purchase = PpvPurchase::where('season_id','=',$season_ide)->orderBy('created_at', 'desc')
+                // ->where('user_id', Auth::user()->id)
+                // ->first();
         
-                if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
-                    $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
-                    $currentdate = date("M d , y H:i:s");
-                    $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
-                }
-                else{
-                    $ppv_exists_check_query = 0;
-                }    
+                // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                //     $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                //     $currentdate = date("M d , y H:i:s");
+                //     $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                // }
+                // else{
+                //     $ppv_exists_check_query = 0;
+                // }    
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $ppv_purchase = PpvPurchase::where('season_id',$season_ide)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                $ppv_exists_check_query = !empty($ppv_purchase) ? 1 : 0;
+
 
                     // dd($ppv_purchase);
                 if($season_access_ppv == "free" && $series->access == 'guest' || Auth::user()->role == "admin" || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'registered' || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'subscriber'){
@@ -1209,7 +1430,7 @@ class TvshowsController extends Controller
     
         } catch (\Throwable $th) {
     
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -1327,9 +1548,24 @@ class TvshowsController extends Controller
             $id = $series->id;
 
             if (!Auth::guest() && $series->ppv_status == 1) {
-                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                    ->where('series_id', '=', $id)
-                    ->count();
+                // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                //     ->where('series_id', '=', $id)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $ppv_exits = PpvPurchase::where('series_id',$id)
+                                        ->where('user_id', Auth::user()->id)
+                                        ->where('to_time','>',$current_date)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+
+                $ppv_exits = $ppv_exits ? 1 : 0; 
             } else {
                 $ppv_exits = 0;
             }
@@ -1536,9 +1772,25 @@ class TvshowsController extends Controller
             endif;
             
             if ($series->ppv_status == 1 && $settings->access_free == 0) {
-                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                    ->where('series_id', '=', $series->id)
-                    ->count();
+                // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                //     ->where('series_id', '=', $series->id)
+                //     ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $ppv_exits = PpvPurchase::where('series_id',$series->id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+    
+                $ppv_exits = $ppv_exits ? 1 : 0; 
+                                        
             } else {
                 $ppv_exits = 0;
             }
@@ -2097,17 +2349,50 @@ public function RemoveDisLikeEpisode(Request $request)
         // use App\PpvPurchase as PpvPurchase;
     
         if (!empty($episode->ppv_price) && $settings->access_free == 0) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('episode_id', '=', $id)
-                ->count();
+            // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+            //     ->where('episode_id', '=', $id)
+            //     ->count();
+
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+            $ppv_exits = PpvPurchase::where('episode_id',$id)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->where('to_time','>',$current_date)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get()->map(function ($item){
+                                        $payment_status = payment_status($item);
+                                        if ($payment_status === null || $item->status === $payment_status) {
+                                            return $item;
+                                        }
+                                            return null;
+                                    })->first();
+    
+            $ppv_exits = $ppv_exits ? 1 : 0; 
+
         } else {
             $ppv_exits = 0;
         }
     
         if ($series->ppv_status == 1 && $settings->access_free == 0) {
-            $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                ->where('series_id', '=', $series->id)
-                ->count();
+            // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+            //     ->where('series_id', '=', $series->id)
+            //     ->count();
+
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+            $ppv_exits = PpvPurchase::where('series_id', $series->id)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->where('to_time','>',$current_date)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get()->map(function ($item){
+                                        $payment_status = payment_status($item);
+                                        if ($payment_status === null || $item->status === $payment_status) {
+                                            return $item;
+                                        }
+                                            return null;
+                                    })->first();
+    
+            $ppv_exits = $ppv_exits ? 1 : 0; 
+
+
         } else {
             $ppv_exits = 0;
         }
@@ -2146,14 +2431,51 @@ public function RemoveDisLikeEpisode(Request $request)
             }
 
             if (!Auth::guest() ):
+                
+            $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+            // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+            //                 ->where('series_id', '=', $episode->series_id)
+            //                 ->where('season_id', '=', $episode->season_id)
+            //                 ->count();
 
-            $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                            ->where('series_id', '=', $episode->series_id)
-                            ->where('season_id', '=', $episode->season_id)
-                            ->count();
-            $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                ->where('series_id', '=', $episode->series_id)
-                                ->count();
+            $PpvPurchase = PpvPurchase::where('series_id', $episode->series_id)
+                                    ->where('season_id', '=', $episode->season_id)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->where('to_time','>',$current_date)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get()->map(function ($item){
+                                        $payment_status = payment_status($item);
+                                        if ($payment_status === null || $item->status === $payment_status) {
+                                            return $item;
+                                        }
+                                            return null;
+                                    })->first();
+    
+            $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
+                                    
+            // $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+            // ->where('series_id', '=', $episode->series_id)
+            // ->count();
+
+            $SeriesPpvPurchase = PpvPurchase::where('series_id', $episode->series_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+            $SeriesPpvPurchase = $SeriesPpvPurchase ? 1 : 0; 
+        
+
+
+
             else:
                 $PpvPurchase = 0;
                 $SeriesPpvPurchase =0;
@@ -2175,10 +2497,26 @@ public function RemoveDisLikeEpisode(Request $request)
                 endforeach;
                 // exit;
 
-                $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                ->where('series_id', '=', $episode->series_id)
-                                ->where('season_id', '=', $episode->season_id)
-                                ->count();
+                // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                //                 ->where('series_id', '=', $episode->series_id)
+                //                 ->where('season_id', '=', $episode->season_id)
+                //                 ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $PpvPurchase = PpvPurchase::where('series_id',  $episode->series_id)
+                                            ->where('season_id', '=', $episode->season_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+                $PpvPurchase = $PpvPurchase ? 1 : 0; 
                 $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
                     
@@ -2235,13 +2573,48 @@ public function RemoveDisLikeEpisode(Request $request)
                     endforeach;
                     // exit;
 
-                    $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                                ->where('series_id', '=', $episode->series_id)
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+
+                    // $PpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                    //                             ->where('series_id', '=', $episode->series_id)
+                    //                             ->where('season_id', '=', $episode->season_id)
+                    //                             ->count();
+
+                    $PpvPurchase = PpvPurchase::where('series_id', $episode->series_id)
                                                 ->where('season_id', '=', $episode->season_id)
-                                                ->count();
-                    $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
-                                    ->where('series_id', '=', $episode->series_id)
-                                    ->count();
+                                                ->where('user_id', Auth::user()->id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+            
+                    $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
+                    // $SeriesPpvPurchase = PpvPurchase::where('user_id',Auth::user()->id)
+                    //                 ->where('series_id', '=', $episode->series_id)
+                    //                 ->count();
+
+                    $SeriesPpvPurchase = PpvPurchase::where('series_id', $episode->series_id)
+                                                    ->where('user_id', Auth::user()->id)
+                                                    ->where('to_time','>',$current_date)
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->get()->map(function ($item){
+                                                        $payment_status = payment_status($item);
+                                                        if ($payment_status === null || $item->status === $payment_status) {
+                                                            return $item;
+                                                        }
+                                                            return null;
+                                                    })->first();
+                    
+                    $SeriesPpvPurchase = $SeriesPpvPurchase ? 1 : 0; 
+
+
                     $season_details = SeriesSeason::where('series_id', '=', $episode->series_id)
                         ->first();
                         if (!Auth::guest() && !empty($free_episodes)):
@@ -2359,14 +2732,48 @@ public function RemoveDisLikeEpisode(Request $request)
                 
                     // Season Ppv Purchase exit check
             if (($ppv_price != 0 && !Auth::guest()) || ($ppv_price != null && !Auth::guest())) {
-                $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                    // ->where('season_id', '=', $season_id)
-                    ->where('series_id', '=', $episode->series_id)
-                    ->count();
+                // $ppv_exits = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                //     // ->where('season_id', '=', $season_id)
+                //     ->where('series_id', '=', $episode->series_id)
+                //     ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $ppv_exits = PpvPurchase::where('season_id', $season_id)
+                                            ->where('series_id', $episode->series_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+                    $ppv_exits = $ppv_exits ? 1 : 0; 
     
-                    $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
-                    ->where('season_id', '=', $episode->season_id)
-                    ->count();
+                    // $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                    // ->where('season_id', '=', $episode->season_id)
+                    // ->count();
+
+                    $PpvPurchase = PpvPurchase::where('season_id', $episode->season_id)
+                                            ->where('series_id', $episode->series_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+                    $PpvPurchase = $PpvPurchase ? 1 : 0; 
+
+
+
                     // dd($PpvPurchase);
                     $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                     ->first();
@@ -2396,9 +2803,24 @@ public function RemoveDisLikeEpisode(Request $request)
                 $checkseasonppv = SeriesSeason::where('series_id', '=', $episode->series_id)
                 ->first();
     
-                $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
-                ->where('season_id', '=', $episode->season_id)
-                ->count();
+                // $PpvPurchase = PpvPurchase::where('series_id', '=', $episode->series_id)
+                // ->where('season_id', '=', $episode->season_id)
+                // ->count();
+                
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $PpvPurchase =  PpvPurchase::where('season_id', $episode->season_id)
+                                            ->where('series_id', $episode->series_id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+                $PpvPurchase = $PpvPurchase ? 1 : 0; 
                 
                 if ($checkseasonppv->access == "ppv" ) {
         
@@ -2626,20 +3048,53 @@ public function RemoveDisLikeEpisode(Request $request)
             })->first();
             // dd($episode_details);
             if(!Auth::guest()){
-                $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
-                                        ->where('series_id', '=', $episode->series_id)
-                                        ->where('season_id', '=', $episode->season_id)
-                                        ->where('episode_id', '=', $episode->id)
-                                        ->count();
+                // $episode_PpvPurchase = PpvPurchase::where('user_id', '=', Auth::user()->id)
+                //                         ->where('series_id', '=', $episode->series_id)
+                //                         ->where('season_id', '=', $episode->season_id)
+                //                         ->where('episode_id', '=', $episode->id)
+                //                         ->count();
+
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $episode_PpvPurchase = PpvPurchase::where('season_id', $episode->season_id)
+                                            ->where('series_id', $episode->series_id)
+                                            ->where('season_id', $episode->season_id)
+                                            ->where('episode_id', $episode->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+            
+                $episode_PpvPurchase = $episode_PpvPurchase ? 1 : 0; 
 
             }else{
                 $episode_PpvPurchase = 0;
             }
             if(!Auth::guest()){
-                    $SeasonSeriesPpvPurchaseCount = PpvPurchase::where('user_id',Auth::user()->id)
-                    ->where('series_id', '=', $episode->series_id)
-                    ->where('season_id', '=', $episode->season_id)->orderBy('created_at', 'desc')
-                    ->count();
+                    // $SeasonSeriesPpvPurchaseCount = PpvPurchase::where('user_id',Auth::user()->id)
+                    // ->where('series_id', '=', $episode->series_id)
+                    // ->where('season_id', '=', $episode->season_id)->orderBy('created_at', 'desc')
+                    // ->count();
+
+                    $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                    $SeasonSeriesPpvPurchaseCount = PpvPurchase::where('season_id', $episode->season_id)
+                                                ->where('series_id', $episode->series_id)
+                                                ->where('season_id', $episode->season_id)
+                                                ->where('to_time','>',$current_date)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
+            
+                    $SeasonSeriesPpvPurchaseCount = $SeasonSeriesPpvPurchaseCount ? 1 : 0; 
             }else{
                 $SeasonSeriesPpvPurchaseCount = 0 ;
             }
@@ -2647,20 +3102,44 @@ public function RemoveDisLikeEpisode(Request $request)
             $season_access_ppv = SeriesSeason::where('id', $episode->season_id)->pluck('access')->first();
             
             if(!Auth::guest()){
-                $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')->first();
+                $ppv_purchase_user = PpvPurchase::where('user_id',Auth::user()->id)->select('user_id','season_id')
+                                                ->get()->map(function ($item){
+                                                    $payment_status = payment_status($item);
+                                                    if ($payment_status === null || $item->status === $payment_status) {
+                                                        return $item;
+                                                    }
+                                                        return null;
+                                                })->first();
 
-                $ppv_purchase = PpvPurchase::where('season_id','=',$episode->season_id)->orderBy('created_at', 'desc')
-                ->where('user_id', Auth::user()->id)
-                ->first();
+                // $ppv_purchase = PpvPurchase::where('season_id','=',$episode->season_id)->orderBy('created_at', 'desc')
+                // ->where('user_id', Auth::user()->id)
+                // ->first();
         
-                if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
-                    $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
-                    $currentdate = date("M d , y H:i:s");
-                    $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
-                }
-                else{
-                    $ppv_exists_check_query = 0;
-                }    
+                // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                //     $new_date = Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                //     $currentdate = date("M d , y H:i:s");
+                //     $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                // }
+                // else{
+                //     $ppv_exists_check_query = 0;
+                // }    
+
+                
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $ppv_purchase = PpvPurchase::where('season_id',$episode->season_id)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->orderBy('created_at', 'desc')
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                $ppv_exists_check_query = !empty($ppv_purchase) ? 1 : 0;
+
 
             if($season_access_ppv == "free" && $series->access == 'guest' || Auth::user()->role == "admin" || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'registered' || $season_access_ppv == "free" && $series->access == 'registered' && Auth::user()->role == 'subscriber'){
                 $episode_play_access = 1;
