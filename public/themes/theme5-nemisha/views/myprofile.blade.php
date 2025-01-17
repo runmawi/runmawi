@@ -666,7 +666,7 @@
                                             <p style="font-weight: 600; font-size: 18px;">Gender:
                                                 <span style="font-weight: 100; font-size:17px;"> 
                                                     @if(!empty($user->gender) && $user->gender == "null")
-                                                        {{_("Male")}}
+                                                        {{__("Male")}}
                                                     @else
                                                         {{$user->gender}}
                                                     @endif
