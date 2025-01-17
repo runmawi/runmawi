@@ -276,7 +276,7 @@
         background: black;
     }
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://e360tvmain.b-cdn.net/css/assets/js/3.6.jquery.min.js" async></script>
 <script>
 
     $( document ).ready(function() {
