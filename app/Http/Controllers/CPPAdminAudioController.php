@@ -1319,7 +1319,23 @@ class CPPAdminAudioController extends Controller
         }
       
             if (!empty($audio_details)) {
-                $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+                // $ppv_status = PpvPurchase::with('audio')->where('audio_id','=',$audio)->where('user_id','=',Auth::user()->id)->where('to_time', '>', Carbon::now())->count();
+
+                $ppv_status =  PpvPurchase::with('audio')->where('audio_id','=',$audio)
+                                            ->where('user_id', Auth::user()->id)
+                                            ->where('to_time','>',$current_date)
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
+
+                $ppv_status = $ppv_status ? 1 : 0; 
+
+
+
                 $view_increment = $this->handleViewCount($audio); 
 
                 $current_audio   = Audio::where('album_id',$albumID)->where('id',$audio)->get();

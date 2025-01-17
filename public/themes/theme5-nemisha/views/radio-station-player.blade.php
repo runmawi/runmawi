@@ -64,12 +64,6 @@
         margin-bottom: 18px;
     }
 
-    .infos-ctn>div {
-        margin-bottom: 8px;
-        color: rgb(0, 82, 204);
-        text-align: left;
-    }
-
     .first-btn {
         margin-left: 3px;
     }
@@ -123,12 +117,6 @@
         color: #000;
     }
 
-    .active-track>.playlist-info-track,
-    .active-track>.playlist-duration,
-    .active-track>.playlist-btn-play {
-        color: #ffc266 !important;
-    }
-
     .form-control {
         color: #000 !important;
         font-weight: 700;
@@ -146,14 +134,6 @@
         color: rgb(255, 0, 0);
         font-size: 20px;
     }
-
-    .audio-js *,
-    .audio-js :after,
-    .audio-js :before {
-        box-sizing: inherit;
-        display: grid;
-    }
-
     .vjs-big-play-button {
         margin: -25px 0 0 -25px;
         width: 50px !important;
@@ -319,6 +299,22 @@
         right: 0;
     }
 
+
+    body.light-theme #current-program{
+        color: <?php echo GetLightText(); ?>!important;
+    }
+
+    body.light-theme #next-program{
+        color: <?php echo GetLightText(); ?>!important;
+    }
+
+    body.light-theme #program-title{
+        color: <?php echo GetLightText(); ?>!important;
+    }
+
+    body.light-theme #program-display{
+        color: <?php echo GetLightText(); ?>!important;
+    }
     @media (min-width: 576px) {
         #Epg_schedule_modal .modal-dialog {
             max-width: 100%;
@@ -346,226 +342,177 @@
         }
     }
 </style>
-
 <?php if (Session::has('message')): ?>
     <div id="successMessage" class="alert alert-info col-md-4" style="z-index: 999; position: fixed !important; right: 0;">
         <?php echo Session::get('message'); ?>
     </div>
-<?php endif ;?>
+<?php endif;?>
 
 <?php if (isset($error)) { ?>
-    <div class="col-md-12 text-center mt-4"
-        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;">
-        <p>
+    <div class="col-md-12 text-center mt-4" style="background: url(<?= URL::to('/assets/img/watch.png') ?>); height: 500px; background-position: center; background-repeat: no-repeat; background-size: contain;">
         <h3 class="text-center"><?php echo $message; ?></h3>
     </div>
 <?php } else { ?>
     <input type="hidden" value="<?php echo URL('/'); ?>" id="base_url">
     <div id="audio_bg">
-        <div id="audio_bg_dim" <?php if($Livestream_detail->access == 'guest' || ($Livestream_detail->access == 'subscriber' && !Auth::guest()) ): ?><?php else: ?>class="darker"<?php endif; ?>></div>
+        <div id="audio_bg_dim" <?php if ($Livestream_detail->access == 'guest' || ($Livestream_detail->access == 'subscriber' && !Auth::guest())): ?><?php else: ?>class="darker"<?php endif; ?>></div>
         <div class="container-fluid">
-            <?php if($Livestream_detail->access == 'guest' || ( ($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) || (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) || (!Auth::guest() && $Livestream_detail->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') || (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && $ppv_status == 1)): ?>
-        
-            <?php if($Livestream_detail): ?>
-            <?php if (  !Auth::guest() && $Livestream_detail->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin' ) { ?>
-            <div id="subscribers_only">
-                <a class="text-center btn btn-success" id="paynowbutton"> Pay for View </a>
-            </div>
-            <?php } else { ?>
-                    <div class="row album-top-30 my-4 ">
-                        <div class="col-lg-8">
-                            <div class="player-ctn" id="player-ctn" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.25)0%, rgba(117, 19, 93, 1)),url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>');background-size: cover;background-repeat: no-repeat;background-position: right;">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-3 col-xs-3 ">
-                                        <img height="150" width="150" id="audio_img" >
-                                        <div onclick="toggleAudio()">
-                                            <button class="btn btn-action play-radio" id="vidbutton"><i class="fa fa-play" aria-hidden="true"></i> Play</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-9 col-md-9 col-xs-9">
-                                        <div class="album_bg">
-                                            <div class="album_container">
-                                                <div class="blur"></div>
-                                                <div class="overlay_blur">
-                                                    <div class="row justify-content-between" style="padding:0px 12px;" >
-                                                        <div class="">
-                                                            <h2 class="hero-title album">
-                                                                <div class="title"></div>
-                                                            </h2>
-                                                        </div>
-                                                        <div class="">
-                                                            <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
-                                                                <div id="btn-faws-volume">
-                                                                    <i id="icon-vol-up" class='fas fa-volume-up icon-mute'></i>
-                                                                    <i id="icon-vol-mute" class='fas fa-volume-mute icon-mute' style="display: none"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                
-                                                    <div class="">
-                                                        <div class="description"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="infos-ctn d-flex justify-space-between"></div>
-                                <div id="myProgress">
-                                    <div id="myBar"></div>
-                                </div>
-                    
-                                <div class="btn-ctn">
-                                    <div class="d-flex" style="justify-content: space-between;width: auto;align-items: center;">
-                                        <ul class="p-0 share-icon-aud">
-                                            <li>
-                                                <div class="btn-action" style="padding:0px 40px;" id="vidbutton" onclick="toggleAudio()">
-                                                    <div id="btn-faws-play-pause">
-                                                        <i class='fas fa-play icon-circle' id="icon-play"></i>
-                                                        <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <a aria-hidden="true" 
-                                                class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" 
-                                                data-authenticated="<?= !Auth::guest() ?>" 
-                                                data-audio_id="<?= $Livestream_detail->id ?>"
-                                                onclick="toggleFavorite(this)">
-                                                <?php if(audiofavorite($Livestream_detail->id) == "active"): ?>
-                                                    <i id="ff" class="fa fa-heart"></i>
-                                                <?php else: ?>
-                                                    <i id="ff" class="fa fa-heart-o"></i>
-                                                <?php endif; ?>
-                                            </a>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown">
-                                                <i id="ff" class="fa fa-share-alt " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="background-color: white;border:1px solid white;padding: 0;">
-                                                    <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
-                                                    <i class="fa fa-twitter" style="color: #00acee;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Twitter
-                                                    </a>
-                                                    <div class="divider" style="border:1px solid white"></div>
-                                                    <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank"><i class="fa fa-facebook" style="color: #3b5998;padding: 10px 5px;border-radius: 50%;display: inline;"></i> Facebook</a>
-                                                </div>
-                                                </div>
-                                            </li>                                        
-                                        </ul>
-                                        <!-- Share -->
-                                    </div>
-                                </div>
-                                <div class="title"></div>
-                            </div>
+            <?php if (
+                $Livestream_detail->access == 'guest' ||
+                (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && !Auth::guest() && Auth::user()->subscribed()) ||
+                (!Auth::guest() && (Auth::user()->role == 'demo' || Auth::user()->role == 'admin')) ||
+                (!Auth::guest() && $Livestream_detail->access == 'registered' && $settings->free_registration && Auth::user()->role == 'registered') ||
+                (($Livestream_detail->access == 'subscriber' || $Livestream_detail->access == 'registered') && $ppv_status == 1)
+            ): ?>
+                <?php if ($Livestream_detail): ?>
+                    <?php if (!Auth::guest() && $Livestream_detail->ppv_status == 1 && $settings->ppv_status == 1 && $ppv_status == 0 && Auth::user()->role != 'admin') { ?>
+                        <div id="subscribers_only">
+                            <a class="text-center btn btn-success" id="paynowbutton">Pay for View</a>
                         </div>
-                        <div class="col-lg-4 p-0">
-                            <audio id="myAudio" ontimeupdate="onTimeUpdate()">
-                                <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>" >
-                                Your browser does not support the audio element.
-                            </audio>
-                            <div class="play-border" style="margin: 0px; 10px;" >
-                                <div class="playlist-ctn">
-                            
-                                    <div class="row align-items-center pt-1">
-                                        <div class="col-12 col-md-6 mb-4">
-                                            <h6 class="mb-0 font-weight-bold">
-                                                <span class="program-name"></span> 
-                                                <i class="fa fa-music" aria-hidden="true"></i>
-                                            </h6>
-                                        </div>
-                                        <div class="col-12 col-md-6 mb-4">
-                                            <div class="moreinfo text-md-right">
-                                                <button 
-                                                    type="button" 
-                                                    class="btn btn-primary w-100" 
-                                                    data-toggle="modal" 
-                                                    data-target="#Epg_schedule_modal"  
-                                                    data-live-id="<?php echo $Livestream_detail->id; ?>"> 
-                                                    VIEW SCHEDULE
+                    <?php } else { ?>
+                        <div class="row album-top-30 my-4">
+                            <div class="col-lg-8">
+                                <div class="player-ctn" id="player-ctn" style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.25) 0%, rgba(117, 19, 93, 1)), url('<?= URL::to('/') . '/public/uploads/images/' . $Livestream_detail->player_image ?>'); background-size: cover; background-repeat: no-repeat; background-position: right;">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <img height="150" width="150" id="audio_img">
+                                            <div onclick="toggleAudio()">
+                                                <button class="btn btn-action play-radio" id="vidbutton">
+                                                    <i class="fa fa-play" aria-hidden="true"></i> Play
                                                 </button>
                                             </div>
                                         </div>
+                                        <div class="col-sm-9">
+                                            <div class="album_bg">
+                                                <div class="album_container">
+                                                    <div class="blur"></div>
+                                                    <div class="overlay_blur">
+                                                        <div class="row justify-content-between" style="padding: 0px 12px;">
+                                                            <div>
+                                                                <h2 class="hero-title album">
+                                                                    <div class="title"></div>
+                                                                </h2>
+                                                            </div>
+                                                            <div>
+                                                                <div class="btn-mute" id="toggleMute" onclick="toggleMute()">
+                                                                    <div id="btn-faws-volume">
+                                                                        <i id="icon-vol-up" class='fas fa-volume-up icon-mute'></i>
+                                                                        <i id="icon-vol-mute" class='fas fa-volume-mute icon-mute' style="display: none"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="description"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <?php if ($Livestream_detail->publish_type == 'publish_now' || $Livestream_detail->publish_type == 'publish_later'): ?>
-                                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                                        <p>
-                                            <?php echo $Livestream_detail->title; ?>
-                                        </p>
-                                    <?php elseif ($Livestream_detail->publish_type == 'schedule_program'): ?>
-                                        <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                                        <p>
-                                            <span id="current-program"></span>
-                                        </p>
-
-                                        <h6 class="mb-2 font-weight-bold">Next Program</h6>
-                                        <p>
-                                            <span id="next-program"></span>
-                                        </p>
-                                    <?php endif; ?>
+                                    <div class="infos-ctn d-flex justify-space-between"></div>
+                                    <div id="myProgress">
+                                        <div id="myBar"></div>
+                                    </div>
+                                    <div class="btn-ctn">
+                                        <div class="d-flex" style="justify-content: space-between; width: auto; align-items: center;">
+                                            <ul class="p-0 share-icon-aud">
+                                                <li>
+                                                    <div class="btn-action" style="padding: 0px 40px;" id="vidbutton" onclick="toggleAudio()">
+                                                        <div id="btn-faws-play-pause">
+                                                            <i class='fas fa-play icon-circle' id="icon-play"></i>
+                                                            <i class='fas fa-pause icon-circle hidden' id="icon-pause"></i>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a aria-hidden="true" class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $Livestream_detail->id ?>" onclick="toggleFavorite(this)">
+                                                        <?php if (audiofavorite($Livestream_detail->id) == "active"): ?>
+                                                            <i id="ff" class="fa fa-heart"></i>
+                                                        <?php else: ?>
+                                                            <i id="ff" class="fa fa-heart-o"></i>
+                                                        <?php endif; ?>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <div class="dropdown">
+                                                        <i id="ff" class="fa fa-share-alt" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: white; border: 1px solid white; padding: 0;">
+                                                            <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
+                                                                <i class="fa fa-twitter" style="color: #00acee; padding: 10px 5px; border-radius: 50%; display: inline;"></i> Twitter
+                                                            </a>
+                                                            <div class="divider" style="border: 1px solid white"></div>
+                                                            <a class="dropdown-item popup" href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" target="_blank">
+                                                                <i class="fa fa-facebook" style="color: #3b5998; padding: 10px 5px; border-radius: 50%; display: inline;"></i> Facebook
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="title"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 p-0">
+                                <audio id="myAudio" ontimeupdate="onTimeUpdate()">
+                                    <source id="source-audio" src="" type="<?= $Livestream_details->livestream_player_type ?>">
+                                    Your browser does not support the audio element.
+                                </audio>
+                                <div class="play-border" style="margin: 0px; 10px;">
+                                    <div class="playlist-ctn">
+                                        <div class="row align-items-center pt-1">
+                                            <div class="col-12 col-md-6 mb-4">
+                                                <h6 class="mb-0 font-weight-bold">
+                                                    <span id="program-display" class="program-name"></span>
+                                                    <i class="fa fa-music" aria-hidden="true"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="col-12 col-md-6 mb-4">
+                                                <div class="moreinfo text-md-right">
+                                                    <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#Epg_schedule_modal" data-live-id="<?php echo $Livestream_detail->id; ?>">VIEW SCHEDULE</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php if ($Livestream_detail->publish_type == 'publish_now' || $Livestream_detail->publish_type == 'publish_later'): ?>
+                                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                            <p id="current-program"><?php echo $Livestream_detail->title; ?></p>
+                                        <?php elseif ($Livestream_detail->publish_type == 'schedule_program'): ?>
+                                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
+                                            <p><span id="current-program"></span></p>
+                                            <h6 class="mb-2 font-weight-bold">Next Program</h6>
+                                            <p><span id="next-program"></span></p>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="clear"></div>
-            <?php } ?>
-        </div>
-        <!-- Playlist  -->
-        <div class="container-fluid">
-        </div>
-
-        <div class="container-fluid">
-            <?php endif; ?>
-            <div class="">
-                <?php else: ?>
+                        <div class="clear"></div>
+                    <?php } ?>
+                <?php endif; ?>
+            <?php else: ?>
                 <div id="subscribers_only">
-                    <h2>Sorry, this audio is only available to <?php if($Livestream_detail->access == 'subscriber'): ?>Subscribers<?php elseif($Livestream_detail->access == 'registered'): ?>Registered
-                        Users<?php endif; ?>
-                    </h2>
+                    <h2>Sorry, this audio is only available to <?php if ($Livestream_detail->access == 'subscriber'): ?>Subscribers<?php elseif ($Livestream_detail->access == 'registered'): ?>Registered Users<?php endif; ?></h2>
                     <div class="clear"></div>
-                    <?php if(!Auth::guest() && $Livestream_detail->access == 'subscriber'): ?>
-                    <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
-                        <button id="button">Become a subscriber to watch this audio</button>
-                    </form>
+                    <?php if (!Auth::guest() && $Livestream_detail->access == 'subscriber'): ?>
+                        <form method="get" action="/user/<?= Auth::user()->username ?>/upgrade_subscription">
+                            <button id="button">Become a subscriber to watch this audio</button>
+                        </form>
                     <?php else: ?>
-                    <form method="get" action="/signup">
-                        <button id="button">Signup Now <?php if($Livestream_detail->access == 'subscriber'): ?>to Become a Subscriber<?php elseif($Livestream_detail->access == 'registered'): ?>for
-                            Free!<?php endif; ?></button>
-                    </form>
+                        <form method="get" action="/signup">
+                            <button id="button">Signup Now <?php if ($Livestream_detail->access == 'subscriber'): ?>to Become a Subscriber<?php elseif ($Livestream_detail->access == 'registered'): ?>for Free!<?php endif; ?></button>
+                        </form>
                     <?php endif; ?>
                 </div>
-                <?php endif; ?>
-            </div>
+         <?php endif; ?>
         </div>
     </div>
 <?php } ?>
 
-<?php if ($Livestream_detail->stream_upload_via == 'radio_station') { ?>
-    <div class="container">
-        <div class="row">
-            <div class=" container-fluid overflow-hidden">
-                <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-                <div class="">
-                    <?php
-                        include public_path('themes/theme5-nemisha/views/partials/related-radio-station.blade.php');
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php }?>
 
-<script type="text/javascript">
-    $('#store-play-list').click(function(){
-                    $('#my-playlist-form').submit();
-                });
-    
+<script type="text/javascript">    
     var base_url = $('#base_url').val();
-    
     $(document).ready(function(){
-    
-    
     //watchlater
     $('.watchlater').click(function(){
     if($(this).data('authenticated')){
@@ -577,12 +524,10 @@
     }else{
     $(this).html('<a><i class="fa fa-clock-o"></i>Watch Later</a>');
     }
-    
     } else {
     window.location = '<?= URL::to('login') ?>';
     }
     });
-    
     
     //My Wishlist
     $('.mywishlist').click(function(){
@@ -628,131 +573,6 @@
   
   
  <script>
-    function createTrackItem(index,name,duration,liveId){
-    
-      var trackItem = document.createElement('div');
-      trackItem.setAttribute("id", "ptc-"+index);
-      trackItem.setAttribute("data-index", index);
-      document.querySelector(".playlist-ctn").appendChild(trackItem);
-    
-      var playBtnItem = document.createElement('div');
-
-      var moreInfoBtn = document.createElement('button');
-      document.querySelector("#ptc-" + index).appendChild(moreInfoBtn);
-      moreInfoBtn.setAttribute("style", "display: none;"); // Hide the button
-
-        moreInfoBtn.addEventListener('click', function () {
-            const liveId = this.getAttribute('data-live-id');
-            loadEpgContent(liveId); 
-        });
-
-
-
-    }
-
-    function loadEpgContent(liveId) {
-        $('#modal-content').html('<p>Loading...</p>');
-
-        $.ajax({
-            url: "<?php echo url('/get-epg-content'); ?>",
-            method: 'GET',
-            data: { live_id: liveId }, 
-            success: function (response) {
-                $('#modal-content').html(response);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error:", error); 
-                $('#modal-content').html('<p>Error loading content. Please try again.</p>');
-            }
-        });
-    }
-
-    
-    var listAudio = <?php echo json_encode($Radio_station_lists); ?>;
-
-    listAudio = listAudio.filter(function(item) {
-        return !item.embed_url; 
-    });
-
-    for (var i = 0; i < listAudio.length; i++) {
-        createTrackItem(i, listAudio[i].title, listAudio[i].duration, listAudio[i].id);
-    }
-    
-    
-    var indexAudio = 0;
-
-    function getCurrentProgram(index) {
-        try {
-            if (listAudio[index].publish_type === "schedule_program") {
-                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
-                var endTimes = JSON.parse(listAudio[index].scheduler_program_end_time);
-                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
-
-                if (!startTimes.length || !endTimes.length || !programTitles.length) {
-                    return "No schedule available.";
-                }
-
-                var currentTime = new Date();
-
-                for (var i = 0; i < startTimes.length; i++) {
-                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
-                    var [endHour, endMinute] = endTimes[i].split(":").map(Number);
-
-                    var startDate = new Date(currentTime);
-                    var endDate = new Date(currentTime);
-                    startDate.setHours(startHour, startMinute, 0, 0);
-                    endDate.setHours(endHour, endMinute, 0, 0);
-                    if (endDate < startDate) {
-                        endDate.setDate(endDate.getDate() + 1);
-                    }
-                    if (currentTime >= startDate && currentTime <= endDate) {
-                        return `${programTitles[i]} (${formatTime(startDate)} - ${formatTime(endDate)})`;
-                    }
-                }
-                    return "No Current Program.";
-                } else {
-                    return listAudio[index].title;
-                }
-            } catch (error) {
-                console.error("Error parsing schedule data:", error);
-                return "Invalid schedule data.";
-        }
-    }
-
-    function getNextProgram(index) {
-        try {
-            if (listAudio[index].publish_type === "schedule_program") {
-                var startTimes = JSON.parse(listAudio[index].scheduler_program_start_time);
-                var programTitles = JSON.parse(listAudio[index].scheduler_program_title);
-
-                if (!startTimes.length || !programTitles.length) {
-                    return "No schedule available.";
-                }
-
-                var currentTime = new Date();
-
-                for (var i = 0; i < startTimes.length; i++) {
-                    var [startHour, startMinute] = startTimes[i].split(":").map(Number);
-                    var startDate = new Date(currentTime);
-                    startDate.setHours(startHour, startMinute, 0, 0);
-
-                    if (currentTime < startDate) {
-                        return `${programTitles[i]} (Starts at ${formatTime(startDate)})`;
-                    }
-                }
-
-                return "No Next Program.";
-            } else {
-                return "No Program Scheduled";
-            }
-        } catch (error) {
-            console.error("Error parsing schedule data:", error);
-            return "Invalid schedule data.";
-        }
-    }
-
-
-     
     function formatTime(date) {
         var hours = date.getHours();
         var minutes = date.getMinutes();
@@ -761,34 +581,9 @@
         minutes = minutes.toString().padStart(2, "0");
         return `${hours}:${minutes} ${ampm}`;
     }
-
-
-    function loadNewTrack(index) {
-        var player = document.querySelector('#source-audio');
-        player.src = listAudio[index].livestream_URL; 
-        document.querySelector('.title').innerHTML = listAudio[index].title; 
-        document.querySelector('.description').innerHTML = listAudio[index].description; 
-        document.querySelector('.program-name').innerHTML = listAudio[index].title; 
-        var image = document.querySelector('#audio_img');
-        image.src = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].image;
-        var divElement = document.getElementById("player-ctn");
-        var player_imageURL = '<?php echo URL::to('/public/uploads/images/');?>' + '/' + listAudio[index].player_image;
-        divElement.style.backgroundImage = "linear-gradient(to left, rgba(0, 0, 0, 0.25) 0%, rgba(117, 19, 93, 1))," + "url('" + player_imageURL + "')";
-
-        this.currentAudio = document.getElementById("myAudio");
-        this.currentAudio.load(); 
-        this.toggleAudio(); 
-        this.updateStylePlaylist(this.indexAudio, index);
-        this.indexAudio = index;
-
-        var liveId = listAudio[index].id; 
-        loadEpgContent(liveId); 
-    }
-    
     document.querySelector('#source-audio').src = <?php echo json_encode(@$Livestream_detail->livestream_URL) ; ?>  
     document.querySelector('.title').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
     document.querySelector('.program-name').innerHTML = <?php echo json_encode(@$Livestream_detail->title) ; ?>  
-
     const descriptionText = <?php echo json_encode(@$Livestream_detail->description); ?> || '-'; 
     const descriptionElement = document.querySelector('.description');
    
@@ -851,68 +646,6 @@
       this.currentAudio.pause();
       clearInterval(interval1);
     }
-    
-    
-    
-    var width = 0;
-    
-    function onTimeUpdate() {
-      var t = this.currentAudio.currentTime
-      this.setBarProgress();
-      if (this.currentAudio.ended) {
-        document.querySelector('#icon-play').style.display = 'block';
-        document.querySelector('#icon-pause').style.display = 'none';
-        this.pauseToPlay(this.indexAudio)
-        if (this.indexAudio < listAudio.length-1) {
-            var index = parseInt(this.indexAudio)+1
-            this.loadNewTrack(index)
-        }
-      }
-    }
-        
-    function getMinutes(t){
-      var min = parseInt(parseInt(t)/60);
-      var sec = parseInt(t%60);
-      if (sec < 10) {
-        sec = "0"+sec
-      }
-      if (min < 10) {
-        min = "0"+min
-      }
-      return min+":"+sec
-    }
-   
-    
-    
-    function seek(event) {
-      var percent = event.offsetX / progressbar.offsetWidth;
-      this.currentAudio.currentTime = percent * this.currentAudio.duration;
-      barProgress.style.width = percent*100 + "%";
-    }
-   
-    function next(){
-      if (this.indexAudio <listAudio.length-1) {
-          var oldIndex = this.indexAudio
-          this.indexAudio++;
-          updateStylePlaylist(oldIndex,this.indexAudio)
-          this.loadNewTrack(this.indexAudio);
-      }
-    }
-    
-    function previous(){
-      if (this.indexAudio>0) {
-          var oldIndex = this.indexAudio
-          this.indexAudio--;
-          updateStylePlaylist(oldIndex,this.indexAudio)
-          this.loadNewTrack(this.indexAudio);
-      }
-    }
-    
-    function updateStylePlaylist(oldIndex,newIndex){
-      this.pauseToPlay(oldIndex);
-      this.playToPause(newIndex)
-    }
-    
     function playToPause(index){
       var ele = document.querySelector('#p-img-'+index)
    

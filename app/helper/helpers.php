@@ -2115,18 +2115,13 @@ function videocipher_Key(){
 }
 
 
-function payment_status($item){
-    switch ($item->payment_gateway) {
+function payment_status($item) {
+    switch ($item ? $item->payment_gateway : null) {
         case 'razorpay':
-        $payment_status = 'captured';
-        break;
-
+            return 'captured';  
         case 'Stripe':
-        $payment_status = 'succeeded';
-        break;
-
+            return 'succeeded';  
         default:
-        $payment_status = null;
-        break;
+            return null;  
     }
 }
