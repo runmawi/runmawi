@@ -109,7 +109,7 @@
 
 
         <div class="epg-info">
-            <h2> {{ ucwords(@$Livestream_details->title) }} </h2>
+            <h2 style="color: #ffffff !important;" > {{ ucwords(@$Livestream_details->title) }} </h2>
             
         </div>
         
@@ -122,7 +122,7 @@
         <div class="date-nav">
             @for ($i = 0; $i < 7; $i++)
                 @php $day = $now->copy()->addDays($i); @endphp
-                <h6 class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
+                <h6 style="color: #ffffff !important;" class="day-nav" data-day="{{ $day->format('N') }}" data-date="{{ $day->format('Y-m-d\TH:i') }}" >
                     {{ $day->format('l') }} ({{ $day->format('d-m-Y') }})
                 </h6>
             @endfor
@@ -155,7 +155,7 @@
                     },
                     success: function (response) {
                         if (response.trim() === '' || response === null) {
-                            $('#data').html('<h2 style="text-align:center; padding-top:50%;" >No program scheduled.</h2>');
+                            $('#data').html('<h2 style="text-align:center; padding-top:50%; color: #ffffff !important;"  >No program scheduled.</h2>');
                         } else {
                             $('#data').html(response);
                         }
@@ -166,7 +166,7 @@
                     }
                 });
             } else {
-                $('#data').html('<h2  style="text-align:center; padding-top:10%;" >No program scheduled.</h2>');
+                $('#data').html('<h2  style="text-align:center; padding-top:10%; color: #ffffff !important;" >No program scheduled.</h2>');
             }
         }
 

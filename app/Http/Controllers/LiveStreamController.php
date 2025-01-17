@@ -281,9 +281,37 @@ class LiveStreamController extends Controller
         
 
           if(!Auth::guest()){
-              $ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
-              $ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+              //$ppv_exist = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+              $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+              $ppv_exist = LivePurchase::where('video_id',$vid)
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->where('status', 1)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
 
+              $ppv_exist = !empty($ppv_exist) ? 1 : 0;
+
+              //$ppv_exists = LivePurchase::where('video_id',$vid)->where('user_id',$user_id)->where('status',1)->latest()->count();
+              $ppv_exists = LivePurchase::where('video_id',$vid)
+                                        ->where('user_id', $user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->where('status', 1)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
+                $ppv_exists = !empty($ppv_exists) ? 1 : 0;
           }
           else{
               $ppv_exist = [];
@@ -383,28 +411,22 @@ class LiveStreamController extends Controller
 
             if ($categoryVideos->access == "ppv" && !Auth::guest()) {
 
-                $live_purchase_exists = LivePurchase::where('video_id', $vid)->where('user_id', Auth::user()->id)
-                    ->where('status', 1)->latest()->first();
+                // $live_purchase_exists = LivePurchase::where('video_id', $vid)->where('user_id', Auth::user()->id)
+                //     ->where('status', 1)->latest()->first();
 
-               //uncomment
-
-                    //     $current_date = Carbon::now()->format('Y-m-d H:i:s a');
-
-                //     $ppv_exists_check_query = LivePurchase::where('video_id',$vid)
-                //     ->where('user_id', Auth::user()->id)
-                //     ->where('to_time','>',$current_date)
-                //     ->where('status', 1)
-                //     ->orderBy('created_at', 'desc')
-                //     ->get()->map(function ($item){
-                //         $payment_status = payment_status($item);
-                        
-                //         if($item->payment_status == $payment_status){
-                //             return $item;
-                //         }
-                //     });
-                   
-                // $live_purchase_status = !empty($live_purchase_exists) ? 1 : 0;
-
+                $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                $live_purchase_exists = LivePurchase::where('video_id',$vid)
+                                        ->where('user_id',$user_id)
+                                        ->where('to_time','>',$current_date)
+                                        ->where('status', 1)
+                                        ->orderBy('created_at', 'desc')
+                                        ->get()->map(function ($item){
+                                            $payment_status = payment_status($item);
+                                            if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                return $item;
+                                            }
+                                                return null;
+                                        })->first();
 
                 $live_purchase_status = !empty($live_purchase_exists) ? 1 : 0;
 
@@ -484,27 +506,29 @@ class LiveStreamController extends Controller
 
                     if( !Auth::guest() ){
 
-                        $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
+                        // $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])->where('user_id', Auth::user()->id)->where('status',1)->latest()->count();
 
+                        // $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
+                        // dd( Auth::user()->id);
+
+                        $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                        $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])
+                                                                ->where('user_id', Auth::user()->id)
+                                                                ->where('to_time','>',$current_date)
+                                                                ->where('status', 1)
+                                                                ->orderBy('created_at', 'desc')
+                                                                ->get()->map(function ($item){
+                                                                    $payment_status = payment_status($item);
+                                                                    if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                                        return $item;
+                                                                    }
+                                                                        return null;
+                                                                })->first();
+
+                        // dd($ppv_exists_check_query);
+                       
                         $PPV_exists = !empty($ppv_exists_check_query) ? true : false ;
 
-                        //uncomment
-
-                        // $current_date = Carbon::now()->format('Y-m-d H:i:s a');
-                        // $ppv_exists_check_query = LivePurchase::where('video_id',$item['id'])
-                        // ->where('user_id', Auth::user()->id)
-                        // ->where('to_time','>',$current_date)
-                        // ->where('status',1)
-                        // ->orderBy('created_at', 'desc')
-                        // ->get()->map(function ($item){
-                        //     $payment_status = payment_status($item);
-                            
-                        //     if($item->payment_status == $payment_status){
-                        //         return $item;
-                        //     }
-                        // })->isNotEmpty();
-
-                        // $PPV_exists = $ppv_exists_check_query ;
 
 
 
@@ -1159,7 +1183,16 @@ class LiveStreamController extends Controller
               $current_time = Carbon::now()->format('Y-m-d H:i:s');
               $live_id      = $request->live_id;
 
-              $live_purchase = LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->first();
+            //   $live_purchase = LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->first();
+
+              $live_purchase = LivePurchase::where('video_id', $live_id)->where('user_id', Auth::user()->id)
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->first();
 
               LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->update([
                 'livestream_view_count' => 1 ,
@@ -1169,6 +1202,7 @@ class LiveStreamController extends Controller
 
                   LivePurchase::where('video_id',$live_id)->where('user_id',Auth::user()->id)->update([
                     'status' => 0 ,
+                    'payment_status' => 'inactive',
                   ]);
 
                     $data = array(
@@ -1199,12 +1233,23 @@ class LiveStreamController extends Controller
           try {
               $current_time = Carbon::now()->format('Y-m-d H:i:s');
 
-              $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+            //   $unseen_expiry_date = LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->pluck('unseen_expiry_date')->first();
+
+              $unseen_expiry_date = LivePurchase::where('video_id', $request->live_id)->where('user_id', Auth::user()->id)
+                                            ->get()->map(function ($item){
+                                                $payment_status = payment_status($item);
+                                                if ($payment_status === null || $item->payment_status === $payment_status) {
+                                                    return $item;
+                                                }
+                                                    return null;
+                                            })->pluck('unseen_expiry_date')->first();
+
 
               if(  $unseen_expiry_date != null && $unseen_expiry_date <= $current_time ){
 
                 LivePurchase::where('video_id',$request->live_id)->where('user_id',Auth::user()->id)->update([
                   'status' => 0 ,
+                  'payment_status' =>'inactive',
                 ]);
 
                 $data = array(

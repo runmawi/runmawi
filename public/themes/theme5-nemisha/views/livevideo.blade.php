@@ -10,10 +10,10 @@
 <link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
 <link href="<?= asset('public/themes/theme5-nemisha/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 
 <!-- Style -->
 <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/style.css') ?>" as="style">
@@ -227,59 +227,11 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
         @php
             include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
         @endphp
+
+
         <?php } ?>
 
-        <?php if ($Livestream_details->stream_upload_via == 'radio_station' && !is_null($Livestream_details->embed_url )) { ?>
-            <div class="row pt-5">
-                <div class="col-lg-8">
-                    <iframe src={{ $Livestream_details->embed_url }} width="100%" height="115" frameborder="0"
-                        referrerpolicy="origin" loading="lazy"></iframe>
-                </div>
-                <div class="col-lg-4">
-                    <div class="play-border">
-                        <div class="playlist-ctn">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-6 mb-4">
-                                    <h6 class="mb-0 font-weight-bold">
-                                        <span class="program-name">{{$Livestream_details->title}}</span> 
-                                        <i class="fa fa-music" aria-hidden="true"></i>
-                                    </h6>
-                                </div>
-                                <div class="col-12 col-md-6 mb-4">
-                                    <div class="moreinfo text-md-right">
-                                        <button 
-                                            type="button" 
-                                            class="btn btn-primary w-100" 
-                                            data-toggle="modal" 
-                                            data-target="#Epg_schedule_modal"  
-                                            data-live-id="<?php echo $Livestream_details->id; ?>"> 
-                                            VIEW SCHEDULE
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                            <p> {{$Livestream_details->title}} </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row">
-                    <div class=" container-fluid video-list you-may-like overflow-hidden">
-                        <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-                        <div class="slider">
-                            <?php
-                                include public_path(
-                                    'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
-                                );
-                            ?>
-                        </div>
-                    </div>
-                </div>
-                </div>
-        <?php } ?>
+     
 
         <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>
 
@@ -372,57 +324,7 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                 @endphp
                                 <?php } ?>
                         
-                                <?php if ($Livestream_details->stream_upload_via == 'radio_station' && !is_null($Livestream_details->embed_url )) { ?>
-                                    <div class="row pt-5">
-                                        <div class="col-lg-8">
-                                            <iframe src={{ $Livestream_details->embed_url }} width="100%" height="115" frameborder="0"
-                                                referrerpolicy="origin" loading="lazy"></iframe>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="play-border">
-                                                <div class="playlist-ctn">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-12 col-md-6 mb-4">
-                                                            <h6 class="mb-0 font-weight-bold">
-                                                                <span class="program-name">{{$Livestream_details->title}}</span> 
-                                                                <i class="fa fa-music" aria-hidden="true"></i>
-                                                            </h6>
-                                                        </div>
-                                                        <div class="col-12 col-md-6 mb-4">
-                                                            <div class="moreinfo text-md-right">
-                                                                <button 
-                                                                    type="button" 
-                                                                    class="btn btn-primary w-100" 
-                                                                    data-toggle="modal" 
-                                                                    data-target="#Epg_schedule_modal"  
-                                                                    data-live-id="<?php echo $Livestream_details->id; ?>"> 
-                                                                    VIEW SCHEDULE
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                                                    <p> {{$Livestream_details->title}} </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                        
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class=" container-fluid video-list you-may-like overflow-hidden">
-                                                <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-                                                <div class="slider">
-                                                    <?php
-                                                        include public_path(
-                                                            'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
-                                                        );
-                                                    ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                <?php } ?>
+                          
                             <?php  } elseif ( ( ($video->access = "subscriber" && ( Auth::guest() == true || Auth::user()->role == "registered" ) ) ||  ( $video->access = "ppv" && Auth::check() == true ? Auth::user()->role != "admin" : Auth::guest() ) ) && $video->free_duration_status == 1 && $video->free_duration != null ) {  ?>
 
                             <div id="video_bg">
@@ -458,61 +360,6 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                                 include public_path('themes/theme5-nemisha/views/radio-station-player.blade.php');
                                             @endphp
                                             <?php } ?>
-                                    
-                                            <?php if ($Livestream_details->stream_upload_via == 'radio_station' && !is_null($Livestream_details->embed_url )) { ?>
-                                                <div class="row pt-5">
-                                                    <div class="col-lg-8">
-                                                        <iframe src={{ $Livestream_details->embed_url }} width="100%" height="115" frameborder="0"
-                                                            referrerpolicy="origin" loading="lazy"></iframe>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="play-border">
-                                                            <div class="playlist-ctn">
-                                                                <div class="row align-items-center">
-                                                                    <div class="col-12 col-md-6 mb-4">
-                                                                        <h6 class="mb-0 font-weight-bold">
-                                                                            <span class="program-name">{{$Livestream_details->title}}</span> 
-                                                                            <i class="fa fa-music" aria-hidden="true"></i>
-                                                                        </h6>
-                                                                    </div>
-                                                                    <div class="col-12 col-md-6 mb-4">
-                                                                        <div class="moreinfo text-md-right">
-                                                                            <button 
-                                                                                type="button" 
-                                                                                class="btn btn-primary w-100" 
-                                                                                data-toggle="modal" 
-                                                                                data-target="#Epg_schedule_modal"  
-                                                                                data-live-id="<?php echo $Livestream_details->id; ?>"> 
-                                                                                VIEW SCHEDULE
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>                         
-                                                                <h6 class="mb-2 font-weight-bold">Current Program</h6>
-                                                                <p> {{$Livestream_details->title}} </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                    
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class=" container-fluid video-list you-may-like overflow-hidden">
-                                                            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
-                                                            <div class="slider">
-                                                                <?php
-                                                                    include public_path(
-                                                                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
-                                                                    );
-                                                                ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                            <?php } ?>
-                                    
-
-
                                         <?php  } else { ?>
                                         <div
                                             id="subscribers_only"style="background:linear-gradient(0deg, rgba(0, 0, 0, 1.4), rgba(0, 0, 0, 0.5)), url(<?= URL::to('/') . '/public/uploads/images/' . $video->player_image ?>); background-repeat: no-repeat; background-size: cover; padding:150px 10px;">
@@ -798,6 +645,24 @@ $Rtmp_url = str_replace('rtmp', 'http', $rtmp_url);
                                     </div>
                                 </div>
                                 <?php }?>
+                                
+                                <?php if ($Livestream_details->stream_upload_via == 'radio_station') { ?>
+                                    <div class="row" style="padding: 0 11px;">
+                                        <div class=" container-fluid video-list you-may-like overflow-hidden">
+                                            <h4 class="" style="color:#fffff;"><?php echo __('Other Radio Station'); ?></h4>
+                                            <div class="slider">
+                                                @php
+                                                    include public_path(
+                                                        'themes/theme5-nemisha/views/partials/related-radio-station.blade.php',
+                                                    );
+                                                @endphp
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php }?>
+
+
+                                
                             </div>
 
 

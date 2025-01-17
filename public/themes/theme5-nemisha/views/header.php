@@ -586,6 +586,9 @@
     body.light-theme .big-title h1 {
         color: <?php echo GetLightText(); ?>!important;
     }
+    body.light-theme #username-title{
+        color: <?php echo GetLightText(); ?>!important;
+    }
 
     body.light-theme header .navbar ul li {
         font-weight: 400;
@@ -1743,7 +1746,7 @@
                                                 <?php endif; ?>
 
 
-                                                <p class="ml-3 mt-3">
+                                                <p id="username-title" class="ml-3 mt-3">
 
                                                     <?php
                                                     $subuser = Session::get('subuser_id');
