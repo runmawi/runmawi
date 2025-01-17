@@ -66,7 +66,7 @@
                                                                     @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                            <i class="playBTN fas fa-play"></i>
+                                                                            <button class="playBTN"><i class="fas fa-play"></i></button>
                                                                         </a>
 
                                                                         <nav>

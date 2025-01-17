@@ -25,29 +25,7 @@
 
             // Video Category Banner
 
-   $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
-
-   $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                              ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
-                              ->where('videos.draft', 1)->where('videos.banner', 0);   
-
-                           if ($getfeching != null && $getfeching->geofencing == 'ON') {
-                              $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
-                           }
-
-                           if ($check_Kidmode == 1) {
-                              $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
-                           }
-
-                           if ($videos_expiry_date_status == 1) {
-                              $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
-                                 $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-                              });
-                           }
-
-   $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
-
-     
+  
 
    $continue_watching = array(
                               'Video_cnt'    => $VideoJsContinueWatching,
