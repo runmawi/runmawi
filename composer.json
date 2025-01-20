@@ -46,7 +46,6 @@
         "phpoffice/phpspreadsheet": "^1.18",
         "pion/laravel-chunk-upload": "^1.5",
         "platformcommunity/flysystem-bunnycdn": "*",
-        "predis/predis": "^2.3",
         "pusher/pusher-php-server": "^5.0",
         "razorpay/razorpay": "2.*",
         "recurly/recurly-client": "^4.52",
