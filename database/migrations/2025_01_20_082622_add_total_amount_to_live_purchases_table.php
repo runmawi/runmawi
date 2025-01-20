@@ -15,7 +15,6 @@ class AddTotalAmountToLivePurchasesTable extends Migration
     {
         Schema::table('live_purchases', function (Blueprint $table) {
             $table->string('total_amount')->nullable();
-            $table->string('payment_id')->nullable();
             $table->string('payment_failure_reason')->nullable();
             $table->string('ppv_plan')->nullable();
         });
@@ -30,7 +29,6 @@ class AddTotalAmountToLivePurchasesTable extends Migration
     {
         Schema::table('live_purchases', function (Blueprint $table) {
             $table->dropColumn('total_amount');
-            $table->dropColumn('payment_id');
             $table->dropColumn('payment_failure_reason');
             $table->dropColumn('ppv_plan');
         });
