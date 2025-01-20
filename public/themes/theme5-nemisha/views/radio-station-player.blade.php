@@ -274,12 +274,11 @@
         display: inline-block; 
     }
 
-
     .play-radio{
         background-color: #ED563C;
         color: white;
         margin-top: 10px;
-        width: 85%;
+        width: 90%;
     }
 
 
@@ -416,7 +415,7 @@
                                     </div>
                                     <div class="btn-ctn">
                                         <div class="d-flex" style="justify-content: space-between; width: auto; align-items: center;">
-                                            <ul class="p-0 share-icon-aud">
+                                            <ul class="p-0 share-icon-aud" style="cursor: pointer;">
                                                 <li>
                                                     <div class="btn-action" style="padding: 0px 40px;" id="vidbutton" onclick="toggleAudio()">
                                                         <div id="btn-faws-play-pause">
@@ -426,13 +425,12 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <a aria-hidden="true" class="favorite <?php echo audiofavorite($Livestream_detail->id); ?>" data-authenticated="<?= !Auth::guest() ?>" data-audio_id="<?= $Livestream_detail->id ?>" onclick="toggleFavorite(this)">
-                                                        <?php if (audiofavorite($Livestream_detail->id) == "active"): ?>
-                                                            <i id="ff" class="fa fa-heart"></i>
-                                                        <?php else: ?>
-                                                            <i id="ff" class="fa fa-heart-o"></i>
-                                                        <?php endif; ?>
-                                                    </a>
+                                                    <a aria-hidden="true" class="favorite <?php echo radiofavorite($Livestream_detail->id); ?>" 
+                                                        data-authenticated="<?php echo !Auth::guest() ? 'true' : 'false'; ?>" 
+                                                        data-live_id="<?php echo $Livestream_detail->id; ?>" 
+                                                        onclick="toggleFavorite(this)">
+                                                         <i id="ff" class="fa fa-heart-o"></i> <!-- Ensure the <i> tag is here -->
+                                                     </a>
                                                 </li>
                                                 <li>
                                                     <div class="dropdown">
@@ -549,29 +547,6 @@
     });
     
 </script>
-<script type="text/javascript">
-    function toggleFavorite(element) {
-      if ($(element).data('authenticated')) {
-        const audioId = $(element).data('audio_id');
-        const isActive = $(element).hasClass('active');
-        if (isActive) {
-          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
-          });
-          $(element).removeClass('active');
-          $(element).html('<i class="fa fa-heart-o"></i>');
-        } else {
-          $.post('<?= URL::to('radio-favorite') ?>', { audio_id: audioId, _token: '<?= csrf_token(); ?>' }, function(data) {
-          });
-          $(element).addClass('active');
-          $(element).html('<i class="fa fa-heart"></i>');
-        }
-      } else {
-        window.location = '<?= URL::to('login') ?>';
-      }
-    }
-  </script>
-  
-  
  <script>
     function formatTime(date) {
         var hours = date.getHours();
@@ -748,4 +723,42 @@
     document.addEventListener("DOMContentLoaded", function() {
         getProgramDetails();
     });
+</script>
+<script>
+    function toggleFavorite(element) {
+        const liveId = element.getAttribute('data-live_id');
+        const authenticated = element.getAttribute('data-authenticated');
+        
+        if (authenticated === "false") {
+            alert('You need to log in to add this to favorites.');
+            return;
+        }
+        const url = "<?php echo url('/toggle-favorite'); ?>";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ live_id: liveId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "added") {
+                element.classList.add("active");
+                element.querySelector('i').classList.replace("fa-heart-o", "fa-heart");
+            } else if (data.status === "removed") {
+                element.classList.remove("active");
+                element.querySelector('i').classList.replace("fa-heart", "fa-heart-o");
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+    }
 </script>

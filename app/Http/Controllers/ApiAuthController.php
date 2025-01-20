@@ -17425,108 +17425,35 @@ public function QRCodeMobileLogout(Request $request)
     
   private static function All_Homepage_radio_stations($homepage_input_array){
     
-        $radio_station_status = $homepage_input_array['MobileHomeSetting']->radio_station;
-        $homepage_geofencing = $homepage_input_array['Geofencing'];
-        $homepage_default_image_url = array(
-          'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
-          'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
-        );
+    $radio_station_status = $homepage_input_array['MobileHomeSetting']->radio_station;
+    $homepage_geofencing = $homepage_input_array['Geofencing'];
+    $homepage_default_image_url = array(
+      'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+      'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+    );
+      if( $radio_station_status == null || $radio_station_status == 0 ):   
+          $livestreams = array();  
+      else:
+        $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
+                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                            'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                            'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
+                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                          ->where('active', '1')
+                                          ->where('stream_upload_via','radio_station')
+                                          ->where('status', 1)
+                                          ->get()->map(function ($item) use ($homepage_default_image_url) {
+                                            $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+                                            $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+                                            $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $homepage_default_image_url['homepage_default_horizontal_image_url']  ;
+                                            $item['description'] = $item->description ;
+                                            $item['source']    = "Radio Station";
+                                            return $item;
+                                        });
 
-          if( $radio_station_status == null || $radio_station_status == 0 ):   
-
-              $livestreams = array();      // Note - if the home-setting (live_videos) is turned off in the admin panel
-
-          else:
-
-            $current_timezone = current_timezone();
-
-            $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                                'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                                'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                                'scheduler_program_days','scheduler_program_title','scheduler_program_start_time', 'scheduler_program_end_time',
-                                                'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                              ->where('active', '1')
-                                              ->where('stream_upload_via','radio_station')
-                                              ->where('status', 1)
-                                              ->get()->map(function ($item) use ($homepage_default_image_url) {
-                                                $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
-                                                $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
-                                                $item['tv_image_url'] = !is_null($item->Tv_live_image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $homepage_default_image_url['homepage_default_horizontal_image_url']  ;
-                                                $item['description'] = $item->description ;
-                                                $item['source']    = "Radio Station";
-                                                return $item;
-                                            });
-        
-            
-              $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
-
-                $livestream->live_animation = 'true';
-            
-                $current_time = Carbon::now($current_timezone);
-            
-                if ($livestream->publish_type === 'publish_later') {
-            
-                    $publish_later_status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i') <= $current_time->format('Y-m-d\TH:i');
-                    $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i') <= $current_time->format('Y-m-d\TH:i');
-            
-                    $livestream->publish_later_live_animation = $publish_later_live_animation == true ? 'true' : 'false';
-            
-                    $livestream->live_animation = $publish_later_live_animation == true ? 'true' : 'false';
-            
-                    return $publish_later_status;
-                }
-            
-                if ($livestream->publish_type === 'schedule_program') {
-                    $program_start_times = json_decode($livestream->scheduler_program_start_time, true);
-                    $program_end_times = json_decode($livestream->scheduler_program_end_time, true);
-            
-                    if ($program_start_times && $program_end_times) {
-                        foreach ($program_start_times as $index => $start_time) {
-                            $end_time = $program_end_times[$index] ?? null;
-            
-                            if ($start_time && $end_time) {
-                                $start_datetime = Carbon::createFromFormat('H:i', $start_time, $current_timezone);
-                                $end_datetime = Carbon::createFromFormat('H:i', $end_time, $current_timezone);
-            
-                                if ($current_time->between($start_datetime, $end_datetime)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                    return false;
-                }
-            
-                return $livestream->publish_type === 'publish_now';
-            });
-
-
-
-            $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) use ($current_timezone) {
-
-              if ($livestream->publish_type === 'publish_now') {
-                  return $livestream->created_at;
-              } elseif ($livestream->publish_type === 'publish_later') {
-                  return $livestream->publish_time;
-              } elseif ($livestream->publish_type === 'schedule_program') {
-                  $program_start_times = json_decode($livestream->scheduler_program_start_time, true);
-          
-                  if ($program_start_times) {
-                      return Carbon::createFromFormat('H:i', $program_start_times[0], $current_timezone)->timestamp;
-                  }
-                  return $livestream->publish_time;
-              }
-          
-              return $livestream->publish_type;
-          })->values();
-            
-            return $livestreams_sort->take($homepage_input_array['limit']);
-
-          endif;
-
-          return $livestreams ;
-      }
-
+      endif;
+      return $livestreams ;
+  }
 
       
     private static function All_Homepage_user_generated_content($homepage_input_array){
