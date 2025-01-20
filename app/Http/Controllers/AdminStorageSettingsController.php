@@ -107,6 +107,7 @@ class AdminStorageSettingsController extends Controller
         $storage_settings->bunny_cdn_ftp_access_key = $request->bunny_cdn_ftp_access_key;
         $storage_settings->bunny_cdn_access_key = $request->bunny_cdn_access_key;
         $storage_settings->bunny_cdn_file_linkend_hostname = $request->bunny_cdn_file_linkend_hostname;
+        $storage_settings->bunny_cdn_base_url = $request->bunny_cdn_base_url;
         $storage_settings->flussonic_storage_site_base_url = $request->flussonic_storage_site_base_url;
         $storage_settings->flussonic_storage_username = $request->flussonic_storage_username;
         $storage_settings->flussonic_storage_password = $request->flussonic_storage_password;
