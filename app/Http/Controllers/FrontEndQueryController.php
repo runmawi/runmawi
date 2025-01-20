@@ -48,6 +48,7 @@ use App\Videoartist;
 use App\ContinueWatching;
 use App\CountryCode;
 use App\SeriesSeason;
+use App\StorageSetting;
 
 class FrontEndQueryController extends Controller
 {
@@ -95,6 +96,11 @@ class FrontEndQueryController extends Controller
         }
                     
         $this->check_Kidmode = !Auth::guest() && $this->Mode['user_type'] != null && $this->Mode['user_type'] == "Kids" ? 1 : 0 ;
+
+        $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
+
+        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('public/uploads') ;
+
         
     }
 
@@ -119,8 +125,8 @@ class FrontEndQueryController extends Controller
 
 
             $latest_videos = $latest_videos->latest()->get()->map(function ($item) {
-                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
         return $latest_videos ;
@@ -147,8 +153,8 @@ class FrontEndQueryController extends Controller
 
 
             $All_movies = $All_movies->latest()->get()->map(function ($item) {
-                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
         return $All_movies ;
@@ -175,8 +181,8 @@ class FrontEndQueryController extends Controller
 
 
             $latest_videos = $latest_videos->orderBy('title')->get()->map(function ($item) {
-                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image ;
-                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_vertical_image ;
+                $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url ;
                 return $item;
             });
         return $latest_videos ;
@@ -298,8 +304,8 @@ class FrontEndQueryController extends Controller
         $Series_based_on_category->each(function ($category) {
             $category->category_series->transform(function ($item) {
 
-                $item['image_url']        = !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
-                $item['Player_image_url'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : $this->default_horizontal_image_url ;
+                $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/images/'.$item->image) : $this->default_vertical_image_url ;
+                $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/images/'.$item->player_image ) : $this->default_horizontal_image_url ;
 
                 $item['upload_on'] =  Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
 
@@ -307,7 +313,7 @@ class FrontEndQueryController extends Controller
 
                 $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                         ->map(function ($item) {
-                                                            $item['image_url']  = !is_null($item->image) ? URL::to('public/uploads/images/'.$item->image) : $this->default_vertical_image_url ;
+                                                            $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $this->default_vertical_image_url ;
                                                             return $item;
                                                     });
 
@@ -335,11 +341,11 @@ class FrontEndQueryController extends Controller
                 ->map(function ($series) {
                     $series->id = $series->series_id;
                     $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
-                        ? URL::to('public/uploads/images/' . $series->image)
+                        ? $this->BaseURL.('/images/' . $series->image)
                         : $this->default_vertical_image;
     
                     $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
-                        ? URL::to('public/uploads/images/' . $series->player_image)
+                        ? $this->BaseURL.('/images/' . $series->player_image)
                         : $this->default_horizontal_image_url;
     
                     $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY');
@@ -352,9 +358,9 @@ class FrontEndQueryController extends Controller
                         ->get()->take(15)
                         ->map(function ($episode) {
                             $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
-                                ? URL::to('public/uploads/images/' . $episode->image)
+                                ? $this->BaseURL.('/images/' . $episode->image)
                                 : $this->default_vertical_image;
-                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? URL::to('public/uploads/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
+                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? $this->BaseURL.('/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
     
                             $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
                                 ->pluck('series_seasons_name')
@@ -457,9 +463,9 @@ class FrontEndQueryController extends Controller
                                         ->where('active', '1')
                                         ->where('status', 1)->latest()
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
-                                            $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $default_vertical_image_url ;
-                                            $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                            $item['tv_image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
+                                            $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $default_vertical_image_url ;
+                                            $item['Player_image_url'] = !is_null($item->player_image) ?  $this->BaseURL.('/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                            $item['tv_image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
                                             $item['description'] = $item->description ;
                                             $item['source']    = "Livestream";
                                             return $item;
@@ -1000,8 +1006,8 @@ class FrontEndQueryController extends Controller
             ->get()
             ->map(function ($category) {
                 $category->category_videos->map(function ($video) {
-                    $video->image_url = URL::to('/public/uploads/images/' . $video->image);
-                    $video->Player_image_url = URL::to('/public/uploads/images/' . $video->player_image);
+                    $video->image_url = $this->BaseURL.('s/images/' . $video->image);
+                    $video->Player_image_url = $this->BaseURL.('s/images/' . $video->player_image);
                     return $video;
                 });
                 $category->source = "category_videos";
@@ -1051,9 +1057,9 @@ class FrontEndQueryController extends Controller
 
         $epg_data =  AdminEPGChannel::where('status',1)->get()->map(function ($item) use ($default_vertical_image_url ,$default_horizontal_image_url , $carbon_now , $carbon_today , $current_timezone) {
                     
-                    $item['image_url'] = $item->image != null ? URL::to('public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
-                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
-                    $item['Logo_url'] = $item->logo != null ?  URL::to('public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+                    $item['image_url'] = $item->image != null ? $this->BaseURL.('/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+                    $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url;
+                    $item['Logo_url'] = $item->logo != null ?  $this->BaseURL.('/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
                                                         
                     $item['ChannelVideoScheduler_current_video_details']  =  ChannelVideoScheduler::where('channe_id',$item->id)->where('choosed_date' , $carbon_today )
                                                                                 ->get()->map(function ($item) use ($carbon_now , $current_timezone) {
@@ -1067,7 +1073,7 @@ class FrontEndQueryController extends Controller
                                                                                                                                     ->copy()->tz( $current_timezone );
 
                                                                                     if ($carbon_now->between($converted_start_time, $converted_end_time)) {
-                                                                                        $item['video_image_url'] = URL::to('public/uploads/images/'.$item->image ) ;
+                                                                                        $item['video_image_url'] = $this->BaseURL.('/images/'.$item->image ) ;
                                                                                         $item['converted_start_time'] = $converted_start_time->format('h:i A');
                                                                                         $item['converted_end_time']   =   $converted_end_time->format('h:i A');
                                                                                         return $item ;
@@ -1150,9 +1156,9 @@ class FrontEndQueryController extends Controller
             }
         
             $data = $data->latest()->limit(30)->get()->map(function ($item) {
-                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['image_url']          =  $item->image != null ?  $this->BaseURL.('s/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  $this->BaseURL.('/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  $this->BaseURL.('/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
                 $item['source_type']        = "Videos" ;
                 return $item;
             });
@@ -1187,9 +1193,9 @@ class FrontEndQueryController extends Controller
             }
 
             $livestreams_data = $livestreams_data->latest()->limit(30)->get()->map(function ($item){
-                                    $item['image_url'] = $item->image != null ? URL::to('/public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                                    $item['Player_image_url'] = $item->player_image != null ?  URL::to('/public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
-                                    $item['tv_image_url'] = $item->video_tv_image != null ? URL::to('/public/uploads/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
+                                    $item['image_url'] = $item->image != null ? $this->BaseURL.('s/images/'.$item->image) : default_vertical_image_url() ;
+                                    $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('s/images/'.$item->player_image) : default_horizontal_image_url() ;
+                                    $item['tv_image_url'] = $item->video_tv_image != null ? $this->BaseURL.('s/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
                                     $item['source']    = "Livestream";
                                     return $item;
                                 });
@@ -1231,9 +1237,9 @@ class FrontEndQueryController extends Controller
             }
     
             $data = $data->latest()->limit(30)->get()->map(function ($item) {
-                $item['image_url']          =  $item->image != null ?  URL::to('/public/uploads/images/'.$item->image) :  default_vertical_image_url() ;
-                $item['Player_image_url']   =  $item->player_image != null ?  URL::to('public/uploads/images/'.$item->player_image) :  default_horizontal_image_url() ;
-                $item['TV_image_url']       =  $item->video_tv_image != null ?  URL::to('public/uploads/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
+                $item['image_url']          =  $item->image != null ?  $this->BaseURL.('s/images/'.$item->image) :  default_vertical_image_url() ;
+                $item['Player_image_url']   =  $item->player_image != null ?  $this->BaseURL.('/images/'.$item->player_image) :  default_horizontal_image_url() ;
+                $item['TV_image_url']       =  $item->video_tv_image != null ?  $this->BaseURL.('/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
                 $item['source_type']        = "Videos" ;
                 return $item;
             });
