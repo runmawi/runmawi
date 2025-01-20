@@ -179,8 +179,7 @@
 <input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting">
 
 <script type="text/javascript">
-    $(document).ready(function () {
-
+    document.addEventListener('DOMContentLoaded', function() {
         $('.searches').on('keyup', function () {
             var query = $(this).val();
 
@@ -201,7 +200,8 @@
                 $('.search_list').html("");
             }
         });
-
+    });
+    document.addEventListener('DOMContentLoaded', function() {
         $(document).on('click', 'li', function () {
 
             var value = $(this).text();
