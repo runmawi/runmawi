@@ -4730,7 +4730,7 @@ public function verifyandupdatepassword(Request $request)
   
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
@@ -4746,8 +4746,6 @@ public function verifyandupdatepassword(Request $request)
             ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason ]
           );
         }
-
-      
 
       $response = array(
         'status' => 'true',
@@ -4899,7 +4897,7 @@ public function verifyandupdatepassword(Request $request)
 
        $response = array(
         'status' => 'false',
-        'message' => $th->getMessage()
+        'message' => "video has been added"
       );
 
       return response()->json($response, 500);
@@ -11117,7 +11115,7 @@ public function Adstatus_upate(Request $request)
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
         $mobile_homepage = MobileHomeSetting::first();
         $homesetting = HomeSetting::first();
-        
+        // dd($homesetting );
         $response = array(
           'status'  => 'true',
           'homesetting'=> $homesetting,
@@ -26232,7 +26230,7 @@ public function TV_login(Request $request)
   
   public function DeleteStation(Request $request){
     try {
-       
+        // dd($id);
        MusicStation::where('id',$request->id)->delete();
        UserMusicStation::where('station_id',$request->id)->delete();
        $response = array(
