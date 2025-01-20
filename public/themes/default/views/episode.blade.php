@@ -181,6 +181,48 @@
         z-index: 999;
         cursor: pointer;
     }
+
+
+    body.dark-theme .navbar-collapse {
+        background: transparent !important;
+    }
+    body.dark-theme .music-play-lists li:hover span {
+        color: <?php echo $GetDarkText; ?>!important;
+    }
+    body.dark-theme .share:hover .share-box a {
+        color: <?php echo $GetDarkText; ?>!important;
+    }
+    body.dark-theme .sectionArtists .artistHeading, body.dark-theme .sectionArtists .listItems .listItem .name{color: <?php echo $GetDarkText; ?>!important;}
+
+    body.light-theme h4, body.light-theme p, body.light-theme h3 body.light-theme li {
+        color: <?php echo GetLightText(); ?>!important;
+    }
+    body.light-theme .movie-rent h3.title-popup,body.light-theme .movie-rent h5{
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme label.text-white {
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme #price-display {
+        color: <?php echo GetDarkText(); ?>!important;
+    }
+    body.light-theme .bg-dark {
+        background-color: <?php echo GetLightBg(); ?>!important;
+    }
+    body.light-theme .name {
+        color: <?php echo GetLightText(); ?>;
+    }
+  
+    body.dark .modal.show .modal-dialog{background-color: <?php echo $GetLightBg; ?> !important;}
+    body.light-theme .share-box a{color: <?php echo $GetLightText; ?> !important;}
+    body.light-theme .share-box span{color: <?php echo $GetLightText; ?> !important;}
+
+
+    body.light-theme .your_watching{color: <?php echo $GetLightText; ?> !important;}
+    body.dark-theme .your_watching{color: <?php echo $GetDarkText; ?> !important;}
+
+
+
     a.epi-name.mt-3.mb-0.btn i{color: #fff !important;}
 
     @media (min-width:601px){
