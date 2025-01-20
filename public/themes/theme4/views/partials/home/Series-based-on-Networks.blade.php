@@ -5,7 +5,7 @@
         <section id="iq-trending-{{ $section_key }}" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12">
                                         
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -56,14 +56,22 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
+                                                                    @if ($multiple_compress_image == 1)
+                                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                                    @else
+                                                                        <img data-flickity-lazyload="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                                    @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
                                                                         </a>
 
                                                                         <nav>
-                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}">
+                                                                                <i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                         </nav>
 
                                                                         @php
@@ -120,7 +128,14 @@
                                             <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
+                                                        @if ($multiple_compress_image == 1)
+                                                            <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                        @else
                                                             <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                        @endif
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="row">
@@ -168,8 +183,12 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 7,
+            setGallerySize: true,
+            resize: true, 
         });
     });
+
+    flkty.reloadCells();
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
 

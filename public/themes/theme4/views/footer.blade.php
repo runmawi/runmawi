@@ -127,32 +127,22 @@
 
 
    <!-- jQuery, Popper JS -->
-   <!-- <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.4.1.min.js') ?>"></script> -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/popper.min.js') ?>"></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/popper.min.js" async></script>
    
    <!-- Bootstrap JS -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap.min.js') ?>"></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/bootstrap.min.js" async></script>
    
 
    <!-- select2 Js -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/select2.min.js') ?>"></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/select2.min.js" async></script>
    
    <!-- Magnific Popup-->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery.magnific-popup.min.js') ?>"></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery.magnific-popup.min.js" async></script>
    
 
     <!-- Custom JS-->
-    <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/custom.js') ?>" as="script">
-   <link rel="preload" href="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>" as="script">
-   <link rel="preload" href="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>" as="script">
+    <script src="https://e360tvmain.b-cdn.net/css/assets/js/custom.js" async></script>
 
-    <script src="<?= asset('public/themes/theme4/assets/js/custom.js') ?>"></script>
-    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.js' ?>"></script>
-    <script src="<?= URL::to('/') . '/assets/js/jquery.lazy.min.js' ?>"></script>
 
 <script>
     $(document).ready(function () {
