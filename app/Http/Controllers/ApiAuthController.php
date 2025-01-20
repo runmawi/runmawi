@@ -4900,7 +4900,7 @@ public function verifyandupdatepassword(Request $request)
         'message' => "video has been added"
       );
 
-      return ;
+      return response()->json($response, 500);
     }
   }
 
