@@ -4681,6 +4681,8 @@ public function verifyandupdatepassword(Request $request)
 
   public function add_payperview(Request $request)
   {
+    try {
+  
     $payment_type = $request->payment_type;
     $video_id = $request->video_id;
     $live_id = $request->live_id;
@@ -4728,7 +4730,7 @@ public function verifyandupdatepassword(Request $request)
   
         }else if(!empty($live_id) && $live_id != ''){
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
@@ -4744,8 +4746,6 @@ public function verifyandupdatepassword(Request $request)
             ['user_id' => $user_id ,'series_id' => $series_id,'season_id' => $season_id,'to_time' => $date ,'ppv_plan'=> $ppv_plan,'total_amount'=> $amount,'created_at'=>now(),'updated_at'=>now(), 'payment_gateway'=>$payment_type,'platform' => $platform,'payment_id' => $payment_id, 'status' => $status,  'payment_failure_reason' => $payment_failure_reason ]
           );
         }
-
-      
 
       $response = array(
         'status' => 'true',
@@ -4893,6 +4893,15 @@ public function verifyandupdatepassword(Request $request)
 
     return response()->json($response, 200);
 
+    } catch (\Throwable $th) {
+
+       $response = array(
+        'status' => 'false',
+        'message' => "video has been added"
+      );
+
+      return response()->json($response, 500);
+    }
   }
 
     public function AddPpvPaypal(Request $request)

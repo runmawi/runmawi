@@ -322,6 +322,12 @@ border-radius: 0px 4px 4px 0px;
                            </div>
                         </div>
 
+                        <div class="col-sm-6">
+                            <label class="">Bunny CDN Account BaseURL</label>
+                            <div class="panel-body" style="display: block;">
+                              <input type="text" class="form-control" name="bunny_cdn_base_url" id="bunny_cdn_base_url" value="@if(!empty($storage_settings->bunny_cdn_base_url)){{ $storage_settings->bunny_cdn_base_url }} @endif" />
+                           </div>
+                        </div>
                         <!-- <div class="col-sm-6">
                             <label class="">Bunny CDN Video Path</label>
                             <div class="panel-body" style="display: block;">
