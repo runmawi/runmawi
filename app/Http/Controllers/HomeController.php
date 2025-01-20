@@ -108,7 +108,7 @@ class HomeController extends Controller
 
         $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
 
-        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('/') ;
+        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('/public/uploads') ;
 
     }
 
@@ -953,8 +953,8 @@ class HomeController extends Controller
 
                                     ->latest('series.created_at')->get()->map(function ($item) {
 
-                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/public/uploads/images/'.$item->image) : default_vertical_image() ;
-                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
                             $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
 
@@ -962,7 +962,7 @@ class HomeController extends Controller
 
                             $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
-                                                                    $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                    $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
                                                                     return $item;
                                                                 });
                             $item['has_more'] = count($item['Series_depends_episodes']) > 14;
@@ -986,8 +986,8 @@ class HomeController extends Controller
                     $Series_based_on_category->each(function ($category) {
                         $category->category_series->transform(function ($item) {
 
-                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/public/uploads/images/'.$item->image) : default_vertical_image() ;
-                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                            $item['image_url']        = !is_null($item->image)  ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
+                            $item['Player_image_url'] = !is_null($item->player_image)  ? $this->BaseURL.('/images/'.$item->player_image ) : default_horizontal_image_url() ;
 
                             $item['upload_on'] =  Carbon\Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY');
 
@@ -995,7 +995,7 @@ class HomeController extends Controller
 
                             $item['Series_depends_episodes'] = Series::find($item->id)->Series_depends_episodes
                                                                     ->map(function ($item) {
-                                                                        $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/public/uploads/images/'.$item->image) : default_vertical_image() ;
+                                                                        $item['image_url']  = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : default_vertical_image() ;
                                                                         return $item;
                                                                 });
 
@@ -4425,9 +4425,9 @@ public function uploadExcel(Request $request)
 
         $epg_channel_data =  AdminEPGChannel::where('status',1)->where('id',$request->channel_id)->limit(15)->get()->map(function ($item )  use( $default_horizontal_image_url, $default_vertical_image_url ,$request , $current_timezone) {
 
-            $item['image_url'] = $item->image != null ? $this->BaseURL.('/public/uploads/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
-            $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('/public/uploads/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
-            $item['Logo_url'] = $item->logo != null ?  $this->BaseURL.('/public/uploads/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
+            $item['image_url'] = $item->image != null ? $this->BaseURL.('/EPG-Channel/'.$item->image ) : $default_vertical_image_url ;
+            $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('/EPG-Channel/'.$item->player_image ) : $default_horizontal_image_url ;
+            $item['Logo_url'] = $item->logo != null ?  $this->BaseURL.('/EPG-Channel/'.$item->logo ) : $default_vertical_image_url;
 
             $item['ChannelVideoScheduler']  =  ChannelVideoScheduler::where('channe_id',$request->channel_id)
 
