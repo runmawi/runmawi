@@ -66,7 +66,7 @@
                                                                     @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                            <button class="playBTN"><i class="fas fa-play"></i></button>
+                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
                                                                         </a>
 
                                                                         <nav>
@@ -173,55 +173,48 @@
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-        var flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7,
-            setGallerySize: true,
-            resize: true, 
-        });
+    // Initialize Flickity for each carousel
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 7,
+        setGallerySize: true,
+        resize: true,
     });
 
     flkty.reloadCells();
-    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
-
+    // Attach event listeners for items in the section
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
             var sectionIndex = this.getAttribute('data-section-index');
             var index = this.getAttribute('data-index');
 
-            // Remove current class from all items in this section
+            // Remove 'current' class from all items and add to the clicked one
             elem.querySelectorAll('.item').forEach(function(item) {
                 item.classList.remove('current');
             });
             this.classList.add('current');
 
-            // Hide all captions and thumbnails in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .caption').forEach(function(caption) {
-                caption.style.display = 'none';
-            });
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .thumbnail').forEach(function(thumbnail) {
-                thumbnail.style.display = 'none';
-            });
+            // Hide all captions, thumbnails, and sliders in the section
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .caption`).forEach(caption => caption.style.display = 'none');
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .thumbnail`).forEach(thumbnail => thumbnail.style.display = 'none');
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .network-based-depends-slider`).forEach(slider => slider.style.display = 'none');
 
-            // Hide all sliders in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .network-based-depends-slider').forEach(function(slider) {
-                slider.style.display = 'none';
-            });
-
-            
-            // Show the slider for the selected series
-            var selectedSlider = document.querySelector('#videoInfo-' + sectionIndex + ' .network-based-depends-slider[data-index="' + index + '"]');
+            // Show the selected slider and initialize it with Flickity
+            var selectedSlider = document.querySelector(`#videoInfo-${sectionIndex} .network-based-depends-slider[data-index="${index}"]`);
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
-                setTimeout(function() {
+
+                // Check if Flickity is already initialized, to avoid duplicate instances
+                if (!selectedSlider.classList.contains('flickity-enabled')) {
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
@@ -232,26 +225,31 @@
                         imagesLoaded: true,
                         lazyLoad: 7,
                     });
-                },0);
+                }
             }
 
-            var selectedCaption = document.querySelector('#videoInfo-' + sectionIndex + ' .caption[data-index="' + index + '"]');
-            var selectedThumbnail = document.querySelector('#videoInfo-' + sectionIndex + ' .thumbnail[data-index="' + index + '"]');
+            // Show the caption and thumbnail for the selected item
+            var selectedCaption = document.querySelector(`#videoInfo-${sectionIndex} .caption[data-index="${index}"]`);
+            var selectedThumbnail = document.querySelector(`#videoInfo-${sectionIndex} .thumbnail[data-index="${index}"]`);
             if (selectedCaption && selectedThumbnail) {
                 selectedCaption.style.display = 'block';
                 selectedThumbnail.style.display = 'block';
                 $('.depend-episode-modal-demd').show();
             }
 
-            document.getElementById('videoInfo-' + sectionIndex).style.display = 'flex';
+            // Ensure the video info section is visible
+            document.getElementById(`videoInfo-${sectionIndex}`).style.display = 'flex';
         });
     });
 });
+
+// Close dropdown functionality
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
         dropdown.style.display = 'none';
     });
+});
 });
 
 </script>
