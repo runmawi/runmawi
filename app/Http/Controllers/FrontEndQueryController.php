@@ -463,9 +463,9 @@ class FrontEndQueryController extends Controller
                                         ->where('active', '1')
                                         ->where('status', 1)->latest()
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
-                                            $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('s/images/'.$item->image) : $default_vertical_image_url ;
-                                            $item['Player_image_url'] = !is_null($item->player_image) ?  $this->BaseURL.('s/images/'.$item->player_image) : $default_horizontal_image_url ;
-                                            $item['tv_image_url'] = !is_null($item->image) ? $this->BaseURL.('s/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
+                                            $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $default_vertical_image_url ;
+                                            $item['Player_image_url'] = !is_null($item->player_image) ?  $this->BaseURL.('/images/'.$item->player_image) : $default_horizontal_image_url ;
+                                            $item['tv_image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->Tv_live_image) : $default_horizontal_image_url  ;
                                             $item['description'] = $item->description ;
                                             $item['source']    = "Livestream";
                                             return $item;
