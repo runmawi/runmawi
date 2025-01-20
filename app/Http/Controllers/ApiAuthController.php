@@ -4681,6 +4681,8 @@ public function verifyandupdatepassword(Request $request)
 
   public function add_payperview(Request $request)
   {
+    try {
+  
     $payment_type = $request->payment_type;
     $video_id = $request->video_id;
     $live_id = $request->live_id;
@@ -4893,6 +4895,15 @@ public function verifyandupdatepassword(Request $request)
 
     return response()->json($response, 200);
 
+    } catch (\Throwable $th) {
+
+       $response = array(
+        'status' => 'false',
+        'message' => $th->getMessage()
+      );
+
+      return response()->json($response, 500);
+    }
   }
 
     public function AddPpvPaypal(Request $request)
@@ -11106,7 +11117,7 @@ public function Adstatus_upate(Request $request)
         $homepage_order = OrderHomeSetting::select('id','header_name')->get()->toArray();
         $mobile_homepage = MobileHomeSetting::first();
         $homesetting = HomeSetting::first();
-        // dd($homesetting );
+        
         $response = array(
           'status'  => 'true',
           'homesetting'=> $homesetting,
@@ -26221,7 +26232,7 @@ public function TV_login(Request $request)
   
   public function DeleteStation(Request $request){
     try {
-        // dd($id);
+       
        MusicStation::where('id',$request->id)->delete();
        UserMusicStation::where('station_id',$request->id)->delete();
        $response = array(
