@@ -591,6 +591,12 @@ class RazorpayController extends Controller
             );
             $order  = $api->utility->verifyPaymentSignature($attributes);
 
+            $payment = $api->payment->fetch($request->rzp_paymentid);
+
+            if ($payment->status !== 'captured') {
+                $payment->capture(['amount' => $payment->amount]);
+            } 
+            $payment_status = $payment->status; 
 
             $video = LiveStream::where('id','=',$request->live_id)->first();
 
@@ -627,12 +633,12 @@ class RazorpayController extends Controller
             $purchase->total_amount = $request->get('amount')/100 ;
             $purchase->admin_commssion = $admin_commssion;
             $purchase->moderator_commssion = $moderator_commssion;
-            $purchase->status = 'active';
+            $purchase->status = $payment_status;
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->payment_id = $request->rzp_paymentid;
-            $purchase->payment_gateway= 'Razorpay';
+            $purchase->payment_gateway= 'razorpay';
             $purchase->save();
 
 
@@ -644,6 +650,9 @@ class RazorpayController extends Controller
             $livepurchase->amount = $request->get('amount')/100 ;
             $livepurchase->status = 1;
             $livepurchase->platform = 'website';
+            $livepurchase->payment_gateway = 'razorpay';
+            $livepurchase->payment_status = $payment_status;
+            $livepurchase->payment_id = $request->rzp_paymentid;
             $livepurchase->save();
 
             $respond=array(
@@ -1077,6 +1086,15 @@ class RazorpayController extends Controller
             $order  = $api->utility->verifyPaymentSignature($attributes);
             // dd($api->utility);
 
+
+            $payment = $api->payment->fetch($request->rzp_paymentid);
+
+            if ($payment->status !== 'captured') {
+                $payment->capture(['amount' => $payment->amount]);
+            } 
+            $payment_status = $payment->status; 
+
+
             $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
 
             $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
@@ -1135,13 +1153,13 @@ class RazorpayController extends Controller
             $purchase->total_amount = $request->amount /100 ;
             $purchase->admin_commssion = $admin_commssion;
             $purchase->moderator_commssion = $moderator_commssion;
-            $purchase->status = 'active';
+            $purchase->status =  $payment_status;
             $purchase->to_time = $to_time;
             $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
             $purchase->payment_id = $request->rzp_paymentid;
-            $purchase->payment_gateway= 'Razorpay';
+            $purchase->payment_gateway= 'razorpay';
             $purchase->save();
 
             $respond=array(

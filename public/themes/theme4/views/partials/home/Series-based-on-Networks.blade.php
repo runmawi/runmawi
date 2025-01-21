@@ -5,7 +5,7 @@
         <section id="iq-trending-{{ $section_key }}" class="s-margin">
             <div class="container-fluid pl-0">
                 <div class="row">
-                    <div class="col-sm-12 overflow-hidden">
+                    <div class="col-sm-12">
                                         
                         {{-- Header --}}
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
                                             <div>
-                                                <img src="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -56,14 +56,22 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img data-flickity-lazyload="{{ $episode->image_url }}" class="img-fluid lazy" alt="{{ $episode->title }}">
+                                                                    @if ($multiple_compress_image == 1)
+                                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                                    @else
+                                                                        <img data-flickity-lazyload="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                                    @endif
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                            <button class="playBTN"><i class="fas fa-play"></i></button>
+                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
                                                                         </a>
 
                                                                         <nav>
-                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}">
+                                                                                <i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                         </nav>
 
                                                                         @php
@@ -109,44 +117,46 @@
     <div class="depend-episode-modal-demd" style="display: none;">
         {{-- Networks depends Episode Modal --}}
         @foreach($data as $section_key => $series_networks)
-            @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
-                @foreach ($series->Series_depends_episodes as $episode_key => $episode)
-                    <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                            <div class="container">
-                                <div class="modal-content" style="border:none; background:transparent;">
-                                    <div class="modal-body">
-                                        <div class="col-lg-12">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    @if ($multiple_compress_image == 1)
-                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
-                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
-                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
-                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
-                                                    @else
-                                                        <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
-                                                    @endif
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="row">
-                                                        <div class="col-lg-10 col-md-10 col-sm-10">
-                                                            <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
-                                                        </div>
-
-                                                        <div class="col-lg-2 col-md-2 col-sm-2">
-                                                            <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
-                                                                <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                            </button>
-                                                        </div>
+            @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty())
+                @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
+                    @foreach ($series->Series_depends_episodes as $episode_key => $episode)
+                        <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                                <div class="container">
+                                    <div class="modal-content" style="border:none; background:transparent;">
+                                        <div class="modal-body">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        @if ($multiple_compress_image == 1)
+                                                            <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
+                                                                srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
+                                                                {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
+                                                        @else
+                                                            <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                        @endif
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                                <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
+                                                            </div>
 
-                                                    @if (optional($episode)->episode_description)
-                                                        <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
-                                                    @endif
+                                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                                <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
+                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
 
-                                                    <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                                        @if (optional($episode)->episode_description)
+                                                            <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
+                                                        @endif
 
+                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,57 +164,52 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 @endforeach
-            @endforeach
+            @endif
         @endforeach
     </div>
 @endif
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-        var flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7,
-        });
+    // Initialize Flickity for each carousel
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 7,
+        setGallerySize: true,
+        resize: true,
     });
-    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
+    flkty.reloadCells();
 
+    // Attach event listeners for items in the section
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
             var sectionIndex = this.getAttribute('data-section-index');
             var index = this.getAttribute('data-index');
 
-            // Remove current class from all items in this section
+            // Remove 'current' class from all items and add to the clicked one
             elem.querySelectorAll('.item').forEach(function(item) {
                 item.classList.remove('current');
             });
             this.classList.add('current');
 
-            // Hide all captions and thumbnails in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .caption').forEach(function(caption) {
-                caption.style.display = 'none';
-            });
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .thumbnail').forEach(function(thumbnail) {
-                thumbnail.style.display = 'none';
-            });
+            // Hide all captions, thumbnails, and sliders in the section
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .caption`).forEach(caption => caption.style.display = 'none');
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .thumbnail`).forEach(thumbnail => thumbnail.style.display = 'none');
+            document.querySelectorAll(`#videoInfo-${sectionIndex} .network-based-depends-slider`).forEach(slider => slider.style.display = 'none');
 
-            // Hide all sliders in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .network-based-depends-slider').forEach(function(slider) {
-                slider.style.display = 'none';
-            });
-
-            
-            // Show the slider for the selected series
-            var selectedSlider = document.querySelector('#videoInfo-' + sectionIndex + ' .network-based-depends-slider[data-index="' + index + '"]');
+            // Show the selected slider and initialize it with Flickity
+            var selectedSlider = document.querySelector(`#videoInfo-${sectionIndex} .network-based-depends-slider[data-index="${index}"]`);
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
                 setTimeout(function() {
@@ -221,23 +226,28 @@
                 },0);
             }
 
-            var selectedCaption = document.querySelector('#videoInfo-' + sectionIndex + ' .caption[data-index="' + index + '"]');
-            var selectedThumbnail = document.querySelector('#videoInfo-' + sectionIndex + ' .thumbnail[data-index="' + index + '"]');
+            // Show the caption and thumbnail for the selected item
+            var selectedCaption = document.querySelector(`#videoInfo-${sectionIndex} .caption[data-index="${index}"]`);
+            var selectedThumbnail = document.querySelector(`#videoInfo-${sectionIndex} .thumbnail[data-index="${index}"]`);
             if (selectedCaption && selectedThumbnail) {
                 selectedCaption.style.display = 'block';
                 selectedThumbnail.style.display = 'block';
                 $('.depend-episode-modal-demd').show();
             }
 
-            document.getElementById('videoInfo-' + sectionIndex).style.display = 'flex';
+            // Ensure the video info section is visible
+            document.getElementById(`videoInfo-${sectionIndex}`).style.display = 'flex';
         });
     });
 });
+
+// Close dropdown functionality
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
         dropdown.style.display = 'none';
     });
+});
 });
 
 </script>

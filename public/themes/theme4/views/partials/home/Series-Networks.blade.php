@@ -1,7 +1,7 @@
 @php
-    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
-                $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url,$BaseURL) {
+                $item['image_url'] = $item->image != null ? $BaseURL.('/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+                $item['banner_image_url'] = $item->banner_image != null ?  $BaseURL.('/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
                 $Series = App\Series::select(
                                 'id', 'title', 'slug', 'access', 'active', 'ppv_status', 'featured', 'duration', 'image',
@@ -12,10 +12,10 @@
                             ->where('network_id', 'LIKE', '%"'.$item->id.'"%')
                             ->latest();
 
-                            $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url) {
-                                $seriesItem['image_url'] = $seriesItem->image != null ? URL::to('public/uploads/images/' . $seriesItem->image) : $default_vertical_image_url;
-                                $seriesItem['Player_image_url'] = $seriesItem->player_image != null ? URL::to('public/uploads/images/' . $seriesItem->player_image) : $default_horizontal_image_url;
-                                $seriesItem['TV_image_url'] = $seriesItem->tv_image != null ? URL::to('public/uploads/images/' . $seriesItem->tv_image) : @$default_horizontal_image_url;
+                            $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url,$BaseURL) {
+                                $seriesItem['image_url'] = $seriesItem->image != null ? $BaseURL.('/images/' . $seriesItem->image) : $default_vertical_image_url;
+                                $seriesItem['Player_image_url'] = $seriesItem->player_image != null ? $BaseURL.('/images/' . $seriesItem->player_image) : $default_horizontal_image_url;
+                                $seriesItem['TV_image_url'] = $seriesItem->tv_image != null ? $BaseURL.('/images/' . $seriesItem->tv_image) : @$default_horizontal_image_url;
 
                                 $seriesItem['season_count'] = App\SeriesSeason::where('series_id', $seriesItem->id)->count();
                                 $seriesItem['episode_count'] = App\Episode::where('series_id', $seriesItem->id)->count();
@@ -35,7 +35,7 @@
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+                <div class="col-sm-12">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -49,7 +49,7 @@
                                 @foreach ($data as $key => $series_networks)
                                     <div class="item" data-index="{{ $key }}">
                                         <div>
-                                            <img src="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
+                                            <img data-flickity-lazyload="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
                                     </div>
                                 @endforeach
@@ -83,19 +83,19 @@
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img data-flickity-lazyload="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos">                                                                                <div class="controls">
-                                                                
-                                                                <a href="{{ route('network.play_series',$series_details->slug) }}">
-                                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                            <img data-flickity-lazyload="{{ $series_details->image ?  $BaseURL.('/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos"> 
+                                                            <div class="controls">
+                                                                <a href="{{ route('network.play_series', $series_details->slug) }}">
+                                                                        <i class="playBTN fas fa-play"></i>
                                                                 </a>
-
-                                                                <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
-                                                                
-                                                                <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                    <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $series_details->season_count ." Seasons ".$series_details->episode_count .' Episodes' }}</span> <br>
-                                                                    {{ optional($series_details)->title   }}
+                                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key }}">
+                                                                    <i class="fas fa-info-circle"></i>
+                                                                    <span>More info</span>
+                                                                </button>
+                                                                <p class="trending-dec">
+                                                                    <span class="season_episode_numbers">{{ $series_details->season_count . " Seasons " . $series_details->episode_count . ' Episodes' }}</span><br>
+                                                                    {{ optional($series_details)->title }}
                                                                 </p>
-                                                                
                                                             </div>
                                                         </div>
                                                     </a>
@@ -138,7 +138,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
+                                                    <img class="lazy" src="{{ $BaseURL.('/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -190,6 +190,8 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 7,
+            setGallerySize: true,
+            resize: true, 
         });
 
 
@@ -252,3 +254,54 @@ $('body').on('click', '.drp-close', function() {
 
 </script>
 
+<style>
+    .controls {
+    position: absolute;
+    padding: 4px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    opacity: 0;
+    transition: all .15s ease;
+    display: flex;
+}
+
+.playBTN {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    border: none;
+    background-color: rgba(51, 51, 51, 0.4);
+    transition: background-color .15s ease;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+}
+
+.playBTN i {
+    position: relative;
+    left: 2px;
+}
+.moreBTN{
+    position: absolute;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    right: 4px;
+    top: 4px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+}
+</style>

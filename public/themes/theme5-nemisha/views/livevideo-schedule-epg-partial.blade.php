@@ -22,12 +22,12 @@
                                 }
                             @endphp
 
-                            <div class="program-item d-flex align-items-center mb-3">
+                            <div class="program-item d-flex align-items-center">
                                 <div class="time-section">
                                     <p>{{ $startTime->format('h:i A') }} to {{ $endTime->format('h:i A') }} </p>
                                 </div>
                                 <div class="title-section text-left">
-                                    <h6 class="px-3" >{{ $title }}</h6>
+                                    <h6 style="color: #ffffff !important;" class="px-3" >{{ $title }}</h6>
                                 </div>
                             </div>
                         @endif
@@ -39,7 +39,7 @@
                 <p>No program data available.</p>
             @endisset
         @elseif ($Livestream_details->publish_type == 'publish_now')
-            <div class="program-item d-flex align-items-center mb-3">
+            <div class="program-item d-flex align-items-center">
                 <div class="time-section">
                     <p>12:00 AM to 11:59 PM </p>
                 </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             @elseif ($Livestream_details->publish_type == 'publish_later')
-            <div class="program-item d-flex align-items-center mb-3">
+            <div class="program-item d-flex align-items-center">
                 <div class="time-section text-left me-3">
                     <div class="time-section">
                         @php

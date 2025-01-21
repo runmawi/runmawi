@@ -320,6 +320,75 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                             </div>
                         </div>
                       
+                            <div class="col-6 mb-3">
+                              <?php foreach($season as $key => $seasons): ?>
+                                  <div class="episodes_div season_<?= $seasons->id;?>">
+                                      <?php
+                                      // Calculate episode play access inside the loop
+                                        if (Auth::check()) {
+                                            $ppv_purchase_user = App\PpvPurchase::where('user_id', Auth::user()->id)
+                                                                ->select('user_id', 'season_id')
+                                                                ->get()
+                                                                ->map(function ($item) {
+                                                                    $payment_status = null;
+
+                                                                    if ($item->payment_gateway == "Stripe") {
+                                                                        $payment_status = 'succeeded';
+                                                                    } elseif ($item->payment_gateway == "razorpay") {
+                                                                        $payment_status = 'captured';
+                                                                    }
+
+                                                                    // Include the record only if status matches and it's not failed
+                                                                    if ($payment_status !== null && $item->status === $payment_status) {
+                                                                        return $item;
+                                                                    }
+
+                                                                    return null;
+                                                                })->first();
+
+                                                // $ppv_purchase = App\PpvPurchase::where('season_id','=',$seasons->id)->orderBy('created_at', 'desc')
+                                                // ->where('user_id', Auth::user()->id)
+                                                // ->first();
+                                        
+                                                // if(!empty($ppv_purchase) && !empty($ppv_purchase->to_time)){
+                                                //     $new_date = \Carbon\Carbon::parse($ppv_purchase->to_time)->format('M d , y H:i:s');
+                                                //     $currentdate = date("M d , y H:i:s");
+                                                //     $ppv_exists_check_query = $new_date > $currentdate ?  1 : 0;
+                                                // }
+                                                // else{
+                                                //     $ppv_exists_check_query = 0;
+                                                // }    
+
+
+                                                $current_date = \Carbon\Carbon::now()->format('Y-m-d H:i:s a');
+                                                $ppv_purchase = App\PpvPurchase::where('season_id', $seasons->id)
+                                                                                ->where('user_id', Auth::user()->id)
+                                                                                ->where('to_time', '>', $current_date)
+                                                                                ->orderBy('created_at', 'DESC')
+                                                                                ->get()
+                                                                                ->map(function ($item) {
+                                                                                    $payment_status = null;
+                                                                                    if ($item->payment_gateway == "Stripe") {
+                                                                                        $payment_status = 'succeeded';
+                                                                                    } elseif ($item->payment_gateway == "razorpay") {
+                                                                                        $payment_status = 'captured';
+                                                                                    }
+                                                                                    if ($payment_status !== null) {
+                                                                                        if ($item->status === $payment_status) {
+                                                                                            return $item;
+                                                                                        }
+                                                                                        return null; 
+                                                                                    }
+                                                                                    return $item;
+                                                                                })->first();
+
+                                                // dd($ppv_purchase);
+
+                                            
+                                            $ppv_exists_check_query = !empty($ppv_purchase) ? 1 : 0;
+
+                                    
+                                                // dd($ppv_exists_check_query);
                            
 
 					</div>

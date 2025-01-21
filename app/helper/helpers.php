@@ -51,6 +51,15 @@ function albumfavorite($album_id)
 }
 
 }
+
+function radiofavorite($live_id)
+{
+    if (!Auth::guest()) {
+        $favorite = App\Favorite::where('user_id', Auth::user()->id)->where('live_id', $live_id)->first();
+        return isset($favorite->id) ? "active" : "";
+    }
+    return "";
+}
    
 function productImagePath($image_name)
 {
@@ -2112,4 +2121,16 @@ function Enable_Video_Compression()
 function videocipher_Key(){
     $videocipher_ApiKey = App\StorageSetting::pluck('videocipher_ApiKey')->first();
     return  $videocipher_ApiKey; 
+}
+
+
+function payment_status($item) {
+    switch ($item ? $item->payment_gateway : null) {
+        case 'razorpay':
+            return 'captured';  
+        case 'Stripe':
+            return 'succeeded';  
+        default:
+            return null;  
+    }
 }

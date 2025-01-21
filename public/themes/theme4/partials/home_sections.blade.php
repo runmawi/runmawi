@@ -7,6 +7,10 @@
                               'default_vertical_image_url' => $default_vertical_image_url,
                               'default_horizontal_image_url' => $default_horizontal_image_url,
                          ];
+
+$BunnyCDNEnable = App\StorageSetting::pluck('bunny_cdn_storage')->first();
+$BaseURL = $BunnyCDNEnable == 1 ? App\StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('public/uploads') ;
+                
 @endphp
 
 @forelse ($order_settings as $key => $item) 
@@ -20,7 +24,7 @@
      @endif
      
      @if(  $item->video_name == 'live_videos' && $home_settings->live_videos == 1 )             {{-- live videos --}}
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream]) )->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/live-videos', array_merge($homepage_array_data, ['data' => $livetream, 'BaseURL' => $BaseURL]) )->content() !!}
      @endif
      
      @if(  $item->video_name == 'videoCategories' && $home_settings->videoCategories == 1 )     {{-- video Categories --}} 
@@ -132,11 +136,11 @@
      @endif
      
      @if( $Series_Networks_Status == 1 &&  $item->video_name == 'Series_Networks' && $home_settings->Series_Networks == 1 )      {{-- Series Networks --}} 
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data )->content() !!}
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-Networks', $homepage_array_data , ['BaseURL' => $BaseURL] )->content() !!}
      @endif
-     
-     @if(  $Series_Networks_Status == 1 &&   $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1 )      {{-- Series based on Networks--}} 
-          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data , ['data' => $Series_based_on_Networks ]) )->content() !!}
+
+     @if($Series_Networks_Status == 1 && $item->video_name == 'Series_based_on_Networks' && $home_settings->Series_based_on_Networks == 1)
+          {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/Series-based-on-Networks', array_merge($homepage_array_data, ['data' => $Series_based_on_Networks]))->content() !!}
      @endif
      
      @if(   $item->video_name == 'Leaving_soon_videos' && $home_settings->Leaving_soon_videos == 1 )     
@@ -150,3 +154,4 @@
 @empty
 
 @endforelse
+

@@ -442,7 +442,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // search
     Route::get('search', 'HomeController@search');
-    Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
+    // Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
     Route::post('/searchResult', 'HomeController@searchResult');
 
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
@@ -1686,6 +1686,7 @@ Route::get('/callback/{provider}', 'GoogleLoginController@callback');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/load-more-series-networks',  'HomeController@loadMore')->name('load.more.series.networks');
 Route::get('/Plancountry', 'AdminUsersController@PlanCountry');
 
     // CPP Payment
@@ -3083,5 +3084,5 @@ Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('adm
 // Unassigned episodes assign
 Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisodes')->name('season.unassigned_episodes');
 Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
-Route::post('/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
-Route::post('datafree/radio-favorite', 'LiveStreamController@add_favorite')->name('radio-favorite');
+Route::post('/toggle-favorite','LiveStreamController@toggleFavorite')->name('toggle.favorite');
+Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');

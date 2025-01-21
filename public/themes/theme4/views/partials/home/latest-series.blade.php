@@ -17,7 +17,7 @@
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0">
             <div class="row">
-                <div class="col-sm-12 overflow-hidden">
+                <div class="col-sm-12">
                                     
                                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
@@ -69,11 +69,18 @@
                                                 <div class="depend-items">
                                                 <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                     <div class=" position-relative">
-                                                        <img data-flickity-lazyload="{{ $episode_details->image_url }}" class="img-fluid" alt="{{ $episode_details->title }}">  
+                                                        @if ($multiple_compress_image == 1)
+                                                            <img class="flickity-lazyloaded" alt="{{ $episode_details->title }}" src="{{ $episode_details->player_image_url }}"
+                                                                srcset="{{ $episode_details->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w')) : $episode_details->player_image_url }},
+                                                                {{ $episode_details->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') : $episode_details->player_image_url }},
+                                                                {{ $episode_details->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') : $episode_details->player_image_url }}" >
+                                                        @else
+                                                            <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                        @endif
                                                         <div class="controls">
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
-                                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                                <i class="playBTN fas fa-play"></i>
                                                             </a>
 
                                                             <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
@@ -124,7 +131,14 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img class="lazy" src="{{ $episode_details->player_image_url }}" alt="{{ $episode_details->title }}">
+                                                @if ($multiple_compress_image == 1)
+                                                    <img class="flickity-lazyloaded" alt="{{ $episode_details->title }}" src="{{ $episode_details->player_image_url }}"
+                                                        srcset="{{ $episode_details->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode_details->responsive_image.' 860w')) : $episode_details->player_image_url }},
+                                                        {{ $episode_details->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') : $episode_details->player_image_url }},
+                                                        {{ $episode_details->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') : $episode_details->player_image_url }}" >
+                                                @else
+                                                    <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                @endif
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -171,6 +185,8 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 6,
+            setGallerySize: true,
+            resize: true,   
         });
 
         

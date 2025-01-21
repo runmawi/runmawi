@@ -25,29 +25,7 @@
 
             // Video Category Banner
 
-   $VideoCategory_id = App\VideoCategory::where('in_home',1)->where('banner', 1)->pluck('id')->toArray();
-
-   $VideoCategory_banner = App\Video::join('categoryvideos', 'categoryvideos.video_id', '=', 'videos.id')
-                              ->whereIn('category_id', $VideoCategory_id)->where('videos.active', 1)->where('videos.status', 1)
-                              ->where('videos.draft', 1)->where('videos.banner', 0);   
-
-                           if ($getfeching != null && $getfeching->geofencing == 'ON') {
-                              $VideoCategory_banner = $VideoCategory_banner->whereNotIn('videos.id', Block_videos());
-                           }
-
-                           if ($check_Kidmode == 1) {
-                              $VideoCategory_banner = $VideoCategory_banner->whereBetween('videos.age_restrict', [0, 12]);
-                           }
-
-                           if ($videos_expiry_date_status == 1) {
-                              $VideoCategory_banner = $VideoCategory_banner->where(function ($query) {
-                                 $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-                              });
-                           }
-
-   $VideoCategory_banner = $VideoCategory_banner->latest('videos.created_at')->limit(15)->get();
-
-     
+  
 
    $continue_watching = array(
                               'Video_cnt'    => $VideoJsContinueWatching,
@@ -205,6 +183,47 @@
 </style>
 
 <script>
+   let isFetching = false; 
+   let scrollFetch;
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         let page_url = $("#home_sections").attr('next-page-url');
+
+         if (page_url != null && !isFetching) {
+            isFetching = true;
+            $("#loader").removeClass("hidden-loader");
+            console.log("second loader...");
+            
+
+            $.ajax({
+               url: page_url,
+               success: function (data) {
+                  if (data.view) {
+                     // Append the data from the second script
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  } else {
+                     // If no more pages, remove the URL to stop further requests
+                     $("#home_sections").removeAttr('next-page-url');
+                  }
+               },
+               complete: function () {
+                  isFetching = false; // Allow second script to trigger again
+                  if ($("#home_sections").attr('next-page-url') == null) {
+                     $("#loader").addClass("hidden-loader");
+                  }
+               }
+            });
+         }
+      }, 10);
+   });
+</script>
+
+
+<script>
    window.onload = function() {
       const sidenav = document.querySelector('.sidenav');
       const rightnav = document.querySelector('.rightnav');
@@ -229,41 +248,8 @@
          main.style.marginRight = '0px';
       }
    };
-      
-   var isFetching = false; 
-   var scrollFetch; 
 
-   $(window).scroll(function () {
-      clearTimeout(scrollFetch);
-
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#home_sections").attr('next-page-url');
-         // console.log("scrolled");
-
-         if (page_url != null && !isFetching) {
-            isFetching = true;
-            $("#loader").removeClass("hidden-loader");
-
-            $.ajax({
-               url: page_url,
-               success: function (data) {
-                  if (data.view) {
-                     $("#home_sections").append(data.view);
-                     $("#home_sections").attr('next-page-url', data.url);
-                  } else {
-                     $("#home_sections").removeAttr('next-page-url');
-                  }
-               },
-               complete: function () {
-                  isFetching = false;
-                  if ($("#home_sections").attr('next-page-url') == null) {
-                     $("#loader").addClass("hidden-loader");
-                  }
-               }
-            });
-         }
-      }, 10);
-   });
+   
 
    // width and height set dynamically
    document.addEventListener('DOMContentLoaded', function() {

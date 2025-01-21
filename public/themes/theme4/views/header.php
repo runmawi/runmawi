@@ -51,7 +51,6 @@
     <?php
 
       $settings = App\Setting::first();
-   
       $dynamic_page = App\Page::where('slug', '=', $request_url)->first();
 
       $SiteMeta_page = App\SiteMeta::where('page_slug', '=', $request_url)->first(); 
@@ -201,116 +200,88 @@
    <?php } ?>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
+   <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/flickity.css" as="style" onload="this.rel='stylesheet'">
+   <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/flickity.css"></noscript>
+
+
+    <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/style.css"></noscript>
 
   
-   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>" as="style" onload="this.rel='stylesheet'">
-   <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/flickity.css') ?>"></noscript>
-
-   <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>" as="style" onload="this.rel='stylesheet'">
-   <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/style.css') ?>"></noscript>
-
-   <!-- Preload Font -->
-   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style" crossorigin="anonymous">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" crossorigin="anonymous">
-
    <!-- JavaScript -->
-   <script src="<?= asset('public/themes/theme4/assets/js/flickity.pkgd.min.js') ?>" async ></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/flickity.pkgd.min.js" async ></script>
 
-   <link rel="preload" fetchpriority="high" href="https://dev.e360tv.com/public/uploads/images/series_1716490979.webp" as="image">
-
+   
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
-    <!-- Typography CSS -->
-       <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>" as="style" onload="this.rel='stylesheet'">
-       <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/typography.css') ?>"></noscript>
- 
+   
    <!-- Bootstrap CSS -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/bootstrap.min.css') ?>"></noscript>
+      <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/bootstrap.min.css"></noscript>
 
    <!-- Responsive -->
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/responsive.css') ?>"></noscript>
+      <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/responsive.css" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/responsive.css"></noscript>
+      
+       <!-- Typography CSS -->
+       <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/typography.css" as="style" onload="this.rel='stylesheet'">
+       <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/typography.css"></noscript>
+ 
 
    <!-- Remixicon -->
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"></noscript>
       
       <!-- Font awesome -->
-      <link rel="preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"></noscript>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css"></noscript>
 
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/variable.css') ?>"></noscript>
-      
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/animate.min.css') ?>"></noscript>
-      
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/magnific-popup.css.css') ?>"></noscript>
-      
-      <link rel="preload" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>" as="style" onload="this.rel='stylesheet'">
-      <noscript><link rel="stylesheet" href="<?= URL::to('public/themes/theme4/assets/css/dark.css') ?>"></noscript>
+      <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css" as="style" onload="this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css"></noscript>
 
    
-    <script src="<?= asset('public/themes/theme4/assets/js/jquery-3.5.1.min.js') ?>" async></script>
+    <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery-3.5.1.min.js" async></script>
 
     
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
     
-   <script type="text/javascript">
-      //	window.addEventListener("resize", function() {
-      //		"use strict"; window.location.reload(); 
-      //	});
+    <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // Prevent closing dropdown on clicking inside
+    document.querySelectorAll('.dropdown-menu').forEach((element) => {
+      element.addEventListener('click', (e) => e.stopPropagation());
+    });
 
-      document.addEventListener("DOMContentLoaded", function(){
+    // Check for smaller screens
+    if (window.innerWidth < 992) {
+      // Close all submenus when the parent dropdown is hidden
+      document.querySelectorAll('.navbar .dropdown').forEach((dropdown) => {
+        dropdown.addEventListener('hidden.bs.dropdown', () => {
+          dropdown.querySelectorAll('.submenu').forEach((submenu) => {
+            submenu.style.display = 'none'; // Hide submenu
+          });
+        });
+      });
 
-         /////// Prevent closing from click inside dropdown
-         document.querySelectorAll('.dropdown-menu').forEach(function(element){
-            element.addEventListener('click', function (e) {
-            e.stopPropagation();
-            });
-         })
+      // Toggle submenus on click
+      document.querySelectorAll('.dropdown-menu a').forEach((link) => {
+        link.addEventListener('click', function (e) {
+          const nextEl = this.nextElementSibling;
 
-         // make it as accordion for smaller screens
-         if (window.innerWidth < 992) {
-
-            // close all inner dropdowns when parent is closed
-            document.querySelectorAll('.navbar .dropdown').forEach(function(everydropdown){
-               everydropdown.addEventListener('hidden.bs.dropdown', function () {
-                  // after dropdown is hidden, then find all submenus
-                  this.querySelectorAll('.submenu').forEach(function(everysubmenu){
-                     // hide every submenu as well
-                     everysubmenu.style.display = 'none';
-                  });
-               })
-            });
-            
-            document.querySelectorAll('.dropdown-menu a').forEach(function(element){
-               element.addEventListener('click', function (e) {
-         
-                  let nextEl = this.nextElementSibling;
-                  if(nextEl && nextEl.classList.contains('submenu')) {	
-                     // prevent opening link if link needs to open dropdown
-                     e.preventDefault();
-                     // console.log(nextEl);
-                     if(nextEl.style.display == 'block'){
-                        nextEl.style.display = 'none';
-                     } else {
-                        nextEl.style.display = 'block';
-                     }
-
-                  }
-               });
-            })
-         }
-         // end if innerWidth
-
-      }); 
-   </script>
+          // Check if the next sibling is a submenu
+          if (nextEl && nextEl.classList.contains('submenu')) {
+            e.preventDefault(); // Prevent default link behavior
+            nextEl.style.display = nextEl.style.display === 'block' ? 'none' : 'block';
+          }
+        });
+      });
+    }
+  });
+</script>
 
     <?php 
       if(count($Script) > 0){
@@ -1022,7 +993,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                      <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
                         <link rel="preload" href="<?= $admin_advertistment_banners->top_image_url ?>" as="image">
                         <div class="col-sm-9 mx-auto header_top_position_img">
-                           <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="857" height="32" /> 
+                           <img class="img-fluid flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="857" height="32" /> 
                         </div>
                      <?php endif ;?>
                      
@@ -1051,7 +1022,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <!-- <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button> -->
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= front_end_logo() ?>" /> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= front_end_logo() ?>" width="<?=  $settings->logo_width; ?>" height="<?=  $settings->logo_height; ?>" /> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
@@ -1950,7 +1921,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <input type="text" class="text search-input font-size-12 searches"
                                                       placeholder="type here to search..." name="search" >
                                                    <i class="search-link ri-search-line"></i>
-                                                   <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
+                                                   <?php  
+                                                      // include 'public/themes/theme4/partials/Search_content.php'; 
+                                                   ?>
                                                 </div>
                                              </form>
                                           </div>
@@ -2476,67 +2449,51 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 }
 
    </style>
-   <script>
-      $(document).ready(function () {
-   //  console.log("document is ready");
-    $('[data-toggle="offcanvas"], #navToggle').on('click', function () {
-        $('.offcanvas-collapse').toggleClass('open')
-    })
-});
-window.onload = function () {
-   //  console.log("window is loaded");
-};
-   </script>
-   
-   <script>
-  let changeIcon = function(icon) {
-    if (icon.classList.contains('fa-bars')) {
-      // If 'fa-bars' is present, replace it with 'fa-times'
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
-    } else {
-      // If 'fa-bars' is not present, replace it with 'fa-bars'
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
+
+<script>
+  // Document ready equivalent in vanilla JS
+  document.addEventListener('DOMContentLoaded', function () {
+    // Toggle offcanvas functionality
+    document.querySelectorAll('[data-toggle="offcanvas"], #navToggle').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        document.querySelector('.offcanvas-collapse').classList.toggle('open');
+      });
+    });
+
+    // Automatically fade out the header image after 4 seconds
+    setTimeout(function () {
+      const headerImage = document.querySelector('.header_top_position_img');
+      if (headerImage) {
+        headerImage.style.transition = 'opacity 0.3s';
+        headerImage.style.opacity = '0';
+        setTimeout(() => headerImage.style.display = 'none', 300); // Fully hide after fade out
+      }
+    }, 4000);
+  });
+
+  // Change icon dynamically
+  const changeIcon = function (icon) {
+    if (icon) {
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    }
+  };
+
+  // Theme toggle functionality
+  document.getElementById('toggle').addEventListener('change', function (e) {
+    const isChecked = e.target.checked;
+    document.body.classList.toggle('light-theme', isChecked);
+    location.reload(true); // Reload the page to apply the theme changes (if necessary)
+  });
+
+  // Navbar flex toggle
+  function toggleNavbarFlex() {
+    const navbarList = document.getElementById('navbarList');
+    if (navbarList) {
+      navbarList.classList.toggle('navbar-list-flex');
     }
   }
-
-  window.onload = function () {
-      setTimeout(function () {
-         $(".header_top_position_img").fadeOut('fast');
-      }, 4000);
-   };
-
 </script>
-
-
-<input type="checkbox" id="toggle" style="display:none;">
-
-<script>
-    const toggle = document.getElementById('toggle');
-    const body = document.body;
-
-    toggle.addEventListener('input', (e) => {
-
-        const isChecked = e.target.checked;
-
-        if (isChecked) {
-            body.classList.add('light-theme');
-            location.reload(true);
-        } else {
-            body.classList.remove('light-theme');
-            location.reload(true);
-        }
-    });
-</script>
-<script>
-      function toggleNavbarFlex() {
-      var navbarList = document.getElementById('navbarList');
-      navbarList.classList.toggle('navbar-list-flex');
-      }
-</script>
-
-
 <!-- <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const ids = [ 'down-live', 'down-network', 'down-series'];

@@ -33,8 +33,11 @@ class AdminNetworkController extends Controller
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
                 $item['series'] = Series::all()->filter(function ($series) use ($item) {
                     $networkIds = json_decode($series->network_id, true);
+
+                    if (!is_array($networkIds)) {
+                        return false;
+                    }
             
-                    // Check if the current network_id exists in the network_ids array
                     if (in_array($item->id, $networkIds)) {
                         $order = DB::table('series_network_order')
                             ->where('network_id', $item->id)
