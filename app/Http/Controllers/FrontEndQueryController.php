@@ -355,7 +355,9 @@ class FrontEndQueryController extends Controller
                     $season_ids = SeriesSeason::where('series_id',$series->id)->pluck('id');
     
                     $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->whereIn('season_id',$season_ids)->where('active',1)
-                        ->get()->take(15)
+                        ->latest()
+                        ->take(15)
+                        ->get()
                         ->map(function ($episode) {
                             $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
                                 ? $this->BaseURL.('/images/' . $episode->image)
