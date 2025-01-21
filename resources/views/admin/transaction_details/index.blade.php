@@ -98,7 +98,7 @@
                                                         @if ($transaction->status == 1)
                                                         <td class="bg-success">Success</td>
                                                         @else
-                                                            <td class="{{ $transaction->status == 'captured' || $transaction->status == 'authorized' ? 'bg-success' : ($transaction->status == 'failed'  ? 'bg-danger' : '') }}">
+                                                            <td class="{{ $transaction->status == 'captured' || $transaction->status == 'succeeded' || $transaction->status == 'authorized' ? 'bg-success' : ($transaction->status == 'failed'  ? 'bg-danger' : '') }}">
                                                                 {{ $transaction->status ?: 'N/A' }}
                                                             </td>
                                                         @endif
@@ -118,14 +118,11 @@
                                                             data-placement="top" title="" data-original-title="View"
                                                             href="{{ route('admin.transaction-details.show', $transaction->unique_id) }}"><img
                                                                 class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/view.svg'; ?>"></a>
-
-                                                        @if ($transaction->created_at == $transaction->updated_at)
                                                             <a class="iq-bg-success" data-toggle="tooltip"
                                                                 data-placement="top" title=""
                                                                 data-original-title="Edit"
                                                                 href="{{ route('admin.transaction-details.edit', $transaction->unique_id) }}"><img
                                                                     class="ply" src="<?php echo URL::to('/') . '/assets/img/icon/edit.svg'; ?>"></a>
-                                                        @endif
                                                     </td>
                                                 </tr>
                                             @else
