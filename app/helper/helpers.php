@@ -51,6 +51,15 @@ function albumfavorite($album_id)
 }
 
 }
+
+function radiofavorite($live_id)
+{
+    if (!Auth::guest()) {
+        $favorite = App\Favorite::where('user_id', Auth::user()->id)->where('live_id', $live_id)->first();
+        return isset($favorite->id) ? "active" : "";
+    }
+    return "";
+}
    
 function productImagePath($image_name)
 {

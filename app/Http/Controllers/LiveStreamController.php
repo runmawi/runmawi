@@ -1532,20 +1532,26 @@ class LiveStreamController extends Controller
         }   
     }
 
-    public function add_favorite(Request $request)
+    public function toggleFavorite(Request $request)
     {
-        $audio_id = $request->get('audio_id');
-        if($audio_id){
-            $favorite = Favorite::where('user_id', '=', Auth::user()->id)->where('audio_id', '=', $audio_id)->first();
-            if(isset($favorite->id)){ 
-                $favorite->delete();
-            } else {
-                $favorite = new Favorite;
-                $favorite->user_id = Auth::user()->id;
-                $favorite->audio_id = $audio_id;
-                $favorite->save();
-                echo $favorite;
-            }
+        if (!Auth::check()) {
+            return response()->json(['status' => 'unauthenticated'], 401);
+        }
+
+        $userId = Auth::id();
+        $liveId = $request->input('live_id');
+
+        $favorite = Favorite::where('user_id', $userId)->where('live_id', $liveId)->first();
+
+        if ($favorite) {
+            $favorite->delete();
+            return response()->json(['status' => 'removed']);
+        } else {
+            Favorite::create([
+                'user_id' => $userId,
+                'live_id' => $liveId,
+            ]);
+            return response()->json(['status' => 'added']);
         }
     }
 
