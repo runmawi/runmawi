@@ -212,9 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var selectedSlider = document.querySelector(`#videoInfo-${sectionIndex} .network-based-depends-slider[data-index="${index}"]`);
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
-
-                // Check if Flickity is already initialized, to avoid duplicate instances
-                if (!selectedSlider.classList.contains('flickity-enabled')) {
+                setTimeout(function() {
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
@@ -225,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         imagesLoaded: true,
                         lazyLoad: 7,
                     });
-                }
+                },0);
             }
 
             // Show the caption and thumbnail for the selected item
