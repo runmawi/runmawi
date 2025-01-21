@@ -1,7 +1,7 @@
 @php
-    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url) {
-                $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
-                $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
+    $data = App\SeriesNetwork::where('in_home',1)->orderBy('order')->limit(15)->get()->map(function ($item) use ($default_vertical_image_url , $default_horizontal_image_url,$BaseURL) {
+                $item['image_url'] = $item->image != null ? $BaseURL.('/seriesNetwork/'.$item->image ) : $default_vertical_image_url ;
+                $item['banner_image_url'] = $item->banner_image != null ?  $BaseURL.('/seriesNetwork/'.$item->banner_image ) : $default_horizontal_image_url;
 
                 $Series = App\Series::select(
                                 'id', 'title', 'slug', 'access', 'active', 'ppv_status', 'featured', 'duration', 'image',
@@ -12,10 +12,10 @@
                             ->where('network_id', 'LIKE', '%"'.$item->id.'"%')
                             ->latest();
 
-                            $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url) {
-                                $seriesItem['image_url'] = $seriesItem->image != null ? URL::to('public/uploads/images/' . $seriesItem->image) : $default_vertical_image_url;
-                                $seriesItem['Player_image_url'] = $seriesItem->player_image != null ? URL::to('public/uploads/images/' . $seriesItem->player_image) : $default_horizontal_image_url;
-                                $seriesItem['TV_image_url'] = $seriesItem->tv_image != null ? URL::to('public/uploads/images/' . $seriesItem->tv_image) : @$default_horizontal_image_url;
+                            $series = $Series->take(15)->get()->map(function ($seriesItem) use ($default_vertical_image_url, $default_horizontal_image_url,$BaseURL) {
+                                $seriesItem['image_url'] = $seriesItem->image != null ? $BaseURL.('/images/' . $seriesItem->image) : $default_vertical_image_url;
+                                $seriesItem['Player_image_url'] = $seriesItem->player_image != null ? $BaseURL.('/images/' . $seriesItem->player_image) : $default_horizontal_image_url;
+                                $seriesItem['TV_image_url'] = $seriesItem->tv_image != null ? $BaseURL.('/images/' . $seriesItem->tv_image) : @$default_horizontal_image_url;
 
                                 $seriesItem['season_count'] = App\SeriesSeason::where('series_id', $seriesItem->id)->count();
                                 $seriesItem['episode_count'] = App\Episode::where('series_id', $seriesItem->id)->count();
@@ -83,7 +83,7 @@
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img data-flickity-lazyload="{{ $series_details->image ?  URL::to('public/uploads/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos"> 
+                                                            <img data-flickity-lazyload="{{ $series_details->image ?  $BaseURL.('/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos"> 
                                                             <div class="controls">
                                                                 <a href="{{ route('network.play_series', $series_details->slug) }}">
                                                                         <i class="playBTN fas fa-play"></i>
@@ -138,7 +138,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                    <img class="lazy" src="{{ URL::to('public/uploads/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
+                                                    <img class="lazy" src="{{ $BaseURL.('/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
