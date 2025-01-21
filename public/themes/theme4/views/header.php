@@ -1921,7 +1921,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                    <input type="text" class="text search-input font-size-12 searches"
                                                       placeholder="type here to search..." name="search" >
                                                    <i class="search-link ri-search-line"></i>
-                                                   <?php  include 'public/themes/theme4/partials/Search_content.php'; ?>
+                                                   <?php  
+                                                      // include 'public/themes/theme4/partials/Search_content.php'; 
+                                                   ?>
                                                 </div>
                                              </form>
                                           </div>
