@@ -17,7 +17,7 @@
                             <div class="channel-row">
                                 <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video flickity-slider">
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
-                                        <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}">
+                                        <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
                                                 <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
@@ -47,23 +47,16 @@
                                             </div>
 
                                             <div class="thumbnail" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
-                                                <img src="{{ $series->Player_image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img id="series_player_img-{{ $series->id }}-{{$section_key}}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
 
-                                            <div id="network-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }}" class="network-based-depends-slider networks-depends-series-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }} content-list" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
+                                            <div id="network-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }}" class="network-based-depends-slider networks-depends-series-slider-{{ $section_key }}-{{ $Series_depends_Networks_key }} content-list height-{{ $series->id }}-{{$section_key}}" data-index="{{ $Series_depends_Networks_key }}" data-section-index="{{ $section_key }}">
                                                 @foreach ($series->Series_depends_episodes as $episode_key => $episode)
                                                     <div class="depends-row">
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    @if ($multiple_compress_image == 1)
-                                                                        <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
-                                                                            srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
-                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
-                                                                            {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
-                                                                    @else
-                                                                        <img data-flickity-lazyload="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
-                                                                    @endif
+                                                                    <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                              <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -216,12 +209,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: false,
+                        groupCells: true,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 7,
+                        lazyLoad: true,
                     });
                 },0);
             }
@@ -251,4 +244,80 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 });
 
 </script>
+
+<script>
+    $(document).on('click', '.item', function () {
+        const seriesId = $(this).data('series-id');
+        const sectionKey = $(this).data('section-index');
+
+        const isLoaded = $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded');
+        
+        if (isLoaded) {
+            // console.log('Images already loaded, skipping AJAX call.');
+            return;
+        }
+
+        $.ajax({
+            url: '{{ route("getSeriesEpisodeImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                series_id: seriesId
+            },
+            success: function (response) {
+                console.log('series img: ' + response.series_image);
+                console.log('episode images: ', response.episode_images);
+                console.log('series id: ' + seriesId);
+                console.log('sectionKey id: ' + sectionKey);
+
+                let maxHeight = 0;
+                $('#series_player_img-' + seriesId + '-' + sectionKey).attr('src', response.series_image);
+                $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded', true);
+
+                response.episode_images.forEach((image, index) => {
+                    const imgId = '#episode_player_img-' + seriesId + '-' + sectionKey + '-' + index;
+                    // console.log('Updating image for:', imgId, 'with', image);
+                    $(imgId).attr('src', image);
+
+                    let imgHeight = $(imgId).height();
+                    if (imgHeight > maxHeight) {
+                        maxHeight = imgHeight;
+                    }
+                });
+                // console.log('max height: ' + maxHeight);
+                const heightdiv = '.height-' + seriesId + '-' + sectionKey + ' .flickity-viewport' ;
+                const heightauto = '.height-' + seriesId + '-' + sectionKey + ' .depends-row' ;
+                // console.log('imgId height: ' + heightdiv + ': ' + maxHeight);
+                
+                // $(heightdiv).css("height", maxHeight);
+                $(heightauto).css("height", "auto");
+                $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                // $('.content-list .depends-row').css("height", 'auto');
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+    });
+</script>
+
+<style>
+    .network-based-depends-slider .flickity-viewport{height: 100px;}
+    .content-list .depends-row div.depend-items, .content-list .depends-row{height: 100%;}
+    .depend-items:before{
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: #555;
+        background-image: url(https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp);
+        background-size: cover;
+        background-position: center;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        right: 2px;
+        z-index: 0;
+        border-radius: 10px;
+    }
+</style>
 

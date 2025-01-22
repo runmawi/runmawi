@@ -1478,4 +1478,38 @@ class FrontEndQueryController extends Controller
     //     return $cnt_watching;
     // }
 
+
+    public function getSeriesEpisodeImg(Request $request)
+    {
+        $seriesId = $request->series_id;
+        $image = Series::where('id', $seriesId)->pluck('player_image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $image)
+                        : $this->default_vertical_image;
+
+        $seasonIds = SeriesSeason::where('series_id', $seriesId)->pluck('id');
+
+        $episodeImages = Episode::where('series_id', $seriesId)
+                                    ->whereIn('season_id', $seasonIds)
+                                    ->where('active', 1)
+                                    ->latest()
+                                    ->take(15)
+                                    ->pluck('player_image') // Fetch only the player_image column
+                                    ->map(function ($playerImage) {
+                                        return (!is_null($playerImage) && $playerImage != 'default_horizontal_image.jpg') 
+                                            ? $this->BaseURL . '/images/' . $playerImage 
+                                            : $this->default_horizontal_image_url;
+                                    });
+
+
+            // dd($episodeImages);
+
+        return response()->json([
+            'series_image' => $image,
+            'episode_images' => $episodeImages
+        ]);
+    }
+
+    
 }
