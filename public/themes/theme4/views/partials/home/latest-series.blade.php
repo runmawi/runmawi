@@ -75,7 +75,7 @@
                                                                 {{ $episode_details->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') : $episode_details->player_image_url }},
                                                                 {{ $episode_details->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') : $episode_details->player_image_url }}" >
                                                         @else
-                                                            <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                            <img src="{{ $episode_details->player_image_url }}" alt="{{ $episode_details->title }}">
                                                         @endif
                                                         <div class="controls">
                                                             
@@ -137,7 +137,7 @@
                                                         {{ $episode_details->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode_details->responsive_image.' 640w') : $episode_details->player_image_url }},
                                                         {{ $episode_details->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode_details->responsive_image.' 420w') : $episode_details->player_image_url }}" >
                                                 @else
-                                                    <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
+                                                    <img src="{{ $episode_details->player_image_url }}" alt="{{ $episode_details->title }}">
                                                 @endif
                                             </div>
                                             <div class="col-lg-6">

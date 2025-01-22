@@ -258,10 +258,10 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
                 series_id: seriesId
             },
             success: function (response) {
-                console.log('series img: ' + response.series_image);
-                console.log('episode images: ', response.episode_images);
-                console.log('series id: ' + seriesId);
-                console.log('sectionKey id: ' + sectionKey);
+                // console.log('series img: ' + response.series_image);
+                // console.log('episode images: ', response.episode_images);
+                // console.log('series id: ' + seriesId);
+                // console.log('sectionKey id: ' + sectionKey);
 
                 let maxHeight = 0;
                 const heightdiv = '.height-' + seriesId + '-' + sectionKey + ' .flickity-viewport' ;
@@ -313,7 +313,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
                 episode_id: episodeId
             },
             success: function (response) {
-                console.log('episode modal img: ' + response.episode_modal_images);
+                // console.log('episode modal img: ' + response.episode_modal_images);
 
                 let maxHeight = 0;
                 $('#episode_modal-img-' + episodeId + '-' + sectionKey).attr('src', response.episode_modal_images);

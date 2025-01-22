@@ -6,6 +6,7 @@
                               'getfeching' => $getfeching,
                               'default_vertical_image_url' => $default_vertical_image_url,
                               'default_horizontal_image_url' => $default_horizontal_image_url,
+                              'BaseURL'                      => $BaseURL
                          ];
 
 $BunnyCDNEnable = App\StorageSetting::pluck('bunny_cdn_storage')->first();
