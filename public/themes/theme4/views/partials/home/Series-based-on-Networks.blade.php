@@ -56,7 +56,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                                    <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded" width="300" height="200">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                              <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -83,7 +83,7 @@
                                                     </div>
                                                 @endforeach
                                                 @if ($series->has_more)
-                                                    <div class="depends-row" style="height: 100%">
+                                                    <div class="depends-row last-elmnt" style="height: 100% !important;">
                                                             <a href="{{ route('network.play_series', $series->slug) }}">
                                                             <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
                                                                 <div class=" position-relative">
@@ -329,6 +329,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 <style>
     .network-based-depends-slider .flickity-viewport{height: 100px;}
     .content-list .depends-row div.depend-items, .content-list .depends-row{height: 100%;}
+    .last-elmnt{height: 100% !important;}
     .depend-items:before{
         content: '';
         display: block;
