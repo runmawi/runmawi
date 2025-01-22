@@ -17,7 +17,7 @@
                             <div class="channel-row">
                                 <div id="trending-slider-nav-{{ $section_key }}" class="video-list series-based-network-video flickity-slider">
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
-                                        <div class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
+                                        <div id="top-slider-img" class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
                                                 <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
@@ -63,7 +63,7 @@
                                                                         </a>
 
                                                                         <nav>
-                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}">
+                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" data-episode-id="{{ $episode->id }}" data-section-index="{{ $section_key }}">
                                                                                 <i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                         </nav>
 
@@ -121,14 +121,7 @@
                                             <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        @if ($multiple_compress_image == 1)
-                                                            <img class="flickity-lazyloaded" alt="{{ $episode->title }}" src="{{ $episode->player_image_url }}"
-                                                                srcset="{{ $episode->responsive_image ? (URL::to('public/uploads/PCimages/'.$episode->responsive_image.' 860w')) : $episode->player_image_url }},
-                                                                {{ $episode->responsive_image ? URL::to('public/uploads/Tabletimages/'.$episode->responsive_image.' 640w') : $episode->player_image_url }},
-                                                                {{ $episode->responsive_image ? URL::to('public/uploads/mobileimages/'.$episode->responsive_image.' 420w') : $episode->player_image_url }}" >
-                                                        @else
-                                                            <img src="{{ $episode->player_image_url }}" alt="{{ $episode->title }}">
-                                                        @endif
+                                                        <img id="episode_modal-img-{{$episode->id}}-{{$section_key}}" alt="{{ $episode->title }}">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="row">
@@ -246,7 +239,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 </script>
 
 <script>
-    $(document).on('click', '.item', function () {
+    $(document).on('click', '#top-slider-img', function () {
         const seriesId = $(this).data('series-id');
         const sectionKey = $(this).data('section-index');
 
@@ -271,28 +264,60 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
                 console.log('sectionKey id: ' + sectionKey);
 
                 let maxHeight = 0;
-                $('#series_player_img-' + seriesId + '-' + sectionKey).attr('src', response.series_image);
-                $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded', true);
-
-                response.episode_images.forEach((image, index) => {
-                    const imgId = '#episode_player_img-' + seriesId + '-' + sectionKey + '-' + index;
-                    // console.log('Updating image for:', imgId, 'with', image);
-                    $(imgId).attr('src', image);
-
-                    let imgHeight = $(imgId).height();
-                    if (imgHeight > maxHeight) {
-                        maxHeight = imgHeight;
-                    }
-                });
-                // console.log('max height: ' + maxHeight);
                 const heightdiv = '.height-' + seriesId + '-' + sectionKey + ' .flickity-viewport' ;
                 const heightauto = '.height-' + seriesId + '-' + sectionKey + ' .depends-row' ;
-                // console.log('imgId height: ' + heightdiv + ': ' + maxHeight);
-                
-                // $(heightdiv).css("height", maxHeight);
+
+                $('#series_player_img-' + seriesId + '-' + sectionKey).attr('src', response.series_image);
+                $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded', true);
+               
+                response.episode_images.forEach((image, index) => {
+                    const imgId = '#episode_player_img-' + seriesId + '-' + sectionKey + '-' + index;
+                    $(imgId).attr('src', image);
+                    // console.log("img height: " + image.height);
+                    const img = new Image();
+                    img.src = image;
+
+                    img.onload = function() {
+                        const imgHeight = $(imgId).height();
+                        // console.log("img height: " + imgHeight);
+
+                        if (imgHeight > maxHeight) {
+                            maxHeight = imgHeight;
+                        }
+                        
+                        // console.log("Current max height: " + maxHeight);
+                        $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                    };
+                });
                 $(heightauto).css("height", "auto");
-                $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
-                // $('.content-list .depends-row').css("height", 'auto');
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(document).on('click', '.moreBTN', function () {
+        const episodeId = $(this).data('episode-id');
+        const sectionKey = $(this).data('section-index');
+        // console.log("modal opened");
+
+        $.ajax({
+            url: '{{ route("getModalEpisodeImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                episode_id: episodeId
+            },
+            success: function (response) {
+                console.log('episode modal img: ' + response.episode_modal_images);
+
+                let maxHeight = 0;
+                $('#episode_modal-img-' + episodeId + '-' + sectionKey).attr('src', response.episode_modal_images);
+              
             },
             error: function () {
                 console.log('Failed to load images. Please try again.');

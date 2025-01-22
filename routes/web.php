@@ -3073,3 +3073,4 @@ Route::post('/toggle-favorite','LiveStreamController@toggleFavorite')->name('tog
 Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');
 
 Route::post('getSeriesEpisodeImg','FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');
+Route::post('getModalEpisodeImg','FrontEndQueryController@getModalEpisodeImg')->name('getModalEpisodeImg');
