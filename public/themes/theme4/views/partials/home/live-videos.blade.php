@@ -14,7 +14,7 @@
                         <div class="channel-row">
                             <div id="trending-slider-nav" class="video-list live-stream-video flickity-slider">
                                 @foreach ($data as $key => $livestream_videos)
-                                    <div class="item" data-index="{{ $key }}">
+                                    <div id="live-top-img" class="item" data-index="{{ $key }}" data-live-id="{{ $livestream_videos->id}}">
                                         <div>
                                             <img data-flickity-lazyload="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
                                             @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
@@ -103,7 +103,7 @@
                                         @endif
 
                                         <div class="d-flex align-items-center p-0 mt-3">
-                                            <img  src="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" alt="livestream_videos" alt="livestream_videos" style="height: 30%; width:30%" > 
+                                            <img id="live-drop-img-{{$livestream_videos->id}}" class="live-2img" style="height: 30%; width:30%" > 
                                         </div>
 
                                         <div class="trending-dec">{{ html_entity_decode(strip_tags($livestream_videos->description), ENT_QUOTES) }}</div>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="thumbnail" data-index="{{ $key }}">
-                                        <img src="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="latest_series" width="300" height="200" >
+                                        <img id="live_player_img-{{ $livestream_videos->id }}" class="flickity-lazyloaded" alt="{{ $livestream_videos->title }}" width="300" height="200">
                                     </div>
                                 @endforeach
                             </div>
@@ -136,7 +136,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  src="{{ $livestream_videos->player_image ?  URL::to('public/uploads/images/'.$livestream_videos->player_image) : $default_horizontal_image_url }}" alt="modal">
+                                            <img  id="live_modal_img-{{$livestream_videos->id}}" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -235,6 +235,34 @@
 
 </script>
 
+<script>
+    $(document).on('click', '#live-top-img', function () {
+        const liveId = $(this).data('live-id');
+        // console.log("liveId: " + liveId);
+
+        $.ajax({
+            url: '{{ route("getLiveDropImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                live_id: liveId
+            },
+            success: function (response) {
+                // console.log('live img: ' + response.live_images);
+
+                $('#live_player_img-' + liveId).attr('src', response.live_images);
+                $('#live-drop-img-' + liveId).attr('src', response.live_images);
+                $('#live_modal_img-' + liveId).attr('src', response.live_images);
+                $('#live-drop-img-' + liveId).css("height", "30%");
+                $('#live-drop-img-' + liveId).css("width", "30%");
+              
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+    });
+</script>
 
 
 
@@ -253,6 +281,7 @@
     top: 0;
     opacity: 1 !important;
 }
+.live-2img{width: 200px;height: 100px;}
 
 @keyframes pulse {
     0% {
