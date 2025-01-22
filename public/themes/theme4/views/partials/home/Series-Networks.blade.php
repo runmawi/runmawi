@@ -47,7 +47,7 @@
                         <div class="channel-row">
                             <div id="trending-slider-nav" class="video-list series-network-video flickity-slider">
                                 @foreach ($data as $key => $series_networks)
-                                    <div class="item" data-index="{{ $key }}">
+                                    <div id="network-slider-img" class="item" data-index="{{ $key }}" data-network-id="{{ $series_networks->id }}">
                                         <div>
                                             <img data-flickity-lazyload="{{ $series_networks->image_url }}" class="flickity-lazyloaded" alt="{{ ($series_networks)->name }}" >
                                         </div>
@@ -74,21 +74,22 @@
                                         
 
                                         <div class="thumbnail" data-index="{{ $key }}">
-                                            <img src="{{ $series_networks->banner_image_url}}" class="flickity-lazyloaded" alt="latest_series" >
+                                            <img id="network-bg-img-{{ $series_networks->id }}" class="flickity-lazyloaded" alt="{{ $series_networks->name }}" >
                                         </div>
 
-                                        <div id="{{ 'trending-slider-nav' }}" class="{{ 'network-depends-slider networks-depends-series-slider-'.$key .' content-list'}}" data-index="{{ $key }}" >
+                                        <div id="{{ 'trending-slider-nav' }}" class="{{ 'network-depends-slider networks-depends-series-slider-'.$key .' content-list height-'. $series_networks->id}}" data-index="{{ $key }}" >
                                             @foreach ($series_networks->series as $series_key  => $series_details )
                                                 <div class="depends-row">
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img data-flickity-lazyload="{{ $series_details->image ?  $BaseURL.('/images/'.$series_details->image) : $default_vertical_image_url }}" class="img-fluid" alt="Videos"> 
+                                                            <img id="series_player_img-{{ $series_networks->id }}-{{ $series_key }}" class="flickity-lazyloaded" width="300" height="200">
+
                                                             <div class="controls">
                                                                 <a href="{{ route('network.play_series', $series_details->slug) }}">
                                                                         <i class="playBTN fas fa-play"></i>
                                                                 </a>
-                                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key }}">
+                                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key }}" data-series-id="{{ $series_details->id }}">
                                                                     <i class="fas fa-info-circle"></i>
                                                                     <span>More info</span>
                                                                 </button>
@@ -138,7 +139,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                    <img class="lazy" src="{{ $BaseURL.('/images/'.$series_details->player_image) }}" alt="{{ $series_details->title }}">
+                                                <img id="network-series-modal-img-{{$series_details->id}}" alt="{{ $series_details->title }}">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -254,7 +255,102 @@ $('body').on('click', '.drp-close', function() {
 
 </script>
 
+
+<script>
+    $(document).on('click', '#network-slider-img', function () {
+        const networkId = $(this).data('network-id');
+
+        $.ajax({
+            url: '{{ route("getnetworkSeriesImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                network_id: networkId
+            },
+            success: function (response) {
+                let maxHeight = 0;
+                const heightdiv = '.height-' + networkId + ' .flickity-viewport' ;
+                const heightauto = '.height-' + networkId + ' .depends-row' ;
+
+                console.log('heightdiv: ' + heightdiv);
+                
+
+                $('#network-bg-img-' + networkId).attr('src', response.network_image);
+               
+                response.series_images.forEach((image, index) => {
+                    const imgId = '#series_player_img-' + networkId + '-' + index;
+                    $(imgId).attr('src', image);
+                    console.log("imgId : " + imgId);
+                    const img = new Image();
+                    img.src = image;
+
+                    img.onload = function() {
+                        const imgHeight = $(imgId).height();
+                        console.log("img height: " + imgHeight);
+
+                        if (imgHeight > maxHeight) {
+                            maxHeight = imgHeight;
+                        }
+                        
+                        console.log("Current max height: " + maxHeight);
+                        $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                    };
+                });
+                $(heightauto).css("height", "auto");
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(document).on('click', '.moreBTN', function () {
+        const SeriesId = $(this).data('series-id');
+        console.log("Modal opened for Series ID: " + SeriesId);
+
+        $.ajax({
+            url: '{{ route("getSeriesNetworkModalImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                Series_id: SeriesId
+            },
+            success: function (response) {
+                const imgId = '#network-series-modal-img-' + SeriesId;
+                console.log('Updating image source for: ' + imgId);
+
+                // Update the image source
+                $(imgId).attr('src', response.network_series_modal_images);
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+    });
+
+</script>
+
 <style>
+
+.network-depends-slider .flickity-viewport{height: 100px;}
+    .depend-items:before{
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: #555;
+        background-image: url(https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp);
+        background-size: cover;
+        background-position: center;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        right: 2px;
+        z-index: 0;
+        border-radius: 10px;
+    }
     .controls {
     position: absolute;
     padding: 4px;

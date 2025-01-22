@@ -3074,3 +3074,6 @@ Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->
 
 Route::post('getSeriesEpisodeImg','FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');
 Route::post('getModalEpisodeImg','FrontEndQueryController@getModalEpisodeImg')->name('getModalEpisodeImg');
+Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('getLiveDropImg');
+Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
+Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');

@@ -1510,6 +1510,34 @@ class FrontEndQueryController extends Controller
             'episode_images' => $episodeImages
         ]);
     }
+    public function getnetworkSeriesImg(Request $request)
+    {
+        $networkId = $request->network_id;
+        $image = SeriesNetwork::where('id', $networkId)->pluck('banner_image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/seriesNetwork/' . $image)
+                        : $this->default_vertical_image;
+
+        $seriesImages = Series::where('network_id', 'LIKE', '%"'.$networkId.'"%')
+                                    ->where('active', 1)
+                                    ->latest()
+                                    ->take(15)
+                                    ->pluck('image')
+                                    ->map(function ($Image) {
+                                        return (!is_null($Image) && $Image != 'default_horizontal_image.jpg') 
+                                            ? $this->BaseURL . '/images/' . $Image 
+                                            : $this->default_horizontal_image_url;
+                                    });
+
+
+            // dd($episodeImages);
+
+        return response()->json([
+            'network_image' => $image,
+            'series_images' => $seriesImages
+        ]);
+    }
 
     public function getModalEpisodeImg(Request $request)
     {
@@ -1523,6 +1551,37 @@ class FrontEndQueryController extends Controller
 
         return response()->json([
             'episode_modal_images' => $image
+        ]);
+    }
+
+    public function getSeriesNetworkModalImg(Request $request)
+    {
+        $Id = $request->Series_id;
+        $image = Series::where('id', $Id)->pluck('player_image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $image)
+                        : $this->default_vertical_image;
+            // dd($image);
+
+        return response()->json([
+            'network_series_modal_images' => $image
+        ]);
+    }
+
+    public function getLiveDropImg(Request $request)
+    {
+        $liveId = $request->live_id;
+        // dd($liveId);
+        $image = livestream::where('id', $liveId)->pluck('player_image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $image)
+                        : $this->default_vertical_image;
+            // dd($image);
+
+        return response()->json([
+            'live_images' => $image
         ]);
     }
 
