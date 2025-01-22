@@ -1511,5 +1511,20 @@ class FrontEndQueryController extends Controller
         ]);
     }
 
+    public function getModalEpisodeImg(Request $request)
+    {
+        $episodeId = $request->episode_id;
+        $image = Episode::where('id', $episodeId)->pluck('player_image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $image)
+                        : $this->default_vertical_image;
+            // dd($image);
+
+        return response()->json([
+            'episode_modal_images' => $image
+        ]);
+    }
+
     
 }
