@@ -288,6 +288,7 @@ class HomeController extends Controller
                     'button_text'         => $button_text,
                     'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
                     'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'BaseURL'                            => $this->BaseURL
                 );
             }else{
                 $data = array(
@@ -1080,6 +1081,7 @@ class HomeController extends Controller
                         'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
                         'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
                         'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+                        'BaseURL'                            => $this->BaseURL
                     );
                     if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                         if($request->ajax()) {
@@ -1515,6 +1517,7 @@ class HomeController extends Controller
                         'button_text'         => $button_text, 
                         'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
                         'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'BaseURL'                            => $this->BaseURL
                     );
                 }else{
 
