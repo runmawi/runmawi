@@ -3071,3 +3071,5 @@ Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisod
 Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
 Route::post('/toggle-favorite','LiveStreamController@toggleFavorite')->name('toggle.favorite');
 Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');
+
+Route::post('getSeriesEpisodeImg','FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');

@@ -674,6 +674,21 @@ img{max-width:100%;height: auto;}
   z-index: 0;
   border-radius: 10px;
 }
+.depend-items:before{
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: #555;
+  background-image: url(../img/gradient.webp);
+  background-size: cover;
+  background-position: center;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  z-index: 0;
+  border-radius: 10px;
+}
 .channels-list .channel-row .video-list .item > div {
   display: block;
   position: relative;
