@@ -319,8 +319,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                               </div>
                             </div>
                         </div>
-                      
-                            <div class="col-6 mb-3">
+                        <div class="col-6 mb-3">
                               <?php foreach($season as $key => $seasons): ?>
                                   <div class="episodes_div season_<?= $seasons->id;?>">
                                       <?php
@@ -390,7 +389,101 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                                     
                                                 // dd($ppv_exists_check_query);
                            
+                                        } else {
+                                            $ppv_purchase_user = null; 
+                                        }
+                                      $setting_subscirbe_series_access = App\Setting::pluck('enable_ppv_rent_series')->first();
+                                      $season_access_ppv = App\SeriesSeason::where('id', $seasons->id)->pluck('access')->first();
+                                      
+                                      if($season_access_ppv == "free" || Auth::check() && Auth::user()->role == "admin") {
+                                          $episode_play_access = 1;
+                                      } else {
 
+                                          if(Auth::guest()) {
+                                              $episode_play_access = 0;
+                                          } elseif(Auth::user()->role == "registered") {
+                                              if($ppv_purchase_user && $ppv_purchase_user->season_id == $seasons->id || $ppv_exists_check_query > 0) {
+                                                  $episode_play_access = 1;
+                                              } else {
+                                                  $episode_play_access = 0;
+                                              }
+                                          } elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 1) {
+                                              $episode_play_access = 1;
+                                          } elseif(Auth::user()->role == "subscriber" && $setting_subscirbe_series_access == 0) {
+                                              if($ppv_purchase_user && $ppv_purchase_user->season_id == $seasons->id || $ppv_exists_check_query > 0) {
+                                                  $episode_play_access = 1;
+                                              } else {
+                                                  $episode_play_access = 0;
+                                              }
+                                          }
+                                      }
+                                      ?>
+
+                                      <?php if($episode_play_access == 0): ?>
+                                          <?php if($series->access == "guest" && $seasons->access == "ppv"): ?>
+                                              <?php if(Auth::guest() && $seasons->access == "ppv"): ?>
+                                                  <div class="d-flex">
+                                                    <?php if($subscribe_btn == 1): ?>
+                                                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                            <button id="button" class="view-count rent-video btn bd mr-4 text-white"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                        </form>
+                                                      <?php endif; ?>
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                          <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                      </button>
+                                                  </div>
+                                              <?php elseif(Auth::check() && Auth::user()->role == "registered" && $seasons->access == "ppv"): ?>
+                                                  <div class="d-flex">
+                                                    <?php if($subscribe_btn == 1): ?>
+                                                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                        <button id="button" class="view-count rent-video btn text-white bd mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                          <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                      </button>
+                                                  </div>
+                                              <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                  <div class="d-flex">
+                                                      <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                          <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                      </button>
+                                                  </div>
+                                              <?php endif; ?>
+                                          <?php elseif($series->access == "registered" && $seasons->access == "ppv"): ?>
+                                              <?php if(Auth::check() && Auth::user()->role == "registered" && $seasons->access == "ppv"): ?>
+                                                  <div class="d-flex">
+                                                    <?php if($subscribe_btn == 1): ?>
+                                                        <form method="get" action="<?= URL::to('/becomesubscriber') ?>">
+                                                        <button id="button" class="view-count rent-video btn bd text-white mr-4"><?php echo __(!empty($button_text->subscribe_text) ? $button_text->subscribe_text : 'Subscribe Now'); ?></button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                      <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>">
+                                                          <div class="playbtn text-white" style="gap:5px">
+                                                              <span class="text pr-2"> <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?> </span>
+                                                          </div>
+                                                      </a>
+                                                  </div>
+                                              <?php elseif(Auth::check() && Auth::user()->role == "subscriber" && $settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                  <div class="d-flex">
+                                                      <a class="btn mr-3" data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>">
+                                                          <div class="playbtn text-white" style="gap:5px">
+                                                              <span class="text pr-2"> <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?> </span>
+                                                          </div>
+                                                      </a>
+                                                  </div>
+                                              <?php endif; ?>
+                                          <?php elseif($series->access == "subscriber" && $seasons->access == "ppv"): ?>
+                                              <?php if($settings->enable_ppv_rent_series == 0 && $seasons->access == "ppv"): ?>
+                                                  <button data-toggle="modal" data-target="#season-purchase-now-modal-<?= $seasons->id; ?>" class="view-count rent-video btn bd">
+                                                      <?=  __(!empty($button_text->purchase_text) ? ($button_text->purchase_text) : ' Purchase Now ') ?>
+                                                  </button>
+                                              <?php endif; ?>
+                                          <?php endif; ?>
+                                      <?php endif; ?>
+                                  </div>
+                              <?php endforeach; ?>
+                          </div>
 					</div>
 				</div>
                
