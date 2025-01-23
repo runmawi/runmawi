@@ -275,6 +275,9 @@ class FrontEndQueryController extends Controller
                     $series->blocked_countries_names = array_map(function ($id) use ($countryList) {
                         return $countryList[$id] ?? null;
                     }, $blockedCountries ?: []);
+                    $series['image_url']        = !is_null($series->image)  ? $this->BaseURL.('/images/'.$series->image) : $this->default_vertical_image_url ;
+                    $series['Player_image_url'] = !is_null($series->player_image)  ? $this->BaseURL.('/images/'.$series->player_image ) : $this->default_horizontal_image_url ;
+
             
                     return $series;
                 });
