@@ -83,7 +83,7 @@
                                                     <div class="depend-items">
                                                     <a href="{{ route('network.play_series',$series_details->slug) }}">
                                                         <div class=" position-relative">
-                                                            <img id="series_player_img-{{ $series_networks->id }}-{{ $series_key }}" class="flickity-lazyloaded" width="300" height="200">
+                                                            <img id="series_player_img-{{ $series_networks->id }}-{{ $series_key }}" class="flickity-lazyloaded drop-slider-img" alt="{{ $series_details->title }}" width="300" height="200">
 
                                                             <div class="controls">
                                                                 <a href="{{ route('network.play_series', $series_details->slug) }}">
@@ -286,14 +286,15 @@ $('body').on('click', '.drp-close', function() {
 
                     img.onload = function() {
                         const imgHeight = $(imgId).height();
-                        console.log("img height: " + imgHeight);
+                        // console.log("img height: " + imgHeight);
 
                         if (imgHeight > maxHeight) {
                             maxHeight = imgHeight;
                         }
                         
-                        console.log("Current max height: " + maxHeight);
+                        // console.log("Current max height: " + maxHeight);
                         $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                        $(imgId).attr('style', 'opacity:' + '1 !important;');
                     };
                 });
                 $(heightauto).css("height", "auto");
@@ -336,6 +337,7 @@ $('body').on('click', '.drp-close', function() {
 <style>
 
 .network-depends-slider .flickity-viewport{height: 100px;}
+.drop-slider-img{opacity: 0 !important;}
     .depend-items:before{
         content: '';
         display: block;

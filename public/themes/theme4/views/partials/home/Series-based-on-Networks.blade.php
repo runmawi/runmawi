@@ -56,7 +56,7 @@
                                                         <div class="depend-items">
                                                             <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                 <div class="position-relative">
-                                                                    <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded" width="300" height="200">
+                                                                    <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="{{ $episode->title}}">
                                                                     <div class="controls">
                                                                         <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
                                                                              <button class="playBTN"><i class="fas fa-play"></i></button>
@@ -287,6 +287,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
                         
                         // console.log("Current max height: " + maxHeight);
                         $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                        $(imgId).attr('style', 'opacity:' + '1 !important;');
                     };
                 });
                 $(heightauto).css("height", "auto");
@@ -328,6 +329,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 
 <style>
     .network-based-depends-slider .flickity-viewport{height: 100px;}
+    .drop-slider-img{opacity: 0 !important;}
     .content-list .depends-row div.depend-items, .content-list .depends-row{height: 100%;}
     .last-elmnt{height: 100% !important;}
     .depend-items:before{
