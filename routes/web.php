@@ -442,7 +442,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // search
     Route::get('search', 'HomeController@search');
-    // Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
     Route::post('/searchResult', 'HomeController@searchResult');
 
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
