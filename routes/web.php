@@ -442,7 +442,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
 
     // search
     Route::get('search', 'HomeController@search');
-    // Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
+    Route::get('/searchResult', 'HomeController@searchResult')->name('searchResult');
     Route::post('/searchResult', 'HomeController@searchResult');
 
     Route::get('search-videos/{videos_search_value}', 'HomeController@searchResult_videos')->name('searchResult_videos');
@@ -3071,3 +3071,10 @@ Route::post('season/unassigned_episodes','AdminSeriesController@UnassignedEpisod
 Route::get('/get-epg-content', 'LiveStreamController@getEpgContent');
 Route::post('/toggle-favorite','LiveStreamController@toggleFavorite')->name('toggle.favorite');
 Route::post('datafree/toggle-favorite', 'LiveStreamController@toggleFavorite')->name('toggle.favorite');
+
+Route::post('getSeriesEpisodeImg','FrontEndQueryController@getSeriesEpisodeImg')->name('getSeriesEpisodeImg');
+Route::post('getModalEpisodeImg','FrontEndQueryController@getModalEpisodeImg')->name('getModalEpisodeImg');
+Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('getLiveDropImg');
+Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
+Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
+Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
