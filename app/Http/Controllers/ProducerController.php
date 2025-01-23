@@ -475,6 +475,7 @@ class ProducerController extends Controller
 
                                                 $item['monthly_Summary'] = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                             ->whereBetween('created_at', [Carbon::now()->subMonths(6), Carbon::now()]) 
+                                                            ->where('created_at', '>=', $filter_date) 
                                                             ->where(function ($query) {
                                                                 $query->where('status', 'captured')->orWhere('status', '1');
                                                             })
