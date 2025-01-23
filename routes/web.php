@@ -3077,3 +3077,4 @@ Route::post('getModalEpisodeImg','FrontEndQueryController@getModalEpisodeImg')->
 Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('getLiveDropImg');
 Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
 Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
+Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
