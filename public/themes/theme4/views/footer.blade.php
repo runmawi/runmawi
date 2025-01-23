@@ -229,12 +229,10 @@
 ?>
 
 <!-- JavaScript -->
-<link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
 <link rel="preload" href="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>" as="script">
 <link rel="preload" href="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>" as="script">
 <!-- <link rel="preload" href="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>" as="script"> -->
 
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 <script src="<?= URL::to('/') . '/assets/js/ls.bgset.min.js' ?>"></script>
 <script src="<?= URL::to('/') . '/assets/js/lazysizes.min.js' ?>"></script>
 <!-- <script src="<?= URL::to('/') . '/assets/js/plyr.polyfilled.js' ?>"></script>  -->
