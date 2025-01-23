@@ -471,7 +471,7 @@ class ProducerController extends Controller
                                             ])
                                             ->groupBy('video_id', 'live_id', 'audio_id', 'series_id', 'season_id')
 
-                                            ->get()->map(function($item) use ( $cpp_user_id)  {
+                                            ->get()->map(function($item) use ( $cpp_user_id,$filter_date)  {
 
                                                 $item['monthly_Summary'] = PpvPurchase::where('moderator_id', $cpp_user_id)
                                                             ->whereBetween('created_at', [Carbon::now()->subMonths(6), Carbon::now()]) 
