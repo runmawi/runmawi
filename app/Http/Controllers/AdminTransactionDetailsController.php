@@ -102,8 +102,8 @@ class AdminTransactionDetailsController extends Controller
             if (count($paginatedTransactions) > 0) {
                 $total_row = $paginatedTransactions->count();
                 foreach ($paginatedTransactions as $i => $transaction) {
-                    $paymentStatus = $transaction->payment_id ? "Success" : "Failed";
-                    $statusClass = $transaction->payment_id ? "bg-success" : "bg-danger";
+                    $paymentStatus = $transaction->transaction_type == 'Subscription' ? "Success" : $transaction->status;
+                    $statusClass = $transaction->status === 'captured' || $transaction->status === 'succeeded' || $transaction->status === 1 ? "bg-success" : "bg-danger";
                     $amount = $transaction->transaction_type == 'Subscription' ? $transaction->price : $transaction->total_amount;
                     $content = "-";
                     
