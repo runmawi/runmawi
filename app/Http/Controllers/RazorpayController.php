@@ -402,10 +402,14 @@ class RazorpayController extends Controller
             }
             if(!empty($moderators_id)){
                 $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                if ($moderator) {
+                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                } else {
+                    $percentage = 0;
+                }
                 $total_amount        = $video->ppv_price;
                 $title               =  $video->title;
                 $commssion           =  VideoCommission::where('type','CPP')->first();
-                $percentage          =  $moderator->commission_percentage ? $moderator->commission_percentage : 0 ; 
                 $ppv_price           =  $request->amount/100;
                 $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
                 $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -494,10 +498,14 @@ class RazorpayController extends Controller
         }
         if(!empty($moderators_id)){
             $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
             $total_amount        = $video->ppv_price;
             $title               =  $video->title;
             $commssion           =  VideoCommission::where('type','CPP')->first();
-            $percentage          =  $moderator->commission_percentage; 
             $ppv_price           =  $request->amount/100;
             $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
             $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -606,10 +614,14 @@ class RazorpayController extends Controller
 
             if(!empty($moderators_id)){
                 $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                if ($moderator) {
+                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                } else {
+                    $percentage = 0;
+                }
                 $total_amount        =  $video->ppv_price;
                 $title               =  $video->title;
                 $commssion           =  VideoCommission::where('type','CPP')->first();
-                $percentage          =  $moderator->commission_percentage; 
                 $ppv_price           =  $video->ppv_price;
                 $moderator_commssion =  ($percentage/100) * $ppv_price ;
                 $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -710,10 +722,14 @@ class RazorpayController extends Controller
         }
         if(!empty($moderators_id)){
             $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
             $total_amount        = $video->ppv_price;
             $title               =  $video->title;
             $commssion           =  VideoCommission::where('type','CPP')->first();
-            $percentage          =  $moderator->commission_percentage; 
             $ppv_price           =  $request->amount/100;
             $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
             $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -1111,10 +1127,14 @@ class RazorpayController extends Controller
             
             if(!empty($moderators_id)){
                 $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                if ($moderator) {
+                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                } else {
+                    $percentage = 0;
+                }
                 $total_amount        =  $video->ppv_price;
                 $title               =  $video->title;
                 $commssion           =  VideoCommission::where('type','CPP')->first();
-                $percentage          =  $moderator->commission_percentage; 
                 $ppv_price           =  $video->ppv_price;
                 $moderator_commssion =  ($percentage/100) * $ppv_price ;
                 $admin_commssion     =  $ppv_price - $moderator_commssion;
@@ -1207,10 +1227,14 @@ class RazorpayController extends Controller
         }
         if(!empty($moderators_id)){
             $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
             $total_amount        = $SeriesSeason->ppv_price;
             $title               =  $SeriesSeason->series_seasons_name;
             $commssion           =  VideoCommission::where('type','CPP')->first();
-            $percentage          =  $moderator->commission_percentage; 
             $ppv_price           =  $request->amount/100;
             $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
             $admin_commssion     =  $ppv_price - $moderator_commssion;
