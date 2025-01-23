@@ -960,7 +960,7 @@ border-radius: 0px 4px 4px 0px;
                              </div>
          
                               <div class="col-sm-6 form-group">
-                                 <label class="m-0"> Free Duration <small>Enter The Live Stream Free Duration In (HH : MM : SS)</small></label>
+                                 <label class="m-0"> Free Duration <small> In (HH : MM : SS)</small></label>
                                  <input type="text" class="form-control" placeholder="HH:MM:SS" name="free_duration" id="free_duration" >
                               </div>
                            </div>
