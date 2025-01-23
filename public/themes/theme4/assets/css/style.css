@@ -477,7 +477,7 @@ a.button-groups.btn.btn-hover.mr-2:hover{background-color:#fff!important;color:#
 .playBTN:hover{background-color:#fff;color:#000}
 .playBTN i{position:relative;left:2px;top:0px}
 .moreBTN:hover span{width:auto;margin-left:4px}
-.controls .trending-dec{margin:auto 0 0;color:#fff;padding:2px;font-size:calc(12px + 0.15vw);width:100%;overflow:hidden;text-overflow:ellipsis;line-height:17px;height:70px;}
+.controls .trending-dec{margin:auto 0 0;color:#fff;padding:2px;font-size:calc(12px + 0.15vw);width:100%;overflow:hidden;text-overflow:ellipsis;line-height:17px;height:70px;z-index: -1;}
 .controls nav{position:absolute;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;right:4px;top:4px;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}
 .moreBTN{color:#fff;-webkit-box-flex:1;-ms-flex:1;flex:1;display:-webkit-box;display:-ms-flexbox;display:flex;justify-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:rgba(51,51,51,0.4);border:none;padding:8px;border-radius:4px;-webkit-box-shadow:none;box-shadow:none;font-size:calc(12px + 0.25vmin);font-weight:700;-webkit-transition:all .2s ease;transition:all .2s ease;cursor:pointer;outline:none;line-height:14px}
 .moreBTN:hover{background-color:#fff;color:#000}
