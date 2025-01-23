@@ -88,7 +88,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
         fill: <?php echo $GetDarkText; ?>!important;
     }
 
-    body.light-theme h4, body.light-theme p, body.light-theme h3 {
+    body.light-theme h4, body.light-theme p, body.light-theme h3 body.light-theme li {
         color: <?php echo GetLightText(); ?>!important;
     }
     body.light-theme .movie-rent h3.title-popup,body.light-theme .movie-rent h5{

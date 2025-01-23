@@ -13026,6 +13026,19 @@ $cpanel->end();
               $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
               $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->video_tv_image;
 
+              $description = $item->description;
+                do {
+                    $previous = $description;
+                    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                } while ($description !== $previous);
+              $details = $item->details;
+                do {
+                    $previous = $details;
+                    $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                } while ($details !== $previous);
+              $item['details']             = strip_tags($details);
+              $item['description']         = strip_tags($description);
+
              
               if($item['type'] == 'mp4_url'){
                 $item['url'] = $item['mp4_url'];
@@ -13039,7 +13052,7 @@ $cpanel->end();
 
               $details = html_entity_decode($item->description);
               $description = strip_tags($details);
-              $item['description'] = str_replace("\r", '', $description);
+              // $item['description'] = str_replace("\r", '', $description);
               return $item;
             });
 
