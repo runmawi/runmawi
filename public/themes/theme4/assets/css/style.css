@@ -658,6 +658,7 @@ img{max-width:100%;height: auto;}
 .channels-list .channel-row .video-list .item {
   padding: 2px;
   position: relative;
+  height: 100%;
 }
 .channels-list .channel-row .video-list .item:before {
   content: '';

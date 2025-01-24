@@ -2970,7 +2970,7 @@ public function verifyandupdatepassword(Request $request)
 
         $plans_ads_enable = $this->plans_ads_enable($request->user_id);
        
-        if($plans_ads_enable == 1 && $choose_player == 0 ){
+        if($plans_ads_enable == 1 && $choose_player == 0 && $video ){
 
           $current_time = Carbon::now()->format('H:i:s');
 

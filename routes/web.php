@@ -6,6 +6,7 @@ use App\Http\Middleware\cpp;
 use App\Http\Middleware\Channel;
 use Carbon\Carbon as Carbon;
 use Illuminate\Support\Facades\Schema;
+use App\Series;
 
 // @$translate_language = App\Setting::pluck('translate_language')->first();
 // \App::setLocale(@$translate_language); translate_language
@@ -3093,3 +3094,22 @@ Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('ge
 Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
 Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
 Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
+Route::post('getLiveModal','FrontEndQueryController@getLiveModal')->name('getLiveModal');
+
+Route::get('/series/image/{series_id}', function ($series_id) {
+    $image = Series::where('id', $series_id)->pluck('image')->first();
+
+    $BunnyCDNEnable = \App\StorageSetting::pluck('bunny_cdn_storage')->first();
+    $defaultVerticalImageUrl = default_vertical_image_url();
+
+    $BaseURL = $BunnyCDNEnable == 1 
+        ? \App\StorageSetting::pluck('bunny_cdn_base_url')->first()
+        : url('public/uploads');
+
+    // Generate full image URL
+    $image = ($image !== 'default_image.jpg')
+        ? $BaseURL . '/images/' . $image
+        : $defaultVerticalImageUrl;
+
+    return response()->json(['image_url' => $image]);
+})->name('network.series.image');
