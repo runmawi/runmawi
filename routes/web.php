@@ -3079,6 +3079,7 @@ Route::post('getLiveDropImg','FrontEndQueryController@getLiveDropImg')->name('ge
 Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')->name('getnetworkSeriesImg');
 Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
 Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
+Route::post('getLiveModal','FrontEndQueryController@getLiveModal')->name('getLiveModal');
 
 Route::get('/series/image/{series_id}', function ($series_id) {
     $image = Series::where('id', $series_id)->pluck('image')->first();
