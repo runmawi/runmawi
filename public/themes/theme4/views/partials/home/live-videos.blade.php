@@ -135,7 +135,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  id="live_modal_img" alt="modal">
+                                            <img  id="live_modal_img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -273,12 +273,12 @@
                 // console.log("image: " + response.image);
                 // console.log("title: " + response.title);
                 // console.log("description: " + response.description);
-                const slug = 'live/' + response.slug;
                 // console.log("slug: " + slug);
                 $('#live_modal_img').attr('src', response.image);
+                $('#live_modal_img').attr('alt', response.title);
                 $('.modal-title').text(response.title);
                 $('.modal-desc').text(response.description);
-                $('.btn.btn-hover').attr('href', slug);
+                $('.btn.btn-hover').attr('href', response.slug);
                 
 
             },
@@ -288,7 +288,7 @@
         });
 
         $('.btn-close-white').on('click', function () {
-            $('#live_modal_img').attr('src', '');
+            $('#live_modal_img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
             $('.modal-title').text('');
             $('.modal-desc').text('');
             $('.btn.btn-hover').attr('href', '');
