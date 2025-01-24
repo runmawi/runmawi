@@ -169,64 +169,53 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Flickity
-    const elem = document.querySelector('.live-stream-video');
-    if (elem) {
-        const flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7
-        });
-        flkty.reloadCells();
-
-        // Add click event listener to items
-        document.querySelectorAll('.live-stream-video .item').forEach(item => {
-            item.addEventListener('click', function () {
-                // Remove 'current' class from all items
-                document.querySelectorAll('.live-stream-video .item').forEach(item => {
-                    item.classList.remove('current');
-                });
-                // Add 'current' class to the clicked item
-                this.classList.add('current');
-
-                // Get the data index of the clicked item
-                const index = this.getAttribute('data-index');
-
-                // Hide all captions and thumbnails
-                document.querySelectorAll('.live-stream-dropdown .caption').forEach(caption => {
-                    caption.style.display = 'none';
-                });
-                document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(thumbnail => {
-                    thumbnail.style.display = 'none';
-                });
-
-                // Show the corresponding caption and thumbnail
-                const selectedCaption = document.querySelector(`.live-stream-dropdown .caption[data-index="${index}"]`);
-                const selectedThumbnail = document.querySelector(`.live-stream-dropdown .thumbnail[data-index="${index}"]`);
-                if (selectedCaption) selectedCaption.style.display = 'block';
-                if (selectedThumbnail) selectedThumbnail.style.display = 'block';
-
-                // Show the dropdown
-                const dropdown = document.querySelector('.live-stream-dropdown');
-                if (dropdown) dropdown.style.display = 'flex';
-            });
-        });
-    }
-
-    // Handle dropdown close button
-    document.body.addEventListener('click', function (e) {
-        if (e.target.classList.contains('drp-close')) {
-            const dropdown = document.querySelector('.live-stream-dropdown');
-            if (dropdown) dropdown.style.display = 'none';
-        }
+  
+  var elem = document.querySelector('.live-stream-video');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 7
     });
-});
+    flkty.reloadCells();
+
+    document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.live-stream-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.live-stream-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.live-stream-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('live-stream-dropdown')[0].style.display = 'flex';
+        });
+    });
+
+
+    $('body').on('click', '.drp-close', function() {
+        $('.live-stream-dropdown').hide();
+    });
+
 
 </script>
 
