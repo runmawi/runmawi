@@ -2,39 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Notification;
+use URL;
+use Auth;
+use Theme;
+use Session;
+use App\User;
+use App\Video;
+use App\Series;
+use App\Channel;
+use App\Setting;
+use App\SiteLogs;
+use Carbon\Carbon;
+use App\LiveStream;
+use App\HomeSetting;
+use App\PpvPurchase;
+use App\LivePurchase;
+use App\SeriesSeason;
+use App\Subscription;
+use Razorpay\Api\Api;
+use App\ChannelPayout;
+use App\ModeratorsUser;
+use App\PaymentSetting;
+use App\ModeratorPayout;
+use App\VideoCommission;
+use App\ThemeIntegration;
 use \Redirect as Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Session;
-use Theme;
-use Auth;
-use Carbon\Carbon;
-use App\Subscription;
-use Razorpay\Api\Api;
-use App\User;
-use App\ThemeIntegration;
-use App\PaymentSetting;
-use URL;
-use App\ModeratorsUser;
-use App\VideoCommission;
-use App\PpvPurchase;
-use App\Video;
-use App\Setting;
-use App\LivePurchase;
-use App\LiveStream;
-use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Encryption\DecryptException;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
-use App\ModeratorPayout;
-use App\ChannelPayout;
-use App\Channel;
-use App\HomeSetting;
-use App\SeriesSeason;
-use App\Series;
 
 
 class RazorpayController extends Controller
@@ -361,7 +362,6 @@ class RazorpayController extends Controller
 
        $setting = Setting::first();  
        $ppv_hours = $setting->ppv_hours;
-
        $d = new \DateTime('now');
        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
        $now = $d->format('Y-m-d h:i:s a');
@@ -446,7 +446,11 @@ class RazorpayController extends Controller
             $respond=array(
                 'status'  => 'true',
             );
-        
+            SiteLogs::create([
+                'level' => 'success',
+                'message' => 'Razorpay video rent payment stored successfully!',
+                'context' => 'RazorpayVideoRent_Payment'
+            ]);
             return view('Razorpay.Rent_message',compact('respond'),$respond);
 
         } catch (\Exception $e) {
@@ -455,6 +459,12 @@ class RazorpayController extends Controller
             $respond=array(
                 'status'  => 'false',
             );
+
+            SiteLogs::create([
+                'level' => 'fails',
+                'message' => $e->getMessage(),
+                'context' => 'RazorpayVideoRent_Payment'
+            ]);
 
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
@@ -537,9 +547,21 @@ class RazorpayController extends Controller
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
+        SiteLogs::create([
+            'level' => 'success',
+            'message' => 'Razorpay video rent payment failure stored successfully!',
+            'context' => 'RazorpayVideoRent_Paymentfailure'
+        ]);
+
         return response()->json(['status' => 'failure_logged']);
     }catch (\Exception $e) {
         
+        SiteLogs::create([
+            'level' => 'fails',
+            'message' => $e->getMessage(),
+            'context' => 'RazorpayVideoRent_Paymentfailure'
+        ]);
+
         return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
     }
     }
