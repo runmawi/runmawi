@@ -111,7 +111,7 @@
                                         <div class="p-btns">
                                             <div class="d-flex align-items-center p-0">
                                                 <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                <a href="#" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-LiveStream-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
+                                                <a href="#" id="data-modal-live" class="button-groups btn btn-hover mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-LiveStream-videos-Modal" data-live-id="{{ $livestream_videos->id}}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
                                             </div>
                                         </div>
                                     </div>
@@ -127,8 +127,7 @@
         </div>
 
 
-        @foreach ($data as $key => $livestream_videos )
-            <div class="modal fade info_model" id="{{ "Home-LiveStream-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+            <div class="modal fade info_model" id="Home-LiveStream-videos-Modal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                     <div class="container">
                         <div class="modal-content" style="border:none; background:transparent;">
@@ -136,12 +135,12 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  id="live_modal_img-{{$livestream_videos->id}}" alt="modal">
+                                            <img  id="live_modal_img" alt="modal">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
+                                                    <h2 class="modal-title caption-h2"></h2>
 
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -152,11 +151,9 @@
                                             </div>
                                             
 
-                                            @if (optional($livestream_videos)->description)
-                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($livestream_videos)->description) !!}</div>
-                                            @endif
+                                                <div class="modal-desc trending-dec mt-4"></div>
 
-                                            <a href="{{ URL::to('live/'.$livestream_videos->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                            <a href="" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
                                         </div>
                                     </div>
                                 </div>
@@ -165,8 +162,6 @@
                     </div>
                 </div>
             </div>
-        @endforeach
-
 
     </section>
 @endif
@@ -252,7 +247,6 @@
 
                 $('#live_player_img-' + liveId).attr('src', response.live_images);
                 $('#live-drop-img-' + liveId).attr('src', response.live_images);
-                $('#live_modal_img-' + liveId).attr('src', response.live_images);
                 $('#live-drop-img-' + liveId).css("height", "30%");
                 $('#live-drop-img-' + liveId).css("width", "30%");
               
@@ -261,6 +255,46 @@
                 console.log('Failed to load images. Please try again.');
             }
         });
+    });
+</script>
+
+<script>
+    $(document).on('click', '#data-modal-live', function() {
+        const LiveId = $(this).data('live-id');
+        // console.log("modal opened.");
+        $.ajax({
+            url: '{{ route("getLiveModal") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                live_id : LiveId
+            },
+            success: function (response) {
+                // console.log("image: " + response.image);
+                // console.log("title: " + response.title);
+                // console.log("description: " + response.description);
+                const slug = 'live/' + response.slug;
+                // console.log("slug: " + slug);
+                $('#live_modal_img').attr('src', response.image);
+                $('.modal-title').text(response.title);
+                $('.modal-desc').text(response.description);
+                $('.btn.btn-hover').attr('href', slug);
+                
+
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+
+        $('.btn-close-white').on('click', function () {
+            $('#live_modal_img').attr('src', '');
+            $('.modal-title').text('');
+            $('.modal-desc').text('');
+            $('.btn.btn-hover').attr('href', '');
+        });
+
+
     });
 </script>
 

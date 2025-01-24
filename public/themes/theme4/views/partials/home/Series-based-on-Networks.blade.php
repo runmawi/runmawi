@@ -384,7 +384,7 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 
                                 // Set the height of the flickity viewport
                                 // heightDiv.css('height', maxHeight + 'px');
-                                console.log(heightDiv + " height : " + maxHeight);
+                                // console.log(heightDiv + " height : " + maxHeight);
                                 
                                 $(heightDiv).attr('style', 'height:' + maxHeight + 'px !important;');
                                 $(autoHeight).css("height", "auto");

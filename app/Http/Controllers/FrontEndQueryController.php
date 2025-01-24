@@ -1619,5 +1619,28 @@ class FrontEndQueryController extends Controller
         ]);
     }
 
+    public function getLiveModal(Request $request)
+    {
+        $liveId = $request->live_id;
+        // dd($liveId);
+        $image       = livestream::where('id', $liveId)->pluck('player_image')->first();
+        $title       = livestream::where('id', $liveId)->pluck('title')->first();
+        $description = livestream::where('id', $liveId)->pluck('description')->first();
+        $description = strip_tags(html_entity_decode($description));
+        $slug        = livestream::where('id', $liveId)->pluck('slug')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $image)
+                        : $this->default_vertical_image;
+            // dd($image);
+
+        return response()->json([
+            'image' => $image,
+            'title'       => $title,
+            'description' => $description,
+            'slug'        => $slug
+        ]);
+    }
+
     
 }
