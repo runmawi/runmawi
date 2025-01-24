@@ -547,9 +547,21 @@ class RazorpayController extends Controller
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
+        SiteLogs::create([
+            'level' => 'success',
+            'message' => 'Razorpay video rent payment failure stored successfully!',
+            'context' => 'RazorpayVideoRent_Paymentfailure'
+        ]);
+
         return response()->json(['status' => 'failure_logged']);
     }catch (\Exception $e) {
         
+        SiteLogs::create([
+            'level' => 'fails',
+            'message' => $e->getMessage(),
+            'context' => 'RazorpayVideoRent_Paymentfailure'
+        ]);
+
         return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
     }
     }
