@@ -351,5 +351,19 @@ if ($Prevent_inspect == 1) { ?>
         }
     };
 </script>
+<script>
+
+var elem = document.querySelector('.video-list');
+    var flkty = new Flickity(elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: false,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyLoad: 7
+    });
+</script>
 
 <?php } ?>
