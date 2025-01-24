@@ -81,7 +81,7 @@
    
    <!-- Loader -->
    <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
-      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;">
+      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;" loading="lazy">
    </div>
 
    {{-- End Ads banners --}}
@@ -89,7 +89,7 @@
 
       @if (optional($admin_advertistment_banners)->bottom_image_url )
          <div class="col-sm-9 mx-auto ">
-            <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" width="857" height="32"/> 
+            <img class="img-fluid logo" alt="ad" src="{{ optional($admin_advertistment_banners)->bottom_image_url }}" width="857" height="32" loading="lazy" /> 
          </div>
       @endif
 
