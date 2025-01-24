@@ -58,8 +58,8 @@
                                                                 <div class="position-relative">
                                                                     <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="{{ $episode->title}}">
                                                                     <div class="controls">
-                                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
+                                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="playBTN">
+                                                                            <i class="fas fa-play"></i>
                                                                         </a>
 
                                                                         <nav>
@@ -116,7 +116,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img id="episode_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" alt="episode">
+                                        <img id="episode_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp">
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">
@@ -304,12 +304,13 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
                 // console.log("image: " + response.image);
                 // console.log("title: " + response.title);
                 // console.log("description: " + response.description);
-                const slug = 'live/' + response.slug;
-                // console.log("slug: " + slug);
+                // const slug = 'live/' + response.slug;
+                console.log("slug: " + response.slug);
                 $('#episode_modal-img').attr('src', response.image);
+                $('#episode_modal-img').attr('alt', response.title);
                 $('.modal-title').text(response.title);
                 $('.modal-desc').text(response.description);
-                $('.btn.btn-hover').attr('href', slug);
+                $('.btn.btn-hover').attr('href', response.slug);
                 
 
             },
