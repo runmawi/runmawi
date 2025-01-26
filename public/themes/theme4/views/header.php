@@ -209,10 +209,7 @@
     <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/style.css"></noscript>
 
   
-   <!-- JavaScript -->
-   <script src="https://e360tvmain.b-cdn.net/css/assets/js/flickity.pkgd.min.js" async ></script>
-
-   
+  
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
@@ -243,6 +240,10 @@
       <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css"></noscript>
 
+   
+   <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
+   <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
    
     <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery-3.5.1.min.js" async></script>
 

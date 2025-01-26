@@ -12,7 +12,7 @@
 
                     <div class="channels-list">
                         <div class="channel-row">
-                            <div id="trending-slider-nav" class="video-list live-stream-video flickity-slider">
+                            <div id="trending-slider-nav" class="video-list live-video flickity-slider">
                                 @foreach ($data as $key => $livestream_videos)
                                     <div id="live-top-img" class="item" data-index="{{ $key }}" data-live-id="{{ $livestream_videos->id}}">
                                         <div>
@@ -170,22 +170,25 @@
 
 <script>
   
-  var elem = document.querySelector('.live-stream-video');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyLoad: 7
-    });
-    flkty.reloadCells();
+  var elem = document.querySelector('.live-video');
+    if (elem) {
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7
+        });
+    } else {
+        console.error("Carousel element not found");
+    }
 
-    document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+    document.querySelectorAll('.live-video .item').forEach(function(item) {
         item.addEventListener('click', function() {
-            document.querySelectorAll('.live-stream-video .item').forEach(function(item) {
+            document.querySelectorAll('.live-video .item').forEach(function(item) {
                 item.classList.remove('current');
             });
 
