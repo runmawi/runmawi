@@ -135,7 +135,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  id="live_modal_img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp">
+                                            <img  id="live_modal_img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">

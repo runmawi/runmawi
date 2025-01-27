@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div id="top-slider-img" class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
-                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}?width=351&height=198" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
@@ -116,7 +116,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img id="episode_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp">
+                                        <img id="episode_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">

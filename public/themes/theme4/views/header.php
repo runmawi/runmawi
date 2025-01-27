@@ -229,10 +229,10 @@
        <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/typography.css"></noscript>
  
 
-   <!-- Remixicon -->
+      <!-- Remixicon -->
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"></noscript>
-      
+   
       <!-- Font awesome -->
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css"></noscript>
@@ -976,12 +976,18 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
 <script>
    document.addEventListener("DOMContentLoaded", function() {
-      fetch('header_menus')
-            .then(response => response.text())
-            .then(data => {
-               document.getElementById('menu-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading menus:', error));
+      $.ajax({
+            url: '<?= route("header_menus"); ?>',
+            type: "GET",
+            success: function (response) {
+               //  console.log("response: " + JSON.stringify(response));
+               document.getElementById('menu-placeholder').innerHTML = response;
+
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
    });
 </script>
 
@@ -1540,7 +1546,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
                                        <li class="nav-item nav-icon">
                                              <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" aria-label="searchResult">
-                                                <i class="ri-search-line"></i>
+                                             <i class="ri-search-line"></i>
                                              </a>
 
                                           <div class="search-box iq-search-bar d-search">
