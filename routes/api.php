@@ -87,6 +87,7 @@ Route::group(
         Route::post('addwatchlater', 'ApiAuthController@addwatchlater');
         Route::post('myWishlists', 'ApiAuthController@myWishlists');
         Route::post('myFavorites', 'ApiAuthController@myFavorites');
+        Route::post('Favourites_list', 'ApiAuthController@Favourites_list');
         Route::post('mywatchlaters', 'ApiAuthController@mywatchlaters');
         Route::post('showWishlist', 'ApiAuthController@showWishlist');
         Route::post('showFavorites', 'ApiAuthController@showFavorites');
