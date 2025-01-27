@@ -4203,10 +4203,115 @@ public function verifyandupdatepassword(Request $request)
 
   }
 
-  public function myFavorites(Request $request) {
+  public function myfavorites(Request $request) {
+
     $user_id = $request->user_id;
 
-    // Fetch all favorites in the original order
+    /*channel videos*/
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+
+    if ( $video_ids_count  > 0) {
+
+      foreach ($video_ids as $key => $value) {
+        $k2[] = $value->video_id;
+      }
+      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'videos';
+        return $item;
+      });
+
+      if(count($channel_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+    }else{
+            $status = "false";
+      $channel_videos = [];
+    }
+
+    // Episode
+
+    $episode_id = Favorite::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+
+    if(count($episode_id) > 0 ){
+
+        $episode = Episode::whereIn('id',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
+          $item['source'] = 'episode';
+          return $item;
+        });
+
+    }else{
+      $episode = [];
+    }
+
+    // Audios
+
+    $audio_id = Favorite::where('user_id','=',$user_id)->whereNotNull('audio_id')->pluck('audio_id');
+
+    if(count($audio_id) > 0 ){
+
+        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
+          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
+          return $item;
+        });
+
+    }else{
+      $audios = [];
+    }
+
+
+    /*UGC videos*/
+    $ugc_video_ids = Favorite::select('ugc_video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+    $ugc_video_ids_count = Favorite::select('ugc_video_id')->where('user_id',$user_id)->count();
+
+    if ( $ugc_video_ids_count  > 0) {
+
+      foreach ($ugc_video_ids as $key => $value) {
+        $k2[] = $value->ugc_video_id;
+      }
+      $ugc_videos = UGCVideo::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['video_url'] = URL::to('/').'/storage/app/public/';
+        $item['source'] = 'ugc_videos';
+        return $item;
+      });
+
+      if(count($ugc_videos) > 0){
+        $status = "true";
+      }else{
+        $status = "false";
+      }
+    }else{
+            $status = "false";
+      $ugc_videos = [];
+    }
+
+  if(count($channel_videos) > 0 || count($ugc_videos) > 0 || count($episode) > 0 || count($audios) > 0){
+    $status = "true";
+  }else{
+    $status = "false";
+  }
+    $response = array(
+        'status'          =>$status,
+        'channel_videos'  => $channel_videos,
+        'ugc_videos'      => $ugc_videos,
+        'episode_videos'  => $episode,
+        'audios'          => $audios,
+      );
+    return response()->json($response, 200);
+
+  }
+
+  public function Favourites_list(Request $request) {
+    $user_id = $request->user_id;
+
     $favorites = Favorite::where('user_id', $user_id)
         ->orderBy('created_at', 'desc')
         ->get();
@@ -4215,6 +4320,7 @@ public function verifyandupdatepassword(Request $request)
     $ugc_videos = [];
     $episodes = [];
     $audios = [];
+    $live_streams = [];
 
     foreach ($favorites as $favorite) {
         if ($favorite->video_id) {
@@ -4248,7 +4354,14 @@ public function verifyandupdatepassword(Request $request)
                 $audio['source'] = 'audio';
                 $audios[] = $audio;
             }
-        }
+        } elseif ($favorite->live_id) {
+          $live = LiveStream::find($favorite->live_id);
+          if ($live) {
+              $live['image'] = URL::to('/') . '/public/uploads/images/' . $live->image;
+              $live['source'] = 'livestream';
+              $live_streams[] = $live;
+          }
+      }
     }
 
     $status = (count($channel_videos) > 0 || count($ugc_videos) > 0 || count($episodes) > 0 || count($audios) > 0) ? "true" : "false";
@@ -4259,6 +4372,7 @@ public function verifyandupdatepassword(Request $request)
         'ugc_videos' => $ugc_videos,
         'episode_videos' => $episodes,
         'audios' => $audios,
+        'live_streams' => $live_streams,
     ];
 
     return response()->json($response, 200);
