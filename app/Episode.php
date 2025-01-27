@@ -13,6 +13,11 @@ class Episode extends Model
 		    return $this->belongsTo('App\Series','series_id','id');
   	}
 
+    public function series(){
+      return $this->belongsTo('App\Series','series_id','id');
+      return $this->belongsTo('App\Series','series_id','id');
+  }
+
     public function channeluser(){
       return $this->belongsTo('App\Channel','user_id','id');
     }

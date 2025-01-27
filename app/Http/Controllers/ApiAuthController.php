@@ -4203,6 +4203,77 @@ public function verifyandupdatepassword(Request $request)
 
   }
 
+
+  public function Wishlists_list(Request $request) {
+      $user_id = $request->user_id;
+
+      $wishlists = Wishlist::where('user_id', $user_id)
+          ->orderBy('created_at', 'desc')
+          ->get();
+      $wishlist_items = [];
+      foreach ($wishlists as $wishlist) {
+          if ($wishlist->video_id) {
+              $video = Video::find($wishlist->video_id);
+              if ($video) {
+                  $wishlist_items[] = [
+                      'id' => $video->id,
+                      'title' => $video->title,
+                      'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
+                      'video_url' => URL::to('/') . '/storage/app/public/',
+                      'source' => 'video',
+                      'created_at' => $wishlist->created_at
+                  ];
+              }
+          } elseif ($wishlist->ugc_video_id) {
+              $ugc_video = UGCVideo::find($wishlist->ugc_video_id);
+              if ($ugc_video) {
+                  $wishlist_items[] = [
+                      'id' => $ugc_video->id,
+                      'title' => $ugc_video->title,
+                      'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
+                      'video_url' => URL::to('/') . '/storage/app/public/',
+                      'source' => 'ugc_videos',
+                      'created_at' => $wishlist->created_at
+                  ];
+              }
+          } elseif ($wishlist->episode_id) {
+              $episode = Episode::find($wishlist->episode_id);
+              if ($episode) {
+                  $wishlist_items[] = [
+                      'id' => $episode->id,
+                      'title' => $episode->title,
+                      'image' => URL::to('/') . '/public/uploads/images/' . $episode->image,
+                      'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
+                      'source' => 'episode',
+                      'created_at' => $wishlist->created_at
+                  ];
+              }
+          } elseif ($wishlist->audio_id) {
+              $audio = Audio::find($wishlist->audio_id);
+              if ($audio) {
+                  $wishlist_items[] = [
+                      'id' => $audio->id,
+                      'title' => $audio->title,
+                      'image' => URL::to('/') . '/public/uploads/images/' . $audio->image,
+                      'source' => 'audio',
+                      'created_at' => $wishlist->created_at
+                  ];
+              }
+          }
+      }
+
+      // Determine status
+      $status = count($wishlist_items) > 0 ? "true" : "false";
+
+      // Response
+      $response = [
+          'status' => $status,
+          'wishlists' => $wishlist_items 
+      ];
+
+      return response()->json($response, 200);
+  }
+
   public function myfavorites(Request $request) {
 
     $user_id = $request->user_id;
@@ -4308,6 +4379,85 @@ public function verifyandupdatepassword(Request $request)
     return response()->json($response, 200);
 
   }
+
+  public function Favourites_list(Request $request) {
+    $user_id = $request->user_id;
+    $favorites = Favorite::where('user_id', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $favorite_items = [];
+
+    foreach ($favorites as $favorite) {
+        if ($favorite->video_id) {
+            $video = Video::find($favorite->video_id);
+            if ($video) {
+                $favorite_items[] = [
+                    'id' => $video->id,
+                    'title' => $video->title,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
+                    'video_url' => URL::to('/') . '/storage/app/public/',
+                    'source' => 'videos',
+                    'created_at' => $favorite->created_at
+                ];
+            }
+        } elseif ($favorite->ugc_video_id) {
+            $ugc_video = UGCVideo::find($favorite->ugc_video_id);
+            if ($ugc_video) {
+                $favorite_items[] = [
+                    'id' => $ugc_video->id,
+                    'title' => $ugc_video->title,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
+                    'video_url' => URL::to('/') . '/storage/app/public/',
+                    'source' => 'ugc_videos',
+                    'created_at' => $favorite->created_at
+                ];
+            }
+        } elseif ($favorite->episode_id) {
+            $episode = Episode::find($favorite->episode_id);
+            if ($episode) {
+                $favorite_items[] = [
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'image' => URL::to('/') . '/public/uploads/images/' . $episode->image,
+                    'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
+                    'source' => 'episode',
+                    'created_at' => $favorite->created_at
+                ];
+            }
+        } elseif ($favorite->audio_id) {
+            $audio = Audio::find($favorite->audio_id);
+            if ($audio) {
+                $favorite_items[] = [
+                    'id' => $audio->id,
+                    'title' => $audio->title,
+                    'image' => URL::to('/') . '/public/uploads/images/' . $audio->image,
+                    'source' => 'audio',
+                    'created_at' => $favorite->created_at
+                ];
+            }
+        } elseif ($favorite->live_id) {
+            $live = LiveStream::find($favorite->live_id);
+            if ($live) {
+                $favorite_items[] = [
+                    'id' => $live->id,
+                    'title' => $live->title,
+                    'image' => URL::to('/') . '/public/uploads/images/' . $live->image,
+                    'source' => 'livestream',
+                    'created_at' => $favorite->created_at
+                ];
+            }
+        }
+    }
+
+    $status = count($favorite_items) > 0 ? "true" : "false";
+    $response = [
+        'status' => $status,
+        'favorites' => $favorite_items,
+    ];
+
+    return response()->json($response, 200);
+}
 
   public function mywatchlaters(Request $request) {
 
@@ -10597,7 +10747,7 @@ public function LocationCheck(Request $request){
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later'
+          'message'=>'Added to Your Watch Later'
         );
 
       }

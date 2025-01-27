@@ -12,7 +12,7 @@
 
                     <div class="channels-list">
                         <div class="channel-row">
-                            <div id="trending-slider-nav" class="video-list live-stream-video flickity-slider">
+                            <div id="trending-slider-nav" class="video-list live-video flickity-slider">
                                 @foreach ($data as $key => $livestream_videos)
                                     <div id="live-top-img" class="item" data-index="{{ $key }}" data-live-id="{{ $livestream_videos->id}}">
                                         <div>
@@ -135,7 +135,7 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <img  id="live_modal_img" alt="modal">
+                                            <img  id="live_modal_img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="row">
@@ -169,11 +169,10 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Initialize Flickity
-    const elem = document.querySelector('.live-stream-video');
+  
+  var elem = document.querySelector('.live-video');
     if (elem) {
-        const flkty = new Flickity(elem, {
+        var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
             groupCells: false,
@@ -183,50 +182,43 @@
             imagesLoaded: true,
             lazyLoad: 7
         });
-        flkty.reloadCells();
-
-        // Add click event listener to items
-        document.querySelectorAll('.live-stream-video .item').forEach(item => {
-            item.addEventListener('click', function () {
-                // Remove 'current' class from all items
-                document.querySelectorAll('.live-stream-video .item').forEach(item => {
-                    item.classList.remove('current');
-                });
-                // Add 'current' class to the clicked item
-                this.classList.add('current');
-
-                // Get the data index of the clicked item
-                const index = this.getAttribute('data-index');
-
-                // Hide all captions and thumbnails
-                document.querySelectorAll('.live-stream-dropdown .caption').forEach(caption => {
-                    caption.style.display = 'none';
-                });
-                document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(thumbnail => {
-                    thumbnail.style.display = 'none';
-                });
-
-                // Show the corresponding caption and thumbnail
-                const selectedCaption = document.querySelector(`.live-stream-dropdown .caption[data-index="${index}"]`);
-                const selectedThumbnail = document.querySelector(`.live-stream-dropdown .thumbnail[data-index="${index}"]`);
-                if (selectedCaption) selectedCaption.style.display = 'block';
-                if (selectedThumbnail) selectedThumbnail.style.display = 'block';
-
-                // Show the dropdown
-                const dropdown = document.querySelector('.live-stream-dropdown');
-                if (dropdown) dropdown.style.display = 'flex';
-            });
-        });
+    } else {
+        console.error("Carousel element not found");
     }
 
-    // Handle dropdown close button
-    document.body.addEventListener('click', function (e) {
-        if (e.target.classList.contains('drp-close')) {
-            const dropdown = document.querySelector('.live-stream-dropdown');
-            if (dropdown) dropdown.style.display = 'none';
-        }
+    document.querySelectorAll('.live-video .item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.live-video .item').forEach(function(item) {
+                item.classList.remove('current');
+            });
+
+            item.classList.add('current');
+
+            var index = item.getAttribute('data-index');
+
+            document.querySelectorAll('.live-stream-dropdown .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
+
+            var selectedCaption = document.querySelector('.live-stream-dropdown .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('.live-stream-dropdown .thumbnail[data-index="' + index + '"]');
+            if (selectedCaption && selectedThumbnail) {
+                selectedCaption.style.display = 'block';
+                selectedThumbnail.style.display = 'block';
+            }
+
+            document.getElementsByClassName('live-stream-dropdown')[0].style.display = 'flex';
+        });
     });
-});
+
+
+    $('body').on('click', '.drp-close', function() {
+        $('.live-stream-dropdown').hide();
+    });
+
 
 </script>
 
@@ -273,12 +265,12 @@
                 // console.log("image: " + response.image);
                 // console.log("title: " + response.title);
                 // console.log("description: " + response.description);
-                const slug = 'live/' + response.slug;
                 // console.log("slug: " + slug);
                 $('#live_modal_img').attr('src', response.image);
+                $('#live_modal_img').attr('alt', response.title);
                 $('.modal-title').text(response.title);
                 $('.modal-desc').text(response.description);
-                $('.btn.btn-hover').attr('href', slug);
+                $('.btn.btn-hover').attr('href', response.slug);
                 
 
             },
@@ -288,7 +280,7 @@
         });
 
         $('.btn-close-white').on('click', function () {
-            $('#live_modal_img').attr('src', '');
+            $('#live_modal_img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
             $('.modal-title').text('');
             $('.modal-desc').text('');
             $('.btn.btn-hover').attr('href', '');

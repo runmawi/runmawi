@@ -209,10 +209,7 @@
     <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/style.css"></noscript>
 
   
-   <!-- JavaScript -->
-   <script src="https://e360tvmain.b-cdn.net/css/assets/js/flickity.pkgd.min.js" async ></script>
-
-   
+  
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
 
@@ -232,17 +229,21 @@
        <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/typography.css"></noscript>
  
 
-   <!-- Remixicon -->
+      <!-- Remixicon -->
       <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" integrity="sha512-HXXR0l2yMwHDrDyxJbrMD9eLvPe3z3qL3PPeozNTsiHJEENxx8DH2CxmV05iwG0dwoz5n4gQZQyYLUNt1Wdgfg==" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css"></noscript>
-      
+   
       <!-- Font awesome -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" integrity="sha512-Pv1WJMqAtVgNNct5vhq+4cgkKinKpV1jCwSWD4am9CjwxsJSCkLWKcE/ZBqHnEE1mHs01c8B0GMvcn/pQ/yrog==" crossorigin="anonymous" referrerpolicy="no-referrer" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css"></noscript>
 
       <link rel="preload" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css" as="style" onload="this.rel='stylesheet'">
       <noscript><link rel="stylesheet" href="https://e360tvmain.b-cdn.net/css/assets/css/variable.css"></noscript>
 
+   
+   <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
+   <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
    
     <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery-3.5.1.min.js" async></script>
 
@@ -973,6 +974,22 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
 </style>
 
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+      $.ajax({
+            url: '<?= route("header_menus"); ?>',
+            type: "GET",
+            success: function (response) {
+               //  console.log("response: " + JSON.stringify(response));
+               document.getElementById('menu-placeholder').innerHTML = response;
+
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+   });
+</script>
 
 <body class="dark-theme">
     <!-- loader Start -->
@@ -993,7 +1010,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                      <?php if(optional($admin_advertistment_banners)->top_image_url ): ?>
                         <link rel="preload" href="<?= $admin_advertistment_banners->top_image_url ?>" as="image">
                         <div class="col-sm-9 mx-auto header_top_position_img">
-                           <img class="img-fluid flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="857" height="32" /> 
+                           <img class="img-fluid flickity-lazyloaded" alt="logo" src="<?= $admin_advertistment_banners->top_image_url ?>" data-src="<?= $admin_advertistment_banners->top_image_url ?>" width="857" height="32" loading="lazy"/> 
                         </div>
                      <?php endif ;?>
                      
@@ -1030,399 +1047,9 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       <!-- Header Top Position  -->
                                  <?php if($theme->header_top_position == 1): ?>
 
-                                    <ul id="navbarList" class="navbar-nav top-colps">
-
-                                       <?php  
-
-                                          $header_top_position_menus = App\Menu::orderBy('order', 'asc')->where('in_home',1)->get();
-                                                                              
-                                          $Parent_video_category = App\VideoCategory::whereIn('id', function ($query) {
-                                             
-                                             $query->select('parent_id')->from('video_categories');
-
-                                                   })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
-
-                                                ->get()->map(function ($item) {
-
-                                                $item['sub_video_category'] = App\VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
-                                             
-                                                return $item;
-                                          });
-
-                                          $Parent_live_category = App\LiveCategory::whereIn('id', function ($query) {
-                                             
-                                             $query->select('parent_id')->from('live_categories');
-
-                                                   })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')
-
-                                                ->get()->map(function ($item) {
-
-                                                $item['sub_live_category'] = App\LiveCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
-                                             
-                                                return $item;
-                                          });
-
-                                          $Parent_audios_category = App\AudioCategory::whereIn('id', function ($query) {
-                                             
-                                             $query->select('parent_id')->from('audio_categories');
-
-                                                   })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('active',1)
-
-                                                ->get()->map(function ($item) {
-
-                                                $item['sub_audios_category'] = App\AudioCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
-                                             
-                                                return $item;
-                                          });
-
-                                          $Parent_series_category = App\SeriesGenre::whereIn('id', function ($query) {
-                                             
-                                             $query->select('parent_id')->from('series_genre');
-
-                                                   })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
-
-                                                ->get()->map(function ($item) {
-
-                                                $item['sub_series_category'] = App\SeriesGenre::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
-                                             
-                                                return $item;
-                                          });
-
-                                          $Parent_Series_Networks = App\SeriesNetwork::whereIn('id', function ($query) {
-                                             
-                                             $query->select('parent_id')->from('series_networks');
-                                          
-                                                   })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
-                                          
-                                                ->get()->map(function ($item) {
-                                          
-                                                $item['Sub_Series_Networks'] = App\SeriesNetwork::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
-                                             
-                                                return $item;
-                                          });
-
-                                          $tv_shows_series = App\Series::where('active',1)->get();
-
-                                          $languages = App\Language::all();
-
-                                          foreach ($header_top_position_menus as $menu) {
-
-                                             if ( $menu->in_menu == "video" ) {  ?>
-
-                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-video" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                   </a>
-
-                                                   <ul class="dropdown-menu primary_menu">
-                                                      <?php foreach ( $Parent_video_category as $category) : ?>
-                                                         <?php if( !is_null($category) ): ?>
-                                                            <li>
-                                                               <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$category->slug) ?>">
-                                                                  <?= $category->name;?>
-                                                               </a>
-
-                                                               <?php foreach ( $category->sub_video_category as $sub_video_category) : ?>
-                                                                  <?php if( !is_null($category) ): ?>
-                                                                     <ul class="submenu dropdown-menu">
-                                                                        <?php foreach ( $category->sub_video_category as $sub_video_category) : ?>
-                                                                           <li>
-                                                                              <a class="dropdown-item cont-item" href="<?= route('Parent_video_categories',$sub_video_category->slug)?>">
-                                                                                 <?= $sub_video_category->name;?>
-                                                                              </a>
-                                                                           </li>
-                                                                        <?php endforeach ; ?>
-                                                                     </ul>
-                                                               <?php endif; endforeach ; ?>
-                                                            </li>
-                                                         <?php endif; ?>
-                                                      <?php endforeach ; ?>
-                                                   </ul>
-                                                      
-                                                </li>
-
-                                             <?php } elseif  ( $menu->in_menu == "movies") {  ?>
-
-                                                <li class="nav-item  dskdflex menu-item">
-                                                   <a class="nav-link justify-content-between" id="dn" href="<?= URL::to($menu->url) ?>">
-                                                      <?= $menu->name ?>
-                                                   </a>
-                                                   <ul class="dropdown-menu categ-head">
-                                                         <?php foreach ( $languages as $language): ?>
-                                                         <li>
-                                                               <a class="dropdown-item cont-item" href="<?= URL::to('language/'.$language->id.'/'.$language->name);?>">
-                                                                  <?= $language->name;?>
-                                                               </a>
-                                                         </li>
-                                                         <?php endforeach; ?>
-                                                   </ul>
-                                                </li>
-
-                                             <?php } elseif ( $menu->in_menu == "live") { ?>
-
-                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-live" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                   </a>
-
-                                                   <ul class="dropdown-menu primary_menu">
-                                                      <?php 
-                                                         foreach ( $Parent_live_category as $category) :
-                                                            if( !is_null($category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?= URL::to('live/category/'.$category->slug) ?>">
-                                                                     <?= $category->name;?>
-                                                                  </a>
-
-                                                                  <?php foreach ( $category->sub_live_category as $sub_live_category) : ?>
-                                                                     <?php if( !is_null($category) ): ?>
-                                                                        <ul class="submenu dropdown-menu">
-                                                                           <?php foreach ( $category->sub_live_category as $sub_live_category) : ?>
-                                                                              <li>
-                                                                                 <a class="dropdown-item cont-item" href="<?= URL::to('live/category/'.$sub_live_category->slug) ?>">
-                                                                                    <?= $sub_live_category->name;?>
-                                                                                 </a>
-                                                                              </li>
-                                                                           <?php endforeach ; ?>
-                                                                        </ul>
-                                                                  <?php endif; endforeach ; ?>
-                                                               </li> <?php
-                                                            endif; 
-                                                         endforeach ; ?>
-                                                   </ul>
-                                                      
-                                                </li>
-
-                                             <?php } elseif ( $menu->in_menu == "audios") { ?>
-
-                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-audio" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                   </a>
-
-                                                   <ul class="dropdown-menu primary_menu">
-                                                      <?php 
-                                                         foreach ( $Parent_audios_category as $category) :
-                                                            if( !is_null($category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?= URL::to('audio/'.$category->slug) ?>">
-                                                                     <?= $category->name;?>
-                                                                  </a>
-
-                                                                  <?php foreach ( $category->sub_audios_category as $sub_audios_category) : ?>
-                                                                     <?php if( !is_null($category) ): ?>
-                                                                        <ul class="submenu dropdown-menu">
-                                                                           <?php foreach ( $category->sub_audios_category as $sub_audios_category) : ?>
-                                                                              <li>
-                                                                                 <a class="dropdown-item cont-item" href="<?= URL::to('audio/'.$sub_audios_category->slug) ?>">
-                                                                                    <?= $sub_audios_category->name;?>
-                                                                                 </a>
-                                                                              </li>
-                                                                           <?php endforeach ; ?>
-                                                                        </ul>
-                                                                  <?php endif; endforeach ; ?>
-                                                               </li> <?php
-                                                            endif; 
-                                                         endforeach ; ?>
-                                                   </ul>
-                                                      
-                                                </li>
-
-                                             <?php }elseif ( $menu->in_menu == "tv_show") { ?>
-                                                
-                                                <li class="nav-item active dskdflex menu-item ">
-
-                                                   <a href="<?php echo URL::to($menu->url)?>">
-                                                         <?= ($menu->name); ?> <i class="fa fa-angle-down"></i>
-                                                   </a>
-
-                                                   <?php if(count($tv_shows_series) > 0 ){ ?>
-                                                      <ul class="dropdown-menu categ-head primary_menu">
-                                                         <?php foreach ( $tv_shows_series->take(6) as $key => $tvshows_series): ?>
-                                                         <li>
-                                                               <?php if($key < 5): ?>
-                                                               <a class="dropdown-item cont-item" href="<?php echo URL::to('play_series/'.$tvshows_series->slug );?>">
-                                                                     <?= $tvshows_series->title;?>
-                                                               </a>
-                                                               <?php else: ?>
-                                                               <a class="dropdown-item cont-item text-primary" href="<?php echo URL::to('/series/list');?>">
-                                                                     <?php echo 'More...';?>
-                                                               </a>
-                                                               <?php endif; ?>
-                                                         </li>
-                                                         <?php endforeach; ?>
-                                                      </ul>
-                                                   <?php } ?>
-                                                </li>
-
-                                             <?php }elseif ( $menu->in_menu == "series") { ?>
-                                                
-                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                   <a class="nav-link dropdown-toggle justify-content-between" id="down-series" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                      <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                   </a>
-
-                                                   <ul class="dropdown-menu primary_menu">
-                                                      <?php 
-                                                         foreach ( $Parent_series_category as $category) :
-                                                            if( !is_null($category) ): ?>
-                                                               <li>
-                                                                  <a class="dropdown-item cont-item" href="<?= URL::to('series/category/'.$category->slug) ?>">
-                                                                     <?= $category->name;?>
-                                                                  </a>
-
-                                                                  <?php foreach ( $category->sub_series_category as $sub_series_category) : ?>
-                                                                     <?php if( !is_null($category) ): ?>
-                                                                        <ul class="submenu dropdown-menu">
-                                                                           <?php foreach ( $category->sub_series_category as $sub_series_category) : ?>
-                                                                              <li>
-                                                                                 <a class="dropdown-item cont-item" href="<?= URL::to('series/category/'.$category->slug) ?>">
-                                                                                    <?= $sub_series_category->name;?>
-                                                                                 </a>
-                                                                              </li>
-                                                                           <?php endforeach ; ?>
-                                                                        </ul>
-                                                                  <?php endif; endforeach ; ?>
-                                                               </li> <?php
-                                                            endif; 
-                                                         endforeach ; ?>
-                                                   </ul>
-                                                      
-                                                </li>
-
-                                             <?php }elseif ( $menu->in_menu == "networks") { ?>
-
-                                                <li class="nav-item dropdown menu-item d-flex align-items-center">
-                                                      <a class="nav-link dropdown-toggle justify-content-between" id="down-network" href="<?= URL::to($menu->url) ?>" data-bs-toggle="dropdown">
-                                                         <?= $menu->name ?> <i class="fa fa-angle-down"></i>
-                                                      </a>
-
-                                                      <ul class="dropdown-menu primary_menu">
-                                                         <?php 
-                                                            foreach ( $Parent_Series_Networks as $category) :
-                                                               if( !is_null($category) ): ?>
-                                                                  <li>
-                                                                     <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
-                                                                        <?= $category->name;?>
-                                                                     </a>
-
-                                                                     <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
-                                                                        <?php if( !is_null($category) ): ?>
-                                                                           <ul class="submenu dropdown-menu">
-                                                                              <?php foreach ( $category->Sub_Series_Networks as $Sub_Series_Networks) : ?>
-                                                                                 <li>
-                                                                                    <a class="dropdown-item cont-item" href="<?= route('Specific_Series_Networks',$category->slug) ?>">
-                                                                                       <?= $Sub_Series_Networks->name;?>
-                                                                                    </a>
-                                                                                 </li>
-                                                                              <?php endforeach ; ?>
-                                                                           </ul>
-                                                                     <?php endif; endforeach ; ?>
-                                                                  </li> <?php
-                                                               endif; 
-                                                            endforeach ; ?>
-                                                      </ul>
-                                                         
-                                                   </li>
-
-                                             <?php } else { ?>
-
-                                                <li class="menu-item">
-                                                   <a href="<?php if($menu->select_url == "add_Site_url"){ echo URL::to( $menu->url ); }elseif($menu->select_url == "add_Custom_url"){ echo $menu->custom_url;  }?>">
-                                                         <?php echo __($menu->name);?>
-                                                   </a>
-                                                </li>
-
-                                             <?php  } 
-                                          } ?>
-                                          <!-- <ul class="d-flex justify-content-around mt-3 mob_res-top_position">
-                                             <?php if( Auth::guest() ) : ?>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                         <div class="media-body">
-                                                            <h6 class="mb-0 ">Sign In</h6>
-                                                         </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                         <div class="media-body">
-                                                            <h6 class="mb-0 ">Sign Up</h6>
-                                                         </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-
-                                             <?php elseif( !Auth::guest() && Auth::user()->role == "admin"): ?>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('/admin') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Admin</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Logout</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                
-                                             <?php elseif( !Auth::guest() && Auth::user()->role == "subscriber"): ?>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Manage Profile</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Logout</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-
-                                             <?php elseif( !Auth::guest() && Auth::user()->role == "registered"): ?>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('myprofile') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Manage Profile</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                <li class="nav-item nav-icon btn">
-                                                   <a href="<?= URL::to('/logout') ?>" class="iq-sub-card">
-                                                      <div class="media align-items-center">
-                                                            <div class="media-body">
-                                                               <h6 class="mb-0 ">Logout</h6>
-                                                            </div>
-                                                      </div>
-                                                   </a>
-                                                </li>
-                                                
-                                             <?php endif; ?>
-
-
-                                          </ul> -->
-                                    </ul>
+                                    <div id="menu-placeholder">
+                                          <!-- Menus will be loaded here -->
+                                    </div>
 
                                  <?php endif;
 
@@ -1858,6 +1485,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                       
                                                       
                                                       if (!empty($channel)) { ?>
+                                                         <?php if( $theme->enable_channel_btn ==1): ?>
                                                             <div class="p-2" >
                                                                <form method="POST" action="<?= URL::to('channel/home') ?>" >
                                                                   <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
@@ -1866,6 +1494,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                                   <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
                                                                </form>
                                                             </div>
+                                                         <?php endif; ?>
                                                       <?php }
                                                    } ?>
                                                 </div>
@@ -1877,42 +1506,47 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                               </div> 
                               
                               <!-- Channel and CPP Login -->
-                              <div class="d-flex p-2">
-                                 <?php if (!Auth::guest()) {
-                                    $userEmail = Auth::user()->email;
-                                    $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
-                                    $channel = App\Channel::where('email', $userEmail)->first();
-
-                                    if (!empty($moderatorsUser)) { ?>
-                                          <div class="p-2" >
-                                             <form method="POST" action="<?= URL::to('cpp/home') ?>" >
-                                                <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                                                <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                                                <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
-                                             </form>
-                                          </div>
-                                    <?php }
-                                    
-                                    if (!empty($channel)) { ?>
-                                          <div class="p-2" >
-                                             <form method="POST" action="<?= URL::to('channel/home') ?>" >
-                                                <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
-                                                <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
-                                                <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
-                                                <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
-                                             </form>
-                                          </div>
-                                    <?php }
-                                 } ?>
+                              <?php if($theme->enable_channel_btn ==1 || $theme->enable_cpp_btn ==1): ?>
+                                 <div class="d-flex p-2">
+                                    <?php if (!Auth::guest()) {
+                                       $userEmail = Auth::user()->email;
+                                       $moderatorsUser = App\ModeratorsUser::where('email', $userEmail)->first();
+                                       $channel = App\Channel::where('email', $userEmail)->first();
+                                       if (!empty($moderatorsUser)) { ?>
+                                          <?php if( $theme->enable_cpp_btn ==1): ?>
+                                                <div class="p-2" >
+                                                   <form method="POST" action="<?= URL::to('cpp/home') ?>" >
+                                                      <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                      <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                      <input type="hidden" name="password" value="<?= @$moderatorsUser->password ?>" autocomplete="current-password">
+                                                      <button type="submit" class="btn btn-hover" >Visit CPP Portal</button>
+                                                   </form>
+                                                </div>
+                                          <?php endif; ?>
+                                       <?php }
+                                       
+                                       if (!empty($channel)) { ?>
+                                          <?php if( $theme->enable_channel_btn ==1): ?>
+                                                <div class="p-2" >
+                                                   <form method="POST" action="<?= URL::to('channel/home') ?>" >
+                                                      <input type="hidden" name="_token" id="token" value="<?= csrf_token() ?>">
+                                                      <input type="hidden" name="email" value="<?= $userEmail ?>" autocomplete="email" autofocus>
+                                                      <input type="hidden" name="password" value="<?= @$channel->unhased_password ?>" autocomplete="current-password">
+                                                      <button type="submit" class="btn btn-hover" >Visit Channel Portal</button>
+                                                   </form>
+                                                </div>
+                                          <?php endif; ?>
+                                       <?php }
+                                    } ?>
                                  </div>
+                              <?php endif; ?>
 
                                  <div class="navbar-right menu-right">
                                     <ul class="d-flex align-items-center list-inline m-0">
 
                                        <li class="nav-item nav-icon">
                                              <a href="<?= URL::to('searchResult') ?>" class="search-toggle device-search" aria-label="searchResult">
-                                                <i class="ri-search-line"></i>
+                                             <i class="ri-search-line"></i>
                                              </a>
 
                                           <div class="search-box iq-search-bar d-search">

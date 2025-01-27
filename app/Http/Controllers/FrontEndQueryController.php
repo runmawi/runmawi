@@ -1575,16 +1575,25 @@ class FrontEndQueryController extends Controller
 
     public function getModalEpisodeImg(Request $request)
     {
-        $episodeId = $request->episode_id;
-        $image = Episode::where('id', $episodeId)->pluck('player_image')->first();
+        $episodeId     = $request->episode_id;
 
-        $image = (!is_null($image) && $image != 'default_image.jpg')
-                        ? $this->BaseURL.('/images/' . $image)
+        $episode = Episode::with('series')
+                            ->select('id', 'series_id', 'title', 'slug', 'player_image', 'episode_description')
+                            ->find($episodeId);
+                            
+        $description   = strip_tags(html_entity_decode($episode->episode_description));
+        $slug          = URL::to('networks/episode/'.$episode->series->slug . '/' . $episode->slug);
+
+        $image = (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $episode->player_image)
                         : $this->default_vertical_image;
             // dd($image);
 
         return response()->json([
-            'episode_modal_images' => $image
+            'image'       => $image,
+            'title'       => $episode->title,
+            'description' => $description,
+            'slug'        => $slug
         ]);
     }
 
@@ -1623,20 +1632,18 @@ class FrontEndQueryController extends Controller
     {
         $liveId = $request->live_id;
         // dd($liveId);
-        $image       = livestream::where('id', $liveId)->pluck('player_image')->first();
-        $title       = livestream::where('id', $liveId)->pluck('title')->first();
-        $description = livestream::where('id', $liveId)->pluck('description')->first();
-        $description = strip_tags(html_entity_decode($description));
-        $slug        = livestream::where('id', $liveId)->pluck('slug')->first();
+        $live       = livestream::where('id', $liveId)->select('player_image','title','description','slug')->first();
+        $description =  !empty($live->description) ? strip_tags(html_entity_decode($live->description)) : '';
+        $slug          = URL::to('live/'.$live->slug);
 
-        $image = (!is_null($image) && $image != 'default_image.jpg')
-                        ? $this->BaseURL.('/images/' . $image)
+        $image = (!is_null($live->player_image) && $live->player_image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $live->player_image)
                         : $this->default_vertical_image;
             // dd($image);
 
         return response()->json([
-            'image' => $image,
-            'title'       => $title,
+            'image'       => $image,
+            'title'       => $live->title,
             'description' => $description,
             'slug'        => $slug
         ]);

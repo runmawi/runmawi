@@ -333,6 +333,10 @@ class RazorpayController extends Controller
             'amount'          => $request->amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
+            'notes'           => [
+                'video_id' => $request->video_id,
+                'user_id'  => Auth::user()->id,
+            ],
         ];
         
         $razorpayOrder = $api->order->create($orderData);
@@ -342,6 +346,7 @@ class RazorpayController extends Controller
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
+            'user_id'           =>   Auth::user()->id ? Auth::user()->id : null,
             'currency'       =>  'INR',
             'amount'         =>  $request->amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
@@ -447,7 +452,7 @@ class RazorpayController extends Controller
                 'status'  => 'true',
             );
             SiteLogs::create([
-                'level' => 'success',
+                'level' => 'success'. $purchase->status,
                 'message' => 'Razorpay video rent payment stored successfully!',
                 'context' => 'RazorpayVideoRent_Payment'
             ]);
@@ -474,6 +479,14 @@ class RazorpayController extends Controller
     {
 
         try {
+        $validatedData = $request->validate([
+            'payment_id' => 'nullable|string',
+            'order_id' => 'nullable|string',
+            'video_id' => 'nullable|integer',
+            'user_id' => 'nullable|integer',
+            'amount' => 'nullable|numeric',
+            'error_description' => 'nullable|string',
+        ]);
 
         $setting = Setting::first();  
         $ppv_hours = $setting->ppv_hours;
@@ -483,16 +496,16 @@ class RazorpayController extends Controller
         $now = $d->format('Y-m-d h:i:s a');
         $time = date('h:i:s', strtotime($now));
         $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
- 
-        $failureData = $request->all();
 
-        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+        $paymentId = $validatedData['payment_id'] ?? $validatedData['order_id'];
+
+        $existingPurchase = PpvPurchase::where('payment_id',  $paymentId)->first();
 
         if ($existingPurchase) {
             return response()->json(['status' => 'already_logged']);
         }
 
-        $video = Video::where('id','=', $failureData['video_id'] )->first();
+        $video = Video::where('id','=', $validatedData['video_id'] )->first();
 
         if(!empty($video)){
         $moderators_id = $video->user_id;
@@ -534,28 +547,27 @@ class RazorpayController extends Controller
         }
 
         $purchase = new PpvPurchase;
-        $purchase->user_id = $failureData['user_id'];
-        $purchase->video_id = $failureData['video_id'];
-        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->user_id = $validatedData['user_id'];
+        $purchase->video_id = $validatedData['video_id'];
+        $purchase->total_amount = $validatedData['amount'] / 100;
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
-        $purchase->payment_failure_reason = $failureData['error_description'];
+        $purchase->payment_failure_reason = $validatedData['error_description'] ?? 'Unknown error';
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
-        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_id = $paymentId; 
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
         SiteLogs::create([
             'level' => 'success',
-            'message' => 'Razorpay video rent payment failure stored successfully!',
+            'message' => 'Razorpay video rent payment failure stored successfully! '. $paymentId ,
             'context' => 'RazorpayVideoRent_Paymentfailure'
         ]);
 
         return response()->json(['status' => 'failure_logged']);
     }catch (\Exception $e) {
-        
         SiteLogs::create([
             'level' => 'fails',
             'message' => $e->getMessage(),
@@ -577,6 +589,10 @@ class RazorpayController extends Controller
             'amount'          => $request->amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
+            'notes'           => [
+                'live_id' => $request->live_id,
+                'user_id'  => Auth::user()->id,
+            ],
         ];
 
         $live_slug = LiveStream::where('id',$request->live_id)->pluck('slug')->first();
@@ -707,9 +723,15 @@ class RazorpayController extends Controller
 
     public function RazorpayLiveRent_Paymentfailure(Request $request)
     {
-
-        
         try {
+        $validatedData = $request->validate([
+            'payment_id' => 'nullable|string',
+            'order_id' => 'nullable|string',
+            'live_id' => 'nullable|integer',
+            'user_id' => 'nullable|integer',
+            'amount' => 'nullable|numeric',
+            'error_description' => 'required|string',
+        ]);
         $setting = Setting::first();  
         $ppv_hours = $setting->ppv_hours;
  
@@ -718,17 +740,14 @@ class RazorpayController extends Controller
         $now = $d->format('Y-m-d h:i:s a');
         $time = date('h:i:s', strtotime($now));
         $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
- 
- 
-        $failureData = $request->all();
-
-        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+        $paymentId = $validatedData['payment_id'] ?? $validatedData['order_id'];
+        $existingPurchase = PpvPurchase::where('payment_id',$paymentId)->first();
 
         if ($existingPurchase) {
             return response()->json(['status' => 'already_logged']);
         }
 
-        $video = LiveStream::where('id','=', $failureData['live_id'] )->first();
+        $video = LiveStream::where('id','=', $validatedData['live_id'] )->first();
 
         if(!empty($video)){
         $moderators_id = $video->user_id;
@@ -770,16 +789,16 @@ class RazorpayController extends Controller
         }
 
         $purchase = new PpvPurchase;
-        $purchase->user_id = $failureData['user_id'];
-        $purchase->live_id = $failureData['live_id'];
-        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->user_id = $validatedData['user_id'];
+        $purchase->live_id = $validatedData['live_id'];
+        $purchase->total_amount = $validatedData['amount'] / 100;
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
-        $purchase->payment_failure_reason = $failureData['error_description'];
+        $purchase->payment_failure_reason = $validatedData['error_description'];
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
-        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_id = $paymentId;
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
@@ -1074,7 +1093,10 @@ class RazorpayController extends Controller
             'receipt'         => $recept_id,
             'amount'          => $request->amount * 100, 
             'currency'        => 'INR',
-            'payment_capture' => 1 ,
+            'notes'           => [
+                'series_id' => $SeriesSeason_id,
+                'user_id'  => Auth::user()->id,
+            ],
         ];
         
         $razorpayOrder = $api->order->create($orderData);
@@ -1231,6 +1253,15 @@ class RazorpayController extends Controller
     {
 
         try{
+        $validatedData = $request->validate([
+            'payment_id' => 'nullable|string',
+            'order_id' => 'nullable|string',
+            'SeriesSeason_id' => 'nullable|integer',
+            'season_id' => 'nullable|integer',
+            'user_id' => 'nullable|integer',
+            'amount' => 'nullable|numeric',
+            'error_description' => 'nullable|string',
+        ]);
 
         $setting = Setting::first();  
         $ppv_hours = $setting->ppv_hours;
@@ -1240,18 +1271,17 @@ class RazorpayController extends Controller
         $now = $d->format('Y-m-d h:i:s a');
         $time = date('h:i:s', strtotime($now));
         $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now)));           
+        $paymentId = $validatedData['payment_id'] ?? $validatedData['order_id'];
 
-        $failureData = $request->all();
-
-        $existingPurchase = PpvPurchase::where('payment_id', $failureData['payment_id'])->first();
+        $existingPurchase = PpvPurchase::where('payment_id', $paymentId)->first();
 
         if ($existingPurchase) {
             return response()->json(['status' => 'already_logged']);
         }
 
 
-        $SeriesSeason = SeriesSeason::where('id',$failureData['SeriesSeason_id'])->first();
-        $series_id = SeriesSeason::where('id', $failureData['SeriesSeason_id'])->pluck('series_id')->first();
+        $SeriesSeason = SeriesSeason::where('id',$validatedData['SeriesSeason_id'])->first();
+        $series_id = SeriesSeason::where('id', $validatedData['SeriesSeason_id'])->pluck('series_id')->first();
         $Series = Series::where('id',$series_id)->first();
 
 
@@ -1295,17 +1325,17 @@ class RazorpayController extends Controller
         }
 
         $purchase = new PpvPurchase;
-        $purchase->user_id = $failureData['user_id'];
-        $purchase->season_id     = $failureData['SeriesSeason_id'] ;
+        $purchase->user_id = $validatedData['user_id'];
+        $purchase->season_id     = $validatedData['SeriesSeason_id'] ;
         $purchase->series_id    = $series_id ;
-        $purchase->total_amount = $failureData['amount'] / 100;
+        $purchase->total_amount = $validatedData['amount'] / 100;
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
         $purchase->status = 'failed';
-        $purchase->payment_failure_reason = $failureData['error_description'];
+        $purchase->payment_failure_reason = $validatedData['error_description'];
         $purchase->platform = 'website';
         $purchase->to_time = $to_time;
-        $purchase->payment_id = $failureData['payment_id'] ?? null;
+        $purchase->payment_id = $paymentId;
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 

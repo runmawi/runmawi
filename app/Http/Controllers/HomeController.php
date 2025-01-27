@@ -88,6 +88,7 @@ use App\LiveEventArtist;
 use Theme;
 use App\ButtonText;
 use App\StorageSetting;
+use App\Menu;
 
 class HomeController extends Controller
 {
@@ -4791,6 +4792,101 @@ public function uploadExcel(Request $request)
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function header_menus() {
+        try{
+
+            $header_top_position_menus = Menu::orderBy('order', 'asc')->where('in_home',1)->get();
+                                                                              
+            $Parent_video_category = VideoCategory::whereIn('id', function ($query) {
+                
+                $query->select('parent_id')->from('video_categories');
+
+                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+
+                ->get()->map(function ($item) {
+
+                $item['sub_video_category'] = VideoCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->where('in_menu',1)->get();
+                
+                return $item;
+            });
+
+            $Parent_live_category = LiveCategory::whereIn('id', function ($query) {
+                
+                $query->select('parent_id')->from('live_categories');
+
+                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')
+
+                ->get()->map(function ($item) {
+
+                $item['sub_live_category'] = LiveCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
+                
+                return $item;
+            });
+
+            $Parent_audios_category = AudioCategory::whereIn('id', function ($query) {
+                
+                $query->select('parent_id')->from('audio_categories');
+
+                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('active',1)
+
+                ->get()->map(function ($item) {
+
+                $item['sub_audios_category'] = AudioCategory::where('parent_id',$item->id)->orderBy('order', 'asc')->get();
+                
+                return $item;
+            });
+
+            $Parent_series_category = SeriesGenre::whereIn('id', function ($query) {
+                
+                $query->select('parent_id')->from('series_genre');
+
+                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+
+                ->get()->map(function ($item) {
+
+                $item['sub_series_category'] = SeriesGenre::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
+                
+                return $item;
+            });
+
+            $Parent_Series_Networks = SeriesNetwork::whereIn('id', function ($query) {
+                
+                $query->select('parent_id')->from('series_networks');
+            
+                    })->orwhere('parent_id',0)->orwhere('parent_id',null)->orderBy('order', 'asc')->where('in_menu',1)
+            
+                ->get()->map(function ($item) {
+            
+                $item['Sub_Series_Networks'] = SeriesNetwork::where('parent_id',$item->id)->where('in_menu',1)->orderBy('order', 'asc')->get();
+                
+                return $item;
+            });
+
+            $tv_shows_series = Series::where('active',1)->get();
+
+            $languages = Language::all();
+
+            $data = [
+                'languages'                   => $languages,
+                'tv_shows_series'             => $tv_shows_series,
+                'Parent_Series_Networks'      => $Parent_Series_Networks,
+                'Parent_series_category'      => $Parent_series_category,
+                'Parent_audios_category'      => $Parent_audios_category,
+                'Parent_live_category'        => $Parent_live_category,
+                'Parent_video_category'       => $Parent_video_category,
+                'header_top_position_menus'   => $header_top_position_menus,
+
+            ];
+            // dd($data);
+            return Theme::view('header_menus', $data);
+
+        }catch(\Throwable $th){
+            // return $th->getMessage();
+            return abort(404);
+        }
+        
     }
 
 

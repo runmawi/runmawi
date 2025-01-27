@@ -58,12 +58,12 @@
                                                                 <div class="position-relative">
                                                                     <img id="episode_player_img-{{ $series->id }}-{{$section_key}}-{{ $episode_key }}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="{{ $episode->title}}">
                                                                     <div class="controls">
-                                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}">
-                                                                             <button class="playBTN"><i class="fas fa-play"></i></button>
+                                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="playBTN">
+                                                                            <i class="fas fa-play"></i>
                                                                         </a>
 
                                                                         <nav>
-                                                                            <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Networks-based-categories-episode-Modal-'.$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" data-episode-id="{{ $episode->id }}" data-section-index="{{ $section_key }}">
+                                                                            <button id="data-modal-based-network" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="{{ $episode->id }}">
                                                                                 <i class="fas fa-info-circle"></i><span>More info</span></button>
                                                                         </nav>
 
@@ -107,133 +107,126 @@
         @endif
     @endforeach
 
-    <div class="depend-episode-modal-demd" style="display: none;">
-        {{-- Networks depends Episode Modal --}}
-        @foreach($data as $section_key => $series_networks)
-            @if (!empty($series_networks->Series_depends_Networks) && ($series_networks->Series_depends_Networks)->isNotEmpty())
-                @foreach ($series_networks->Series_depends_Networks as $Series_depends_Networks_key => $series)
-                    @foreach ($series->Series_depends_episodes as $episode_key => $episode)
-                        <div class="modal fade info_model" id="{{ "Home-Networks-based-categories-episode-Modal-".$section_key.'-'.$Series_depends_Networks_key.'-'.$episode_key }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                                <div class="container">
-                                    <div class="modal-content" style="border:none; background:transparent;">
-                                        <div class="modal-body">
-                                            <div class="col-lg-12">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <img id="episode_modal-img-{{$episode->id}}-{{$section_key}}" alt="{{ $episode->title }}">
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                <h2 class="caption-h2">{{ optional($episode)->title }}</h2>
-                                                            </div>
+    <div class="depend-episode-modal-demd">
+        <div class="modal fade info_model" id="Home-Networks-based-categories-episode-Modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
+                <div class="container">
+                    <div class="modal-content" style="border:none; background:transparent;">
+                        <div class="modal-body">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <img id="episode_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <h2 class="modal-title caption-h2"></h2>
+                                            </div>
 
-                                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                                <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
-                                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-                                                        @if (optional($episode)->episode_description)
-                                                            <div class="trending-dec mt-4">{!! html_entity_decode(optional($episode)->episode_description) !!}</div>
-                                                        @endif
-
-                                                        <a href="{{ URL::to('networks/episode/'.$series->slug.'/'.$episode->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
-
-                                                    </div>
-                                                </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
+                                                    <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
+                                                </button>
                                             </div>
                                         </div>
+
+                                            <div class="modal-desc trending-dec mt-4"></div>
+
+                                        <a href="" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                @endforeach
-            @endif
-        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endif
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-    // Initialize Flickity for each carousel
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyLoad: 7,
-        setGallerySize: true,
-        resize: true,
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 7,
+            setGallerySize: true,
+            resize: true, 
+        });
     });
 
     flkty.reloadCells();
+    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
-    // Attach event listeners for items in the section
+
     elem.querySelectorAll('.item').forEach(function(item) {
         item.addEventListener('click', function() {
             var sectionIndex = this.getAttribute('data-section-index');
             var index = this.getAttribute('data-index');
 
-            // Remove 'current' class from all items and add to the clicked one
+            // Remove current class from all items in this section
             elem.querySelectorAll('.item').forEach(function(item) {
                 item.classList.remove('current');
             });
             this.classList.add('current');
 
-            // Hide all captions, thumbnails, and sliders in the section
-            document.querySelectorAll(`#videoInfo-${sectionIndex} .caption`).forEach(caption => caption.style.display = 'none');
-            document.querySelectorAll(`#videoInfo-${sectionIndex} .thumbnail`).forEach(thumbnail => thumbnail.style.display = 'none');
-            document.querySelectorAll(`#videoInfo-${sectionIndex} .network-based-depends-slider`).forEach(slider => slider.style.display = 'none');
+            // Hide all captions and thumbnails in this section
+            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .caption').forEach(function(caption) {
+                caption.style.display = 'none';
+            });
+            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .thumbnail').forEach(function(thumbnail) {
+                thumbnail.style.display = 'none';
+            });
 
-            // Show the selected slider and initialize it with Flickity
-            var selectedSlider = document.querySelector(`#videoInfo-${sectionIndex} .network-based-depends-slider[data-index="${index}"]`);
+            // Hide all sliders in this section
+            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .network-based-depends-slider').forEach(function(slider) {
+                slider.style.display = 'none';
+            });
+
+            
+            // Show the slider for the selected series
+            var selectedSlider = document.querySelector('#videoInfo-' + sectionIndex + ' .network-based-depends-slider[data-index="' + index + '"]');
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
                 setTimeout(function() {
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: true,
+                        groupCells: false,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: true,
+                        lazyLoad: 7,
                     });
                 },0);
             }
 
-            // Show the caption and thumbnail for the selected item
-            var selectedCaption = document.querySelector(`#videoInfo-${sectionIndex} .caption[data-index="${index}"]`);
-            var selectedThumbnail = document.querySelector(`#videoInfo-${sectionIndex} .thumbnail[data-index="${index}"]`);
+            var selectedCaption = document.querySelector('#videoInfo-' + sectionIndex + ' .caption[data-index="' + index + '"]');
+            var selectedThumbnail = document.querySelector('#videoInfo-' + sectionIndex + ' .thumbnail[data-index="' + index + '"]');
             if (selectedCaption && selectedThumbnail) {
                 selectedCaption.style.display = 'block';
                 selectedThumbnail.style.display = 'block';
                 $('.depend-episode-modal-demd').show();
             }
 
-            // Ensure the video info section is visible
-            document.getElementById(`videoInfo-${sectionIndex}`).style.display = 'flex';
+            document.getElementById('videoInfo-' + sectionIndex).style.display = 'flex';
         });
     });
 });
-
-// Close dropdown functionality
 document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     closeButton.addEventListener('click', function() {
         var dropdown = this.closest('.series-based-network-dropdown');
         dropdown.style.display = 'none';
     });
-});
 });
 
 </script>
@@ -301,29 +294,43 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
 
 
 <script>
-    $(document).on('click', '.moreBTN', function () {
+    $(document).on('click', '#data-modal-based-network', function() {
         const episodeId = $(this).data('episode-id');
-        const sectionKey = $(this).data('section-index');
-        // console.log("modal opened");
-
+        // console.log("modal opened.");
         $.ajax({
             url: '{{ route("getModalEpisodeImg") }}',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                episode_id: episodeId
+                episode_id : episodeId
             },
             success: function (response) {
-                // console.log('episode modal img: ' + response.episode_modal_images);
+                // console.log("image: " + response.image);
+                // console.log("title: " + response.title);
+                // console.log("description: " + response.description);
+                // const slug = 'live/' + response.slug;
+                console.log("slug: " + response.slug);
+                $('#episode_modal-img').attr('src', response.image);
+                $('#episode_modal-img').attr('alt', response.title);
+                $('.modal-title').text(response.title);
+                $('.modal-desc').text(response.description);
+                $('.btn.btn-hover').attr('href', response.slug);
+                
 
-                let maxHeight = 0;
-                $('#episode_modal-img-' + episodeId + '-' + sectionKey).attr('src', response.episode_modal_images);
-              
             },
             error: function () {
                 console.log('Failed to load images. Please try again.');
             }
         });
+
+        $('.btn-close-white').on('click', function () {
+            $('#episode_modal-img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
+            $('.modal-title').text('');
+            $('.modal-desc').text('');
+            $('.btn.btn-hover').attr('href', '');
+        });
+
+
     });
 </script>
 
