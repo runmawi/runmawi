@@ -3098,3 +3098,5 @@ Route::get('/series/image/{series_id}', function ($series_id) {
 
     return response()->json(['image_url' => $image]);
 })->name('network.series.image');
+
+Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
