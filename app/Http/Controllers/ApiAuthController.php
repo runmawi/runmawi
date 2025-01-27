@@ -4203,111 +4203,66 @@ public function verifyandupdatepassword(Request $request)
 
   }
 
-  public function myfavorites(Request $request) {
-
+  public function myFavorites(Request $request) {
     $user_id = $request->user_id;
 
-    /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
-    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+    // Fetch all favorites in the original order
+    $favorites = Favorite::where('user_id', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-    if ( $video_ids_count  > 0) {
+    $channel_videos = [];
+    $ugc_videos = [];
+    $episodes = [];
+    $audios = [];
 
-      foreach ($video_ids as $key => $value) {
-        $k2[] = $value->video_id;
-      }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'videos';
-        return $item;
-      });
-
-      if(count($channel_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $channel_videos = [];
+    foreach ($favorites as $favorite) {
+        if ($favorite->video_id) {
+            $video = Video::find($favorite->video_id);
+            if ($video) {
+                $video['image_url'] = URL::to('/') . '/public/uploads/images/' . $video->image;
+                $video['video_url'] = URL::to('/') . '/storage/app/public/';
+                $video['source'] = 'videos';
+                $channel_videos[] = $video;
+            }
+        } elseif ($favorite->ugc_video_id) {
+            $ugc_video = UGCVideo::find($favorite->ugc_video_id);
+            if ($ugc_video) {
+                $ugc_video['image_url'] = URL::to('/') . '/public/uploads/images/' . $ugc_video->image;
+                $ugc_video['video_url'] = URL::to('/') . '/storage/app/public/';
+                $ugc_video['source'] = 'ugc_videos';
+                $ugc_videos[] = $ugc_video;
+            }
+        } elseif ($favorite->episode_id) {
+            $episode = Episode::find($favorite->episode_id);
+            if ($episode) {
+                $episode['image'] = URL::to('/') . '/public/uploads/images/' . $episode->image;
+                $episode['series_name'] = Series::where('id', $episode->series_id)->pluck('title')->first();
+                $episode['source'] = 'episode';
+                $episodes[] = $episode;
+            }
+        } elseif ($favorite->audio_id) {
+            $audio = Audio::find($favorite->audio_id);
+            if ($audio) {
+                $audio['image'] = URL::to('/') . '/public/uploads/images/' . $audio->image;
+                $audio['source'] = 'audio';
+                $audios[] = $audio;
+            }
+        }
     }
 
-    // Episode
+    $status = (count($channel_videos) > 0 || count($ugc_videos) > 0 || count($episodes) > 0 || count($audios) > 0) ? "true" : "false";
 
-    $episode_id = Favorite::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+    $response = [
+        'status' => $status,
+        'channel_videos' => $channel_videos,
+        'ugc_videos' => $ugc_videos,
+        'episode_videos' => $episodes,
+        'audios' => $audios,
+    ];
 
-    if(count($episode_id) > 0 ){
-
-        $episode = Episode::whereIn('id',$episode_id)->orderBy('episode_order')->get()->map(function ($item) {
-          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['series_name'] = Series::where('id',$item->series_id)->pluck('title')->first();
-          $item['source'] = 'episode';
-          return $item;
-        });
-
-    }else{
-      $episode = [];
-    }
-
-    // Audios
-
-    $audio_id = Favorite::where('user_id','=',$user_id)->whereNotNull('audio_id')->pluck('audio_id');
-
-    if(count($audio_id) > 0 ){
-
-        $audios = Audio::whereIn('id',$audio_id)->get()->map(function ($item) {
-          $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-          $item['source'] = 'audio';
-          return $item;
-        });
-
-    }else{
-      $audios = [];
-    }
-
-
-    /*UGC videos*/
-    $ugc_video_ids = Favorite::select('ugc_video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
-    $ugc_video_ids_count = Favorite::select('ugc_video_id')->where('user_id',$user_id)->count();
-
-    if ( $ugc_video_ids_count  > 0) {
-
-      foreach ($ugc_video_ids as $key => $value) {
-        $k2[] = $value->ugc_video_id;
-      }
-      $ugc_videos = UGCVideo::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'ugc_videos';
-        return $item;
-      });
-
-      if(count($ugc_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $ugc_videos = [];
-    }
-
-  if(count($channel_videos) > 0 || count($ugc_videos) > 0 || count($episode) > 0 || count($audios) > 0){
-    $status = "true";
-  }else{
-    $status = "false";
-  }
-    $response = array(
-        'status'          =>$status,
-        'channel_videos'  => $channel_videos,
-        'ugc_videos'      => $ugc_videos,
-        'episode_videos'  => $episode,
-        'audios'          => $audios,
-      );
     return response()->json($response, 200);
-
-  }
+}
 
   public function mywatchlaters(Request $request) {
 
