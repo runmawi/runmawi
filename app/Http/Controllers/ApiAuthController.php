@@ -10747,7 +10747,7 @@ public function LocationCheck(Request $request){
         Watchlater::insert($data);
         $response = array(
           'status'=>'true',
-          'message'=>'Added  to  Your Watch Later'
+          'message'=>'Added to Your Watch Later'
         );
 
       }
