@@ -19,7 +19,7 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div id="top-slider-img" class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
-                                                <img data-flickity-lazyload="{{ $series->image_url }}?width=351&height=198" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
                                             </div>
                                         </div>
                                     @endforeach
