@@ -3078,6 +3078,7 @@ Route::get('admin/transaction_details/{unique_id}/edit', 'AdminTransactionDetail
 Route::post('admin/transaction_details/{unique_id}/update', 'AdminTransactionDetailsController@update')->name('admin.transaction-details.update');
 Route::get('admin/transaction_details/{unique_id}/show', 'AdminTransactionDetailsController@show')->name('admin.transaction-details.show');
 Route::get('admin/transaction_live_search', 'AdminTransactionDetailsController@live_search');
+Route::get('admin/missing-transaction', 'RazorpayController@Razorpay_Missingtransaction')->name('admin.transaction-details.missing-transaction');
 
 // Analytics management
 Route::get('/admin/analytics', 'AdminUsersController@AnalyticsIndex')->name('admin.analytics.index');

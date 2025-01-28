@@ -35,6 +35,9 @@
                                 <div class="form-group mr-2">
                                      <input type="text" name="search" id="search" class="form-control" placeholder="Search Data" />
                                 </div>
+                                <div class="form-group mr-2">
+                                    <a onclick="return confirm('Proceed to fetch missing transaction?')" href="{{ route('admin.transaction-details.missing-transaction') }}" class="btn btn-warning">Fetch Missing Transaction</a>
+                                </div>
                             </div>
                         </div>
                         <div class="iq-card-body table-responsive p-0">

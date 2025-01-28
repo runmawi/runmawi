@@ -335,6 +335,7 @@ class RazorpayController extends Controller
             'payment_capture' => 1 ,
             'notes'           => [
                 'video_id' => $request->video_id,
+                'ppv_plan' => $request->ppv_plan,
                 'user_id'  => Auth::user()->id,
             ],
         ];
@@ -452,7 +453,7 @@ class RazorpayController extends Controller
                 'status'  => 'true',
             );
             SiteLogs::create([
-                'level' => 'success'. $purchase->status,
+                'level' => 'success,'. $purchase->status,
                 'message' => 'Razorpay video rent payment stored successfully!',
                 'context' => 'RazorpayVideoRent_Payment'
             ]);
@@ -592,6 +593,7 @@ class RazorpayController extends Controller
             'notes'           => [
                 'live_id' => $request->live_id,
                 'user_id'  => Auth::user()->id,
+                'ppv_plan' => $request->ppv_plan,
             ],
         ];
 
@@ -708,6 +710,11 @@ class RazorpayController extends Controller
             $respond=array(
                 'status'  => 'true',
             );
+            SiteLogs::create([
+                'level' => 'success,'. $purchase->status,
+                'message' => 'Razorpay live rent payment stored successfully!',
+                'context' => 'RazorpayLiveRent_Payment'
+            ]);
         
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond);
 
@@ -717,6 +724,11 @@ class RazorpayController extends Controller
                 'status'  => 'false',
             );
 
+            SiteLogs::create([
+                'level' => 'fails',
+                'message' => $e->getMessage(),
+                'context' => 'RazorpayLiveRent_Payment'
+            ]);
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
     }
@@ -802,8 +814,21 @@ class RazorpayController extends Controller
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
+        SiteLogs::create([
+            'level' => 'success',
+            'message' => 'Razorpay live rent payment failure stored successfully! '. $paymentId ,
+            'context' => 'RazorpayLiveRent_Paymentfailure'
+        ]);
+
         return response()->json(['status' => 'failure_logged']);
     } catch (\Exception $e) {
+
+        
+        SiteLogs::create([
+            'level' => 'fails',
+            'message' => $e->getMessage(),
+            'context' => 'RazorpayLiveRent_Paymentfailure'
+        ]);
       
         return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
     }
@@ -1096,6 +1121,7 @@ class RazorpayController extends Controller
             'notes'           => [
                 'series_id' => $SeriesSeason_id,
                 'user_id'  => Auth::user()->id,
+                'ppv_plan' => $request->ppv_plan,
             ],
         ];
         
@@ -1235,6 +1261,13 @@ class RazorpayController extends Controller
             $respond=array(
                 'status'  => 'true',
             );
+
+            SiteLogs::create([
+                'level' => 'success,'. $purchase->status,
+                'message' => 'Razorpay SeriesSeason rent payment stored successfully!',
+                'context' => 'RazorpaySeriesSeasonRent_Payment'
+            ]);
+        
         
             return view('Razorpay.Rent_message',compact('respond'),$respond);
 
@@ -1243,6 +1276,13 @@ class RazorpayController extends Controller
             $respond=array(
                 'status'  => 'false',
             );
+
+            SiteLogs::create([
+                'level' => 'fails',
+                'message' => $e->getMessage(),
+                'context' => 'RazorpaySeriesSeasonRent_Payment'
+            ]);
+        
 
             return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
         }
@@ -1339,9 +1379,23 @@ class RazorpayController extends Controller
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
+        SiteLogs::create([
+            'level' => 'success',
+            'message' => 'Razorpay SeriesSeason rent payment failure stored successfully! '. $paymentId ,
+            'context' => 'RazorpaySeriesSeasonRent_Paymentfailure'
+        ]);
+
+
         return response()->json(['status' => 'failure_logged']);
 
         } catch (\Exception $e) {
+
+        SiteLogs::create([
+            'level' => 'fails',
+            'message' => $e->getMessage(),
+            'context' => 'RazorpaySeriesSeasonRent_Paymentfailure'
+        ]);
+    
         return response()->json(['status' => 'error', 'message' => 'An error occurred while processing the payment failure.']);
     }
 
@@ -1385,6 +1439,259 @@ class RazorpayController extends Controller
         return Theme::view('Razorpay.SeriesSeason_rent_checkout',compact('response'),$response);
     }
 
+    public function Razorpay_Missingtransaction()
+    {
+        $setting = Setting::first();  
+        $ppv_hours = $setting->ppv_hours;
+        $d = new \DateTime('now');
+        $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+        $now = $d->format('Y-m-d h:i:s a');
+        $time = date('h:i:s', strtotime($now));
+        $to_time = date('Y-m-d h:i:s a', strtotime('+' . $ppv_hours . ' hour', strtotime($now))); 
 
-    
+        try {
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $totalTransactions = 200;
+            $transactionsPerRequest = 100;
+            $skip = 0; 
+            $fetchedTransactions = 0;
+
+            while ($fetchedTransactions < $totalTransactions) {
+                $options = [
+                    'count' => $transactionsPerRequest,
+                    'skip' => $skip,
+                ];
+                $payments = $api->payment->all($options);
+                if (empty($payments['items'])) {
+                    break;
+                }
+
+                foreach ($payments['items'] as $payment) {
+                    $paymentId = $payment['id'];
+                    $existingPayment = PpvPurchase::where('payment_id', $paymentId)->first();
+
+                   
+                    if (!$existingPayment) {
+                        $amount = $payment['amount'] / 100;
+                        $status = $payment['status'];
+                        $userId = $payment['notes']['user_id'] ?? null;
+                        $Ppv_plan = $payment['notes']['ppv_plan'] ?? null;
+
+                        $videoId = $payment['notes']['video_id'] ?? null;
+                        $liveId = $payment['notes']['live_id'] ?? null;
+                        $audioId = $payment['notes']['audio_id'] ?? null;
+                        $movieId = $payment['notes']['movie_id'] ?? null;
+                        $seriesId = $payment['notes']['series_id'] ?? null;
+                        $seasonId = $payment['notes']['season_id'] ?? null;
+                        $episodeId = $payment['notes']['episode_id'] ?? null;
+
+                        $mediaType = null;
+                        $mediaId = null;
+                       
+
+                        if ($liveId) {
+                            $mediaType = 'live';
+                            $mediaId = $liveId;
+                        } elseif ($videoId) {
+                            $mediaType = 'video';
+                            $mediaId = $videoId;
+                        } elseif ($audioId) {
+                            $mediaType = 'audio';
+                            $mediaId = $audioId;
+                        } elseif ($movieId) {
+                            $mediaType = 'movie';
+                            $mediaId = $movieId;
+                        } elseif ($seriesId) {
+                            $mediaType = 'series';
+                            $mediaId = $seriesId;
+                        } elseif ($seasonId) {
+                            $mediaType = 'season';
+                            $mediaId = $seasonId;
+                        } elseif ($episodeId) {
+                            $mediaType = 'episode';
+                            $mediaId = $episodeId;
+                        }
+
+                        if ($mediaId && $userId) {
+                            
+                            $purchase = new PpvPurchase();
+                            $purchase->user_id = $userId;
+                            $purchase->total_amount = $amount;
+                            $purchase->status = $status;
+                            $purchase->to_time = $to_time;
+                            $purchase->platform = 'website';
+                            $purchase->payment_id = $paymentId;
+                            $purchase->payment_gateway = 'razorpay';
+                            $purchase->ppv_plan = $Ppv_plan;
+                            if ($mediaType === 'video') {
+                                $purchase->video_id = $mediaId;
+                            } elseif ($mediaType === 'live') {
+                                $purchase->live_id = $mediaId;
+                            } elseif ($mediaType === 'audio') {
+                                $purchase->audio_id = $mediaId;
+                            } elseif ($mediaType === 'movie') {
+                                $purchase->movie_id = $mediaId;
+                            } elseif ($mediaType === 'series') {
+                                $purchase->series_id = $mediaId;
+                            } elseif ($mediaType === 'season') {
+                                $purchase->season_id = $mediaId;
+                            } elseif ($mediaType === 'episode') {
+                                $purchase->episode_id = $mediaId;
+                            }
+                            $moderators_id = null;
+                            $moderator_commssion = 0;
+                            $admin_commssion = 0;
+                            if ($mediaType === 'video' || $mediaType === 'live' || $mediaType === 'series') {
+                              
+                                if ($mediaType === 'video') {
+                                    $video = Video::where('id', $mediaId)->first();
+                                    if(!empty($video)){
+                                        $moderators_id = $video->user_id;
+                                    }
+                        
+                                    $commission_btn = $setting->CPP_Commission_Status;
+                                    $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+                                    $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+                                    $commission_percentage_value = $video->CPP_commission_percentage;
+                                    if($commission_btn === 0){
+                                        $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+                                    }
+                                
+                                    if(!empty($moderators_id)){
+                                       
+                                        $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                                        if ($moderator) {
+                                            $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                                        } else {
+                                            $percentage = 0;
+                                        }
+                                        $total_amount        = $video->ppv_price;
+                                        $title               =  $video->title;
+                                        $commssion           =  VideoCommission::where('type','CPP')->first();
+                                        $ppv_price           =  $amount;
+                                        $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+                                        $admin_commssion     =  $ppv_price - $moderator_commssion;
+                                        $moderator_id        =  $moderators_id;
+                                    }
+                                    else
+                                    {
+                                        $total_amount = $video->ppv_price;
+                                        $title =  $video->title;
+                                        $commssion  =  VideoCommission::where('type','CPP')->first();
+                                        $percentage = null; 
+                                        $ppv_price = $video->ppv_price;
+                                        $admin_commssion =  null;
+                                        $moderator_commssion = null;
+                                        $moderator_id = null;
+                                    }
+                                    // dd('clear');
+                                    $purchase->moderator_id = $moderator_id;
+                                    $purchase->admin_commssion = $admin_commssion;
+                                    $purchase->moderator_commssion = $moderator_commssion;
+                                    $purchase->save();
+
+                                } elseif ($mediaType === 'live') {
+                                    $liveStream = LiveStream::where('id', $mediaId)->first();
+                                    if(!empty($video)){
+                                        $moderators_id = $liveStream->user_id;
+                                    }
+
+                                    if(!empty($moderators_id)){
+                                        $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                                        if ($moderator) {
+                                            $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                                        } else {
+                                            $percentage = 0;
+                                        }
+                                        $total_amount        =  $liveStream->ppv_price;
+                                        $title               =  $liveStream->title;
+                                        $commssion           =  VideoCommission::where('type','CPP')->first();
+                                        $ppv_price           =  $liveStream->ppv_price;
+                                        $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                                        $admin_commssion     =  $ppv_price - $moderator_commssion;
+                                        $moderator_id        =  $moderators_id;
+                                    }
+                                    else
+                                    {
+                                        $total_amount   = $liveStream->ppv_price;
+                                        $title          =  $liveStream->title;
+                                        $commssion      =  VideoCommission::where('type','CPP')->first();
+                                        $percentage     = null; 
+                                        $ppv_price       = $liveStream->ppv_price;
+                                        $admin_commssion =  null;
+                                        $moderator_commssion = null;
+                                        $moderator_id = null;
+                                    }
+
+                                    $purchase->moderator_id = $moderator_id;
+                                    $purchase->admin_commssion = $admin_commssion;
+                                    $purchase->moderator_commssion = $moderator_commssion;
+                                    $purchase->save();
+
+                                } elseif ($mediaType === 'series') {
+                                    $SeriesSeason = SeriesSeason::where('id',$mediaId)->first();
+
+                                    $series_id = SeriesSeason::where('id',$mediaId)->pluck('series_id')->first();
+                                    $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
+                                    $Series = Series::where('id',$series_id)->first();
+
+                                    if(!empty($Series) && $Series->uploaded_by == 'CPP'){
+                                        $moderators_id = $Series->user_id;
+                                    }
+                                    if(!empty($moderators_id)){
+                                        $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+                                        if ($moderator) {
+                                            $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+                                        } else {
+                                            $percentage = 0;
+                                        }
+                                        $total_amount        =  $video->ppv_price;
+                                        $title               =  $video->title;
+                                        $commssion           =  VideoCommission::where('type','CPP')->first();
+                                        $ppv_price           =  $video->ppv_price;
+                                        $moderator_commssion =  ($percentage/100) * $ppv_price ;
+                                        $admin_commssion     =  $ppv_price - $moderator_commssion;
+                                        $moderator_id        =  $moderators_id;
+                                    }
+                                    else
+                                    {
+                                        $total_amount = $request->amount;
+                                        $title =  $SeriesSeason->title;
+                                        $commssion  =  VideoCommission::where('type','CPP')->first();
+                                        $percentage = null; 
+                                        $ppv_price = $amount;
+                                        $admin_commssion =  null;
+                                        $moderator_commssion = null;
+                                        $moderator_id = null;
+                                    }
+                                    $purchase->moderator_id = $moderator_id;
+                                    $purchase->admin_commssion = $admin_commssion;
+                                    $purchase->moderator_commssion = $moderator_commssion;
+                                    $purchase->save();
+                                }
+                            } else {
+                                \Log::warning("No valid media ID or user ID found for payment ID: " . $paymentId);
+                            }
+                        } elseif ($existingPayment && $existingPayment->status === 'failed') {
+                            $existingPayment->status = $payment['status'];
+                            $existingPayment->payment_failure_reason = $payment['error']['description'] ?? 'Unknown error';
+                            $existingPayment->save();
+                        }
+                        $fetchedTransactions++;
+                        if ($fetchedTransactions >= $totalTransactions) {
+                            break;
+                        }
+                    }
+                    $skip += $transactionsPerRequest;
+                }
+            }
+
+            return redirect()->route('admin.transaction-details.index');
+
+        } catch (\Exception $e) {
+        //    dd($e->getMessage());
+            return redirect()->route('admin.transaction-details.index')->with('error', 'An error occurred while processing the transactions.');
+        }
+    }
+
 }
