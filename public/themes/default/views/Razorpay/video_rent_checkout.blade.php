@@ -30,7 +30,8 @@ var options = {
         "name": "{{$response['name']}}",
     },
     "notes": {
-        "address": "{{$response['address']}}"
+        "video_id": "{{$response['video_id']}}",
+        "user_id": "{{$response['user_id']}}"
     },
     "theme": {
         "color": "#F37254"
