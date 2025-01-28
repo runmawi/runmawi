@@ -31,7 +31,8 @@ var options = {
     },
     "notes": {
         "video_id": "{{$response['video_id']}}",
-        "user_id": "{{$response['user_id']}}"
+        "user_id": "{{$response['user_id']}}",
+        "ppv_plan": "{{$response['ppv_plan']}}"
     },
     "theme": {
         "color": "#F37254"
@@ -57,6 +58,7 @@ rzp1.on('payment.failed', function (response) {
             user_id: "{{ $response['user_id'] }}",
             video_id: "{{ $response['video_id'] }}",
             amount: "{{ $response['amount'] }}",
+            ppv_plan: "{{ $response['ppv_plan'] }}",
             order_id: response.error.metadata.order_id,
             payment_id: response.error.metadata.payment_id,
             error_code: response.error.code,
