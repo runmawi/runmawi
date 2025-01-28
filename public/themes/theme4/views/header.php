@@ -976,18 +976,20 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
 
 <script>
    document.addEventListener("DOMContentLoaded", function() {
-      $.ajax({
-            url: '<?= route("header_menus"); ?>',
-            type: "GET",
-            success: function (response) {
-               //  console.log("response: " + JSON.stringify(response));
-               document.getElementById('menu-placeholder').innerHTML = response;
+      setTimeout(function () {
+         $.ajax({
+               url: '<?= route("header_menus"); ?>',
+               type: "GET",
+               success: function (response) {
+                  //  console.log("response: " + JSON.stringify(response));
+                  document.getElementById('menu-placeholder').innerHTML = response;
 
-            },
-            error: function () {
-                console.log('Failed to load images. Please try again.');
-            }
-        });
+               },
+               error: function () {
+                  console.log('Failed to load images. Please try again.');
+               }
+         });
+      }, 1000);
    });
 </script>
 

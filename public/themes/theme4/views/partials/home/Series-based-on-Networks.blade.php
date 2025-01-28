@@ -19,7 +19,11 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div id="top-slider-img" class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
-                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                @if($section_key < 3)
+                                                    <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                @else
+                                                    <img id="load-img-{{ $section_key }}-{{ $series->id }}" class="flickity-lazyloaded img-load-lazy flick-height-{{ $section_key }}" width="300" height="200" data-src-url="{{ route('network.series.image', ['series_id' => $series->id]) }}" alt="{{ $series->title }}">
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -334,11 +338,87 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
     });
 </script>
 
+<script>
+    $(window).scroll(function () {
+        const lazyImages = document.querySelectorAll('.img-load-lazy');
+        lazyImages.forEach((img) => {
+            if (img.getAttribute('data-loaded') === 'true') {
+                return;
+            }
+            const sectionKey = img.closest('.item').getAttribute('data-section-index');
+            if (sectionKey > 0) {
+                const heightDiv = $('#trending-slider-nav-' + sectionKey + ' .flickity-viewport')
+                const autoHeight = $('#trending-slider-nav-' + sectionKey + ' .item')
+                const imageUrl = img.getAttribute('data-src-url');
+                // console.log('data url: '+ imageUrl);
+                
+                fetch(imageUrl)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.image_url) {
+                            img.setAttribute('src', data.image_url);
+                            img.setAttribute('data-loaded', 'true');
+                            $('.img-load-lazy').attr('style', 'opacity:' + '1 !important;');
+                            // console.log("img adding: " + data.image_url);
+                            const imgElement = new Image();
+                            imgElement.src = data.image_url;
+                            imgElement.onload = function() {
+                                const imgHeight = $('.img-load-lazy').height();
+                                // Find the current maximum height for this section
+                                let maxHeight = 0;
+                                const sectionImages = document.querySelectorAll(`.flick-height-${sectionKey}`);
+                                sectionImages.forEach((sectionImg) => {
+                                    if (sectionImg.getAttribute('data-loaded') === 'true') {
+                                        const currentHeight = sectionImg.offsetHeight;
+                                        if (currentHeight > maxHeight) {
+                                            maxHeight = currentHeight;
+                                        }
+                                    }
+                                });
+                                // Update the maximum height if the new image is taller
+                                if (imgHeight > maxHeight) {
+                                    maxHeight = imgHeight;
+                                }
+                                // Set the height of the flickity viewport
+                                // heightDiv.css('height', maxHeight + 'px');
+                                console.log(heightDiv + " height : " + maxHeight);
+                                
+                                $(heightDiv).attr('style', 'height:' + maxHeight + 'px !important;');
+                                $(autoHeight).css("height", "auto");
+                            };
+                           
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching image:", error);
+                    });
+            }
+        });
+    });
+</script>
+
 <style>
     .network-based-depends-slider .flickity-viewport{height: 100px;}
     .drop-slider-img{opacity: 0 !important;}
     .content-list .depends-row div.depend-items, .content-list .depends-row{height: 100%;}
     .last-elmnt{height: 100% !important;}
+    #trending-slider-nav-3 #top-slider-img,
+    #trending-slider-nav-4 #top-slider-img,
+    #trending-slider-nav-5 #top-slider-img,
+    #trending-slider-nav-6 #top-slider-img,
+    #trending-slider-nav-7 #top-slider-img,
+    #trending-slider-nav-8 #top-slider-img,
+    #trending-slider-nav-9 #top-slider-img,
+    #trending-slider-nav-10 #top-slider-img,
+    #trending-slider-nav-11 #top-slider-img {
+        height: 100%;
+    }
+    .network-based-depends-slider .flickity-viewport, .series-based-network-video .flickity-viewport{height: 100px;}
     .depend-items:before{
         content: '';
         display: block;
@@ -354,5 +434,6 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         z-index: 0;
         border-radius: 10px;
     }
+    .img-load-lazy{opacity: 0 !important;}
 </style>
 
