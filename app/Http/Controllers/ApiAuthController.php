@@ -4205,74 +4205,466 @@ public function verifyandupdatepassword(Request $request)
 
 
   public function Wishlists_list(Request $request) {
-      $user_id = $request->user_id;
+    $user_id = $request->user_id;
 
-      $wishlists = Wishlist::where('user_id', $user_id)
-          ->orderBy('created_at', 'desc')
-          ->get();
-      $wishlist_items = [];
-      foreach ($wishlists as $wishlist) {
-          if ($wishlist->video_id) {
-              $video = Video::find($wishlist->video_id);
-              if ($video) {
-                  $wishlist_items[] = [
-                      'id' => $video->id,
-                      'title' => $video->title,
-                      'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
-                      'video_url' => URL::to('/') . '/storage/app/public/',
-                      'source' => 'video',
-                      'created_at' => $wishlist->created_at
-                  ];
-              }
-          } elseif ($wishlist->ugc_video_id) {
-              $ugc_video = UGCVideo::find($wishlist->ugc_video_id);
-              if ($ugc_video) {
-                  $wishlist_items[] = [
-                      'id' => $ugc_video->id,
-                      'title' => $ugc_video->title,
-                      'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
-                      'video_url' => URL::to('/') . '/storage/app/public/',
-                      'source' => 'ugc_videos',
-                      'created_at' => $wishlist->created_at
-                  ];
-              }
-          } elseif ($wishlist->episode_id) {
-              $episode = Episode::find($wishlist->episode_id);
-              if ($episode) {
-                  $wishlist_items[] = [
-                      'id' => $episode->id,
-                      'title' => $episode->title,
-                      'image' => URL::to('/') . '/public/uploads/images/' . $episode->image,
-                      'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
-                      'source' => 'episode',
-                      'created_at' => $wishlist->created_at
-                  ];
-              }
-          } elseif ($wishlist->audio_id) {
-              $audio = Audio::find($wishlist->audio_id);
-              if ($audio) {
-                  $wishlist_items[] = [
-                      'id' => $audio->id,
-                      'title' => $audio->title,
-                      'image' => URL::to('/') . '/public/uploads/images/' . $audio->image,
-                      'source' => 'audio',
-                      'created_at' => $wishlist->created_at
-                  ];
-              }
-          }
-      }
+    $wishlists = Wishlist::where('user_id', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+    $wishlist_items = [];
+    foreach ($wishlists as $wishlist) {
+        if ($wishlist->video_id) {
+            $video = Video::find($wishlist->video_id);
+            if ($video) {
+                $video_data = [
+                    'id' => $video->id,
+                    'title' => $video->title,
+                    'type' => $video->type,
+                    'mp4_url' => $video->mp4_url,
+                    'm3u8_url' => $video->m3u8_url,
+                    'access' => $video->access,
+                    'image' => $video->image,
+                    'trailer' => $video->trailer,
+                    'url' => $video->url,
+                    'path' => $video->path,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
+                    'source' => 'video',
+                    'videos_url' => null,
+                    'video_player_type' => null,
+                    'qualities' => [] 
+                ];
+    
+                switch (true) {
+                    case $video->type == "mp4_url":
+                        $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->mp4_url;
+                        $video_data['video_player_type'] = 'video/mp4';
+                        break;
 
-      // Determine status
-      $status = count($wishlist_items) > 0 ? "true" : "false";
+                    case $video->type == "m3u8_url":
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->m3u8_url;
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
 
-      // Response
-      $response = [
-          'status' => $status,
-          'wishlists' => $wishlist_items 
-      ];
+                    case $video->type == "embed":
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->embed_code;
+                        $video_data['video_player_type'] = 'embed';
+                        break;
 
-      return response()->json($response, 200);
+                    case $video->type == null && pathinfo($video->mp4_url, PATHINFO_EXTENSION) == "mp4":
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = URL::to('/storage/app/public/' . $video->path . '.m3u8');
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
+
+                    case $video->type == null && pathinfo($video->mp4_url, PATHINFO_EXTENSION) == "mov":
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->mp4_url;
+                        $video_data['video_player_type'] = 'video/mp4';
+                        break;
+
+                    case $video->type == null:
+                        $video_data['videos_url'] = URL::to('/storage/app/public/' . $video->path . '.m3u8');
+                        $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
+
+                    case $video->type == " " && !is_null($video->transcoded_url):
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->transcoded_url;
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
+
+                    case $video->type == "bunny_cdn":
+                      $video_data['video_url'] = URL::to('/') . '/storage/app/public/';
+                        $video_data['videos_url'] = $video->mp4_url;
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+
+                        $response = Http::withoutVerifying()->get($video->m3u8_url);
+                        $qualities = [];
+
+                        if ($response->successful()) {
+                            $contents = $response->body();
+                            preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                            foreach ($matches[2] as $quality) {
+                                $qualities[] = str_replace('p', '', $quality);
+                            }
+                        }
+
+                        $video_data['qualities'] = $qualities;
+                        break;
+
+                    default:
+                        $video_data['videos_url'] = null;
+                        $video_data['video_player_type'] = null;
+                        $video_data['qualities'] = [];
+                        break;
+                }
+
+                $wishlist_items[] = $video_data;
+            }
+        } elseif ($wishlist->ugc_video_id) {
+            $ugc_video = UGCVideo::find($wishlist->ugc_video_id);
+            if ($ugc_video) {
+               $video_data = [
+                    'id' => $ugc_video->id,
+                    'title' => $ugc_video->title,
+                    'type' => $ugc_video->type,
+                    'mp4_url' => $ugc_video->mp4_url,
+                    'm3u8_url' => $ugc_video->m3u8_url,
+                    'image' => $ugc_video->image,
+                    'url' => $ugc_video->url,
+                    'path' => $ugc_video->path,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
+                    'source' => 'ugc_videos',
+                    'videos_url' => null,
+                    'video_player_type' => null,
+                    'qualities' => [] 
+                ];
+                switch (true) {
+                  case $ugc_video->type == "mp4_url":
+                      $video_data['videos_url'] = $ugc_video->mp4_url;
+                      $video_data['video_player_type'] = 'video/mp4';
+                      break;
+
+                  case $ugc_video->type == "m3u8_url":
+                      $video_data['videos_url'] = $ugc_video->m3u8_url;
+                      $video_data['video_player_type'] = 'application/x-mpegURL';
+                      break;
+
+                  case $ugc_video->type == "embed":
+                      $video_data['videos_url'] = $ugc_video->embed_code;
+                      $video_data['video_player_type'] = 'embed';
+                      break;
+
+                  case $ugc_video->type == null && pathinfo($ugc_video->mp4_url, PATHINFO_EXTENSION) == "mp4":
+                      $video_data['videos_url'] = URL::to('/storage/app/public/' . $ugc_video->path . '.m3u8');
+                      $video_data['video_player_type'] = 'application/x-mpegURL';
+                      break;
+
+                  case $ugc_video->type == null && pathinfo($ugc_video->mp4_url, PATHINFO_EXTENSION) == "mov":
+                      $video_data['videos_url'] = $ugc_video->mp4_url;
+                      $video_data['video_player_type'] = 'video/mp4';
+                      break;
+
+                  case $ugc_video->type == null:
+                      $video_data['videos_url'] = URL::to('/storage/app/public/' . $ugc_video->path . '.m3u8');
+                      $video_data['video_player_type'] = 'application/x-mpegURL';
+                      break;
+
+                  case $ugc_video->type == " " && !is_null($ugc_video->transcoded_url):
+                      $video_data['videos_url'] = $ugc_video->transcoded_url;
+                      $video_data['video_player_type'] = 'application/x-mpegURL';
+                      break;
+
+                  case $ugc_video->type == "bunny_cdn":
+                      $video_data['videos_url'] = $ugc_video->mp4_url;
+                      $video_data['video_player_type'] = 'application/x-mpegURL';
+
+                      $response = Http::withoutVerifying()->get($ugc_video->m3u8_url);
+                      $qualities = [];
+
+                      if ($response->successful()) {
+                          $contents = $response->body();
+                          preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                          foreach ($matches[2] as $quality) {
+                              $qualities[] = str_replace('p', '', $quality);
+                          }
+                      }
+
+                      $video_data['qualities'] = $qualities;
+                      break;
+
+                  default:
+                      $video_data['videos_url'] = null;
+                      $video_data['video_player_type'] = null;
+                      $video_data['qualities'] = [];
+                      break;
+              }
+              $wishlist_items[] = $video_data;
+            }
+        } elseif ($wishlist->episode_id) {
+            $episode = Episode::find($wishlist->episode_id);
+            if ($episode) {
+                $video_data = [
+                  'id' => $episode->id,
+                  'title' => $episode->title,
+                  'type' => $episode->type,
+                  'mp4_url' => $episode->mp4_url,
+                  'm3u8_url' => $episode->m3u8_url,
+                  'image' => $episode->image,
+                  'url' => $episode->url,
+                  'path' => $episode->path,
+                  'image_url' => URL::to('/') . '/public/uploads/images/' . $episode->image,
+                  'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
+                  'source' => 'episode',
+                  'videos_url' => null,
+                  'video_player_type' => null,
+                  'qualities' => [] 
+              ];
+              switch (true) {
+                case $episode->type == "mp4_url":
+                    $video_data['videos_url'] = $episode->mp4_url;
+                    $video_data['video_player_type'] = 'video/mp4';
+                    break;
+                case $episode->type == "m3u8_url":
+                    $video_data['videos_url'] = $episode->m3u8_url;
+                    $video_data['video_player_type'] = 'application/x-mpegURL';
+                    break;
+                case $episode->type == "embed":
+                    $video_data['videos_url'] = $episode->embed_code;
+                    $video_data['video_player_type'] = 'embed';
+                    break;
+                case $episode->type == null && pathinfo($episode->mp4_url, PATHINFO_EXTENSION) == "mp4":
+                    $video_data['videos_url'] = URL::to('/storage/app/public/' . $episode->path . '.m3u8');
+                    $video_data['video_player_type'] = 'application/x-mpegURL';
+                    break;
+                case $episode->type == null && pathinfo($episode->mp4_url, PATHINFO_EXTENSION) == "mov":
+                    $video_data['videos_url'] = $episode->mp4_url;
+                    $video_data['video_player_type'] = 'video/mp4';
+                    break;
+
+                case $episode->type == null:
+                    $video_data['videos_url'] = URL::to('/storage/app/public/' . $episode->path . '.m3u8');
+                    $video_data['video_player_type'] = 'application/x-mpegURL';
+                    break;
+
+                case $episode->type == " " && !is_null($episode->transcoded_url):
+                    $video_data['videos_url'] = $episode->transcoded_url;
+                    $video_data['video_player_type'] = 'application/x-mpegURL';
+                    break;
+
+                case $episode->type == "bunny_cdn":
+                    $video_data['videos_url'] = $episode->mp4_url;
+                    $video_data['video_player_type'] = 'application/x-mpegURL';
+
+                    $response = Http::withoutVerifying()->get($episode->m3u8_url);
+                    $qualities = [];
+
+                    if ($response->successful()) {
+                        $contents = $response->body();
+                        preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+
+                        foreach ($matches[2] as $quality) {
+                            $qualities[] = str_replace('p', '', $quality);
+                        }
+                    }
+
+                    $video_data['qualities'] = $qualities;
+                    break;
+
+                default:
+                    $video_data['videos_url'] = null;
+                    $video_data['video_player_type'] = null;
+                    $video_data['qualities'] = [];
+                    break;
+            }
+            $wishlist_items[] = $video_data;
+            }
+        } elseif ($wishlist->audio_id) {
+            $audio = Audio::find($wishlist->audio_id);
+            if ($audio) {
+                  $audio_data = [
+                    'id' => $audio->id,
+                    'title' => $episode->title,
+                    'type' => $episode->type,
+                    'mp3_url' => $episode->mp3_url,
+                    'image' => $episode->image,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $audio->image,
+                    'source' => 'audio',
+                ];
+                $wishlist_items[] = $audio_data;
+            }
+        }
+    }
+
+    // Determine status
+    $status = count($wishlist_items) > 0 ? "true" : "false";
+
+    // Response
+    $response = [
+        'status' => $status,
+        'wishlists' => $wishlist_items
+    ];
+
+    return response()->json($response, 200);
   }
+
+
+  public function Favourites_list(Request $request) {
+    $user_id = $request->user_id;
+    $favorites = Favorite::where('user_id', $user_id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    $favorite_items = [];
+
+    foreach ($favorites as $favorite) {
+        if ($favorite->video_id) {
+            $video = Video::find($favorite->video_id);
+            if ($video) {
+                $video_data = [
+                    'id' => $video->id,
+                    'title' => $video->title,
+                    'type' => $video->type,
+                    'mp4_url' => $video->mp4_url,
+                    'm3u8_url' => $video->m3u8_url,
+                    'access' => $video->access,
+                    'image' => $video->image,
+                    'trailer' => $video->trailer,
+                    'url' => $video->url,
+                    'path' => $video->path,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
+                    'source' => 'video',
+                    'videos_url' => null,
+                    'video_player_type' => null,
+                    'qualities' => [],
+                ];
+
+                switch (true) {
+                    case $video->type == "mp4_url":
+                        $video_data['videos_url'] = $video->mp4_url;
+                        $video_data['video_player_type'] = 'video/mp4';
+                        break;
+
+                    case $video->type == "m3u8_url":
+                        $video_data['videos_url'] = $video->m3u8_url;
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
+
+                    case $video->type == "embed":
+                        $video_data['videos_url'] = $video->embed_code;
+                        $video_data['video_player_type'] = 'embed';
+                        break;
+
+                    case $video->type == "bunny_cdn":
+                        $video_data['videos_url'] = $video->mp4_url;
+                        $video_data['video_player_type'] = 'application/x-mpegURL';
+
+                        // Fetch video qualities
+                        $response = Http::withoutVerifying()->get($video->m3u8_url);
+                        $qualities = [];
+                        if ($response->successful()) {
+                            $contents = $response->body();
+                            preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+x\d+)\s*(\d+p)\/video\.m3u8/', $contents, $matches);
+                            foreach ($matches[2] as $quality) {
+                                $qualities[] = str_replace('p', '', $quality);
+                            }
+                        }
+
+                        $video_data['qualities'] = $qualities;
+                        break;
+
+                    default:
+                        $video_data['videos_url'] = null;
+                        $video_data['video_player_type'] = null;
+                        $video_data['qualities'] = [];
+                        break;
+                }
+
+                $favorite_items[] = $video_data;
+            }
+        } elseif ($favorite->ugc_video_id) {
+            $ugc_video = UGCVideo::find($favorite->ugc_video_id);
+            if ($ugc_video) {
+                $ugc_data = [
+                    'id' => $ugc_video->id,
+                    'title' => $ugc_video->title,
+                    'type' => $ugc_video->type,
+                    'mp4_url' => $ugc_video->mp4_url,
+                    'm3u8_url' => $ugc_video->m3u8_url,
+                    'image' => $ugc_video->image,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
+                    'source' => 'ugc_videos',
+                    'videos_url' => null,
+                    'video_player_type' => null,
+                    'qualities' => [],
+                ];
+
+                switch (true) {
+                    case $ugc_video->type == "mp4_url":
+                        $ugc_data['videos_url'] = $ugc_video->mp4_url;
+                        $ugc_data['video_player_type'] = 'video/mp4';
+                        break;
+
+                    case $ugc_video->type == "m3u8_url":
+                        $ugc_data['videos_url'] = $ugc_video->m3u8_url;
+                        $ugc_data['video_player_type'] = 'application/x-mpegURL';
+                        break;
+
+                    case $ugc_video->type == "embed":
+                        $ugc_data['videos_url'] = $ugc_video->embed_code;
+                        $ugc_data['video_player_type'] = 'embed';
+                        break;
+
+                    default:
+                        $ugc_data['videos_url'] = null;
+                        $ugc_data['video_player_type'] = null;
+                        break;
+                }
+
+                $favorite_items[] = $ugc_data;
+            }
+        } elseif ($favorite->episode_id) {
+            $episode = Episode::find($favorite->episode_id);
+            if ($episode) {
+                $favorite_items[] = [
+                    'id' => $episode->id,
+                    'title' => $episode->title,
+                    'type' => $episode->type,
+                    'mp4_url' => $episode->mp4_url,
+                    'm3u8_url' => $episode->m3u8_url,
+                    'image' => $episode->image,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $episode->image,
+                    'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
+                    'source' => 'episode',
+                    'videos_url' => null,
+                    'video_player_type' => null,
+                ];
+            }
+        } elseif ($favorite->audio_id) {
+            $audio = Audio::find($favorite->audio_id);
+            if ($audio) {
+                $favorite_items[] = [
+                    'id' => $audio->id,
+                    'title' => $audio->title,
+                    'type' => $audio->type,
+                    'mp3_url' => $audio->mp3_url,
+                    'image' => $audio->image,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $audio->image,
+                    'source' => 'audio',
+                ];
+            }
+        } elseif ($favorite->live_id) {
+            $live = LiveStream::find($favorite->live_id);
+            if ($live) {
+                $favorite_items[] = [
+                    'id' => $live->id,
+                    'title' => $live->title,
+                    'url_type' => $live->url_type,
+                    'mp4_url' => $live->mp4_url,
+                    'embed_url' => $live->embed_url,
+                    'm3u_url' => $live->m3u_url,
+                    'acc_audio_file' => $live->acc_audio_file,
+                    'acc_audio_url' => $live->acc_audio_url,
+                    'image' => $live->image,
+                    'image_url' => URL::to('/') . '/public/uploads/images/' . $live->image,
+                    'source' => 'livestream',
+                ];
+            }
+        }
+    }
+    $status = count($favorite_items) > 0 ? "true" : "false";
+    $response = [
+        'status' => $status,
+        'favorites' => $favorite_items,
+    ];
+
+    return response()->json($response, 200);
+}
 
   public function myfavorites(Request $request) {
 
@@ -4380,84 +4772,6 @@ public function verifyandupdatepassword(Request $request)
 
   }
 
-  public function Favourites_list(Request $request) {
-    $user_id = $request->user_id;
-    $favorites = Favorite::where('user_id', $user_id)
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    $favorite_items = [];
-
-    foreach ($favorites as $favorite) {
-        if ($favorite->video_id) {
-            $video = Video::find($favorite->video_id);
-            if ($video) {
-                $favorite_items[] = [
-                    'id' => $video->id,
-                    'title' => $video->title,
-                    'image_url' => URL::to('/') . '/public/uploads/images/' . $video->image,
-                    'video_url' => URL::to('/') . '/storage/app/public/',
-                    'source' => 'videos',
-                    'created_at' => $favorite->created_at
-                ];
-            }
-        } elseif ($favorite->ugc_video_id) {
-            $ugc_video = UGCVideo::find($favorite->ugc_video_id);
-            if ($ugc_video) {
-                $favorite_items[] = [
-                    'id' => $ugc_video->id,
-                    'title' => $ugc_video->title,
-                    'image_url' => URL::to('/') . '/public/uploads/images/' . $ugc_video->image,
-                    'video_url' => URL::to('/') . '/storage/app/public/',
-                    'source' => 'ugc_videos',
-                    'created_at' => $favorite->created_at
-                ];
-            }
-        } elseif ($favorite->episode_id) {
-            $episode = Episode::find($favorite->episode_id);
-            if ($episode) {
-                $favorite_items[] = [
-                    'id' => $episode->id,
-                    'title' => $episode->title,
-                    'image' => URL::to('/') . '/public/uploads/images/' . $episode->image,
-                    'series_name' => Series::where('id', $episode->series_id)->pluck('title')->first(),
-                    'source' => 'episode',
-                    'created_at' => $favorite->created_at
-                ];
-            }
-        } elseif ($favorite->audio_id) {
-            $audio = Audio::find($favorite->audio_id);
-            if ($audio) {
-                $favorite_items[] = [
-                    'id' => $audio->id,
-                    'title' => $audio->title,
-                    'image' => URL::to('/') . '/public/uploads/images/' . $audio->image,
-                    'source' => 'audio',
-                    'created_at' => $favorite->created_at
-                ];
-            }
-        } elseif ($favorite->live_id) {
-            $live = LiveStream::find($favorite->live_id);
-            if ($live) {
-                $favorite_items[] = [
-                    'id' => $live->id,
-                    'title' => $live->title,
-                    'image' => URL::to('/') . '/public/uploads/images/' . $live->image,
-                    'source' => 'livestream',
-                    'created_at' => $favorite->created_at
-                ];
-            }
-        }
-    }
-
-    $status = count($favorite_items) > 0 ? "true" : "false";
-    $response = [
-        'status' => $status,
-        'favorites' => $favorite_items,
-    ];
-
-    return response()->json($response, 200);
-}
 
   public function mywatchlaters(Request $request) {
 
