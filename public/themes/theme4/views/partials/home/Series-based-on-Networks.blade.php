@@ -19,7 +19,14 @@
                                     @foreach ($series_networks->Series_depends_Networks as $key => $series)
                                         <div id="top-slider-img" class="item" data-index="{{ $key }}" data-section-index="{{ $section_key }}" data-series-id="{{ $series->id }}">
                                             <div>
-                                                <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                @if ($multiple_compress_image == 1)
+                                                    <img class="flickity-lazyloaded" alt="{{ $series->title }}" data-flickity-lazyload="{{ $series->image_url }}"
+                                                        srcset="{{ $series->responsive_image ? (URL::to('public/uploads/PCimages/'.$series->responsive_image.' 860w')) : $series->image_url }},
+                                                        {{ $series->responsive_image ? URL::to('public/uploads/Tabletimages/'.$series->responsive_image.' 640w') : $series->image_url }},
+                                                        {{ $series->responsive_image ? URL::to('public/uploads/mobileimages/'.$series->responsive_image.' 420w') : $series->image_url }}" >
+                                                @else
+                                                    <img data-flickity-lazyload="{{ $series->image_url }}" class="flickity-lazyloaded" alt="{{ $series->title }}" width="300" height="200">
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -62,11 +69,9 @@
                                                                             <i class="fas fa-play"></i>
                                                                         </a>
 
-                                                                        <nav>
                                                                             <button id="data-modal-based-network" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="{{ $episode->id }}">
                                                                                 <i class="fas fa-info-circle"></i><span>More info</span></button>
-                                                                        </nav>
-
+                                                                        
                                                                         @php
                                                                             $series_seasons_name = App\SeriesSeason::where('id',$episode->season_id)->pluck('series_seasons_name')->first();
                                                                         @endphp
@@ -353,6 +358,16 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         right: 2px;
         z-index: 0;
         border-radius: 10px;
+    }
+    .moreBTN{
+        position: absolute;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        right: 4px;
+        top: 4px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
     }
 </style>
 
