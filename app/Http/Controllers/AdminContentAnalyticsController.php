@@ -68,7 +68,7 @@ class AdminContentAnalyticsController extends Controller
                 DB::raw('SUM(ppv_purchases.total_amount) as total_amount')
             )
             ->where($monthCondition) 
-            ->where('ppv_purchases.status', 'captured') 
+            ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
             ->groupBy('videos.id',) 
             ->orderBy('purchase_count', 'desc')
             ->get();
@@ -83,7 +83,7 @@ class AdminContentAnalyticsController extends Controller
                 DB::raw('SUM(ppv_purchases.total_amount) as total_amount')
             )
             ->where($monthCondition) 
-            ->where('ppv_purchases.status', 'captured') 
+            ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
             ->groupBy('series.id',) 
             ->orderBy('purchase_count', 'desc')
             ->get();
@@ -98,7 +98,7 @@ class AdminContentAnalyticsController extends Controller
                 DB::raw('SUM(ppv_purchases.total_amount) as total_amount')
             )
             ->where($monthCondition) 
-            ->where('ppv_purchases.status', 'captured') 
+            ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
             ->groupBy('audio.id',) 
             ->orderBy('purchase_count', 'desc')
             ->get();
@@ -113,7 +113,7 @@ class AdminContentAnalyticsController extends Controller
                 DB::raw('SUM(ppv_purchases.total_amount) as total_amount')
             )
             ->where($monthCondition) 
-            ->where('ppv_purchases.status', 'captured') 
+            ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
             ->groupBy('live_streams.id',) 
             ->orderBy('purchase_count', 'desc')
             ->get();
