@@ -55,7 +55,7 @@
         display: inline-block;
         padding: 5px 30px;
         margin: 0 5px;
-        background-color: #ED563C;
+        background-color: #000000;
         color: #fff;
         font-weight: bold;
         border-radius: 8px;
@@ -90,7 +90,7 @@
         border-bottom-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
-        background:#ED563C!important;
+        background:#000000!important;
         color: #fff!important;
         padding: 5px 100px!important;
         margin:0%; 
