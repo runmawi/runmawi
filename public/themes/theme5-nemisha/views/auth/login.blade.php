@@ -73,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
         margin-left: -57px;
    
           height: 45px !important;
-    background: #ED553B !important;
+    background: #000000 !important;
     color: #fff !important;
     position: absolute;
     right: 0px;
@@ -133,13 +133,13 @@ font-size: 35px;
 
     }
      .btn-outline-success{
-        border: 1px solid #ED553B;
-         color: #ED553B;
+        border: 1px solid #000000;
+         color: #000000;
     }
      .btn-outline-success:hover{
-        border: 1px solid #ED553B;
-        background-color: #ED553B!important;
-         color: #000!important;
+        border: 1px solid #000000;
+        background-color: #000000!important;
+         color: #ffffff!important;
     }
     	.input-icons i {
 			position: absolute;
@@ -188,8 +188,8 @@ line-height: 55px;
     i.fa.fa-google-plus {
         /* padding: 10px !important;*/}
         .btn-success{
-            background: #ED553B!important;
-            border: 1px solid #ED553B;
+            background: #000000!important;
+            border: 1px solid #000000;
 
         }
         .demo_cred {

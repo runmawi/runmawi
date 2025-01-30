@@ -217,7 +217,7 @@ i.fa.fa-google-plus {
     .reveal{
         margin-left: -57px;
     height: 45px !important;
-    background: #ED553B !important;
+    background: #000000 !important;
     color: #fff !important;
     }
     .error {
@@ -304,17 +304,17 @@ font-weight: 600;
    
 }
        .btn-outline-success{
-        border: 1px solid #ED553B;
-         color: #ED553B!important;
+        border: 1px solid #000000;
+         color: #000000!important;
     }
     .btn-outline-success:hover{
-        border: 1px solid #ED553B;
-        background-color: #ED553B!important;
-         color: #000!important;
+        border: 1px solid #000000;
+        background-color: #000000!important;
+         color: #ffffff!important;
     }
     .btn-success{
-        background: #ED553B!important;
-        border: 1px solid #ED553B;
+        background: #000000!important;
+        border: 1px solid #000000;
 
     }
      .join{
@@ -598,7 +598,7 @@ $jsondata = json_decode($jsonString, true); ?>
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button> -->
-                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #ed553b!important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
+                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #000000!important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
 
                                  <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to NEMISA TV Terms of Service and Privacy Policy. </p> -->
                                  <!-- <div class=" pt-4 mb-2">
