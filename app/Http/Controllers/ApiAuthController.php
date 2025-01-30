@@ -14196,15 +14196,11 @@ $cpanel->end();
 
         $dataToCheck = [
             'category_videos'               => $myData,
-            'movies'                 => $latest_videos,
+            'movies'                        => $latest_videos,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
-            '24/7'                           => $epg,
+            '24/7'                          => $epg,
         ];
-        
-        if ( !is_null( $latest_videos) &&  count($latest_videos) > 0) {
-          $dataToCheck += ['movies' => $latest_videos];
-        }
 
         if ( !is_null($featured_videos) && count($featured_videos) > 0) {
           $dataToCheck += ['featured_videos' => $featured_videos];
@@ -29834,6 +29830,42 @@ public function SendVideoPushNotification(Request $request)
       }
       return response()->json($response, 200);
      
+     }
+
+     public function roku_login(Request $request)
+     {
+        try{
+            $email = $request->email;
+            $pass  = $request->password;
+      
+            $user = User::where('email',$email)->first();
+            
+            if($user){
+              if ($user && Hash::check($pass, $user->password)) {
+                  return response()->json([
+                      'status' => true,
+                      'user'   => $user
+                  ], 200);
+              } else {
+                  return response()->json([
+                      'status'  => false,
+                      'message' => 'Invalid password.'
+                  ], 401);
+              }
+            }else{
+              return response()->json([
+                'status'  => false,
+                'message' => 'Invalid email.'
+            ], 401);
+            }
+
+        }catch(\Throwable $th){
+          return response()->json([
+              'status'  => false,
+              'message' => 'Something went wrong',
+              'error'   => $th->getMessage() // For debugging, remove in production
+          ], 500);
+        }
      }
 
 }

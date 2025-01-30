@@ -423,12 +423,12 @@
         overflow: hidden;
     }
 
-    ._banner_img img {
+    /* ._banner_img img {
         width: 100%;
         height: 100%;
-        /* object-fit: cover; */
-        filter: brightness(70%); /* Darkens the image for better text readability */
-    }
+        object-fit: cover;
+        filter: brightness(70%);
+    } */
 
     ._meta_desc_data_ {
         position: absolute;

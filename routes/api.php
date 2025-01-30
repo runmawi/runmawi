@@ -722,4 +722,7 @@ Route::group(
             Route::post('ugclike', 'ApiAuthContinueController@ugclike');
             Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
             Route::post('add_favorite_ugcvideo', 'ApiAuthContinueController@add_favorite_ugcvideo');
+
+            // roku login
+            Route::get('roku_login','ApiAuthController@roku_login');
         });
