@@ -13,7 +13,7 @@
             z-index: 10000;
             top: 80%;
             right: 0;
-            background: #ED563C;
+            background: #000000;
             transition: width 0.8s, height 0.8s, margin-right 0.8s;
             overflow: visible;
             white-space: nowrap;
@@ -41,7 +41,7 @@
             z-index: 9999;
             top: 60%;
             right: 0;
-            background: #ED563C;
+            background: #000000;
             transition: width 0.8s, height 0.8s, margin-right 0.8s;
             overflow: visible;
             white-space: nowrap;
@@ -66,7 +66,7 @@
     </div>
     
     <div id="shorts-content" style="display: none; position: relative;" >
-        <div id="close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 10px; left: -60px; font-size: 15px; cursor: pointer;  background: #ED563C; padding:10px; border-top-left-radius:20px; border-bottom-left-radius:20px; z-index:10000; "> 
+        <div id="close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 10px; left: -60px; font-size: 15px; cursor: pointer;  background: #000000; padding:10px; border-top-left-radius:20px; border-bottom-left-radius:20px; z-index:10000; "> 
            <h6>Close</h6>
         </div>
         <div id="mobile-close-btn" onclick="closeShortsMinis(event)" style="position: absolute; top: 5px; right: 10px; font-size: 25px; cursor: pointer; display: none;" >

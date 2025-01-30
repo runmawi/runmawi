@@ -39,7 +39,7 @@
     .epg-navigation{z-index:0;position:relative;overflow-x:auto; background-color: #333; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}
     .nav-arrow{background:grey;border:none;height:30px;margin-top:5px;time-section-left:3px}
     .day-nav{margin:0 10px; cursor: pointer;  transition: background-color 0.3s ease, color 0.3s ease; font-size: 15px;}
-    .day-nav.active {background-color: #ed563c; color: white; border-radius: 5px; padding: 10px;}
+    .day-nav.active {background-color: #000000; color: white; border-radius: 5px; padding: 10px;}
     .date-nav{align-items:center;background-color:#1c1c1c;display:flex; height:50px;  }
     .epg-programs::-webkit-scrollbar,.epg-navigation::-webkit-scrollbar,.epg-grid::-webkit-scrollbar{display:none}
     .epg-channel {width: 100%; white-space: nowrap; overflow: auto;text-overflow: ellipsis;max-width: 250px; display: inline-block; }
