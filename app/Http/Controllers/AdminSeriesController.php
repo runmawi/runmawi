@@ -301,7 +301,7 @@ class AdminSeriesController extends Controller
                 $data['image'] = $series_image;
 
             } else {
-                $data['image'] = 'placeholder.jpg';
+                $data['image'] = default_vertical_image();
             }
         
             // Series Player Image  
@@ -334,7 +334,7 @@ class AdminSeriesController extends Controller
 
             } else {
 
-                $player_image = "default_horizontal_image.jpg";
+                $player_image = default_vertical_image();
 
             }
 
@@ -367,7 +367,52 @@ class AdminSeriesController extends Controller
                 $tv_image  =  $series_tv_image_image ; 
 
             } else {
-                $tv_image = "default_horizontal_image.jpg";
+                $tv_image = default_horizontal_image();
+            }
+
+            if (compress_responsive_image_enable() == 1 || compress_responsive_image_enable() == 0) {
+                
+                if ($request->hasFile('image')) {
+
+                    $local_image_path = public_path('/uploads/images/' . basename($data['image']));
+                    // dd(file_exists($local_image_path));
+                    if (file_exists($local_image_path)) {
+                        $image = Image::make($local_image_path);
+                        $image_filename = 'series_' . time() . '_image.webp';
+                        // dd($image_filename); 
+                    } 
+                    // dd($image_filename);
+                    Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+                    
+                }else{
+                    $responsive_image = default_vertical_image();  
+                }
+
+                if ($request->hasFile('player_image')) {
+
+                    $local_image_path = public_path('/uploads/images/' . basename($player_image));
+                    // dd(file_exists($local_image_path));
+                    if (file_exists($local_image_path)) {
+                        $series_player_image = Image::make($local_image_path);
+                        $player_image_filename = 'series_' . time() . '_player_image.webp';
+                        // dd($image_filename); 
+                    } 
+                    // dd($player_image_filename);
+                    Image::make($series_player_image)->resize(332,187)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($series_player_image)->resize(435,244)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($series_player_image)->resize(351,198)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $player_responsive_image = $player_image_filename;
+                    
+        
+                }else{
+        
+                    $player_responsive_image = default_horizontal_image();
+                }
             }
             
 //          
@@ -460,6 +505,8 @@ class AdminSeriesController extends Controller
         $series->season_trailer = $season_trailer ;
         $series->series_trailer = $series_trailer ;
         $series->blocked_countries = json_encode($countryIds);
+        $series->responsive_image = $responsive_image ;
+        $series->player_responsive_image = $player_responsive_image ;
         $series->save();  
 
 
@@ -762,6 +809,49 @@ class AdminSeriesController extends Controller
 
                 $series->tv_image = $Series_tv_filename;
             }
+        //    dd($data);
+            if (compress_responsive_image_enable() == 1 || compress_responsive_image_enable() == 0) {
+                
+                if ($request->hasFile('image') || !empty($data["image"])) {
+
+                    $image = !empty($request->file('image')) ? $request->file('image') : $data["image"];
+                    $local_image_path = public_path('/uploads/images/' . basename($data['image']));
+                    // dd(file_exists($local_image_path));
+                    if (file_exists($local_image_path)) {
+                        $image = Image::make($local_image_path);
+                        $image_filename = 'series_' . time() . '_image.webp';
+                        // dd($image_filename); 
+                    } 
+                    // dd($image_filename);
+                    Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    
+                    $responsive_image = $image_filename;
+                    
+                }else if (!empty($request->responsive_image)) {
+                    $responsive_image  = $request->responsive_image;
+                } else{
+                    $responsive_image = $data->responsive_image; 
+                }
+
+                if ($request->hasFile('player_image') || !empty($data["player_image"])) {
+                    $responsive_player_image =  $data["player_image"];
+                    $player_image_filename = 'series_' . time() . '_player_image.webp';
+                    // dd($player_image_filename);
+                    Image::make($responsive_player_image)->resize(332,187)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($responsive_player_image)->resize(435,244)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                    Image::make($responsive_player_image)->resize(351,198)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                    
+                    $player_responsive_image = $player_image_filename;
+                    // dd($player_responsive_image);
+                    
+                }else if (!empty($request->player_responsive_image)) {
+                    $player_responsive_image  = $request->player_responsive_image;
+                } else{
+                    $player_responsive_image = $player_image; 
+                }
+            }
 
 
         if(empty($data['active'])){
@@ -829,6 +919,8 @@ class AdminSeriesController extends Controller
         $series->details =($data['details']);
         $series->network_id = !empty($data['network_id']) ? json_encode($data['network_id']) : [];
         $series->blocked_countries = json_encode($countryIds);
+        $series->responsive_image = $responsive_image;
+        $series->player_responsive_image = $player_responsive_image;
         $series->save();
 
         if(!empty($data['artists'])){
