@@ -1146,7 +1146,7 @@
     <div id="main">
         <header id="main-header">
             <div class="main-header">
-                <div class="container-fluid" style="z-index:10000;" >
+                <div class="" style="z-index:10000;" >
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="navbar navbar-expand-lg navbar-light p-0">
