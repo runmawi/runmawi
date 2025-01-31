@@ -842,10 +842,9 @@
         top: 0;
         left: 0;
         /* background: linear-gradient(160deg,rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0),rgba(245, 74, 145, 0.86) ,rgba(243, 203, 56, 0.9), rgba(245, 74, 145, 0.86),rgb(0, 0, 0)); */
-        background-color:rgba(0, 0, 0, 0.86);
-        background-image:    linear-gradient(165deg, #000000 45%, #000000 45%, #FF5ACD   , #FBDA61 70%, #ff5acd 90%, #000000 100%);
+        background-color:rgba(0, 0, 0, 0.8);
+        /* background-image:    linear-gradient(165deg, rgba(0, 0, 0, 0.9) 45%,rgba(0, 0, 0, 0.9) 45%,rgba(255, 90, 206, 0.9)   ,rgba(251, 218, 97, 0.9) 70%, rgba(255, 90, 206, 0.9) 90%, rgba(0, 0, 0, 0.9) 100%); */
         color: #fff!important;
-
         transition: 0.6s;
         overflow-x: hidden;
         padding-top: 70px;
@@ -899,7 +898,6 @@
         padding-right: 10px;
         height: 35px;
         width: 50px;
-
     }
 
     .akm {
@@ -2155,7 +2153,6 @@
                     sidebar.style.width = "250px";
                     sidebar.style.zIndex = "1000"; 
                     sidebar.style.position = "fixed";
-                    main.style.marginLeft = "0";
                     toggleIcon.src = darkModeLogo; 
                     toggleIcon.style.width = "255px"; 
                      toggleIcon.style.height = "auto";
@@ -2164,7 +2161,6 @@
                     sidebar.style.width = "63px";
                     sidebar.style.zIndex = "1000";
                     sidebar.style.position = "fixed";
-                    main.style.marginLeft = "0";
                     toggleIcon.src = darkModeLogo; 
                     toggleIcon.style.width = "255px";  
                     toggleIcon.style.height = "auto"; 
