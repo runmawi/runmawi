@@ -13378,7 +13378,7 @@ $cpanel->end();
 
       try{
 
-        $roku_tvcode = $request->query('roku_tvcode');
+        $user_id = $request->query('user_id');
         // return $roku_tvcode;
 
         $HomeSetting = MobileHomeSetting::first();
@@ -13600,7 +13600,7 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($roku_tvcode) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($user_id) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
             $description = $item->description;
@@ -13620,8 +13620,8 @@ $cpanel->end();
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) use($roku_tvcode) {
-                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                    ->map(function ($season) use($user_id) {
+                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
                                           $new_date = Carbon::parse($ppv_purchase->to_time);
@@ -13725,7 +13725,7 @@ $cpanel->end();
                                                       ->orderBy('order')
                                                       ->limit(15)
                                                       ->get()
-                                                      ->map(function ($item) use($roku_tvcode) {
+                                                      ->map(function ($item) use($user_id) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
@@ -13735,7 +13735,7 @@ $cpanel->end();
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
-                                                                                    ->map(function ($series) use($roku_tvcode) {
+                                                                                    ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
                                                                                         $description = $series->description;
@@ -13752,8 +13752,8 @@ $cpanel->end();
                                                                                         $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
-                                                                                                                        ->map(function ($season) use($roku_tvcode) {
-                                                                                                                            $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                                                                                                        ->map(function ($season) use($user_id) {
+                                                                                                                            $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                                                                                                             $ppv_exists_check_query = 0;
                                                                                                                             if($ppv_purchase){
                                                                                                                               $new_date = Carbon::parse($ppv_purchase->to_time);
@@ -14027,8 +14027,8 @@ $cpanel->end();
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
-                                      ->map(function ($item) use($roku_tvcode) {
-                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('live_id',$item->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                      ->map(function ($item) use($user_id) {
+                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
                                           $new_date = Carbon::parse($ppv_purchase->to_time);

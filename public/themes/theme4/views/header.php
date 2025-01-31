@@ -1954,15 +1954,10 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
    </script>
 
      <!-- search validation -->
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/jquery.validate.min.js') ?>"></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/bootstrap-5.0.2.min.js" async ></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/popper-2.9.2.min.js" async ></script>
+   <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery.validate.min.js" async ></script>
 
-
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/popper-2.9.2.min.js') ?>"></script>
-
-   <link rel="preload" href="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>" as="script">
-   <script src="<?= asset('public/themes/theme4/assets/js/bootstrap-5.0.2.min.js') ?>"></script>
 
    <script>
       $("#searchResult").validate({

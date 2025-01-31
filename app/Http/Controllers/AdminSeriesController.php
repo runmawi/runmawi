@@ -2057,19 +2057,30 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
-        if (compress_responsive_image_enable() == 1) {
+        if (compress_responsive_image_enable() == 1 || compress_responsive_image_enable() == 0) {
+           
+        if ($request->hasFile('image') || !empty($data['video_image_url'])) {
 
-        if ($request->hasFile('image')) {
+            // $image = !empty($request->file('image')) ? $request->file('image') : $data['video_image_url'];
 
-            $image = $request->file('image');
-
-                $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
-                $image_filename = $image_filename;
-
-                Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
-                Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
-                Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+            $image = !empty($request->file('image')) ? $request->file('image') : null;
+           
+                if ($image) {
+                    $image_filename = 'episode_' . time() . '_image.' . $image->getClientOriginalExtension();
+                } else {
+                    $local_image_path = public_path('/uploads/images/' . basename($data['video_image_url'])); // Adjust this if necessary
+                    if (file_exists($local_image_path)) {
+                        $image = Image::make($local_image_path);
+                        $image_filename = 'episode_' . time() . '_image.webp';
+                        // dd($image_filename); 
+                    } 
+                    
+                }
+                Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
                 
+                // dd($image_filename);
                 $data["responsive_image"] = $image_filename;
 
         }else{
@@ -2077,16 +2088,27 @@ class AdminSeriesController extends Controller
             $data["responsive_image"] = default_vertical_image(); 
         }
 
-        if ($request->hasFile('player_image')) {
+        if ($request->hasFile('player_image') || !empty($data['selected_image_url'])) {
 
-            $player_image = $request->file('player_image');
+            $player_image = !empty($request->file('player_image')) ? $request->file('player_image') : null;
 
+            if ($player_image) {
                 $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
-
-                Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
-                Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
-                Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+            } else {
+                $local_image_path = public_path('/uploads/images/' . basename($data['selected_image_url'])); // Adjust this if necessary
+                if (file_exists($local_image_path)) {
+                    $player_image = Image::make($local_image_path);
+                    $player_image_filename = 'episode_' . time() . '_player_image.webp';
+                    // dd($player_image_filename); 
+                } 
                 
+            }
+            
+
+                Image::make($player_image)->resize(332,187)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(435,244)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                Image::make($player_image)->resize(351,198)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                // dd($player_image_filename);
                 $data["responsive_player_image"] = $player_image_filename ;
 
         }else{
@@ -2125,18 +2147,58 @@ class AdminSeriesController extends Controller
             if(!empty($image)){
 
                  if($image != ''  && $image != null){
-                    $file_old = $image_path.$image;
 
-                    if (file_exists($file_old)){
-                    unlink($file_old);
+                    $image = !empty($request->file('image')) ? $request->file('image') : null;
+
+                    if ($image) {
+                        $file_old = $image_path.$image;
+
+                        if (file_exists($file_old)){
+                            unlink($file_old);
+                        } 
+                    }else {
+                        $image_path = public_path('/uploads/images/' . basename($data['video_image_url'])); // Adjust this if necessary
+                        if (file_exists($local_image_path)) {
+                            $image = Image::make($local_image_path);
+                            $image_filename = 'episode_' . time() . '_image.webp';$image_filename = 'episode_' . time() . '_image.webp'; // You can customize this as needed
+                            $file_old = $image_path . $image_filename;
+                            $image->save($file_old);
+                            unlink($file_old);
+                        } 
+                        
                     }
+                        // dd(file_exists($file_old));
+
+                    // $file_old = $image_path.$image;
+
+                    // if (file_exists($file_old)){
+                    // unlink($file_old);
+                    // }
                 }
 
-                if(compress_image_enable() == 1){
-            
-                    $episode_filename  = time().'.'.compress_image_format();
-                    $episode_image     =  'episode-'.$episode_filename ;
-                    Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
+                if(compress_image_enable() == 1 || compress_image_enable() == 0){
+                    $image = !empty($request->file('image')) ? $request->file('image') : null;
+                    if ($image ) {
+                        $episode_filename  = time().'.'.compress_image_format();
+                        $episode_image     =  'episode-'.$episode_filename ;
+                        Image::make($file)->save(base_path().'/public/uploads/images/'.$episode_image,compress_image_resolution() );
+                    } else {
+                        $local_image_path = public_path('/uploads/images/' . basename($data['video_image_url']));
+                        if (file_exists($local_image_path)) {
+                            $image = Image::make($local_image_path);
+                            
+                            $episode_filename = time() . '.' . compress_image_format();
+                            $episode_image = 'episode-' . $episode_filename;
+
+                            
+                            $image->save(base_path() . '/public/uploads/images/' . $episode_image, compress_image_resolution());
+                            // dd(base_path() . '/public/uploads/images/' . $episode_image, compress_image_resolution());
+                        } else {
+                            throw new \Exception('File does not exist at the specified path: ' . $local_image_path);
+                        }
+                        
+                    }
+
                 }else{
 
                     $episode_filename  = time().'.'.$image->getClientOriginalExtension();
@@ -2755,39 +2817,68 @@ class AdminSeriesController extends Controller
                 $data['image'] = $episode->image ;
             }
 
-            if (compress_responsive_image_enable() == 1) {
-
-            if ($request->hasFile('image')) {
-
-                $image = $request->file('image');
+            if (compress_responsive_image_enable() == 1 || compress_responsive_image_enable() == 0) {
                 
-                    $image_filename = 'episode_' .time() . '_image.' . $image->getClientOriginalExtension();
-                    $image_filename = $image_filename;
-                
-                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                if ($request->hasFile('image') || !empty($data["video_image_url"])) {
+
+                    $image = !empty($request->file('image')) ? $request->file('image') : null;
+            
+                    if ($image) {
+                        $image_filename = 'episode_' . time() . '_image.' . $image->getClientOriginalExtension();
+                    } else {
+                        $local_image_path = public_path('/uploads/images/' . basename($data['video_image_url'])); // Adjust this if necessary
+                        if (file_exists($local_image_path)) {
+                            $image = Image::make($local_image_path);
+                            $image_filename = 'episode_' . time() . '_image.webp';
+                            // dd($image_filename); 
+                        } 
+                        
+                    }
+                    Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
                     
+                    // dd($image_filename);
                     $responsive_image = $image_filename;
-                
+
+
+                        // $image = !empty($request->file('image')) ? $request->file('image') : $data["image"];
+                        // $image_filename = !empty($request->file('image')) ? 'episode_' .time() . '_image.' . $image->getClientOriginalExtension() : 'episode_' .time() . '_image.webp';
+                        
+                        // $image_filename = $image_filename;
+                    
+                        // Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                        // Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                        // Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                        
+                        // $responsive_image = $image_filename;
+                    
                 }else if (!empty($request->responsive_image)) {
                     $responsive_image  = $request->responsive_image;
                 } else{
                     $responsive_image = $episode->responsive_image; 
                 }
-                
-                if ($request->hasFile('player_image')) {
-                
-                $player_image = $request->file('player_image');
-                
-                    $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
-                
-                    Image::make($player_image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
-                    Image::make($player_image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
-                    Image::make($player_image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                if ($request->hasFile('player_image') || !empty($data["selected_image_url"])) {
+                    // dd($data);
+                    $player_image = !empty($request->file('player_image')) ? $request->file('player_image') : null;
+            
+                    if ($player_image) {
+                        $player_image_filename = 'episode_' .time() . '_player_image.' . $player_image->getClientOriginalExtension();
+                    } else {
+                        $local_image_path = public_path('/uploads/images/' . basename($data['selected_image_url'])); // Adjust this if necessary
+                        if (file_exists($local_image_path)) {
+                            $player_image = Image::make($local_image_path);
+                            $player_image_filename = 'episode_' . time() . '_player_image.webp';
+                            // dd($image_filename); 
+                        } 
+                        
+                    }
+                        Image::make($player_image)->resize(332,187)->save(base_path() . '/public/uploads/mobileimages/' . $player_image_filename, compress_image_resolution());
+                        Image::make($player_image)->resize(435,244)->save(base_path() . '/public/uploads/Tabletimages/' . $player_image_filename, compress_image_resolution());
+                        Image::make($player_image)->resize(351,198)->save(base_path() . '/public/uploads/PCimages/' . $player_image_filename, compress_image_resolution());
+                        
+                        $responsive_player_image = $player_image_filename;
                     
-                    $responsive_player_image = $player_image_filename;
-                
                 }else if (!empty($request->responsive_player_image)) {
                     $responsive_player_image  = $request->responsive_player_image;
                 }else{
@@ -3208,32 +3299,32 @@ class AdminSeriesController extends Controller
 
                 if(Enable_Extract_Image() == 1){
                     // extractImageFromVideo
-                
+
                     $ffmpeg = \FFMpeg\FFMpeg::create();
                     $videoFrame = $ffmpeg->open($Video_storepath);
-                    
+                
                     // Define the dimensions for the frame (16:9 aspect ratio)
                     $frameWidth = 1280;
                     $frameHeight = 720;
-                    
+                
                     // Define the dimensions for the frame (9:16 aspect ratio)
                     $frameWidthPortrait = 1080;  // Set the desired width of the frame
                     $frameHeightPortrait = 1920; // Calculate height to maintain 9:16 aspect ratio
-                    
+                
                     $randportrait = 'portrait_' . $rand;
-                    
+                
                     $interval = 5; // Interval for extracting frames in seconds
                     $totalDuration = round($videoFrame->getStreams()->videos()->first()->get('duration'));
                     $totalDuration = intval($totalDuration);
-    
-    
+
+                
                     if ( 600 < $totalDuration) { 
                         $timecodes = [5, 120, 240, 360, 480]; 
                     } else { 
                         $timecodes = [5, 10, 15, 20, 25]; 
                     }
-    
-                    
+
+                
                     foreach ($timecodes as $index => $time) {
                         $imagePortraitPath = public_path("uploads/images/{$episode_id}_{$randportrait}_{$index}.jpg");
                         $imagePath = public_path("uploads/images/{$episode_id}_{$rand}_{$index}.jpg");
@@ -3247,21 +3338,39 @@ class AdminSeriesController extends Controller
                                 ->frame(TimeCode::fromSeconds($time))
                                 ->save($imagePortraitPath, new X264('libmp3lame', 'libx264'), null, new Dimension($frameWidthPortrait, $frameHeightPortrait));
                 
+                            // Convert JPG to WEBP
+                            $webpImagePath = str_replace('.jpg', '.webp', $imagePath);
+                            $webpPortraitImagePath = str_replace('.jpg', '.webp', $imagePortraitPath);
+                
+                            if (file_exists($imagePath)) {
+                                $image = imagecreatefromjpeg($imagePath);
+                                imagewebp($image, $webpImagePath, 80);
+                                imagedestroy($image);
+                                unlink($imagePath);
+                            }
+                
+                            if (file_exists($imagePortraitPath)) {
+                                $imagePortrait = imagecreatefromjpeg($imagePortraitPath);
+                                imagewebp($imagePortrait, $webpPortraitImagePath, 80);
+                                imagedestroy($imagePortrait);
+                                unlink($imagePortraitPath);
+                            }
+                
                             $VideoExtractedImage = new VideoExtractedImages();
                             $VideoExtractedImage->user_id = Auth::user()->id;
                             $VideoExtractedImage->socure_type = 'Episode';
                             $VideoExtractedImage->video_id = $episode_id;
                             $VideoExtractedImage->image_original_name = $episode_id;
-                            $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $index . '.jpg');
-                            $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $index . '.jpg');
-                            $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $index . '.jpg';
+                            $VideoExtractedImage->image_path = URL::to("/public/uploads/images/" . $episode_id . '_' . $rand . '_' . $index . '.webp');
+                            $VideoExtractedImage->portrait_image = URL::to("/public/uploads/images/" . $episode_id . '_' . $randportrait . '_' . $index . '.webp');
+                            $VideoExtractedImage->image_original_name = $episode_id . '_' . $rand . '_' . $index . '.webp';
                             $VideoExtractedImage->save();
-    
+                
                         } catch (\Exception $e) {
                             dd($e->getMessage());
                         }
                     }
-                
+
                 }
                 
                 $episode_title = Episode::find($episode_id);
@@ -5138,7 +5247,7 @@ class AdminSeriesController extends Controller
         $image = (isset($data['image'])) ? $data['image'] : '';
 
         $file = $image;
-        if (compress_responsive_image_enable() == 1) {
+        if (compress_responsive_image_enable() == 1 || compress_responsive_image_enable() == 0) {
 
         if ($request->hasFile('image')) {
 
