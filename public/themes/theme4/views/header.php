@@ -211,7 +211,17 @@
   
   
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?php echo getFavicon();?>" type="image/gif" sizes="16x16">
+     <?php
+      $favicon_url = URL::to('https://e360tvimages.b-cdn.net/settings/'. $settings->favicon);
+
+      $theme = App\SiteTheme::first();
+      $settings = App\Setting::first();
+
+      $logo = ($theme->theme_mode == "light" && !empty($theme->light_mode_logo)) ? $theme->light_mode_logo : (($theme != "light" && !empty($theme->dark_mode_logo)) ? $theme->dark_mode_logo : $settings->logo);
+      
+      $logo =  URL::to('https://e360tvimages.b-cdn.net/settings/'. $logo )  ;
+     ?>
+    <link rel="shortcut icon" href="<?php echo $favicon_url ?>" type="image/gif" sizes="16x16">
 
     <input type="hidden" value="<?php echo $settings->google_tracking_id ; ?>" name="tracking_id" id="tracking_id">
 
@@ -242,9 +252,7 @@
 
    
    <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
-   <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-   
+    <script src="https://e360tvmain.b-cdn.net/css/assets/js/flick-popper-magnific.js" async></script>
     <script src="https://e360tvmain.b-cdn.net/css/assets/js/jquery-3.5.1.min.js" async></script>
 
     
@@ -998,7 +1006,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
     <?php if( get_image_loader() == 1 ) { ?>
       <div class="fullpage-loader">
          <div class="fullpage-loader__logo">
-               <img src="<?= front_end_logo() ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
+               <img src="<?= $logo ?>" class="c-logo" alt="<?=  $settings->website_name ; ?>">
          </div>
       </div>
     <?php } ?>
@@ -1041,7 +1049,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                  <!-- <button class="navbar-toggler border-0 p-0 mr-3 onclickbutton_menu responsive-toggle-btn" type="button" id="navToggle"  data-bs-dismiss="offcanvas" aria-label="Toggle navigation menu"><i class="fa fa-bars" onclick="changeIcon(this)" aria-hidden="true"></i></button> -->
                               <?php endif ;?>
 
-                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= front_end_logo() ?>" width="<?=  $settings->logo_width; ?>" height="<?=  $settings->logo_height; ?>" /> </a>
+                              <a class="navbar-brand" href="<?= URL::to('/home') ?>" aria-label="home-logo"> <img class="img-fluid logo flickity-lazyloaded" alt="logo" src="<?= $logo ?>" width="<?=  $settings->logo_width; ?>" height="<?=  $settings->logo_height; ?>" /> </a>
 
 
                               <div class="collapse navbar-collapse side-colps" id="main_nav">
