@@ -29,6 +29,11 @@ class LandingpageController extends Controller
    public function landing_page( $landing_page_slug, $landing_page_id = 0 )
    {
     $settings = $this->settings ;
+    
+    if($settings->enable_landing_page == 0){
+        return redirect("/home");
+    }
+
     $admin_landingpage_slug = AdminLandingPage::select('slug', 'status', 'landing_page_id')
         ->where('status', '1')
         ->latest()
