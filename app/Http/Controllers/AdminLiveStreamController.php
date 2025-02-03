@@ -48,6 +48,7 @@ use App\VideosSubtitle as VideosSubtitle;
 use Intervention\Image\Filters\DemoFilter;
 use App\VideoResolution as VideoResolution;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\SiteTheme;
 
 class AdminLiveStreamController extends Controller
 {
@@ -844,6 +845,9 @@ class AdminLiveStreamController extends Controller
         $settings = Setting::first();
         $compress_image_settings = CompressImage::first();
 
+        $access_password = "ZUrtSvrah3E7fj2";
+        $access_btn_staus = SiteTheme::pluck('access_change_pass')->first();
+
 
         if(  $video->stream_upload_via == "radio_station" ){
            
@@ -915,6 +919,8 @@ class AdminLiveStreamController extends Controller
             'currentRouteName' => Route::currentRouteName() ,
             'inputs_details_array' => $inputs_details_array ,
             'scheduler_program'    => $scheduler_program,
+            'access_password'  => $access_password,
+            'access_btn_staus'  => $access_btn_staus
         );
 
         return View::make('admin.livestream.edit', $data); 

@@ -1559,14 +1559,18 @@ class AdminSeriesController extends Controller
     {
         $season = SeriesSeason::where('id',$id)->first();
         $series = Series::where('id',$season->series_id)->first();
+        $access_btn_staus = SiteTheme::pluck('access_change_pass')->first();
         // dd($season);
         $compress_image_settings = CompressImage::first();
+        $access_password = "ZUrtSvrah3E7fj2";
         $data =array(
             'season' => $season,
             'InappPurchase' => InappPurchase::all(),
             'series' => $series,
             'compress_image_settings' => $compress_image_settings,
             'theme_settings' => SiteTheme::first(),
+            'access_password'  => $access_password,
+            'access_btn_staus'  => $access_btn_staus
         );
 
         return View::make('admin/series/season/edit',$data);
@@ -1833,6 +1837,7 @@ class AdminSeriesController extends Controller
         $series_season->ios_ppv_price_480p = $data['ios_ppv_price_480p'];
         $series_season->ios_ppv_price_720p = $data['ios_ppv_price_720p'];
         $series_season->ios_ppv_price_1080p = $data['ios_ppv_price_1080p'];
+        $series_season->updated_by = Auth::user()->id;
         $series_season->save();
         if($trailer != '' && $pack == "Business"  && $settings->transcoding_access  == 1  && $StorageSetting->aws_storage == 0) {
             ConvertSerieTrailer::dispatch($series_season,$storepath,$convertresolution,$trailer_video_name,$trailer_Video);
