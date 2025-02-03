@@ -57,6 +57,7 @@ Route::group(
         Route::post('directVerify', 'ApiAuthController@directVerify');
         Route::post('resetpassword', 'ApiAuthController@resetpassword');
         Route::post('updatepassword', 'ApiAuthController@updatepassword');
+        Route::post('verify_code_updatepassword', 'ApiAuthController@verify_code_updatepassword');
         Route::post('changepassword', 'ApiAuthController@changepassword');
         Route::post('verifyandupdatepassword', 'ApiAuthController@verifyandupdatepassword');
 
