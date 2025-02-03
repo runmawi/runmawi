@@ -1521,29 +1521,50 @@ class ApiAuthController extends Controller
       return response()->json($response, $response['status_code']);
     }
 
-  public function updatepassword(Request $request)
-  {
-    $user_email = $request->email;
-    $verification_code = $request->verification_code;
-    if (DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists()) {
+      public function verify_code_updatepassword(Request $request)
+      {
+          $user_email = $request->email;
+          $verification_code = $request->verification_code;
 
-      $user_id = User::where('email', '=', $user_email)->first();
-      $user = User::find($user_id->id);
-      $user->password = Hash::make($request->password);
-      $user->save();
-          send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id->id);
-      $response = array(
-        'status'=>'true',
-        'message'=>'Password changed successfully.'
-      );
-    }else{
-      $response = array(
-        'status'=>'false',
-        'message'=>'Invalid Verification code.'
-      );
+          $exists = DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists();
+
+          if ($exists) {
+              return response()->json([
+                  'status' => 'true',
+                  'message' => 'Verification code is valid.'
+              ], 200);
+          } else {
+              return response()->json([
+                  'status' => 'false',
+                  'message' => 'Invalid verification code.'
+              ], 200);
+          }
+      }
+
+
+    public function updatepassword(Request $request)
+    {
+      $user_email = $request->email;
+      // $verification_code = $request->verification_code;
+      if (DB::table('password_resets')->where('email', '=', $user_email)->exists()) {
+
+        $user_id = User::where('email', '=', $user_email)->first();
+        $user = User::find($user_id->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+            send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id->id);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Password changed successfully.'
+        );
+      }else{
+        $response = array(
+          'status'=>'false',
+          'message'=>'Email not found in password reset records.'
+        );
+      }
+        return response()->json($response, 200);
     }
-      return response()->json($response, 200);
-  }
 
 
   public function categoryvideos(Request $request)
@@ -4928,6 +4949,7 @@ public function verifyandupdatepassword(Request $request)
 
     $payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
     ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)
+    ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
     ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
         $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -4936,13 +4958,18 @@ public function verifyandupdatepassword(Request $request)
 
     $payperview_episodes = PpvPurchase::join('episodes', 'episodes.id', '=', 'ppv_purchases.episode_id')
       ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.episode_id', '!=', 0)
+      ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
       ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
           $item['ppv_episodes_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           return $item;
         });
 
-    $payperview_series_season = PpvPurchase::select('series_id','season_id')->where('ppv_purchases.series_id', '!=', 0)->where('ppv_purchases.season_id', '!=', 0)->where('user_id', $user_id)->get();
+    $payperview_series_season = PpvPurchase::select('series_id','season_id')
+      ->where('ppv_purchases.series_id', '!=', 0)
+      ->where('ppv_purchases.season_id', '!=', 0)
+      ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
+      ->where('user_id', $user_id)->get();
 
     if ($payperview_series_season->count() > 0) {
       $series_ids = $payperview_series_season->pluck('series_id')->toArray();
