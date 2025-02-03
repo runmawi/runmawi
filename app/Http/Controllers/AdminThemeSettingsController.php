@@ -296,6 +296,8 @@ class AdminThemeSettingsController extends Controller
 
         $theme_settings->enable_channel_btn                   = !empty($data['enable_channel_btn']) ? '1' : '0';
         
+        $theme_settings->access_change_pass                   = !empty($data['access_change_pass']) ? '1' : '0';
+        
         $theme_settings->save();
 
         return Redirect::back()->with(['note' => 'Successfully Updated Settings', 'note_type' => 'success']);
