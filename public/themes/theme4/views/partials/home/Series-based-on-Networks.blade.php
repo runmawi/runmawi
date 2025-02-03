@@ -152,6 +152,8 @@
 @endif
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
         var flkty = new Flickity(elem, {
@@ -205,12 +207,12 @@
                     new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: false,
+                        groupCells: true,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 7,
+                        lazyLoad: true,
                     });
                 },0);
             }
