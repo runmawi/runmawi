@@ -242,7 +242,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         </p>
 
                         <p class="desc-name text-left m-0 mt-1">
-                            <?= __(html_entity_decode(strip_tags($episode->episode_description))) ?>
+                            {!! nl2br(e($episode->episode_description)) !!}
                         </p>
                         @if (Auth::check() && Auth::user()->role == 'subscriber')
                             <a class="btn mt-3" data-toggle="modal" data-target="#season-purchase-now-modal">
@@ -388,7 +388,9 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         @endforeach
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
-                    <p class="">{!! $episode->episode_description !!}</p>
+                    @if(!empty($episode->episode_description))
+                        <p class="">{!! nl2br(e($episode->episode_description)) !!}</p>
+                    @endif
 
                     <?php
                     $media_url = URL::to('episode') . '/' . $series->slug . '/' . $episode->slug;
