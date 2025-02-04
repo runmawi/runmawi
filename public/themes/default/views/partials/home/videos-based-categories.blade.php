@@ -123,7 +123,7 @@
                                                 <div class="border-bg">
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="VideoBasedPlayTrailer">
-                                                            <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}" loading="lazy">
+                                                            <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
                                                         </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -248,7 +248,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload:true,
+            lazyload: 7
         });
     });
 </script>
