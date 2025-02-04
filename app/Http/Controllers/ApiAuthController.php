@@ -9650,6 +9650,29 @@ return response()->json($response, 200);
     return response()->json($response, 200);
 
     }
+
+
+    
+    public function albums_audios_genre(Request $request)
+    {
+        $albums_audios_slug = $request->albums_audios_slug;
+        $CategoryAudio = AudioCategory::where('slug', $albums_audios_slug)->first();
+        $AudioCategory = $CategoryAudio ? $CategoryAudio->specific_category_audio : [];
+        if (count($AudioCategory) > 0) {              
+            return response()->json([
+                'status' => true,
+                'genre_name' => $CategoryAudio->name,
+                'audio' => $AudioCategory
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'No audio added'
+            ]);
+        }
+    }
+
+
     public function AudioCategory(Request $request)
     {
         $audiocategories_count = AudioCategory::orderBy('created_at', 'desc')->get()->count();
