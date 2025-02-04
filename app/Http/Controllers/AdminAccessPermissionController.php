@@ -74,6 +74,7 @@ class AdminAccessPermissionController extends Controller
                     'enable_partner_payouts'           => !empty($request->enable_partner_payouts) ? 1 : 0 ,
                     'slider_trailer'           => !empty($request->slider_trailer) ? 1 : 0 ,
                     'enable_transaction_details'           => !empty($request->enable_transaction_details) ? 1 : 0 ,
+                    'access_change_pass'                   => !empty($request->access_change_pass) ? 1 : 0 ,
                  ]);
             }else{
                 
@@ -103,6 +104,7 @@ class AdminAccessPermissionController extends Controller
                     'enable_partner_payouts'           => !empty($request->enable_partner_payouts) ? 1 : 0 ,
                     'slider_trailer'           => !empty($request->slider_trailer) ? 1 : 0 ,
                     'enable_transaction_details'           => !empty($request->enable_transaction_details) ? 1 : 0 ,
+                    'access_change_pass'                   => !empty($request->access_change_pass) ? 1 : 0 ,
                 ]);
             }
 
