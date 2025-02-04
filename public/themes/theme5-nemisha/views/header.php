@@ -283,7 +283,6 @@
         width: 100vw;
         overflow: hidden;
         background: #222831;
-        z-index: 9999;
         opacity: 1;
         transition: opacity .5s;
         display: flex;
@@ -532,8 +531,17 @@
         border-right: 1px solid #000!important;
     } 
     body.light-theme .music-play-lists li {
-        background-color: #ED563C!important;
+        background: linear-gradient(
+        to bottom, 
+        rgba(0, 0, 0, 0.9),
+        rgba(15, 15, 15, 0.9)     
+        )!important;
         color: #fff!important;
+    }
+
+    #toggleIcon{
+        width: 255px;
+        height: auto;
     }
 
     body.light-theme span i {
@@ -828,13 +836,15 @@
 
     .sidebar {
         height: 100%;
-        width: 50px;
+        width: 63px;
         position: fixed;
-        z-index: 1;
+        z-index: 1000;
         top: 0;
         left: 0;
-        background: #ED563C;
-
+        /* background: linear-gradient(160deg,rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0),rgb(0, 0, 0),rgba(245, 74, 145, 0.86) ,rgba(243, 203, 56, 0.9), rgba(245, 74, 145, 0.86),rgb(0, 0, 0)); */
+        background-color:rgba(0, 0, 0, 0.8);
+        /* background-image:    linear-gradient(165deg, rgba(0, 0, 0, 0.9) 45%,rgba(0, 0, 0, 0.9) 45%,rgba(255, 90, 206, 0.9)   ,rgba(251, 218, 97, 0.9) 70%, rgba(255, 90, 206, 0.9) 90%, rgba(0, 0, 0, 0.9) 100%); */
+        color: #fff!important;
         transition: 0.6s;
         overflow-x: hidden;
         padding-top: 70px;
@@ -842,7 +852,7 @@
     }
 
     .sidebar a {
-        padding-left: 8px;
+        padding-left: 12px;
         text-decoration: none;
         font-size: 18px;
         color: #fff !important;
@@ -887,8 +897,7 @@
     .sidebar img {
         padding-right: 10px;
         height: 35px;
-        width: 45px;
-
+        width: 50px;
     }
 
     .akm {
@@ -950,6 +959,14 @@
     <!-- loader END -->
     <!-- Header -->
     <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+    <img
+            id="toggleIcon"
+            src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
+            alt="Sidebar Toggle"
+            style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
+            onclick="toggleSidebar()"
+        />
+
         <ul id="" class="nav navbar-nav <?php if (Session::get('locale') == 'arabic') {
             echo 'navbar-right';
         } else {
@@ -969,7 +986,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex  align-items-center" href="<?php echo URL::to('/categoryList'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span style="padding-left:10px;" ><?php echo __($menu->name); ?></span> 
                         <!--  <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1000,7 +1017,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Movie-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/> <span style="padding-left:10px;" ><?php echo __($menu->name); ?></span>
                         <!--<i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1021,7 +1038,7 @@
             <li class="dropdown menu-item">
                 <a class="dropdown-toggle" id="down" href="<?php echo URL::to('/') . $menu->url; ?>" data-toggle="dropdown" aria-label="<?php echo __($menu->name); ?>">
                     <a style="height:45px;" class="d-flex align-items-center" href="<?php echo URL::to('/Live-list'); ?>" aria-label="<?php echo __($menu->name); ?>"> 
-                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/><?php echo __($menu->name); ?>
+                        <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item"/> <span style="padding-left:10px;" ><?php echo __($menu->name); ?></span>
                         <!-- <i class="ri-arrow-down-s-line"></i>-->
                     </a>
                 </a>
@@ -1092,8 +1109,7 @@
                     echo $menu->custom_url;
                 } ?>" aria-label="<?php echo __($menu->name); ?>">
                     <!-- <img class=""  src="<?php echo URL::to('/assets/img/home.png'); ?>" /> <span class="mt-2" ><?php echo __($menu->name); ?></span> -->
-                    <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span
-                        class=""><?php echo __($menu->name); ?></span>
+                    <img class="menu-items" src="<?php echo $menu->image; ?>" alt="menu-item" /> <span style="padding-left:10px;" ><?php echo __($menu->name); ?></span>
 
                 </a>
             </li>
@@ -1128,11 +1144,9 @@
     </div>
 
     <div id="main">
-
-
         <header id="main-header">
             <div class="main-header">
-                <div class="container-fluid" style="z-index:10000;" >
+                <div class="" style="z-index:10000;" >
                     <div class="row">
                         <div class="col-sm-12">
                             <nav class="navbar navbar-expand-lg navbar-light p-0">
@@ -1144,7 +1158,7 @@
                                         <i class="fa fa-bars" aria-hidden="true"></i>
                                     </div>
                                 </a>
-                                <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
+                                <!-- <?php if($theme_mode == "light" && !empty(@$theme->light_mode_logo)){  ?>
                                 <a class="navbar-brand mb-0" href="<?php echo URL::to('home'); ?>"> <img
                                         src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->light_mode_logo; ?>" class="c-logo logo-img" alt="<?php echo $settings->website_name; ?>"> </a>
                                 <?php }elseif($theme_mode != "light" && !empty(@$theme->dark_mode_logo)){ ?>
@@ -1153,7 +1167,7 @@
                                 <?php }else { ?>
                                 <a class="navbar-brand mb-0" href="<?php echo URL::to('home'); ?>"> <img
                                         src="<?php echo URL::to('/') . '/public/uploads/settings/' . $settings->logo; ?>" class="c-logo logo-img" alt="<?php echo $settings->website_name; ?>"> </a>
-                                <?php } ?>
+                                <?php } ?> -->
 
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="mobile-menu-header">
@@ -2127,22 +2141,34 @@
 
             <script>
                 var mini = true;
+                const lightModeLogo = "<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->light_mode_logo; ?>";
+                const darkModeLogo = "<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>";
 
                 function toggleSidebar() {
-                    if (mini) {
-                        //console.log("opening sidebar");
-                        document.getElementById("mySidebar").style.width = "250px";
-                        document.getElementById("main").style.marginLeft = "250px";
+                const sidebar = document.getElementById("mySidebar");
+                const main = document.getElementById("main");
+                const toggleIcon = document.getElementById("toggleIcon");
 
-                        this.mini = false;
-                    } else {
-                        //console.log("closing sidebar");
-                        document.getElementById("mySidebar").style.width = "50px";
-                        document.getElementById("main").style.marginLeft = "50px";
+                if (mini) {
+                    sidebar.style.width = "250px";
+                    sidebar.style.zIndex = "1000"; 
+                    sidebar.style.position = "fixed";
+                    toggleIcon.src = darkModeLogo; 
+                    toggleIcon.style.width = "255px"; 
+                     toggleIcon.style.height = "auto";
+                    mini = false;
+                } else {
+                    sidebar.style.width = "63px";
+                    sidebar.style.zIndex = "1000";
+                    sidebar.style.position = "fixed";
+                    toggleIcon.src = darkModeLogo; 
+                    toggleIcon.style.width = "255px";  
+                    toggleIcon.style.height = "auto"; 
 
-                        this.mini = true;
-                    }
+                    mini = true;
                 }
+            }
+
             </script>
             <script>
                 let theme_modes = $("#toggle").val();

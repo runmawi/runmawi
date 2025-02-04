@@ -1190,6 +1190,44 @@ border-radius: 0px 4px 4px 0px;
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        var previousValue = $('#access').val();
+        var access_pass = '<?= $access_password ?>';
+        var access_btn_staus = '<?= $access_btn_staus ?>';
+        console.log('access_btn_staus: ' + access_btn_staus);
+        
+        
+        if(access_btn_staus == 1){
+            $('#access').change(function() {
+                var newValue = $(this).val();
+
+                if (newValue !== previousValue) {
+                    var password = prompt("Please enter your password:");
+
+                    if (password === access_pass ) {
+                        previousValue = newValue;
+                    } else {
+                        $(this).val(previousValue);
+                        alert("Incorrect password. Access level not changed.");
+                    }
+                }
+            });
+
+            $('.pull-right').click(function(event) {
+                if ($('#access').val() === previousValue) {
+                    return true;
+                } else {
+                    event.preventDefault();
+                    alert("Please change the access level back or enter the correct password.");
+                }
+            });
+        };
+    });
+</script>
+
 <script>
          ClassicEditor
             .create( document.querySelector( '#details' ) )

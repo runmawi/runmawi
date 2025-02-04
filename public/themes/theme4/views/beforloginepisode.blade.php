@@ -126,7 +126,7 @@
                             <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title ; ?></h4>
-                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;>{!! $episode->episode_description !!}</p>
+                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;>{!! nl2br(e($episode->episode_description)) !!}</p>
                                     
                                     <h4 class=""><?php echo __('Subscribe to view more'); ?>
                                         <?php if ($series->access == 'subscriber'): ?>
@@ -165,7 +165,7 @@
                             <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">  
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title; ?></h4>
-                                    <p class="mt-2 text-white" style="margin:0 auto" ;>{!! $episode->episode_description !!}</p>
+                                    <p class="mt-2 text-white" style="margin:0 auto" ;>{!! nl2br(e($episode->episode_description)) !!}</p>
                                     <h4 class="">
                                         <?php if ($series->access == 'subscriber'): ?>
                                             <?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?>
@@ -291,7 +291,7 @@
                         </p>
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                     ?></p>
-                        <p class="desc">{!! $episode->episode_description !!}</p>
+                        <p class="desc">{!! nl2br(e($episode->episode_description)) !!}</p>
                     </div>
                     <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
                     ?>

@@ -54,6 +54,10 @@ $homepage_array_data = [
 
       @partial('home_sections')
 </div>
+   <!-- Loader -->
+   <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
+      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" data-src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;" loading="lazy">
+   </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -228,29 +232,29 @@ $(".home-search").hide();
       }
    }
 
-   var isFetching = false;
-   var scrollFetch;
+   // var isFetching = false;
+   // var scrollFetch;
 
-   $(document).scroll(function () {
-      clearTimeout(scrollFetch);
+   // $(document).scroll(function () {
+   //    clearTimeout(scrollFetch);
 
-      scrollFetch = setTimeout(function () {
-         var page_url = $("#home_sections").attr('next-page-url');
-         console.log("scrolled");
-         <?php if( ($order_settings->total()) != ($order_settings->perPage()) ){?>
-            if (page_url != null && !isFetching) {
-               isFetching = true;
-               $.ajax({
-                  url: page_url,
-                  success: function (data) {
-                        $("#home_sections").append(data.view);
-                        $("#home_sections").attr('next-page-url', data.url);
-                  },
-               });
-            }
-         <?php } ?>
-      }, 100);
-   });
+   //    scrollFetch = setTimeout(function () {
+   //       var page_url = $("#home_sections").attr('next-page-url');
+   //       console.log("scrolled");
+   //       <?php if( ($order_settings->total()) != ($order_settings->perPage()) ){?>
+   //          if (page_url != null && !isFetching) {
+   //             isFetching = true;
+   //             $.ajax({
+   //                url: page_url,
+   //                success: function (data) {
+   //                      $("#home_sections").append(data.view);
+   //                      $("#home_sections").attr('next-page-url', data.url);
+   //                },
+   //             });
+   //          }
+   //       <?php } ?>
+   //    }, 100);
+   // });
 </script>
 
 <style>
@@ -318,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyload: 2,
         autoPlay: 5000,
     });
 
@@ -383,6 +387,44 @@ document.addEventListener("DOMContentLoaded", function () {
                }
          });
       }
+   });
+
+   let isFetching = false; 
+   let scrollFetch;
+
+   $(window).scroll(function () {
+      clearTimeout(scrollFetch);
+
+      scrollFetch = setTimeout(function () {
+         let page_url = $("#home_sections").attr('next-page-url');
+
+         if (page_url != null && !isFetching) {
+            isFetching = true;
+            $("#loader").removeClass("hidden-loader");
+            console.log("second loader...");
+            
+
+            $.ajax({
+               url: page_url,
+               success: function (data) {
+                  if (data.view) {
+                     // Append the data from the second script
+                     $("#home_sections").append(data.view);
+                     $("#home_sections").attr('next-page-url', data.url);
+                  } else {
+                     // If no more pages, remove the URL to stop further requests
+                     $("#home_sections").removeAttr('next-page-url');
+                  }
+               },
+               complete: function () {
+                  isFetching = false; // Allow second script to trigger again
+                  if ($("#home_sections").attr('next-page-url') == null) {
+                     $("#loader").addClass("hidden-loader");
+                  }
+               }
+            });
+         }
+      }, 10);
    });
 
 

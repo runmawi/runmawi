@@ -202,6 +202,43 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<script>
+    $(document).ready(function() {
+        var previousValue = $('#ppv_access').val();
+        var access_pass = '<?= $access_password ?>';
+        var access_btn_staus = '<?= $access_btn_staus ?>';
+        console.log('access_btn_staus: ' + access_btn_staus);
+        
+        
+        if(access_btn_staus == 1){
+            $('#ppv_access').change(function() {
+                var newValue = $(this).val();
+
+                if (newValue !== previousValue) {
+                    var password = prompt("Please enter your password:");
+
+                    if (password === access_pass ) {
+                        previousValue = newValue;
+                    } else {
+                        $(this).val(previousValue);
+                        alert("Incorrect password. Access level not changed.");
+                    }
+                }
+            });
+
+            $('#submit-update-cat').click(function(event) {
+                if ($('#ppv_access').val() === previousValue) {
+                    return true;
+                } else {
+                    event.preventDefault();
+                    alert("Please change the access level back or enter the correct password.");
+                }
+            });
+        };
+    });
+</script>
+
 <script>
     $(document).ready(function(){
         $("#ppv_price_input").change(function(){

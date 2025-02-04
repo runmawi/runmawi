@@ -1520,29 +1520,50 @@ class ApiAuthController extends Controller
       return response()->json($response, $response['status_code']);
     }
 
-  public function updatepassword(Request $request)
-  {
-    $user_email = $request->email;
-    $verification_code = $request->verification_code;
-    if (DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists()) {
+      public function verify_code_updatepassword(Request $request)
+      {
+          $user_email = $request->email;
+          $verification_code = $request->verification_code;
 
-      $user_id = User::where('email', '=', $user_email)->first();
-      $user = User::find($user_id->id);
-      $user->password = Hash::make($request->password);
-      $user->save();
-          send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id->id);
-      $response = array(
-        'status'=>'true',
-        'message'=>'Password changed successfully.'
-      );
-    }else{
-      $response = array(
-        'status'=>'false',
-        'message'=>'Invalid Verification code.'
-      );
+          $exists = DB::table('password_resets')->where('email', '=', $user_email)->where('verification_code', '=', $verification_code)->exists();
+
+          if ($exists) {
+              return response()->json([
+                  'status' => 'true',
+                  'message' => 'Verification code is valid.'
+              ], 200);
+          } else {
+              return response()->json([
+                  'status' => 'false',
+                  'message' => 'Invalid verification code.'
+              ], 200);
+          }
+      }
+
+
+    public function updatepassword(Request $request)
+    {
+      $user_email = $request->email;
+      // $verification_code = $request->verification_code;
+      if (DB::table('password_resets')->where('email', '=', $user_email)->exists()) {
+
+        $user_id = User::where('email', '=', $user_email)->first();
+        $user = User::find($user_id->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+            send_password_notification('Notification From '. GetWebsiteName(),'Password has been Updated Successfully','Password Update Done','',$user_id->id);
+        $response = array(
+          'status'=>'true',
+          'message'=>'Password changed successfully.'
+        );
+      }else{
+        $response = array(
+          'status'=>'false',
+          'message'=>'Email not found in password reset records.'
+        );
+      }
+        return response()->json($response, 200);
     }
-      return response()->json($response, 200);
-  }
 
 
   public function categoryvideos(Request $request)
@@ -4928,6 +4949,7 @@ public function verifyandupdatepassword(Request $request)
 
     $payperview_video = PpvPurchase::join('videos', 'videos.id', '=', 'ppv_purchases.video_id')
     ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.video_id', '!=', 0)
+    ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
     ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
         $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -4936,13 +4958,18 @@ public function verifyandupdatepassword(Request $request)
 
     $payperview_episodes = PpvPurchase::join('episodes', 'episodes.id', '=', 'ppv_purchases.episode_id')
       ->where('ppv_purchases.user_id', '=', $user_id)->where('ppv_purchases.episode_id', '!=', 0)
+      ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
       ->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
           $item['ppv_episodes_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
           return $item;
         });
 
-    $payperview_series_season = PpvPurchase::select('series_id','season_id')->where('ppv_purchases.series_id', '!=', 0)->where('ppv_purchases.season_id', '!=', 0)->where('user_id', $user_id)->get();
+    $payperview_series_season = PpvPurchase::select('series_id','season_id')
+      ->where('ppv_purchases.series_id', '!=', 0)
+      ->where('ppv_purchases.season_id', '!=', 0)
+      ->whereIn('ppv_purchases.status', ['captured', 'succeeded',1])
+      ->where('user_id', $user_id)->get();
 
     if ($payperview_series_season->count() > 0) {
       $series_ids = $payperview_series_season->pluck('series_id')->toArray();
@@ -5753,6 +5780,7 @@ public function verifyandupdatepassword(Request $request)
       // print_r();exit;
 
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+      $ugcvideos_count = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
@@ -5811,6 +5839,17 @@ public function verifyandupdatepassword(Request $request)
       } else {
         $videos = [];
       }
+
+      if ($ugcvideos_count > 0) {
+        $ugcvideos = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
+      } else {
+        $ugcvideos = [];
+      }
+
       if ($ppv_videos_count > 0) {
         $ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -5888,6 +5927,7 @@ public function verifyandupdatepassword(Request $request)
 
       $response = array(
         'channelvideos' => $videos,
+        'ugcvideos' => $ugcvideos,
         'channel_category' => $video_category,
         'search_value' => $search_value,
         'audios' => $audios,
@@ -7497,15 +7537,20 @@ public function checkEmailExists(Request $request)
       $episode_count = Episode::where('id','=',$episodeid)->count();
       if($episode_count > 0){
       $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
-      $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-         return $item;
-       });
-        $status = true;
-       }else{
-         $episode = [];
-        $status = false;
-       }
+      $episode = Episode::where('id','!=',$episodeid)
+                ->where('season_id','=',$season_id)
+                ->where('active',1)
+                ->where('status',1)
+                ->orderBy('created_at', 'desc')
+                ->get()->map(function ($item) {
+                  $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  return $item;
+                });
+                  $status = true;
+                }else{
+                  $episode = [];
+                  $status = false;
+                }
 
       $response = array(
         'status'=>$status,
@@ -13378,7 +13423,7 @@ $cpanel->end();
 
       try{
 
-        $roku_tvcode = $request->query('roku_tvcode');
+        $user_id = $request->query('user_id');
         // return $roku_tvcode;
 
         $HomeSetting = MobileHomeSetting::first();
@@ -13600,7 +13645,7 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($roku_tvcode) {
+          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($user_id) {
             $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
             $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
             $description = $item->description;
@@ -13620,8 +13665,8 @@ $cpanel->end();
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) use($roku_tvcode) {
-                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                    ->map(function ($season) use($user_id) {
+                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
                                           $new_date = Carbon::parse($ppv_purchase->to_time);
@@ -13725,7 +13770,7 @@ $cpanel->end();
                                                       ->orderBy('order')
                                                       ->limit(15)
                                                       ->get()
-                                                      ->map(function ($item) use($roku_tvcode) {
+                                                      ->map(function ($item) use($user_id) {
                                                           $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
@@ -13735,7 +13780,7 @@ $cpanel->end();
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
-                                                                                    ->map(function ($series) use($roku_tvcode) {
+                                                                                    ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
                                                                                         $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
                                                                                         $description = $series->description;
@@ -13752,8 +13797,8 @@ $cpanel->end();
                                                                                         $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
-                                                                                                                        ->map(function ($season) use($roku_tvcode) {
-                                                                                                                            $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('season_id',$season->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                                                                                                        ->map(function ($season) use($user_id) {
+                                                                                                                            $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                                                                                                             $ppv_exists_check_query = 0;
                                                                                                                             if($ppv_purchase){
                                                                                                                               $new_date = Carbon::parse($ppv_purchase->to_time);
@@ -14027,8 +14072,8 @@ $cpanel->end();
                                           'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','mp4_url')
                                       ->where('active', '=', '1')
                                       ->get()
-                                      ->map(function ($item) use($roku_tvcode) {
-                                        $ppv_purchase = !empty($roku_tvcode) ? PpvPurchase::where('live_id',$item->id)->where('roku_tvcode',$roku_tvcode)->orderBy('created_at', 'desc')->first() : null;
+                                      ->map(function ($item) use($user_id) {
+                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
                                           $new_date = Carbon::parse($ppv_purchase->to_time);
@@ -14196,15 +14241,11 @@ $cpanel->end();
 
         $dataToCheck = [
             'category_videos'               => $myData,
-            'movies'                 => $latest_videos,
+            'movies'                        => $latest_videos,
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
-            '24/7'                           => $epg,
+            '24/7'                          => $epg,
         ];
-        
-        if ( !is_null( $latest_videos) &&  count($latest_videos) > 0) {
-          $dataToCheck += ['movies' => $latest_videos];
-        }
 
         if ( !is_null($featured_videos) && count($featured_videos) > 0) {
           $dataToCheck += ['featured_videos' => $featured_videos];
@@ -29838,6 +29879,42 @@ public function SendVideoPushNotification(Request $request)
       }
       return response()->json($response, 200);
      
+     }
+
+     public function roku_login(Request $request)
+     {
+        try{
+            $email = $request->email;
+            $pass  = $request->password;
+      
+            $user = User::where('email',$email)->first();
+            
+            if($user){
+              if ($user && Hash::check($pass, $user->password)) {
+                  return response()->json([
+                      'status' => true,
+                      'user'   => $user
+                  ], 200);
+              } else {
+                  return response()->json([
+                      'status'  => false,
+                      'message' => 'Invalid password.'
+                  ], 401);
+              }
+            }else{
+              return response()->json([
+                'status'  => false,
+                'message' => 'Invalid email.'
+            ], 401);
+            }
+
+        }catch(\Throwable $th){
+          return response()->json([
+              'status'  => false,
+              'message' => 'Something went wrong',
+              'error'   => $th->getMessage() // For debugging, remove in production
+          ], 500);
+        }
      }
 
 }

@@ -1552,7 +1552,7 @@ class RazorpayController extends Controller
                                     $commission_btn = $setting->CPP_Commission_Status;
                                     $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
                                     $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
-                                    $commission_percentage_value = $video->CPP_commission_percentage;
+                                    $commission_percentage_value = $video->CPP_commission_percentage ?? 0;
                                     if($commission_btn === 0){
                                         $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
                                     }
@@ -1565,8 +1565,8 @@ class RazorpayController extends Controller
                                         } else {
                                             $percentage = 0;
                                         }
-                                        $total_amount        = $video->ppv_price;
-                                        $title               =  $video->title;
+                                        $total_amount        = $video->ppv_price ?? 0;
+                                        $title               =  $video->title ?? 'unknown title';
                                         $commssion           =  VideoCommission::where('type','CPP')->first();
                                         $ppv_price           =  $amount;
                                         $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
@@ -1575,11 +1575,11 @@ class RazorpayController extends Controller
                                     }
                                     else
                                     {
-                                        $total_amount = $video->ppv_price;
-                                        $title =  $video->title;
+                                        $total_amount = $video->ppv_price ?? 0;
+                                        $title =  $video->title ?? 'unknown title';
                                         $commssion  =  VideoCommission::where('type','CPP')->first();
                                         $percentage = null; 
-                                        $ppv_price = $video->ppv_price;
+                                        $ppv_price = $video->ppv_price ?? 0;
                                         $admin_commssion =  null;
                                         $moderator_commssion = null;
                                         $moderator_id = null;
@@ -1603,10 +1603,10 @@ class RazorpayController extends Controller
                                         } else {
                                             $percentage = 0;
                                         }
-                                        $total_amount        =  $liveStream->ppv_price;
-                                        $title               =  $liveStream->title;
+                                        $total_amount        =  $liveStream->ppv_price ?? 0;
+                                        $title               =  $liveStream->title ?? 'unknown title';
                                         $commssion           =  VideoCommission::where('type','CPP')->first();
-                                        $ppv_price           =  $liveStream->ppv_price;
+                                        $ppv_price           =  $liveStream->ppv_price ?? 0;
                                         $moderator_commssion =  ($percentage/100) * $ppv_price ;
                                         $admin_commssion     =  $ppv_price - $moderator_commssion;
                                         $moderator_id        =  $moderators_id;
@@ -1645,10 +1645,10 @@ class RazorpayController extends Controller
                                         } else {
                                             $percentage = 0;
                                         }
-                                        $total_amount        =  $video->ppv_price;
-                                        $title               =  $video->title;
+                                        $total_amount        =  $video->ppv_price ?? 0;
+                                        $title               =  $video->title ?? 'unknown title';
                                         $commssion           =  VideoCommission::where('type','CPP')->first();
-                                        $ppv_price           =  $video->ppv_price;
+                                        $ppv_price           =  $video->ppv_price?? 0;
                                         $moderator_commssion =  ($percentage/100) * $ppv_price ;
                                         $admin_commssion     =  $ppv_price - $moderator_commssion;
                                         $moderator_id        =  $moderators_id;

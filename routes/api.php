@@ -57,6 +57,7 @@ Route::group(
         Route::post('directVerify', 'ApiAuthController@directVerify');
         Route::post('resetpassword', 'ApiAuthController@resetpassword');
         Route::post('updatepassword', 'ApiAuthController@updatepassword');
+        Route::post('verify_code_updatepassword', 'ApiAuthController@verify_code_updatepassword');
         Route::post('changepassword', 'ApiAuthController@changepassword');
         Route::post('verifyandupdatepassword', 'ApiAuthController@verifyandupdatepassword');
 
@@ -722,4 +723,7 @@ Route::group(
             Route::post('ugclike', 'ApiAuthContinueController@ugclike');
             Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
             Route::post('add_favorite_ugcvideo', 'ApiAuthContinueController@add_favorite_ugcvideo');
+
+            // roku login
+            Route::get('roku_login','ApiAuthController@roku_login');
         });
