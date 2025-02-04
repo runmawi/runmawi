@@ -19438,11 +19438,8 @@ public function QRCodeMobileLogout(Request $request)
       
         $this->validate($request, [ 'network_id'  => 'required|integer' ]);
 
-        $Networks_depends_series = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
-                                          ->where('series.active', 1)
-                                          ->where('series_network_order.network_id',[(string)$request->network_id])
-                                          ->orderBy('series_network_order.order', 'asc')
-                                          ->get()->map(function ($item) { 
+        $Networks_depends_series = Series::where('series.active', 1)->whereJsonContains('network_id', [(string)$request->network_id])
+                                      ->latest('series.created_at')->limit(15)->get()->map(function ($item) { 
                         
                                           $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                           $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
