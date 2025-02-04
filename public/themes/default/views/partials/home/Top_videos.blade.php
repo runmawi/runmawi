@@ -19,7 +19,7 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $most_watched_video->slug) }}">
-                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
+                                                    <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $most_watched_video->image ? URL::to('/public/uploads/images/' . $most_watched_video->image) : $default_vertical_image_url }}" alt="{{ $most_watched_video->title }}"> 
                                                 </a>
 
                                                 <!-- PPV price -->
@@ -149,6 +149,6 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyload: 7
     });
  </script>

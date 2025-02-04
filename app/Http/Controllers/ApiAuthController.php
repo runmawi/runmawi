@@ -5788,6 +5788,7 @@ public function verifyandupdatepassword(Request $request)
       // print_r();exit;
 
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
+      $ugcvideos_count = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_videos_count = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->count();
       $video_category_count = VideoCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
       $ppv_category_count = PpvCategory::where('name', 'LIKE', '%'.$search_value.'%')->count();
@@ -5846,6 +5847,17 @@ public function verifyandupdatepassword(Request $request)
       } else {
         $videos = [];
       }
+
+      if ($ugcvideos_count > 0) {
+        $ugcvideos = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        return $item;
+      });
+
+      } else {
+        $ugcvideos = [];
+      }
+
       if ($ppv_videos_count > 0) {
         $ppv_videos = PpvVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
@@ -5923,6 +5935,7 @@ public function verifyandupdatepassword(Request $request)
 
       $response = array(
         'channelvideos' => $videos,
+        'ugcvideos' => $ugcvideos,
         'channel_category' => $video_category,
         'search_value' => $search_value,
         'audios' => $audios,
@@ -7532,15 +7545,20 @@ public function checkEmailExists(Request $request)
       $episode_count = Episode::where('id','=',$episodeid)->count();
       if($episode_count > 0){
       $season_id = Episode::where('id','=',$episodeid)->pluck('season_id');
-      $episode = Episode::where('id','!=',$episodeid)->where('season_id','=',$season_id)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-         $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-         return $item;
-       });
-        $status = true;
-       }else{
-         $episode = [];
-        $status = false;
-       }
+      $episode = Episode::where('id','!=',$episodeid)
+                ->where('season_id','=',$season_id)
+                ->where('active',1)
+                ->where('status',1)
+                ->orderBy('created_at', 'desc')
+                ->get()->map(function ($item) {
+                  $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
+                  return $item;
+                });
+                  $status = true;
+                }else{
+                  $episode = [];
+                  $status = false;
+                }
 
       $response = array(
         'status'=>$status,
