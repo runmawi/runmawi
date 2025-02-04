@@ -724,6 +724,9 @@ Route::group(
             Route::post('ugcdislike', 'ApiAuthContinueController@ugcdislike');
             Route::post('add_favorite_ugcvideo', 'ApiAuthContinueController@add_favorite_ugcvideo');
 
+            Route::post('albums_audios_genre', 'ApiAuthController@albums_audios_genre');
+
+
             // roku login
             Route::get('roku_login','ApiAuthController@roku_login');
         });
