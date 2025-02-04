@@ -1330,6 +1330,7 @@ class AdminLiveStreamController extends Controller
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
+        $video->updated_by = Auth::user()->id;
         
         $video->recurring_timezone  =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_timezone)  ) ? $request->recurring_timezone : null ;
         $video->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;
