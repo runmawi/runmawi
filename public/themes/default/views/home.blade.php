@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyload: 2,
         autoPlay: 5000,
     });
 
