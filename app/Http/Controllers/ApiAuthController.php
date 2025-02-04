@@ -222,6 +222,14 @@ class ApiAuthController extends Controller
 
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
 
+        $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
+
+        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('public/uploads') ;
+
+        $this->default_vertical_image_url = default_vertical_image_url();
+        $this->default_horizontal_image_url = default_horizontal_image_url();
+
+
   }
 
   public function signup(Request $request)
@@ -1176,6 +1184,15 @@ class ApiAuthController extends Controller
 
 
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
+      $user = Auth::user();
+      if ($user->active == 0) {
+          Auth::logout();
+          return response()->json([
+              'message' => 'Your account is deactivated.',
+              'note_type' => 'error',
+              'status' => 'verifyemail',
+          ], 200);
+      }
 
       LoggedDevice::where('user_id', '=', Auth::user()->id)->delete();
       $user_id = Auth::user()->id;
@@ -13645,9 +13662,11 @@ $cpanel->end();
 
         if($HomeSetting->series == 1){
 
-          $series = Series::select('id','title','access','description','details','player_image','tv_image')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($user_id) {
-            $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-            $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+          $series = Series::select('id','title','access','description','details','player_image','tv_image','slug')->where('active','1')->latest()->limit(15)->get()->map(function ($item) use($user_id) {
+            // $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
+            // $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->tv_image;
+            $item['player_image_url']  = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url ;
+            $item['Tv_image_url']      = (!is_null($item->tv_image) && $item->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->tv_image) : $this->default_horizontal_image_url ;
             $description = $item->description;
               do {
                   $previous = $description;
@@ -13665,7 +13684,7 @@ $cpanel->end();
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) use($user_id) {
+                                    ->map(function ($season) use($user_id, $item) {
                                         $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
@@ -13714,7 +13733,7 @@ $cpanel->end();
                                                 'id'                       => $episode->id,
                                                 'title'                    => $episode->title,
                                                 'slug'                     => $episode->slug,
-                                                'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
                                                 'description'              => strip_tags($description),
                                                 'episodeNumber'            => $episode->episode_order,
                                                 'access'                   => $episode->access,
@@ -13728,7 +13747,7 @@ $cpanel->end();
                                                                                 ],
                                                                                 'duration' => $episode->duration,
                                                                               ],
-                                                'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
+                                                'Tv_image_url'                 => (!is_null($episode->tv_image) && $episode->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->tv_image) : $this->default_horizontal_image_url,
                                                 'status'                   => $episode->status,
                                               ];
                                             });
@@ -13738,6 +13757,7 @@ $cpanel->end();
                                             return [
                                                 'title' => $season->series_seasons_name,
                                                 'access' => $season_access,
+                                                'share_url' => URL::to('play_series/'.$item->slug),
                                                 'episodes' => $episodes,
                                             ];
                                         }
@@ -13771,18 +13791,18 @@ $cpanel->end();
                                                       ->limit(15)
                                                       ->get()
                                                       ->map(function ($item) use($user_id) {
-                                                          $item['banner_image'] = URL::to('/') . '/public/uploads/images/' . $item->banner_image;
+                                                          $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
-                                                          $item['series'] = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image')
+                                                          $item['series'] = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image','series.slug')
                                                                                     ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
                                                                                     ->where('active', '1')
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
-                                                                                        $series['player_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->player_image;
-                                                                                        $series['Tv_image_url'] = URL::to('/') . '/public/uploads/images/' . $series->tv_image;
+                                                                                        $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
+                                                                                        $series['Tv_image_url'] = (!is_null($series->tv_image) && $series->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->tv_image) : $this->default_horizontal_image_url;
                                                                                         $description = $series->description;
                                                                                           do {
                                                                                               $previous = $description;
@@ -13797,7 +13817,7 @@ $cpanel->end();
                                                                                         $series['description']         = strip_tags($description);
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
-                                                                                                                        ->map(function ($season) use($user_id) {
+                                                                                                                        ->map(function ($season) use($user_id, $series) {
                                                                                                                             $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                                                                                                             $ppv_exists_check_query = 0;
                                                                                                                             if($ppv_purchase){
@@ -13845,7 +13865,7 @@ $cpanel->end();
                                                                                                                                     'id'                       => $episode->id,
                                                                                                                                     'title'                    => $episode->title,
                                                                                                                                     'slug'                     => $episode->slug,
-                                                                                                                                    'player_image_url'         => URL::to('/').'/public/uploads/images/'.$episode->player_image,
+                                                                                                                                    'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
                                                                                                                                     'description'              => strip_tags($description),
                                                                                                                                     'episodeNumber'            => $episode->episode_order,
                                                                                                                                     'access'                   => $episode->access,
@@ -13859,7 +13879,7 @@ $cpanel->end();
                                                                                                                                                                     ],
                                                                                                                                                                     'duration' => $episode->duration,
                                                                                                                                                                   ],
-                                                                                                                                    'Tv_image_url'                 => URL::to('/').'/public/uploads/images/'.$episode->tv_image,
+                                                                                                                                    'Tv_image_url'                 => (!is_null($episode->tv_image) && $episode->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->tv_image) : $this->default_horizontal_image_url,
                                                                                                                                     'status'                   => $episode->status,
                                                                                                                                   ];
                                                                                                                                 });
@@ -13869,6 +13889,7 @@ $cpanel->end();
                                                                                                                                 return [
                                                                                                                                     'title' => $season->series_seasons_name,
                                                                                                                                     'access' => $season_access,
+                                                                                                                                    'share_url' => URL::to('play_series/'.$series['slug']),
                                                                                                                                     'episodes' => $episodes,
                                                                                                                                 ];
                                                                                                                             }
@@ -14089,13 +14110,14 @@ $cpanel->end();
                                           $item['access'] = 'PPV';
                                         }
 
-                                        $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
-                                        $item['player_image_url'] = URL::to('/').'/public/uploads/images/'.$item->player_image;
-                                        $item['Tv_image_url'] = URL::to('/').'/public/uploads/images/'.$item->Tv_live_image;
+                                        $item['image'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_horizontal_image_url;
+                                        $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url;
+                                        $item['Tv_image_url'] = (!is_null($item->Tv_live_image) && $item->Tv_live_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->Tv_live_image) : $this->default_horizontal_image_url;
                                         $details = html_entity_decode($item->description);
                                         $description = strip_tags($details);
                                         $item['description'] = str_replace("\r", '', $description);
                                         $item['type'] = $item->url_type;
+                                        $item['share_url'] = (URL::to('live/'.$item->slug));
                                         $video_url = $item['url_type'];
                                         if($video_url == "live_stream_video"){
                                           $item['url'] = $item->live_stream_video;
