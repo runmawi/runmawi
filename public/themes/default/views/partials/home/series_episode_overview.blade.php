@@ -57,7 +57,7 @@ $data = App\Series::where('active', '1')->limit(15)
                                             <div class="img-box">
                                                 <a class="playTrailer" href="#">
                                                     @if ( $multiple_compress_image == 1)
-                                                        <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" data-flickity-lazyload="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : $default_vertical_image_url }}"
+                                                        <img class="img-fluid position-relative" alt="{{ $Episode_details->title }}" src="{{ $Episode_details->image ?  URL::to('public/uploads/images/'.$Episode_details->image) : $default_vertical_image_url }}"
                                                             srcset="{{ URL::to('public/uploads/PCimages/'.$Episode_details->responsive_image.' 860w') }},
                                                             {{ URL::to('public/uploads/Tabletimages/'.$Episode_details->responsive_image.' 640w') }},
                                                             {{ URL::to('public/uploads/mobileimages/'.$Episode_details->responsive_image.' 420w') }}" >
@@ -103,6 +103,6 @@ $data = App\Series::where('active', '1')->limit(15)
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:  7
+        lazyload: true,
     });
  </script>
