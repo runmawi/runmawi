@@ -19443,7 +19443,8 @@ public function QRCodeMobileLogout(Request $request)
                                       ->where('series_network_order.network_id', [(string)$request->network_id])
                                       ->orderBy('series_network_order.order', 'asc')
                                           ->get()->map(function ($item) { 
-                        
+                                            
+                                          $item['id']               = $item->series_id ;
                                           $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                           $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
                                           $item['upload_on']        = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 
