@@ -70,7 +70,7 @@
                                                 <div class="border-bg">
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}">
-                                                            <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
+                                                            <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}">
                                                         </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -192,12 +192,12 @@
             new Flickity(elem, {
                 cellAlign: 'left',
                 contain: true,
-                groupCells: true,
+                groupCells: false,
                 pageDots: false,
                 draggable: true,
                 freeScroll: true,
                 imagesLoaded: true,
-                lazyLoad: true,
+                lazyLoad: 7,
             });
         });
     });

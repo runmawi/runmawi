@@ -896,8 +896,8 @@
 
     .sidebar img {
         padding-right: 10px;
-        height: 35px;
-        width: 50px;
+        height: 30px;
+        width: 45px;
     }
 
     .akm {

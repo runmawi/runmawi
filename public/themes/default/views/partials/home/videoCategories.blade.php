@@ -37,7 +37,7 @@
                                           <div class="border-bg">
                                              <div class="img-box">
                                                 <a class="playTrailer" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
-                                                      <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->name }}">
+                                                      <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image_url }}" alt="{{ $Categories->name }}">
                                                 </a>
                                              </div>
                                           </div>
@@ -85,11 +85,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

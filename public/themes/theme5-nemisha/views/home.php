@@ -50,18 +50,6 @@
       <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
    <?php endif; ?>
 
-   <?php if( $home_settings->user_generated_content == '1' ): ?>
-      <section id="iq-continue overflow-hidden">
-         <div class="container-fluid ">
-               <div class="row">
-                  <div class="col-sm-12 ">
-                     <?php include 'partials/home/ugc-videos.blade.php'; ?>
-                  </div>
-               </div>
-         </div>
-      </section>
-   <?php endif; ?>
-
    <?php foreach($order_settings as $key => $item): ?>
       <?php if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1' ): ?>
          <section id="iq-continue overflow-hidden">
@@ -69,6 +57,18 @@
                   <div class="row">
                      <div class="col-sm-12 ">
                         <?php include 'partials/home/latest-videos.php'; ?>
+                     </div>
+                  </div>
+            </div>
+         </section>
+      <?php endif; ?>
+
+      <?php if( $item->video_name == 'user_generated_content' && $home_settings->user_generated_content == '1' ): ?>
+         <section id="iq-continue overflow-hidden">
+            <div class="container-fluid ">
+                  <div class="row">
+                     <div class="col-sm-12 ">
+                     <?php include 'partials/home/ugc-videos.blade.php'; ?>
                      </div>
                   </div>
             </div>
