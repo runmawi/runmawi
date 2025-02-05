@@ -3254,18 +3254,33 @@ public function verifyandupdatepassword(Request $request)
 
       // PPV 
 
-        $current_date = date('Y-m-d h:i:s a', time());
+      $current_date = new \DateTime(); 
+
 
         $ppv_exist =!empty($user_id) ? LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count() : 0;
 
         if ($ppv_exist > 0) {
 
               $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->orderBy('created_at', 'desc')->pluck('to_time')->first();
+              if ($ppv_time_expire) {
+                $ppv_time_expire = new \DateTime($ppv_time_expire);
+            
+                $expiry_duration = $current_date->diff($ppv_time_expire);
+            
+                $days = $expiry_duration->days;
+                $hours = $expiry_duration->h;
+            
+                $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+                $expiry_duration = $ppv_time_expire > $current_date ? "Remaining Time: {$days} days, {$hours} hours" : null;
+            } else {
+                echo "No expiry time found.";
+            }
 
-              $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+              
 
         } else {
               $ppv_video_status = "pay_now";
+              $expiry_duration = null;
         }
 
         //  Like & Dislike
@@ -3384,6 +3399,7 @@ public function verifyandupdatepassword(Request $request)
         });
 
       $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+      $livestreamAccess = LiveStream::where('user_id','=',$liveid)->pluck('access')->first();
 
       // Reccuring Program 
 
@@ -3554,6 +3570,8 @@ public function verifyandupdatepassword(Request $request)
         'like' => $like,
         'dislike' => $dislike,
         'ppv_video_status' => $ppv_video_status,
+        'expiry_duration' => $expiry_duration,
+        'video_access' => $livestreamAccess,
         'languages' => $languages,
         'categories' => $categories,
         'current_timezone' => current_timezone(),
