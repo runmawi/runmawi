@@ -62,7 +62,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ url('play_series/' . $series_video->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->image) : $default_vertical_image_url }}" src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->image) : $default_vertical_image_url }}" alt="{{ $series_video->title }}">
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $series_video->image ? URL::to('public/uploads/images/' . $series_video->image) : $default_vertical_image_url }}" alt="{{ $series_video->title }}">
                                                     </a>
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @switch(true)
@@ -180,12 +180,12 @@
             new Flickity(elem, {
                 cellAlign: 'left',
                 contain: true,
-                groupCells: true,
+                groupCells: false,
                 pageDots: false,
                 draggable: true,
                 freeScroll: true,
                 imagesLoaded: true,
-                lazyLoad: true
+                lazyLoad: 7,
             });
         });
     });

@@ -28,7 +28,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('/channel/' . $channel->channel_slug) }}">
-                                                      <img src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" data-src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name }}">
+                                                      <img data-flickity-lazyload="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" data-src="{{ $channel->channel_logo ? $channel->channel_logo : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $channel->channel_name }}">
                                                   </a>
                                               </div>
                                           </div>
@@ -62,11 +62,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

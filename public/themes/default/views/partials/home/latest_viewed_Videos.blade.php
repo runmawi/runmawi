@@ -77,7 +77,7 @@ else
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('category/videos/' . $latest_view_video->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_video->image ? URL::to('/public/uploads/images/' . $latest_view_video->image) : $default_vertical_image_url }}" src="{{ $latest_view_video->image ? URL::to('/public/uploads/images/' . $latest_view_video->image) : $default_vertical_image_url }}" alt="{{ $latest_view_video->title }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_video->image ? URL::to('/public/uploads/images/' . $latest_view_video->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $latest_view_video->image ? URL::to('/public/uploads/images/' . $latest_view_video->image) : $default_vertical_image_url }}" alt="{{ $latest_view_video->title }}">
                                                 </a>
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
                                                     @switch(true)
@@ -107,7 +107,7 @@ else
 
                                         <div class="block-description">
                                             <a class="playTrailer" href="{{ URL::to('category/videos/' . $latest_view_video->slug) }}">
-                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_video->player_image ? URL::to('/public/uploads/images/' . $latest_view_video->player_image) : $default_vertical_image_url }}" src="{{ $latest_view_video->player_image ? URL::to('/public/uploads/images/' . $latest_view_video->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_video->title }}">
+                                                <img class="img-fluid w-100" loading="lazy" data-src="{{ $latest_view_video->player_image ? URL::to('/public/uploads/images/' . $latest_view_video->player_image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $latest_view_video->player_image ? URL::to('/public/uploads/images/' . $latest_view_video->player_image) : $default_vertical_image_url }}" alt="{{ $latest_view_video->title }}">
                                             </a>
                                             @if($ThumbnailSetting->free_or_cost_label == 1)
                                                 @switch(true)
@@ -201,11 +201,11 @@ else
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>
