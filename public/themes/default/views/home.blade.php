@@ -293,6 +293,32 @@ body{
 overflow-x:hidden;
 overflow-y:scroll;
 }
+
+.home-sliders {
+    width: 100%; 
+    height: 100%; 
+}
+
+.home-sliders .flickity-viewport {
+    width: 100%;
+    height: 100%; 
+}
+
+.home-sliders .flickity-slider {
+    display: flex;
+}
+
+.home-sliders .slide {
+    width: 100%; 
+    height: 100%;
+}
+
+.home-sliders img {
+    width: 100%; 
+    height: 100%;
+}
+
+
 </style>
 <script>
 var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
@@ -323,11 +349,15 @@ document.addEventListener("DOMContentLoaded", function () {
                groupCells: true,
                pageDots: false,
                draggable: true,
-               freeScroll: true,
+               freeScroll: false,
                imagesLoaded: true,
                lazyLoad: 2,
-               autoPlay: 5000,
+               autoPlay: 4000,
                wrapAround: true,
+               selectedAttraction: 0.02, 
+         });
+         window.addEventListener("resize", function () {
+                flkty.resize();
          });
 
          setTimeout(() => {
@@ -335,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
                flkty.reloadCells();
                elem.style.opacity = "1";
                elem.style.transition = "opacity 0.5s ease-in-out";
-         }, 500);
+         }, 300);
       });
    }
     // Video trailer slider
