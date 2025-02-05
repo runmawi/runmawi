@@ -248,7 +248,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload:true,
+            lazyload: true,
         });
     });
 </script>

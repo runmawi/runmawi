@@ -185,7 +185,7 @@
                 draggable: true,
                 freeScroll: true,
                 imagesLoaded: true,
-                lazyLoad: true,
+                lazyLoad: true
             });
         });
     });

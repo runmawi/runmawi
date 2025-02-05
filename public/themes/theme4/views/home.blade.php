@@ -180,6 +180,10 @@
    .hidden-loader {
       display: none !important;
    }
+   .button-groups:before{
+      margin-bottom: 0;
+      margin-right: 0;
+   }
 </style>
 
 <script>

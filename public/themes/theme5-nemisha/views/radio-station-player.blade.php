@@ -151,7 +151,7 @@
 
     .bd {
         padding: 10px 15px;
-        background: #ed563c !important;
+        background: #000000 !important;
     }
 
     .bd:hover {}
@@ -257,7 +257,7 @@
     }
 
     .icon-circle {
-        background-color: #ED563C;
+        background-color: #000000;
         padding: 13px;
         border-radius: 50%;
         color: white;
@@ -266,7 +266,7 @@
     }
 
     .icon-mute {
-        background-color: #ED563C;
+        background-color: #000000;
         padding: 10px;
         border-radius: 50%;
         color: white;
@@ -275,7 +275,7 @@
     }
 
     .play-radio{
-        background-color: #ED563C;
+        background-color: #000000;
         color: white;
         margin-top: 10px;
         width: 90%;

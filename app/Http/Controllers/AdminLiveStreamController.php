@@ -48,6 +48,7 @@ use App\VideosSubtitle as VideosSubtitle;
 use Intervention\Image\Filters\DemoFilter;
 use App\VideoResolution as VideoResolution;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\SiteTheme;
 
 class AdminLiveStreamController extends Controller
 {
@@ -844,6 +845,9 @@ class AdminLiveStreamController extends Controller
         $settings = Setting::first();
         $compress_image_settings = CompressImage::first();
 
+        $access_password = "ZUrtSvrah3E7fj2";
+        $access_btn_staus = SiteTheme::pluck('access_change_pass')->first();
+
 
         if(  $video->stream_upload_via == "radio_station" ){
            
@@ -915,6 +919,8 @@ class AdminLiveStreamController extends Controller
             'currentRouteName' => Route::currentRouteName() ,
             'inputs_details_array' => $inputs_details_array ,
             'scheduler_program'    => $scheduler_program,
+            'access_password'  => $access_password,
+            'access_btn_staus'  => $access_btn_staus
         );
 
         return View::make('admin.livestream.edit', $data); 
@@ -1324,6 +1330,7 @@ class AdminLiveStreamController extends Controller
         $video->search_tags = $searchtags;
         $video->access = $request->access;
         $video->ios_ppv_price = $request->ios_ppv_price;
+        $video->updated_by = Auth::user()->id;
         
         $video->recurring_timezone  =  $request->publish_type == "recurring_program"  && ( !is_null($request->recurring_timezone)  ) ? $request->recurring_timezone : null ;
         $video->recurring_program   =  $request->publish_type == "recurring_program"  && !is_null($request->recurring_program) ? $request->recurring_program : null ;

@@ -168,7 +168,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload: true,
+            lazyLoad: true,
         });
     } else {
         console.error("Carousel element not found");
