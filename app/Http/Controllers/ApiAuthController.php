@@ -5748,8 +5748,8 @@ public function verifyandupdatepassword(Request $request)
     }
 
 
-    public function search(Request $request)
-    {
+  public function search(Request $request)
+  {
 
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
@@ -5763,9 +5763,9 @@ public function verifyandupdatepassword(Request $request)
         return $item;
     });
 
-  }else{
-    $artist_categories = 'false';
-  }
+    }else{
+      $artist_categories = 'false';
+    }
 
       $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
       if($audio_artist_count > 0){
@@ -5799,20 +5799,20 @@ public function verifyandupdatepassword(Request $request)
           "audio_artist" => $audio_artist,
         );
       }
-    }else{
-      $Audio_artist_detail= array(
-        "message" => 'No Audio',
-        "audio" => '',
-        "audio_artist" => '',
-      );
-    }
       }else{
         $Audio_artist_detail= array(
-          "message" => 'No Artist',
+          "message" => 'No Audio',
           "audio" => '',
-        "audio_artist" => '',
+          "audio_artist" => '',
         );
       }
+        }else{
+          $Audio_artist_detail= array(
+            "message" => 'No Artist',
+            "audio" => '',
+          "audio_artist" => '',
+          );
+        }
       // print_r();exit;
 
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -5841,6 +5841,7 @@ public function verifyandupdatepassword(Request $request)
       if ($audios_count > 0) {
         $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
           return $item;
         });
 
@@ -5859,6 +5860,7 @@ public function verifyandupdatepassword(Request $request)
       if ($albums_count > 0) {
         $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+      $item['source'] = 'album';
       return $item;
       });
 
@@ -5869,6 +5871,7 @@ public function verifyandupdatepassword(Request $request)
       if ($videos_count > 0) {
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'video';
         return $item;
       });
 
@@ -5879,6 +5882,7 @@ public function verifyandupdatepassword(Request $request)
       if ($ugcvideos_count > 0) {
         $ugcvideos = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'ugcvideo';
         return $item;
       });
 
@@ -5954,6 +5958,7 @@ public function verifyandupdatepassword(Request $request)
       if ($series_count > 0) {
         $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'series';
         return $item;
       });
 
@@ -8906,12 +8911,10 @@ return response()->json($response, 200);
                               'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
                               'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
                               'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime')
+                              'continue_watchings.currentTime','continue_watchings.created_at')
                       ->whereIn('videos.id', $video_id_query)
-                      ->groupBy('continue_watchings.videoid')
                       ->orderBy('continue_watchings.created_at', 'desc') 
-                      ->latest('continue_watchings.created_at');
-
+                      ->groupBy('continue_watchings.videoid');
                  
 
                   if ($this->videos_expiry_date_status == 1) {
@@ -8945,13 +8948,12 @@ return response()->json($response, 200);
         $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
                               ->select('episodes.id', 'episodes.id' ,'title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                                     'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
-                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
+                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime','continue_watchings.created_at')
                                 ->whereIn('episodes.id', $episode_id_query)
                                 ->where('episodes.active', '1')
                                 ->where('episodes.status', '1')
-                                ->latest('continue_watchings.created_at')
-                                ->groupBy('continue_watchings.episodeid')
                                 ->orderBy('continue_watchings.created_at', 'desc') 
+                                ->groupBy('continue_watchings.episodeid')
                                 ->get()
                                 ->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();
