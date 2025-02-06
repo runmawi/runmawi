@@ -18,7 +18,7 @@
                      @if($settings->homepage_views_all_button_status == 1)
                         <h4 class="main-title view-all">
                               <a href="{{ $order_settings_list[11]->header_name ? url('/' . $order_settings_list[11]->url) : '' }}">
-                                 {{ __('View alls') }}
+                                 {{ __('View all') }}
                               </a>
                         </h4>
                      @endif
@@ -39,12 +39,12 @@
                                                 <a class="playTrailer" aria-label="{{ $Categories->name }}" href="{{ url('/category/' . $Categories->slug) }}">
                                                       <div>
                                                          @if ($multiple_compress_image == 1)
-                                                             <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $Categories->title }}" src="{{ $Categories->image }}"
+                                                             <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $Categories->title }}" data-flickity-lazyload="{{ $Categories->image }}"
                                                                  srcset="{{ $Categories->responsive_image ? (URL::to('public/uploads/PCimages/'.$Categories->responsive_image.' 860w')) : $Categories->image }},
                                                                  {{ $Categories->responsive_image ? URL::to('public/uploads/Tabletimages/'.$Categories->responsive_image.' 640w') : $Categories->image }},
                                                                  {{ $Categories->responsive_image ? URL::to('public/uploads/mobileimages/'.$Categories->responsive_image.' 420w') : $Categories->image }}" >
                                                          @else
-                                                             <img src="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $Categories->title }}">
+                                                             <img data-flickity-lazyload="{{ $Categories->image ? URL::to('public/uploads/videocategory/' . $Categories->image) : $default_vertical_image }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $Categories->title }}">
                                                          @endif
                                                      </div>
                                                 </a>
@@ -99,6 +99,6 @@
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyLoad: true,
+        lazyLoad: 7,
     });
  </script>

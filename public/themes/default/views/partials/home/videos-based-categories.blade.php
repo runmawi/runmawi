@@ -67,7 +67,7 @@
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h5 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View allss' }}</a></h5>
+                                <h5 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View all' }}</a></h5>
                             @endif 
                            
                         </div>
@@ -125,12 +125,12 @@
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="VideoBasedPlayTrailer">
                                                             <div>
                                                                 @if ($multiple_compress_image == 1)
-                                                                    <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}" src="{{ $videos->image }}"
+                                                                    <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}" data-flickity-lazyload="{{ $videos->image }}"
                                                                         srcset="{{ $videos->responsive_image ? (URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w')) : $videos->image }},
                                                                         {{ $videos->responsive_image ? URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') : $videos->image }},
                                                                         {{ $videos->responsive_image ? URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') : $videos->image }}" >
                                                                 @else
-                                                                    <img src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}">
+                                                                    <img data-flickity-lazyload="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}">
                                                                 @endif
                                                             </div>
                                                         </a>
@@ -257,7 +257,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: true,
+            lazyLoad: 7,
         });
     });
 </script>
