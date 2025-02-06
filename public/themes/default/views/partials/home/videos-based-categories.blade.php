@@ -67,7 +67,7 @@
                         <div class="iq-main-header d-flex align-items-center justify-content-between">
                             <h4 class="main-title"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ optional($video_category)->name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h5 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View all' }}</a></h5>
+                                <h5 class="main-title view-all"><a href="{{ route('video_categories',[$video_category->slug] )}}">{{ 'View allss' }}</a></h5>
                             @endif 
                            
                         </div>
