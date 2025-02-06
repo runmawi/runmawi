@@ -152,8 +152,6 @@
 @endif
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
         var flkty = new Flickity(elem, {
@@ -165,12 +163,9 @@
             freeScroll: true,
             imagesLoaded: true,
             lazyLoad: 7,
-            setGallerySize: true,
-            resize: true, 
         });
     });
 
-    flkty.reloadCells();
     document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
 
 
@@ -246,7 +241,6 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         const isLoaded = $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded');
         
         if (isLoaded) {
-            // console.log('Images already loaded, skipping AJAX call.');
             return;
         }
 
