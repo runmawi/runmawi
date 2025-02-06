@@ -187,13 +187,11 @@
                                                                     {{ strlen($videos->title) > 17 ? substr($videos->title, 0, 18) . '...' : $videos->title }}
                                                                 </p>
                                                             @endif
-
                                                             @if($ThumbnailSetting->enable_description == 1)
                                                                 <p class="desc-name text-left m-0 mt-1">
                                                                     {{ strlen($videos->description) > 75 ? substr(html_entity_decode(strip_tags($videos->description)), 0, 75) . '...' : strip_tags($videos->description) }}
                                                                 </p>
                                                             @endif
-
                                                             <div class="movie-time d-flex align-items-center pt-2">
                                                                 @if($ThumbnailSetting->age == 1 && !($videos->age_restrict == 0))
                                                                     <span class="position-relative badge p-1 mr-2">{{ $videos->age_restrict}}</span>
@@ -213,8 +211,6 @@
                                                                     {{ __('Featured') }}
                                                                     </span>
                                                                 @endif
-                                                            </div>
-                                                            <div class="movie-time d-flex align-items-center pt-1">
                                                                 @php
                                                                     $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
                                                                         ->where('categoryvideos.video_id', $videos->video_id)
@@ -228,7 +224,6 @@
                                                                 @endif
                                                             </div>
                                                         </a>
-
                                                         <a type="button" class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category/videos/'.$videos->slug) }}">
                                                             <i class="fa fa-play mr-1" aria-hidden="true"></i> {{ __('Watch Now') }} 
                                                         </a>
