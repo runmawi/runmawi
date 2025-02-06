@@ -29,7 +29,7 @@
                                           <div class="border-bg">
                                              <div class="img-box">
                                                    <a href="{{ URL::to('audio/' . $audio->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" alt="{{ $audio->title }}">
+                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $audio->image ? URL::to('/public/uploads/images/' . $audio->image) : $default_vertical_image_url }}" alt="{{ $audio->title }}">
                                                    </a>
                                              </div>
                                           </div>
@@ -69,11 +69,11 @@
    var flkty = new Flickity(elem, {
        cellAlign: 'left',
        contain: true,
-       groupCells: true,
+       groupCells: false,
        pageDots: false,
        draggable: true,
        freeScroll: true,
        imagesLoaded: true,
-       lazyload: true,
+       lazyLoad: 7,
    });
 </script>

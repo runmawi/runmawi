@@ -12,8 +12,8 @@
             <a href="<?php echo URL::to('home') ?>" aria-label="videos">
                 <div class="block-images position-relative">
                     <div class="img-box">
-                        <a  href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $ugc_video->slug ?>" aria-label="videos">
-                             <img src="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image;  ?>" class="img-fluid w-100 h-50" alt="<?php echo $ugc_video->title; ?>">
+                        <a  href="<?php echo URL::to('ugc') . '/video-player/' . $ugc_video->slug ?>" aria-label="videos">
+                            <img src="<?php echo URL::to('/').'/public/uploads/images/'.$ugc_video->image; ?>" class="img-fluid w-100 h-50" alt="<?php echo $ugc_video->title; ?>">
                         </a>
                     </div>
                 </div>
@@ -49,8 +49,7 @@
 <?php endif; ?>
 <!-- Flickity Slider -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var elem = document.querySelector('.ugc-video');
+var elem = document.querySelector('.ugc-video');
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
@@ -60,6 +59,5 @@
         freeScroll: true,
         imagesLoaded: true,
         lazyload: true,
-    });
 });
  </script>

@@ -129,11 +129,11 @@ $ThumbnailSetting = App\ThumbnailSetting::first();
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyLoad: 7,
     });
  </script>

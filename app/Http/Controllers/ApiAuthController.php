@@ -4359,7 +4359,7 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $wishlist_items[] = $video_data;
+                 array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->ugc_video_id) {
             $ugc_video = UGCVideo::find($wishlist->ugc_video_id);
@@ -4440,7 +4440,7 @@ public function verifyandupdatepassword(Request $request)
                       $video_data['qualities'] = [];
                       break;
               }
-              $wishlist_items[] = $video_data;
+               array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->episode_id) {
             $episode = Episode::find($wishlist->episode_id);
@@ -4518,7 +4518,7 @@ public function verifyandupdatepassword(Request $request)
                     $video_data['qualities'] = [];
                     break;
             }
-            $wishlist_items[] = $video_data;
+             array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->audio_id) {
             $audio = Audio::find($wishlist->audio_id);
@@ -4621,7 +4621,7 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $favorite_items[] = $video_data;
+                array_unshift($favorite_items, $video_data);
             }
         } elseif ($favorite->ugc_video_id) {
             $ugc_video = UGCVideo::find($favorite->ugc_video_id);
@@ -4662,7 +4662,8 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $favorite_items[] = $ugc_data;
+                array_unshift($favorite_items, $ugc_data);
+                
             }
         } elseif ($favorite->episode_id) {
             $episode = Episode::find($favorite->episode_id);
