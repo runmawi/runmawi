@@ -12,7 +12,7 @@
                         @else
                             <h4 class="main-title fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ optional($order_settings_list[1])->header_name }}</a></h4>
                             @if($settings->homepage_views_all_button_status == 1)
-                                <h5 class="main-title view-all fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ 'View all' }}</a></h5>
+                                <h5 class="main-title view-all fira-sans-condensed-regular"><a href="{{ URL::to('channel/latest-videos/'.$channel_partner_slug) }}">{{ 'View allsss' }}</a></h5>
                             @endif
                         @endif
                         
