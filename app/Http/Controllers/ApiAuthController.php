@@ -3271,7 +3271,7 @@ public function verifyandupdatepassword(Request $request)
                 $hours = $expiry_duration->h;
             
                 $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
-                $expiry_duration = $ppv_time_expire > $current_date ? "Remaining Time: {$days} days, {$hours} hours" : null;
+                $expiry_duration = $ppv_time_expire > $current_date ? "Expires in: {$days} days, {$hours} hours" : null;
             } else {
                 echo "No expiry time found.";
             }
