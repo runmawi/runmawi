@@ -21,7 +21,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category/videos/' . $Most_watched_countries->slug) }}">
-                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
+                                                        <img class="img-fluid w-100" loading="lazy" data-src="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $Most_watched_countries->image ? URL::to('/public/uploads/images/' . $Most_watched_countries->image) : $default_vertical_image_url }}" alt="{{ $Most_watched_countries->title }}"> 
                                                     </a>
 
                                                     <!-- PPV price -->
@@ -149,11 +149,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

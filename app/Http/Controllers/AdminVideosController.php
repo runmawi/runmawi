@@ -1798,7 +1798,7 @@ class AdminVideosController extends Controller
         }
 
         $data = $request->all();
-        // dd($data);
+      
 
         $validatedData = $request->validate([
             "title" => "required|max:255",
@@ -1812,11 +1812,14 @@ class AdminVideosController extends Controller
         $video = Video::findOrFail($id);
         Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
-        if ($request->slug == "") {
-            $data["slug"] = $this->createSlug($data["title"]);
-        } else {
-            $data["slug"] = str_replace(" ", "-", $request->slug);
+        if(!empty($data['slug'])){
+            $slug = str_replace('#', '', $data['slug']);
+
+            $slug = Str::slug($slug, '-');
+        }else{
+            $slug = Str::slug($data['title'], '-');
         }
+        // dd(!empty($data['slug']));
 
     if (compress_responsive_image_enable() == 1) {
 
@@ -2535,10 +2538,9 @@ class AdminVideosController extends Controller
         } else {
         }
 
-        if (!empty($data["slug"])) {
-            $video->slug = $data["slug"];
-        } else {
-        }
+        if (!empty($slug)) {
+            $video->slug = $slug;
+        } 
 
         if (empty($data["publish_type"])) {
             $publish_type = 0;

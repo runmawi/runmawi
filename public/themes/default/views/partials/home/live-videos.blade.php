@@ -55,7 +55,7 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('/') . '/live/' . $video->slug }}"  aria-label="LiveStream-PlayTrailer">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}"/>
+                                                        <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $video->image ? URL::to('/public/uploads/images/' . $video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}"/>
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -163,12 +163,12 @@
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
-            groupCells: true,
+            groupCells: false,
             pageDots: false,
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: true,
+            lazyLoad: 7,
         });
     } else {
         console.error("Carousel element not found");

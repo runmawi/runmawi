@@ -123,7 +123,16 @@
                                                 <div class="border-bg">
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="VideoBasedPlayTrailer">
-                                                            <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}" loading="lazy">
+                                                            <div>
+                                                                @if ($multiple_compress_image == 1)
+                                                                    <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}" data-flickity-lazyload="{{ $videos->image }}"
+                                                                        srcset="{{ $videos->responsive_image ? (URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w')) : $videos->image }},
+                                                                        {{ $videos->responsive_image ? URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') : $videos->image }},
+                                                                        {{ $videos->responsive_image ? URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') : $videos->image }}" >
+                                                                @else
+                                                                    <img data-flickity-lazyload="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}">
+                                                                @endif
+                                                            </div>
                                                         </a>
 
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -243,12 +252,12 @@
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
-            groupCells: true,
+            groupCells: false,
             pageDots: false,
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyload: true,
+            lazyLoad: 7,
         });
     });
 </script>

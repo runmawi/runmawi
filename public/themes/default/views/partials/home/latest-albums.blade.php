@@ -28,7 +28,7 @@
                                        <div class="border-bg">
                                           <div class="img-box">
                                                 <a class="playTrailer" href="{{ URL::to('album/'.$album->slug) }}" aria-label="AlbumPlayTrailer">
-                                                   <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}" loading="lazy">
+                                                   <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $album->album ? URL::to('public/uploads/albums/'.$album->album) : $default_vertical_image_url }}" alt="{{ $album->albumname }}" loading="lazy">
                                                 </a>   
                                           </div>
                                        </div>
@@ -62,11 +62,11 @@
    var flkty = new Flickity(elem, {
        cellAlign: 'left',
        contain: true,
-       groupCells: true,
+       groupCells: false,
        pageDots: false,
        draggable: true,
        freeScroll: true,
        imagesLoaded: true,
-       lazyload: true,
+       lazyLoad: 7,
    });
 </script>
