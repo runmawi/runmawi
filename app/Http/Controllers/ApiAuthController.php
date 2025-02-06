@@ -13723,6 +13723,25 @@ $cpanel->end();
             $item['description']         = strip_tags($description);
             unset($item['player_image']);
             unset($item['tv_image']);
+            $series_share_url = null;
+            if($item['access'] == 'subscriber'){
+              $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+              $subs_exists_check_query = 0;
+              if($subs_purchase){
+                $new_date = Carbon::parse($subs_purchase->ends_at);
+                $currentdate = Carbon::now();
+                $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+              }
+              $item['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+              $series_share_url = $item['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+            }elseif($item['access'] == 'registered'){
+              $item['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+            }else{
+              $item['access'] = 'guest';
+            }
+            $item['series_share_url'] = $series_share_url;
+
+
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
@@ -13799,7 +13818,7 @@ $cpanel->end();
                                             return [
                                                 'title' => $season->series_seasons_name,
                                                 'access' => $season_access,
-                                                'share_url' => URL::to('play_series/'.$item->slug),
+                                                'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$item->slug) : null,
                                                 'episodes' => $episodes,
                                             ];
                                         }
@@ -13857,6 +13876,23 @@ $cpanel->end();
                                                                                           } while ($details !== $previous);
                                                                                         $series['details']             = strip_tags($details);
                                                                                         $series['description']         = strip_tags($description);
+                                                                                        $series_share_url = null;
+                                                                                        if($series['access'] == 'subscriber'){
+                                                                                          $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                                                                          $subs_exists_check_query = 0;
+                                                                                          if($subs_purchase){
+                                                                                            $new_date = Carbon::parse($subs_purchase->ends_at);
+                                                                                            $currentdate = Carbon::now();
+                                                                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                                          }
+                                                                                          $series['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+                                                                                          $series_share_url = $series['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+                                                                                        }elseif($series['access'] == 'registered'){
+                                                                                          $series['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+                                                                                        }else{
+                                                                                          $series['access'] = 'guest';
+                                                                                        }
+                                                                                        $series['series_share_url'] = $series_share_url;
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
                                                                                                                         ->map(function ($season) use($user_id, $series) {
@@ -13931,7 +13967,7 @@ $cpanel->end();
                                                                                                                                 return [
                                                                                                                                     'title' => $season->series_seasons_name,
                                                                                                                                     'access' => $season_access,
-                                                                                                                                    'share_url' => URL::to('play_series/'.$series['slug']),
+                                                                                                                                    'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$series->slug) : null,
                                                                                                                                     'episodes' => $episodes,
                                                                                                                                 ];
                                                                                                                             }
@@ -14136,21 +14172,35 @@ $cpanel->end();
                                       ->where('active', '=', '1')
                                       ->get()
                                       ->map(function ($item) use($user_id) {
-                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
-                                        $ppv_exists_check_query = 0;
-                                        if($ppv_purchase){
-                                          $new_date = Carbon::parse($ppv_purchase->to_time);
-                                          $currentdate = Carbon::now();
-                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        if($item['access'] == 'subscriber'){
+                                          $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                          $subs_exists_check_query = 0;
+                                          if($subs_purchase){
+                                            $new_date = Carbon::parse($subs_purchase->ends_at);
+                                            $currentdate = Carbon::now();
+                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'subscriber'; 
+                                          }
+                                        }elseif($item['access'] == 'ppv'){
+                                          $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                          $ppv_exists_check_query = 0;
+                                          if($ppv_purchase){
+                                            $new_date = Carbon::parse($ppv_purchase->to_time);
+                                            $currentdate = Carbon::now();
+                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'ppv'; 
+                                          }
+                                        }else{
+                                          $item['access'] = 'guest';
                                         }
 
-                                        if($item['access'] == 'guest'){
-                                          $item['access'] = 'guest';
-                                        }elseif( $ppv_exists_check_query > 0){
-                                          $item['access'] = 'guest';
+                                        if($item['access'] == 'subscriber'){
+                                            $item['share_url'] = URL::to('becomesubscriber');
+                                        }elseif($item['access'] == 'ppv'){
+                                          $item['share_url'] = (URL::to('app/live/'.$item->slug));
                                         }else{
-                                          $item['access'] = 'PPV';
+                                          $item['share_url'] =null;
                                         }
+                                        
+
 
                                         $item['image'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_horizontal_image_url;
                                         $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url;
@@ -14159,7 +14209,6 @@ $cpanel->end();
                                         $description = strip_tags($details);
                                         $item['description'] = str_replace("\r", '', $description);
                                         $item['type'] = $item->url_type;
-                                        $item['share_url'] = (URL::to('live/'.$item->slug));
                                         $video_url = $item['url_type'];
                                         if($video_url == "live_stream_video"){
                                           $item['url'] = $item->live_stream_video;
