@@ -91,7 +91,7 @@ if (!Auth::guest()) {
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
-                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                    <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
 
                                                 </a>
                                                 @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -214,11 +214,11 @@ if (!Auth::guest()) {
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

@@ -38,9 +38,9 @@ $homepage_array_data = [
 <!-- Slider Start -->
 
 <section id="home" class="iq-main-slider m-0 p-0">
-<div id="home-slider" class="home-sliders slider m-0 p-0">
-   {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
-</div>
+   <div id="home-slider" class="home-sliders slider m-0 p-0" style="opacity: 0;">
+       {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
+   </div>
 </section>
 
 <!-- MainContent -->
@@ -293,6 +293,33 @@ body{
 overflow-x:hidden;
 overflow-y:scroll;
 }
+
+.home-sliders {
+    width: 100%; 
+    height: auto; 
+}
+
+.home-sliders .flickity-viewport {
+    width: 100%;
+    height: auto; 
+}
+
+.home-sliders .flickity-slider {
+    display: flex;
+}
+
+.home-sliders .slide {
+    width: 100%; 
+    height: auto;
+}
+
+.home-sliders img {
+    width: 100%; 
+    height: auto;
+    object-fit: contain;
+}
+
+
 </style>
 <script>
 var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
@@ -314,18 +341,34 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 document.addEventListener("DOMContentLoaded", function () {
     // Initialize Flickity slider
     var elem = document.querySelector('.home-sliders');
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: true,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload: true,
-        autoPlay: 5000,
-    });
 
+   if (elem) {
+      imagesLoaded(elem, function () {
+         var flkty = new Flickity(elem, {
+               cellAlign: 'left',
+               contain: true,
+               groupCells: true,
+               pageDots: false,
+               draggable: true,
+               freeScroll: false,
+               imagesLoaded: true,
+               lazyLoad: 2,
+               autoPlay: 4000,
+               wrapAround: true,
+               selectedAttraction: 0.02, 
+         });
+         window.addEventListener("resize", function () {
+                flkty.resize();
+         });
+
+         setTimeout(() => {
+               flkty.resize();
+               flkty.reloadCells();
+               elem.style.opacity = "1";
+               elem.style.transition = "opacity 0.5s ease-in-out";
+         }, 300);
+      });
+   }
     // Video trailer slider
     $('.myvideos').each(function () {
       const video = $(this).get(0);

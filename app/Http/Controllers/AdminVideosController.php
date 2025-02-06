@@ -1798,7 +1798,7 @@ class AdminVideosController extends Controller
         }
 
         $data = $request->all();
-        // dd($data);
+      
 
         $validatedData = $request->validate([
             "title" => "required|max:255",
@@ -1812,11 +1812,14 @@ class AdminVideosController extends Controller
         $video = Video::findOrFail($id);
         Video::query()->where('id','!=', $id)->update(['today_top_video' => 0]);
 
-        if ($request->slug == "") {
-            $data["slug"] = $this->createSlug($data["title"]);
-        } else {
-            $data["slug"] = str_replace(" ", "-", $request->slug);
+        if(!empty($data['slug'])){
+            $slug = str_replace('#', '', $data['slug']);
+
+            $slug = Str::slug($slug, '-');
+        }else{
+            $slug = Str::slug($data['title'], '-');
         }
+        // dd(!empty($data['slug']));
 
     if (compress_responsive_image_enable() == 1) {
 
@@ -2535,10 +2538,9 @@ class AdminVideosController extends Controller
         } else {
         }
 
-        if (!empty($data["slug"])) {
-            $video->slug = $data["slug"];
-        } else {
-        }
+        if (!empty($slug)) {
+            $video->slug = $slug;
+        } 
 
         if (empty($data["publish_type"])) {
             $publish_type = 0;
@@ -4140,14 +4142,23 @@ class AdminVideosController extends Controller
 
                 $image = $request->file('image');
 
-                    $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
-                    $image_filename = $image_filename;
+                    // $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    // $image_filename = $image_filename;
+                    // Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    // Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    // Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    // $responsive_image = $image_filename;
 
-                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    $local_image_path = public_path('/uploads/images/' . basename($image));
+                    if (file_exists($local_image_path)) {
+                        $image = Image::make($local_image_path);
+                        $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    } 
+                    Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
                     
-                    $responsive_image = $image_filename;
+                    $responsive_image = $image_filename;         
 
             }else{
 

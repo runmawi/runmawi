@@ -370,6 +370,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('episode/{series_name}/{episode_name}/{plan}', 'TvshowsController@play_episode');
 
     Route::get('play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
+    Route::get('app/play_series/{name}/', 'TvshowsController@play_series')->name('play_series');
     Route::get('networks/play_series/{name}/', 'TvshowsController@play_series')->name('network.play_series');
 
     Route::get('play-series/season-depends-episode/', 'TvshowsController@season_depends_episode_section')->name('front-end.series.season-depends-episode');
@@ -574,6 +575,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('/live', 'LiveStreamController@Index');
 
     Route::get('/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
+    Route::get('/app/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
     Route::get('datafree/live/{id}', 'LiveStreamController@Play')->name('LiveStream_play');
     Route::get('/live/embed/{id}', 'LiveStreamController@EmbedLivePlay');
 
