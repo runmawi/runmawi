@@ -125,12 +125,12 @@
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="VideoBasedPlayTrailer">
                                                             <div>
                                                                 @if ($multiple_compress_image == 1)
-                                                                    <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}" data-flickity-lazyload="{{ $videos->image }}"
+                                                                    <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}" src="{{ $videos->image }}"
                                                                         srcset="{{ $videos->responsive_image ? (URL::to('public/uploads/PCimages/'.$videos->responsive_image.' 860w')) : $videos->image }},
                                                                         {{ $videos->responsive_image ? URL::to('public/uploads/Tabletimages/'.$videos->responsive_image.' 640w') : $videos->image }},
                                                                         {{ $videos->responsive_image ? URL::to('public/uploads/mobileimages/'.$videos->responsive_image.' 420w') : $videos->image }}" >
                                                                 @else
-                                                                    <img data-flickity-lazyload="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}">
+                                                                    <img src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $videos->title }}">
                                                                 @endif
                                                             </div>
                                                         </a>
@@ -252,12 +252,12 @@
         var flkty = new Flickity(elem, {
             cellAlign: 'left',
             contain: true,
-            groupCells: true,
+            groupCells: false,
             pageDots: false,
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: 7,
+            lazyLoad: true,
         });
     });
 </script>
