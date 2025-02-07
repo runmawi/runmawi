@@ -4142,14 +4142,23 @@ class AdminVideosController extends Controller
 
                 $image = $request->file('image');
 
-                    $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
-                    $image_filename = $image_filename;
+                    // $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    // $image_filename = $image_filename;
+                    // Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    // Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    // Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    // $responsive_image = $image_filename;
 
-                    Image::make($image)->resize(568,320)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(480,853)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
-                    Image::make($image)->resize(675,1200)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
+                    $local_image_path = public_path('/uploads/images/' . basename($image));
+                    if (file_exists($local_image_path)) {
+                        $image = Image::make($local_image_path);
+                        $image_filename = 'video_' .time() . '_image.' . $image->getClientOriginalExtension();
+                    } 
+                    Image::make($image)->resize(187,332)->save(base_path() . '/public/uploads/mobileimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(244,435)->save(base_path() . '/public/uploads/Tabletimages/' . $image_filename, compress_image_resolution());
+                    Image::make($image)->resize(198,351)->save(base_path() . '/public/uploads/PCimages/' . $image_filename, compress_image_resolution());
                     
-                    $responsive_image = $image_filename;
+                    $responsive_image = $image_filename;         
 
             }else{
 
