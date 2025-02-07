@@ -470,10 +470,11 @@ class FrontEndQueryController extends Controller
         $default_horizontal_image_url = default_horizontal_image_url();
 
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                            'duration', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
+                                        ->where('stream_upload_via', '!=', 'radio_station')
                                         ->where('status', 1)->latest()
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
                                             $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $default_vertical_image_url ;
