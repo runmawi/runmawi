@@ -277,7 +277,7 @@ line-height: 55px;
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" alt="header-logo" width="100%" height="100%"></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" alt="header-logo"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
