@@ -9,15 +9,16 @@
             color: white;
             height: 170px;
             width: 35px;
-            position: absolute;
+            position: fixed;
             z-index: 10000;
-            top: 80%;
+            top: 11%;
             right: 0;
             background: #000000;
             transition: width 0.8s, height 0.8s, margin-right 0.8s;
             overflow: visible;
             white-space: nowrap;
             cursor: pointer;
+            box-shadow: -3px 0 10px rgba(0, 0, 0, 0.5); 
     }   
 
     .shorts-minis .sample{
