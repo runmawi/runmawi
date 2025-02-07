@@ -9,14 +9,14 @@
                     <?php echo $order_settings_list[1]->header_name ?? ""; ?>
                 </a>
             </h5>
-            <a class="see" href="<?php echo route('Channel_videos_list', Request::segment(2)); ?>"> See Allz </a>
+            <a class="see" href="<?php echo route('Channel_videos_list', Request::segment(2)); ?>"> See All </a>
         <?php } else { ?>
             <h5 class="main-title">
                 <a href="<?php echo !empty($order_settings_list[1]->header_name) ? URL::to('/') . '/' . $order_settings_list[1]->url : ""; ?>">
                     <?php echo $order_settings_list[1]->header_name ?? ""; ?>
                 </a>
             </h5>
-            <a class="see" href="<?php echo !empty($order_settings_list[1]->header_name) ? URL::to('/') . '/' . $order_settings_list[1]->url : ""; ?>"> See Allx </a>
+            <a class="see" href="<?php echo !empty($order_settings_list[1]->header_name) ? URL::to('/') . '/' . $order_settings_list[1]->url : ""; ?>"> See All </a>
         <?php } ?>
     </div>
 
