@@ -170,55 +170,80 @@
 
 <script>
   
-  var elem = document.querySelector('.live-video');
-    if (elem) {
-        var flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7
+  document.addEventListener('DOMContentLoaded', function () {
+    function initializeFlickity() {
+        var elem = document.querySelector('.live-video');
+        if (!elem) {
+            console.error("Carousel element not found");
+            return;
+        }
+
+        // Wait for images to load completely before initializing Flickity
+        imagesLoaded(elem, function () {
+            console.log("All images loaded, initializing Flickity...");
+            
+            var flkty = new Flickity(elem, {
+                cellAlign: 'left',
+                contain: true,
+                groupCells: false,
+                pageDots: false,
+                draggable: true,
+                freeScroll: true,
+                imagesLoaded: true,
+                lazyLoad: 7
+            });
+
+            // Ensure Flickity adjusts properly
+            requestAnimationFrame(() => {
+                flkty.resize();
+                flkty.reloadCells();
+            });
+
+            // Reinitialize on window resize (Fixes Mobile Safari Issues)
+            window.addEventListener('resize', function () {
+                setTimeout(() => {
+                    flkty.resize();
+                    flkty.reloadCells();
+                }, 200);
+            });
         });
-    } else {
-        console.error("Carousel element not found");
     }
 
-    document.querySelectorAll('.live-video .item').forEach(function(item) {
-        item.addEventListener('click', function() {
-            document.querySelectorAll('.live-video .item').forEach(function(item) {
-                item.classList.remove('current');
-            });
+    // Run Flickity initialization only when images are fully loaded
+    window.addEventListener('load', initializeFlickity);
 
-            item.classList.add('current');
+    // Event listener for clicking items
+    document.querySelectorAll('.live-video .item').forEach(function (item) {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.live-video .item').forEach(i => i.classList.remove('current'));
+            this.classList.add('current');
 
-            var index = item.getAttribute('data-index');
+            var index = this.getAttribute('data-index');
 
-            document.querySelectorAll('.live-stream-dropdown .caption').forEach(function(caption) {
-                caption.style.display = 'none';
-            });
-            document.querySelectorAll('.live-stream-dropdown .thumbnail').forEach(function(thumbnail) {
-                thumbnail.style.display = 'none';
-            });
+            // Hide all captions and thumbnails
+            document.querySelectorAll('.live-stream-dropdown .caption, .live-stream-dropdown .thumbnail')
+                .forEach(el => el.style.display = 'none');
 
-            var selectedCaption = document.querySelector('.live-stream-dropdown .caption[data-index="' + index + '"]');
-            var selectedThumbnail = document.querySelector('.live-stream-dropdown .thumbnail[data-index="' + index + '"]');
-            if (selectedCaption && selectedThumbnail) {
-                selectedCaption.style.display = 'block';
-                selectedThumbnail.style.display = 'block';
-            }
+            // Show selected caption and thumbnail
+            var selectedCaption = document.querySelector(`.live-stream-dropdown .caption[data-index="${index}"]`);
+            var selectedThumbnail = document.querySelector(`.live-stream-dropdown .thumbnail[data-index="${index}"]`);
 
-            document.getElementsByClassName('live-stream-dropdown')[0].style.display = 'flex';
+            if (selectedCaption) selectedCaption.style.display = 'block';
+            if (selectedThumbnail) selectedThumbnail.style.display = 'block';
+
+            var dropdown = document.querySelector('.live-stream-dropdown');
+            if (dropdown) dropdown.style.display = 'flex';
         });
     });
 
-
-    $('body').on('click', '.drp-close', function() {
-        $('.live-stream-dropdown').hide();
+    // Close button listener
+    document.querySelectorAll('.drp-close').forEach(function (closeButton) {
+        closeButton.addEventListener('click', function () {
+            var dropdown = document.querySelector('.live-stream-dropdown');
+            if (dropdown) dropdown.style.display = 'none';
+        });
     });
-
+});
 
 </script>
 
