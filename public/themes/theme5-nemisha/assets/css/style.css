@@ -142,6 +142,23 @@ display: flex;
 align-items: center;
 
 color: #FFFFFF;}
+
+.navbar > .container, 
+.navbar > .container-fluid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: nowrap; /* Prevents wrapping issues in older Safari */
+    flex-wrap: nowrap; /* Ensure content doesn’t wrap unexpectedly */
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+
 .nav-open .nav-overlay { opacity: 1; visibility: visible; -webkit-transition: 0.3s; -o-transition: 0.3s; transition: 0.3s; }
 .nav-overlay { left: 0; right: 0; top: 0; bottom: 0; opacity: 0; z-index: 900; display: block; width: 100%; position: fixed; visibility: hidden; background: rgba(0, 0, 0, 0.6); -webkit-transition: 0.3s; -o-transition: 0.3s; transition: 0.3s; }
 .more-toggle { color: var(--iq-white) !important; font-size: 22px; }
