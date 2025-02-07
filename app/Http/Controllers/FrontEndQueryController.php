@@ -474,7 +474,6 @@ class FrontEndQueryController extends Controller
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
-                                        ->where('stream_upload_via', '!=', 'radio_station')
                                         ->where('status', 1)->latest()
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
                                             $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $default_vertical_image_url ;
