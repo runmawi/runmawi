@@ -958,7 +958,7 @@
       </div>-->
     <!-- loader END -->
     <!-- Header -->
-    <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
+    <div id="mySidebar" class="sidebar">
     <img
             id="toggleIcon"
             src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
@@ -966,6 +966,10 @@
             style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
             onclick="toggleSidebar()"
         />
+
+        <div id="menuIcon" onclick="toggleSidebar()" style="cursor: pointer; padding-left:20px; font-size: 24px;">
+            &#9776;
+        </div>
 
         <ul id="" class="nav navbar-nav <?php if (Session::get('locale') == 'arabic') {
             echo 'navbar-right';
@@ -2154,17 +2158,14 @@
                     sidebar.style.zIndex = "1000"; 
                     sidebar.style.position = "fixed";
                     toggleIcon.src = darkModeLogo; 
-                    toggleIcon.style.width = "255px"; 
-                     toggleIcon.style.height = "auto";
+                    menuIcon.innerHTML = "&#10006;"; // Close icon
                     mini = false;
                 } else {
                     sidebar.style.width = "63px";
                     sidebar.style.zIndex = "1000";
                     sidebar.style.position = "fixed";
-                    toggleIcon.src = darkModeLogo; 
-                    toggleIcon.style.width = "255px";  
-                    toggleIcon.style.height = "auto"; 
-
+                    menuIcon.innerHTML = "&#9776;"; // Hamburger menu
+                    toggleIcon.src = darkModeLogo;
                     mini = true;
                 }
             }
