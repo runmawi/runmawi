@@ -152,7 +152,7 @@
 
 
                     
-                    <h1 class="text-white mb-3 title">{{ \Illuminate\Support\Str::limit($videodetail->title,80) }}</h1>
+                    <h1 class="text-white mb-3 mt-3 title">{{ \Illuminate\Support\Str::limit($videodetail->title,80) }}</h1>
 
                     <!-- Year, Running time, Age -->
                     <?php
@@ -167,18 +167,6 @@
                         }
                         //  dd($video->duration);
                     ?>
-                    <div class="d-flex align-items-center text-white text-detail">
-                        @if(!empty($video->age_restrict))
-                            <span class="badge  p-3">{{ __($video->age_restrict) . ' ' . '+' }} </span>
-                        @endif
-                        @if(!empty($video->duration))
-                            <span class="">{{ __($time) }} </span>
-                        @endif
-                        @if(!empty($video->year))
-                            <span class="trending-year">{{ __($video->year) }} </span>
-                        @endif
-
-                    </div>
 
                     <?php if (!Auth::guest()) { ?>
                         <div class="row">
@@ -359,6 +347,43 @@
 
                 <div class="cate-lang-status-details">
 
+                    @if(!empty($video->age_restrict))
+                        <div class="info">      
+                            <span classname="text bold"> Age:&nbsp;</span> 
+                            <span class="text">
+                                <span style="color:var(--iq-primary) !important;font-weight:600;">{{ $video->age_restrict }}</span>
+                            </span>
+                        </div>
+                    @endif
+                    @if(!empty($video->duration))
+                        <div class="info">      
+                            <span classname="text bold"> Duration:&nbsp;</span> 
+                            <span class="text">
+                                <span style="color:var(--iq-primary) !important;font-weight:600;">{{ $time }}</span>
+                            </span>
+                        </div>
+                    @endif
+                    @if(!empty($video->year))
+                        <div class="info">      
+                            <span classname="text bold"> Year:&nbsp;</span> 
+                            <span class="text">
+                                <span style="color:var(--iq-primary) !important;font-weight:600;">{{ $video->year }}</span>
+                            </span>
+                        </div>
+                    @endif
+                        <div class="info">      
+                            <span classname="text bold"> Languages:&nbsp;</span> 
+                            @if ($videodetail->Language->isNotEmpty())
+                                @php
+                                    $languageNames = $videodetail->Language->pluck('name')->implode(', ');
+                                @endphp
+
+                                <span class="text">
+                                    <span style="color:var(--iq-primary) !important;font-weight:600;">{{ $languageNames }}</span>
+                                </span>
+                            @endif
+
+                        </div>
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
                         <div class="info">      
