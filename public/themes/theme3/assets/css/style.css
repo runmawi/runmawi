@@ -108,9 +108,9 @@ header .navbar ul li:last-child { margin-right: 0; }
 #home-slider .slick-dots li.slick-active button { background: var(--iq-primary); }
 #home-slider li { position: relative; }
 .slider-description { position: absolute; top: 15%; left: 80px; }
-#home-slider h1.slider-text { font-size: 53px; margin: 15px 0; }
+#home-slider h1.slider-text { font-size: 30px; margin: 15px 0; }
 #home-slider p {
-    margin: 20px 0 5px 0;
+    /* margin: 20px 0 5px 0; */
     width: 75%;
     /* max-height: 70px; */
     overflow: hidden;
