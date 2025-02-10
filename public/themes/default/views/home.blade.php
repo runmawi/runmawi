@@ -271,6 +271,7 @@ $(".home-search").hide();
    @media (min-width:2400px){
       .descp{max-height: 320px !important;}
    }
+   .hidden-loader {display: none !important;}
 </style>
 
 <!-- flickity -->
@@ -432,6 +433,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
    });
 
+   //  width and height set dynamically
+   var images = document.querySelectorAll('.flickity-lazyloaded');
+   images.forEach(function(image) {
+      var renderedWidth = image.clientWidth;
+      var renderedHeight = image.clientHeight;
+
+      image.setAttribute('width', renderedWidth);
+      image.setAttribute('height', renderedHeight);
+   });
+});
+
+</script>
+
+<script>
    let isFetching = false; 
    let scrollFetch;
 
@@ -469,19 +484,6 @@ document.addEventListener("DOMContentLoaded", function () {
          }
       }, 10);
    });
-
-
-   //  width and height set dynamically
-   var images = document.querySelectorAll('.flickity-lazyloaded');
-   images.forEach(function(image) {
-      var renderedWidth = image.clientWidth;
-      var renderedHeight = image.clientHeight;
-
-      image.setAttribute('width', renderedWidth);
-      image.setAttribute('height', renderedHeight);
-   });
-});
-
 </script>
 
 <style>
