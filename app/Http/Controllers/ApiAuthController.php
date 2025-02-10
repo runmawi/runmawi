@@ -13857,10 +13857,9 @@ $cpanel->end();
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
-                                                          $item['series'] = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image','series.slug')
-                                                                                    ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
-                                                                                    ->where('active', '1')
-                                                                                    ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
+                                                          $item['series'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                                                                                    ->where('series.active', 1)
+                                                                                    ->where('series_network_order.network_id', $item->id)
                                                                                     ->orderBy('series_network_order.order', 'asc')
                                                                                     ->limit(6)
                                                                                     ->get()
@@ -14393,14 +14392,13 @@ $cpanel->end();
         $user_id = $request->query('user_id');
         $networkId = $request->network_id;
         $page = $request->page ?? 1;
-        $limit = 4;
+        $limit = 6;
         $offset = ($page - 1) * $limit;
     
-        $series = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image','series.slug')
-                          ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
-                          ->where('active', '1')
-                          ->where('series.network_id', 'LIKE', '%"'.$networkId.'"%')
-                          ->orderBy('series_network_order.order', 'asc')
+        $series = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                        ->where('series.active', 1)
+                        ->where('series_network_order.network_id', $networkId)
+                        ->orderBy('series_network_order.order', 'asc')
                           ->offset($offset)
                           ->limit($limit)
                           ->get()
