@@ -681,22 +681,6 @@
                     </ul>
                 </div>
 
-                <div class="col-sm-6 col-md-6 col-xs-12">
-        
-                    <ul class="list-inline p-0 mt-4 rental-lists">
-                        <!-- Subscribe -->
-                        @if($Livestream_details->access == 'subscriber')
-                            <li>
-                                <a href="<?php echo URL::to('/login');?>"><span class="view-count btn btn-primary subsc-video"><?php echo __('Subscribe');?> </span></a>
-                            </li>
-                        @elseif($Livestream_details->access = 'ppv')
-                            <li>
-                                <a data-toggle="modal" data-target="#exampleModalCenter" class="view-count btn btn-primary rent-video" href="<?php echo URL::to('/login');?>">
-                                    <?php echo __('Rent');?> </a>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
             </div>
         <?php   }?>
 
