@@ -1,58 +1,62 @@
 @php
-    $check_Kidmode = 0 ;
-
-    $data = App\VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode) {
-        $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $query->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $query->whereBetween('videos.age_restrict', [0, 12]);
-        }
-    })
-
-    ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.responsive_image')
-            ->where('videos.active', 1)
-            ->where('videos.status', 1)
-            ->where('videos.draft', 1);
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $videos->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $videos->whereBetween('videos.age_restrict', [0, 12]);
-        }
-
-        $videos->latest('videos.created_at')->get();
-    }])
-    ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
-    ->where('video_categories.in_home', 1)
-    ->whereHas('category_videos', function ($query) use ($check_Kidmode) {
-        $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
-
-        if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-            $query->whereNotIn('videos.id', Block_videos());
-        }
-
-        if ($check_Kidmode == 1) {
-            $query->whereBetween('videos.age_restrict', [0, 12]);
-        }
-    })
-    ->orderBy('video_categories.order')
-    ->get()
-    ->map(function ($category) {
-        $category->category_videos->map(function ($video) {
-            $video->image_url = URL::to('/public/uploads/images/'.$video->image);
-            $video->Player_image_url = URL::to('/public/uploads/images/'.$video->player_image);
-            return $video;
+    $check_Kidmode = 0;
+    $geofencing = Geofencing();
+    $geofencingOn = $geofencing !== null && $geofencing->geofencing == 'ON';
+    $blockedVideos = $geofencingOn ? Block_videos() : [];
+    $data = App\VideoCategory::query()
+        ->where('video_categories.in_home', 1)
+        ->whereHas('category_videos', function ($query) use ($check_Kidmode, $blockedVideos) {
+            $query->where([
+                ['videos.active', 1],
+                ['videos.status', 1],
+                ['videos.draft', 1]
+            ]);
+            if (!empty($blockedVideos)) {
+                $query->whereNotIn('videos.id', $blockedVideos);
+            }
+            if ($check_Kidmode == 1) {
+                $query->whereBetween('videos.age_restrict', [0, 12]);
+            }
+        })
+        ->with([
+            'category_videos' => function ($videos) use ($check_Kidmode, $blockedVideos) {
+                $videos->select([
+                        'videos.id', 'title', 'slug', 'year', 'rating', 'access',
+                        'publish_type', 'global_ppv', 'publish_time', 'ppv_price',
+                        'duration', 'image', 'featured', 'age_restrict',
+                        'player_image', 'description', 'videos.trailer',
+                        'videos.trailer_type', 'videos.responsive_image'
+                    ])
+                    ->where([
+                        ['videos.active', 1],
+                        ['videos.status', 1],
+                        ['videos.draft', 1]
+                    ]);
+                if (!empty($blockedVideos)) {
+                    $videos->whereNotIn('videos.id', $blockedVideos);
+                }
+                if ($check_Kidmode == 1) {
+                    $videos->whereBetween('videos.age_restrict', [0, 12]);
+                }
+                $videos->latest('videos.created_at');
+            }
+        ])
+        ->select([
+            'video_categories.id', 'video_categories.name', 
+            'video_categories.slug', 'video_categories.in_home', 
+            'video_categories.order'
+        ])
+        ->orderBy('video_categories.order')
+        ->get()
+        ->map(function ($category) {
+            $category->category_videos->map(function ($video) {
+                $video->image_url = URL::to('/public/uploads/images/' . $video->image);
+                $video->Player_image_url = URL::to('/public/uploads/images/' . $video->player_image);
+                return $video;
+            });
+            $category->source = "category_videos";
+            return $category;
         });
-        $category->source =  "category_videos" ;
-        return $category;
-    });
 @endphp
 
 
