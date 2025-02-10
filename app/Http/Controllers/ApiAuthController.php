@@ -13862,6 +13862,7 @@ $cpanel->end();
                                                                                     ->where('active', '1')
                                                                                     ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
                                                                                     ->orderBy('series_network_order.order', 'asc')
+                                                                                    ->limit(6)
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -14387,6 +14388,154 @@ $cpanel->end();
     return response()->json($response, 200);
 
     }
+
+    public function NetworkLoadSeries(Request $request) {
+        $user_id = $request->query('user_id');
+        $networkId = $request->network_id;
+        $page = $request->page ?? 1;
+        $limit = 4;
+        $offset = ($page - 1) * $limit;
+    
+        $series = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image','series.slug')
+                          ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                          ->where('active', '1')
+                          ->where('series.network_id', 'LIKE', '%"'.$networkId.'"%')
+                          ->orderBy('series_network_order.order', 'asc')
+                          ->offset($offset)
+                          ->limit($limit)
+                          ->get()
+                          ->map(function ($series) use($user_id) {
+                              $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
+                              $series['Tv_image_url'] = (!is_null($series->tv_image) && $series->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->tv_image) : $this->default_horizontal_image_url;
+                              $description = $series->description;
+                                do {
+                                    $previous = $description;
+                                    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                } while ($description !== $previous);
+                              $details = $series->details;
+                                do {
+                                    $previous = $details;
+                                    $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                } while ($details !== $previous);
+                              $series['details']             = strip_tags($details);
+                              $series['description']         = strip_tags($description);
+                              $series_share_url = null;
+                              if($series['access'] == 'subscriber'){
+                                $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                $subs_exists_check_query = 0;
+                                if($subs_purchase){
+                                  $new_date = Carbon::parse($subs_purchase->ends_at);
+                                  $currentdate = Carbon::now();
+                                  $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                }
+                                $series['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+                                $series_share_url = $series['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+                              }elseif($series['access'] == 'registered'){
+                                $series['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+                              }else{
+                                $series['access'] = 'guest';
+                              }
+                              $series['series_share_url'] = $series_share_url;
+                              $series['seasons'] = SeriesSeason::where('series_id', $series->id)
+                                                              ->get()
+                                                              ->map(function ($season) use($user_id, $series) {
+                                                                  $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                                                  $ppv_exists_check_query = 0;
+                                                                  if($ppv_purchase){
+                                                                    $new_date = Carbon::parse($ppv_purchase->to_time);
+                                                                    $currentdate = Carbon::now();
+                                                                    $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                  }
+
+                                                                  if($season->access == 'free'){
+                                                                    $season_access = 'guest';
+                                                                  }elseif( $ppv_exists_check_query > 0){
+                                                                    $season_access = 'guest';
+                                                                  }else{
+                                                                    $season_access = 'PPV';
+                                                                  }
+                                                                  $episodes = Episode::where('season_id', $season->id)
+                                                                      ->orderBy('episode_order')
+                                                                      ->get()
+                                                                      ->map(function ($episode) {
+                                                                        if($this->Theme == 'theme4'){
+                                                                          if($episode->type == 'm3u8'){
+                                                                            $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                                          } elseif($episode->type == 'embed'){
+                                                                              $url = $episode->url;
+                                                                          }
+                                                                          else{
+                                                                            $url = $episode->url;
+                                                                          }
+                                                                        }else{
+                                                                          if($episode->type == 'm3u8'){
+                                                                            $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                                          } elseif($episode->type == 'embed'){
+                                                                              $url = $episode->url;
+                                                                          }
+                                                                          else{
+                                                                            $url = $episode->url;
+                                                                          }
+                                                                        }
+                                                                        $description = $episode->episode_description;
+                                                                                    do {
+                                                                                        $previous = $description;
+                                                                                        $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                    } while ($description !== $previous);
+                                                                        return [
+                                                                          'id'                       => $episode->id,
+                                                                          'title'                    => $episode->title,
+                                                                          'slug'                     => $episode->slug,
+                                                                          'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
+                                                                          'description'              => strip_tags($description),
+                                                                          'episodeNumber'            => $episode->episode_order,
+                                                                          'access'                   => $episode->access,
+                                                                          'content'                  => [
+                                                                                                          'dateAdded' => $episode->created_at,
+                                                                                                          'videos' => [
+                                                                                                              [
+                                                                                                                  'videoType' => $episode->type,
+                                                                                                                  'url' => $url,
+                                                                                                              ],
+                                                                                                          ],
+                                                                                                          'duration' => $episode->duration,
+                                                                                                        ],
+                                                                          'Tv_image_url'                 => (!is_null($episode->tv_image) && $episode->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->tv_image) : $this->default_horizontal_image_url,
+                                                                          'status'                   => $episode->status,
+                                                                        ];
+                                                                      });
+
+                                                                  // Only include the season if it has episodes
+                                                                  if ($episodes->isNotEmpty()) {
+                                                                      return [
+                                                                          'title' => $season->series_seasons_name,
+                                                                          'access' => $season_access,
+                                                                          'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$series->slug) : null,
+                                                                          'episodes' => $episodes,
+                                                                      ];
+                                                                  }
+
+                                                                  // Return null for seasons with no episodes
+                                                                  return null;
+                                                              })
+                                                              ->filter(function ($value) {
+                                                                  return $value !== null;
+                                                              });
+
+                                                          // Remove the 'seasons' key if it's an empty array
+                                                          if ($series['seasons']->isEmpty()) {
+                                                              unset($series['seasons']);
+                                                          }
+
+                          return $series;
+                        });
+    
+        return response()->json([
+            'series' => $series,
+            'next_page' => count($series) == $limit ? $page + 1 : null, // If series are available, provide next page
+        ]);
+    }
+  
 
     public function LanguageVideo(Request $request){
 
