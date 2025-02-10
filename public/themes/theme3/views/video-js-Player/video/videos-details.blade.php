@@ -148,29 +148,11 @@
 
         <div class="container-fluid g-border">
             <div class="row align-items-center">
-                <div class="col-sm-8 col-md-8 col-xs-12">
+                <div class="col-sm-12 col-md-12 col-xs-12">
 
-                        {{-- Breadcrumbs  --}}
-                    <div class="scp-breadcrumb">
-                        <ul class="breadcrumb breadcrumb-csp p-0">
-                        
-                            <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-                        
-                            @foreach( $videodetail->categories as $key => $category )
-
-                                <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
-
-                            @endforeach
-                            
-                            <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-                        
-                            <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
-                        
-                        </ul>
-                    </div>
 
                     
-                    <h1 class="text-white mb-3 title">{{ \Illuminate\Support\Str::limit($videodetail->title,40) }}</h1>
+                    <h1 class="text-white mb-3 title">{{ \Illuminate\Support\Str::limit($videodetail->title,80) }}</h1>
 
                     <!-- Year, Running time, Age -->
                     <?php
@@ -183,17 +165,18 @@
                         } else {
                             $time = 'Not Defined';
                         }
-                        //  dd($time);
+                        //  dd($video->duration);
                     ?>
                     <div class="d-flex align-items-center text-white text-detail">
-                        <?php if (!empty($video->age_restrict)) { ?><span
-                                class="badge  p-3"><?php echo __($video->age_restrict) . ' ' . '+'; ?></span><?php } ?>
-                        <?php if (!empty($time)) { ?><span class=""><?php echo $time; ?></span><?php } ?>
-                        <?php if (!empty($video->year)) { ?><span class="trending-year"><?php if ($video->year == 0) {
-                                echo '';
-                            } else {
-                                echo $video->year;
-                            } ?></span><?php } ?>
+                        @if(!empty($video->age_restrict))
+                            <span class="badge  p-3">{{ __($video->age_restrict) . ' ' . '+' }} </span>
+                        @endif
+                        @if(!empty($video->duration))
+                            <span class="">{{ __($time) }} </span>
+                        @endif
+                        @if(!empty($video->year))
+                            <span class="trending-year">{{ __($video->year) }} </span>
+                        @endif
 
                     </div>
 
@@ -375,12 +358,6 @@
 
 
                 <div class="cate-lang-status-details">
-                    <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
-                            <span classname="text bold">Status: </span>
-                            <span class="text" style="color:var(--iq-primary) !important;font-weight:600;">{{ $videodetail->video_publish_status }}</span>
-                        </div>
-                    </div>
 
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
