@@ -13850,7 +13850,7 @@ $cpanel->end();
         $offset = $request->offset ?? 0;
         $limit = 4;
         $network_count = SeriesNetwork::where('in_home', 1)->count();
-        $next_offset = $network_count >= ($offset + $limit) ?  ($offset + $limit) : false ;
+        $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
         if($HomeSetting->Series_based_on_Networks == 1){
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                       ->where('in_home', 1)
