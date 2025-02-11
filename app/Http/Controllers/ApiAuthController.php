@@ -20197,39 +20197,50 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Recommended_videos_users_Pagelist($user_id){
 
-    $check_Kidmode = 0 ;
+    $check_Kidmode = 0;
 
-    $query = RecentView::query()
-        ->select('video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 'videos.featured', 'videos.age_restrict', 'videos.player_image', DB::raw('COUNT(video_id) AS count'))
+    $query = RecentView::select(
+            'video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 
+            'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 
+            'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 
+            'videos.featured', 'videos.age_restrict', 'videos.player_image',
+            DB::raw('COUNT(video_id) AS count')
+        )
         ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-        ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
-        ->orderByRaw('count DESC' );
-    
-        if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
-        {
-          $query->whereNotIn('videos.id',Block_videos());
+        ->where('recent_views.sub_user', $user_id)
+        ->groupBy('video_id')
+        ->orderByRaw('COUNT(video_id) DESC');
+
+    // Check if Geofencing is ON
+    if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+        $blockedVideos = Block_videos();
+        if (!empty($blockedVideos)) {
+            $query->whereNotIn('videos.id', $blockedVideos);
         }
+    }
 
-        if( $check_Kidmode == 1 )
-        {
-          $query->whereBetween('videos.age_restrict', [ 0, 12 ]);
-        }
+    // Kid mode filtering
+    if ($check_Kidmode == 1) {
+        $query->whereBetween('videos.age_restrict', [0, 12]);
+    }
 
-    $data = $query->groupBy('video_id')
-      ->orderByDesc('count')
-      ->latest('videos.created_at')
-      ->get();
+    // Fetch data
+    $data = $query->get();
 
-    $data->transform(function ($item) {
-        $item->image_url = URL::to('public/uploads/images/'.$item->image);
-        $item->player_image_url = URL::to('public/uploads/images/'.$item->player_image);
-        $item->source = "Videos";
-        return $item;
-    });
+    // Transform data
+    if (!$data->isEmpty()) {
+        $data->transform(function ($item) {
+            $item->image_url = URL::to('public/uploads/images/'.$item->image);
+            $item->player_image_url = URL::to('/public/uploads/images/'.$item->player_image);
+            $item->source = "Videos";
+            return $item;
+        });
+    } else {
+        return response()->json(['message' => 'No data found'], 404);
+    }
 
     return $data;
-
-  }
+}
 
   private static function Recommended_videos_Country_Pagelist(){
 
