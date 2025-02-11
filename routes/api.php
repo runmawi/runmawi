@@ -731,4 +731,5 @@ Route::group(
 
             // roku login
             Route::get('roku_login','ApiAuthController@roku_login');
+            Route::post('recommended_videos','ApiAuthController@recommended_videos');
         });
