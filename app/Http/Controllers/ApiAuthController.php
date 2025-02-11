@@ -18869,7 +18869,7 @@ public function QRCodeMobileLogout(Request $request)
 
         $data = RecentView::select('video_id','videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 'videos.featured', 'videos.age_restrict','videos.player_image', 'videos.description','videos.trailer','videos.trailer_type','videos.video_tv_image',DB::raw('COUNT(video_id) AS count'))
                   ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                  ->groupBy('video_id')->where('recent_views.sub_user',$user_id)
+                  ->groupBy('video_id')->where('recent_views.user_id',$user_id)
                   ->orderByRaw('count DESC' );
                   
                   if($homepage_geofencing !=null && $homepage_geofencing->geofencing == 'ON')
@@ -20207,7 +20207,7 @@ public function QRCodeMobileLogout(Request $request)
     $query = RecentView::query()
         ->select('video_id', 'videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 'videos.featured', 'videos.age_restrict', 'videos.player_image', DB::raw('COUNT(video_id) AS count'))
         ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-        ->groupBy('video_id')
+        ->groupBy('video_id')->where('recent_views.user_id',$user_id)
         ->orderByRaw('count DESC' );
     
         if(Geofencing() !=null && Geofencing()->geofencing == 'ON')
@@ -30180,5 +30180,42 @@ public function SendVideoPushNotification(Request $request)
           ], 500);
         }
      }
+
+     public function recommended_videos(Request $request)
+     {
+         try {
+             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
+             $countryName = $geoip->getCountry();
+             $getfeching = Geofencing::first();
+             $video_id = $request->videoid;
+             $user_id = $request->user_id;
+             $subuser_id = $request->subuser_id;
+      
+             if (!empty($user_id)) {
+                 $view = new RecentView();
+                 $view->video_id = $video_id;
+                 $view->user_id = $user_id;
+                 $view->country_name = $countryName;
+     
+                 if (!empty($subuser_id)) {
+                     $view->sub_user = $subuser_id;
+                 }
+                 $view->visited_at = now();
+                 $view->save();
+              }
+     
+             return response()->json([
+                 'status' => 'success',
+                 'message' => 'Recommended video saved successfully.'
+             ], 200);
+             
+         } catch (\Exception $e) {
+             return response()->json([
+                 'status' => 'error',
+                 'message' => 'Recommended video not saved',
+                 'error' => $e->getMessage(),
+             ], 500);
+         }
+    }
 
 }
