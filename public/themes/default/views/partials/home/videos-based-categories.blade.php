@@ -1,25 +1,32 @@
 @php
     $check_Kidmode = 0 ;
+
     $data = App\VideoCategory::query()->whereHas('category_videos', function ($query) use ($check_Kidmode) {
         $query->where('videos.active', 1)->where('videos.status', 1)->where('videos.draft', 1);
+
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $query->whereNotIn('videos.id', Block_videos());
         }
+
         if ($check_Kidmode == 1) {
             $query->whereBetween('videos.age_restrict', [0, 12]);
         }
     })
+
     ->with(['category_videos' => function ($videos) use ($check_Kidmode) {
-        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type','videos.responsive_image')
+        $videos->select('videos.id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price', 'duration', 'rating', 'image', 'featured', 'age_restrict','player_image','description','videos.trailer','videos.trailer_type')
             ->where('videos.active', 1)
             ->where('videos.status', 1)
             ->where('videos.draft', 1);
+
         if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
             $videos->whereNotIn('videos.id', Block_videos());
         }
+
         if ($check_Kidmode == 1) {
             $videos->whereBetween('videos.age_restrict', [0, 12]);
         }
+
         $videos->latest('videos.created_at')->get();
     }])
     ->select('video_categories.id', 'video_categories.name', 'video_categories.slug', 'video_categories.in_home', 'video_categories.order')
@@ -117,7 +124,8 @@
                                                     <div class="img-box">
                                                         <a class="playTrailer" href="{{ URL::to('category/videos/'.$videos->slug) }}" aria-label="VideoBasedPlayTrailer">
                                                             <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $videos->image ? URL::to('public/uploads/images/'.$videos->image) : $default_vertical_image_url }}" alt="{{ $videos->title }}" loading="lazy">
-                                                        </a>                                 
+                                                        </a>
+
                                                         @if($ThumbnailSetting->free_or_cost_label == 1)
                                                                 @switch(true)
                                                                     @case($videos->access == 'subscriber')
@@ -240,7 +248,7 @@
             draggable: true,
             freeScroll: true,
             imagesLoaded: true,
-            lazyLoad: true,
+            lazyLoad:true,
         });
     });
 </script>
