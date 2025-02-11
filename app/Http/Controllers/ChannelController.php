@@ -135,9 +135,9 @@ class ChannelController extends Controller
                         ->whereIn('id',$categoryVideo_id)->where('active',1)->where('status', 1)->where('draft',1)
                         ->where(function ($query)  {
 
-                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-                                $videos->whereNotIn('videos.id', Block_videos());
-                            }
+                            // if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                            //     $videos->whereNotIn('videos.id', Block_videos());
+                            // }
 
                         })->where(function ($query) use ($check_Kidmode) {
 
@@ -158,11 +158,11 @@ class ChannelController extends Controller
                 'video_categories_videos' => $video_categories_videos ,
                 'VideosCategory' => $VideoCategory
             ];
-
+            
             return Theme::view('videos-Categories', $data);
 
         } catch (\Throwable $th) {
-
+            return $th->getMessage();
             return abort(404);
         }
     }
