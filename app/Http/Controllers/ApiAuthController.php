@@ -13847,11 +13847,16 @@ $cpanel->end();
           $series = null;
         }
 
+        $offset = $request->offset ?? 0;
+        $limit = 4;
+        $network_count = SeriesNetwork::where('in_home', 1)->count();
+        $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
         if($HomeSetting->Series_based_on_Networks == 1){
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                       ->where('in_home', 1)
                                                       ->orderBy('order')
-                                                      ->limit(15)
+                                                      ->skip($offset)
+                                                      ->take($limit)
                                                       ->get()
                                                       ->map(function ($item) use($user_id) {
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
@@ -13861,7 +13866,6 @@ $cpanel->end();
                                                                                     ->where('series.active', 1)
                                                                                     ->where('series_network_order.network_id', $item->id)
                                                                                     ->orderBy('series_network_order.order', 'asc')
-                                                                                    ->limit(6)
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -14360,6 +14364,7 @@ $cpanel->end();
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
             '24/7'                          => $epg,
+            'next_offset'                   => $next_offset,
         ];
 
         if ( !is_null($featured_videos) && count($featured_videos) > 0) {
