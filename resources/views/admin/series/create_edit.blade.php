@@ -985,6 +985,12 @@ $settings  = App\Setting::first();?>
             .catch( error => {
                 console.error( error );
             } );
+
+         ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
 			</script>
 
 <script>
