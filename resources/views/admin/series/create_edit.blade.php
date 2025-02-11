@@ -225,7 +225,7 @@ $settings  = App\Setting::first();?>
 			</div>
 
 			<div class="panel panel-primary mt-3" data-collapsed="0"> <div class="panel-heading"> 
-				<div class="panel-title font-weight-bold"><label class="m-0">Short Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
+				<div class="panel-title font-weight-bold"><label class="m-0">Show Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-12 p-0" style="display: block;"> 
 					<p class="p1">Add a short description of the TV Shows below:</p> 
 					<textarea class="form-control" name="description" id="description" >@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
