@@ -280,16 +280,14 @@
    <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
 
    <!-- js -->
-   <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
+   <!-- <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/> -->
    <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery.lazy.min.js');?>" as="script">
 
    <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
 
    <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
-   <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
-
-
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>" async></script>
+   <script src="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ;?>" async></script>
 
 
    <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
@@ -1954,7 +1952,7 @@
          });
       </script>
                   <!-- search validation -->
-      <script  src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" ></script>
+      <script  src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" async></script>
 
       <script>
          $( "#searchResult" ).validate({
