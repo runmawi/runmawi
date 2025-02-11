@@ -49,6 +49,8 @@ Route::group(
 
         Route::get('home_page', 'ApiAuthController@PageHome');
         Route::get('PageHome_Livestream', 'ApiAuthController@PageHome_Livestream');
+
+        Route::get('network_load_series', 'ApiAuthController@NetworkLoadSeries');
         
         Route::post('login', 'ApiAuthController@login');
         Route::post('signup', 'ApiAuthController@signup');

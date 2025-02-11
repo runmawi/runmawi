@@ -46,7 +46,7 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                   <a class="playTrailer" href="{{ URL::to('series/category/'. $Series_Genre->slug) }}">
-                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $Series_Genre->image ? URL::to('public/uploads/videocategory/' . $Series_Genre->image) : $default_vertical_image_url }}" src="{{ $Series_Genre->image ? URL::to('public/uploads/videocategory/' . $Series_Genre->image) : $default_vertical_image_url }}" alt="{{ $Series_Genre->name }}">
+                                                      <img class="img-fluid w-100" loading="lazy" data-src="{{ $Series_Genre->image ? URL::to('public/uploads/videocategory/' . $Series_Genre->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $Series_Genre->image ? URL::to('public/uploads/videocategory/' . $Series_Genre->image) : $default_vertical_image_url }}" alt="{{ $Series_Genre->name }}">
                                                   </a>
                                               </div>
                                           </div>
@@ -89,11 +89,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

@@ -74,6 +74,10 @@
         .text-white{
             color:#fff !important;
         }
+        .favorites-slider .slick-next{right: 10px;}
+        .favorites-slider .slick-prev{left: 10px;}
+        .breadcrumb-item a{font-size: 14px;}
+        .text-white.mb-3.title{font-size: 2.052em}
         @media (max-width:660px){
             .desc{
                 font-size: 15px;
@@ -144,29 +148,11 @@
 
         <div class="container-fluid g-border">
             <div class="row align-items-center">
-                <div class="col-sm-8 col-md-8 col-xs-12">
+                <div class="col-sm-12 col-md-12 col-xs-12">
 
-                        {{-- Breadcrumbs  --}}
-                    <div class="scp-breadcrumb">
-                        <ul class="breadcrumb breadcrumb-csp p-0">
-                        
-                            <li><a href="{{ route('latest-videos') }}">{{ ucwords('videos') }}</a> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-                        
-                            @foreach( $videodetail->categories as $key => $category )
-
-                                <li class="breadcrumb-item"> <a href="{{ route('video_categories',[ $category->slug ]) }}">{{ $category->name }}</a> </li>
-
-                            @endforeach
-                            
-                            <li> <i class="fa fa-angle-right mx-2" aria-hidden="true"></i> </li>
-                        
-                            <li class="active">{{ (strlen($videodetail->title) > 50) ? ucwords(substr($videodetail->title,0,120).'...') : ucwords($videodetail->title) }}</li>
-                        
-                        </ul>
-                    </div>
 
                     
-                    <h1 class="text-white mb-3">{{ \Illuminate\Support\Str::limit($videodetail->title,40) }}</h1>
+                    <h1 class="text-white mb-3 title">{{ \Illuminate\Support\Str::limit($videodetail->title,80) }}</h1>
 
                     <!-- Year, Running time, Age -->
                     <?php
@@ -179,17 +165,18 @@
                         } else {
                             $time = 'Not Defined';
                         }
-                        //  dd($time);
+                        //  dd($video->duration);
                     ?>
                     <div class="d-flex align-items-center text-white text-detail">
-                        <?php if (!empty($video->age_restrict)) { ?><span
-                                class="badge  p-3"><?php echo __($video->age_restrict) . ' ' . '+'; ?></span><?php } ?>
-                        <?php if (!empty($time)) { ?><span class=""><?php echo $time; ?></span><?php } ?>
-                        <?php if (!empty($video->year)) { ?><span class="trending-year"><?php if ($video->year == 0) {
-                                echo '';
-                            } else {
-                                echo $video->year;
-                            } ?></span><?php } ?>
+                        @if(!empty($video->age_restrict))
+                            <span class="badge  p-3">{{ __($video->age_restrict) . ' ' . '+' }} </span>
+                        @endif
+                        @if(!empty($video->duration))
+                            <span class="">{{ __($time) }} </span>
+                        @endif
+                        @if(!empty($video->year))
+                            <span class="trending-year">{{ __($video->year) }} </span>
+                        @endif
 
                     </div>
 
@@ -273,9 +260,9 @@
 
                     <!-- Trailer  -->
 
-                    <div class="col-sm-9 col-12 p-0 mt-5">
-                        <div>
-                            @if( optional($videodetail)->trailer )
+                    @if( optional($videodetail)->trailer )
+                        <div class="col-sm-9 col-12 p-0 mt-5">
+                            <div>
                                 <div class="img__wrap">
                                     <img class="img__img " src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>" class="img-fluid" alt="" height="200" width="300">
                                     <div class="img__description_layer" data-bs-toggle="modal" data-bs-target="#trailermodal">
@@ -288,36 +275,37 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                        </div>
-                        <div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        
-                                        <div class="embed-responsive embed-responsive-16by9">
-                                            <?php if($videodetail->trailer_type == "embed_url" ) : ?>
-                                                <iframe width="100%" height="auto"  src="{{ $videodetail->trailer }}" frameborder="0" allowfullscreen></iframe>
-                                            <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
-                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
-                                                    <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
-                                                </video>
-                                            <?php elseif($videodetail->trailer_type == "m3u8_url" ): ?>
-                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
-                                                    <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
-                                                </video>
-                                            <?php else: ?>
-                                                <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
-                                                    <source src="<?= $videodetail->trailer ?>" type="video/mp4">
-                                                </video>                 
-                                            <?php endif; ?>
+                                
+                            </div>
+                            <div class="modal fade" id="trailermodal" tabindex="-1" aria-labelledby="trailermodalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <button type="button" class="btn-close close video-js-trailer-modal-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            
+                                            <div class="embed-responsive embed-responsive-16by9">
+                                                <?php if($videodetail->trailer_type == "embed_url" ) : ?>
+                                                    <iframe width="100%" height="auto"  src="{{ $videodetail->trailer }}" frameborder="0" allowfullscreen></iframe>
+                                                <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                                                    <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                        <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                                                    </video>
+                                                <?php elseif($videodetail->trailer_type == "m3u8_url" ): ?>
+                                                    <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                        <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
+                                                    </video>
+                                                <?php else: ?>
+                                                    <video id="video-js-trailer" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
+                                                        <source src="<?= $videodetail->trailer ?>" type="video/mp4">
+                                                    </video>                 
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- Trailer End  -->
 
@@ -333,7 +321,7 @@
         </div>
 
 
-        <div class="">
+        <div class="container-fluid">
             <div class="col-md-7 col-sm-7 col-12 p-0">
 
                 <!-- Description -->
@@ -370,12 +358,6 @@
 
 
                 <div class="cate-lang-status-details">
-                    <div class="info">       {{-- publish_status --}}
-                        <div classname="infoItem">
-                            <span classname="text bold">Status: </span>
-                            <span class="text" style="color:var(--iq-primary) !important;font-weight:600;">{{ $videodetail->video_publish_status }}</span>
-                        </div>
-                    </div>
 
 
                     @if ( $setting->show_languages == 1 &&  !$videodetail->Language->isEmpty())   {{-- Languages --}}
@@ -394,8 +376,6 @@
                         </div>
                     @endif
 
-                
-
                     @if ($videodetail->categories->isNotEmpty())
                         <div class="info">
                             <span classname="text bold"> Categories:&nbsp;</span> 
@@ -408,6 +388,21 @@
                                     </span>
                         </div>
                     @endif
+
+                    @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() )
+                        <div class="info">
+                            <span classname="text bold"> Top Cast:&nbsp;</span>
+                            @php
+                                $artistNames = $videodetail->artists->pluck('artist_name')->implode(', ');
+                            @endphp
+
+                            @if ($artistNames)
+                                <span class="text">
+                                    <span style="color:var(--iq-primary) !important;font-weight:600;">{!! $artistNames !!}</span>
+                                </span>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
 
@@ -417,29 +412,7 @@
 
 
 
-            <div class="vpageSection">
-        
-
-                @if ($setting->show_artist == 1 && !$videodetail->artists->isEmpty() ) {{-- Artists --}}
-                    <div class="sectionArtists">   
-                        <div class="artistHeading">Top Cast</div>
-                        <div class="listItems">
-                            @foreach ( $videodetail->artists as $item )
-                                <a href="{{ route('artist',[ $item->artist_slug ])}}">
-                                    <div class="listItem">
-                                        <div class="profileImg">
-                                            <span class="lazy-load-image-background blur lazy-load-image-loaded" style="color: transparent; display: inline-block;">
-                                                <img  src="{{ URL::to('public/uploads/artists/'. $item->image ) }}" />
-                                            </span>
-                                        </div>
-                                        <div class="name">{{ $item->artist_name }}</div>
-                                        <div class="character">{{ str_replace('_', ' ', $item->artist_type) }}</div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
+            <div class="vpageSection container-fluid">
 
                 <!-- Broadcast  -->
 

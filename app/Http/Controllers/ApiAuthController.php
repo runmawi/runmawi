@@ -3254,18 +3254,33 @@ public function verifyandupdatepassword(Request $request)
 
       // PPV 
 
-        $current_date = date('Y-m-d h:i:s a', time());
+      $current_date = new \DateTime(); 
+
 
         $ppv_exist =!empty($user_id) ? LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->count() : 0;
 
         if ($ppv_exist > 0) {
 
               $ppv_time_expire = LivePurchase::where('user_id','=',$user_id)->where('video_id','=',$liveid)->orderBy('created_at', 'desc')->pluck('to_time')->first();
+              if ($ppv_time_expire) {
+                $ppv_time_expire = new \DateTime($ppv_time_expire);
+            
+                $expiry_duration = $current_date->diff($ppv_time_expire);
+            
+                $days = $expiry_duration->days;
+                $hours = $expiry_duration->h;
+            
+                $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+                $expiry_duration = $ppv_time_expire > $current_date ? "Expires in: {$days} days, {$hours} hours" : null;
+            } else {
+                echo "No expiry time found.";
+            }
 
-              $ppv_video_status = $ppv_time_expire > $current_date ? "can_view" :  "expired" ;
+              
 
         } else {
               $ppv_video_status = "pay_now";
+              $expiry_duration = null;
         }
 
         //  Like & Dislike
@@ -3384,6 +3399,7 @@ public function verifyandupdatepassword(Request $request)
         });
 
       $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
+      $livestreamAccess = LiveStream::where('user_id','=',$liveid)->pluck('access')->first();
 
       // Reccuring Program 
 
@@ -3554,6 +3570,8 @@ public function verifyandupdatepassword(Request $request)
         'like' => $like,
         'dislike' => $dislike,
         'ppv_video_status' => $ppv_video_status,
+        'expiry_duration' => $expiry_duration,
+        'video_access' => $livestreamAccess,
         'languages' => $languages,
         'categories' => $categories,
         'current_timezone' => current_timezone(),
@@ -4341,7 +4359,7 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $wishlist_items[] = $video_data;
+                 array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->ugc_video_id) {
             $ugc_video = UGCVideo::find($wishlist->ugc_video_id);
@@ -4422,7 +4440,7 @@ public function verifyandupdatepassword(Request $request)
                       $video_data['qualities'] = [];
                       break;
               }
-              $wishlist_items[] = $video_data;
+               array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->episode_id) {
             $episode = Episode::find($wishlist->episode_id);
@@ -4500,7 +4518,7 @@ public function verifyandupdatepassword(Request $request)
                     $video_data['qualities'] = [];
                     break;
             }
-            $wishlist_items[] = $video_data;
+             array_unshift($wishlist_items, $video_data);
             }
         } elseif ($wishlist->audio_id) {
             $audio = Audio::find($wishlist->audio_id);
@@ -4603,7 +4621,7 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $favorite_items[] = $video_data;
+                array_unshift($favorite_items, $video_data);
             }
         } elseif ($favorite->ugc_video_id) {
             $ugc_video = UGCVideo::find($favorite->ugc_video_id);
@@ -4644,7 +4662,8 @@ public function verifyandupdatepassword(Request $request)
                         break;
                 }
 
-                $favorite_items[] = $ugc_data;
+                array_unshift($favorite_items, $ugc_data);
+                
             }
         } elseif ($favorite->episode_id) {
             $episode = Episode::find($favorite->episode_id);
@@ -5729,8 +5748,8 @@ public function verifyandupdatepassword(Request $request)
     }
 
 
-    public function search(Request $request)
-    {
+  public function search(Request $request)
+  {
 
       $search_value =  $request['search'];
       $video_category_id =  $request['category_id'];
@@ -5744,9 +5763,9 @@ public function verifyandupdatepassword(Request $request)
         return $item;
     });
 
-  }else{
-    $artist_categories = 'false';
-  }
+    }else{
+      $artist_categories = 'false';
+    }
 
       $audio_artist_count = Artist::where('id',$audio_artist_id)->count();
       if($audio_artist_count > 0){
@@ -5780,20 +5799,20 @@ public function verifyandupdatepassword(Request $request)
           "audio_artist" => $audio_artist,
         );
       }
-    }else{
-      $Audio_artist_detail= array(
-        "message" => 'No Audio',
-        "audio" => '',
-        "audio_artist" => '',
-      );
-    }
       }else{
         $Audio_artist_detail= array(
-          "message" => 'No Artist',
+          "message" => 'No Audio',
           "audio" => '',
-        "audio_artist" => '',
+          "audio_artist" => '',
         );
       }
+        }else{
+          $Audio_artist_detail= array(
+            "message" => 'No Artist',
+            "audio" => '',
+          "audio_artist" => '',
+          );
+        }
       // print_r();exit;
 
       $videos_count = Video::where('title', 'LIKE', '%'.$search_value.'%')->count();
@@ -5822,6 +5841,7 @@ public function verifyandupdatepassword(Request $request)
       if ($audios_count > 0) {
         $audios = Audio::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
           $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+          $item['source'] = 'audio';
           return $item;
         });
 
@@ -5840,6 +5860,7 @@ public function verifyandupdatepassword(Request $request)
       if ($albums_count > 0) {
         $albums = AudioAlbums::where('albumname', 'LIKE', '%'.$search_value.'%')->orderBy('created_at', 'desc')->get()->map(function ($item) {
       $item['image_url'] = URL::to('/').'/public/uploads/albums/'.$item->album;
+      $item['source'] = 'album';
       return $item;
       });
 
@@ -5850,6 +5871,7 @@ public function verifyandupdatepassword(Request $request)
       if ($videos_count > 0) {
             $videos = Video::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'video';
         return $item;
       });
 
@@ -5860,6 +5882,7 @@ public function verifyandupdatepassword(Request $request)
       if ($ugcvideos_count > 0) {
         $ugcvideos = UGCVideo::where('title', 'LIKE', '%'.$search_value.'%')->where('status','=',1)->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'ugcvideo';
         return $item;
       });
 
@@ -5935,6 +5958,7 @@ public function verifyandupdatepassword(Request $request)
       if ($series_count > 0) {
         $series = Series::where('title', 'LIKE', '%'.$search_value.'%')->where('active','=',1)->orderBy('created_at', 'desc')->get()->map(function ($item) {
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+        $item['source'] = 'series';
         return $item;
       });
 
@@ -8887,12 +8911,10 @@ return response()->json($response, 200);
                               'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
                               'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
                               'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime')
+                              'continue_watchings.currentTime','continue_watchings.created_at')
                       ->whereIn('videos.id', $video_id_query)
-                      ->groupBy('continue_watchings.videoid')
                       ->orderBy('continue_watchings.created_at', 'desc') 
-                      ->latest('continue_watchings.created_at');
-
+                      ->groupBy('continue_watchings.videoid');
                  
 
                   if ($this->videos_expiry_date_status == 1) {
@@ -8926,13 +8948,12 @@ return response()->json($response, 200);
         $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
                               ->select('episodes.id', 'episodes.id' ,'title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                                     'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
-                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime')
+                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime','continue_watchings.created_at')
                                 ->whereIn('episodes.id', $episode_id_query)
                                 ->where('episodes.active', '1')
                                 ->where('episodes.status', '1')
-                                ->latest('continue_watchings.created_at')
-                                ->groupBy('continue_watchings.episodeid')
                                 ->orderBy('continue_watchings.created_at', 'desc') 
+                                ->groupBy('continue_watchings.episodeid')
                                 ->get()
                                 ->map(function($item){
                                     $item['series'] = Series::where('id',$item->series_id)->first();
@@ -13704,6 +13725,25 @@ $cpanel->end();
             $item['description']         = strip_tags($description);
             unset($item['player_image']);
             unset($item['tv_image']);
+            $series_share_url = null;
+            if($item['access'] == 'subscriber'){
+              $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+              $subs_exists_check_query = 0;
+              if($subs_purchase){
+                $new_date = Carbon::parse($subs_purchase->ends_at);
+                $currentdate = Carbon::now();
+                $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+              }
+              $item['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+              $series_share_url = $item['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+            }elseif($item['access'] == 'registered'){
+              $item['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+            }else{
+              $item['access'] = 'guest';
+            }
+            $item['series_share_url'] = $series_share_url;
+
+
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
                                     ->limit(15)
                                     ->get()
@@ -13780,7 +13820,7 @@ $cpanel->end();
                                             return [
                                                 'title' => $season->series_seasons_name,
                                                 'access' => $season_access,
-                                                'share_url' => URL::to('play_series/'.$item->slug),
+                                                'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$item->slug) : null,
                                                 'episodes' => $episodes,
                                             ];
                                         }
@@ -13817,11 +13857,11 @@ $cpanel->end();
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
-                                                          $item['series'] = Series::select('series.id', 'series.title', 'series.access', 'series.description', 'series.details', 'series.player_image', 'series.tv_image','series.slug')
-                                                                                    ->join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
-                                                                                    ->where('active', '1')
-                                                                                    ->where('series.network_id', 'LIKE', '%"'.$item->id.'"%')
+                                                          $item['series'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                                                                                    ->where('series.active', 1)
+                                                                                    ->where('series_network_order.network_id', $item->id)
                                                                                     ->orderBy('series_network_order.order', 'asc')
+                                                                                    ->limit(6)
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -13838,6 +13878,23 @@ $cpanel->end();
                                                                                           } while ($details !== $previous);
                                                                                         $series['details']             = strip_tags($details);
                                                                                         $series['description']         = strip_tags($description);
+                                                                                        $series_share_url = null;
+                                                                                        if($series['access'] == 'subscriber'){
+                                                                                          $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                                                                          $subs_exists_check_query = 0;
+                                                                                          if($subs_purchase){
+                                                                                            $new_date = Carbon::parse($subs_purchase->ends_at);
+                                                                                            $currentdate = Carbon::now();
+                                                                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                                          }
+                                                                                          $series['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+                                                                                          $series_share_url = $series['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+                                                                                        }elseif($series['access'] == 'registered'){
+                                                                                          $series['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+                                                                                        }else{
+                                                                                          $series['access'] = 'guest';
+                                                                                        }
+                                                                                        $series['series_share_url'] = $series_share_url;
                                                                                         $series['seasons'] = SeriesSeason::where('series_id', $series->id)
                                                                                                                         ->get()
                                                                                                                         ->map(function ($season) use($user_id, $series) {
@@ -13912,7 +13969,7 @@ $cpanel->end();
                                                                                                                                 return [
                                                                                                                                     'title' => $season->series_seasons_name,
                                                                                                                                     'access' => $season_access,
-                                                                                                                                    'share_url' => URL::to('play_series/'.$series['slug']),
+                                                                                                                                    'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$series->slug) : null,
                                                                                                                                     'episodes' => $episodes,
                                                                                                                                 ];
                                                                                                                             }
@@ -14117,21 +14174,35 @@ $cpanel->end();
                                       ->where('active', '=', '1')
                                       ->get()
                                       ->map(function ($item) use($user_id) {
-                                        $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
-                                        $ppv_exists_check_query = 0;
-                                        if($ppv_purchase){
-                                          $new_date = Carbon::parse($ppv_purchase->to_time);
-                                          $currentdate = Carbon::now();
-                                          $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                        if($item['access'] == 'subscriber'){
+                                          $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                          $subs_exists_check_query = 0;
+                                          if($subs_purchase){
+                                            $new_date = Carbon::parse($subs_purchase->ends_at);
+                                            $currentdate = Carbon::now();
+                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'subscriber'; 
+                                          }
+                                        }elseif($item['access'] == 'ppv'){
+                                          $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                          $ppv_exists_check_query = 0;
+                                          if($ppv_purchase){
+                                            $new_date = Carbon::parse($ppv_purchase->to_time);
+                                            $currentdate = Carbon::now();
+                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'ppv'; 
+                                          }
+                                        }else{
+                                          $item['access'] = 'guest';
                                         }
 
-                                        if($item['access'] == 'guest'){
-                                          $item['access'] = 'guest';
-                                        }elseif( $ppv_exists_check_query > 0){
-                                          $item['access'] = 'guest';
+                                        if($item['access'] == 'subscriber'){
+                                            $item['share_url'] = URL::to('becomesubscriber');
+                                        }elseif($item['access'] == 'ppv'){
+                                          $item['share_url'] = (URL::to('app/live/'.$item->slug));
                                         }else{
-                                          $item['access'] = 'PPV';
+                                          $item['share_url'] =null;
                                         }
+                                        
+
 
                                         $item['image'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->image) : $this->default_horizontal_image_url;
                                         $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->player_image) : $this->default_horizontal_image_url;
@@ -14140,7 +14211,6 @@ $cpanel->end();
                                         $description = strip_tags($details);
                                         $item['description'] = str_replace("\r", '', $description);
                                         $item['type'] = $item->url_type;
-                                        $item['share_url'] = (URL::to('live/'.$item->slug));
                                         $video_url = $item['url_type'];
                                         if($video_url == "live_stream_video"){
                                           $item['url'] = $item->live_stream_video;
@@ -14317,6 +14387,153 @@ $cpanel->end();
     return response()->json($response, 200);
 
     }
+
+    public function NetworkLoadSeries(Request $request) {
+        $user_id = $request->query('user_id');
+        $networkId = $request->network_id;
+        $page = $request->page ?? 1;
+        $limit = 6;
+        $offset = ($page - 1) * $limit;
+    
+        $series = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                        ->where('series.active', 1)
+                        ->where('series_network_order.network_id', $networkId)
+                        ->orderBy('series_network_order.order', 'asc')
+                          ->offset($offset)
+                          ->limit($limit)
+                          ->get()
+                          ->map(function ($series) use($user_id) {
+                              $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
+                              $series['Tv_image_url'] = (!is_null($series->tv_image) && $series->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->tv_image) : $this->default_horizontal_image_url;
+                              $description = $series->description;
+                                do {
+                                    $previous = $description;
+                                    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                } while ($description !== $previous);
+                              $details = $series->details;
+                                do {
+                                    $previous = $details;
+                                    $details = html_entity_decode($details, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                } while ($details !== $previous);
+                              $series['details']             = strip_tags($details);
+                              $series['description']         = strip_tags($description);
+                              $series_share_url = null;
+                              if($series['access'] == 'subscriber'){
+                                $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                $subs_exists_check_query = 0;
+                                if($subs_purchase){
+                                  $new_date = Carbon::parse($subs_purchase->ends_at);
+                                  $currentdate = Carbon::now();
+                                  $subs_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                }
+                                $series['access'] =  ($subs_exists_check_query > 0) ? 'guest' : 'subscriber';
+                                $series_share_url = $series['access'] == 'subscriber' ? URL::to('becomesubscriber') : null ;
+                              }elseif($series['access'] == 'registered'){
+                                $series['access'] = !empty($user_id) ? 'guest' :  'registered'; 
+                              }else{
+                                $series['access'] = 'guest';
+                              }
+                              $series['series_share_url'] = $series_share_url;
+                              $series['seasons'] = SeriesSeason::where('series_id', $series->id)
+                                                              ->get()
+                                                              ->map(function ($season) use($user_id, $series) {
+                                                                  $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
+                                                                  $ppv_exists_check_query = 0;
+                                                                  if($ppv_purchase){
+                                                                    $new_date = Carbon::parse($ppv_purchase->to_time);
+                                                                    $currentdate = Carbon::now();
+                                                                    $ppv_exists_check_query = $new_date->isAfter($currentdate) ? 1 : 0; 
+                                                                  }
+
+                                                                  if($season->access == 'free'){
+                                                                    $season_access = 'guest';
+                                                                  }elseif( $ppv_exists_check_query > 0){
+                                                                    $season_access = 'guest';
+                                                                  }else{
+                                                                    $season_access = 'PPV';
+                                                                  }
+                                                                  $episodes = Episode::where('season_id', $season->id)
+                                                                      ->orderBy('episode_order')
+                                                                      ->get()
+                                                                      ->map(function ($episode) {
+                                                                        if($this->Theme == 'theme4'){
+                                                                          if($episode->type == 'm3u8'){
+                                                                            $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
+                                                                          } elseif($episode->type == 'embed'){
+                                                                              $url = $episode->url;
+                                                                          }
+                                                                          else{
+                                                                            $url = $episode->url;
+                                                                          }
+                                                                        }else{
+                                                                          if($episode->type == 'm3u8'){
+                                                                            $url = URL::to('/storage/app/public/'. $episode->path .'.m3u8') ;
+                                                                          } elseif($episode->type == 'embed'){
+                                                                              $url = $episode->url;
+                                                                          }
+                                                                          else{
+                                                                            $url = $episode->url;
+                                                                          }
+                                                                        }
+                                                                        $description = $episode->episode_description;
+                                                                                    do {
+                                                                                        $previous = $description;
+                                                                                        $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                                                                    } while ($description !== $previous);
+                                                                        return [
+                                                                          'id'                       => $episode->id,
+                                                                          'title'                    => $episode->title,
+                                                                          'slug'                     => $episode->slug,
+                                                                          'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
+                                                                          'description'              => strip_tags($description),
+                                                                          'episodeNumber'            => $episode->episode_order,
+                                                                          'access'                   => $episode->access,
+                                                                          'content'                  => [
+                                                                                                          'dateAdded' => $episode->created_at,
+                                                                                                          'videos' => [
+                                                                                                              [
+                                                                                                                  'videoType' => $episode->type,
+                                                                                                                  'url' => $url,
+                                                                                                              ],
+                                                                                                          ],
+                                                                                                          'duration' => $episode->duration,
+                                                                                                        ],
+                                                                          'Tv_image_url'                 => (!is_null($episode->tv_image) && $episode->tv_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->tv_image) : $this->default_horizontal_image_url,
+                                                                          'status'                   => $episode->status,
+                                                                        ];
+                                                                      });
+
+                                                                  // Only include the season if it has episodes
+                                                                  if ($episodes->isNotEmpty()) {
+                                                                      return [
+                                                                          'title' => $season->series_seasons_name,
+                                                                          'access' => $season_access,
+                                                                          'share_url' => $season_access == 'PPV' ? URL::to('app/play_series/'.$series->slug) : null,
+                                                                          'episodes' => $episodes,
+                                                                      ];
+                                                                  }
+
+                                                                  // Return null for seasons with no episodes
+                                                                  return null;
+                                                              })
+                                                              ->filter(function ($value) {
+                                                                  return $value !== null;
+                                                              });
+
+                                                          // Remove the 'seasons' key if it's an empty array
+                                                          if ($series['seasons']->isEmpty()) {
+                                                              unset($series['seasons']);
+                                                          }
+
+                          return $series;
+                        });
+    
+        return response()->json([
+            'series' => $series,
+            'next_page' => count($series) == $limit ? $page + 1 : null, // If series are available, provide next page
+        ]);
+    }
+  
 
     public function LanguageVideo(Request $request){
 
@@ -19466,7 +19683,8 @@ public function QRCodeMobileLogout(Request $request)
                                       ->where('series_network_order.network_id', [(string)$request->network_id])
                                       ->orderBy('series_network_order.order', 'asc')
                                           ->get()->map(function ($item) { 
-                        
+                                            
+                                          $item['id']               = $item->series_id ;
                                           $item['image_url']        = (!is_null($item->image) && $item->image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
                                           $item['Player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg')  ? URL::to('public/uploads/images/'.$item->player_image )  :  default_horizontal_image_url() ;
                                           $item['upload_on']        = Carbon::parse($item->created_at)->isoFormat('MMMM Do YYYY'); 

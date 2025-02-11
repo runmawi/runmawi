@@ -3913,15 +3913,22 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
   padding: .5rem 1rem;
 }
 
-.navbar>.container,.navbar>.container-fluid {
+.navbar > .container,
+.navbar > .container-fluid {
+  display: -webkit-box; /* Older Safari */
+  display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
+  display: flex  !important;
+  -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+  -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
+ width: 100%;
 }
 
 .navbar-brand {

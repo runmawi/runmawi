@@ -151,91 +151,115 @@
     </div>
 @endif
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
-    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
-        var flkty = new Flickity(elem, {
-            cellAlign: 'left',
-            contain: true,
-            groupCells: false,
-            pageDots: false,
-            draggable: true,
-            freeScroll: true,
-            imagesLoaded: true,
-            lazyLoad: 7,
-            setGallerySize: true,
-            resize: true, 
-        });
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+    function initializeFlickity() {
+        document.querySelectorAll('.series-based-network-video').forEach(function (elem) {
+            // Hide carousel initially to prevent vertical stacking
+            elem.style.visibility = 'hidden';
+            elem.style.opacity = '0';
 
-    flkty.reloadCells();
-    document.querySelectorAll('.series-based-network-video').forEach(function(elem) {
+            imagesLoaded(elem, function () {
+                console.log("All images loaded, initializing Flickity...");
 
+                var flkty = new Flickity(elem, {
+                    cellAlign: 'left',
+                    contain: true,
+                    groupCells: true,
+                    pageDots: false,
+                    draggable: true,
+                    freeScroll: true,
+                    imagesLoaded: true,
+                    lazyLoad: 7,
+                    setGallerySize: true,
+                    resize: true,
+                });
 
-    elem.querySelectorAll('.item').forEach(function(item) {
-        item.addEventListener('click', function() {
-            var sectionIndex = this.getAttribute('data-section-index');
-            var index = this.getAttribute('data-index');
+                // Ensure Flickity resizes properly in Safari
+                flkty.on('ready', function () {
+                    flkty.resize();
+                    flkty.reloadCells();
+                });
 
-            // Remove current class from all items in this section
-            elem.querySelectorAll('.item').forEach(function(item) {
-                item.classList.remove('current');
-            });
-            this.classList.add('current');
+                // Force reflow before displaying (fixes vertical stacking)
+                elem.getBoundingClientRect();
 
-            // Hide all captions and thumbnails in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .caption').forEach(function(caption) {
-                caption.style.display = 'none';
-            });
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .thumbnail').forEach(function(thumbnail) {
-                thumbnail.style.display = 'none';
-            });
+                // Show carousel only after initialization
+                requestAnimationFrame(() => {
+                    elem.style.visibility = 'visible';
+                    elem.style.opacity = '1';
+                    flkty.resize();
+                });
 
-            // Hide all sliders in this section
-            document.querySelectorAll('#videoInfo-' + sectionIndex + ' .network-based-depends-slider').forEach(function(slider) {
-                slider.style.display = 'none';
-            });
+                // Reinitialize Flickity on window resize (Fixes Mobile Safari Issues)
+                window.addEventListener('resize', function () {
+                    setTimeout(() => {
+                        flkty.resize();
+                        flkty.reloadCells();
+                    }, 200);
+                });
 
-            
-            // Show the slider for the selected series
-            var selectedSlider = document.querySelector('#videoInfo-' + sectionIndex + ' .network-based-depends-slider[data-index="' + index + '"]');
-            if (selectedSlider) {
-                selectedSlider.style.display = 'block';
-                setTimeout(function() {
-                    new Flickity(selectedSlider, {
-                        cellAlign: 'left',
-                        contain: true,
-                        groupCells: true,
-                        pageDots: false,
-                        draggable: true,
-                        freeScroll: true,
-                        imagesLoaded: true,
-                        lazyLoad: true,
+                // Click event for selecting items
+                elem.querySelectorAll('.item').forEach(function (item) {
+                    item.addEventListener('click', function () {
+                        var sectionIndex = this.getAttribute('data-section-index');
+                        var index = this.getAttribute('data-index');
+
+                        // Remove "current" class from all items
+                        elem.querySelectorAll('.item').forEach(i => i.classList.remove('current'));
+                        this.classList.add('current');
+
+                        // Hide all captions, thumbnails, and sliders
+                        document.querySelectorAll(`#videoInfo-${sectionIndex} .caption, 
+                                                   #videoInfo-${sectionIndex} .thumbnail, 
+                                                   #videoInfo-${sectionIndex} .network-based-depends-slider`)
+                            .forEach(el => el.style.display = 'none');
+
+                        // Show the selected slider
+                        var selectedSlider = document.querySelector(`#videoInfo-${sectionIndex} .network-based-depends-slider[data-index="${index}"]`);
+                        if (selectedSlider) {
+                            selectedSlider.style.display = 'block';
+                            setTimeout(() => {
+                                new Flickity(selectedSlider, {
+                                    cellAlign: 'left',
+                                    contain: true,
+                                    groupCells: true,
+                                    pageDots: false,
+                                    draggable: true,
+                                    freeScroll: true,
+                                    imagesLoaded: true,
+                                    lazyLoad: true,
+                                }).resize();
+                            }, 0);
+                        }
+
+                        var selectedCaption = document.querySelector(`#videoInfo-${sectionIndex} .caption[data-index="${index}"]`);
+                        var selectedThumbnail = document.querySelector(`#videoInfo-${sectionIndex} .thumbnail[data-index="${index}"]`);
+                        if (selectedCaption && selectedThumbnail) {
+                            selectedCaption.style.display = 'block';
+                            selectedThumbnail.style.display = 'block';
+                            document.querySelector('.depend-episode-modal-demd').style.display = 'block';
+                        }
+
+                        document.getElementById(`videoInfo-${sectionIndex}`).style.display = 'flex';
                     });
-                },0);
-            }
+                });
+            });
+        });
+    }
 
-            var selectedCaption = document.querySelector('#videoInfo-' + sectionIndex + ' .caption[data-index="' + index + '"]');
-            var selectedThumbnail = document.querySelector('#videoInfo-' + sectionIndex + ' .thumbnail[data-index="' + index + '"]');
-            if (selectedCaption && selectedThumbnail) {
-                selectedCaption.style.display = 'block';
-                selectedThumbnail.style.display = 'block';
-                $('.depend-episode-modal-demd').show();
-            }
+    // Ensure Flickity initializes only after all images are loaded
+    window.addEventListener('load', initializeFlickity);
 
-            document.getElementById('videoInfo-' + sectionIndex).style.display = 'flex';
+    // Close dropdown on click
+    document.querySelectorAll('.drp-close').forEach(closeButton => {
+        closeButton.addEventListener('click', function () {
+            var dropdown = this.closest('.series-based-network-dropdown');
+            if (dropdown) dropdown.style.display = 'none';
         });
     });
 });
-document.querySelectorAll('.drp-close').forEach(function(closeButton) {
-    closeButton.addEventListener('click', function() {
-        var dropdown = this.closest('.series-based-network-dropdown');
-        dropdown.style.display = 'none';
-    });
-});
-
 </script>
 
 <script>
@@ -246,7 +270,6 @@ document.querySelectorAll('.drp-close').forEach(function(closeButton) {
         const isLoaded = $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded');
         
         if (isLoaded) {
-            // console.log('Images already loaded, skipping AJAX call.');
             return;
         }
 

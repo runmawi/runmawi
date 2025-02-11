@@ -40,7 +40,7 @@
                                         <div class="border-bg">
                                             <div class="img-box">
                                                 <a class="playTrailer" href="{{ route('Specific_Series_Networks',$series_networks->slug) }}">
-                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
+                                                    <img class="img-fluid w-100" loading="lazy" data-src="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" data-flickity-lazyload="{{ $series_networks->image_url ? $series_networks->image_url : $default_vertical_image_url }}" alt="{{ $series_networks->name }}">
                                                 </a>
                                             </div>
                                         </div>
@@ -82,11 +82,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

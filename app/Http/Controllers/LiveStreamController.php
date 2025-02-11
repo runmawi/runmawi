@@ -186,6 +186,20 @@ class LiveStreamController extends Controller
     {
       try {
 
+        $currentUrl = url()->current();
+        if (strpos($currentUrl, '/app/') !== false){
+            if (!auth()->check()) {
+                $modifiedUrl = preg_replace('/\/app/', '', $currentUrl);
+                session(['url.intended' => $modifiedUrl]);
+                return redirect()->route('login');
+            }else{
+                if (strpos($currentUrl, '/app') !== false) {
+                    $modifiedUrl = str_replace('/app', '', $currentUrl);
+                    return redirect($modifiedUrl);
+                }
+            }
+        }
+
       $Theme = HomeSetting::pluck('theme_choosen')->first();
       Theme::uses( $Theme );
 
@@ -583,8 +597,8 @@ class LiveStreamController extends Controller
 
                     if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
 
-                        $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
-                        // $block_videos_exists = null;
+                        // $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
+                        $block_videos_exists = null;
 
                         if ($block_videos_exists) {
 

@@ -1462,6 +1462,20 @@ class TvshowsController extends Controller
     public function play_series($name)
     {
         try {
+
+            $currentUrl = url()->current();
+            if (strpos($currentUrl, '/app/') !== false){
+                if (!auth()->check()) {
+                    $modifiedUrl = preg_replace('/\/app/', '', $currentUrl);
+                    session(['url.intended' => $modifiedUrl]);
+                    return redirect()->route('login');
+                }else{
+                    if (strpos($currentUrl, '/app') !== false) {
+                        $modifiedUrl = str_replace('/app', '', $currentUrl);
+                        return redirect($modifiedUrl);
+                    }
+                }
+            }
             
             $Theme = HomeSetting::pluck('theme_choosen')->first();
             $theme = Theme::uses($Theme);

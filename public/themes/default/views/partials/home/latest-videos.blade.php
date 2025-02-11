@@ -55,7 +55,16 @@
                                             <div class="border-bg">
                                                 <div class="img-box">
                                                     <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $watchlater_video->slug }}"  aria-label="VideoplayTrailer">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $watchlater_video->image ? URL::to('/public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}">
+                                                        <div>
+                                                            @if ($multiple_compress_image == 1)
+                                                                <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $watchlater_video->title }}" data-flickity-lazyload="{{ $watchlater_video->image }}"
+                                                                    srcset="{{ $watchlater_video->responsive_image ? (URL::to('public/uploads/PCimages/'.$watchlater_video->responsive_image.' 860w')) : $watchlater_video->image }},
+                                                                    {{ $watchlater_video->responsive_image ? URL::to('public/uploads/Tabletimages/'.$watchlater_video->responsive_image.' 640w') : $watchlater_video->image }},
+                                                                    {{ $watchlater_video->responsive_image ? URL::to('public/uploads/mobileimages/'.$watchlater_video->responsive_image.' 420w') : $watchlater_video->image }}" >
+                                                            @else
+                                                                <img data-flickity-lazyload="{{ $watchlater_video->image ? URL::to('public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $watchlater_video->title }}">
+                                                            @endif
+                                                        </div>
                                                     </a>
 
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -177,11 +186,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload: true,
+        lazyLoad: 7,
     });
  </script>

@@ -36,13 +36,13 @@
                                       <div class="border-bg">
                                           <div class="img-box">
                                               <a class="playTrailer" href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
-                                                  <img data-src="{{ $Audio_Category->image ? URL::to('/public/uploads/audios/' . $Audio_Category->image) : $default_vertical_image_url }}" src="{{ $Audio_Category->image ? URL::to('/public/uploads/audios/' . $Audio_Category->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $Audio_Category->name }}">
+                                                  <img data-src="{{ $Audio_Category->image ? URL::to('/public/uploads/audios/' . $Audio_Category->image) : $default_vertical_image_url }}" data-flickity-lazyload="{{ $Audio_Category->image ? URL::to('/public/uploads/audios/' . $Audio_Category->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $Audio_Category->name }}">
                                               </a>
                                           </div>
                                       </div>
                                       <div class="block-description">
                                           <a class="playTrailer" href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
-                                              <img src="{{ $Audio_Category->banner_image ? URL::to('/public/uploads/audios/' . $Audio_Category->banner_image) : $default_vertical_image_url }}" data-src="{{ $Audio_Category->banner_image ? URL::to('/public/uploads/audios/' . $Audio_Category->banner_image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $Audio_Category->name }}">
+                                              <img data-flickity-lazyload="{{ $Audio_Category->banner_image ? URL::to('/public/uploads/audios/' . $Audio_Category->banner_image) : $default_vertical_image_url }}" data-src="{{ $Audio_Category->banner_image ? URL::to('/public/uploads/audios/' . $Audio_Category->banner_image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $Audio_Category->name }}">
                                           </a>
                                           <div class="hover-buttons text-white">
                                               <a href="{{ url('/audios/category/' . $Audio_Category->slug) }}">
@@ -71,11 +71,11 @@
     var flkty = new Flickity(elem, {
         cellAlign: 'left',
         contain: true,
-        groupCells: true,
+        groupCells: false,
         pageDots: false,
         draggable: true,
         freeScroll: true,
         imagesLoaded: true,
-        lazyload:true,
+        lazyLoad: 7,
     });
  </script>

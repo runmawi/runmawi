@@ -355,28 +355,36 @@ class FrontEndQueryController extends Controller
                     $series['duration_format'] = !is_null($series->duration)
                         ? Carbon::parse($series->duration)->format('G\H i\M')
                         : null;
-                    $season_ids = SeriesSeason::where('series_id',$series->id)->pluck('id');
-    
-                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)->whereIn('season_id',$season_ids)->where('active',1)
-                        ->latest()
-                        ->take(15)
-                        ->get()
-                        ->map(function ($episode) {
-                            $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
-                                ? $this->BaseURL.('/images/' . $episode->image)
-                                : $this->default_vertical_image;
-                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? $this->BaseURL.('/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
-    
-                            $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
-                                ->pluck('series_seasons_name')
-                                ->first();
-    
-                            return $episode;
-                        });
-    
+                    $season_ids = SeriesSeason::where('series_id',$series->id)->orderBy('order','desc')->pluck('id');
+                    $first_season_id = $season_ids->first();
+                    $season_epi_count = Episode::where('season_id',$first_season_id)->where('active','1')->count();
+                    // dd($season_ids);
+
+                    if ($season_ids->isNotEmpty()) {
+                            $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
+                                                                ->whereIn('season_id', $season_ids)
+                                                                ->where('active', 1)
+                                                                ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
+                                                                ->latest()
+                                                                ->take(15)
+                                                                ->get()
+                                ->map(function ($episode) {
+                                    $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
+                                        ? $this->BaseURL.('/images/' . $episode->image)
+                                        : $this->default_vertical_image;
+                                    $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? $this->BaseURL.('/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
+            
+                                    $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
+                                        ->pluck('series_seasons_name')
+                                        ->first();
+            
+                                    return $episode;
+                                });
+                    } else {
+                        $series['Series_depends_episodes'] = collect(); // Return empty collection if no seasons found
+                    }
                         $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
 
-                        // Check if there are more than 14 episodes
                         $series['has_more'] = $totalEpisodes > 14;
                     $series['source'] = 'Series';
     
@@ -462,7 +470,7 @@ class FrontEndQueryController extends Controller
         $default_horizontal_image_url = default_horizontal_image_url();
 
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                            'duration', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
