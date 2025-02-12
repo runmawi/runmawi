@@ -16,7 +16,7 @@ class SecurityHeaders
         $response->headers->set('Content-Security-Policy', "frame-ancestors 'none';");
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-        $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-src 'none'");
+        // $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-src 'none'");
 
 
         return $response;
