@@ -13858,8 +13858,9 @@ $cpanel->end();
                                                       ->skip($offset)
                                                       ->take($limit)
                                                       ->get()
-                                                      ->map(function ($item) use($user_id) {
+                                                      ->map(function ($item) use($user_id, $next_offset) {
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
+                                                          $item['next_offset'] = $next_offset;
                                                   
                                                           // Fetch series where network_id in Series table matches the current SeriesNetwork id
                                                           $item['series'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
@@ -14364,7 +14365,7 @@ $cpanel->end();
             'series'                        => $series,
             'Series_based_on_Networks'      => $Series_based_on_Networks,
             '24/7'                          => $epg,
-            'next_offset'                   => $next_offset,
+            // 'next_offset'                   => $next_offset,
         ];
 
         if ( !is_null($featured_videos) && count($featured_videos) > 0) {
