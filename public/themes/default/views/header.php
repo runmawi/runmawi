@@ -255,10 +255,6 @@
    <link rel="preload" href="<?= URL::to('assets/css/variable.css') ;?>" as="style">
    <link rel="preload" href="<?= URL::to('assets/css/all.min.css') ;?>" as="style">
    <link rel="preload" href="<?= URL::to('assets/css/remixicon.css') ;?>" as="style">
-   <link rel="preload" href="<?= URL::to('assets/css/slick.css') ;?>" as="style">
-   <link rel="preload" href="<?= URL::to('assets/css/slick-theme.css') ;?>" as="style">
-   <link rel="preload" href="<?= URL::to('assets/css/owl.carousel.min.css') ;?>" as="style">
-   <link rel="preload" href="<?= URL::to('assets/css/slick-animation.css') ;?>" as="style">
 
    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" >
 
@@ -290,7 +286,7 @@
    <script src="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ;?>" async></script>
 
 
-   <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/>
+   <!-- <link rel="preload" fetchpriority="low" href="<?= URL::to('assets/js/slick-animation.min.js') ?>" as="script"/> -->
 
    <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" as="style">
    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
