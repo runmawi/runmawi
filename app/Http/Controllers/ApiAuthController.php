@@ -4164,7 +4164,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->get();
+    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->latest()->get();
     $video_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
 
     if ( $video_ids_count  > 0) {
@@ -4216,7 +4216,7 @@ public function verifyandupdatepassword(Request $request)
  
     // Episode
 
-    $episode_id = Wishlist::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+    $episode_id = Wishlist::where('user_id','=',$user_id)->whereNotNull('episode_id')->latest()->pluck('episode_id');
 
     if(count($episode_id) > 0 ){
 
@@ -4755,7 +4755,7 @@ public function verifyandupdatepassword(Request $request)
 
     // Episode
 
-    $episode_id = Favorite::where('user_id','=',$user_id)->whereNotNull('episode_id')->pluck('episode_id');
+    $episode_id = Favorite::where('user_id','=',$user_id)->whereNotNull('episode_id')->latest()->pluck('episode_id');
 
     if(count($episode_id) > 0 ){
 
@@ -7564,7 +7564,7 @@ public function checkEmailExists(Request $request)
       } catch (\Throwable $th) {
 
         $response = array(
-          'status'=>'true',
+          'status'=>'false',
           'message'=> $th->getMessage(),
         );
         return response()->json($response, 500);
@@ -10012,8 +10012,7 @@ return response()->json($response, 200);
       $LanguageVideo = LanguageVideo::where('language_id',$language_id)->groupBy('video_id')->pluck('video_id');
 
       $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-          ->where('language_id', '=', $language_id)->where('active', '1')->where('status', '1')
-          ->where('draft', '1');
+          ->where('language_id', '=', $language_id)->where('active', '1')->where('status', '1');
 
           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
               $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
@@ -10032,7 +10031,7 @@ return response()->json($response, 200);
     } catch (\Throwable $th) {
 
       $response = array(
-        'status' => 'true',
+        'status' => 'false',
         'status_code' => 500,
         'message' => $th->getMessage(),
       );
@@ -12821,7 +12820,7 @@ public function Adstatus_upate(Request $request)
     $series_id = $request->series_id;
     $season_id = $request->season_id;
 
-    $episodes = Episode::where('series_id',$series_id)->where('season_id',$season_id)
+    $episodes = Episode::where('series_id',$series_id)->where('season_id',$season_id)->where('active','1')
     ->orderBy('episode_order')->get()->map(function ($item) {
       $item['image'] = URL::to('/').'/public/uploads/images/'.$item->image;
       $item['episode_order'] = 'Episode '.$item->episode_order;
