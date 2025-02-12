@@ -959,13 +959,27 @@
     <!-- loader END -->
     <!-- Header -->
     <div id="mySidebar" class="sidebar">
-    <img
-            id="toggleIcon"
-            src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
-            alt="Sidebar Toggle"
-            style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
-            onclick="toggleSidebar()"
-        />
+
+        <?php if ($theme_mode == "light" && !empty(@$theme->light_mode_logo)) { ?>
+            <a class="mb-0" href="<?php echo URL::to('home'); ?>">
+                <img
+                    id="toggleIcon"
+                    src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
+                    alt="Sidebar Toggle"
+                    style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
+                />
+            </a>
+        <?php } else { ?>
+            <a class="mb-0" href="<?php echo URL::to('home'); ?>">
+                <img
+                    id="toggleIcon"
+                    src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
+                    alt="Sidebar Toggle"
+                    style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
+                />
+            </a>
+        <?php } ?>
+ 
 
         <div id="menuIcon" onclick="toggleSidebar()" style="cursor: pointer; padding-left:20px; font-size: 24px;">
             &#9776;

@@ -259,6 +259,5 @@
             imagesLoaded: true,
             lazyLoad: 7,
         });
-        flkty.recell();
     });
 </script>
