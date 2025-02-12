@@ -10007,24 +10007,25 @@ return response()->json($response, 200);
       $user_id = $request->user_id;
       $language_id = $request->language_id;
 
-      $FrontEndQueryController = new FrontEndQueryController();
-
       $LanguageVideo = LanguageVideo::where('language_id',$language_id)->groupBy('video_id')->pluck('video_id');
 
       $language_videos = Video::join('languagevideos', 'languagevideos.video_id', '=', 'videos.id')
-          ->where('language_id', '=', $language_id)->where('active', '1')->where('status', '1');
+                                ->where('languagevideos.language_id', $language_id)
+                                ->where('videos.active', 1)
+                                ->where('videos.status', 1)
+                                ->select('videos.*')
+                                ->latest()
+                                ->get();
 
           if(Geofencing() !=null && Geofencing()->geofencing == 'ON'){
               $categoryVideos = $categoryVideos->whereNotIn('videos.id', Block_videos());
           }
 
-      $language_videos = $language_videos->latest('videos.created_at');
-
       $response = array(
         'status' => 'true',
         'status_code' => 200,
         'message' => 'Retrieved the Language Videos',
-        'language_videos'=> $language_videos->get(),
+        'language_videos'=> $language_videos,
         'count_language_videos'=> $language_videos->count(),
       );
 
