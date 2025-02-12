@@ -13848,7 +13848,7 @@ $cpanel->end();
         }
 
         $offset = $request->offset ?? 0;
-        $limit = 4;
+        $limit = 2;
         $network_count = SeriesNetwork::where('in_home', 1)->count();
         $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
         if($HomeSetting->Series_based_on_Networks == 1){
