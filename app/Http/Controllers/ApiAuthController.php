@@ -13847,10 +13847,10 @@ $cpanel->end();
           $series = null;
         }
 
-        $offset = $request->offset ?? 0;
-        $limit = 2;
-        $network_count = SeriesNetwork::where('in_home', 1)->count();
-        $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
+        // $offset = $request->offset ?? 0;
+        // $limit = 2;
+        // $network_count = SeriesNetwork::where('in_home', 1)->count();
+        // $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
         if($HomeSetting->Series_based_on_Networks == 1){
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                       ->where('in_home', 1)
@@ -13868,7 +13868,7 @@ $cpanel->end();
                                                                                     ->where('series.active', 1)
                                                                                     ->where('series_network_order.network_id', $item->id)
                                                                                     ->orderBy('series_network_order.order', 'asc')
-                                                                                    ->limit(15)
+                                                                                    ->limit(6)
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -14400,14 +14400,16 @@ $cpanel->end();
     public function NetworkLoadSeries(Request $request) {
         $user_id = $request->query('user_id');
         $networkId = $request->network_id;
-        // $page = $request->page ?? 1;
-        // $limit = 6;
-        // $offset = ($page - 1) * $limit;
+        $page = $request->page ?? 1;
+        $limit = 6;
+        $offset = ($page - 1) * $limit;
     
         $series = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
                         ->where('series.active', 1)
                         ->where('series_network_order.network_id', $networkId)
                         ->orderBy('series_network_order.order', 'asc')
+                        ->offset($offset)
+                          ->limit($limit)
                           ->get()
                           ->map(function ($series) use($user_id) {
                               $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -14537,7 +14539,7 @@ $cpanel->end();
     
         return response()->json([
             'series' => $series,
-            // 'next_page' => count($series) == $limit ? $page + 1 : null, // If series are available, provide next page
+            'next_page' => count($series) == $limit ? $page + 1 : null, // If series are available, provide next page
         ]);
     }
   
