@@ -13856,7 +13856,7 @@ $cpanel->end();
                                                       ->where('in_home', 1)
                                                       ->orderBy('order')
                                                       ->get()
-                                                      ->map(function ($item) use($user_id, $next_offset) {
+                                                      ->map(function ($item) use($user_id) {
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
                                                           $item['series_count'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
                                                                                   ->where('series.active', 1)
