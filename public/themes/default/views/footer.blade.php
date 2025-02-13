@@ -87,10 +87,6 @@
                       </a>
                       <?php } ?>
 
-
-
-
-
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
                           <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" />
@@ -160,18 +156,10 @@
       <!-- Bootstrap JS -->
       <link rel="preload" href="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>" as="script">
       <script src="<?= URL::to('/'). '/assets/js/bootstrap.min.js';?>"></script>
-      <!-- Slick JS -->
-      <link rel="preload" href="<?= URL::to('/'). '/assets/js/slick.min.js';?>" as="script">
-      <script  src="<?= URL::to('/'). '/assets/js/slick.min.js';?>"></script>
-      <!-- owl carousel Js -->
-      <link rel="preload" href="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>" as="script">
-      <script  src="<?= URL::to('/'). '/assets/js/owl.carousel.min.js';?>"></script>
       <!-- select2 Js -->
       <script defer src="<?= URL::to('/'). '/assets/js/select2.min.js';?>"></script>
       <!-- Magnific Popup-->
       <script defer src="<?= URL::to('/'). '/assets/js/jquery.magnific-popup.min.js';?>"></script>
-      <!-- Slick Animation-->
-      <script src="<?= URL::to('/'). '/assets/js/slick-animation.min.js';?>"></script>
       <!-- Custom JS-->
       <link rel="preload" href="<?= URL::to('/'). '/assets/js/custom.js';?>" as="script">
       <script  src="<?= URL::to('/'). '/assets/js/custom.js';?>"></script>
