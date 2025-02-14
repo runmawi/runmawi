@@ -43,6 +43,9 @@
     @endforeach
 @endif
 
+@php 
+    $video_banners = $video_banners->take(5);
+@endphp
         {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $item)
