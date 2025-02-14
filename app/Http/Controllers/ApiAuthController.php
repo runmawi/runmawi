@@ -13847,28 +13847,17 @@ $cpanel->end();
           $series = null;
         }
 
-        // $offset = $request->offset ?? 0;
-        // $limit = 2;
-        // $network_count = SeriesNetwork::where('in_home', 1)->count();
-        // $next_offset = $network_count > ($offset + $limit) ?  ($offset + $limit) : false ;
         if($HomeSetting->Series_based_on_Networks == 1){
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                       ->where('in_home', 1)
                                                       ->orderBy('order')
                                                       ->get()
-                                                      ->map(function ($item) use($user_id, $next_offset) {
+                                                      ->map(function ($item) use($user_id) {
                                                           $item['banner_image'] = (!is_null($item->banner_image) && $item->banner_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$item->banner_image) : $this->default_horizontal_image_url;
-                                                          $item['series_count'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
-                                                                                  ->where('series.active', 1)
-                                                                                  ->where('series_network_order.network_id', $item->id)->count();
-                                                          $item['nextPage']   = $item['series_count'] > 2 ? true : false;
-                                                  
-                                                          // Fetch series where network_id in Series table matches the current SeriesNetwork id
                                                           $item['series'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
                                                                                     ->where('series.active', 1)
                                                                                     ->where('series_network_order.network_id', $item->id)
                                                                                     ->orderBy('series_network_order.order', 'asc')
-                                                                                    ->limit(6)
                                                                                     ->get()
                                                                                     ->map(function ($series) use($user_id) {
                                                                                         $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -14347,44 +14336,95 @@ $cpanel->end();
         $LanguagesAudio = [];
         $languagesLive = [];
       }
-        $response = array(
-          'status'=>'true',
-          // 'HomeSetting' => $HomeSetting,
-          // 'OrderHomeSetting' => $OrderHomeSetting,
-          // 'audios' => $audios,
-          // 'albums' => $albums,
-          // 'movies' => $movies,
-          // 'LiveCategory' => $LiveCategory,
-          // 'Alllanguage' => $Alllanguage  ,
-          // 'VideoLanguage' => $VideoLanguage  ,
-          // 'languagesSeries' => $languagesSeries  ,
-          // 'languagesLive' => $languagesLive  ,
-          // 'LanguagesAudio' => $LanguagesAudio  ,
-        );
 
-        $dataToCheck = [
-            'category_videos'               => $myData,
-            'movies'                        => $latest_videos,
-            'series'                        => $series,
-            'Series_based_on_Networks'      => $Series_based_on_Networks,
-            '24/7'                          => $epg,
-            // 'next_offset'                   => $next_offset,
-        ];
+      if($this->Theme == 'theme4'){
 
-        if ( !is_null($featured_videos) && count($featured_videos) > 0) {
-          $dataToCheck += ['featured_videos' => $featured_videos];
+        $section_index = (int) $request->input('section_index', 0);
+
+        $based_network_count = $Series_based_on_Networks->count();
+        $section_count = $based_network_count + 2;
+
+        $series_sections = $Series_based_on_Networks->chunk(ceil($Series_based_on_Networks->count() / 10));
+
+        if ($section_index === 0) {
+            $response = [
+                'status'          => 'true',
+                'sections_count'  => $section_count,
+                'next_section_index' => 1,
+                'live_videos'     => $livestreams_sort,
+            ];
+        } elseif ($section_index > 0 && $section_index <= $based_network_count) {
+          $section_data = $series_sections[$section_index - 1] ?? [];
+            $response = [
+                'status'                      => 'true',
+                'sections_count'              => $section_count,
+                'next_section_index' => $section_index + 1,
+                'Series_based_on_Networks'    => array_values($section_data->toArray()),
+            ];
+        } elseif ($section_index == $based_network_count+1) {
+            $response = [
+                'status'          => 'true',
+                'sections_count'  => $section_count,
+                'next_section_index' => null,
+                'series'          => $series,
+            ];
+        } else {
+            $response = [
+                'status' => 'false',
+                'message' => 'Invalid section index',
+            ];
         }
 
-        if ( !is_null($livestreams_sort) && count($livestreams_sort) > 0) {
-          $dataToCheck += ['live_videos' => $livestreams_sort];
-        }
 
-        foreach ($dataToCheck as $key => $value) {
-          if ($value !== null) {
-              $response[$key] = $value;
-          }
-        }
-        
+
+
+        // $response = [
+        //   'status'                     => 'true',
+        //   'live_videos'                => $livestreams_sort,
+        //   'Series_based_on_Networks'   => $Series_based_on_Networks,
+        //   'series'                     => $series,
+
+        // ];
+      }else{
+
+      
+                $response = array(
+                  'status'=>'true',
+                  // 'HomeSetting' => $HomeSetting,
+                  // 'OrderHomeSetting' => $OrderHomeSetting,
+                  // 'audios' => $audios,
+                  // 'albums' => $albums,
+                  // 'movies' => $movies,
+                  // 'LiveCategory' => $LiveCategory,
+                  // 'Alllanguage' => $Alllanguage  ,
+                  // 'VideoLanguage' => $VideoLanguage  ,
+                  // 'languagesSeries' => $languagesSeries  ,
+                  // 'languagesLive' => $languagesLive  ,
+                  // 'LanguagesAudio' => $LanguagesAudio  ,
+                );
+
+                $dataToCheck = [
+                    'category_videos'               => $myData,
+                    'movies'                        => $latest_videos,
+                    'series'                        => $series,
+                    'Series_based_on_Networks'      => $Series_based_on_Networks,
+                    '24/7'                          => $epg,
+                ];
+
+                if ( !is_null($featured_videos) && count($featured_videos) > 0) {
+                  $dataToCheck += ['featured_videos' => $featured_videos];
+                }
+
+                if ( !is_null($livestreams_sort) && count($livestreams_sort) > 0) {
+                  $dataToCheck += ['live_videos' => $livestreams_sort];
+                }
+
+                foreach ($dataToCheck as $key => $value) {
+                  if ($value !== null) {
+                      $response[$key] = $value;
+                  }
+                }
+      }
       } catch (\Throwable $th) {
         $response = array(
           'status'=>'false',
@@ -14408,7 +14448,7 @@ $cpanel->end();
                         ->where('series.active', 1)
                         ->where('series_network_order.network_id', $networkId)
                         ->orderBy('series_network_order.order', 'asc')
-                        ->offset($offset)
+                          ->offset($offset)
                           ->limit($limit)
                           ->get()
                           ->map(function ($series) use($user_id) {

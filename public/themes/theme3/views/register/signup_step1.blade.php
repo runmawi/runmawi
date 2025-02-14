@@ -158,7 +158,7 @@ i.fa.fa-google-plus {
         background: transparent !important;
         color: #fff !important;
     }
-    .error {
+    .error, .invalid-feedback {
     color: #d30abe;
     font-family: 'Sen', sans-serif !important;
     }
@@ -202,6 +202,7 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
     font-weight: 500;
     font-size: 25px;
 }
+section{background:black;}
 @media (max-width:425px){
     .col-form-label{
         font-size:12px;
@@ -513,9 +514,12 @@ button.btn.btn-hover.btn-primary.btn-block.signup {
                             </div>
 
 							<div class="col-md-12 d-flex custom-control custom-checkbox mb-3 pl-3" id="mob">
-                                <input id="password-confirm" type="checkbox"  name="terms" value="1" required>
-								<label for="password-confirm" class="col-form-label text-md-right pl-2" style="display: inline-block;
-    cursor: pointer;">{{ __('I accept') }} <a class="text-primary" data-toggle="modal" data-target="#terms" style="text-decoration:none;"> {{ __('Terms and  Conditions' ) }}</a></label>
+                                <span>
+                                    <input id="password-confirm" type="checkbox"  name="terms" value="1" required>
+                                    <label for="password-confirm" class="col-form-label text-md-right pl-2" style="display: inline-block;cursor: pointer;">
+                                        {{ __('I accept') }} <a class="text-primary" data-toggle="modal" data-target="#terms" style="text-decoration:none;"> {{ __('Terms and  Conditions' ) }}</a>
+                                    </label>
+                                </span>
                             </div>
 
                             <div class="sign-up-buttons col-md-12 ">
