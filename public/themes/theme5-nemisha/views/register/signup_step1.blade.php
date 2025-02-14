@@ -413,7 +413,7 @@ $jsondata = json_decode($jsonString, true); ?>
 </div></nav>
 <div class="position-relative">
 <div class="fixe" >
-      <h1 class="in mt-3 text-center" style="color:#cacaca;">SIGN UP TO <span class="nemi"> NEMISA TV</span></h1>
+      <h1 class="in mt-3 text-center" style="color:#cacaca;">SIGN UP TO <span class="nemi"> COCREATAZ</span></h1>
     <div class="row m-0 p-0 justify-content-center" >
       
         <div class="col-md-5 col-lg-5 ">
@@ -437,7 +437,7 @@ $jsondata = json_decode($jsonString, true); ?>
                   <div class="sign-in-from w-100 m-auto">
                       <div align="center">
                          <!-- <img src="<?//php// echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" style="margin-bottom:1rem;"> -->     
-                                 <!-- <p class="get">Get 5 free days of Nemisa Tv</p>-->
+                                 <!-- <p class="get">Get 5 free days of COCREATAZ</p>-->
                       </div>
                        
                       
@@ -600,7 +600,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                   <!-- <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button> -->
                                   <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #000000!important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
 
-                                 <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to NEMISA TV Terms of Service and Privacy Policy. </p> -->
+                                 <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to COCREATAZ Terms of Service and Privacy Policy. </p> -->
                                  <!-- <div class=" pt-4 mb-2">
                                     <hr style="border-color:#fff;">
                                     <p class="bg-white" style="position: relative;top: -23px;right:50%;z-index: 1;width: 5%;display: flex;justify-content: center;font-size:12px;">Or</p>
@@ -609,7 +609,7 @@ $jsondata = json_decode($jsonString, true); ?>
                                 <div class="col-md-12 d-flex align-items-center links" id="mob">
                                     <input id="password-confirm" type="checkbox" name="terms" value="1" required>
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
-                                        <p class="text-left text-white agree mb-0 pl-2" style="color: #cacaca !important">By signing up you agree to NEMISA TV   
+                                        <p class="text-left text-white agree mb-0 pl-2" style="color: #cacaca !important">By signing up you agree to COCREATAZ   
                                             <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a>
                                         </p>
                                         </a>

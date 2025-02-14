@@ -4,7 +4,7 @@ $system_settings = App\SystemSetting::find(1);
 ?>
 <html lang="en-US">
 <head>
-<meta name="description" content="Nemisa TV">
+<meta name="description" content="COCREATAZ">
 <meta name="csrf-token" content="{{ csrf_token() }}">   
 <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -294,7 +294,7 @@ line-height: 55px;
     
 <div class="position-relative pad">
 <div class="fixe">
-     <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">NEMISA TV</span></h1>
+     <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">COCREATAZ</span></h1>
     <div class="row m-0 p-0 justify-content-center">
         
       
@@ -305,7 +305,7 @@ line-height: 55px;
                <div class="sign-in-page-data">
                   <div class="mt-5  " align="center">
                      
-                     <!-- <p class="get">Get 5 free days of Nemisa Tv</p>-->
+                     <!-- <p class="get">Get 5 free days of COCREATAZ</p>-->
                     
                       <?php if($settings->demo_mode == 1) { ?>
                         <div class="demo_cred">
@@ -390,13 +390,13 @@ line-height: 55px;
                            <!-- <div class="col-md-12 d-flex align-items-center links" id="mob">
                                 <input id="password-confirm" type="checkbox" name="terms" value="1" required>
 								<label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block; cursor: pointer;">
-                                    <p class="text-left agree mb-0 pl-2">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                    <p class="text-left agree mb-0 pl-2">By signing up you agree to COCREATAZ   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
                                     </a>
                                 </label>
                             </div> -->
                             <div class="mt-3">
                                 <div class="d-flex   links">
-                                    <p class="text-left agree mb-0">By signing up you agree to NEMISA TV   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
+                                    <p class="text-left agree mb-0">By signing up you agree to COCREATAZ   <a style="color:#01DC82!important;" href="https://nemisatv.co.za/page/terms-and-conditions" target="_blank" class="ml-1">Terms and Conditions</a></p>
                                 </div>
                                         <div class="form-group row mb-0 justify-content-center mt-4">
 						@if ( config('social.google') == 1 )
