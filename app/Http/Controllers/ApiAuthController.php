@@ -14344,7 +14344,7 @@ $cpanel->end();
         $based_network_count = $Series_based_on_Networks->count();
         $section_count = $based_network_count + 2;
 
-        $series_sections = $Series_based_on_Networks->chunk(ceil($Series_based_on_Networks->count() / 10));
+        $series_sections = $Series_based_on_Networks->chunk(ceil($Series_based_on_Networks->count() / $based_network_count));
 
         if ($section_index === 0) {
             $response = [
@@ -14359,7 +14359,7 @@ $cpanel->end();
                 'status'                      => 'true',
                 'sections_count'              => $section_count,
                 'next_section_index' => $section_index + 1,
-                'Series_based_on_Networks'    => array_values($section_data->toArray()),
+                'Series_based_on_Networks'    =>  $section_data = $series_sections[$section_index - 1] ?? [],
             ];
         } elseif ($section_index == $based_network_count+1) {
             $response = [
@@ -14375,16 +14375,6 @@ $cpanel->end();
             ];
         }
 
-
-
-
-        // $response = [
-        //   'status'                     => 'true',
-        //   'live_videos'                => $livestreams_sort,
-        //   'Series_based_on_Networks'   => $Series_based_on_Networks,
-        //   'series'                     => $series,
-
-        // ];
       }else{
 
       
