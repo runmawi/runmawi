@@ -14359,7 +14359,7 @@ $cpanel->end();
                 'status'                      => 'true',
                 'sections_count'              => $section_count,
                 'next_section_index' => $section_index + 1,
-                'Series_based_on_Networks'    =>  $section_data = $series_sections[$section_index - 1] ?? [],
+                'Series_based_on_Networks'    => array_values($section_data->toArray()),
             ];
         } elseif ($section_index == $based_network_count+1) {
             $response = [
