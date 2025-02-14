@@ -314,22 +314,16 @@ class ChannelLiveStreamController extends Controller
                 $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
                 $data['duration'] = $time_seconds;
             }
-            if (empty($data['ppv_price']))
-            {
-                $settings = Setting::where('ppv_status', '=', 1)->first();
-                if (!empty($settings))
-                {
+
+            $ppv_price = null;
+        
+            if (empty($data['ppv_price'])) {
+                $settings = Setting::where('ppv_status', 1)->first();
+                if (!empty($settings)) {
                     $ppv_price = $settings->ppv_price;
                 }
-            }
-            elseif (empty($data['ppv_price']))
-            {
+            } else {
                 $ppv_price = $data['ppv_price'];
-            }
-            else
-            {
-                $ppv_price = null;
-
             }
 
             $last_id = LiveStream::latest()->pluck('id')->first() + 1;
@@ -411,6 +405,8 @@ class ChannelLiveStreamController extends Controller
                 $movie->Rtmp_url = $data['Rtmp_url'];
             }
             
+            // dd( $ppv_price);
+
             $movie->uploaded_by = 'Channel';
             $movie->title = $data['title'];
             $movie->embed_url = $embed_url;
