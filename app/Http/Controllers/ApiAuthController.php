@@ -14394,7 +14394,7 @@ $cpanel->end();
         $languagesLive = [];
       }
 
-      if($this->Theme == 'theme4'){
+      if($this->Theme == 'theme4-check'){
 
         $section_index = (int) $request->input('section_index', 0);
 
