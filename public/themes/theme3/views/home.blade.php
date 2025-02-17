@@ -245,6 +245,10 @@
       }
    </script>
 
+   <style>
+      #home-slider .descp p{margin-bottom:.2rem;}
+   </style>
+
 <?php
    include(public_path('themes/theme3/views/partials/home/home_pop_up.php'));
    include(public_path('themes/theme3/views/footer.blade.php')) ;

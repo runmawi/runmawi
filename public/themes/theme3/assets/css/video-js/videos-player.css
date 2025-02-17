@@ -992,6 +992,10 @@ display: block !important;
     position: relative;
     top: 11%;
   }
+  .vjs-title-bar {
+    font-size: 15px !important;
+    left: 10% !important;
+}
   .my-video.video-js .vjs-live-control {
     line-height: 0.6em;
   }
@@ -1080,6 +1084,11 @@ display: block !important;
     padding-top: 0 !important;
     height: 45vh !important;
   }
+  .vjs-title-bar {
+      font-size: 15px !important;
+      left: 6% !important;
+      top: 5% !important;
+  }
   .live_dot {
     color: red;
     font-size: 60px;
@@ -1162,7 +1171,7 @@ display: block !important;
   }
   .custom-skip-forward-button {
     right: 30%;
-    top: 49%;
+    top: 48%;
   }
 
 }
@@ -1171,7 +1180,7 @@ display: block !important;
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .custom-skip-backward-button {
     left: 32%;
-    top: 49%;
+    top: 48%;
   }
   .custom-skip-forward-button {
     right: 32%;
