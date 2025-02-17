@@ -46,6 +46,7 @@ $system_settings = App\SystemSetting::find(1);
     color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px;}
     .sign-in-page .btn {border: 0 !important;}
     body{background: #000;}
+    .sign-in-from{background: #111111;}
 </style>
 </head>
 <body>
