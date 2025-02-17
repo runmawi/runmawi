@@ -639,6 +639,9 @@
       color: rgb(0, 82, 204) !important;
       font-weight: 500;
    }
+   body.light-theme .search-toggle {
+      color: #000 !important;
+   }
 
    body.light-theme .navbar-right .iq-sub-dropdown {
       background-color:
