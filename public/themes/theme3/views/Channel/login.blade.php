@@ -45,6 +45,7 @@ $system_settings = App\SystemSetting::find(1);
     .reveal{margin-left:-57px;height:45px!important;background:#ed553b!important;
     color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px;}
     .sign-info .btn {border: 0 !important;}
+    body{background: black;}
 </style>
 
  
