@@ -135,9 +135,9 @@ class ChannelController extends Controller
                         ->whereIn('id',$categoryVideo_id)->where('active',1)->where('status', 1)->where('draft',1)
                         ->where(function ($query)  {
 
-                            if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
-                                $videos->whereNotIn('videos.id', Block_videos());
-                            }
+                            // if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                            //     $videos->whereNotIn('videos.id', Block_videos());
+                            // }
 
                         })->where(function ($query) use ($check_Kidmode) {
 
@@ -152,17 +152,18 @@ class ChannelController extends Controller
                             return $item;
             });
 
+            $video_categories_videos_paginate = $this->paginateCollection($video_categories_videos, $this->videos_per_page);
 
             $data = [
                 'Parent_videos_categories'  => $Parent_video_categories ,
-                'video_categories_videos' => $video_categories_videos ,
+                'video_categories_videos' => $video_categories_videos_paginate ,
                 'VideosCategory' => $VideoCategory
             ];
-
+            
             return Theme::view('videos-Categories', $data);
 
         } catch (\Throwable $th) {
-
+            return $th->getMessage();
             return abort(404);
         }
     }

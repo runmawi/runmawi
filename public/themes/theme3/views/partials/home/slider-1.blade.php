@@ -43,6 +43,9 @@
     @endforeach
 @endif
 
+@php 
+    $video_banners = $video_banners->take(5);
+@endphp
         {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $item)
@@ -55,32 +58,32 @@
                                 <h1 class="slider-text big-title title text-uppercase" style="color:#fff !important;">{{ \Illuminate\Support\Str::limit($item->title,50) }} </h1>
                                 
                                                 {{-- Description --}}
-                                <div class="descp" style="overflow-y: scroll;max-height: 250px;scrollbar-width: none; color:#fff !important;">
+                                <div class="descp" style="overflow-y: scroll;max-height: 250px;scrollbar-width: none; color:#fff !important;margin-bottom:15px;">
 
                                     @if (optional($item)->description)
 
-                                        @if (strlen($item->description) < 354 )
+                                        @if (strlen($item->description) < 230 )
                                             <p>{!! html_entity_decode($item->description) !!}</p>
                                         @else
-                                            <p style="color:#fff !important;" class="m-0"> {!!  substr(html_entity_decode($item->description), 0, 354 ) !!} </p>
-                                            <p class="{{ 'm-0 videos-read-more-content-'.$key }}" style="display: none;color:#fff !important;">{!!  substr(html_entity_decode($item->description), 355, 2000 ) !!} </p>
+                                            <p style="color:#fff !important;" class="m-0"> {!!  substr(html_entity_decode($item->description), 0, 230 ) !!} </p>
+                                            <p class="{{ 'm-0 videos-read-more-content-'.$key }}" style="display: none;color:#fff !important;">{!!  substr(html_entity_decode($item->description), 231, 2000 ) !!} </p>
                                             <a href="#" data-read-more-id= "{{ 'videos-read-more-content-'.$key }}" onclick="read_more_details(this)">Read more</a>
                                         @endif
                                     @endif
                                 </div>
+                                <div class="btn btn-primary" type="button">
+                                    <a class="text-white" href="{{ url('/category/videos/' . $item->slug) }}">
+                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                            <span class="text pr-2"> Watch Now </span>
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-
-                            {{-- Trailer --}}
-                        {{-- @if ( optional($item)->trailer)
-                            <div class="trailor-video">
-                                <a href="{{ $item->trailer_link }}" class="playbtn">
-                                    {!! html_entity_decode( $play_button_svg ) !!}
-                                    <span class="w-trailor">Watch Trailer</span>
-                                </a>
-                            </div>
-
-                        @endif --}}
                     </div>
                 </div>
             </a>

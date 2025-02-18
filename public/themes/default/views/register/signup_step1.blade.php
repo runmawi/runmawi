@@ -425,50 +425,42 @@ i.fa.fa-google-plus {
                                  @endif
 
                                 @if(!empty($SignupMenu) && $SignupMenu->password == 1)
-                                 <div class="col-md-12">
-                                     <div class="row">
-                                     <div class="col-md-12">
-                                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" autocomplete="new-password" onkeyup="checkPass(); return false;">
-                                        <p id="password-error" style="color: red;font-size:13px;"></p>
-                                         </div>
-                                         <div >
-                                <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                         </div>
-                                        {{-- <span class="text-danger error_password" id='error_password' style='padding-left: 22px' >
-                                            <strong>{{ __('Password Not matching') }}.</strong>
-                                        </span> --}}
-                                     
-                                         </div>
-                            </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror pwd" name="password" autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility1()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endif
                             
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->password_confirm == 1)
-                            <div class="col-md-12">
-                                <div class="row">
-                                     <div class="col-md-12">
-                                        <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" onkeyup="checkPass(); return false;">
-                                        <p id="confirm-password-error" style="color: red;font-size:13px;"></p>
-                                
-                            </div>
-                                    <div >
-                              <span class="input-group-btn" id="eyeSlash1">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
-                                 </span>
-                                 <span class="input-group-btn" id="eyeShow1" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                 </span>
-                                    </div>
-                                </div>
-                                {{-- <span style="color: var(--iq-white);font-size: 14px;font-style: italic;">{{ __('(Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.)') }}</span> --}}
-                            </div>
-     
-                            </div>            
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input id="password-confirm" type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation" required autocomplete="new-password" onkeyup="checkPass(); return false;">
+                                                <p id="confirm-password-error" style="color: red;font-size:13px;"></p>
+                                            </div>
+                                            <div>
+                                                <span class="input-group-btn" id="eyeSlash1">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                                </span>
+                                                <span class="input-group-btn" id="eyeShow1" style="display: none;">
+                                                    <button class="btn btn-default reveal" onclick="visibility2()" type="button"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>           
                                 @endif
                             
                                 @if(!empty($SignupMenu) && $SignupMenu->country == 1)

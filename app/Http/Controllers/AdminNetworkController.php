@@ -31,7 +31,7 @@ class AdminNetworkController extends Controller
             $SeriesNetwork =  SeriesNetwork::orderBy('order')->get()->map(function ($item) {
                 $item['image_url'] = $item->image != null ? URL::to('public/uploads/seriesNetwork/'.$item->image ) : default_vertical_image_url() ;
                 $item['banner_image_url'] = $item->banner_image != null ?  URL::to('public/uploads/seriesNetwork/'.$item->banner_image ) : default_horizontal_image_url();
-                $item['series'] = Series::all()->filter(function ($series) use ($item) {
+                $item['series'] = Series::where('active','1')->get()->filter(function ($series) use ($item) {
                     $networkIds = json_decode($series->network_id, true);
 
                     if (!is_array($networkIds)) {

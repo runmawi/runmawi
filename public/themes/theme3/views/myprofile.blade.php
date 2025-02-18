@@ -130,6 +130,7 @@ $settings = App\Setting::first();
       body.light-theme h4, body.light-theme p,body.light-theme h3,body.light-theme h5,body.light-theme h2 {
          color: <?php echo GetDarkText(); ?> !important;
       }
+      input.select2-search__field{width:100% !important;}
       @media (max-width:768px) {
          ul.usk {
             display: flex !important;
@@ -335,7 +336,7 @@ $settings = App\Setting::first();
                         <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
                            <div class="row align-items-center mt-4">
-                              <h6>Update Profile:</h6>
+                              <h6 class="text-white" style="color: #fff !important;">Update Profile:</h6>
                               <div class="col-sm-4">
                                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                  <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
@@ -532,7 +533,7 @@ $settings = App\Setting::first();
                   <h4 class="card-title mb-0">Preference for videos</h4>
                   <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                   @csrf
-                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                  <input class="w-100" type="hidden" name="user_id" value="<?= $user->id ?>" />
 
                   <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>Preference Language</h5></label>
