@@ -33,6 +33,12 @@
         const skipBackwardButton = document.querySelector('.custom-skip-backward-button');
         const playPauseButton = document.querySelector('.vjs-big-play-button');
         const backButton = document.querySelector('.staticback-btn');
+        const titleButton = document.querySelector('.vjs-title-bar');
+
+        player.el().appendChild(skipForwardButton);
+        player.el().appendChild(skipBackwardButton);
+        player.el().appendChild(titleButton);
+        player.el().appendChild(backButton);
 
         skipForwardButton.addEventListener('click', function() {
             player.currentTime(player.currentTime() + 10);
