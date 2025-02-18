@@ -13848,7 +13848,7 @@ $cpanel->end();
         }
 
         if($HomeSetting->Series_based_on_Networks == 1){
-          if($this->Theme == 'theme4'){
+          if($this->Theme == 'theme4-check'){
 
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                         ->where('in_home', 1)
@@ -13914,6 +13914,7 @@ $cpanel->end();
                                                                                       ->where('series.active', 1)
                                                                                       ->where('series_network_order.network_id', $item->id)
                                                                                       ->orderBy('series_network_order.order', 'asc')
+                                                                                      ->limit(15)
                                                                                       ->get()
                                                                                       ->map(function ($series) use($user_id) {
                                                                                           $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
@@ -13968,6 +13969,7 @@ $cpanel->end();
                                                                                                                               }
                                                                                                                               $episodes = Episode::where('season_id', $season->id)
                                                                                                                                   ->orderBy('episode_order')
+                                                                                                                                  ->limit(15)
                                                                                                                                   ->get()
                                                                                                                                   ->map(function ($episode) {
                                                                                                                                     if($this->Theme == 'theme4'){
