@@ -585,7 +585,7 @@ $settings = App\Setting::first();
 
                   <div class="col-md-6 mt-3">
                      <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
-                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
+                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'Add Profile' ?>
                      </a> 
                   </div>
 
@@ -661,7 +661,7 @@ $settings = App\Setting::first();
                                        @if(!empty($UserTVLoginCode->tv_code))
                                              <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                        @else
-                                       <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
+                                          <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
                                        @endif
                                           </div>
                                        </div>
@@ -776,6 +776,12 @@ border-radius: 4px;
         
 
   </div>
+  <style>
+   .disabled {
+       pointer-events: none;
+       opacity: 0.5;
+   }
+</style>
   
   <?php $settings = App\Setting::first(); ?>
 
