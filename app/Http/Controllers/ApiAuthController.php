@@ -13914,6 +13914,7 @@ $cpanel->end();
                                                                                       ->where('series.active', 1)
                                                                                       ->where('series_network_order.network_id', $item->id)
                                                                                       ->orderBy('series_network_order.order', 'asc')
+                                                                                      ->limit(15)
                                                                                       ->get()
                                                                                       ->map(function ($series) use($user_id) {
                                                                                           $series['player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$series->player_image) : $this->default_horizontal_image_url;
