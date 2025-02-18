@@ -13848,7 +13848,7 @@ $cpanel->end();
         }
 
         if($HomeSetting->Series_based_on_Networks == 1){
-          if($this->Theme == 'theme4'){
+          if($this->Theme == 'theme4-check'){
 
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                         ->where('in_home', 1)
@@ -13968,6 +13968,7 @@ $cpanel->end();
                                                                                                                               }
                                                                                                                               $episodes = Episode::where('season_id', $season->id)
                                                                                                                                   ->orderBy('episode_order')
+                                                                                                                                  ->limit(15)
                                                                                                                                   ->get()
                                                                                                                                   ->map(function ($episode) {
                                                                                                                                     if($this->Theme == 'theme4'){
