@@ -35,7 +35,7 @@
         #my-video_ima-ad-container div{ overflow:hidden;}
         #my-video{ position:relative; }
         /* .staticback-btn{display:none;} */
-        .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 5%; left:1%; color: white; border: none; cursor: pointer;font-size: 25px; }
+        .staticback-btn{ display: inline-block; position: absolute; background: transparent; z-index: 1;  top: 6%; left:1%; color: white; border: none; cursor: pointer;font-size: 25px; }
         .vpageSection .backdrop-img {
             height: calc(100vh - 148px);
             overflow: hidden;
@@ -281,7 +281,7 @@
                                 <div class="img__wrap">
                                     <img class="img__img " src="<?php echo URL::to('/') . '/public/uploads/images/' . $video->player_image; ?>" class="img-fluid" alt="" height="200" width="300">
                                     <div class="img__description_layer" data-bs-toggle="modal" data-bs-target="#trailermodal">
-                                        <h6 class="text-center">{{ "Trailer" }}</h6>
+                                        <span class="text-center text-white">{{ "Trailer" }}</span>
                                         <div class="hover-buttons text-center" data-bs-toggle="modal" data-bs-target="#trailermodal">
                                             <span class="text-white mt-2">
                                                 <i class="fa fa-play mr-1" aria-hidden="true"></i>
