@@ -785,6 +785,22 @@ border-radius: 4px;
   
   <?php $settings = App\Setting::first(); ?>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+      $(document).ready(function() {
+         $('#tvCode').css('pointer-events','none');
+
+         $("#tv_code").on("input", function() {
+            if(($(this).val()) !== ''){
+               $('#tvCode').css('pointer-events','auto');
+            } else {
+               $('#tvCode').css('pointer-events','none');
+            }
+         });
+
+         
+      });
+  </script>
   
    <script>
 $(document).ready(function () {

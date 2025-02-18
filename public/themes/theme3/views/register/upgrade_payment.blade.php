@@ -117,6 +117,7 @@
             display: flex;
             justify-content: space-between;
             width: 43%;
+            align-items: center;
         }
 
         /* Create an active/current tablink class */
@@ -785,9 +786,9 @@
                             </div>
                         </div>
 
-                        <p class="text-white" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
+                        <p class="" style="font-size: 16px;">Welcome {{ Auth::user()->username ? Auth::user()->username : ' ' }}, </p>
                         
-                        <div class="medium-heading text-white pb-3"> {{ $signup_step2_title }} </div>
+                        <h6 class="medium-heading  pb-3"> {{ $signup_step2_title }} </h6>
 
                         <div class="col-md-12 p-0">
                             <p class="meth"> Payment Method</p>
@@ -996,20 +997,20 @@
                         @if( get_coupon_code() == 1)
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <div class="stripe_payment">
-                                    <p> {{ __('Amount Deducted for Promotion Code') }}   </p>
-                                    <p> {{ __('Payable Amount') }}   </p>
+                                    <p class="text-black"> {{ __('Amount Deducted for Promotion Code') }}   </p>
+                                    <p class="text-black"> {{ __('Payable Amount') }}   </p>
                                 </div>
 
                                 <div class="stripe_payment" >
-                                    <p id="promo_code_amt" > {{  currency_symbol().'0'  }} </p>
-                                    <p id="coupon_amt_deduction"> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0'  }} </p>
+                                    <p id="promo_code_amt" class="text-black"> {{  currency_symbol().'0'  }} </p>
+                                    <p id="coupon_amt_deduction" class="text-black"> {{ $SubscriptionPlan ? currency_symbol().$SubscriptionPlan->price : currency_symbol().'0:0'  }} </p>
                                 </div>
                             </div>
                         @endif
 
                         <hr/>
                         {{-- <h6 class="text-black text-center font-weight-bold">{{ __('You will be charged $56.99 for an annual membership on 05/18/2022. Cancel anytime.') }}</h6> --}}
-                        <p class="text-center mt-3">{{ __('All state sales taxes apply') }}</p>
+                        <p class="text-center text-black mt-3">{{ __('All state sales taxes apply') }}</p>
                     </div>
                     <div class="col-md-12 mt-5" id="paypal_card_payment">
                     </div>
