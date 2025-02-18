@@ -36,7 +36,7 @@
                                 @foreach ($data as $key => $latest_series)
                                     <div id="latest-series-slider-img" class="item" data-index="{{ $key }}" data-series-id="{{ $latest_series->id }}">
                                         <div>
-                                            <img data-flickity-lazyload="{{ $latest_series->image ?  URL::to('public/uploads/images/'.$latest_series->image) : $default_vertical_image_url }}"  class="flickity-lazyloaded" alt="{{ $latest_series->title }}">
+                                            <img data-flickity-lazyload="{{ $latest_series->image_url }}"  class="flickity-lazyloaded" alt="{{ $latest_series->title }}">
                                         </div>
                                     </div>
                                 @endforeach
