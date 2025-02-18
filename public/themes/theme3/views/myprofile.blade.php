@@ -130,7 +130,8 @@ $settings = App\Setting::first();
       body.light-theme h4, body.light-theme p,body.light-theme h3,body.light-theme h5,body.light-theme h2 {
          color: <?php echo GetDarkText(); ?> !important;
       }
-      input.select2-search__field{width:100% !important;}
+      input.select2-search__field{width:100% !important;opacity: 0.8;}
+      input.select2-search__field::placeholder{color: black !important;}
       @media (max-width:768px) {
          ul.usk {
             display: flex !important;
