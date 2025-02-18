@@ -17,118 +17,34 @@
                 @if (($All_movies_list)->isNotEmpty())
 
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="list-inline row p-0 mb-0">
                             @forelse($All_movies_list as $key => $video)
                                 <li class="slide-item col-sm-2 col-md-2 col-xs-12">
                                     <div class="block-images position-relative">
-                                        <div class="border-bg">
+                                        
+                                        <a href="{{ URL::to('category/videos/'.$video->slug ) }}">
+
                                             <div class="img-box">
-                                                <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $video->slug }}">
-                                                    <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $video->image ? URL::to('/public/uploads/images/'.$video->image) : $default_vertical_image_url }}" alt="{{ $video->title }}">
-                                                </a>
-
-                                                @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                    @switch(true)
-                                                        @case($video->access == 'subscriber')
-                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
-                                                        @break
-                                                        @case($video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @break
-                                                        @case(!empty($video->ppv_price))
-                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $video->ppv_price }}</p>
-                                                        @break
-                                                        @case(!empty($video->global_ppv) && $video->ppv_price == null)
-                                                            <p class="p-tag">{{ $video->global_ppv . ' ' . $currency->symbol }}</p>
-                                                        @break
-                                                        @case($video->global_ppv == null && $video->ppv_price == null)
-                                                            <p class="p-tag">{{ __('Free') }}</p>
-                                                        @break
-                                                    @endswitch
-                                                @endif
+                                                <img src="{{ $video->image ?  URL::to('public/uploads/images/'.$video->image) : default_vertical_image_url() }}" class="img-fluid" alt="">
                                             </div>
-                                        </div>
-                                        <div class="block-description">
-                                            <a class="playTrailer" href="{{ URL::to('category') . '/videos/' . $video->slug }}">
+                                            <div class="block-description">
+                                                
 
-                                                @if($ThumbnailSetting->free_or_cost_label == 1)
-                                                    @switch(true)
-                                                        @case($video->access == 'subscriber')
-                                                            <p class="p-tag"><i class="fas fa-crown" style="color:gold"></i></p>
-                                                        @break
-                                                        @case($video->access == 'registered')
-                                                            <p class="p-tag">{{ __('Register Now') }}</p>
-                                                        @break
-                                                        @case(!empty($video->ppv_price))
-                                                            <p class="p-tag">{{ $currency->symbol . ' ' . $video->ppv_price }}</p>
-                                                        @break
-                                                        @case(!empty($video->global_ppv) && $video->ppv_price == null)
-                                                            <p class="p-tag">{{ $video->global_ppv . ' ' . $currency->symbol }}</p>
-                                                        @break
-                                                        @case($video->global_ppv == null && $video->ppv_price == null)
-                                                            <p class="p-tag">{{ __('Free') }}</p>
-                                                        @break
-                                                    @endswitch
-                                                @endif
-                                            </a>
-
-                                            <div class="hover-buttons text-white">
-                                                <a href="{{ URL::to('category') . '/videos/' . $video->slug }}" aria-label="movie">
-                                                    @if($ThumbnailSetting->title == 1)
-                                                        <p class="epi-name text-left mt-2 m-0">
-                                                            {{ strlen($video->title) > 17 ? substr($video->title, 0, 18).'...' : $video->title }}
-                                                        </p>
-                                                    @endif
-
-                                                    @if($ThumbnailSetting->enable_description == 1)
-                                                        <p class="desc-name text-left m-0 mt-1">
-                                                            {{ strlen($video->description) > 75 ? substr(html_entity_decode(strip_tags($video->description)), 0, 75) . '...' : strip_tags($video->description) }}
-                                                        </p>
-                                                    @endif
-
-                                                    <div class="movie-time d-flex align-items-center pt-2">
-                                                        @if($ThumbnailSetting->age == 1 && !($video->age_restrict == 0))
-                                                            <span class="position-relative badge p-1 mr-2">{{ $video->age_restrict}}</span>
-                                                        @endif
-
-                                                        @if($ThumbnailSetting->duration == 1)
-                                                            <span class="position-relative text-white mr-2">
-                                                                {{ (floor($video->duration / 3600) > 0 ? floor($video->duration / 3600) . 'h ' : '') . floor(($video->duration % 3600) / 60) . 'm' }}
-                                                            </span>
-                                                        @endif
-                                                        @if($ThumbnailSetting->published_year == 1 && !($video->year == 0))
-                                                            <span class="position-relative badge p-1 mr-2">
-                                                                {{ __($video->year) }}
-                                                            </span>
-                                                        @endif
-                                                        @if($ThumbnailSetting->featured == 1 && $video->featured == 1)
-                                                            <span class="position-relative text-white">
-                                                               {{ __('Featured') }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-
-                                                    <div class="movie-time d-flex align-items-center pt-1">
-                                                        @php
-                                                            $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                ->where('categoryvideos.video_id', $video->id)
-                                                                ->pluck('video_categories.name');        
-                                                        @endphp
-
-                                                        @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                            <span class="text-white">
-                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                </a>
-
-                                                <a class="epi-name mt-2 mb-0 btn" href="{{ URL::to('category') . '/videos/' . $video->slug }}">
-                                                    <img class="d-inline-block ply" alt="ply" src="{{ URL::to('/assets/img/default_play_buttons.svg') }}" width="10%" height="10%"/> {{ __('Watch Now') }}
-                                                </a>
+                                                <div class="hover-buttons">
+                                                    <a class="" href="{{ URL::to('category/videos/'.$video->slug ) }}">
+                                                        <div class="playbtn" style="gap:5px">    {{-- Play --}}
+                                                            <span class="text pr-2"> Play </span>
+                                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="80px" viewBox="0 0 213.7 213.7" enable-background="new 0 0 213.7 213.7" xml:space="preserve">
+                                                                <polygon class="triangle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 " style="stroke: white !important;"></polygon>
+                                                                <circle class="circle" fill="none" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="106.8" cy="106.8" r="103.3" style="stroke: white !important;"></circle>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
+
+                                            
+                                        </a>
                                     </div>
                                 </li>
                             @empty
@@ -156,4 +72,11 @@
         </div>
     </div>
 </section>
+
+<style>
+    li.slide-item{padding:15px 6px;}
+    section#iq-favorites{margin-top: 2%;}
+</style>
+
+
 <?php include public_path("themes/$current_theme/views/footer.blade.php"); ?>
