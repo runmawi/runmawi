@@ -146,7 +146,7 @@ $(document).ready(function(){
  {
    // alert(query);
   $.ajax({
-   url:"{{ URL::to('/cpp/CPPlive_search') }}",
+   url:"{{ URL::to('/channel/video_search') }}",
    method:'GET',
    data:{query:query},
    dataType:'json',
