@@ -199,7 +199,7 @@ class SignupController extends Controller
                 'admin_user' => Auth::user(),
                 'Artists' => $Artists,
                 'City' => \App\City::get(),
-                'State' => \App\State::get(),
+                'State' => \App\State::orderBy('name', 'asc')->get(),
                 'AllCountry' => \App\AllCountry::get(),
                 'AllCity' => \App\AllCities::get(),
                 'AllState' => \App\AllStates::get(),
@@ -1539,7 +1539,7 @@ public function GetState(Request $request)
     
     $country_id = \App\AllCountry::where('name',$request->country_id)->pluck('id')->first();
 
-    $data['states'] = \App\AllStates::where("country_id", $country_id)
+    $data['states'] = \App\AllStates::where("country_id", $country_id)->orderBy('name','asc')
         ->get(["name", "id"]);
     return response()
         ->json($data);
