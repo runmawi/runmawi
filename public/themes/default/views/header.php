@@ -687,7 +687,7 @@
 
 
          <?php if($theme->loader_format == 1 && !(is_null($theme->loader_video))){ ?>
-            <video id="loader-video" class="video-js" autoplay muted preload="auto" data-setup='' loop style="width:300px;">
+            <video id="loader-video" class="video-js" autoplay muted preload="auto" data-setup='' loop >
                <source src="<?= URL::to('/public/uploads/settings/'.$theme->loader_video) ?>" type='video/mp4'>
             </video>
          <?php } else { ?>
