@@ -3710,7 +3710,7 @@ class AdminVideosController extends Controller
 
         if (Auth::user()->role == 'admin' && $pack != 'Business') {
             $data['status'] = 1;
-        } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 1) {
+        } elseif (Auth::user()->role == 'admin' && $pack == 'Business' && $settings->transcoding_access == 1 && $video->type != "embed"  && $video->type != "mp4_url" && $video->type != "m3u8_url"  ) {
             if ($video->processed_low < 100) {
                 $data['status'] = 0;
             } else {
