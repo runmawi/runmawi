@@ -25,7 +25,7 @@
                               <div class="border-bg">
                                  <div class="img-box">
                                     <a class="playTrailer" href="{{ url('category/videos/' . $cont_video->slug) }}" aria-label="Movie">
-                                       <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="{{ $cont_video->title}}" loading="lazy">
+                                       <img class="img-fluid w-100 flickity-lazyloaded" src="{{ url('public/uploads/images/' . $cont_video->image) }}" alt="{{ $cont_video->title}}" loading="lazy">
                                     </a>
                                     <!-- PPV price -->
                                     @if($ThumbnailSetting->free_or_cost_label == 1)
@@ -127,7 +127,7 @@
                                  <div class="border-bg">
                                     <div class="img-box">
                                           <a class="playTrailer" href="{{ URL::to('episode/'. $latest_view_episode->series->slug.'/'.$latest_view_episode->slug ) }}">
-                                             <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" data-src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" alt="{{ $latest_view_episode->title }}">
+                                             <img class="img-fluid w-100 flickity-lazyloaded" src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" data-src="{{ $latest_view_episode->image ? URL::to('public/uploads/images/'.$latest_view_episode->image) : $default_vertical_image_url }}" alt="{{ $latest_view_episode->title }}">
                                           </a>
                                     </div>
                                  </div>
@@ -197,6 +197,6 @@
       draggable: true,
       freeScroll: true,
       imagesLoaded: true,
-      lazyLoad: 7,
+      lazyLoad: true,
    });
 </script>
