@@ -45,10 +45,12 @@ $system_settings = App\SystemSetting::find(1);
     .reveal{margin-left:-57px;height:45px!important;background:#ed553b!important;
     color:#fff!important;position:absolute;right:0;border-radius:0!important;top:-61px;}
     .sign-in-page .btn {border: 0 !important;}
+    body{background: #000;}
+    .sign-in-from{background: #111111;}
 </style>
 </head>
 <body>
-<section class="sign-in-page" style="background:url('<?php echo URL::to('/').'/public/uploads/settings/'.$settings->login_content; ?>') no-repeat scroll 0 0;;background-size: cover;">
+<section class="sign-in-page" style="background:black;background-size: cover;">
    <div class="container">
       <div class="row  align-items-center justify-content-center height-self-center">
           <!-- <div class="col-lg-  col-md-6">

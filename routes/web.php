@@ -2003,7 +2003,7 @@ Route::group(['prefix' => 'channel', 'middleware' => ['channel']], function () {
     Route::post('/videos/update', ['before' => 'demo', 'uses' => 'ChannelVideosController@Channelupdate']);
 
     Route::get('/Channelusers_videodata', 'ChannelVideosController@ChannelVideo');
-    Route::get('/Channellive_search', 'ChannelVideosController@Channellive_search');
+    Route::get('/video_search', 'ChannelVideosController@video_search');
     Route::post('/m3u8url', 'ChannelVideosController@Channelm3u8url');
     Route::post('/embededcode', 'ChannelVideosController@ChannelEmbededcode');
     Route::post('/mp4url', 'ChannelVideosController@ChannelMp4url');

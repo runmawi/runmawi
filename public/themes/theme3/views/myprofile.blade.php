@@ -130,6 +130,8 @@ $settings = App\Setting::first();
       body.light-theme h4, body.light-theme p,body.light-theme h3,body.light-theme h5,body.light-theme h2 {
          color: <?php echo GetDarkText(); ?> !important;
       }
+      input.select2-search__field{width:100% !important;opacity: 0.8;}
+      input.select2-search__field::placeholder{color: black !important;}
       @media (max-width:768px) {
          ul.usk {
             display: flex !important;
@@ -335,7 +337,7 @@ $settings = App\Setting::first();
                         <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
                            <div class="row align-items-center mt-4">
-                              <h6>Update Profile:</h6>
+                              <h6 class="text-white" style="color: #fff !important;">Update Profile:</h6>
                               <div class="col-sm-4">
                                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
                                  <input type="file" multiple="true" class="form-control editbtn" name="avatar" id="avatar" />
@@ -532,7 +534,7 @@ $settings = App\Setting::first();
                   <h4 class="card-title mb-0">Preference for videos</h4>
                   <form action="{{ route('users-profile-Preference') }}" method="POST"  >
                   @csrf
-                  <input type="hidden" name="user_id" value="<?= $user->id ?>" />
+                  <input class="w-100" type="hidden" name="user_id" value="<?= $user->id ?>" />
 
                   <div class="col-sm-9 form-group p-0 mt-3">
                     <label><h5>Preference Language</h5></label>
@@ -584,7 +586,7 @@ $settings = App\Setting::first();
 
                   <div class="col-md-6 mt-3">
                      <a  style="color: white !important; " href="{{ route('Multi-profile-create') }}" >
-                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'add profile' ?>
+                        <i class="fa fa-plus-circle fa-100x"></i> <?= 'Add Profile' ?>
                      </a> 
                   </div>
 
@@ -660,7 +662,7 @@ $settings = App\Setting::first();
                                        @if(!empty($UserTVLoginCode->tv_code))
                                              <a type="button" href="{{ URL::to('user/tv-code/remove/') }}/{{$UserTVLoginCode->id}}" style="z-index:999; position: absolute; background-color:#df1a10!important;" class="btn round tv-code-remove text-red">Remove</a>
                                        @else
-                                       <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
+                                          <a type="button" id='tvCode' style='z-index:999; position: absolute;' class="btn round tv-code text-white">Add</a>
                                        @endif
                                           </div>
                                        </div>
@@ -775,9 +777,31 @@ border-radius: 4px;
         
 
   </div>
+  <style>
+   .disabled {
+       pointer-events: none;
+       opacity: 0.5;
+   }
+</style>
   
   <?php $settings = App\Setting::first(); ?>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+      $(document).ready(function() {
+         $('#tvCode').css('pointer-events','none');
+
+         $("#tv_code").on("input", function() {
+            if(($(this).val()) !== ''){
+               $('#tvCode').css('pointer-events','auto');
+            } else {
+               $('#tvCode').css('pointer-events','none');
+            }
+         });
+
+         
+      });
+  </script>
   
    <script>
 $(document).ready(function () {

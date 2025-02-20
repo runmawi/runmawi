@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\PpvPurchase;
 use App\Subscription;
+use App\PaymentSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -44,7 +45,17 @@ class AdminTransactionDetailsController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        return view('admin.transaction_details.index', compact('paginatedTransactions'));
+        $paymentSettings = [
+            'stripe_payment_settings' => PaymentSetting::where('payment_type', 'Stripe')->first(),
+            'paypal_payment_settings' => PaymentSetting::where('payment_type', 'PayPal')->first(),
+            'Razorpay_payment_setting' => PaymentSetting::where('payment_type', 'Razorpay')->first(),
+            'paystack_payment_setting' => PaymentSetting::where('payment_type', 'Paystack')->first(),
+            'Cinet_payment_setting' => PaymentSetting::where('payment_type', 'CinetPay')->first(),
+            'Paydunya_payment_setting' => PaymentSetting::where('payment_type', 'Paydunya')->first(),
+            'recurly_payment_setting' => PaymentSetting::where('payment_type', 'Recurly')->first(),
+        ];
+
+        return view('admin.transaction_details.index', compact('paginatedTransactions', 'paymentSettings'));
     }
 
     public function live_search(Request $request)

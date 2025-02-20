@@ -152,10 +152,11 @@ class ChannelController extends Controller
                             return $item;
             });
 
+            $video_categories_videos_paginate = $this->paginateCollection($video_categories_videos, $this->videos_per_page);
 
             $data = [
                 'Parent_videos_categories'  => $Parent_video_categories ,
-                'video_categories_videos' => $video_categories_videos ,
+                'video_categories_videos' => $video_categories_videos_paginate ,
                 'VideosCategory' => $VideoCategory
             ];
             

@@ -1049,13 +1049,13 @@ border-radius: 0px 4px 4px 0px;
                 <div class="col-sm-2 recurring_program_week_day" style="{{ !is_null($video->recurring_program_week_day)  ? '' : 'display: none' }}" >
                     <label class="m-0">{{ __('Week Days ')}} </label>
                     <select class="form-control" name="recurring_program_week_day" >
-                        <option value="1"  {{ !empty(($video->recurring_program_week_day=="1"))? "selected" : "" }}  >  Monday </option>
-                        <option value="2"  {{ !empty(($video->recurring_program_week_day=="2"))? "selected" : "" }} >  Tuesday </option>
-                        <option value="3"  {{ !empty(($video->recurring_program_week_day=="3"))? "selected" : "" }} > Wednesday </option>
-                        <option value="4"  {{ !empty(($video->recurring_program_week_day=="4"))? "selected" : "" }} > Thrusday</option>
-                        <option value="5"  {{ !empty(($video->recurring_program_week_day=="5"))? "selected" : "" }} > Friday</option>
-                        <option value="6"  {{ !empty(($video->recurring_program_week_day=="6"))? "selected" : "" }} > Saturday</option>
-                        <option value="7"  {{ !is_null(($video->recurring_program_week_day=="7"))? "selected" : "" }}  > Sunday </option>
+                        <option value="1"  {{ !empty(($video->recurring_program_week_day== 1))? "selected" : "" }}  >  Monday </option>
+                        <option value="2"  {{ !empty(($video->recurring_program_week_day==2))? "selected" : "" }} >  Tuesday </option>
+                        <option value="3"  {{ !empty(($video->recurring_program_week_day==3))? "selected" : "" }} > Wednesday </option>
+                        <option value="4"  {{ !empty(($video->recurring_program_week_day==4))? "selected" : "" }} > Thrusday</option>
+                        <option value="5"  {{ !empty(($video->recurring_program_week_day==5))? "selected" : "" }} > Friday</option>
+                        <option value="6"  {{ !empty(($video->recurring_program_week_day== 6))? "selected" : "" }} > Saturday</option>
+                        <option value="7"  {{ !empty(($video->recurring_program_week_day==7))? "selected" : "" }}  > Sunday </option>
                     </select>
                 </div>
 

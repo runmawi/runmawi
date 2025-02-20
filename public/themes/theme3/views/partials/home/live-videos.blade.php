@@ -7,7 +7,8 @@
 
                     {{-- Header --}}
                     <div class="iq-main-header d-flex align-items-center justify-content-between">
-                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->url ? URL::to($order_settings_list[1]->url) : null }} ">{{ optional($order_settings_list[3])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->header_name ? URL::to('/') . '/' . $order_settings_list[3]->url : '' }}">{{ optional($order_settings_list[3])->header_name }}</a></h4>
+                        <h4 class="main-title"><a href="{{ $order_settings_list[3]->header_name ? URL::to('/') . '/' . $order_settings_list[3]->url : '' }} ">{{ "View all" }}</a></h4>
                     </div>
 
                     <div class="favorites-contens">
