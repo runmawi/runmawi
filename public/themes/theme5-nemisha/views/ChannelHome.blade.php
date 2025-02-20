@@ -19,6 +19,11 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         top: 43%;
     }
     .container-fluid.overflow-hidden{padding-left: 0;}
+    .channel_nav .nav-link.active{background-color:var(--iq-primary) !important;color: #fff !important;}
+    .slick-slide.slick-current.slick-center a{background-color:var(--iq-primary) !important;color: #fff !important;}
+    .nav-tabs .nav-item a, .slick-slide.slick-center a{background-color: #fff !important;color: #000 !important;}
+    .nav-tabs .nav-item a:hover, .slick-slide.slick-center a:hover{background-color: #fff !important;color: #000 !important;}
+    html {scroll-behavior: smooth;}
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
@@ -91,21 +96,34 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
 <div class="channel_nav ">
     <div class="">
         <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
+            
             <li class="nav-item Allnav">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All</a>
             </li>
-            <li class="nav-item videonav">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
-            </li>
-            <li class="nav-item livenav">
-                <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
-            </li>
-            <li class="nav-item seriesnav">
-                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Series</a>
-            </li>
-            <li class="nav-item audionav">
-                <a class="nav-link" id="Audios-tab" data-toggle="tab" href="#Audios" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
-            </li>
+
+            @if(count($latest_video) > 0)
+                <li class="nav-item videonav">
+                    <a class="nav-link" href="#latest-videos" role="tab" aria-controls="profile" aria-selected="false">Videos</a>
+                </li>
+            @endif
+
+            @if(count($livetream) > 0)
+                <li class="nav-item livenav">
+                    <a class="nav-link"  href="#live-videos" role="tab" aria-controls="profile" aria-selected="false">Live Stream</a>
+                </li>
+            @endif
+
+            @if(count($latest_series) > 0)
+                <li class="nav-item seriesnav">
+                    <a class="nav-link"  href="#series-list" role="tab" aria-controls="contact" aria-selected="false">Series</a>
+                </li>
+            @endif
+
+            @if(count($audios) > 0)
+                <li class="nav-item audionav">
+                    <a class="nav-link"  href="#audios-list" role="tab" aria-controls="contact" aria-selected="false">Audios</a>
+                </li>
+            @endif
         </ul>
 
         <div class="tab-content container-fluid" id="myTabContent">
@@ -128,7 +146,7 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <hr>
-                <div class="Series_Categorynav ">
+                <div class="Series_Categorynav">
                     <?php foreach ($VideoCategory as $key => $videos_category) { ?>
                         <a class="nav-link dropdown-item" id="pills-kids-tab" data-toggle="pill"
                                 data-category-id=<?php echo $videos_category->id; ?> onclick="Series_Category(this)" href="#pills-kids"
@@ -241,7 +259,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
       
        ?>
     <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
+        <div class="container-fluid overflow-hidden" id="latest-videos">
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php include public_path('themes/theme5-nemisha/views/partials/home/latest-videos.php');  ?>
@@ -256,7 +274,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
       
        ?>
     <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
+        <div class="container-fluid overflow-hidden" id="live-videos">
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
@@ -274,7 +292,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
       
        ?>
     <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
+        <div class="container-fluid overflow-hidden" id="series-list">
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php
@@ -292,7 +310,7 @@ if(count($latest_video) > 0 || count($livetream) > 0 || count($latest_series) > 
       
        ?>
     <section id="iq-favorites">
-        <div class="container-fluid overflow-hidden">
+        <div class="container-fluid overflow-hidden" id="audios-list">
             <div class="row">
                 <div class="col-sm-12 ">
                     <?php

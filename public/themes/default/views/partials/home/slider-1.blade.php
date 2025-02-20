@@ -19,7 +19,7 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                             <h2 class="text-white" style="color: var(--iq-white) !important;">
-                                {{ strlen($slider_video->title) > 15 ? substr($slider_video->title, 0, 50) . '...' : $slider_video->title }}
+                                {{ $slider_video->title }}
                             </h2>
                             <div class="d-flex justify-content-evenly align-items-center r-mb-23">
                                 <a href="{{ $slider_video->link }}" class="btn bd">
@@ -86,7 +86,7 @@
                             $decode_title = strip_tags(html_entity_decode($title));
                         @endphp
                         <h2>
-                            {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
+                            {{ $decode_title }}
                         </h2>
                     @endif
         
@@ -126,7 +126,7 @@
             <div class="position-absolute _meta_desc_data_">
                 <div class="bgc">
                     <h2>
-                        {{ strlen($series->title) > 15 ? substr($series->title, 0, 50) . '...' : $series->title }}
+                        {{ $series->title }}
                     </h2>
         
                     <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
@@ -177,7 +177,7 @@
             <div class="position-absolute _meta_desc_data_">
                 <div class="bgc">
                     <h2>
-                        {{ strlen($Episode_slider->title) > 15 ? substr($Episode_slider->title, 0, 50) . '...' : $Episode_slider->title }}
+                        {{ $Episode_slider->title }}
                     </h2>
         
                     <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
@@ -220,7 +220,7 @@
             <div class="position-absolute _meta_desc_data_">
                 <div class="bgc">
                     <h2>
-                        {{ strlen($slider_live->title) > 15 ? substr($slider_live->title, 0, 50) . '...' : $slider_live->title }}
+                        {{ $slider_live->title }}
                     </h2>
         
                     <div class="descp" style="overflow-y: scroll; max-height: 250px; scrollbar-width: none; color:#fff !important;">
@@ -261,7 +261,7 @@
                     <div class="row align-items-center bl h-100">
                         <div class="col-xl-6 col-lg-12 col-md-12">
                             <h2 class="text-white">
-                                {{ strlen($live_event_banner->title) > 15 ? substr($live_event_banner->title, 0, 50) . '...' : $live_event_banner->title }}
+                                {{ $live_event_banner->title }}
                             </h2>
 
                             <div class="d-flex align-items-center">
@@ -315,7 +315,7 @@
                                     $decode_title = strip_tags(html_entity_decode($title));
                                 @endphp
                                 <h2 class="">
-                                    {{ strlen($decode_title) > 15 ? substr($decode_title, 0, 50) . '...' : $decode_title }}
+                                    {{ $decode_title }}
                                 </h2>
                             @endif
 
@@ -406,7 +406,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: 0;
+        left: 0;    
         width: 100%;
         height: 100%;
         background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), 
@@ -414,7 +414,7 @@
         z-index: 0;
     }
 
-#home-slider .flickity-viewport{height: calc(100vw / 3.5) !important;}
+#home-slider .flickity-viewport{height: calc(100vw / 2.5) !important;}
 
     ._banner_img {
         position: relative;

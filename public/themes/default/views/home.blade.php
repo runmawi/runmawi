@@ -295,6 +295,32 @@ overflow-x:hidden;
 overflow-y:scroll;
 }
 
+.home-sliders {
+    width: 100%; 
+    height: auto; 
+}
+
+.home-sliders .flickity-viewport {
+    width: 100%;
+    height: auto; 
+}
+
+.home-sliders .flickity-slider {
+    display: flex;
+}
+
+.home-sliders .slide {
+    width: 100%; 
+    height: auto;
+}
+
+.home-sliders img {
+    width: 100%; 
+    height: auto;
+    object-fit: contain;
+}
+
+
 </style>
 <script>
 var scheduler_content = '<?= Session::get('scheduler_content'); ?>';

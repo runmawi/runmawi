@@ -14231,12 +14231,20 @@ $cpanel->end();
                                       ->get()
                                       ->map(function ($item) use($user_id) {
                                         if($item['access'] == 'subscriber'){
+                                            $item['share_url'] = URL::to('becomesubscriber');
+                                        }elseif($item['access'] == 'ppv'){
+                                          $item['share_url'] = (URL::to('app/live/'.$item->slug));
+                                        }else{
+                                          $item['share_url'] =null;
+                                        }
+                                        if($item['access'] == 'subscriber'){
                                           $subs_purchase = !empty($user_id) ? Subscription::where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                           $subs_exists_check_query = 0;
                                           if($subs_purchase){
                                             $new_date = Carbon::parse($subs_purchase->ends_at);
                                             $currentdate = Carbon::now();
-                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'subscriber'; 
+                                            $item['access'] = $new_date->isAfter($currentdate) ? 'guest' : 'subscriber'; 
+                                            // $item['share_url'] = $new_date->isAfter($currentdate) ? null : URL::to('becomesubscriber'); 
                                           }
                                         }elseif($item['access'] == 'ppv'){
                                           $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
@@ -14244,19 +14252,16 @@ $cpanel->end();
                                           if($ppv_purchase){
                                             $new_date = Carbon::parse($ppv_purchase->to_time);
                                             $currentdate = Carbon::now();
-                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'ppv'; 
+                                            $item['access'] = $new_date->isAfter($currentdate) ? 'guest' : "PPV"; 
+                                            // $item['share_url'] = $new_date->isAfter($currentdate) ? null : (URL::to('app/live/'.$item->slug)); 
                                           }
                                         }else{
                                           $item['access'] = 'guest';
+                                          // $item['share_url'] = null;
                                         }
+                                        
 
-                                        if($item['access'] == 'subscriber'){
-                                            $item['share_url'] = URL::to('becomesubscriber');
-                                        }elseif($item['access'] == 'ppv'){
-                                          $item['share_url'] = (URL::to('app/live/'.$item->slug));
-                                        }else{
-                                          $item['share_url'] =null;
-                                        }
+                                        
                                         
 
 

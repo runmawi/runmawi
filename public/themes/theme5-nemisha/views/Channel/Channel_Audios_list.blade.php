@@ -15,13 +15,13 @@
                     </div>
                     
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline  row p-0 mb-4">
+                        <ul class="list-inline  row p-0 mb-4">
 
                             @if (count($audios) > 0)
 
-                                @foreach ($audios as $key => $audio)
+                                @forelse ($audios as $key => $audio)
 
-                                    <li class="slide-item col-6 col-sm-3 col-md-3 col-xs-12">
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
 
                                         <a href="{{ URL::to('audio/' . $audio->slug) }}">
                                             <div class="block-images position-relative">
@@ -114,17 +114,22 @@
                                             </div>
                                         </a>
                                     </li>
-                                @endforeach
+                                @empty
+                                    <div class="col-md-12 text-center mt-4"
+                                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                        <h3 class="text-center">No Audio Available</h3>
+                                    </div>
+                                @endforelse
                             @else
                                 <div class="col-md-12 text-center mt-4"
                                     style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-                                    <h3 class="text-center">No Video Available</h3>
+                                    <h3 class="text-center">No Audio Available</h3>
                                 </div>
                             @endif
                         </ul>
 
                         <div class="col-md-12 pagination justify-content-end">
-                            {!! count($audios) != 0 ? $audios->links() : " "!!}
+                            {!! $audios->links() !!}
                         </div>
 
                     </div>

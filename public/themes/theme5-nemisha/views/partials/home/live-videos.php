@@ -5,11 +5,11 @@
   <?php if( Route::currentRouteName() == "ChannelHome"){?>
     
     <h5 class="main-title">
-        <a href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">
+        <a href="<?php echo route('Channel_livevideos_list',Request::segment(2)); ?>">
           <?php if ($order_settings_list[3]->header_name) { echo $order_settings_list[3]->header_name ;} else { echo "" ; } ?></a>
     </h5>
 
-    <a class="see" href="<?php echo route('Channel_series_list',Request::segment(2)); ?>">See All </a>
+    <a class="see" href="<?php echo route('Channel_livevideos_list',Request::segment(2)); ?>">See All </a>
 
   <?php }else{ ?>
 
