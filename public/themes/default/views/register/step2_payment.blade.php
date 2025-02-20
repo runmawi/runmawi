@@ -6,12 +6,12 @@
     
     $PayPalpayment = App\PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
 
-    $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+    $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->paypal_live_mode : null;
 
     $paypal_signature = null;
 
     if (!is_null($PayPalpayment)) {
-        switch ($PayPalpayment->live_mode) {
+        switch ($PayPalpayment->paypal_live_mode) {
             case 0:
                 $paypalClientId = $PayPalpayment->test_paypal_signature;
                 break;
@@ -1081,7 +1081,7 @@
                                     plans_id: plans_id,
                                     subscriptionID: data.subscriptionID,
                                     coupon_code: final_coupon_code_stripe,
-                                    _token: '<?= csrf_token() ?>'
+                                    _token: '<?= csrf_token() ?>',
                                     userId: '{{ @$intent_stripe->id }}',
                                 },
 

@@ -121,7 +121,7 @@ class ChannelVideosController extends Controller
         }
     }
 
-    public function Channellive_search(Request $request)
+    public function video_search(Request $request)
     {
         // print_r($request->get('query'));exit;
         if ($request->ajax())
