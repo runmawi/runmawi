@@ -14251,6 +14251,7 @@ $cpanel->end();
                                         }else{
                                           $item['access'] = 'guest';
                                           $item['share_url'] = null;
+                                          $item['check'] = null;
                                         }
                                         
 
