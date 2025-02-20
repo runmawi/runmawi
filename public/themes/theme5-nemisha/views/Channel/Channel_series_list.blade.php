@@ -17,99 +17,113 @@
                         </h4>                   
                     </div>
 
-                    <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
-                            @if (isset($respond_data['Series']))
+                    @if (count($respond_data['Series']) > 0)
+                        <div class="favorites-contens">
+                            <ul class="list-inline row p-0 mb-0">
+                                @if (isset($respond_data['Series']))
 
-                                @foreach ($respond_data['Series'] as $key => $Serie)
+                                    @forelse ($respond_data['Series'] as $key => $Serie)
 
-                                    <li class="slide-item col-sm-3 col-md-3 col-xs-12">
+                                        <li class="slide-item col-sm-2 col-md-2 col-xs-12">
 
-                                       <a  href="{{ URL::to('play_series/'. $Serie->slug ) }}">
-                                            <div class="block-images position-relative">
-                                                <div class="img-box">
-                                                    <img src="{{ $Serie->image ? URL::to('/public/uploads/images/'.$Serie->image) : $default_vertical_image_url }}" class="img-fluid" alt="Channel-Video-Image">
-                                                </div>
+                                        <a  href="{{ URL::to('play_series/'. $Serie->slug ) }}">
+                                                <div class="block-images position-relative">
+                                                    <div class="img-box">
+                                                        <img src="{{ $Serie->image ? URL::to('/public/uploads/images/'.$Serie->image) : $default_vertical_image_url }}" class="img-fluid" alt="Channel-Video-Image">
+                                                    </div>
 
-                                                <div class="block-description">
-                                                    <div class="hover-buttons">
-                                                        <a href="{{ URL::to('play_series/'. $Serie->slug ) }}">
-                                                            <img class="ply" src="{{ URL::to('assets/img/play.svg') }} ">
-                                                        </a>
-                                                    <div>
-                                                </div>
+                                                    <div class="block-description">
+                                                        <div class="hover-buttons">
+                                                            <a href="{{ URL::to('play_series/'. $Serie->slug ) }}">
+                                                                <img class="ply" src="{{ URL::to('assets/img/play.svg') }} ">
+                                                            </a>
+                                                        <div>
+                                                    </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div>
-                                                <div class="mt-2 d-flex justify-content-between p-0">
-                                                    @if ($respond_data['ThumbnailSetting']->title == 1)
-                                                        <h6>{{ strlen($Serie->title) > 17 ? substr($Serie->title, 0, 18) . '...' : $Serie->title }}</h6>
-                                                    @endif
+                                                <div>
+                                                    <div class="mt-2 d-flex justify-content-between p-0">
+                                                        @if ($respond_data['ThumbnailSetting']->title == 1)
+                                                            <h6>{{ strlen($Serie->title) > 17 ? substr($Serie->title, 0, 18) . '...' : $Serie->title }}</h6>
+                                                        @endif
 
-                                                    @if ($respond_data['ThumbnailSetting']->age == 1 && $Serie->age_restrict != null )
-                                                        <div class="badge badge-secondary">
-                                                            {{ $Serie->age_restrict . ' ' . '+' }}
+                                                        @if ($respond_data['ThumbnailSetting']->age == 1 && $Serie->age_restrict != null )
+                                                            <div class="badge badge-secondary">
+                                                                {{ $Serie->age_restrict . ' ' . '+' }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+
+                                                    <div class="movie-time my-2">
+
+                                                        <!-- Rating -->
+
+                                                        @if ($respond_data['ThumbnailSetting']->rating == 1 && $Serie->rating != null)
+                                                            <span class="text-white">
+                                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                {{ $Serie->rating }}
+                                                            </span>
+                                                        @endif
+
+                                                        <!-- Featured -->
+                                                        @if ($respond_data['ThumbnailSetting']->featured == 1 && $Serie->featured != null && $Serie->featured == 1)
+                                                            <span class="text-white">
+                                                                <i class="fa fa-flag" aria-hidden="true"></i>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+
+                                                        {{-- Source --}}
+                                                    <div class="movie-time my-2">
+                                                        <span class="text-white">
+                                                            {{ $Serie->source }}
+                                                        </span>
+                                                    </div>
+
+                                                        <!-- published_year -->
+                                                    @if ($respond_data['ThumbnailSetting']->published_year == 1 && $Serie->year != null)
+                                                        <div class="movie-time my-2">
+                                                            <span class="text-white">
+                                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                    {{ $Serie->year }}
+                                                            </span>
                                                         </div>
                                                     @endif
                                                 </div>
+                                            </a>
+                                        </li>
+                                    @empty
+                                        <div class="col-md-12 text-center mt-4"
+                                            style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                            <p>
+                                            <h3 class="text-center">{{ __('No Series Available') }}</h3>
+                                        </div>
+                                    @endforelse
+                                @endif
+                            </ul>
 
+                            <div class="col-md-12 pagination justify-content-end">
+                                {!! $respond_data['Series']->links() !!}
+                            </div>
 
-                                                <div class="movie-time my-2">
-
-                                                    <!-- Rating -->
-
-                                                    @if ($respond_data['ThumbnailSetting']->rating == 1 && $Serie->rating != null)
-                                                        <span class="text-white">
-                                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                             {{ $Serie->rating }}
-                                                        </span>
-                                                    @endif
-
-                                                    <!-- Featured -->
-                                                    @if ($respond_data['ThumbnailSetting']->featured == 1 && $Serie->featured != null && $Serie->featured == 1)
-                                                        <span class="text-white">
-                                                            <i class="fa fa-flag" aria-hidden="true"></i>
-                                                        </span>
-                                                    @endif
-                                                </div>
-
-                                                    {{-- Source --}}
-                                                <div class="movie-time my-2">
-                                                    <span class="text-white">
-                                                        {{ $Serie->source }}
-                                                    </span>
-                                                </div>
-
-                                                    <!-- published_year -->
-                                                @if ($respond_data['ThumbnailSetting']->published_year == 1 && $Serie->year != null)
-                                                    <div class="movie-time my-2">
-                                                        <span class="text-white">
-                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                {{ $Serie->year }}
-                                                        </span>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            @endif
-                        </ul>
-
-                        <div class="col-md-12 pagination justify-content-end">
-                            {!! $respond_data['Series']->links() !!}
                         </div>
-
-                    </div>
+                    @else
+                        <div class="col-md-12 text-center mt-4"
+                            style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                            <p>
+                            <h3 class="text-center">{{ __('No Series Available') }}</h3>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     @else
         <div class="col-md-12 text-center mt-4"
             style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-            <h3 class="text-center">No Video Available</h3>
+            <h3 class="text-center">{{ __('No Series Available') }}</h3>
         </div>
     @endif
 </section>
