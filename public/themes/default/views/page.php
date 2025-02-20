@@ -23,6 +23,11 @@
         font-size: 27px;
         font-weight: 400;
     }
+
+    body.light-theme .page-body li {
+      color: <?php echo $GetLightText; ?>;
+      }
+
 </style>
 
     <div class="container">
