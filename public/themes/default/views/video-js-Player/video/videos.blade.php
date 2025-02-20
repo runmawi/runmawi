@@ -60,7 +60,7 @@
 
                 <video id="my-video" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-play-control vjs-fluid vjs_video_1462 vjs-controls-enabled vjs-picture-in-picture-control vjs-workinghover vjs-v7 vjs-quality-selector vjs-has-started vjs-paused vjs-layout-x-large vjs-user-inactive" controls
                     width="auto" height="auto" poster="{{ $videodetail->player_image_url }}" playsinline="playsinline"
-                    autoplay>
+                    autoplay="false">
                     <source src="{{ $videodetail->videos_url }}" type="{{ $videodetail->video_player_type }}">
 
                                     {{-- Subtitle --}}
