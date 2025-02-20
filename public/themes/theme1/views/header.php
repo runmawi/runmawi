@@ -136,18 +136,19 @@
     </title>
     <meta name="description" content="<?php
     if (!empty($videos_data)) {
-        echo $videos_data->description;
+        echo htmlspecialchars($videos_data->description);
     } elseif (!empty($episdoe)) {
-        echo $episdoe->description;
+        echo htmlspecialchars($episdoe->description);
     } elseif (!empty($series)) {
-        echo $series->description;
+        echo htmlspecialchars($series->description);
     } elseif (!empty($livestream)) {
-        echo $livestream->description;
+        echo htmlspecialchars($livestream->description);
     } elseif (!empty($SiteMeta_page)) {
-        echo $SiteMeta_page->meta_description . ' | ' . $settings->website_name;
+        echo htmlspecialchars($SiteMeta_page->meta_description . ' | ' . $settings->website_name);
     } else {
-        echo $settings->website_description;
-    } //echo $settings;  ?>" />
+        echo htmlspecialchars($settings->website_description);
+        }
+    ?>" />
 
     <!-- Schema.org markup for Google+ -->
     <meta itemprop="name" content="<?php
@@ -166,20 +167,21 @@
     } else {
         echo urldecode($uppercase) . ' | ' . $settings->website_name;
     } ?>">
-    <meta itemprop="description" content="<?php
+  <meta itemprop="description" content="<?php
     if (!empty($videos_data)) {
-        echo $videos_data->description;
+        echo htmlspecialchars($videos_data->description);
     } elseif (!empty($episdoe)) {
-        echo $episdoe->description;
+        echo htmlspecialchars($episdoe->description);
     } elseif (!empty($series)) {
-        echo $series->description;
+        echo htmlspecialchars($series->description);
     } elseif (!empty($livestream)) {
-        echo $livestream->description;
+        echo htmlspecialchars($livestream->description);
     } elseif (!empty($SiteMeta_page)) {
-        echo $SiteMeta_page->meta_description . ' | ' . $settings->website_name;
+        echo htmlspecialchars($SiteMeta_page->meta_description . ' | ' . $settings->website_name);
     } else {
-        echo $settings->website_description;
-    } //echo $settings;  ?>">
+        echo htmlspecialchars($settings->website_description);
+    }
+?>" />
     <meta itemprop="image"
         content="<?php
         if (!empty($videos_data)) {
@@ -217,20 +219,21 @@
     } else {
         echo urldecode($uppercase) . ' | ' . $settings->website_name;
     } ?>">
-    <meta name="twitter:description" content="<?php
+  <meta name="twitter:description" content="<?php
     if (!empty($videos_data)) {
-        echo $videos_data->description;
+        echo htmlspecialchars($videos_data->description);
     } elseif (!empty($episdoe)) {
-        echo $episdoe->description;
+        echo htmlspecialchars($episdoe->description);
     } elseif (!empty($series)) {
-        echo $series->description;
+        echo htmlspecialchars($series->description);
     } elseif (!empty($livestream)) {
-        echo $livestream->description;
+        echo htmlspecialchars($livestream->description);
     } elseif (!empty($SiteMeta_page)) {
-        echo $SiteMeta_page->meta_description . ' | ' . $settings->website_name;
+        echo htmlspecialchars($SiteMeta_page->meta_description . ' | ' . $settings->website_name);
     } else {
-        echo $settings->website_description;
-    } //echo $settings;  ?>">
+        echo htmlspecialchars($settings->website_description);
+    }
+    ?>" />
     <!-- Twitter summary card with large image must be at least 280x150px -->
     <meta name="twitter:image:src"
         content="<?php
@@ -282,19 +285,19 @@
         } //echo $settings;  ?>" />
     <meta property="og:description" content="<?php
     if (!empty($videos_data)) {
-        echo $videos_data->description;
+        echo htmlspecialchars($videos_data->description);
     } elseif (!empty($episdoe)) {
-        echo $episdoe->description;
+        echo htmlspecialchars($episdoe->description);
     } elseif (!empty($series)) {
-        echo $series->description;
+        echo htmlspecialchars($series->description);
     } elseif (!empty($livestream)) {
-        echo $livestream->description;
+        echo htmlspecialchars($livestream->description);
     } elseif (!empty($SiteMeta_page)) {
-        echo $SiteMeta_page->meta_description . ' | ' . $settings->website_name;
+        echo htmlspecialchars($SiteMeta_page->meta_description . ' | ' . $settings->website_name);
     } else {
-        echo $settings->website_description;
-    } //echo $settings;  ?>" />
-
+        echo htmlspecialchars($settings->website_description);
+    }
+    ?>" />
 
     <?php $Linking_Setting = App\LinkingSetting::first();
     $site_url = \Request::url();
