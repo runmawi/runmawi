@@ -55,7 +55,6 @@
     });
 @endphp
 
-
 @if (!empty($data) && $data->isNotEmpty())
     @foreach( $data as $key => $video_category )
         <section id="iq-trending iq-favorites-{{ $key }}">
