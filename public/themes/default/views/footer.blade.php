@@ -135,9 +135,9 @@
 
             foreach($cmspages as $key => $page) {
               if($page->slug == 'contact-us') { ?>
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" style="color:#fff !important;"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
               <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" style="color:#fff !important;"> <?= __($page->title) ?> </a>
+              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
             <?php } } ?>
           </p>
           <p class="text-center">
@@ -425,9 +425,17 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
           text-align: center;
       }
   }
-  body.light-theme footer a, body.light-theme footer p{color: #000  !important; }
-  footer p{color: #fff  !important; }
-  footer a{color: #fff  !important; }
+  /* Default (Dark Theme) */
+  footer a,
+  footer p {
+      color: #fff !important; /* White text for dark theme */
+  }
+
+  /* Light Theme */
+  body.light-theme footer a,
+  body.light-theme footer p {
+      color: #000 !important; /* Black text for light theme */
+  }
   .footer_link{border-right: 2px solid #fff;padding: 0 5px;}
   .footer_link:last-child{border-right:none;}
 </style>

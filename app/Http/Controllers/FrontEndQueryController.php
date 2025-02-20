@@ -1145,88 +1145,87 @@ class FrontEndQueryController extends Controller
 
     public function watchLater() {
         if (!Auth::guest()) {
-   
             $Watchlater_video = Watchlater::where('user_id', Auth::user()->id)->where('type', 'channel')->latest()->pluck('video_id')->toArray();
             $Watchlater_episode = Watchlater::where('user_id', Auth::user()->id)->where('type', 0)->pluck('episode_id');
             $Watchlater_live = Watchlater::where('user_id', Auth::user()->id)->where('type', 'live')->pluck('live_id');
-// dd($Watchlater_video);
-            $check_Kidmode = 0 ;
-        
+            $check_Kidmode = 0;
+    
+            // Ensure $data is always initialized
+            $data = collect([]);
+    
             if (!empty($Watchlater_video)) {
                 $ids = implode(',', array_filter($Watchlater_video));
-                $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                                'duration','rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-                                                'expiry_date','active','status','draft')
-            
-                ->where('active',1)->where('status', 1)->whereIn('id', $Watchlater_video)
-                 ;
-                // dd($data);
-            
-                if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-                {
-                    $data = $data->whereNotIn('videos.id',Block_videos());
+                $data = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price',
+                                        'duration', 'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'player_image', 'details', 'description',
+                                        'expiry_date', 'active', 'status', 'draft')
+                            ->where('active', 1)
+                            ->where('status', 1)
+                            ->whereIn('id', $Watchlater_video);
+    
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                    $data = $data->whereNotIn('videos.id', Block_videos());
                 }
-            
-                if( !Auth::guest() && $check_Kidmode == 1 )
-                {
-                    $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+    
+                if (!Auth::guest() && $check_Kidmode == 1) {
+                    $data = $data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
                 }
-            
+    
                 if (!empty($ids)) {
                     $data = $data->orderByRaw("FIELD(id, $ids)");
                 }
-
+    
                 $data = $data->limit(30)->get()->map(function ($item) {
-                    $item['image_url']          =  $item->image != null ?  $this->BaseURL.('s/images/'.$item->image) :  default_vertical_image_url() ;
-                    $item['Player_image_url']   =  $item->player_image != null ?  $this->BaseURL.('/images/'.$item->player_image) :  default_horizontal_image_url() ;
-                    $item['TV_image_url']       =  $item->video_tv_image != null ?  $this->BaseURL.('/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
-                    $item['source_type']        = "Videos" ;
+                    $item['image_url'] = $item->image != null ? $this->BaseURL . ('s/images/' . $item->image) : default_vertical_image_url();
+                    $item['Player_image_url'] = $item->player_image != null ? $this->BaseURL . ('/images/' . $item->player_image) : default_horizontal_image_url();
+                    $item['TV_image_url'] = $item->video_tv_image != null ? $this->BaseURL . ('/images/' . $item->video_tv_image) : default_horizontal_image_url();
+                    $item['source_type'] = "Videos";
                     return $item;
                 });
             }
-            $episode_data = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
-                                            'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
-                                ->where('active', '1')
-                                ->where('status', '1')
-                                ->whereIn('id',$Watchlater_episode);      
-
-            if( !Auth::guest() && $check_Kidmode == 1 )
-            {
-                $episode_data = $episode_data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+    
+            // Process episodes
+            $episode_data = Episode::select('id', 'title', 'slug', 'rating', 'access', 'series_id', 'season_id', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'episode_description',
+                                            'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'uploaded_by', 'user_id')
+                                    ->where('active', '1')
+                                    ->where('status', '1')
+                                    ->whereIn('id', $Watchlater_episode);
+    
+            if (!Auth::guest() && $check_Kidmode == 1) {
+                $episode_data = $episode_data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
             }
-
-            $episode_data = $episode_data->latest()->limit(30)->get()->map(function($item){
-                $item['series'] = Series::where('id',$item->series_id);
-                return $item ;
+    
+            $episode_data = $episode_data->latest()->limit(30)->get()->map(function ($item) {
+                $item['series'] = Series::where('id', $item->series_id);
+                return $item;
             });
     
+            // Process livestreams
             $livestreams_data = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
-                                            'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
-                                            'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
-                                            'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
-                                        ->where('active', '1')
-                                        ->where('status', 1)
-                                        ->whereIn('id',$Watchlater_live);
-
-            if( !Auth::guest() && $check_Kidmode == 1 )
-            {
-                $livestreams_data = $livestreams_data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+                                                    'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
+                                                    'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
+                                                    'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day')
+                                            ->where('active', '1')
+                                            ->where('status', 1)
+                                            ->whereIn('id', $Watchlater_live);
+    
+            if (!Auth::guest() && $check_Kidmode == 1) {
+                $livestreams_data = $livestreams_data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
             }
-
-            $livestreams_data = $livestreams_data->latest()->limit(30)->get()->map(function ($item){
-                                    $item['image_url'] = $item->image != null ? $this->BaseURL.('s/images/'.$item->image) : default_vertical_image_url() ;
-                                    $item['Player_image_url'] = $item->player_image != null ?  $this->BaseURL.('s/images/'.$item->player_image) : default_horizontal_image_url() ;
-                                    $item['tv_image_url'] = $item->video_tv_image != null ? $this->BaseURL.('s/images/'.$item->Tv_live_image) : default_horizontal_image_url()  ;
-                                    $item['source']    = "Livestream";
-                                    return $item;
-                                });
-
-        }else{
+    
+            $livestreams_data = $livestreams_data->latest()->limit(30)->get()->map(function ($item) {
+                $item['image_url'] = $item->image != null ? $this->BaseURL . ('s/images/' . $item->image) : default_vertical_image_url();
+                $item['Player_image_url'] = $item->player_image != null ? $this->BaseURL . ('s/images/' . $item->player_image) : default_horizontal_image_url();
+                $item['tv_image_url'] = $item->video_tv_image != null ? $this->BaseURL . ('s/images/' . $item->Tv_live_image) : default_horizontal_image_url();
+                $item['source'] = "Livestream";
+                return $item;
+            });
+    
+        } else {
             $data = collect([]);
             $episode_data = collect([]);
             $livestreams_data = collect([]);
         }
-        // dd($data);
+    
         return [
             'videos' => collect($data),
             'episodes' => collect($episode_data),
@@ -1236,67 +1235,73 @@ class FrontEndQueryController extends Controller
 
     public function wishlist() {
         if (!Auth::guest()) {
-    
             $Wishlist_video = Wishlist::where('user_id', Auth::user()->id)->where('type', 'channel')->latest()->pluck('video_id')->toArray();
             $Wishlist_episode = Wishlist::where('user_id', Auth::user()->id)->where('type', 0)->latest()->pluck('episode_id')->toArray();
     
-            $check_Kidmode = 0 ;
+            $check_Kidmode = 0;
+            
+            // Ensure $data is always initialized
+            $data = collect([]);
     
-            $ids = implode(',', array_filter($Wishlist_video));
-            $data = Video::select('id','title','slug','year','rating','access','publish_type','global_ppv','publish_time','ppv_price',
-                                            'rating','image','featured','age_restrict','video_tv_image','player_image','details','description',
-                                            'expiry_date','active','status','draft')
+            if (!empty($Wishlist_video)) {
+                $ids = implode(',', array_filter($Wishlist_video));
+                $data = Video::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'global_ppv', 'publish_time', 'ppv_price',
+                                        'rating', 'image', 'featured', 'age_restrict', 'video_tv_image', 'player_image', 'details', 'description',
+                                        'expiry_date', 'active', 'status', 'draft')
+                            ->where('active', 1)
+                            ->where('status', 1)
+                            ->whereIn('id', $Wishlist_video);
     
-            ->where('active',1)->where('status', 1)->whereIn('id',$Wishlist_video);
+                if (Geofencing() != null && Geofencing()->geofencing == 'ON') {
+                    $data = $data->whereNotIn('videos.id', Block_videos());
+                }
     
-            if( Geofencing() !=null && Geofencing()->geofencing == 'ON')
-            {
-                $data = $data->whereNotIn('videos.id',Block_videos());
+                if (!Auth::guest() && $check_Kidmode == 1) {
+                    $data = $data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
+                }
+    
+                if (!empty($ids)) {
+                    $data = $data->orderByRaw("FIELD(id, $ids)");
+                }
+    
+                $data = $data->latest()->limit(30)->get()->map(function ($item) {
+                    $item['image_url'] = $item->image != null ? $this->BaseURL . ('s/images/' . $item->image) : default_vertical_image_url();
+                    $item['Player_image_url'] = $item->player_image != null ? $this->BaseURL . ('/images/' . $item->player_image) : default_horizontal_image_url();
+                    $item['TV_image_url'] = $item->video_tv_image != null ? $this->BaseURL . ('/images/' . $item->video_tv_image) : default_horizontal_image_url();
+                    $item['source_type'] = "Videos";
+                    return $item;
+                });
             }
     
-            if( !Auth::guest() && $check_Kidmode == 1 )
-            {
-                $data = $data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
-            }
-
-            if (!empty($ids)) {
-                $data = $data->orderByRaw("FIELD(id, $ids)");
-            }
+            // Ensure $episode_data is always initialized
+            $episode_data = collect([]);
     
-            $data = $data->latest()->limit(30)->get()->map(function ($item) {
-                $item['image_url']          =  $item->image != null ?  $this->BaseURL.('s/images/'.$item->image) :  default_vertical_image_url() ;
-                $item['Player_image_url']   =  $item->player_image != null ?  $this->BaseURL.('/images/'.$item->player_image) :  default_horizontal_image_url() ;
-                $item['TV_image_url']       =  $item->video_tv_image != null ?  $this->BaseURL.('/images/'.$item->video_tv_image) :  default_horizontal_image_url() ;
-                $item['source_type']        = "Videos" ;
-                return $item;
-            });
-
-            $episode_data = Episode::select('id','title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
-                                            'duration','rating','image','featured','tv_image','player_image','uploaded_by','user_id')
-                                ->where('active', '1')
-                                ->where('status', '1')
-                                ->whereIn('id',$Wishlist_episode);                                
-
-            if( !Auth::guest() && $check_Kidmode == 1 )
-            {
-                $episode_data = $episode_data->whereNull('age_restrict')->orwhereNotBetween('age_restrict',  [ 0, 12 ] );
+            if (!empty($Wishlist_episode)) {
+                $episode_data = Episode::select('id', 'title', 'slug', 'rating', 'access', 'series_id', 'season_id', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'episode_description',
+                                                'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'uploaded_by', 'user_id')
+                                    ->where('active', '1')
+                                    ->where('status', '1')
+                                    ->whereIn('id', $Wishlist_episode);
+    
+                if (!Auth::guest() && $check_Kidmode == 1) {
+                    $episode_data = $episode_data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
+                }
+    
+                $episode_data = $episode_data->latest()->get()->map(function ($item) {
+                    $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only necessary fields
+                    return $item;
+                });
             }
-
-            $episode_data = $episode_data->latest()->get()->map(function($item){
-                                $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only the necessary fields
-                                return $item;
-                            });
-
-        }else{
+        } else {
             $data = collect([]);
             $episode_data = collect([]);
         }
-        // return $data;
+    
         return [
             'videos' => collect($data),
             'episodes' => collect($episode_data),
         ];
-    }
+    } 
 
     public function latestViewedEpisode() {
         if (Auth::guest() != true) {

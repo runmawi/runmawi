@@ -406,7 +406,7 @@
         content: "";
         position: absolute;
         top: 0;
-        left: 0;
+        left: 0;    
         width: 100%;
         height: 100%;
         background: linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), 
@@ -414,7 +414,7 @@
         z-index: 0;
     }
 
-#home-slider .flickity-viewport{height: calc(100vw / 3.5) !important;}
+#home-slider .flickity-viewport{height: calc(100vw / 2.5) !important;}
 
     ._banner_img {
         position: relative;
