@@ -476,16 +476,19 @@ class ChannelHomeController extends Controller
 
             $channel = Channel::where('channel_slug',$channel_slug)->first(); 
 
-            $data = Audio::where('active', '1')->where('user_id', $channel->id)
+            $Audio = Audio::where('active', '1')->where('user_id', $channel->id)
                     ->where('uploaded_by','Channel')
                     ->latest()
-                    ->paginate() ;
+                    ->get() ;
+
+            $Audio = $this->paginateCollection($Audio, $this->videos_per_page);
+
 
             $respond = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
-                'audios' => $data ,
+                'audios' => $Audio ,
             );
 
             return Theme::view('channel.Channel_Audios_list', $respond);
@@ -499,19 +502,23 @@ class ChannelHomeController extends Controller
     public function Channel_livevideos_list($channel_slug)
     {
         try {
-
+            
             $channel = Channel::where('channel_slug',$channel_slug)->first(); 
 
-            $data = LiveStream::where('active','1')->where('user_id',$channel->id)
+            $live = LiveStream::where('active','1')->where('user_id',$channel->id)
                                 ->where('uploaded_by','Channel')
                                 ->latest()
                                 ->get();
 
+            $live = $this->paginateCollection($live, $this->videos_per_page);
+
+                                
+            // dd($live);
             $data = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting' => ThumbnailSetting::first(),
-                'videos' => $data ,
+                'live' => $live ,
                 'channel_slug' => $channel_slug ,
             );
 
@@ -528,23 +535,25 @@ class ChannelHomeController extends Controller
 
             $channel = Channel::where('channel_slug',$channel_slug)->first(); 
            
-            $data = Series::where('active','1')->where('user_id', $channel->id)
+            $Series = Series::where('active','1')->where('user_id', $channel->id)
                             ->where('uploaded_by', 'Channel')
                             ->latest()
-                            ->paginate();
+                            ->get();
+
+            $Series = $this->paginateCollection($Series, $this->videos_per_page);
 
             $respond_data = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
-                'Series' => $data ,
+                'Series' => $Series ,
                 'channel_slug' => $channel_slug ,
             );
 
             return Theme::view('channel.Channel_series_list',  [ 'respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
-
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -555,16 +564,19 @@ class ChannelHomeController extends Controller
 
             $channel = Channel::where('channel_slug',$channel_slug)->first(); 
 
-            $data = Video::where('active', '=', '1')->where('status', '=', '1')
+            $Video = Video::where('active', '=', '1')->where('status', '=', '1')
                             ->where('user_id', '=', $channel->id)
                             ->where('uploaded_by', '=', 'Channel')->where('draft', '=', '1')
-                            ->paginate();
+                            ->get();
+
+            $Video = $this->paginateCollection($Video, $this->videos_per_page);
+
 
             $respond_data = array(
                 'settings' => Setting::first(),
                 'currency' => CurrencySetting::first(),
                 'ThumbnailSetting'  => (new FrontEndQueryController)->ThumbnailSetting() ,
-                'videos' => $data ,
+                'videos' => $Video ,
                 'channel_slug' => $channel_slug ,
             );
 
