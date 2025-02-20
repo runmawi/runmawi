@@ -276,14 +276,14 @@
    <link rel="preload" href="<?= URL::to('/assets/css/compine.css') ;?>" as="style" />
 
    <!-- js -->
-   <!-- <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/> -->
+   <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ?>" as="script"/>
    <link rel="preload" fetchpriority="high" href="<?= URL::to('/assets/js/jquery.lazy.min.js');?>" as="script">
 
    <link rel="preload" href="<?= URL::to('/assets/js/jquery.3.4.1.js') ?>" as="script"/>
 
    <!-- flickity.js & jquery.magnific-popup.min.js & popper.min.js -->
-   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>" async></script>
-   <script src="<?= URL::to('/assets/js/jquery-3.4.1.min.js') ;?>" async></script>
+   <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+   <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 
    <link rel="preload" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" as="style">
    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
