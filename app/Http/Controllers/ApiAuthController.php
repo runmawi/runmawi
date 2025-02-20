@@ -5259,6 +5259,9 @@ public function verifyandupdatepassword(Request $request)
           DB::table('live_purchases')->insert(
             ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
+          DB::table('ppv_purchases')->insert(
+            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
+          );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
         }else if(!empty($audio_id) && $audio_id != ''){
