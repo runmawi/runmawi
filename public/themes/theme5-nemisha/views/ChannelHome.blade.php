@@ -19,6 +19,10 @@ $continue_watching_setting = App\HomeSetting::pluck('continue_watching')->first(
         top: 43%;
     }
     .container-fluid.overflow-hidden{padding-left: 0;}
+    .channel_nav .nav-link.active{background-color:var(--iq-primary) !important;color: #fff !important;}
+    .slick-slide.slick-current.slick-center a{background-color:var(--iq-primary) !important;color: #fff !important;}
+    .nav-tabs .nav-item a, .slick-slide.slick-center a{background-color: #fff !important;color: #000 !important;}
+    .nav-tabs .nav-item a:hover, .slick-slide.slick-center a:hover{background-color: #fff !important;color: #000 !important;}
 </style>
 <!-- Favicon -->
 <link rel="shortcut icon" href="<?= URL::to('/') . '/public/uploads/settings/' . $settings->favicon ?>" />
