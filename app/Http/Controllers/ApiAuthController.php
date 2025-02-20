@@ -14245,7 +14245,7 @@ $cpanel->end();
                                           if($ppv_purchase){
                                             $new_date = Carbon::parse($ppv_purchase->to_time);
                                             $currentdate = Carbon::now();
-                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access']    = 'GUEST' : $item['access'] = 'PPV'; 
+                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access']    = 'GUEST' : $item['access'] = 'PPV1'; 
                                             $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['share_url'] = null : $item['share_url'] = (URL::to('app/live/'.$item->slug)); 
                                           }
                                         }else{
