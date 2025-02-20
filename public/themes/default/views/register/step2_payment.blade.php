@@ -1081,7 +1081,7 @@
                                     plans_id: plans_id,
                                     subscriptionID: data.subscriptionID,
                                     coupon_code: final_coupon_code_stripe,
-                                    _token: '<?= csrf_token() ?>'
+                                    _token: '<?= csrf_token() ?>',
                                     userId: '{{ @$intent_stripe->id }}',
                                 },
 
