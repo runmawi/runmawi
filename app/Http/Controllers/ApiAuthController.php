@@ -14237,6 +14237,7 @@ $cpanel->end();
                                             $new_date = Carbon::parse($subs_purchase->ends_at);
                                             $currentdate = Carbon::now();
                                             $subs_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'subscriber'; 
+                                            $subs_exists_check_query = $new_date->isAfter($currentdate) ? $item['share_url'] = null : $item['share_url'] = URL::to('becomesubscriber'); 
                                           }
                                         }elseif($item['access'] == 'ppv'){
                                           $ppv_purchase = !empty($user_id) ? PpvPurchase::where('live_id',$item->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
@@ -14244,19 +14245,22 @@ $cpanel->end();
                                           if($ppv_purchase){
                                             $new_date = Carbon::parse($ppv_purchase->to_time);
                                             $currentdate = Carbon::now();
-                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access'] = 'guest' : $item['access'] = 'ppv'; 
+                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['access']    = 'guest' : $item['access'] = 'PPV'; 
+                                            $ppv_exists_check_query = $new_date->isAfter($currentdate) ? $item['share_url'] = null : $item['share_url'] = (URL::to('app/live/'.$item->slug)); 
                                           }
                                         }else{
                                           $item['access'] = 'guest';
+                                          $item['share_url'] = null;
                                         }
+                                        
 
-                                        if($item['access'] == 'subscriber'){
-                                            $item['share_url'] = URL::to('becomesubscriber');
-                                        }elseif($item['access'] == 'ppv'){
-                                          $item['share_url'] = (URL::to('app/live/'.$item->slug));
-                                        }else{
-                                          $item['share_url'] =null;
-                                        }
+                                        // if($item['access'] == 'subscriber'){
+                                        //     $item['share_url'] = URL::to('becomesubscriber');
+                                        // }elseif($item['access'] == 'ppv'){
+                                        //   $item['share_url'] = (URL::to('app/live/'.$item->slug));
+                                        // }else{
+                                        //   $item['share_url'] =null;
+                                        // }
                                         
 
 
