@@ -17,13 +17,14 @@
                         </h4>                   
                     </div>
 
+                @if ($respond_data['videos']->isNotEmpty())
                     <div class="favorites-contens">
-                        <ul class="category-page list-inline row p-0 mb-0">
+                        <ul class="list-inline row p-0 mb-0">
                             @if (isset($respond_data['videos']))
 
-                                @foreach ($respond_data['videos'] as $key => $video)
+                                @forelse ($respond_data['videos'] as $key => $video)
 
-                                    <li class="slide-item col-sm-3 col-md-3 col-xs-12">
+                                    <li class="slide-item col-sm-2 col-md-2 col-xs-12">
 
                                         <a href="{{ $video->redirect_url }}">
                                             <div class="block-images position-relative">
@@ -153,7 +154,13 @@
                                             </div>
                                         </a>
                                     </li>
-                                @endforeach
+                                @empty
+                                    <div class="col-md-12 text-center mt-4"
+                                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                                        <p>
+                                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                                    </div>
+                                @endforelse
                             @endif
                         </ul>
 
@@ -162,13 +169,20 @@
                         </div>
 
                     </div>
+                @else
+                    <div class="col-md-12 text-center mt-4"
+                        style="background: url(<?= URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
+                        <p>
+                        <h3 class="text-center">{{ __('No Video Available') }}</h3>
+                    </div>
+                @endif
                 </div>
             </div>
         </div>
     @else
         <div class="col-md-12 text-center mt-4"
             style="background: url(<?= URL::to('/assets/img/watch.png') ?>);background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
-            <h3 class="text-center">No Video Available</h3>
+            <h3 class="text-center">{{ __('No Video Available') }}</h3>
         </div>
     @endif
 </section>
