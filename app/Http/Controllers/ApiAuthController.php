@@ -5256,11 +5256,13 @@ public function verifyandupdatepassword(Request $request)
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
         }else if(!empty($live_id) && $live_id != ''){
+          $payment_type == 'Stripe';
+          $status = 1;
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => 'succeeded', 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'status' => $status, 'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'payment_status' => 'succeeded', 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
           DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => 'succeeded', 'payment_failure_reason' => $payment_failure_reason ]
+            ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
           );
           send_password_notification('Notification From '. GetWebsiteName(),'You have rented a video','You have rented a video','',$user_id);
   
@@ -19452,7 +19454,7 @@ public function QRCodeMobileLogout(Request $request)
                                                 
                                                         $series['duration_format'] =  !is_null($series->duration) ?  Carbon::parse( $series->duration)->format('G\H i\M'): null ;
                                                 
-                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes->take(15)
+                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes
                                                                                                 ->map(function ($item) {
                                                                                                   $description = $item->episode_description;
                                                                                                                   do {
