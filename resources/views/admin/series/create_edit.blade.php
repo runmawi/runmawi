@@ -228,7 +228,7 @@ $settings  = App\Setting::first();?>
 				<div class="panel-title font-weight-bold"><label class="m-0">Show Description</label></div> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
 				<div class="panel-body col-sm-12 p-0" style="display: block;"> 
 					<p class="p1">Add a short description of the TV Shows below:</p> 
-					<textarea class="form-control" name="description" id="description" >@if(!empty($series->description)){{ htmlspecialchars($series->description) }}@endif</textarea>
+					<textarea class="form-control" name="description" id="description" >@if(!empty($series->description)){{ ($series->description) }}@endif</textarea>
 				</div> 
 			</div>
 			<div class="row mt-3"> 
