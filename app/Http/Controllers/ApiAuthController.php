@@ -13769,7 +13769,7 @@ $cpanel->end();
                                         $episodes = Episode::where('season_id', $season->id)
                                             ->orderBy('episode_order')
                                             ->get()
-                                            ->map(function ($episode) {
+                                            ->map(function ($episode) use ($season_access) {
                                               // return $episode;
                                               if($this->Theme == 'theme4'){
                                                 if($episode->type == 'm3u8'){
@@ -13802,7 +13802,7 @@ $cpanel->end();
                                                 'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
                                                 'description'              => strip_tags($description),
                                                 'episodeNumber'            => $episode->episode_order,
-                                                'access'                   => $episode->access,
+                                                'access'                   => $season_access,
                                                 'content'                  => [
                                                                                 'dateAdded' => $episode->created_at,
                                                                                 'videos' => [
@@ -13851,7 +13851,7 @@ $cpanel->end();
         }
 
         if($HomeSetting->Series_based_on_Networks == 1){
-          if($this->Theme == 'theme4'){
+          if($this->Theme == 'theme40'){
 
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                         ->where('in_home', 1)
@@ -13974,7 +13974,7 @@ $cpanel->end();
                                                                                                                                   ->orderBy('episode_order')
                                                                                                                                   ->limit(15)
                                                                                                                                   ->get()
-                                                                                                                                  ->map(function ($episode) {
+                                                                                                                                  ->map(function ($episode) use($season_access) {
                                                                                                                                     if($this->Theme == 'theme4'){
                                                                                                                                       if($episode->type == 'm3u8'){
                                                                                                                                         $url = URL::to('/storage/app/public-latest/'. $episode->path .'.m3u8') ;
@@ -14006,7 +14006,7 @@ $cpanel->end();
                                                                                                                                       'player_image_url'         => (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg') ? $this->BaseURL.('/images/'.$episode->player_image) : $this->default_horizontal_image_url,
                                                                                                                                       'description'              => strip_tags($description),
                                                                                                                                       'episodeNumber'            => $episode->episode_order,
-                                                                                                                                      'access'                   => $episode->access,
+                                                                                                                                      'access'                   => $season_access,
                                                                                                                                       'content'                  => [
                                                                                                                                                                       'dateAdded' => $episode->created_at,
                                                                                                                                                                       'videos' => [
