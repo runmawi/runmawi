@@ -89,10 +89,10 @@
                                                                 <a href="{{ route('network.play_series', $series_details->slug) }}">
                                                                         <i class="playBTN fas fa-play"></i>
                                                                 </a>
-                                                                <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key }}" data-series-id="{{ $series_details->id }}">
-                                                                    <i class="fas fa-info-circle"></i>
-                                                                    <span>More info</span>
-                                                                </button>
+                                                                <button id="data-modal-network-series" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-SeriesNetwork-series-Modal" data-series-id="{{ $series_details->id }}">
+                                                                    <i class="fas fa-info-circle"></i><span>More info</span></button>
+
+                                                                
                                                                 <p class="trending-dec">
                                                                     <span class="season_episode_numbers">{{ $series_details->season_count . " Seasons " . $series_details->episode_count . ' Episodes' }}</span><br>
                                                                     {{ optional($series_details)->title }}
@@ -128,10 +128,7 @@
           
         {{-- Series Modal --}}
 
-        @foreach ($data as $key => $series_networks )
-
-            @foreach ($series_networks->series as $series_key => $series_details )
-                <div class="modal fade info_model" id="{{ 'Home-SeriesNetwork-series-Modal-'.$key.'-'.$series_key }}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade info_model" id="Home-SeriesNetwork-series-Modal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                         <div class="container">
                             <div class="modal-content" style="border:none; background:transparent;">
@@ -139,31 +136,25 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img id="network-series-modal-img-{{$series_details->id}}" alt="{{ $series_details->title }}">
+                                                <img id="series_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-10 col-md-10 col-sm-10">
-                                                        <h2 class="caption-h2">{{ optional($series_details)->title }}</h2>
+                                                        <h2 class="modal-title caption-h2"></h2>
                                                     </div>
-
+        
                                                     <div class="col-lg-2 col-md-2 col-sm-2">
-                                                        <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                        <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
                                                             <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
                                                         </button>
                                                     </div>
                                                 </div>
-                                                
-                                                <div class="trending-dec mt-4" >
-                                                    {{ $series_details->season_count ." Series ".$series_details->episode_count .' Episodes' }} 
-                                                </div>
-
-                                                @if (optional($series_details)->details)
-                                                    <div class="trending-dec mt-4">{!! html_entity_decode( optional($series_details)->details) !!}</div>
-                                                @endif
-
-                                                <a href="{{ URL::to('play_series/'.$series_details->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
-
+        
+                                                    <div class="modal-desc trending-dec mt-4"></div>
+        
+                                                <a href="" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+        
                                             </div>
                                         </div>
                                     </div>
@@ -172,8 +163,6 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
-        @endforeach
 
     </section>
 @endif
@@ -222,17 +211,17 @@ document.querySelectorAll('.series-network-video .item').forEach(function(item) 
         var selectedSlider = document.querySelector('.series-network-dropdown .network-depends-slider[data-index="' + index + '"]');
             if (selectedSlider) {
                 selectedSlider.style.display = 'block';
-                setTimeout(function() { // Ensure the element is visible before initializing Flickity
-                    var flkty = new Flickity(selectedSlider, {
+                setTimeout(() => {
+                    new Flickity(selectedSlider, {
                         cellAlign: 'left',
                         contain: true,
-                        groupCells: false,
+                        groupCells: true,
                         pageDots: false,
                         draggable: true,
                         freeScroll: true,
                         imagesLoaded: true,
-                        lazyLoad: 7,
-                    });
+                        lazyLoad: true,
+                    }).resize();
                 }, 0);
             }
 
@@ -307,32 +296,48 @@ $('body').on('click', '.drp-close', function() {
 </script>
 
 
-<script>
-    $(document).on('click', '.moreBTN', function () {
-        const SeriesId = $(this).data('series-id');
-        console.log("Modal opened for Series ID: " + SeriesId);
 
+<script>
+    $(document).on('click', '#data-modal-network-series', function() {
+        const SeriesId = $(this).data('series-id');
+        // console.log("modal opened.");
         $.ajax({
             url: '{{ route("getSeriesNetworkModalImg") }}',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                Series_id: SeriesId
+                Series_id : SeriesId
             },
             success: function (response) {
-                const imgId = '#network-series-modal-img-' + SeriesId;
-                console.log('Updating image source for: ' + imgId);
+                // console.log("image: " + response.image);
+                // console.log("title: " + response.title);
+                // console.log("description: " + response.description);
+                // const slug = 'live/' + response.slug;
+                console.log("slug: " + response.slug);
+                $('#series_modal-img').attr('src', response.image);
+                $('#series_modal-img').attr('alt', response.title);
+                $('.modal-title').text(response.title);
+                $('.modal-desc').text(response.description);
+                $('.btn.btn-hover').attr('href', response.slug);
+                
 
-                // Update the image source
-                $(imgId).attr('src', response.network_series_modal_images);
             },
             error: function () {
                 console.log('Failed to load images. Please try again.');
             }
         });
-    });
 
+        $('.btn-close-white').on('click', function () {
+            $('#series_modal-img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
+            $('.modal-title').text('');
+            $('.modal-desc').text('');
+            $('.btn.btn-hover').attr('href', '');
+        });
+
+
+    });
 </script>
+
 
 <style>
 
