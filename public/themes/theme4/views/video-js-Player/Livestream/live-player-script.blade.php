@@ -62,7 +62,7 @@
             const CheckPreAds  = '<?= $pre_advertisement ?>';
             const CheckPostAds = '<?= $post_advertisement ?>';
             const midrollincreaseInterval = Number('<?= $video_js_mid_advertisement_sequence_time ?>');
-            // const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
+            const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
 
             const markers = [];
 
@@ -123,7 +123,7 @@
         var prerollTriggered = false;
         var postrollTriggered = false;
 
-        const vastTagMidroll_array = '<?php echo $mid_advertisement ?>';
+        const vastTagMidroll_array = "<?php echo json_encode($mid_advertisement, JSON_HEX_TAG); ?>";
         const vastTagMidrollArray  = vastTagMidroll_array != "" ? JSON.parse(vastTagMidroll_array) : null;
 
         var midrollRequested = false;
