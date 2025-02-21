@@ -491,7 +491,7 @@ class ChannelHomeController extends Controller
                 'audios' => $Audio ,
             );
 
-            return Theme::view('channel.Channel_Audios_list', $respond);
+            return Theme::view('Channel.Channel_Audios_list', $respond);
 
         } catch (\Throwable $th) {
 
@@ -522,7 +522,7 @@ class ChannelHomeController extends Controller
                 'channel_slug' => $channel_slug ,
             );
 
-            return Theme::view('channel.Channel_livevideos_list', $data);
+            return Theme::view('Channel.Channel_livevideos_list', $data);
 
         } catch (\Throwable $th) {
             return abort(404);
@@ -550,7 +550,7 @@ class ChannelHomeController extends Controller
                 'channel_slug' => $channel_slug ,
             );
 
-            return Theme::view('channel.Channel_series_list',  [ 'respond_data' => $respond_data]);
+            return Theme::view('Channel.Channel_series_list',  [ 'respond_data' => $respond_data]);
 
         } catch (\Throwable $th) {
             // return $th->getMessage();
