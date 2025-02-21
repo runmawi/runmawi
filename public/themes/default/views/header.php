@@ -318,8 +318,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      height: 100vh;
-      width: 100vw;
+      height: 100%;
+      width: 100%;
       overflow: hidden;
       /* background: linear-gradient(180deg, #040404 0%, #3D3D47 100%); */
       background: #000;
