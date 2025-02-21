@@ -19452,7 +19452,7 @@ public function QRCodeMobileLogout(Request $request)
                                                 
                                                         $series['duration_format'] =  !is_null($series->duration) ?  Carbon::parse( $series->duration)->format('G\H i\M'): null ;
                                                 
-                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes
+                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes->take(15)
                                                                                                 ->map(function ($item) {
                                                                                                   $description = $item->episode_description;
                                                                                                                   do {
