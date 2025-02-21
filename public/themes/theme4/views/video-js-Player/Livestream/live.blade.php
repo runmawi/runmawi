@@ -677,9 +677,20 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
 
 <script>
+    var elem = document.querySelector('.live-videos');
+    var flkty = new Flickity( elem, {
+        cellAlign: 'left',
+        contain: true,
+        groupCells: true,
+        pageDots: false,
+        draggable: true,
+        freeScroll: true,
+        imagesLoaded: true,
+        lazyload:true,
+    });
+</script>
 
-
-
+<script>
 function paypal_checkout(live_id, amount) {
 
     $('#paypal-button-container').empty();

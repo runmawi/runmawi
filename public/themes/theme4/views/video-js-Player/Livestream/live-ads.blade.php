@@ -99,10 +99,10 @@
             $pre_advertisement  = $setting->default_ads_url;
         }
 
-        if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && count($mid_advertisement) == 0 ){
-            $mid_advertisement[]  = $setting->default_ads_url;
-            $video_js_mid_advertisement_sequence_time = 1800 ;
-        }
+        // if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && count($mid_advertisement) == 0 ){
+        //     $mid_advertisement[]  = $setting->default_ads_url;
+        //     $video_js_mid_advertisement_sequence_time = 1800 ;
+        // }
 
         if($setting->default_ads_status == 1 && !is_null($setting->default_ads_url)  && is_null($post_advertisement) ){
             $post_advertisement = $setting->default_ads_url;
