@@ -1675,6 +1675,7 @@ class AdminLiveStreamController extends Controller
        {
            $video = LiveStream::findOrFail($id);
            $video->active = 1;
+           $video->status = 1;
            $video->save();
            $settings = Setting::first();
            $user_id = $video->user_id;
