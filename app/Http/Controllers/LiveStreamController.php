@@ -602,8 +602,8 @@ class LiveStreamController extends Controller
 
                     if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
 
-                        $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
-                        // $block_videos_exists = null;
+                        // $block_videos_exists = $item->whereIn('videos.id', Block_LiveStreams())->exists();
+                        $block_videos_exists = null;
 
                         if ($block_videos_exists) {
 
