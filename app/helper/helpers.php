@@ -2130,6 +2130,8 @@ function payment_status($item) {
             return 'captured';  
         case 'Stripe':
             return 'succeeded';  
+        case 'stripe':
+            return 'succeeded';  
         default:
             return null;  
     }
