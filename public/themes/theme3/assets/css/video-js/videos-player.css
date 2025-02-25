@@ -10,8 +10,8 @@
   width: 3em;
   display: inline-block;
   position: absolute;
-  top: 52%;
-  left: 49.5%;
+  top: 50%;
+  left: 50%;
   padding: 0;
   margin-top: -0.81666em;
   margin-left: -1.5em;
@@ -71,7 +71,7 @@
 }
 
 body.light-theme span{
-  color: white !important;
+  color: #000 !important;
 }
 
 .video-js .vjs-mute-control .vjs-icon-placeholder:before {
@@ -105,7 +105,7 @@ body.light-theme span{
 
 .my-video.vjs-fluid {
   padding-top: 0 !important;
-  height: 98vh !important;
+  height: calc(100vh - 20px) !important;
 }
 
 .my-video.video-js .vjs-tech {
@@ -504,7 +504,7 @@ line-height: 2.1em;
   align-items: center;
   font-size: 2em;
   position: absolute;
-  top: calc(100% - 51%);
+  top: calc(100% - 54%);
   width: 40px;
   height: 40px;
 }
@@ -673,7 +673,7 @@ display: block !important;
   border: none;
   color: white;
   display: inline-block;
-  font-size: 20px;
+  font-size: 13px;
   text-transform: capitalize;
   text-decoration: none;
   /* transition: none; */
@@ -1028,7 +1028,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
       padding-top: 0 !important;
-      height: 45vh !important;
+      height: 45vh;
   }
   .live_dot {
       color: red;
@@ -1155,7 +1155,7 @@ display: block !important;
   }
   .my-video.vjs-fluid {
       padding-top: 0 !important;
-      height: 45vh !important;
+      height: 45vh;
   }
   .live_dot {
       color: red;
