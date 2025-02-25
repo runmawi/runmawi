@@ -11,7 +11,7 @@
                         </h4>
                         <h4 class="main-title"><a
                                 href="{{  URL::to('/series/category/' . $category->slug ) }} ">
-                                {{ 'view all' }}
+                                {{ 'View all' }}
                             </a>
                         </h4>
                     </div>

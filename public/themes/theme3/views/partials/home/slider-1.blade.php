@@ -43,11 +43,11 @@
     @endforeach
 @endif
 
-@php 
-    $video_banners = $video_banners->take(5);
-@endphp
         {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
+    @php 
+        $video_banners = $video_banners->take(5);
+    @endphp
     @foreach ($video_banners as $key => $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}'); background-repeat: no-repeat;background-size: cover;">
             <a href="{{ url('/category/videos/' . $item->slug) }}">
@@ -96,8 +96,8 @@
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $item)
         <div class="slide slick-bg s-bg-1" style="background: url('{{ URL::to('public/uploads/images/' . $item->player_image) }}');  background-repeat: no-repeat;background-size: cover;" >
-            <a href="{{ url('play_series/'. $item->slug) }}" class="btn bd">
-                <div class="container-fluid position-relative h-100" style="padding:0 100px !important;">
+            <a href="{{ url('play_series/'. $item->slug) }}">
+                <div class="container-fluid position-relative h-100" style="padding:0 100px">
                     <div class="slider-inner h-100">
                         <div class="row align-items-center  h-100">
                             <div class="col-xl-6 col-lg-12 col-md-12">

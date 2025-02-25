@@ -337,7 +337,7 @@
 
 
         <div class="container-fluid">
-            <div class="col-md-7 col-sm-7 col-12 p-0">
+            <div class="col-md-12 col-sm-12 col-12 p-0">
 
                 <!-- Description -->
 
@@ -673,7 +673,9 @@
 
 
 <style>
+    #main-header, footer{display: block !important;}
       body.light-theme .descrption-video-details p {color: <?php echo GetLightText(); ?>!important;}
+      body.light-theme .share-icons.music-play-lists li .playbtn span {color: <?php echo GetDarkText(); ?>!important;}
       body.light-theme .cate-lang-status-details {color: <?php echo GetLightText(); ?>!important;}
       body.light-theme ul.breadcrumb.breadcrumb-csp.p-0 a {color: <?php echo GetLightText(); ?>!important;}
       body.dark-theme .cate-lang-status-details {color: <?php echo GetDarkText(); ?>!important;}
