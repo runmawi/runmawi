@@ -89,7 +89,7 @@
 .vpageBanner .content .right .utilities {
     color: #fff;
     opacity: 1;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -127,11 +127,11 @@
 }
 .genres .genre:last-child { border-right: 0px solid #848484; }
 
-.vpageBanner .content .right .row {
+.vpageBanner .content .right .watch_buttons .row {
     display: flex;
     align-items: center;
     gap: 25px;
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
 }
 
 .circleRating {
@@ -355,11 +355,14 @@
 ul.breadcrumb.breadcrumb-csp{
     background-color: transparent !important;
 }
-
-@media (max-width: 1600px) {
-    .modal-dialog {
-        max-width: 700px;
-    }
+.breadcrumb{
+    background-color: transparent;
+}
+li.breadcrumb-item a{
+    color: #fff;
+}
+.modal-dialog-centered .modal-content {
+    background: transparent;
 }
 
 @media only screen and (min-width: 768px) {
@@ -379,7 +382,7 @@ ul.breadcrumb.breadcrumb-csp{
     }
 
     .vpageBanner .content .right .title {
-        font-size: 34px;
+        font-size: 25px;
         line-height: 44px;
     }
 
@@ -421,48 +424,7 @@ ul.breadcrumb.breadcrumb-csp{
         line-height: 24px;
     }
 }
-
-
-/* Video details */
-
-header#main-header{display: block !important;}
-footer.mb-3{display: block !important;}
-
-.container-fluid.g-border .text-detail {
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: 0.7px;
-    /* margin-bottom: 30px; */
-}
-.img__wrap {
-    transform: scale(1.0);
+li.slide-item {
     position: relative;
-    height: 200px;
-    width:300px;
-}
-.img__description_layer {
-    position: absolute;
-    cursor: pointer;
-    padding: 30px 20px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-image: linear-gradient(to bottom, rgba(4, 8, 15, 0.9), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
-    color: #fff;
-    visibility: hidden;
-    opacity: 0;
-    width: 300px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: opacity .2s, visibility .2s;
-}
-.img__description {
-    transition: .2s;
-    transform: translateY(1em);
-}
-.img__wrap:hover .img__description_layer {
-    visibility: visible;
-    opacity: 1;
+    padding: 0 15px 0 15px;
 }

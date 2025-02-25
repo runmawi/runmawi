@@ -10,10 +10,8 @@
     $order_settings_list = App\OrderHomeSetting::get();
     $home_settings = App\HomeSetting::first();
 
-    $Slider_array_data = array(
-            'live_banner'  => App\LiveStream::where('active', 1)->where('status',1)->where('banner', 1)->get() , 
-            'live_event_banners' => App\LiveEventArtist::where('active', 1)->where('status',1)->where('banner', 1)->get(),
-         );    
+    $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
+  
 ?>
 
 @if (Session::has('message'))
@@ -23,11 +21,8 @@
                 {{-- Slider --}}
 
 <section id="home" class="iq-main-slider p-0">
-    <div id="home-slider" class="slider m-0 p-0">
-       {!! Theme::uses('theme6')->load('public/themes/theme3/views/partials/home/slider-1', [
-                'series_sliders' => App\Series::where('active', '=', '1')->where('banner','=','1')
-                                        ->latest()->get() ,
-            ])->content() !!}
+    <div id="home-slider" class="home-sliders slider m-0 p-0">
+        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
     </div>
  </section>
 
