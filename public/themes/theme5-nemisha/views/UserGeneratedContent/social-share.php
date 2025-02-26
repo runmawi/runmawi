@@ -15,7 +15,7 @@ $media_subject = $media_title;
         <input type="hidden" value="<?= $media_url ?>" id="media_url">
 
         <ul class="list-inline p-0 m-0 share-icons music-play-lists">
-            <li class="share sharemobres"><span><i class="ri-share-fill"></i></span>
+            <li class="share sharemobres"  style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;" ><span><i class="ri-share-fill"></i></span>
                 <div class="share-box">
                     <div class="d-flex"> 
                         <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $media_url ?>" ><i class="ri-facebook-fill"></i></a>

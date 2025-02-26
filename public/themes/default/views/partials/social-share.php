@@ -53,7 +53,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
 <!-- Buttons start here. Copy this ul to your document. -->
 <ul class="list-inline p-0 m-0 share-icons music-play-lists">
                                         <!-- Share -->
-                                <li class="share sharemobres">
+                                <li class="share sharemobres" style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;" >
                                     <span >
                                     <i class="ri-share-fill"></i>
                                     </span>

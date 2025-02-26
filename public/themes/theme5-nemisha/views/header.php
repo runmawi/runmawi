@@ -540,7 +540,7 @@
     }
 
     #toggleIcon{
-        width: 255px;
+        width: 175px;
         height: auto;
     }
 
@@ -966,7 +966,7 @@
                     id="toggleIcon"
                     src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
                     alt="Sidebar Toggle"
-                    style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
+                    style="cursor: pointer; position: absolute; top: 2px; left: -2px;"
                 />
             </a>
         <?php } else { ?>
@@ -975,7 +975,7 @@
                     id="toggleIcon"
                     src="<?php echo URL::to('/') . '/public/uploads/settings/' . $theme->dark_mode_logo; ?>"
                     alt="Sidebar Toggle"
-                    style="cursor: pointer; position: absolute; top: 2px; left: -28px;"
+                    style="cursor: pointer; position: absolute; top: 2px; left: -2px;"
                 />
             </a>
         <?php } ?>
