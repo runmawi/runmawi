@@ -13853,7 +13853,7 @@ $cpanel->end();
         }
 
         if($HomeSetting->Series_based_on_Networks == 1){
-          if($this->Theme == 'theme4'){
+          if($this->Theme == 'theme40'){
 
             $Series_based_on_Networks = SeriesNetwork::select('id', 'name', 'order', 'image', 'banner_image', 'slug', 'in_home')
                                                         ->where('in_home', 1)
