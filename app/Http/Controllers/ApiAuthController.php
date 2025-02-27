@@ -154,6 +154,7 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg as FFMpeg;
 use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
+use App\RokuHomeSetting;
 
 
 class ApiAuthController extends Controller
@@ -13492,7 +13493,7 @@ $cpanel->end();
         $user_id = $request->query('user_id');
         // return $roku_tvcode;
 
-        $HomeSetting = MobileHomeSetting::first();
+        $HomeSetting = RokuHomeSetting::first();
         $OrderHomeSetting = OrderHomeSetting::first();
         $OrderSetting = array();
 

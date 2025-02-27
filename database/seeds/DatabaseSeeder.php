@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
             TVSettingTableSeeder::class,
             CreateTranslationLanguages::class,
             ChannelRolesTableSeeder::class,
+            RokuHomeSettingSeeder::class,
         ]);
     
     }
