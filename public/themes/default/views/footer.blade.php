@@ -266,9 +266,9 @@ function about(evt , id) {
 ?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
-
+ {{-- <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script> --}}
+{{-- 
  <script>
   function loadScriptWithTimeout(url, timeout = 50000) {
     return new Promise((resolve, reject) => {
@@ -309,7 +309,7 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
         // Handle the error (e.g., show a message to the user)
     });
 
- </script>
+ </script> --}}
 
 <script>
     function loadJS(u) {
@@ -322,8 +322,8 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
-<link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+{{-- <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
 
 <?php
     try {
