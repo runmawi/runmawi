@@ -88,6 +88,7 @@
                     <div class="tab">
                         <button class="tablinks1 btn btn-light">Web Home Page</button>
                         <button class="tablinks2 btn btn-light">Mobile Home Page</button>
+                        <button class="tablinks3 btn btn-light">Tv Home Page</button>
                     </div>
 
                     <div class="admin-section-title mt-3">
@@ -1191,6 +1192,7 @@
             <div class="tab">
                 <button class="tablinks1 btn btn-light">Web Home Page</button>
                 <button class="tablinks2 btn btn-light">Mobile Home Page</button>
+                <button class="tablinks3 btn btn-light">Tv Home Page</button>
             </div>
             <div class="admin-section-title mt-3">
                 <div class="col-4 mb-3">
@@ -2265,9 +2267,1097 @@
             </form>
         </div>
     </div>
-    </div>
+</div>
+</div>
+
+
+    <!----- Roku homepage settings    -->
+    <div id="rokuhomesetting">
+        <div class="iq-card">
+            <div class="tab">
+                <button class="tablinks1 btn btn-light">Web Home Page</button>
+                <button class="tablinks2 btn btn-light">Mobile Home Page</button>
+                <button class="tablinks3 btn btn-light">Tv Home Page</button>
+            </div>
+            <div class="admin-section-title mt-3">
+                <div class="col-4 mb-3">
+                    <label>{{ "Pagination value" }}</label>
+                    <input type="t4t" class="form-control" name="mobile_pagination" id="mobile_pagination" placeholder="Ppv description for video"
+                                    value="@if(!empty($mobilesettings->mobile_pagination)){{ $mobilesettings->mobile_pagination }}@endif" style="background-color: #e8f5e9 !important;" form="MobilesettingsForm"/>
+                </div>
+
+                <h4><i class="entypo-monitor"></i> Roku Home Page Settings</h4>
+            </div>
+            <div class="clear"></div>
+
+
+            <form action="{{ URL::to('/admin/roku-home-settings/save') }}" method="post"
+                enctype="multipart/form-data" id="MobilesettingsForm">
+                @csrf
+                <div class="panel panel-primary mt-3" data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-options"> <a href="#" data-rel="collapse"><i
+                                    class="entypo-down-open"></i></a> </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row align-items-center p-2">
+                            <!-- <div class="row"> -->
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[0]->header_name)
+                                                {{ @$order_settings_list[0]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input name="featured_videos" type="checkbox"
+                                                @if (@$rokusettings->featured_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[1]->header_name)
+                                                {{ @$order_settings_list[1]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if (@$rokusettings->latest_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="latest_videos" id="latest_videos">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[2]->header_name)
+                                                {{ @$order_settings_list[2]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="category_videos"
+                                                @if (@$rokusettings->category_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[9]->header_name)
+                                                {{ @$order_settings_list[9]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="live_category"
+                                                @if (@$rokusettings->live_category == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[11]->header_name)
+                                                {{ @$order_settings_list[11]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="videoCategories"
+                                                @if (@$rokusettings->videoCategories == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[12]->header_name)
+                                                {{ @$order_settings_list[12]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="liveCategories"
+                                                @if (@$rokusettings->liveCategories == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[3]->header_name)
+                                                {{ @$order_settings_list[3]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if (@$rokusettings->live_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="live_videos" id="live_videos">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[5]->header_name)
+                                                {{ @$order_settings_list[5]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->audios == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="audios" id="audios">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[6]->header_name)
+                                                {{ @$order_settings_list[6]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->albums == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="albums" id="albums">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[4]->header_name)
+                                                {{ @$order_settings_list[4]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->series == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="series" id="series">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[7]->header_name)
+                                                {{ @$order_settings_list[7]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->Recommendation == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="Recommendation" id="Recommendation">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[10]->header_name)
+                                                {{ @$order_settings_list[10]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($settings->video_schedule == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="video_schedule" id="video_schedule">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1"> Auto Intro Skip </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->AutoIntro_skip == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="AutoIntro_skip" id="AutoIntro_skip">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1"> Auto Intro Skip </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox"
+                                                @if ($rokusettings->AutoIntro_skip == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                name="AutoIntro_skip" id="AutoIntro_skip">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[13]->header_name)
+                                                {{ @$order_settings_list[13]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="channel_partner"
+                                                @if ($rokusettings->channel_partner == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[14]->header_name)
+                                                {{ @$order_settings_list[14]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="content_partner"
+                                                @if ($rokusettings->content_partner == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[15]->header_name)
+                                                {{ @$order_settings_list[15]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="latest_viewed_Videos"
+                                                @if ($rokusettings->latest_viewed_Videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[16]->header_name)
+                                                {{ @$order_settings_list[16]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="latest_viewed_Livestream"
+                                                @if ($rokusettings->latest_viewed_Livestream == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[17]->header_name)
+                                                {{ @$order_settings_list[17]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="latest_viewed_Audios"
+                                                @if ($rokusettings->latest_viewed_Audios == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[18]->header_name)
+                                                {{ @$order_settings_list[18]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="latest_viewed_Episode"
+                                                @if ($rokusettings->latest_viewed_Episode == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- </div> -->
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[19]->header_name)
+                                                {{ @$order_settings_list[19]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="SeriesGenre"
+                                                @if ($rokusettings->SeriesGenre == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[20]->header_name)
+                                                {{ @$order_settings_list[20]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="SeriesGenre_videos"
+                                                @if ($rokusettings->SeriesGenre_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[21]->header_name)
+                                                {{ @$order_settings_list[21]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="AudioGenre"
+                                                @if ($rokusettings->AudioGenre == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <label class="mt-1">
+                                            {{ @$order_settings_list[22]->header_name ? @$order_settings_list[22]->header_name : ' ' }}
+                                        </label>
+                                    </div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="AudioGenre_audios"
+                                                @if ($rokusettings->AudioGenre_audios == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {{-- Recommended videos site --}}
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <label class="mt-1">
+                                            {{ @$order_settings_list[23]->header_name ? @$order_settings_list[23]->header_name : ' ' }}
+                                        </label>
+                                    </div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="Recommended_videos_site"
+                                                {{ $rokusettings->Recommended_videos_site == 1 ? 'checked' : ' ' }}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Recommended videos users --}}
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <label class="mt-1">
+                                            {{ @$order_settings_list[24]->header_name ? @$order_settings_list[24]->header_name : ' ' }}
+                                        </label>
+                                    </div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="Recommended_videos_users"
+                                                {{ $rokusettings->Recommended_videos_users == 1 ? 'checked' : ' ' }}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {{-- Recommended videos Country --}}
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <label class="mt-1">
+                                            {{ @$order_settings_list[25]->header_name ? @$order_settings_list[25]->header_name : ' ' }}
+                                        </label>
+                                    </div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="Recommended_videos_Country"
+                                                {{ $rokusettings->Recommended_videos_Country == 1 ? 'checked' : ' ' }}>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[26]->header_name)
+                                                        {{ @$order_settings_list[26]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="my_playlist"
+                                                        @if ($rokusettings->my_playlist == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[27]->header_name)
+                                                        {{ @$order_settings_list[27]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="video_playlist"
+                                                        @if ($rokusettings->video_playlist == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                            <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1"> {{ ucwords('continue watching') }} </label></div>
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox"
+                                                        @if ($rokusettings->continue_watching == 1) {{ "checked='checked'" }} @else {{ '' }} @endif
+                                                        name="continue_watching" id="continue_watching">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[28]->header_name)
+                                                        {{ @$order_settings_list[28]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Today_Top_videos"
+                                                        @if ($rokusettings->Today_Top_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[29]->header_name)
+                                                        {{ @$order_settings_list[29]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="series_episode_overview"
+                                                        @if ($rokusettings->series_episode_overview == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[30]->header_name)
+                                                        {{ @$order_settings_list[30]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Series_Networks"
+                                                        @if ($rokusettings->Series_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[31]->header_name)
+                                                        {{ @$order_settings_list[31]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Series_based_on_Networks"
+                                                        @if ($rokusettings->Series_based_on_Networks == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                        
+                        <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[34]->header_name)
+                                                        {{ @$order_settings_list[34]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Document"
+                                                        @if ($rokusettings->Document == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[35]->header_name)
+                                                        {{ @$order_settings_list[35]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="Document_Category"
+                                                        @if ($rokusettings->Document_Category == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[36]->header_name)
+                                                        {{ @$order_settings_list[36]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="watchlater_videos"
+                                                        @if ($rokusettings->watchlater_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[37]->header_name)
+                                                        {{ @$order_settings_list[37]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="wishlist_videos"
+                                                        @if ($rokusettings->wishlist_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                            style="width: ;">
+                                            <div><label class="mt-1">
+                                                    @if (@$order_settings_list[38]->header_name)
+                                                        {{ @$order_settings_list[38]->header_name }}
+                                                    @else
+                                                        {{ '' }}
+                                                    @endif
+                                                </label></div>
+
+                                            <div class="mt-1 d-flex align-items-center justify-content-around">
+                                                <div class="mr-2">OFF</div>
+                                                <label class="switch mt-2">
+                                                    <input type="checkbox" name="latest_episode_videos"
+                                                        @if ($rokusettings->latest_episode_videos == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                                <div class="ml-2">ON</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    
+                            {{-- <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[23]->header_name)
+                                                {{ @$order_settings_list[23]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="AudioAlbums"
+                                                @if ($rokusettings->AudioAlbums == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            {{-- </div> --}}
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[39]->header_name)
+                                                {{ @$order_settings_list[39]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="live_artist"
+                                                @if ($rokusettings->live_artist == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[33]->header_name)
+                                                {{ @$order_settings_list[33]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="epg"
+                                                @if ($rokusettings->epg == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[40]->header_name)
+                                                {{ @$order_settings_list[40]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="user_generated_content"
+                                                @if ($rokusettings->user_generated_content == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between"
+                                    style="width: ;">
+                                    <div><label class="mt-1">
+                                            @if (@$order_settings_list[42]->header_name)
+                                                {{ @$order_settings_list[42]->header_name }}
+                                            @else
+                                                {{ '' }}
+                                            @endif
+                                        </label></div>
+
+                                    <div class="mt-1 d-flex align-items-center justify-content-around">
+                                        <div class="mr-2">OFF</div>
+                                        <label class="switch mt-2">
+                                            <input type="checkbox" name="radio_station"
+                                                @if ($rokusettings->radio_station == 1) {{ "checked='checked'" }} @else {{ '' }} @endif>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="ml-2">ON</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary mt-3" name="submit"> Save
+                                    Settings</button>
+                            </div>
+                        </div>
+            </form>
+        </div>
     </div>
 
+
+
+
+
+    
 
     <div class="col-md-8 d-flex justify-content-between">
         <h4><i class="entypo-list"></i> Home Page Order</h4>
@@ -2424,14 +3514,22 @@
     <script>
         $('#webhomesetting').show();
         $('#Mobilehomesetting').hide();
+        $('#rokuhomesetting').hide();
 
         $('.tablinks1').click(function() {
             $('#webhomesetting').show();
             $('#Mobilehomesetting').hide();
+            $('#rokuhomesetting').hide();
         });
         $('.tablinks2').click(function() {
             $('#webhomesetting').hide();
             $('#Mobilehomesetting').show();
+            $('#rokuhomesetting').hide();
+        });
+        $('.tablinks3').click(function() {
+            $('#webhomesetting').hide();
+            $('#Mobilehomesetting').hide();
+            $('#rokuhomesetting').show();
         });
     </script>
     
