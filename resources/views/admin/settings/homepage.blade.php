@@ -88,7 +88,9 @@
                     <div class="tab">
                         <button class="tablinks1 btn btn-light">Web Home Page</button>
                         <button class="tablinks2 btn btn-light">Mobile Home Page</button>
-                        <button class="tablinks3 btn btn-light">Tv Home Page</button>
+                        @if(!empty($rokusettings))
+                            <button class="tablinks3 btn btn-light">Tv Home Page</button>
+                        @endif
                     </div>
 
                     <div class="admin-section-title mt-3">
@@ -1192,7 +1194,9 @@
             <div class="tab">
                 <button class="tablinks1 btn btn-light">Web Home Page</button>
                 <button class="tablinks2 btn btn-light">Mobile Home Page</button>
-                <button class="tablinks3 btn btn-light">Tv Home Page</button>
+                @if(!empty($rokusettings))
+                    <button class="tablinks3 btn btn-light">Tv Home Page</button>
+                @endif
             </div>
             <div class="admin-section-title mt-3">
                 <div class="col-4 mb-3">
@@ -2272,6 +2276,7 @@
 
 
     <!----- Roku homepage settings    -->
+    @if(!empty($rokusettings))
     <div id="rokuhomesetting">
         <div class="iq-card">
             <div class="tab">
@@ -3352,6 +3357,7 @@
             </form>
         </div>
     </div>
+    @endif
 
 
 
