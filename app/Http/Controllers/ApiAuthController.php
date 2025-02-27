@@ -13919,6 +13919,7 @@ $cpanel->end();
                                                                                       ->where('series.active', 1)
                                                                                       ->where('series_network_order.network_id', $item->id)
                                                                                       ->orderBy('series_network_order.order', 'asc')
+                                                                                      ->select('series.*')
                                                                                       ->limit(15)
                                                                                       ->get()
                                                                                       ->map(function ($series) use($user_id) {
