@@ -217,7 +217,7 @@ i.fa.fa-google-plus {
     .reveal{
         margin-left: -57px;
     height: 45px !important;
-    background: #000000 !important;
+    background: #F9CB04  !important;
     color: #fff !important;
     }
     .error {
@@ -304,24 +304,24 @@ font-weight: 600;
    
 }
        .btn-outline-success{
-        border: 1px solid #000000;
-         color: #000000!important;
+        border: 1px solid #F9CB04 ;
+         color: #F9CB04 !important;
     }
     .btn-outline-success:hover{
-        border: 1px solid #000000;
-        background-color: #000000!important;
+        border: 1px solid #F9CB04 ;
+        background-color: #F9CB04 !important;
          color: #ffffff!important;
     }
     .btn-success{
-        background: #000000!important;
-        border: 1px solid #000000;
+        background: #F9CB04 !important;
+        border: 1px solid #F9CB04 ;
 
     }
      .join{
         color: #FFD109;
     }
     .nemi{
-        color: #01DC82;
+        color: #F9CB04 ;
     }
     .bg-light{
         background-color: #fff!important;
@@ -401,7 +401,7 @@ $jsondata = json_decode($jsonString, true); ?>
     
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" width="100%" height="100%"></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/cocreataz-final-logo-black.svg'); ?>" style="" width="100%" height="100%"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
@@ -598,7 +598,7 @@ $jsondata = json_decode($jsonString, true); ?>
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button> -->
-                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #000000!important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
+                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #F9CB04 !important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
 
                                  <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to COCREATAZ Terms of Service and Privacy Policy. </p> -->
                                  <!-- <div class=" pt-4 mb-2">
@@ -722,7 +722,7 @@ $jsondata = json_decode($jsonString, true); ?>
   </div>
 <style>
     .modal-content {
-        background-color: #000000;
+        background-color: #F9CB04 ;
     }
 </style>
 

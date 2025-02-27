@@ -73,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
         margin-left: -57px;
    
           height: 45px !important;
-    background: #000000 !important;
+    background: #F9CB04  !important;
     color: #fff !important;
     position: absolute;
     right: 0px;
@@ -133,12 +133,12 @@ font-size: 35px;
 
     }
      .btn-outline-success{
-        border: 1px solid #000000;
-         color: #000000;
+        border: 1px solid #F9CB04 ;
+         color: #F9CB04 ;
     }
      .btn-outline-success:hover{
-        border: 1px solid #000000;
-        background-color: #000000!important;
+        border: 1px solid #F9CB04 ;
+        background-color: #F9CB04 !important;
          color: #ffffff!important;
     }
     	.input-icons i {
@@ -188,8 +188,8 @@ line-height: 55px;
     i.fa.fa-google-plus {
         /* padding: 10px !important;*/}
         .btn-success{
-            background: #000000!important;
-            border: 1px solid #000000;
+            background: #F9CB04 !important;
+            border: 1px solid #F9CB04 ;
 
         }
         .demo_cred {
@@ -252,7 +252,7 @@ line-height: 55px;
         color: #FFD109;
     }
     .nemi{
-        color: #01DC82;
+        color: #F9CB04 ;
     }
 
 }
@@ -277,7 +277,7 @@ line-height: 55px;
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/nem-b.webp'); ?>" style="" alt="header-logo"></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/cocreataz-final-logo-black.svg'); ?>" style="" alt="header-logo"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->
@@ -294,7 +294,7 @@ line-height: 55px;
     
 <div class="position-relative pad">
 <div class="fixe">
-     <h1 class="in mt-3 text-center">SIGN IN TO <span class="nemi">COCREATAZ</span></h1>
+     <h1 class="in mt-3 text-center" style="color:#cacaca;">SIGN IN TO <span class="nemi">COCREATAZ</span></h1>
     <div class="row m-0 p-0 justify-content-center">
         
       
@@ -364,10 +364,10 @@ line-height: 55px;
                         </div> 
                             <div class="position-relative">
                                  <span class="input-group-btn" id="eyeSlash">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeSlash-icon"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+                                   <button class="btn signup btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeSlash-icon"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
                                  </span>
                                  <span class="input-group-btn" id="eyeShow" style="display: none;">
-                                   <button class="btn btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeShow-icon"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                   <button class="btn signup btn-default reveal" onclick="visibility1()" type="button" aria-label="eyeShow-icon"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                  </span>
                             </div>
                                  </div>
