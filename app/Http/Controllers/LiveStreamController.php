@@ -185,7 +185,7 @@ class LiveStreamController extends Controller
     public function Play(Request $request,$vid)
     {
       try {
-
+        
         $currentUrl = url()->current();
         if (strpos($currentUrl, '/app/') !== false){
             if (!auth()->check()) {
@@ -219,7 +219,7 @@ class LiveStreamController extends Controller
 
       $categoryVideos = LiveStream::where('slug',$vid)->first();
       $source_id = LiveStream::where('slug',$vid)->pluck('id')->first();
-
+        
        // Check Channel Purchase 
        
        $UserChannelSubscription = true ;
@@ -487,6 +487,11 @@ class LiveStreamController extends Controller
             $Livestream_details = LiveStream::where('id',$vid)->where('status',1)
                                             ->get()
                                             ->map( function ($item)  use (  $adsvariable_url, $geoip , $settings , $currency , $getfeching)  {
+                                            
+                if( Auth::check() &&  Auth::user()->role == 'admin'){
+                    $item['users_video_visibility_status']         = true ;
+                    $item['access']         = 'guest' ;
+                }
 
                 $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('LiveStream_play',[ optional($item)->slug ]);
@@ -864,9 +869,10 @@ class LiveStreamController extends Controller
                     'paypal_signature' => $paypal_signature,
                     'AdminAccessPermission' => AdminAccessPermission::first(),
                     'UserChannelSubscription' => $UserChannelSubscription,
-                );           
+                );   
+                // dd($data);        
 
-                if(  $Theme == "default" || $Theme == "theme6" ){
+                if(  $Theme == "default" || $Theme == "theme6" || $Theme == "theme4" ){
                     // dd($data['default_vertical_image_url ']);
                     return Theme::view('video-js-Player.Livestream.live', $data);
                 }else{

@@ -665,7 +665,6 @@
                             <?php include(public_path('themes/theme4/views/partials/live-social-share.php')) ; ?>                   
                     </ul>
                 </div>
-                </ul>
             </div>
 
             </div>

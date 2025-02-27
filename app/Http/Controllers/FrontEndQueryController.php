@@ -1627,15 +1627,24 @@ class FrontEndQueryController extends Controller
     public function getSeriesNetworkModalImg(Request $request)
     {
         $Id = $request->Series_id;
-        $image = Series::where('id', $Id)->pluck('player_image')->first();
 
-        $image = (!is_null($image) && $image != 'default_image.jpg')
-                        ? $this->BaseURL.('/images/' . $image)
+        $Series = Series::where('id',$Id)->select('id', 'title', 'slug', 'player_image', 'description')
+                            ->first();
+                            // dd($Series);
+
+        $description   = strip_tags(html_entity_decode($Series->description));
+        $slug          = URL::to('play_series/'.$Series->slug );
+
+        $image = (!is_null($Series->player_image) && $Series->player_image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $Series->player_image)
                         : $this->default_vertical_image;
             // dd($image);
 
         return response()->json([
-            'network_series_modal_images' => $image
+            'image'       => $image,
+            'title'       => $Series->title,
+            'description' => $description,
+            'slug'        => $slug
         ]);
     }
 

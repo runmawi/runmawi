@@ -318,8 +318,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      height: 100vh;
-      width: 100vw;
+      height: 100%;
+      width: 100%;
       overflow: hidden;
       /* background: linear-gradient(180deg, #040404 0%, #3D3D47 100%); */
       background: #000;
@@ -676,13 +676,24 @@
       .navbar-toggler{border:none;}
       .pagination a{color:#000 !important;}
 
+      @media (max-width: 768px) {
+         .fullpage-loader__logo .video-js {
+            width: 500px; 
+         }
+      }
+
+      @media (max-width: 480px) {
+         .fullpage-loader__logo .video-js {
+            width: 500px; 
+         }
+      }
    </style>
 
 </head>
 
    <!-- loader Start -->
    <?php if( get_image_loader() == 1) { ?>
-      <div id="loader" class="fullpage-loader">
+      <div id="loader" class="fullpage-loader" style="height:100%;width:100%;" >
          <div class="fullpage-loader__logo" style="text-align:center;" >
 
 

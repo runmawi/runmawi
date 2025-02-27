@@ -55,7 +55,7 @@
         display: inline-block;
         padding: 5px 30px;
         margin: 0 5px;
-        background-color: #000000;
+        background-color: #F9CB04 ;
         color: #fff;
         font-weight: bold;
         border-radius: 8px;
@@ -219,7 +219,7 @@
         <div class="d-flex flex-column flex-lg-row justify-content-between" >
             <div class="d-flex align-items-center">
                 <ul class="list-inline p-0 share-icons music-play-lists d-flex justify-content-end" style="align-items: self-end;">
-                    <li class="share">
+                    <li style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;">
                         <span data-toggle="modal"  data-video-id={{ $videodetail->id }}   onclick="video_watchlater(this)" >
                             <i class="video-watchlater {{ !is_null($videodetail->watchlater_exist) ? "fal fa-minus" : "fal fa-plus "  }}"></i>
                         </span>
@@ -230,7 +230,7 @@
                         </div>
                     </li>
                      <!-- Wishlist  -->
-                    <li class="share">
+                    <li style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;">
                         <span class="mywishlist " data-video-id={{ $videodetail->id }} onclick="video_wishlist(this)" >
                             <i class="video-wishlist {{ !is_null( $videodetail->wishlist_exist ) ? 'ri-heart-fill' : 'ri-heart-line'  }}"></i>
                         </span>
@@ -243,17 +243,17 @@
 
                     @php include public_path('themes/theme5-nemisha/views/UserGeneratedContent/social-share.php'); @endphp 
     
-                    <li>
+                    <li style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;">
                     <span data-video-id={{ $videodetail->id }}  onclick="video_like(this)" >
                         <i class="video-like {{ !is_null( $videodetail->Like_exist ) ? 'ri-thumb-up-fill' : 'ri-thumb-up-line'  }}"></i>
                     </span>
                     </li>
-                    <li>
+                    <li style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;">
                     <span data-video-id={{ $videodetail->id }}  onclick="video_dislike(this)" >
                         <i class="video-dislike {{ !is_null( $videodetail->dislike_exist ) ? 'ri-thumb-down-fill' : 'ri-thumb-down-line'  }}"></i>
                     </span>
                     </li>
-                    <li>
+                    <li style="display: inline-flex; margin-right: 5px; width: 45px; height: 45px;">
                     <span><a href="#" onclick="Copy();" class="share-ico"><i class="ri-links-fill"></i></a></span>
                     </li>
                     <input type="hidden" value="181" id="videoid">    <input type="hidden" value="1" id="user_id">                                   
