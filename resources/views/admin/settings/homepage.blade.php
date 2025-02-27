@@ -2285,13 +2285,8 @@
                 <button class="tablinks3 btn btn-light">Tv Home Page</button>
             </div>
             <div class="admin-section-title mt-3">
-                <div class="col-4 mb-3">
-                    <label>{{ "Pagination value" }}</label>
-                    <input type="t4t" class="form-control" name="mobile_pagination" id="mobile_pagination" placeholder="Ppv description for video"
-                                    value="@if(!empty($mobilesettings->mobile_pagination)){{ $mobilesettings->mobile_pagination }}@endif" style="background-color: #e8f5e9 !important;" form="MobilesettingsForm"/>
-                </div>
 
-                <h4><i class="entypo-monitor"></i> Roku Home Page Settings</h4>
+                <h4><i class="entypo-monitor"></i> Tv Home Page Settings</h4>
             </div>
             <div class="clear"></div>
 
