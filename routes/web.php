@@ -696,6 +696,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/home-settings', 'Admin\HomeSettingsController@index');
     Route::post('/home-settings/save', 'Admin\HomeSettingsController@save_settings');
     Route::post('/mobile-home-settings/save', 'Admin\HomeSettingsController@mobilesave_settings');
+    Route::post('/roku-home-settings/save', 'Admin\HomeSettingsController@rokusave_settings');
 
     Route::get('/order-home-settings', 'Admin\HomeSettingsController@Orderindex');
     Route::get('/order-home-settings/order_save', 'Admin\HomeSettingsController@Ordersave_settings');
