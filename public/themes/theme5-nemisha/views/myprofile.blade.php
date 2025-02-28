@@ -244,7 +244,7 @@
 	}
 
     ul.ugc-tabs li.ugc-current{
-		background: #F9CB04 ;
+		background: #F27906 ;
 		color: #fff;
 	}
 
@@ -619,7 +619,7 @@
                                     <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                                     </div>
                                     <div>
-                                    <button style="background:#F9CB04 !important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
+                                    <button style="background:#F27906 !important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
                                     </div>
                                     <div class="shareprofile">
                                         <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
@@ -693,7 +693,7 @@
                                     <div class="ugc-videos" style="position: relative;" >
                                         <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
                                         <div class="ugc-actions">
-                                            <div style="border-radius: 7px; background-color:#F9CB04 ; padding:2px 5px;">
+                                            <div style="border-radius: 7px; background-color:#F27906 ; padding:2px 5px;">
                                                 <a class="iq-bg-success" data-toggle="tooltip" data-placement="top" title="Edit Meta"
                                                 data-original-title="Edit Meta" href="{{ URL::to('ugc-edit') . '/' . $eachugcvideos->id }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#fff" class="bi bi-pencil-fill" viewBox="0 0 16 16">

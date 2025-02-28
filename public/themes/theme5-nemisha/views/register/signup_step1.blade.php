@@ -217,7 +217,7 @@ i.fa.fa-google-plus {
     .reveal{
         margin-left: -57px;
     height: 45px !important;
-    background: #F9CB04  !important;
+    background: #F27906  !important;
     color: #fff !important;
     }
     .error {
@@ -304,24 +304,24 @@ font-weight: 600;
    
 }
        .btn-outline-success{
-        border: 1px solid #F9CB04 ;
-         color: #F9CB04 !important;
+        border: 1px solid #F27906 ;
+         color: #F27906 !important;
     }
     .btn-outline-success:hover{
-        border: 1px solid #F9CB04 ;
-        background-color: #F9CB04 !important;
+        border: 1px solid #F27906 ;
+        background-color: #F27906 !important;
          color: #ffffff!important;
     }
     .btn-success{
-        background: #F9CB04 !important;
-        border: 1px solid #F9CB04 ;
+        background: #F27906 !important;
+        border: 1px solid #F27906 ;
 
     }
      .join{
         color: #FFD109;
     }
     .nemi{
-        color: #F9CB04 ;
+        color: #F27906 ;
     }
     .bg-light{
         background-color: #fff!important;
@@ -598,7 +598,7 @@ $jsondata = json_decode($jsonString, true); ?>
                             <div class="sign-up-buttons col-md-12 mt-3 " align="right">
                                   <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
                                   <!-- <button class="btn  btn-primary btn-block signup" style="display: block;color:#fff;font-size:20px;" type="submit" name="create-account">{{ __('START EXPLORING TODAY') }}</button> -->
-                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #F9CB04 !important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
+                                  <input class="btn  btn-primary btn-block signup" style="border: #f3ece0 !important;color:#fff;font-size:20px;background-color: #F27906 !important;display: block;" type="submit" name="create-account" value="START EXPLORING TODAY">
 
                                  <!-- <p class="text-left poli mb-0 mt-2" >By signing up you agree to COCREATAZ Terms of Service and Privacy Policy. </p> -->
                                  <!-- <div class=" pt-4 mb-2">
@@ -722,7 +722,7 @@ $jsondata = json_decode($jsonString, true); ?>
   </div>
 <style>
     .modal-content {
-        background-color: #F9CB04 ;
+        background-color: #F27906 ;
     }
 </style>
 
