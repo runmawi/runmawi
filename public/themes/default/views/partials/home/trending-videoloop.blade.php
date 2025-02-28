@@ -127,19 +127,17 @@
                                                                 @endif
                                                             </div>
 
-                                                        <div class="movie-time d-flex align-items-center pt-1">
                                                             @php
                                                                 $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id', $watchlater_video->id)
-                                                                    ->pluck('video_categories.name');
-                                                            @endphp
+                                                                ->where('categoryvideos.video_id', $watchlater_video->id)
+                                                                ->pluck('video_categories.name');
+                                                                @endphp
                                                             @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                    {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
-                                                                </span>
+                                                            <div class="movie-time d-flex align-items-center pt-1 text-white">
+                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
+                                                            </div>
                                                             @endif
-                                                        </div>
                                                     </a>
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>
