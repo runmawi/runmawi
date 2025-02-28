@@ -78,7 +78,7 @@
                     @if($videos->enable_video_title_image == 1 && $videos->video_title_image != null)
                         <!-- Video thumbnail image -->
                         <a href="{{ url('/category/videos/' . $videos->slug) }}">
-                            <img class="flickity-lazyloaded" src="{{ url('public/uploads/images/' . $videos->video_title_image) }}" class="video_title_images" alt="{{ $videos->title }}">
+                            <img class="flickity-lazyloaded" src="{{ url('public/uploads/images/' . $videos->video_title_image) }}" class="video_title_images" alt="{{ $videos->title }}" loading="lazy">
                         </a>
                     @else
                         <!-- Video Title -->
