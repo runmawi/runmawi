@@ -11,6 +11,7 @@
 
   $theme = App\SiteTheme::first();
   $theme_mode = $theme->theme_mode;
+  $videocipher = $theme->enable_video_cipher_upload;
 ?>
 
 <footer class="py-4 mt-5">
@@ -266,50 +267,54 @@ function about(evt , id) {
 ?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- {{-- <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script> --}}
-{{-- 
+
+ <?php if( $videocipher == 0) { ?>
+
+ <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
+
  <script>
-  function loadScriptWithTimeout(url, timeout = 50000) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = url;
+    function loadScriptWithTimeout(url, timeout = 50000) {
+      return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = url;
 
-        const timer = setTimeout(() => {
-            reject(new Error(`Timed out while loading ${url}`));
-            script.remove();
-        }, timeout);
+          const timer = setTimeout(() => {
+              reject(new Error(`Timed out while loading ${url}`));
+              script.remove();
+          }, timeout);
 
-        script.onload = () => {
-            clearTimeout(timer);
-            resolve();
-        };
+          script.onload = () => {
+              clearTimeout(timer);
+              resolve();
+          };
 
-        script.onerror = () => {
-            clearTimeout(timer);
-            reject(new Error(`Failed to load ${url}`));
-        };
+          script.onerror = () => {
+              clearTimeout(timer);
+              reject(new Error(`Failed to load ${url}`));
+          };
 
-        document.body.appendChild(script);
-    });
-}
+          document.body.appendChild(script);
+      });
+  }
 
-// Specify the URL for your hls.min.js file
-const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
-const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
+  // Specify the URL for your hls.min.js file
+  const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
+  const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
 
-// Load HLS.js with a timeout
-loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
-    .then(() => {
-        console.log(`HLS.js loaded successfully.`);
-        // You can now use HLS.js functionalities safely
-    })
-    .catch((error) => {
-        console.error(`Error loading HLS.js:`, error);
-        // Handle the error (e.g., show a message to the user)
-    });
+  // Load HLS.js with a timeout
+  loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
+      .then(() => {
+          console.log(`HLS.js loaded successfully.`);
+          // You can now use HLS.js functionalities safely
+      })
+      .catch((error) => {
+          console.error(`Error loading HLS.js:`, error);
+          // Handle the error (e.g., show a message to the user)
+      });
 
- </script> --}}
+ </script>
+<?php } ?>
 
 <script>
     function loadJS(u) {
@@ -322,8 +327,11 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
-{{-- <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
+
+<?php if( $videocipher == 0) { ?>
+<link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<?php } ?>
 
 <?php
     try {

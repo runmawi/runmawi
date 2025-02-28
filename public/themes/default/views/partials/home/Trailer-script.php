@@ -1,7 +1,12 @@
 <!-- Trailer(videos)M3U8 - Player  -->
-
-<script src="https://cdn.plyr.io/3.5.10/plyr.js"></script>
+<?php
+  $theme = App\SiteTheme::first();
+  $videocipher = $theme->enable_video_cipher_upload;
+?>
+<!-- <script src="https://cdn.plyr.io/3.5.10/plyr.js"></script> -->
+<?php if( $videocipher == 0) { ?>
 <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<?php } ?>
 
 <script>
 
