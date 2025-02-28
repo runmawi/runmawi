@@ -41,7 +41,8 @@
     @foreach ($video_banners as $key => $videos)
         <div class="s-bg-1">
             <div class="_banner_img">
-                <img class="flickity-lazyloaded" src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}">
+                <img class="flickity-lazyloaded" src="{{ asset('public/uploads/images/placeholder.webp') }}" data-src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}" loading="lazy">
+
                 @if($settings->slider_trailer == 1 && !empty($videos->trailer))
                     <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?>
                         <video class="myvideos" loop autoplay muted onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" src="<?php echo $videos->trailer; ?>" width="100%"
@@ -400,6 +401,16 @@
         }
     });
 </script> --}}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const lazyImages = document.querySelectorAll("img[data-src]");
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+        });
+    });
+</script>
 
 <style>
     .s-bg-1::before {
