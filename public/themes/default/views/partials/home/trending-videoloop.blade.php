@@ -56,7 +56,16 @@
                                           <div class="border-bg">
                                               <div class="img-box">
                                                     <a class="playTrailer" href="{{ url('category/videos/' . $watchlater_video->slug) }}" aria-label="Trending">
-                                                        <img class="img-fluid w-100 flickity-lazyloaded" data-flickity-lazyload="{{ $watchlater_video->image ? URL::to('public/uploads/images/' . $watchlater_video->image) : $default_vertical_image_url }}" alt="{{ $watchlater_video->title }}" loading="lazy">
+                                                        <div>
+                                                            @if ($multiple_compress_image == 1)
+                                                                <img class="img-fluid w-100 flickity-lazyloaded" alt="{{ $watchlater_video->title }}" data-flickity-lazyload="{{ $watchlater_video->image }}"
+                                                                srcset="{{ $watchlater_video->responsive_image ? (URL::to('public/uploads/PCimages/'.$watchlater_video->responsive_image.' 860w')) : $watchlater_video->image }},
+                                                                {{ $watchlater_video->responsive_image ? URL::to('public/uploads/Tabletimages/'.$watchlater_video->responsive_image.' 640w') : $watchlater_video->image }},
+                                                                {{ $watchlater_video->responsive_image ? URL::to('public/uploads/mobileimages/'.$watchlater_video->responsive_image.' 420w') : $watchlater_video->image }}" >
+                                                            @else
+                                                                <img data-flickity-lazyload="{{ $watchlater_video->image ? URL::to('public/uploads/images/'.$watchlater_video->image) : $default_vertical_image_url }}" class="img-fluid w-100 flickity-lazyloaded" alt="{{ $watchlater_video->title }}">
+                                                            @endif
+                                                        </div>
                                                     </a>
                                                     @if($ThumbnailSetting->free_or_cost_label == 1)
                                                         @if($watchlater_video->access == 'subscriber')
@@ -127,19 +136,17 @@
                                                                 @endif
                                                             </div>
 
-                                                        <div class="movie-time d-flex align-items-center pt-1">
                                                             @php
                                                                 $CategoryThumbnail_setting = App\CategoryVideo::join('video_categories', 'video_categories.id', '=', 'categoryvideos.category_id')
-                                                                    ->where('categoryvideos.video_id', $watchlater_video->id)
-                                                                    ->pluck('video_categories.name');
-                                                            @endphp
+                                                                ->where('categoryvideos.video_id', $watchlater_video->id)
+                                                                ->pluck('video_categories.name');
+                                                                @endphp
                                                             @if($ThumbnailSetting->category == 1 && count($CategoryThumbnail_setting) > 0)
-                                                                <span class="text-white">
-                                                                    <i class="fa fa-list-alt" aria-hidden="true"></i>
-                                                                    {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
-                                                                </span>
+                                                            <div class="movie-time d-flex align-items-center pt-1 text-white">
+                                                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                                                                {{ implode(', ', $CategoryThumbnail_setting->toArray()) }}
+                                                            </div>
                                                             @endif
-                                                        </div>
                                                     </a>
                                                     <a class="epi-name mt-2 mb-0 btn" href="{{ url('category/videos/' . $watchlater_video->slug) }}">
                                                         <i class="fa fa-play mr-1" aria-hidden="true"></i>

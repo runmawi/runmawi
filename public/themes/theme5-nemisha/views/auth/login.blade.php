@@ -73,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
         margin-left: -57px;
    
           height: 45px !important;
-    background: #F9CB04  !important;
+    background: #F27906  !important;
     color: #fff !important;
     position: absolute;
     right: 0px;
@@ -133,12 +133,12 @@ font-size: 35px;
 
     }
      .btn-outline-success{
-        border: 1px solid #F9CB04 ;
-         color: #F9CB04 ;
+        border: 1px solid #F27906 ;
+         color: #F27906 ;
     }
      .btn-outline-success:hover{
-        border: 1px solid #F9CB04 ;
-        background-color: #F9CB04 !important;
+        border: 1px solid #F27906 ;
+        background-color: #F27906 !important;
          color: #ffffff!important;
     }
     	.input-icons i {
@@ -188,8 +188,8 @@ line-height: 55px;
     i.fa.fa-google-plus {
         /* padding: 10px !important;*/}
         .btn-success{
-            background: #F9CB04 !important;
-            border: 1px solid #F9CB04 ;
+            background: #F27906 !important;
+            border: 1px solid #F27906 ;
 
         }
         .demo_cred {
@@ -252,7 +252,7 @@ line-height: 55px;
         color: #FFD109;
     }
     .nemi{
-        color: #F9CB04 ;
+        color: #F27906 ;
     }
 
 }

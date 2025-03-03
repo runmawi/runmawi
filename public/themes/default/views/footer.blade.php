@@ -11,6 +11,7 @@
 
   $theme = App\SiteTheme::first();
   $theme_mode = $theme->theme_mode;
+  $videocipher = $theme->enable_video_cipher_upload;
 ?>
 
 <footer class="py-4 mt-5">
@@ -67,17 +68,17 @@
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" loading="lazy"  />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" alt="t" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" alt="t" loading="lazy"  />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" />
+                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" loading="lazy"  />
                       </a>
                       <?php } ?>
 
@@ -89,7 +90,7 @@
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" loading="lazy"  />
                       </a>
                       <?php } ?>
 
@@ -101,7 +102,7 @@
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" loading="lazy"  />
                       </a>
                       <?php } ?>
 
@@ -113,7 +114,7 @@
 
                       <?php if(!empty($settings->tiktok_page_id)){?>
                         <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" />
+                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" loading="lazy"  />
                         </a>
                         <?php } ?>
 
@@ -127,24 +128,19 @@
 
   </div>
 
-    <div class="container-fluid">
-        <p class="mb-0 text-center font-size-14 text-body" >
+  <div class="container-fluid">
+      <div class="footer_links_container text-center">
           <?php
-                    // CMS Pages
-            $cmspages = App\Page::where('footer_active', 1)->get();
-
-            foreach($cmspages as $key => $page) {
-              if($page->slug == 'contact-us') { ?>
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
-              <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
-            <?php } } ?>
-          </p>
-          <p class="text-center">
-            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?>
-          </p>
-    </div>
-
+              $cmspages = App\Page::where('footer_active', 1)->get();
+              foreach ($cmspages as $page) { ?>
+                  <a href="<?= URL::to(($page->slug == 'contact-us') ? '/'.$page->slug : 'page/'.$page->slug ) ?>"
+                    target="_blank"
+                    class="ml-1 footer_link">
+                    <?= __($page->title) ?>
+                  </a>
+          <?php } ?>
+      </div>
+  </div>
 </footer>
       <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
@@ -266,50 +262,54 @@ function about(evt , id) {
 ?>
  <script async src="<?= URL::to('/'). '/assets/js/ls.bgset.min.js';?>"></script>
  <script async src="<?= URL::to('/'). '/assets/js/plyr.polyfilled.js';?>"></script>
- {{-- <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
- <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script> --}}
-{{-- 
+
+ <?php if( $videocipher == 0) { ?>
+
+ <script async src="<?= URL::to('/'). '/assets/js/hls.min.js';?>"></script>
+ <script async src="<?= URL::to('/'). '/assets/js/hls.js.map';?>"></script>
+
  <script>
-  function loadScriptWithTimeout(url, timeout = 50000) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = url;
+    function loadScriptWithTimeout(url, timeout = 50000) {
+      return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = url;
 
-        const timer = setTimeout(() => {
-            reject(new Error(`Timed out while loading ${url}`));
-            script.remove();
-        }, timeout);
+          const timer = setTimeout(() => {
+              reject(new Error(`Timed out while loading ${url}`));
+              script.remove();
+          }, timeout);
 
-        script.onload = () => {
-            clearTimeout(timer);
-            resolve();
-        };
+          script.onload = () => {
+              clearTimeout(timer);
+              resolve();
+          };
 
-        script.onerror = () => {
-            clearTimeout(timer);
-            reject(new Error(`Failed to load ${url}`));
-        };
+          script.onerror = () => {
+              clearTimeout(timer);
+              reject(new Error(`Failed to load ${url}`));
+          };
 
-        document.body.appendChild(script);
-    });
-}
+          document.body.appendChild(script);
+      });
+  }
 
-// Specify the URL for your hls.min.js file
-const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
-const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
+  // Specify the URL for your hls.min.js file
+  const hlsJsUrl = "<?= URL::to('/'). '/assets/js/hls.js';?>";
+  const timeoutMilliseconds = 50000; // Adjust timeout as needed (in milliseconds)
 
-// Load HLS.js with a timeout
-loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
-    .then(() => {
-        console.log(`HLS.js loaded successfully.`);
-        // You can now use HLS.js functionalities safely
-    })
-    .catch((error) => {
-        console.error(`Error loading HLS.js:`, error);
-        // Handle the error (e.g., show a message to the user)
-    });
+  // Load HLS.js with a timeout
+  loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
+      .then(() => {
+          console.log(`HLS.js loaded successfully.`);
+          // You can now use HLS.js functionalities safely
+      })
+      .catch((error) => {
+          console.error(`Error loading HLS.js:`, error);
+          // Handle the error (e.g., show a message to the user)
+      });
 
- </script> --}}
+ </script>
+<?php } ?>
 
 <script>
     function loadJS(u) {
@@ -322,8 +322,11 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
     // loadJS("https://afarkas.github.io/lazysizes/plugins/respimg/ls.respimg.min.js");
     // }
 </script>
-{{-- <link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
-<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script> --}}
+
+<?php if( $videocipher == 0) { ?>
+<link rel="preload" href="https://cdn.jsdelivr.net/hls.js/latest/hls.js" as="script">
+<script defer src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+<?php } ?>
 
 <?php
     try {
@@ -425,6 +428,20 @@ loadScriptWithTimeout(hlsJsUrl, timeoutMilliseconds)
           text-align: center;
       }
   }
+
+  .footer_links_container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        min-height: 50px; /* Reserve space */
+    }
+
+    .footer_link {
+        margin: 5px;
+    }
+
+
+
   /* Default (Dark Theme) */
   footer a,
   footer p {

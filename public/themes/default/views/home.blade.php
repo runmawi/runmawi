@@ -38,7 +38,14 @@ $homepage_array_data = [
 <!-- Slider Start -->
 
 <section id="home" class="iq-main-slider m-0 p-0">
-   <div id="home-slider" class="home-sliders slider m-0 p-0">
+
+    <!-- Skeleton Loader -->
+    <div id="slider-loader" class="slider-skeleton">
+         <div class="skeleton-box"></div>
+   </div>
+
+
+   <div id="home-slider" class="home-sliders slider m-0 p-0" style="opacity: 0; visibility: hidden;">
        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
    </div>
 </section>
@@ -275,9 +282,8 @@ $(".home-search").hide();
 </style>
 
 <!-- flickity -->
-<link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
+{{-- <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script"> --}}
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
 <!-- Trailer -->
 @php
 include(public_path('themes/default/views/partials/home/Trailer-script.php'));
@@ -322,6 +328,32 @@ overflow-y:scroll;
 
 
 </style>
+
+<script>
+       var elem = document.querySelector('.home-sliders');
+       var loader = document.getElementById("slider-loader");
+
+       imagesLoaded(elem, function () {
+           // Initialize Flickity after images are loaded
+           new Flickity(elem, {
+               cellAlign: 'left',
+               contain: true,
+               groupCells: false,
+               pageDots: false,
+               draggable: true,
+               freeScroll: true,
+               imagesLoaded: true,
+               lazyLoad: 2,
+               autoPlay: 5000,
+           });
+
+           // Hide the skeleton loader and show the slider
+           loader.style.display = "none";
+           elem.style.opacity = "1";
+           elem.style.visibility = "visible";
+       });
+</script>
+
 <script>
 var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
 
@@ -340,20 +372,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize Flickity slider
-    var elem = document.querySelector('.home-sliders');
-
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload: 2,
-        autoPlay: 5000,
-    });
+   
 
     // Video trailer slider
     $('.myvideos').each(function () {
@@ -495,5 +514,40 @@ document.addEventListener("DOMContentLoaded", function () {
       color: #ffcc00;
    }
 
+
+</style>
+
+<style>
+  .slider-skeleton {
+    width: 100vw;  
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f0f0f0;
+    z-index: 1000; 
+}
+
+.skeleton-box {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite linear;
+}
+
+@keyframes loading {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+.home-sliders {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
 
 </style>
