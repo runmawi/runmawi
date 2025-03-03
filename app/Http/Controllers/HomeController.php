@@ -951,7 +951,8 @@ class HomeController extends Controller
                     $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)->orderBy('order')->get()->map(function ($item) {
 
                         $item['Series_depends_Networks'] = Series::where('series.active', 1)
-                        ->whereJsonContains('network_id', [(string)$item->id])
+                        ->where('network_id', 'LIKE', '%"'.$item->id.'"%')
+
 
                                     ->latest('series.created_at')->get()->map(function ($item) {
 
