@@ -128,24 +128,19 @@
 
   </div>
 
-    <div class="container-fluid">
-        <p class="mb-0 text-center font-size-14 text-body" >
+  <div class="container-fluid">
+      <div class="footer_links_container text-center">
           <?php
-                    // CMS Pages
-            $cmspages = App\Page::where('footer_active', 1)->get();
-
-            foreach($cmspages as $key => $page) {
-              if($page->slug == 'contact-us') { ?>
-              <a href="<?= URL::to('/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
-              <?php }else{  ?>
-              <a href="<?= URL::to('page/'.$page->slug ) ?>" target="_blank" class="ml-1 footer_link" > <?= __($page->title) ?> </a>
-            <?php } } ?>
-          </p>
-          <p class="text-center">
-            <?php echo $settings->website_name . ' ' . '<i class="ri-copyright-line"></i>' . ' ' . Carbon::now()->year ; ?> <?php echo (__('All Rights Reserved')); ?>
-          </p>
-    </div>
-
+              $cmspages = App\Page::where('footer_active', 1)->get();
+              foreach ($cmspages as $page) { ?>
+                  <a href="<?= URL::to(($page->slug == 'contact-us') ? '/'.$page->slug : 'page/'.$page->slug ) ?>"
+                    target="_blank"
+                    class="ml-1 footer_link">
+                    <?= __($page->title) ?>
+                  </a>
+          <?php } ?>
+      </div>
+  </div>
 </footer>
       <link rel="preload" href="<?= URL::to('assets/js/jquery.3.4.1.js') ?>" as="script">
       <script src="<?= URL::to('assets/js/jquery.3.4.1.js') ?>"></script>
@@ -433,6 +428,20 @@ function about(evt , id) {
           text-align: center;
       }
   }
+
+  .footer_links_container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        min-height: 50px; /* Reserve space */
+    }
+
+    .footer_link {
+        margin: 5px;
+    }
+
+
+
   /* Default (Dark Theme) */
   footer a,
   footer p {

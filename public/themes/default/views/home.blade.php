@@ -38,7 +38,16 @@ $homepage_array_data = [
 <!-- Slider Start -->
 
 <section id="home" class="iq-main-slider m-0 p-0">
-   <div id="home-slider" class="home-sliders slider m-0 p-0">
+
+    <!-- Skeleton Loader -->
+    <div id="slider-loader" class="slider-skeleton">
+      <div class="skeleton-box"></div>
+      <div class="skeleton-box"></div>
+      <div class="skeleton-box"></div>
+  </div>
+
+
+   <div id="home-slider" class="home-sliders slider m-0 p-0" style="opacity: 0; visibility: hidden;">
        {!! Theme::uses($current_theme)->load("public/themes/{$current_theme}/views/partials/home/{$slider_choosen}", $Slider_array_data )->content() !!}
    </div>
 </section>
@@ -323,21 +332,28 @@ overflow-y:scroll;
 </style>
 
 <script>
-    // Initialize Flickity slider
-    var elem = document.querySelector('.home-sliders');
-   imagesLoaded(elem, function () {
-      new Flickity(elem, {
-         cellAlign: 'left',
-         contain: true,
-         groupCells: false,
-         pageDots: false,
-         draggable: true,
-         freeScroll: true,
-         imagesLoaded: true,
-         lazyLoad: 2,
-         autoPlay: 5000,
-      });
-   });
+       var elem = document.querySelector('.home-sliders');
+       var loader = document.getElementById("slider-loader");
+
+       imagesLoaded(elem, function () {
+           // Initialize Flickity after images are loaded
+           new Flickity(elem, {
+               cellAlign: 'left',
+               contain: true,
+               groupCells: false,
+               pageDots: false,
+               draggable: true,
+               freeScroll: true,
+               imagesLoaded: true,
+               lazyLoad: 2,
+               autoPlay: 5000,
+           });
+
+           // Hide the skeleton loader and show the slider
+           loader.style.display = "none";
+           elem.style.opacity = "1";
+           elem.style.visibility = "visible";
+       });
 </script>
 
 <script>
@@ -501,4 +517,36 @@ document.addEventListener("DOMContentLoaded", function () {
    }
 
 
+</style>
+
+<style>
+  .slider-skeleton {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    height: calc(100vh * 0.4);
+    align-items: center;
+    justify-content: center;
+   }
+
+   .skeleton-box {
+      width: 100%;
+      height: calc(100vh * 0.3); 
+      max-height: 300px; 
+      background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite linear;
+      border-radius: 8px;
+   }
+
+   @keyframes loading {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+   }
+
+   .home-sliders {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease-in-out;
+   }
 </style>
