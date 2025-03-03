@@ -1,5 +1,10 @@
 <!-- Header Start Test MEssage -->
 @php
+
+if (!empty($video_banners) && $video_banners->isNotEmpty()) {
+    echo '<link rel="preload" as="image" href="' . URL::to('/public/uploads/images/' . $video_banners->first()->player_image) . '">';
+}
+
 include (public_path('themes/default/views/header.php'));
 
 $slider_choosen = $home_settings->slider_choosen == 2 ? "slider-2" : "slider-1 ";
@@ -274,9 +279,14 @@ $(".home-search").hide();
    .hidden-loader {display: none !important;}
 </style>
 
-<!-- flickity -->
-<link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+     let script = document.createElement("script");
+     script.src = "https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js";
+     script.defer = true;
+     document.body.appendChild(script);
+   });
+ </script>
 
 <!-- Trailer -->
 @php
@@ -318,6 +328,10 @@ overflow-y:scroll;
     width: 100%; 
     height: auto;
     object-fit: contain;
+}
+
+#home_sections {
+   min-height: 800px;
 }
 
 
