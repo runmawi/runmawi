@@ -19456,19 +19456,7 @@ public function QRCodeMobileLogout(Request $request)
                                                 
                                                         $series['duration_format'] =  !is_null($series->duration) ?  Carbon::parse( $series->duration)->format('G\H i\M'): null ;
                                                 
-                                                        $series['Series_depends_episodes'] = Series::find($series->id)->Series_depends_episodes
-                                                                                                ->map(function ($item) {
-                                                                                                  $description = $item->episode_description;
-                                                                                                                  do {
-                                                                                                                      $previous = $description;
-                                                                                                                      $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                                                                                                                  } while ($description !== $previous);
-                                                                                                $item['episode_description']= strip_tags($description);
-                                                                                                $item['image_url']  = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image() ;
-                                                                                                return $item;
-                                                                                            });
-                                                        $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
-                                                        $series['has_more'] = $totalEpisodes > 14;
+                                                    
 
                                                 
                                                         $series['source'] = 'Series';
