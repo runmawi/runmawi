@@ -41,10 +41,8 @@ $homepage_array_data = [
 
     <!-- Skeleton Loader -->
     <div id="slider-loader" class="slider-skeleton">
-      <div class="skeleton-box"></div>
-      <div class="skeleton-box"></div>
-      <div class="skeleton-box"></div>
-  </div>
+         <div class="skeleton-box"></div>
+   </div>
 
 
    <div id="home-slider" class="home-sliders slider m-0 p-0" style="opacity: 0; visibility: hidden;">
@@ -521,32 +519,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <style>
   .slider-skeleton {
+    width: 100vw;  
+    height: 100vh;
     display: flex;
-    gap: 10px;
-    overflow: hidden;
-    height: calc(100vh * 0.4);
     align-items: center;
     justify-content: center;
-   }
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f0f0f0;
+    z-index: 1000; 
+}
 
-   .skeleton-box {
-      width: 100%;
-      height: calc(100vh * 0.3); 
-      max-height: 300px; 
-      background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite linear;
-      border-radius: 8px;
-   }
+.skeleton-box {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite linear;
+}
 
-   @keyframes loading {
-      0% { background-position: 100% 0; }
-      100% { background-position: -100% 0; }
-   }
+@keyframes loading {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
 
-   .home-sliders {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease-in-out;
-   }
+.home-sliders {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
+
 </style>
