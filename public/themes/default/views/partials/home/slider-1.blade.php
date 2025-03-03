@@ -544,13 +544,6 @@
         opacity: 1;
     }
 
-
-    img.flickity-lazyloaded {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16/9;
-    }
-
     @media(max-width:768px){
         ._meta_desc_data_{display:none;}
     }
