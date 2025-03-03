@@ -321,6 +321,25 @@ overflow-y:scroll;
 
 
 </style>
+
+<script>
+    // Initialize Flickity slider
+    var elem = document.querySelector('.home-sliders');
+   imagesLoaded(elem, function () {
+      new Flickity(elem, {
+         cellAlign: 'left',
+         contain: true,
+         groupCells: false,
+         pageDots: false,
+         draggable: true,
+         freeScroll: true,
+         imagesLoaded: true,
+         lazyLoad: 2,
+         autoPlay: 5000,
+      });
+   });
+</script>
+
 <script>
 var scheduler_content = '<?= Session::get('scheduler_content'); ?>';
 
@@ -339,20 +358,7 @@ var scheduler_time = '<?= Session::forget('scheduler_time'); ?>';
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize Flickity slider
-    var elem = document.querySelector('.home-sliders');
-
-    var flkty = new Flickity(elem, {
-        cellAlign: 'left',
-        contain: true,
-        groupCells: false,
-        pageDots: false,
-        draggable: true,
-        freeScroll: true,
-        imagesLoaded: true,
-        lazyload: 2,
-        autoPlay: 5000,
-    });
+   
 
     // Video trailer slider
     $('.myvideos').each(function () {
