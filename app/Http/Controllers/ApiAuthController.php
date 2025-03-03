@@ -4166,7 +4166,7 @@ public function verifyandupdatepassword(Request $request)
 
     /*channel videos*/
     $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->latest()->get();
-    $video_ids_count = Wishlist::select('video_id')->where('user_id','=',$user_id)->count();
+    $video_ids_count = Wishlist::where('user_id','=',$user_id)->whereNotNull('video_id')->pluck('video_id')->count();
 
     if ( $video_ids_count  > 0) {
 
@@ -4191,7 +4191,8 @@ public function verifyandupdatepassword(Request $request)
 
     //UGC Videos
     $ugc_video_ids = Wishlist::select('ugc_video_id')->where('user_id','=',$user_id)->get();
-    $ugc_video_ids_count = Wishlist::select('ugc_video_id')->where('user_id','=',$user_id)->count();
+    $ugc_video_ids_count = Wishlist::where('user_id','=',$user_id)->whereNotNull('ugc_video_id')->pluck('ugc_video_id')->count();
+    // return $ugc_video_ids_count;
 
     if ( $ugc_video_ids_count  > 0) {
 
@@ -4218,6 +4219,7 @@ public function verifyandupdatepassword(Request $request)
     // Episode
 
     $episode_id = Wishlist::where('user_id','=',$user_id)->whereNotNull('episode_id')->latest()->pluck('episode_id');
+    
 
     if(count($episode_id) > 0 ){
 
@@ -4246,6 +4248,12 @@ public function verifyandupdatepassword(Request $request)
 
     }else{
       $audios = [];
+    }
+
+    if($video_ids_count  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
+      $status = "true";
+    }else{
+      $status = "false";
     }
 
     $response = array(
