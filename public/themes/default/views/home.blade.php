@@ -1,6 +1,7 @@
 <!-- Header Start Test MEssage -->
 @php
 
+
 if (!empty($video_banners) && $video_banners->isNotEmpty()) {
     echo '<link rel="preload" as="image" href="' . URL::to('/public/uploads/images/' . $video_banners->first()->player_image) . '">';
 }
@@ -279,6 +280,7 @@ $(".home-search").hide();
    .hidden-loader {display: none !important;}
 </style>
 
+<!-- flickity -->
 <script>
    document.addEventListener("DOMContentLoaded", function () {
      let script = document.createElement("script");
@@ -287,7 +289,7 @@ $(".home-search").hide();
      document.body.appendChild(script);
    });
  </script>
-
+ 
 <!-- Trailer -->
 @php
 include(public_path('themes/default/views/partials/home/Trailer-script.php'));
@@ -328,10 +330,6 @@ overflow-y:scroll;
     width: 100%; 
     height: auto;
     object-fit: contain;
-}
-
-#home_sections {
-   min-height: 800px;
 }
 
 
