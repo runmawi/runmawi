@@ -41,7 +41,7 @@
     @foreach ($video_banners as $key => $videos)
         <div class="s-bg-1">
             <div class="_banner_img">
-                <img class="flickity-lazyloaded" src="{{ asset('public/uploads/images/placeholder.webp') }}" data-src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}" loading="lazy">
+                <img class="flickity-lazyloaded" src="{{ asset('public/uploads/images/placeholder.webp') }}" data-src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}"  style="aspect-ratio: 16/9; width: 100%; height: auto;" loading="lazy">
 
                 @if($settings->slider_trailer == 1 && !empty($videos->trailer))
                     <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?>
