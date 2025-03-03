@@ -471,11 +471,18 @@ document.addEventListener("DOMContentLoaded", function () {
    //  width and height set dynamically
    var images = document.querySelectorAll('.flickity-lazyloaded');
    images.forEach(function(image) {
-      var renderedWidth = image.clientWidth;
-      var renderedHeight = image.clientHeight;
+      image.addEventListener("load", function() {
+         var renderedWidth = image.naturalWidth;
+         var renderedHeight = image.naturalHeight;
 
-      image.setAttribute('width', renderedWidth);
-      image.setAttribute('height', renderedHeight);
+         image.style.width = renderedWidth + "px";
+         image.style.height = renderedHeight + "px";
+      });
+
+      // Load the actual image (if lazy loading)
+      if (image.dataset.src) {
+         image.src = image.dataset.src;
+      }
    });
 });
 
