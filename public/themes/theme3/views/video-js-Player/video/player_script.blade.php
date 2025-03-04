@@ -224,6 +224,8 @@
                 const checkMidrollAds_array = '<?php echo $mid_advertisement == null ? 0 :  count($mid_advertisement) ?>';
                 const markers = [];
                 const  total = player.duration();
+                console.log("midrollincreaseInterval",midrollincreaseInterval);
+                console.log("total",total);
                 if ( total != 'Infinity' ) {
                     if( !!CheckPreAds ){
                         markers.push({ time: 0 });
@@ -301,6 +303,7 @@
     
             player.on("timeupdate", function() {
                 var currentTime = player.currentTime();
+                let Player_duration = player.duration();
                 // console.console.log('currentTime',currentTime);
                 var timeSinceLastMidroll = currentTime - lastMidrollTime;
                 if (timeSinceLastMidroll >= midrollInterval && !midrollRequested) {
@@ -310,16 +313,27 @@
                     const vastTagMidroll = vastTagMidrollArray[random_array_index];
                     requestMidrollAd(vastTagMidroll);
                 }
+
+                if (!postrollTriggered && Player_duration - currentTime < 2) {                    
+                    player.ima.changeAdTag(vastTagPostroll);
+                    // player.ima.requestAds();
+                    player.ima.requestAds({
+                        adTagUrl: vastTagPostroll,
+                    });
+                    postrollTriggered = true;
+                }
             });
     
             player.on("ended", function() {
                 if (!postrollTriggered) {
-                    postrollTriggered = true;
+                    // postrollTriggered = true;
+                    player.ima.changeAdTag(vastTagPostroll);
                     player.ima.requestAds({
                         adTagUrl: vastTagPostroll,
                     });
-                    // console.log("Postroll ads requested");
+                    console.log("Postroll ads requested");
                 }
+                postrollTriggered = true;
             });
     
             player.on("adsready", function() {
