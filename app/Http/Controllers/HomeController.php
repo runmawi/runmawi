@@ -4890,5 +4890,33 @@ public function uploadExcel(Request $request)
         
     }
 
+    
+    public function fetchMenus()
+    {
+        if (!Auth::guest() && Auth::user()->role != 'admin' || Auth::guest()) {
+            $menus = Menu::orderBy('order', 'asc')
+                        ->where('in_home', '!=', 0)
+                        ->orWhereNull('in_home')
+                        ->get();
+        } else {
+            $menus = Menu::orderBy('order', 'asc')->get();
+        }
+
+        $languages = Language::all();
+        $liveCategories = LiveCategory::orderBy('order', 'asc')->get();
+        $videoCategories = VideoCategory::orderBy('order', 'asc')->get();
+        $audioCategories = AudioCategory::orderBy('order', 'asc')->get();
+        $tvShows = SeriesGenre::get();
+
+        return response()->json([
+            'menus' => $menus,
+            'languages' => $languages,
+            'liveCategories' => $liveCategories,
+            'videoCategories' => $videoCategories,
+            'audioCategories' => $audioCategories,
+            'tvShows' => $tvShows
+        ]);
+    }
+
 
 }

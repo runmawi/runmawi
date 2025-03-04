@@ -8897,6 +8897,7 @@ return response()->json($response, 200);
     try {
 
       $HomeSetting = MobileHomeSetting::first();
+      $HomeSetting->continue_watching = 1;
       if($HomeSetting->continue_watching == 0){
         $response = array(
             'status' => "false",
@@ -8925,9 +8926,9 @@ return response()->json($response, 200);
                               'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
                               'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
                               'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime','continue_watchings.created_at')
+                              'continue_watchings.currentTime','continue_watchings.updated_at')
                       ->whereIn('videos.id', $video_id_query)
-                      ->orderBy('continue_watchings.created_at', 'desc') 
+                      ->orderBy('continue_watchings.updated_at', 'desc') 
                       ->groupBy('continue_watchings.videoid');
                  
 
@@ -8962,11 +8963,11 @@ return response()->json($response, 200);
         $episodes = Episode::join('continue_watchings', 'episodes.id', '=', 'continue_watchings.episodeid')
                               ->select('episodes.id', 'episodes.id' ,'title','slug','rating','access','series_id','season_id','ppv_price','responsive_image','responsive_player_image','responsive_tv_image','episode_description',
                                     'duration','rating','image','featured','tv_image','player_image','episodes.uploaded_by','episodes.user_id',
-                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime','continue_watchings.created_at')
+                                    'continue_watchings.watch_percentage', 'continue_watchings.skip_time','continue_watchings.currentTime','continue_watchings.updated_at')
                                 ->whereIn('episodes.id', $episode_id_query)
                                 ->where('episodes.active', '1')
                                 ->where('episodes.status', '1')
-                                ->orderBy('continue_watchings.created_at', 'desc') 
+                                ->orderBy('continue_watchings.updated_at', 'desc') 
                                 ->groupBy('continue_watchings.episodeid')
                                 ->get()
                                 ->map(function($item){
