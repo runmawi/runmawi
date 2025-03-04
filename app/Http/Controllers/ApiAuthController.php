@@ -8917,7 +8917,7 @@ return response()->json($response, 200);
                     } else {
                         $video_id_query->where('user_id', $user_id)->whereNull('multiuser');
                     }
-      $video_id_query = $video_id_query->pluck('videoid');
+      $video_id_query = $video_id_query->pluck('videoid')->latest();
 
       $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
                       ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
