@@ -39,9 +39,9 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1">
+        <div class="s-bg-1">test
             <div class="_banner_img">
-                <img class="flickity-lazyloaded check" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}">
+                <img class="flickity-lazyloaded" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}" loading="eager" fetchpriority="high" >
 
                 @if($settings->slider_trailer == 1 && !empty($videos->trailer))
                     <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?>
