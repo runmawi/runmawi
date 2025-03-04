@@ -8897,6 +8897,7 @@ return response()->json($response, 200);
     try {
 
       $HomeSetting = MobileHomeSetting::first();
+      $HomeSetting->continue_watching = 1;
       if($HomeSetting->continue_watching == 0){
         $response = array(
             'status' => "false",
