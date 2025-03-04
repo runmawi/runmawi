@@ -433,7 +433,7 @@ function about(evt , id) {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        min-height: 50px; /* Reserve space */
+        min-height: 20px;
     }
 
     .footer_link {
