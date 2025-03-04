@@ -39,7 +39,7 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1">test
+        <div class="s-bg-1">
             <div class="_banner_img">
                 <img class="flickity-lazyloaded" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}" loading="eager" fetchpriority="high" >
 
