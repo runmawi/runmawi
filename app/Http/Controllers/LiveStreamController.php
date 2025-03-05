@@ -872,7 +872,7 @@ class LiveStreamController extends Controller
                 );   
                 // dd($data);        
 
-                if(  $Theme == "default" || $Theme == "theme6" || $Theme == "theme4" ){
+                if(  $Theme == "default" || $Theme == "theme3" || $Theme == "theme6" || $Theme == "theme4" ){
                     // dd($data['default_vertical_image_url ']);
                     return Theme::view('video-js-Player.Livestream.live', $data);
                 }else{
