@@ -3196,7 +3196,7 @@ class AdminUsersController extends Controller
             $user_role = Auth::user()->role;
 
             $user_details = User::find($user_id);
-            $recent_videos = RecentView::orderBy('id', 'desc')->take(10)
+            $recent_videos = RecentView::where('user_id',$user_id)->whereNotNull('video_id')->orderBy('id', 'desc')->take(10)
                 ->get();
             $recent_view = $recent_videos->unique('video_id');
 

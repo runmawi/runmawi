@@ -4,14 +4,14 @@
 
 
 <!-- video-js Style  -->
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-<link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
-<link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
-<link href="<?= URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') ?>" rel="stylesheet">
-<link href="<?= asset('public/themes/theme4/assets/css/video-js/videos-player.css') ?>" rel="stylesheet">
-<link href="<?= asset('public/themes/theme4/assets/css/video-js/video-end-card.css') ?>" rel="stylesheet">
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
+ <link href="{{ asset('public/themes/theme3/assets/css/video-js/videojs.min.css') }}" rel="stylesheet" >
+ <!-- <link href="https://unpkg.com/@videojs/themes@1/dist/fantasy/index.css" rel="stylesheet"> -->
+ <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css" rel="stylesheet">
+ <link href="{{ URL::to('node_modules/videojs-settings-menu/dist/videojs-settings-menu.css') }}" rel="stylesheet" >
+ <link href="{{ asset('public/themes/theme3/assets/css/video-js/videos-player.css') }}" rel="stylesheet" >
+ <link href="{{ asset('public/themes/theme3/assets/css/video-js/video-end-card.css') }}" rel="stylesheet" >
+ <link href="{{ URL::to('node_modules\@filmgardi\videojs-skip-button\dist\videojs-skip-button.css') }}" rel="stylesheet" >
 
 <!-- video-js Script  -->
 
@@ -491,7 +491,7 @@ if(empty($new_date)){
             <div class="col-sm-6 col-md-6 col-xs-12">
                  <ul class="list-inline p-0 mt-4 share-icons music-play-lists">
                       <!-- Social Share, Like Dislike -->
-                         <?php include('partials/live-social-share.php'); ?>                     
+                      <?php include(public_path('themes/theme3/views/partials/live-social-share.php')) ; ?>                    
                   </ul>
             </div>
 
