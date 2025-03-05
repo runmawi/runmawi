@@ -314,380 +314,8 @@
    ?>
 
 <style>
-      .fullpage-loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      /* background: linear-gradient(180deg, #040404 0%, #3D3D47 100%); */
-      background: #000;
-      z-index: 9999;
-      opacity: 1;
-      transition: opacity .5s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .fullpage-loader__logo {
-      position: relative;
-      &:after {
-      // this is the sliding white part
-      content: '';
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      animation: shine 2.5s infinite cubic-bezier(0.42, 0, 0.58, 1);
-      // opaque white slide
-      background: rgba(255,255,255,.8);
-      // gradient shine scroll
-      background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-      background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-      background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
-      }
-      }
-      }
-      @keyframes shine {
-      0% {
-      transform: translateX(-100%) skew(-30deg);
-      }
-      100% {
-      transform: translateX(200%) skew(-30deg);
-      }
-      }
-      .fullpage-loader--invisible {
-      opacity: 0;
-      }
-      /* END LOADER CSS */
-      svg{
-      height: 30px;
-      widows: 30px;
-      }
-      .mk{
-      display: none;
-      }
-      #main-header{ color: #fff; }
-      .svg{ color: #fff; }
-      #videoPlayer{
-      width:100%;
-      height: 100%;
-      margin: 20px auto;
-      }
-      i.fas.fa-child{
-      font-size: 35px;
-      color: white;
-      }
-      span.kids {
-      color: #f7dc59;
-      }
-      span.family{
-      color: #f7dc59;
-      }
-      i.fa.fa-eercast{
-      font-size: 35px;
-      color: white;
-      }
-      a.navbar-brand.iconss {
-      font-size: 19px;
-      font-style: italic;
-      font-family: ui-rounded;
-      }
-      .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 20px;
-      }
-      .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-      }
-      .sliderk {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ddd;
-      -webkit-transition: .4s;
-      transition: .4s;
-      }
-      .sliderk:before {
-      position: absolute;
-      content: "";
-      height: 15px;
-      width: 15px;
-      left: 5px;
-      bottom: 2px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-      }
-      input:checked + .sliderk {
-      background-color: #2196F3;
-      }
-      input:focus + .sliderk {
-      box-shadow: 0 0 1px #2196F3;
-      }
-      input:checked + .sliderk:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-      }
-      li.logout_mobile_view.col-sm-6.myp h6{font-weight:600;}
-      /* Rounded sliders */
-      .sliderk.round {
-         border-radius: 34px;
-      }
-      .sliderk.round:before {
-         border-radius: 50%;
-      }
-      body{background: #000;}
-      /* Dark mode and light Mode */
-         
-      body.dark-theme {
-         background: <?php echo $GetDarkBg; ?>!important;
-      }
-      body.dark-theme i{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme .navbar-right .iq-sub-dropdown, header#main-header.menu-sticky{
-         background: <?php echo $GetDarkBg; ?>!important;
-      }
-      body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4, body.dark-theme h5, body.dark-theme h6{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      
-      body.dark-theme .navbar-collapse{
-         background: <?php echo $GetDarkBg; ?>!important;
-      }
-      body.dark-theme header .navbar ul li.menu-item a{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme .vpageBanner .content .right , body.dark-theme .vpageBanner .content .right .utilities{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme a, body.dark-theme p{
-         color: <?php echo $GetDarkText; ?>;
-      }
-      body.dark-theme .share-icons.music-play-lists li span i{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme ol.breadcrumb{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{
-         background-color: <?php echo $GetDarkBg; ?>!important;
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme header#main-header{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme .breadcrumb i {
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme #home-slider p, body.dark-theme #home-slider h2{
-         color: #fff !important;
-      }
-      body.dark-theme header .st0, .st2{
-         fill: <?php echo $GetDarkText; ?>!important;
-         stroke: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme header .st6,.st3,.st1 {
-         stroke: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme header .st5 {
-         fill: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme header h1, body.dark-theme header h2, body.dark-theme header h3, body.dark-theme header h4, body.dark-theme header h5, body.dark-theme header h6{
-         color: <?php echo $GetDarkText; ?>!important;
-      }
-      body.dark-theme header .cont-item:hover{
-         background-color: transparent !important;
-      }
-      body.dark-theme header .dropdown-menu.categ-head{
-         background-color: <?php echo $GetDarkBg; ?>!important;
-      }
-      body.light-theme {
-      background: <?php echo $GetLightBg; ?>!important;
-      }
-      body.light-theme #home-slider .container-fluid.position-relative.h-100{
-         background: linear-gradient(1deg, rgb(255, 255, 255) 0%, transparent 0%), linear-gradient(90deg, rgb(240, 240, 240) 50%, transparent 50%);
-      }
-      body.light-theme h4, body.light-theme p, body.light-theme span {
-      color: <?php echo $GetLightText; ?>;
-      }
-      body.light-theme .block-description p.epi-name{
-      color: <?php echo $GetLightText; ?> !important;
-      }
-      body.light-theme header#main-header{
-      background-color: <?php echo $GetLightBg; ?>!important;
-      color: <?php echo $GetLightText; ?> !important;
-      box-shadow: 0 0 50px #ccc;
-      }
-      body.light-theme footer{
-      background: <?php echo $GetLightBg; ?>!important;
-      color: <?php echo $GetLightText; ?>;
-      box-shadow: 0 0 50px #ccc;
-      }
-      body.light-theme .copyright{
-      background-color: <?php echo $GetLightBg; ?>;
-      color: <?php echo $GetLightText; ?>;
-      }
-      body.light-theme .dropdown-item.cont-item{
-      color: <?php echo $GetLightText; ?>;
-      }
-      body.light-theme .s-icon{
-      background-color: <?php echo $GetLightBg; ?>;
-      box-shadow: 0 0 50px #ccc;
-      }
-      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover{
-      }
-      body.light-theme .dropdown-menu.categ-head{
-      background-color: <?php echo $GetLightBg; ?>!important;
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme .search-toggle:hover, header .navbar ul li.menu-item a:hover {
-      color: rgb(0, 82, 204)!important;
-         font-weight: 500;
-      }
-      body.light-theme .navbar-right .iq-sub-dropdown{
-      background-color: <?php echo $GetLightBg; ?>;
-      }
-      body.light-theme ul.list-group.home-search{
-      background-color: <?php echo $GetLightBg; ?> !important;
-      }
-      body.light-theme .iq-search-bar .search-input{
-         background-color: <?php echo $GetLightBg; ?> !important;
-         color: var(--iq-body-text) !important;
-      }
-      body.light-theme body.light-theme .list-group-item a{
-         color: var(--iq-body-text) !important;
-      }
-      body.light-theme .searchbox h6, body.light-theme .iq-card-body h6{
-         color: var(--iq-body-text) !important;
-      }
-      body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6{
-         color: var(--iq-body-text) !important;
-      }
-      body.light-theme .media-body h6{
-      color: <?php echo $GetLightText; ?>;
-      font-weight: 400;
-      }
-      body.light-theme .block-description h6{
-      color: <?php echo $GetLightText; ?>;
-      font-weight: 400;
-      }
-      body.light-theme .movie-time i{
-      color: <?php echo $GetLightText; ?>!important;
-      font-weight: 400;
-      }
-      body.light-theme #translator-table_filter input[type="search"]{
-      color: <?php echo $GetLightText; ?>;
-      }
-      body.light-theme li.breadcrumb-item{
-      color: <?php echo $GetLightText; ?>;
-      }
-      body.light-theme .p-tag1{
-      color: <?php echo $GetLightText; ?>!important;
-      font-weight: 400;
-      } body.light-theme .p-tag{
-      color: <?php echo $GetLightText; ?>!important;
-      font-weight: 400;
-      }
-      body.light-theme .movie-time span{
-      color: <?php echo $GetLightText; ?>!important;
-      font-weight: 400;
-      }
-      body.light-theme .block-description a{
-      color: <?php echo $GetLightText; ?>!important;
-      font-weight: 400;
-      }
-
-      body.light-theme .block-description{
-   background-image: linear-gradient(to bottom, rgb(243 244 247 / 30%), rgb(247 243 243 / 90%), rgb(247 244 244 / 90%), rgb(235 227 227 / 90%));
-      backdrop-filter: blur(2px);
-      }
-      body.light-theme  header .navbar ul li{
-      font-weight: 400;
-      }
-      body.light-theme .slick-nav i{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme h2{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme h5{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme .filter-option-inner-inner{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme .vid-title{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme .trending-info h1{
-      color: <?php echo $GetLightText; ?>!important;
-      }body.light-theme .text-detail{
-      color: <?php echo $GetLightText; ?>!important;
-      }body.light-theme .share-icons.music-play-lists li span i{
-      color: <?php echo $GetLightText; ?>!important;
-      }body.light-theme .btn1{
-      border: 1px solid <?php echo $GetLightText; ?>!important;
-      color: <?php echo $GetLightText; ?>!important;
-      }body.light-theme .trending-dec{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme .no_vid_avail{
-      color: <?php echo $GetLightText; ?>!important;
-      }
-      body.light-theme h6.trash{
-      color: black;
-      }
-      .Search_error_class {
-         color: red;
-      }
-   @media  (min-width:1025px)  { li.logout_mobile_view.menu-item{
-      display:none !important;
-   } }
-   @media (min-width:801px) { li.logout_mobile_view.menu-item{
-      display:none !important;
-   } }
-   @media (max-width: 991px) {
-      header .navbar ul li.menu-item a {
-         border-top: 1px solid <?php echo $GetDarkText; ?>!important;
-      }
-   }
-   .navbar-right .transdropdownlist{
-      width:150px;
-   }
-
-   #languageSearch{
-         width: 116px;
-         font-size: 12px;
-         right: 5px;
-         position: relative;
-      }
-      .navbar-toggler{border:none;}
-      .pagination a{color:#000 !important;}
-
-      @media (max-width: 768px) {
-         .fullpage-loader__logo .video-js {
-            width: 500px; 
-         }
-      }
-
-      @media (max-width: 480px) {
-         .fullpage-loader__logo .video-js {
-            width: 500px; 
-         }
-      }
-   </style>
+.fullpage-loader{position:fixed;top:0;left:0;height:100%;width:100%;overflow:hidden;background:#000;z-index:9999;opacity:1;transition:opacity .5s;display:flex;justify-content:center;align-items:center;.fullpage-loader__logo{position:relative;&:after{// this is the sliding #fff part content:'';height:100%;width:100%;position:absolute;top:0;left:0;animation:shine 2.5s infinite cubic-bezier(.42,0,.58,1);// opaque #fff slide background:rgb(255 255 255 / .8);// gradient shine scroll background:-moz-linear-gradient(left,#fff0 0%,#ffffff 50%,#fff0 100%);background:-webkit-linear-gradient(left,#fff0 0%,#ffffff 50%,#fff0 100%);background:linear-gradient(to right,#fff0 0%,#ffffff 50%,#fff0 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff',endColorstr='#00ffffff',GradientType=1)}}}@keyframes shine{0%{transform:translateX(-100%) skew(-30deg)}100%{transform:translateX(200%) skew(-30deg)}}.fullpage-loader--invisible{opacity:0}svg{height:30px;widows:30px}.mk{display:none}#main-header{color:#fff}.svg{color:#fff}#videoPlayer{width:100%;height:100%;margin:20px auto}i.fas.fa-child{font-size:35px;color:#fff}span.kids{color:#f7dc59}span.family{color:#f7dc59}i.fa.fa-eercast{font-size:35px;color:#fff}a.navbar-brand.iconss{font-size:19px;font-style:italic;font-family:ui-rounded}.switch{position:relative;display:inline-block;width:50px;height:20px}.switch input{opacity:0;width:0;height:0}.sliderk{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ddd;-webkit-transition:.4s;transition:.4s}.sliderk:before{position:absolute;content:"";height:15px;width:15px;left:5px;bottom:2px;background-color:#fff;-webkit-transition:.4s;transition:.4s}input:checked+.sliderk{background-color:#2196F3}input:focus+.sliderk{box-shadow:0 0 1px #2196F3}input:checked+.sliderk:before{-webkit-transform:translateX(26px);-ms-transform:translateX(26px);transform:translateX(26px)}li.logout_mobile_view.col-sm-6.myp h6{font-weight:600}.sliderk.round{border-radius:34px}.sliderk.round:before{border-radius:50%}body{background:#000}body.dark-theme{background:<?php echo $GetDarkBg;?>!important}body.dark-theme i{color:<?php echo $GetDarkText;?>!important}body.dark-theme .navbar-right .iq-sub-dropdown,header#main-header.menu-sticky{background:<?php echo $GetDarkBg;?>!important}body.dark-theme h1,body.dark-theme h2,body.dark-theme h3,body.dark-theme h4,body.dark-theme h5,body.dark-theme h6{color:<?php echo $GetDarkText;?>!important}body.dark-theme .navbar-collapse{background:<?php echo $GetDarkBg;?>!important}body.dark-theme header .navbar ul li.menu-item a{color:<?php echo $GetDarkText;?>!important}body.dark-theme .vpageBanner .content .right,body.dark-theme .vpageBanner .content .right .utilities{color:<?php echo $GetDarkText;?>!important}body.dark-theme a,body.dark-theme p{color:<?php echo $GetDarkText;?>}body.dark-theme .share-icons.music-play-lists li span i{color:<?php echo $GetDarkText;?>!important}body.dark-theme ol.breadcrumb{color:<?php echo $GetDarkText;?>!important}body.dark-theme ul.list-group.home-search,.iq-search-bar .search-input{background-color:<?php echo $GetDarkBg;?>!important;color:<?php echo $GetDarkText;?>!important}body.dark-theme header#main-header{color:<?php echo $GetDarkText;?>!important}body.dark-theme .breadcrumb i{color:<?php echo $GetDarkText;?>!important}body.dark-theme #home-slider p,body.dark-theme #home-slider h2{color:#fff!important}body.dark-theme header .st0,.st2{fill:<?php echo $GetDarkText;?>!important;stroke:<?php echo $GetDarkText;?>!important}body.dark-theme header .st6,.st3,.st1{stroke:<?php echo $GetDarkText;?>!important}body.dark-theme header .st5{fill:<?php echo $GetDarkText;?>!important}body.dark-theme header h1,body.dark-theme header h2,body.dark-theme header h3,body.dark-theme header h4,body.dark-theme header h5,body.dark-theme header h6{color:<?php echo $GetDarkText;?>!important}body.dark-theme header .cont-item:hover{background-color:transparent!important}body.dark-theme header .dropdown-menu.categ-head{background-color:<?php echo $GetDarkBg;?>!important}body.light-theme{background:<?php echo $GetLightBg;?>!important}body.light-theme #home-slider .container-fluid.position-relative.h-100{background:linear-gradient(1deg,#ffffff 0%,transparent 0%),linear-gradient(90deg,#f0f0f0 50%,transparent 50%)}body.light-theme h4,body.light-theme p,body.light-theme span{color:<?php echo $GetLightText;?>}body.light-theme .block-description p.epi-name{color:<?php echo $GetLightText;?>!important}body.light-theme header#main-header{background-color:<?php echo $GetLightBg;?>!important;color:<?php echo $GetLightText;?>!important;box-shadow:0 0 50px #ccc}body.light-theme footer{background:<?php echo $GetLightBg;?>!important;color:<?php echo $GetLightText;?>;box-shadow:0 0 50px #ccc}body.light-theme .copyright{background-color:<?php echo $GetLightBg;?>;color:<?php echo $GetLightText;?>}body.light-theme .dropdown-item.cont-item{color:<?php echo $GetLightText;?>}body.light-theme .s-icon{background-color:<?php echo $GetLightBg;?>;box-shadow:0 0 50px #ccc}body.light-theme .dropdown-menu.categ-head{background-color:<?php echo $GetLightBg;?>!important;color:<?php echo $GetLightText;?>!important}body.light-theme .search-toggle:hover,header .navbar ul li.menu-item a:hover{color:#0052cc!important;font-weight:500}body.light-theme .navbar-right .iq-sub-dropdown{background-color:<?php echo $GetLightBg;?>}body.light-theme ul.list-group.home-search{background-color:<?php echo $GetLightBg;?>!important}body.light-theme .iq-search-bar .search-input{background-color:<?php echo $GetLightBg;?>!important;color:var(--iq-body-text)!important}body.light-theme body.light-theme .list-group-item a{color:var(--iq-body-text)!important}body.light-theme .searchbox h6,body.light-theme .iq-card-body h6{color:var(--iq-body-text)!important}body.light-theme h1,body.light-theme h2,body.light-theme h3,body.light-theme h4,body.light-theme h5,body.light-theme h6{color:var(--iq-body-text)!important}body.light-theme .media-body h6{color:<?php echo $GetLightText;?>;font-weight:400}body.light-theme .block-description h6{color:<?php echo $GetLightText;?>;font-weight:400}body.light-theme .movie-time i{color:<?php echo $GetLightText;?>!important;font-weight:400}body.light-theme #translator-table_filter input[type="search"]{color:<?php echo $GetLightText;?>}body.light-theme li.breadcrumb-item{color:<?php echo $GetLightText;?>}body.light-theme .p-tag1{color:<?php echo $GetLightText;?>!important;font-weight:400}body.light-theme .p-tag{color:<?php echo $GetLightText;?>!important;font-weight:400}body.light-theme .movie-time span{color:<?php echo $GetLightText;?>!important;font-weight:400}body.light-theme .block-description a{color:<?php echo $GetLightText;?>!important;font-weight:400}body.light-theme .block-description{background-image:linear-gradient(to bottom,rgb(243 244 247 / 30%),rgb(247 243 243 / 90%),rgb(247 244 244 / 90%),rgb(235 227 227 / 90%));backdrop-filter:blur(2px)}body.light-theme header .navbar ul li{font-weight:400}body.light-theme .slick-nav i{color:<?php echo $GetLightText;?>!important}body.light-theme h2{color:<?php echo $GetLightText;?>!important}body.light-theme h5{color:<?php echo $GetLightText;?>!important}body.light-theme .filter-option-inner-inner{color:<?php echo $GetLightText;?>!important}body.light-theme .vid-title{color:<?php echo $GetLightText;?>!important}body.light-theme .trending-info h1{color:<?php echo $GetLightText;?>!important}body.light-theme .text-detail{color:<?php echo $GetLightText;?>!important}body.light-theme .share-icons.music-play-lists li span i{color:<?php echo $GetLightText;?>!important}body.light-theme .btn1{border:1px solid <?php echo $GetLightText;?>!important;color:<?php echo $GetLightText;?>!important}body.light-theme .trending-dec{color:<?php echo $GetLightText;?>!important}body.light-theme .no_vid_avail{color:<?php echo $GetLightText;?>!important}body.light-theme h6.trash{color:#000}.Search_error_class{color:red}@media (min-width:1025px){li.logout_mobile_view.menu-item{display:none!important}}@media (min-width:801px){li.logout_mobile_view.menu-item{display:none!important}}@media (max-width:991px){header .navbar ul li.menu-item a{border-top:1px solid <?php echo $GetDarkText;?>!important}}.navbar-right .transdropdownlist{width:150px}#languageSearch{width:116px;font-size:12px;right:5px;position:relative}.navbar-toggler{border:none}.pagination a{color:#000!important}@media (max-width:768px){.fullpage-loader__logo .video-js{width:500px}}@media (max-width:480px){.fullpage-loader__logo .video-js{width:500px}}     
+</style>
 
 </head>
 
@@ -815,7 +443,7 @@
 
 
 
-                              <?php
+                            <!-- <?php
                                  $stripe_plan = SubscriptionPlan();
 
                                  if(!Auth::guest() && Auth::User()->role != 'admin' || Auth::guest()){
@@ -823,7 +451,6 @@
                                  }else{
                                     $menus = App\Menu::orderBy('order', 'asc')->get();
                                  }
-
                                  $languages = App\Language::all();
                                  $LiveCategory = App\LiveCategory::orderBy('order', 'asc')->get();
                                  foreach ($menus as $menu) {
@@ -840,8 +467,6 @@
                                     }
 
                                  ?>
-
-
                               <li class="dropdown menu-item dskdflex">
                                  <a class="dropdown-toggle justify-content-between " id="down" href="<?php echo URL::to('/').$menu->url;?>" data-toggle="dropdown">
                                   <?php echo (__($menu->name)); ?> <i class="fa fa-angle-down"></i>
@@ -889,10 +514,7 @@
                                     </li>
                                     <?php } ?>
                                  </ul>
-                              </li>
-
-
-                              <!-- Audios dropdown -->
+                              </li>              
                               <?php }elseif ( $menu->in_menu == "audios" && $menu->in_home == 1) {
                                  $AudioCategory = App\AudioCategory::orderBy('order', 'asc')->get();
                                  ?>
@@ -909,11 +531,7 @@
                                     </li>
                                     <?php } ?>
                                  </ul>
-                              </li>
-
-
-                              <!-- Tv show dropdown -->
-
+                              </li>                         
                               <?php }elseif ( $menu->in_menu == "tv_show" && $menu->in_home == 1) {
                                  $tv_shows_series = App\SeriesGenre::get();
                                  ?>
@@ -948,10 +566,11 @@
                                        </a>
                                  </li>
 
-                              <?php  } } ?>
+                              <?php  } } ?> -->
 
 
 
+                           <li id="menu-list"></li>                                                      
 
                               <?php if(Auth::guest()):  ?>
                                        <div class="col-sm-12 d-flex justify-content-around pt-4 proflogbtn" style="color:white">
@@ -960,7 +579,7 @@
                                                 <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                                    <div class="media align-items-center">
                                                       <div class="right-icon">
-                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" width="45" height="45" style="enable-background:new 0 0 70 70" xml:space="preserve">
                                                             <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
                                                             <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
                                                          </svg>
@@ -975,7 +594,7 @@
                                              <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                                 <div class="media align-items-center">
                                                    <div class="right-icon">
-                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 70 70" width="45" height="45" style="enable-background:new 0 0 70 70" xml:space="preserve">
                                                          <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
                                                          <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
                                                       </svg>
@@ -1317,7 +936,7 @@
                                     <a href="<?php echo URL::to('login') ?>" class="iq-sub-card">
                                        <div class="media align-items-center">
                                           <div class="right-icon">
-                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="45" height="45" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="25" height="25" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
                                                 <path class="st5" d="M13.4 33.7c0 .5.2.9.5 1.2.3.3.8.5 1.2.5h22.2l-4 4.1c-.4.3-.6.8-.6 1.3s.2 1 .5 1.3c.3.3.8.5 1.3.5s1-.2 1.3-.6l7.1-7.1c.7-.7.7-1.8 0-2.5l-7.1-7.1c-.7-.6-1.7-.6-2.4.1s-.7 1.7-.1 2.4l4 4.1H15.2c-1 .1-1.8.9-1.8 1.8z"/>
                                                 <path class="st5" d="M52.3 17.8c0-1.4-.6-2.8-1.6-3.7-1-1-2.3-1.6-3.7-1.6H27.5c-1.4 0-2.8.6-3.7 1.6-1 1-1.6 2.3-1.6 3.7v7.1c0 1 .8 1.8 1.8 1.8s1.8-.8 1.8-1.8v-7.1c0-1 .8-1.8 1.8-1.8H47c.5 0 .9.2 1.2.5.3.3.5.8.5 1.2v31.8c0 .5-.2.9-.5 1.2-.3.3-.8.5-1.2.5H27.5c-1 0-1.8-.8-1.8-1.8v-7.1c0-1-.8-1.8-1.8-1.8s-1.8.8-1.8 1.8v7.1c0 1.4.6 2.8 1.6 3.7 1 1 2.3 1.6 3.7 1.6H47c1.4 0 2.8-.6 3.7-1.6 1-1 1.6-2.3 1.6-3.7V17.8z"/>
                                              </svg>
@@ -1333,7 +952,7 @@
                                     <a href="<?php echo URL::to('signup') ?>" class="iq-sub-card">
                                        <div class="media align-items-center">
                                           <div class="right-icon">
-                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="45" height="45" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
+                                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="25" height="25" viewBox="0 0 70 70" style="enable-background:new 0 0 70 70" xml:space="preserve">
                                                 <path class="st6" d="M53.4 33.7H30.7M36.4 28.1l-5.7 5.7 5.7 5.7"/>
                                                 <path class="st6" d="M50.5 43.7c-2.1 3.4-5.3 5.9-9.1 7.3-3.7 1.4-7.8 1.6-11.7.4a18.4 18.4 0 0 1-9.6-28.8c2.4-3.2 5.8-5.5 9.6-6.6 3.8-1.1 7.9-1 11.7.4 3.7 1.4 6.9 4 9.1 7.3"/>
                                              </svg>
@@ -2118,4 +1737,104 @@
          image.setAttribute('height', renderedHeight);
       });
    });
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        fetchMenus();
+    });
+
+    function fetchMenus() {
+        $.ajax({
+            url: "<?php echo URL::to('/fetch-menus'); ?>",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                $("#menu-list").empty();
+
+                $.each(response.menus, function (index, menu) {
+                    let hasDropdown = (menu.in_menu === "movies" || menu.in_menu === "live" || menu.in_menu === "audios" || menu.in_menu === "tv_show");
+                    let dropdownClass = hasDropdown ? "dropdown" : "";
+                    let dropdownIcon = hasDropdown ? '<i class="fa fa-angle-down"></i>' : "";
+                    let dropdownMenu = hasDropdown ? `<ul class="dropdown-menu categ-head"></ul>` : "";
+
+                    let menuItem = `
+                        <li class="${dropdownClass} menu-item" style="padding:0px 3px;" >
+                            <a href="${"<?php echo URL::to('/'); ?>" + menu.url}" class="dropdown-toggle">
+                                ${menu.name} ${dropdownIcon}
+                            </a>
+                            ${dropdownMenu}
+                        </li>`;
+
+                    let $menuItem = $(menuItem);
+
+                    if (hasDropdown) {
+                        let $dropdownMenu = $menuItem.find("ul");
+
+                        if (menu.in_menu === "movies" && menu.in_home == 1) {
+                            $dropdownMenu.append(loadCategories(response.languages, '/language/'));
+                        }
+                        if (menu.in_menu === "live" && menu.in_home == 1) {
+                            $dropdownMenu.append(loadCategories(response.liveCategories, '/live/category/'));
+                        }
+                        if (menu.in_menu === "audios" && menu.in_home == 1) {
+                            $dropdownMenu.append(loadCategories(response.audioCategories, '/audios/category/'));
+                        }
+                        if (menu.in_menu === "tv_show" && menu.in_home == 1) {
+                            $dropdownMenu.append(loadTVShows(response.tvShows, '/series/category/', '/SeriescategoryList'));
+                        }
+                    }
+
+                    $("#menu-list").append($menuItem);
+                });
+
+                // Enable dropdown on hover
+                $(".dropdown").hover(
+                    function () {
+                        $(this).find(".dropdown-menu").stop(true, true).slideDown(200);
+                    },
+                    function () {
+                        $(this).find(".dropdown-menu").stop(true, true).slideUp(200);
+                    }
+                );
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading menus:", error);
+            }
+        });
+    }
+
+    function loadCategories(categories, urlPrefix) {
+        let content = "";
+        $.each(categories, function (index, category) {
+            content += `<li>
+                <a class="dropdown-item cont-item" href="${"<?php echo URL::to('/'); ?>" + urlPrefix + category.id + '/' + category.name}">
+                    ${category.name}
+                </a>
+            </li>`;
+        });
+        return content;
+    }
+
+    function loadTVShows(tvShows, urlPrefix, moreUrl) {
+        let content = "";
+        $.each(tvShows, function (index, tvShow) {
+            if (index < 5) {
+                content += `<li>
+                    <a class="dropdown-item cont-item" href="${"<?php echo URL::to('/'); ?>" + urlPrefix + tvShow.slug}">
+                        ${tvShow.name}
+                    </a>
+                </li>`;
+            } else if (index == 5) {
+                content += `<li>
+                    <a class="dropdown-item cont-item text-primary" href="${"<?php echo URL::to('/'); ?>" + moreUrl}">
+                        More...
+                    </a>
+                </li>`;
+            }
+        });
+        return content;
+    }
 </script>
