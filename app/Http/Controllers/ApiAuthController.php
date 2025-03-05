@@ -4165,7 +4165,7 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->latest()->get();
+    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->whereNotNull('video_id')->latest()->get();
     $video_ids_count = Wishlist::where('user_id','=',$user_id)->whereNotNull('video_id')->pluck('video_id')->count();
 
     if ( $video_ids_count  > 0) {
@@ -4737,8 +4737,8 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
-    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->orderBy('created_at', 'desc')->get();
+    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->count();
 
     if ( $video_ids_count  > 0) {
 
@@ -8920,34 +8920,44 @@ return response()->json($response, 200);
                     }
       $video_id_query = $video_id_query->pluck('videoid');
 
-      $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
-                      ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
-                              'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 
-                              'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
-                              'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
-                              'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime','continue_watchings.updated_at')
-                      ->whereIn('videos.id', $video_id_query)
-                      ->orderBy('continue_watchings.updated_at', 'desc') 
-                      ->groupBy('continue_watchings.videoid');
-                 
+      $videos = Video::join('continue_watchings', function($join) {
+                          $join->on('videos.id', '=', 'continue_watchings.videoid')
+                              ->whereRaw('continue_watchings.updated_at = (
+                                  SELECT MAX(updated_at) 
+                                  FROM continue_watchings 
+                                  WHERE continue_watchings.videoid = videos.id
+                              )');
+                      })
+                  ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
+                          'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 
+                          'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
+                          'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
+                          'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
+                          'continue_watchings.currentTime','continue_watchings.updated_at')
+                  ->whereIn('videos.id', $video_id_query)
+                  ->orderBy('continue_watchings.updated_at', 'desc'); 
 
+                  // Filter videos by expiry date if enabled
                   if ($this->videos_expiry_date_status == 1) {
-                      $videos = $videos->where(function($query) {
-                          $query->whereNull('videos.expiry_date')
-                                ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
-                      });
-                  }
-
-                  if ($check_Kidmode == 1) {
-                      $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
-                  }
-
-                  $videos = $videos->get()->map(function ($item) {
-                      $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
-                      $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
-                      return $item;
+                  $videos = $videos->where(function($query) {
+                  $query->whereNull('videos.expiry_date')
+                  ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
                   });
+                  }
+
+                  // Apply Kid Mode filter
+                  if ($check_Kidmode == 1) {
+                  $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                  }
+
+                  // Fetch and modify results
+                  $videos = $videos->get()->map(function ($item) {
+                  $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
+                  $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
+                  return $item;
+                  });
+
+
 
 
       // Episode 
