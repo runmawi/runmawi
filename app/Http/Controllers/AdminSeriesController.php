@@ -2757,10 +2757,10 @@ class AdminSeriesController extends Controller
         } else {
         $subtitles = 'No Subtitles Added';
         }
-
+       
         $subtitle = SeriesSubtitle::where('episode_id', '=', $id)->get();
 
-        $series_seasons_type = SeriesSeason::where('id', $episodes->season_id)->pluck('series_seasons_type')->first();
+        $series_seasons_type = isset($episodes) && !empty($episodes->season_id) ? SeriesSeason::where('id', $episodes->season_id)->pluck('series_seasons_type')->first() : null;
 
         $post_route =  URL::to('admin/episode/update');
 

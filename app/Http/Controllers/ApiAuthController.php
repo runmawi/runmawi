@@ -13706,13 +13706,13 @@ $cpanel->end();
             }else{
               $main_genre = "";
             }
+            if ($videos->isEmpty()) {
+              continue;
+          }
 
-            if(count($videos) > 0){
-              $msg = 'success';
-            }else{
-              $msg = 'nodata';
-            }
+          $msg = 'success';
 
+           
             $myData[] = array(
               "message" => $msg,
               'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
