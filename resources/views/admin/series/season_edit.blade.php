@@ -1442,143 +1442,171 @@ document.getElementById('select-all').addEventListener('change', function() {
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
     // alert('test');
-        $("#buttonNext").hide();
-        $("#episode_video_data").hide();
-        $("#submit").hide();
-        var series_id = '<?= $series->id ?>';
-        var season_id = '<?= $season_id ?>';
-        Dropzone.autoDiscover = false;
+    $("#buttonNext").hide();
+    $("#episode_video_data").hide();
+    $("#submit").hide();
+    var series_id = '<?= $series->id ?>';
+    var season_id = '<?= $season_id ?>';
+    Dropzone.autoDiscover = false;
         var MAX_RETRIES = 3;
-    
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
         function handleError(e, t) {
-            if (e.previewElement) {
-                e.previewElement.classList.add("dz-error");
-                if (typeof t !== "string" && t.error) {
-                    t = t.error;
-                }
-                var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
-                r.forEach(function(element) {
-                    element.textContent = t;
-                });
+        if (e.previewElement) {
+            e.previewElement.classList.add("dz-error");
+            if (typeof t !== "string" && t.error) {
+                t = t.error;
             }
+            var r = e.previewElement.querySelectorAll("[data-dz-errormessage]");
+            r.forEach(function(element) {
+                element.textContent = t;
+            });
         }
-    
-        var myDropzone = new Dropzone(".dropzone", {
-            parallelUploads: 2,
-            maxFilesize: 15000000000000000, // 15000MB
-            acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
-            previewTemplate: document.getElementById('template').innerHTML,
-            init: function() {
-                this.on("sending", function(file, xhr, formData) {
-                    formData.append('series_id', series_id);
-                    formData.append('season_id', season_id);
-                    formData.append("UploadlibraryID", $('#UploadlibraryID').val());
-                    formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
-                    formData.append("_token", CSRF_TOKEN);
-    
-                   // Initialize retry counter and canceled flag if they don't exist
-                    if (!file.retryCount) {
-                        file.retryCount = 0;
-                    }
-                    if (!file.userCanceled) {
-                        file.userCanceled = false;
-                    }  
+    }
 
-                    // Add cancel button event listener
-                    file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
-                        console.log("Cancel button clicked for file: " + file.name);
-                        sendErrorLog(file.name, "Upload canceled by user");
-                        file.userCanceled = true;
-                        xhr.abort(); // Abort the current upload
-                        file.status = Dropzone.CANCELED; // Mark the file as canceled
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
-    
-                       // Display a cancel message temporarily
-                        alert("Upload canceled for file: " + file.name);
-                        handleError(file, "Upload canceled by user.");
-                        var cancelMessage = "Upload canceled for file: " + file.name;
-                        var messageElement = document.getElementById('cancel-message');
-                        messageElement.innerHTML = cancelMessage;
-                        messageElement.style.display = 'block';
-                        setTimeout(function() {
-                            messageElement.style.display = 'none';
-                        }, 5000);
-                        myDropzone.processQueue();
-                    });
-                });
-                this.on("uploadprogress", function(file, progress) {
-                    var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
-                    progressElement.textContent = Math.round(progress) + '%';
-                });
-    
-                this.on("success", function(file, response) {
-                    if (response.error == 3) {
-                        sendErrorLog(file.name, "File not uploaded. Choose Library!");
-                        console.log(response.error);
-                        alert("File not uploaded. Choose Library!");
-                        location.reload();
-                    } else {
-                        // Remove previous failure logs since the file succeeded
-                        removeErrorLog(file.name);
-                        sendErrorLog(file.name, "File successfully uploaded");
-    
-                        $("#buttonNext").show();
-                        $("#episode_id").val(response.Episode_id);
-                        $("#title").val(response.episode_title);
-                        $("#duration").val(response.episode_duration);
-                        file.previewElement.querySelector('.dz-cancel').innerHTML = " ";
-                    }
-                });
-    
-                this.on("error", function(file, response) {
-                    if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
-                        file.retryCount++;
-                        setTimeout(function() {
-                            myDropzone.removeFile(file);  // Remove the failed file from Dropzone
-                            myDropzone.addFile(file);     // Requeue the file for upload
-                        }, 1000);
-                    } else if (file.userCanceled) {
-                        sendErrorLog(file.name, "File upload canceled by user");
-                        console.log("File upload canceled by user: " + file.name);
-                    } else {
-                        // Only log the error if the file completely fails after retries
-                        if (file.status !== Dropzone.SUCCESS) {
-                            sendErrorLog(file.name, "Failed to upload after " + MAX_RETRIES + " attempts.");
-                            alert("Failed to upload after " + MAX_RETRIES + " attempts.");
-                        }
-                    }
-                    
-      // Ensure queue continues after handling error
-                    myDropzone.processQueue();
-                });
-    
-                this.on("queuecomplete", function () {
-                    this.files.forEach(function (file) {
-                        if (file.status === Dropzone.SUCCESS) {
-                            sendErrorLog(file.name, "File processed successfully.");
-                        } else if (file.status === Dropzone.ERROR && file.xhr) {
-                            sendErrorLog(file.name, `Error: ${file.xhr.response}`);
-                        }
-                    });
-                    console.log("All uploads in the queue have been processed.");
-                });
-    
-                function sendErrorLog(filename, message) {
-                    $.post("<?php echo URL::to('/admin/UploadErrorLog'); ?>", {
-                        _token: CSRF_TOKEN,
-                        filename: filename,
-                        source_type: "Episode",
-                        error: message
-                    }).fail(function (xhr) {
-                        console.error("Failed to log error:", xhr.responseText);
-                    });
-                }
+    var myDropzone = new Dropzone(".dropzone", { 
+    parallelUploads: 2,
+    maxFilesize: 15000000000000000, // 15000MB
+    acceptedFiles: "video/mp4,video/x-m4v,video/x-matroska,video/mkv",
+    previewTemplate: document.getElementById('template').innerHTML,
+    init: function() {
+        this.on("sending", function(file, xhr, formData) {
+            formData.append('series_id', series_id);
+            formData.append('season_id', season_id);
+            formData.append("UploadlibraryID", $('#UploadlibraryID').val());
+            formData.append("FlussonicUploadlibraryID", $('#FlussonicUploadlibraryID').val());
+            formData.append("_token", CSRF_TOKEN);
 
-
+            // Initialize retry counter and canceled flag if they don't exist
+            if (!file.retryCount) {
+                file.retryCount = 0;
             }
-        });    
+            if (!file.userCanceled) {
+                file.userCanceled = false;
+            }
+
+            // Add cancel button event listener
+            file.previewElement.querySelector('.dz-cancel').addEventListener('click', function() {
+                console.log("Cancel button clicked for file: " + file.name);
+                sendErrorLog(file.name, "Cancel button clicked for file");
+                file.userCanceled = true; 
+                xhr.abort(); // Abort the current upload
+                file.status = Dropzone.CANCELED; // Mark the file as canceled
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
+
+                // Display a cancel message temporarily
+                deleteEpisodeRecord(file.name);
+                alert("Upload canceled for file: " + file.name);
+                handleError(file, "Upload canceled by user.");
+                var cancelMessage = "Upload canceled for file: " + file.name;
+                var messageElement = document.getElementById('cancel-message');
+                messageElement.innerHTML = cancelMessage;
+                messageElement.style.display = 'block'; 
+                setTimeout(function() {
+                    messageElement.style.display = 'none'; 
+                }, 5000);
+                myDropzone.processQueue();
+            });
+        });
+        this.on("uploadprogress", function(file, progress) {
+            var progressElement = file.previewElement.querySelector('.dz-upload-percentage');
+            progressElement.textContent = Math.round(progress) + '%';
+        });
+
+        this.on("success", function(file, value) {
+            if (value.error == 3) {
+                sendErrorLog(file.name, value.error);
+                console.log(value.error);
+                alert("File not uploaded. Choose Library!");
+                location.reload();
+            } else {
+                sendErrorLog(file.name, "File Updated");
+                $("#buttonNext").show();
+                $("#episode_id").val(value.Episode_id);
+                $("#title").val(value.episode_title);
+                $("#duration").val(value.episode_duration);
+                file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
+            }
+        });
+
+        this.on("error", function(file, response) {
+            if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
+                file.retryCount++;
+                setTimeout(function() {
+                    deleteEpisodeRecord(file.name);
+                    myDropzone.removeFile(file);  // Remove the failed file from Dropzone
+                    myDropzone.addFile(file);     // Requeue the file for upload
+                }, 1000); 
+            } else if (file.userCanceled) {
+                    deleteEpisodeRecord(file.name);
+                    sendErrorLog(file.name, "File upload canceled by user");
+                    console.log("File upload canceled by user: " + file.name);
+            } else {
+                deleteEpisodeRecord(file.name);
+                sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
+                alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
+            }
+
+            // Ensure queue continues after handling error
+            myDropzone.processQueue();
+        });
+
+        this.on("queuecomplete", function() {
+            const files = this.files;
+            files.forEach(function (file) {
+               if (file.status === Dropzone.SUCCESS) {
+                     sendErrorLog(file.name, "File processed successfully.");
+               } else if (file.status === Dropzone.ERROR) {
+                  if (file.xhr) {
+                     const serverResponse = file.xhr.response;
+                     sendErrorLog(file.name, `Error: ${serverResponse}`);
+                  } else {
+                     sendErrorLog(file.name, "Unknown error occurred.");
+                  }
+               }
+            });
+            console.log("All uploads in the queue have been processed.");
+        });
+
+        function sendErrorLog(filename, errorMessage) {
+            $.post("<?php echo URL::to('/admin/UploadErrorLog'); ?>", {
+                _token: CSRF_TOKEN,
+                filename: filename,
+                socure_type: "Episode",
+                error: errorMessage
+            }, function(response) {
+                // console.log("Error log submitted:", response);
+            }).fail(function(xhr) {
+                // console.error("Failed to log error:", xhr.response/Text);
+            });
+        }
+
+        myDropzone.on("removedfile", function(file) {
+            console.log("File removed by user: " + file.name);
+            deleteEpisodeRecord(file.name);
+        });
+
+        function deleteEpisodeRecord(file_folder_name) {
+            console.log("delete fun called..");
+            $.post("<?php echo URL::to('/admin/DeleteEpisodeRecord'); ?>", {        
+                _token: CSRF_TOKEN,
+                file_folder_name: file_folder_name
+            }, function(response) {
+                if (response.success) {
+                    console.log("Episode record deleted successfully.");
+                } else {
+                    console.log("Failed to delete episode record.");
+                }
+            }).fail(function(xhr) {
+                console.error("Failed to delete episode:", xhr.responseText);
+            });
+        }
+
+
+    }
+});
 
     // Dropzone.autoDiscover = false;
     // var myDropzone = new Dropzone(".dropzone", {

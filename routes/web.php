@@ -1240,6 +1240,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
     Route::post('/episode/update', 'AdminSeriesController@update_episode');
     Route::post('/episode_upload', 'AdminSeriesController@EpisodeUpload');
+    Route::post('/DeleteEpisodeRecord', 'AdminSeriesController@DeleteEpisodeRecord');
     Route::get('/episode/episode_edit/{id}', 'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload', 'AdminSeriesController@EpisodeVideoUpload');
     Route::get('/episode/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy']);
