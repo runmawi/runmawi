@@ -3317,8 +3317,10 @@ class AdminSeriesController extends Controller
     {
         $value = array();
         $data = $request->all();
-        $series_id = $data['series_id'];
-        $season_id = $data['season_id'];
+        $series_id = $data['series_id'] ?? null;
+        $season_id = $data['season_id'] ?? null;
+
+        // dd($data);
 
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
@@ -3625,6 +3627,23 @@ class AdminSeriesController extends Controller
             return response()->json($value);
         }
     }
+
+    public function DeleteEpisodeRecord(Request $request)
+    {
+        $file_folder_name = $request->input('file_folder_name');
+
+        // Find the episode based on the uploaded file name
+        $episode = Episode::where('title', $file_folder_name)->first();
+
+        if ($episode) {
+            $episode->delete();
+            return response()->json(['success' => true, 'message' => 'Episode deleted successfully']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Episode not found']);
+        }
+    }
+
+
 
     public function createSlug($title, $id = 0)
     {
