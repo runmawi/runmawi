@@ -3389,6 +3389,7 @@ class AdminSeriesController extends Controller
                 $episode->save(); 
 
                 $episode_id = $episode->id;
+                // dd( $episode->title);
                 
                 // $outputFolder = storage_path('app/public/frames');
 
@@ -3631,14 +3632,18 @@ class AdminSeriesController extends Controller
     public function DeleteEpisodeRecord(Request $request)
     {
         $file_folder_name = $request->input('file_folder_name');
+        $file_folder_name_without_extension = pathinfo($file_folder_name, PATHINFO_FILENAME);
+        // dd($file_folder_name_without_extension);
 
         // Find the episode based on the uploaded file name
-        $episode = Episode::where('title', $file_folder_name)->first();
+        $episode = Episode::where('title', $file_folder_name_without_extension)->first();
 
         if ($episode) {
             $episode->delete();
+            // dd($episode);
             return response()->json(['success' => true, 'message' => 'Episode deleted successfully']);
         } else {
+            // dd($episode);
             return response()->json(['success' => false, 'message' => 'Episode not found']);
         }
     }
