@@ -33,7 +33,12 @@ border-radius: 0px 4px 4px 0px;
 	
 .vod-info{padding:0;list-style:none;margin:15px 0;color:var(--text-color-opacity)}
 .vod-info li span{background-color:red;display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
-	
+.dataTables_filter {
+        display: none;
+    }
+.dataTables_length {
+	display: none;
+}
 </style>
 @section('css')
 	<link rel="stylesheet" href="{{ URL::to('/assets/admin/css/sweetalert.css') }}">
@@ -81,7 +86,14 @@ border-radius: 0px 4px 4px 0px;
 			<div class="col-md-6" align="right">	
 <!--				<form method="get" role="form" class="search-form-full"> <div class="form-group"> <input type="text" class="form-control" value="<?= Request::get('s'); ?>" name="s" id="search-input" placeholder="Search..."> <i class="entypo-search"></i> </div> </form>-->
                 <a href="{{ route( $inputs_details_array['create_route'] ) }}" class="btn btn-primary mb-3"><i class="fa fa-plus-circle"></i> Add New</a>
-			 
+				
+				<div class="mt-2 d-flex justify-content-end align-items-center gap-2">
+					<label for="search-box" class="fw-bold mb-0">Search:</label>
+					<div class="w-50">
+						<input type="text" id="search-box" class="form-control">
+					</div>
+				</div>
+				
 				{{-- Bulk video delete --}}
 			 	<button style="margin-bottom: 10px" class="btn btn-primary delete_all"> Delete Selected Video </button>
 			</div>
@@ -578,6 +590,33 @@ border-radius: 0px 4px 4px 0px;
 
 	}
 	}
+</script>
+<script>
+$(document).ready(function () {
+    let originalTable = $("tbody").html();
+    let timer;
+    $("#search-box").on("input", function () {
+        clearTimeout(timer);
+        var search = $(this).val().trim();
+        timer = setTimeout(function () {
+            if (search === "") {
+                $("tbody").html(originalTable);
+                return;
+            }
+            $.ajax({
+                url: "{{ route('admin.livestream.search') }}",
+                method: "GET",
+                data: { search: search },
+                success: function (response) {
+                    $("tbody").html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching search results:", error);
+                }
+            });
+        }, 300);
+    });
+});
 </script>
 
 <script type="text/javascript">
