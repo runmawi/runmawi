@@ -3107,3 +3107,4 @@ Route::get('/series/image/{series_id}', function ($series_id) {
 
 Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
+Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');
