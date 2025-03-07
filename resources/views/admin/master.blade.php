@@ -896,11 +896,18 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <!-- {{-- Log Activity --}} -->
                   <li><p class="lnk">Log Activity</p></li>
 
+                  <li><a href="{{ URL::to('admin/UploadlogActivity') }}" class="iq-waves-effect">
+                        <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/upload.svg')?>">
+                        <span>Upload Log Activity</span>
+                     </a>
+                  </li>
+
                   <li><a href="{{ URL::to('admin/logActivity') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
                         <span>Site Log Activity</span>
                      </a>
                   </li>
+                  
 
                   <!-- Ads Menu ends -->
                   <?php }elseif(  $package == "Business" && auth()->user()->role == "admin" || $package == "Business" && auth()->user()->role == "subscriber" || $package == "Business" && auth()->user()->role == "registered" || $package == "Pro" && auth()->user()->role == "admin"){ ?>
@@ -1357,11 +1364,18 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                   <!-- {{-- Log Activity --}} -->
                   <li><p class="lnk">{{ (__('Log Activity')) }}</p></li>
 
+                  <li><a href="{{ URL::to('admin/UploadlogActivity') }}" class="iq-waves-effect">
+                        <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/upload.svg')?>">
+                        <span>{{ (__('Upload Log Activity')) }}</span>
+                     </a>
+                  </li>
+                  
                   <li><a href="{{ URL::to('admin/logActivity') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
                         <span>{{ (__('Site Log Activity')) }}</span>
                      </a>
                   </li>
+                  
                   <!-- Ads Menu ends -->
                   <?php } elseif(auth()->user()->role == "admin" && $package == "Pro" && $package == "Business"){ ?>
                      <div class="page-container sidebar-collapsed"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
