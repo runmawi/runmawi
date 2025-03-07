@@ -593,23 +593,28 @@ border-radius: 0px 4px 4px 0px;
 </script>
 <script>
 $(document).ready(function () {
-    $("#search-box").on("keyup", function () {
+    let originalTable = $("tbody").html();
+    let timer;
+    $("#search-box").on("input", function () {
+        clearTimeout(timer);
         var search = $(this).val().trim();
-        if (search === "") {
-            location.reload();
-            return;
-        }
-        $.ajax({
-            url: "{{ route('admin.livestream.search') }}",
-            method: "GET",
-            data: { search: search },
-            success: function (response) {
-                $("tbody").html(response);
-            },
-            error: function () {
-                console.error("Error fetching search results");
+        timer = setTimeout(function () {
+            if (search === "") {
+                $("tbody").html(originalTable);
+                return;
             }
-        });
+            $.ajax({
+                url: "{{ route('admin.livestream.search') }}",
+                method: "GET",
+                data: { search: search },
+                success: function (response) {
+                    $("tbody").html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching search results:", error);
+                }
+            });
+        }, 300);
     });
 });
 </script>
