@@ -4165,29 +4165,34 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->whereNotNull('video_id')->latest()->get();
-    $video_ids_count = Wishlist::where('user_id','=',$user_id)->whereNotNull('video_id')->pluck('video_id')->count();
+    $wishlist_videos = Wishlist::where('user_id', $user_id)
+                                  ->whereNotNull('video_id')
+                                  ->orderBy('id', 'desc')
+                                  ->get();
 
-    if ( $video_ids_count  > 0) {
+                              if ($wishlist_videos->isNotEmpty()) {
+                                  $video_ids = $wishlist_videos->pluck('video_id')->toArray();
 
-      foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->video_id;
-      }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'video';
-        return $item;
-      });
-      if(count($channel_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $channel_videos = [];
-    }
+                                  // Fetch all video details while preserving order
+                                  $videos = Video::whereIn('id', $video_ids)->get()->keyBy('id');
+
+                                  // Map wishlist order to videos
+                                  $channel_videos = $wishlist_videos->map(function ($wishlist) use ($videos) {
+                                      if (isset($videos[$wishlist->video_id])) {
+                                          $item = $videos[$wishlist->video_id];
+                                          $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                                          $item['video_url'] = URL::to('/') . '/storage/app/public/';
+                                          $item['source'] = 'video';
+                                          return $item;
+                                      }
+                                  })->filter(); // Remove null values if any
+// Remove null values if any
+
+                                  $status = $channel_videos->isNotEmpty() ? "true" : "false";
+                              } else {
+                                  $status = "false";
+                                  $channel_videos = [];
+                              }
 
     //UGC Videos
     $ugc_video_ids = Wishlist::select('ugc_video_id')->where('user_id','=',$user_id)->get();
@@ -4250,7 +4255,7 @@ public function verifyandupdatepassword(Request $request)
       $audios = [];
     }
 
-    if($video_ids_count  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
+    if(count($video_ids)  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
       $status = "true";
     }else{
       $status = "false";
@@ -4737,30 +4742,59 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->orderBy('created_at', 'desc')->get();
-    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->count();
+    // $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->orderBy('created_at', 'desc')->get();
+    // $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->count();
 
-    if ( $video_ids_count  > 0) {
+    // if ( $video_ids_count  > 0) {
 
-      foreach ($video_ids as $key => $value) {
-        $k2[] = $value->video_id;
-      }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'videos';
-        return $item;
-      });
+    //   foreach ($video_ids as $key => $value) {
+    //     $k2[] = $value->video_id;
+    //   }
+    //   $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+    //     $item['video_url'] = URL::to('/').'/storage/app/public/';
+    //     $item['source'] = 'videos';
+    //     return $item;
+    //   });
 
-      if(count($channel_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $channel_videos = [];
-    }
+    //   if(count($channel_videos) > 0){
+    //     $status = "true";
+    //   }else{
+    //     $status = "false";
+    //   }
+    // }else{
+    //         $status = "false";
+    //   $channel_videos = [];
+    // }
+
+    $watchlater_videos = Favorite::where('user_id', $user_id)
+                                  ->whereNotNull('video_id')
+                                  ->orderBy('id', 'desc')
+                                  ->get();
+
+                              if ($watchlater_videos->isNotEmpty()) {
+                                  $video_ids = $watchlater_videos->pluck('video_id')->toArray();
+
+                                  // Fetch all video details while preserving order
+                                  $videos = Video::whereIn('id', $video_ids)->get()->keyBy('id');
+
+                                  // Map wishlist order to videos
+                                  $channel_videos = $watchlater_videos->map(function ($watchlaterlist) use ($videos) {
+                                      if (isset($videos[$watchlaterlist->video_id])) {
+                                          $item = $videos[$watchlaterlist->video_id];
+                                          $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                                          $item['video_url'] = URL::to('/') . '/storage/app/public/';
+                                          $item['source'] = 'video';
+                                          return $item;
+                                      }
+                                  })->filter(); // Remove null values if any
+                              // Remove null values if any
+
+                                    $status = $channel_videos->isNotEmpty() ? "true" : "false";
+                                } else {
+                                    $status = "false";
+                                    $channel_videos = [];
+                                }
 
     // Episode
 
