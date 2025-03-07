@@ -7097,6 +7097,11 @@ public function checkEmailExists(Request $request)
 
          $item['Share_url'] = URL::to('episode/'.$item['series']->slug.'/'.$item['slug']);
 
+         $details = html_entity_decode($item->episode_description);
+         $description = strip_tags($details);
+         $item['episode_description'] = str_replace("\r", '', $description);
+        // $item['episode_description'] = nl2br($desc);
+
           //Continue Watchings
 
         $item['current_time'] =  '00:00' ;
