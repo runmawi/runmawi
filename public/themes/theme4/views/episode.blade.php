@@ -241,9 +241,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                             <?= __($episode->title) ?>
                         </p>
 
-                        <p class="desc-name text-left m-0 mt-1">
-                            {!! nl2br(e($episode->episode_description)) !!}
-                        </p>
+                        @if(!empty($episode->episode_description))
+                            @php
+                                $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
+                            @endphp
+                            <p class="desc-name text-left m-0 mt-1"> <p>{!! nl2br($description) !!}</p></p>
+                        @endif
+                        
                         @if (Auth::check() && Auth::user()->role == 'subscriber')
                             <a class="btn mt-3" data-toggle="modal" data-target="#season-purchase-now-modal">
                                 <div class="playbtn text-white" style="gap:5px">
@@ -389,7 +393,10 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
                     @if(!empty($episode->episode_description))
-                        <p class="">{!! nl2br(e($episode->episode_description)) !!}</p>
+                        @php
+                            $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
+                        @endphp
+                        <p class=""> <p>{!! nl2br($description) !!}</p></p>
                     @endif
 
                     <?php

@@ -126,8 +126,13 @@
                             <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?=URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title ; ?></h4>
-                                    <p class=" text-white col-lg-8" style="margin:0 auto" ;>{!! nl2br(e($episode->episode_description)) !!}</p>
-                                    
+                                    @if(!empty($episode->episode_description))
+                                        @php
+                                            $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
+                                        @endphp
+                                        <p class="text-white col-lg-8"> <p>{!! nl2br($description) !!}</p></p>
+                                    @endif
+
                                     <h4 class=""><?php echo __('Subscribe to view more'); ?>
                                         <?php if ($series->access == 'subscriber'): ?>
                                             <?php elseif ($series->access == 'registered'): ?><?php echo __('Registered Users'); ?><?php
@@ -165,7 +170,13 @@
                             <div id="subscribers_only" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1.3)) , url(<?= URL::to('/') . '/public/uploads/images/' . $episode->player_image ?>); background-repeat: no-repeat; background-size: cover; height: 450px; padding-top: 150px;">  
                                 <div class="container-fluid">
                                     <h4 class=""><?php echo $episode->title; ?></h4>
-                                    <p class="mt-2 text-white" style="margin:0 auto" ;>{!! nl2br(e($episode->episode_description)) !!}</p>
+                                    @if(!empty($episode->episode_description))
+                                        @php
+                                            $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
+                                        @endphp
+                                        <p class="mt-2 text-white"> <p>{!! nl2br($description) !!}</p></p>
+                                    @endif
+                                    
                                     <h4 class="">
                                         <?php if ($series->access == 'subscriber'): ?>
                                             <?php echo __('Become a Subscribe to Watch This Episode for Free!'); ?>
@@ -291,7 +302,12 @@
                         </p>
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                     ?></p>
-                        <p class="desc">{!! nl2br(e($episode->episode_description)) !!}</p>
+                    @if(!empty($episode->episode_description))
+                        @php
+                            $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
+                        @endphp
+                        <p class="desc"> <p>{!! nl2br($description) !!}</p></p>
+                    @endif
                     </div>
                     <!---<h3 style="color:#000;margin: 10px;"><?=$episode->title
                     ?>
