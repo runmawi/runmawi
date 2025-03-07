@@ -2995,4 +2995,48 @@ class AdminLiveStreamController extends Controller
         return View('admin.livestream.calendar',$data);
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $currentRouteName = Route::currentRouteName();
+    
+        if ($currentRouteName == "admin.radio-station.index") {
+            $inputs_details_array = [
+                'view_route' => "Radio_station_play",
+                'edit_route' => "admin.radio-station.edit",
+                'delete_route' => "admin.radio-station.delete",
+                'all_list_route' => "admin.radio-station.index",
+                'text_main_name' => "Radio Station",
+                'stream_upload_via' => "radio_station",
+            ];
+        } else {
+            $inputs_details_array = [
+                'view_route' => "LiveStream_play",
+                'edit_route' => "admin.livestream.edit",
+                'delete_route' => "admin.livestream.delete",
+                'all_list_route' => "admin.livestream.index",
+                'text_main_name' => "Live Stream",
+                'stream_upload_via' => "live_stream",
+            ];
+        }
+    
+        if (empty($search)) {
+            return redirect()->route($inputs_details_array['all_list_route']);
+        }
+    
+        $videos = LiveStream::where('title', 'like', "%{$search}%")
+            ->orWhereHas('cppuser', function ($query) use ($search) {
+                $query->where('username', 'like', "%{$search}%");
+            })
+            ->orWhereHas('usernames', function ($query) use ($search) {
+                $query->where('username', 'like', "%{$search}%");
+            })
+            ->when($currentRouteName == "admin.livestream.index", function ($query) {
+                return $query->where('stream_upload_via', '!=', 'radio_station');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        return view('admin.livestream.search', compact('videos', 'inputs_details_array'))->render();
+    }
 }
