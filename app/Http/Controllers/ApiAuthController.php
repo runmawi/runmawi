@@ -8112,6 +8112,16 @@ return response()->json($response, 200);
       $item['image_url'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
       $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
       $item['tv_image_url'] = !is_null($item->tv_image) && $item->tv_image != "default_image"? URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url();
+      $description = html_entity_decode($item['description']);
+      $description = strip_tags($description);
+      $description = str_replace("\r", '', $description);
+
+      $details = html_entity_decode($item['details']);
+      $details = strip_tags($details);
+      $details = str_replace("\r", '', $details);
+
+      $item['description'] = $description;
+      $item['details'] = $details;
                                           
       return $item ;
     })->first();
@@ -8154,6 +8164,12 @@ return response()->json($response, 200);
         }
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
         $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
+
+        $epi_description = html_entity_decode($item['episode_description']);
+        $description = strip_tags($epi_description);
+        $item['episode_description'] =  str_replace("\r", '', $description);
+
+        
         return $item;
       });
 
@@ -8164,6 +8180,12 @@ return response()->json($response, 200);
         $msg = 'nodata';
         $count_episode = count($episodes);
       }
+
+      
+      $details = html_entity_decode($series->description);
+      $description = strip_tags($details);
+      $series->description = str_replace("\r", '', $description);
+
 
       $season_name = $season['series_seasons_name'];
       $settings = Setting::first();
