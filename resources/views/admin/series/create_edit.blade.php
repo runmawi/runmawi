@@ -134,7 +134,7 @@ $settings  = App\Setting::first();?>
 							@else
 								<p class="p1">{{ "Select the TV Shows image (720X1280px)"}}:</p> 
 							@endif
-							<input type="file" multiple="true" class="form-group image series_image" name="image" id="series_image" accept="image/webp"/>
+							<input type="file" multiple="true" class="form-group image series_image" name="image" id="series_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
 
 							<span>
 								<p id="video_image_error_msg" style="color:red !important; display:none;">
@@ -168,7 +168,7 @@ $settings  = App\Setting::first();?>
 							@else
 								<p class="p1">{{ "Player Thumbnail ( 1280X720px)"}}</p> 
 							@endif
-							<input type="file" multiple="true" class="form-group" name="player_image" id="series_player_image" accept="image/webp"/>
+							<input type="file" multiple="true" class="form-group" name="player_image" id="series_player_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
 
 							<span>
 								<p id="player_image_error_msg" style="color:red !important; display:none;">

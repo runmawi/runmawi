@@ -357,7 +357,7 @@
                                     @else
                                         <p class="p1">{{ "Select the episodes image (720 X 1280px )"}}:</p> 
                                     @endif
-                                    <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/webp"/>
+                                    <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                                     <span>
                                         <p id="season_image_error_msg" style="color:red !important; display:none;">
                                             * Please upload an image with the correct dimensions.
@@ -386,7 +386,7 @@
                                 @if(!empty($episodes->player_image))
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
                                 @endif
-                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/webp"/>
+                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                                 <span>
                                     <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
                                         * Please upload an image with the correct dimensions.
