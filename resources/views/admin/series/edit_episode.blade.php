@@ -404,7 +404,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                             <p class="p1">{{ "Select the episodes image with ( 720x1280px )"}}:</p> 
                         @endif
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="image" id="episode_image" accept="image/webp"/>
+                            <input type="file" multiple="true" class="form-group" name="image" id="episode_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
 
                             <span>
                                 <p id="season_image_error_msg" style="color:red !important; display:none;">
@@ -432,7 +432,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         {{-- <p class="p1">Select the player image ( 16:9 Ratio or 1280X720px)</p> --}}
 
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/webp"/>
+                            <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
 
                             <span>
                                 <p id="player_image_error_msg" style="color:red !important; display:none;">
@@ -458,7 +458,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <p class="p1">Select the player image ( 16:9 Ratio or 1920 X 1080  px)</p>
 
                         <div class="panel-body">
-                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" accept="image/webp"/>
+                            <input type="file" multiple="true" class="form-group" name="tv_image" id="tv_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                             @if(!empty($episodes->tv_image))
                                 <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->tv_image }}" class="episodes-img" width="200" />
                             @endif

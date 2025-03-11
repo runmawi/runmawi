@@ -53,7 +53,7 @@
                         @if(!empty($season->image))
                             <img src="{{  $season->image }}" class="movie-img" width="200" />
                         @endif
-                        <input type="file" multiple="true" class="form-control" name="image" id="season_image" accept="image/png, image/gif, image/jpeg"/>
+                        <input type="file" multiple="true" class="form-control" name="image" id="season_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                         <span>
                             <p id="season_image_error_msg" style="color:red !important; display:none;">
                                 * Please upload an image with the correct dimensions.
