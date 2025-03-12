@@ -28,17 +28,9 @@ div#video-purchase-now-modal{padding-right: 0 !important;}
 .movie-rent.btn{width: 100%;padding: 10px 15px;background-color: #000 !important;}
 .col-md-12.btn {margin-top: 2rem;}
 .d-flex.justify-content-between.title{border-bottom: 1px solid rgba(255, 255, 255, .5);padding: 10px 0;}
-.btn-primary-dark {
-    background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */
-}
-.title-popup {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-.btn-primary-light {
-    background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */
-}
+.btn-primary-dark {background-color: rgba(var(--btn-primary-rgb), 0.8); /* Darker version */}
+.title-popup {white-space: normal; overflow: visible; text-overflow: clip;  word-break: break-word;line-height: 1.5;text-align: left;}
+.btn-primary-light {background-color: rgba(var(--btn-primary-rgb), 0.3); /* Lighter version */}
 .close-btn {color: #fff;background: #000;padding: 0;border: 2px solid #fff;border-radius: 50%;line-height: 1;width: 30px;height: 30px;cursor: pointer;outline: none;}
 .payment_btn {width: 20px;height: 20px;margin-right: 10px;}
 .quality_option {width: 15px;height: 15px;margin-right: 10px;}
