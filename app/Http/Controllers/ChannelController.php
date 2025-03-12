@@ -3976,8 +3976,8 @@ class ChannelController extends Controller
                             )
                             ->where('active', 1)
                             ->where('status', 1)
-                            ->latest()->get()
-                            ->filter(function ($livestream) use ($current_timezone) {
+                            ->orderBy('created_at', 'desc') 
+                            ->get()->filter(function ($livestream) use ($current_timezone) {
 
                                 if ($livestream->publish_type === 'recurring_program') {
 

@@ -505,12 +505,12 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </a>
                             @endif  --}}
 
-                        @else
+                        @else 
                             @if ( Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 && $videodetail->access == 'guest' && $videodetail->type == 'VideoCipher'
                             || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'registered' && $videodetail->type == 'VideoCipher'
                              || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'subscriber' && $videodetail->type == 'VideoCipher'
                              || !Auth::guest() && Auth::user()->role == 'admin' && Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'ppv' && $videodetail->type == 'VideoCipher')
-                                
+                             
                             <div class="dropdown btn" id="guest-qualitys-selct">
                                 <div class="playbtn" style="gap:5px;">
                                     {!! $play_btn_svg !!}
@@ -527,6 +527,13 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </div>
                             </div>
                             
+                            @elseif(Enable_PPV_Plans() == 0 && $videodetail->access == 'ppv')
+                            <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                    <div class="playbtn" style="gap:5px">
+                                        {!! $play_btn_svg !!}
+                                        <span class="text pr-2 text-white"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
+                                    </div>
+                                </a>
                             @else
                                 <a class="btn play_button" href="{{ $videodetail->users_video_visibility_redirect_url }}">
                                     <div class="playbtn" style="gap:5px">
