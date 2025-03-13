@@ -247,7 +247,7 @@ div#video-js-trailer-player {
                                                                             </div>
                                                                         </div>
                                                                         <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                            <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $season_count ." Seasons - ".$episode_count. ' Episodes'  }}</span> <br>
+                                                                            {{-- <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $season_count ." Seasons - ".$episode_count. ' Episodes'  }}</span> <br> --}}
                                                                         </p>
                                                                         <div class="trending-dec mt-4">{{ html_entity_decode(strip_tags($series->details )) }}</div>
 
@@ -584,7 +584,7 @@ div#video-js-trailer-player {
                                                             </nav> -->
                                                                                                             
                                                             <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $seasons->series_seasons_name ." - Episode ".$episodes->episode_order  }}</span> <br>
+                                                                {{-- <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $seasons->series_seasons_name ." - Episode ".$episodes->episode_order  }}</span> <br> --}}
                                                                 {!! (strip_tags(substr(optional($episodes)->title, 0, 150))) !!}
                                                             </p>
                                                         </div>
@@ -605,7 +605,7 @@ div#video-js-trailer-player {
                                                             </nav> -->
                                                                                                             
                                                             <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $seasons->series_seasons_name ." - Episode ".$episodes->episode_order  }}</span> <br>
+                                                                {{-- <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $seasons->series_seasons_name ." - Episode ".$episodes->episode_order  }}</span> <br> --}}
                                                                 {!! (strip_tags(substr(optional($episodes)->title, 0, 150))) !!}
                                                             </p>
                                                         </div>
