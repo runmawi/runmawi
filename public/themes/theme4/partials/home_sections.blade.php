@@ -52,6 +52,7 @@ $BaseURL = $BunnyCDNEnable == 1 ? App\StorageSetting::pluck('bunny_cdn_base_url'
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/latest-series', array_merge($homepage_array_data, ['data' => $latest_series]) )->content() !!}
      @endif
      
+     
      @if(  $item->video_name == 'ContentPartner' && $home_settings->content_partner == 1 )        {{-- content partner  --}}
           <?php $ModeratorsUser = App\ModeratorsUser::where('status',1)->limit(15)->get(); ?>
           {!! Theme::uses('theme4')->load('public/themes/theme4/views/partials/home/ContentPartners', array_merge($homepage_array_data, ['data' => $ModeratorsUser]) )->content() !!}
