@@ -289,6 +289,50 @@ class AdminDashboardController extends Controller
         
     }
 
+    public function getFolderStorageData()
+    {
+        try {
+           
+            $directoryProcess = new Process(['du', '-h', '--max-depth=1', '/home/cocreata/public_html/public/uploads']);
+            $directoryProcess->run();
+
+            if (!$directoryProcess->isSuccessful()) {
+                throw new ProcessFailedException($directoryProcess);
+            }
+
+            $directoryOutput = $directoryProcess->getOutput();
+
+            $directoryLines = explode("\n", trim($directoryOutput));
+            $directoryDetails = [];
+
+            foreach ($directoryLines as $line) {
+                list($size, $path) = preg_split('/\s+/', $line, 2);
+                $directoryDetails[] = [
+                    'size' => $size,
+                    'path' => $path,
+                ];
+            }
+
+            $responseData = [
+                'memory_details' => $memoryDetails,
+                'directory_details' => $directoryDetails,
+            ];
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Retrieved memory and directory details successfully.',
+                'data'    => $responseData,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'An error occurred.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function getStorageData(): JsonResponse
     {
         try {

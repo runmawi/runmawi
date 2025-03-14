@@ -250,6 +250,9 @@
                                  <p style="color:black;" id="storage-info"></p>
                                  <input type="button" class="btn btn-primary" value="Show Storage" id="show-storage-btn">
 
+                                 <button class="btn btn-primary ml-2" role="button" id="view_image_storage_size"> {{ ucwords('Image Storage Size') }} </button> <br>
+                                 <button class="btn btn-primary mt-1" role="button" id="view_content_storage_size"> {{ ucwords('Content Storage Size') }} </button>
+                                 <button class="btn btn-primary ml-2" role="button" id="view_root_folder_storage_size"> {{ ucwords('Root Folder Storage Size') }} </button>
                             </div>
                             <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                         </div>
@@ -662,13 +665,57 @@
                .catch(error => {
                      console.error('Error fetching storage data:', error);
                });
-         });                  
+         });   
+         
+         function viewStorageSize (message) {
+            var check = confirm("Are you sure you want to view " + message + "?");
 
- 
-         </script>
-<style>
-   .fa {
-   color: yellow
-   }
-</style>
+               if (check) {
+                  $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{ route('admin.getFolderStorageData') }}",
+                        data: {
+                           _token: "{{ csrf_token() }}",
+                        },
+                        success: function(data) {
+                           if (data.status) {
+                              alert(
+                                    "Total Memory: " + data.data.memory.total +
+                                    "\nTotal used: " + data.data.memory.used +
+                                    "\nTotal free: " + data.data.memory.free +
+                                    "\nTotal shared: " + data.data.memory.shared +
+                                    "\nTotal buff cache: " + data.data.memory.buff_cache +
+                                    "\nTotal available: " + data.data.memory.available +
+                                    "\nTotal Swap: " + data.data.swap.total +
+                                    "\nSwap used: " + data.data.swap.used +
+                                    "\nSwap free: " + data.data.swap.free
+                              );
+                           } else {
+                              alert('Oops... Something went wrong!');
+                              window.location.href = '{{ url("admin") }}';
+                           }
+                        },
+                        error: function(xhr, status, error) {
+                           alert("An error occurred: " + error);
+                           window.location.href = '{{ url("admin") }}';
+                        }
+                  });
+               }
+         }
+
+         $("#view_image_storage_size").click(function() {
+            viewStorageSize("image storage size");
+         });
+
+         $("#view_content_storage_size").click(function() {
+            viewStorageSize("content storage size");
+         });
+
+         $("#view_root_folder_storage_size").click(function() {
+            viewStorageSize("root folder storage size");
+         });
+
+      </script>
+<style> .fa { color: yellow}</style>
 @stop
