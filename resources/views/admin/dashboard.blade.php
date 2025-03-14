@@ -667,7 +667,7 @@
                });
          });   
          
-         function viewStorageSize(message) {
+         function viewStorageSize(message,id) {
             var check = confirm("Are you sure you want to view " + message + "?");
             if (check) {
                $.ajax({
@@ -676,6 +676,7 @@
                      url: "{{ route('admin.getFolderStorageData') }}",
                      data: {
                         _token: "{{ csrf_token() }}",
+                        id:id,
                      },
                      success: function(response) {
                         if (response.status) {
@@ -701,15 +702,15 @@
          }
 
          $("#view_image_storage_size").click(function() {
-            viewStorageSize("image storage size");
+            viewStorageSize("image storage size","view_image_storage_size");
          });
 
          $("#view_content_storage_size").click(function() {
-            viewStorageSize("content storage size");
+            viewStorageSize("content storage size",'view_content_storage_size');
          });
 
          $("#view_root_folder_storage_size").click(function() {
-            viewStorageSize("root folder storage size");
+            viewStorageSize("root folder storage size",'view_root_folder_storage_size');
          });
 
       </script>
