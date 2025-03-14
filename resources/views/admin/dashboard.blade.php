@@ -252,7 +252,7 @@
 
                                  <button class="btn btn-primary ml-2" role="button" id="view_image_storage_size"> {{ ucwords('Image Storage Size') }} </button> <br>
                                  <button class="btn btn-primary mt-1" role="button" id="view_content_storage_size"> {{ ucwords('Content Storage Size') }} </button>
-                                 <button class="btn btn-primary ml-2" role="button" id="view_root_folder_storage_size"> {{ ucwords('Root Folder Storage Size') }} </button>
+                                 {{-- <button class="btn btn-primary ml-2" role="button" id="view_root_folder_storage_size"> {{ ucwords('Root Folder Storage Size') }} </button> --}}
                             </div>
                             <div id="top-rated-item-slick-arrow" class="slick-aerrow-block"></div>
                         </div>
