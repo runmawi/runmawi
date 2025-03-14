@@ -667,41 +667,37 @@
                });
          });   
          
-         function viewStorageSize (message) {
+         function viewStorageSize(message) {
             var check = confirm("Are you sure you want to view " + message + "?");
+            if (check) {
+               $.ajax({
+                     type: "get",
+                     dataType: "json",
+                     url: "{{ route('admin.getFolderStorageData') }}",
+                     data: {
+                        _token: "{{ csrf_token() }}",
+                     },
+                     success: function(response) {
+                        if (response.status) {
+                           let storageData = response.data;
+                           let alertMessage = "Folder Storage Details:\n\n";
 
-               if (check) {
-                  $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: "{{ route('admin.getFolderStorageData') }}",
-                        data: {
-                           _token: "{{ csrf_token() }}",
-                        },
-                        success: function(data) {
-                           if (data.status) {
-                              alert(
-                                    "Total Memory: " + data.data.memory.total +
-                                    "\nTotal used: " + data.data.memory.used +
-                                    "\nTotal free: " + data.data.memory.free +
-                                    "\nTotal shared: " + data.data.memory.shared +
-                                    "\nTotal buff cache: " + data.data.memory.buff_cache +
-                                    "\nTotal available: " + data.data.memory.available +
-                                    "\nTotal Swap: " + data.data.swap.total +
-                                    "\nSwap used: " + data.data.swap.used +
-                                    "\nSwap free: " + data.data.swap.free
-                              );
-                           } else {
-                              alert('Oops... Something went wrong!');
-                              window.location.href = '{{ url("admin") }}';
-                           }
-                        },
-                        error: function(xhr, status, error) {
-                           alert("An error occurred: " + error);
+                           storageData.forEach(item => {
+                                 alertMessage += `${item.path} - ${item.size}\n`;
+                           });
+
+                           alert(alertMessage);
+                        } else {
+                           alert('Oops... Something went wrong!');
                            window.location.href = '{{ url("admin") }}';
                         }
-                  });
-               }
+                     },
+                     error: function(xhr, status, error) {
+                        alert("An error occurred: " + error);
+                        window.location.href = '{{ url("admin") }}';
+                     }
+               });
+            }
          }
 
          $("#view_image_storage_size").click(function() {

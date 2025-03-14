@@ -293,13 +293,17 @@ class AdminDashboardController extends Controller
     {
         try {
            
-            $directoryProcess = new Process(['du', '-h', '--max-depth=1', '/home/cocreata/public_html/public/uploads']);
-            $directoryProcess->run();
+            $directory = 'public/uploads';
 
+            $command = ['du', '-h', '--max-depth=1', $directory];
+            
+            $directoryProcess = new Process($command);
+            $directoryProcess->run();
+            
             if (!$directoryProcess->isSuccessful()) {
                 throw new ProcessFailedException($directoryProcess);
             }
-
+            
             $directoryOutput = $directoryProcess->getOutput();
 
             $directoryLines = explode("\n", trim($directoryOutput));
@@ -313,15 +317,10 @@ class AdminDashboardController extends Controller
                 ];
             }
 
-            $responseData = [
-                'memory_details' => $memoryDetails,
-                'directory_details' => $directoryDetails,
-            ];
-
             return response()->json([
                 'status'  => true,
                 'message' => 'Retrieved memory and directory details successfully.',
-                'data'    => $responseData,
+                'data'    => $directoryDetails,
             ]);
 
         } catch (\Exception $e) {
