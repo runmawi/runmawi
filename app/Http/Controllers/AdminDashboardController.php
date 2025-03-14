@@ -289,11 +289,23 @@ class AdminDashboardController extends Controller
         
     }
 
-    public function getFolderStorageData()
+    public function getFolderStorageData(Request $request)
     {
         try {
            
-            $directory = 'public/uploads';
+            $depends_id = $request->id;
+            
+            if ($depends_id == "view_image_storage_size") {
+                $directory = 'public/uploads';
+            }
+
+            if ($depends_id == "view_content_storage_size") {
+                $directory = 'storage/app/public';
+            }
+
+            if ($depends_id == "view_root_folder_storage_size") {
+                $directory = 'public_html';
+            }
 
             $command = ['du', '-h', '--max-depth=1', $directory];
             
