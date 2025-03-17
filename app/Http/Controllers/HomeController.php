@@ -90,6 +90,7 @@ use App\ButtonText;
 use App\StorageSetting;
 use App\Menu;
 use App\UploadErrorLog;
+use App\DeleteLog;
 
 class HomeController extends Controller
 {
@@ -3478,6 +3479,52 @@ class HomeController extends Controller
             }else{
                 $datas = UploadErrorLog::orderBy('id', 'desc')->paginate(10);
                 return view('admin.UploadlogActivity', compact('datas'));
+            }
+            
+
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return abort(404);
+        }
+    }
+
+    public function EpisodeDeleteLog(){
+        try {
+
+            $user =  User::where('id',1)->first();
+            $duedate = $user->package_ends;
+            $current_date = date('Y-m-d');
+
+            if ($current_date > $duedate)
+            {
+
+                $client = new Client();
+                $url = "https://flicknexs.com/userapi/allplans";
+                $params = [
+                    'userid' => 0,
+                ];
+
+                $headers = [
+                    'api-key' => 'k3Hy5qr73QhXrmHLXhpEh6CQ'
+                ];
+                $response = $client->request('post', $url, [
+                    'json' => $params,
+                    'headers' => $headers,
+                    'verify'  => false,
+                ]);
+
+                $responseBody = json_decode($response->getBody());
+
+            $settings = Setting::first();
+            $data = array(
+                'settings' => $settings,
+                'responseBody' => $responseBody,
+                );
+                return View::make('admin.expired_dashboard', $data);
+
+            }else{
+                $datas = DeleteLog::where('deleted_item','episode')->orderBy('id', 'desc')->paginate(10);
+                return view('admin.EpisodeDeleteLog', compact('datas'));
             }
             
 

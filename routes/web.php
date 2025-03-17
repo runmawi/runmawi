@@ -99,6 +99,7 @@ Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 Route::get('add-to-log', 'HomeController@myTestAddToLog');
 Route::get('admin/logActivity', 'HomeController@logActivity');
 Route::get('admin/UploadlogActivity', 'HomeController@UploadlogActivity');
+Route::get('admin/EpisodeDeleteLog', 'HomeController@EpisodeDeleteLog');
 
 Route::get('/scheduled-videos', 'HomeController@ScheduledVideo');
 Route::post('/user/tv-code', 'AdminUsersController@TVCode');
