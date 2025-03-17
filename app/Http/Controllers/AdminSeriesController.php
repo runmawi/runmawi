@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Series as Series;
@@ -2663,6 +2666,26 @@ class AdminSeriesController extends Controller
             $series_id = Episode::find($id)->series_id;
             $season_id = Episode::find($id)->season_id;
             $Episode   = Episode::find($id);
+            $series_name = Series::where('id', $series_id)->pluck('title')->first();
+            $season_name = SeriesSeason::where('id', $season_id)->pluck('series_seasons_name')->first();
+            // dd($season_name);
+            // Initialize DomPDF with options
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+            $dompdf = new Dompdf($options);
+            $html = view('pdf.episode_details', ['episode' => $Episode, 'user' => Auth::user(), 'seriesName' => $series_name, 'SeasonName' => $season_name ])->render();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            $pdfFileName = "episode_{$Episode->id}.pdf";
+            $pdfPath = public_path("deletedPDF/{$pdfFileName}");
+
+            if (!file_exists(public_path('deletedPDF'))) {
+                mkdir(public_path('deletedPDF'), 0777, true);
+            }
+
+            file_put_contents($pdfPath, $dompdf->output());
 
             // dd(Auth::user()->id);
 
@@ -2674,6 +2697,7 @@ class AdminSeriesController extends Controller
                 'deleted_item'    => 'episode',
                 'created_at'      => now(),
                 'updated_at'      => now(),
+                'pdf_path'        => $pdfFileName,
             ]);
 
                     //  Delete Existing  Image
@@ -2717,7 +2741,7 @@ class AdminSeriesController extends Controller
         
         } catch (\Throwable $th) {
 
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
