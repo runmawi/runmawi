@@ -24,7 +24,7 @@
         <div class="iq-card" id="file_log_data">
             <div class="iq-card-header  justify-content-between">
                 <div class="iq-header-title p-0">
-                    <h4>Upload Activity Lists</h4>
+                    <h4>Episode Deleted Logs</h4>
                 </div>
             </div>
 
