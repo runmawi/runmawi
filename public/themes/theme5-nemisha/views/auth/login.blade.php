@@ -73,7 +73,7 @@ $system_settings = App\SystemSetting::find(1);
         margin-left: -57px;
    
           height: 45px !important;
-    background: #F27906  !important;
+    background: #ed1c24  !important;
     color: #fff !important;
     position: absolute;
     right: 0px;
@@ -133,12 +133,12 @@ font-size: 35px;
 
     }
      .btn-outline-success{
-        border: 1px solid #F27906 ;
-         color: #F27906 ;
+        border: 1px solid #ed1c24 ;
+         color: #ed1c24 ;
     }
      .btn-outline-success:hover{
-        border: 1px solid #F27906 ;
-        background-color: #F27906 !important;
+        border: 1px solid #ed1c24 ;
+        background-color: #ed1c24 !important;
          color: #ffffff!important;
     }
     	.input-icons i {
@@ -188,8 +188,8 @@ line-height: 55px;
     i.fa.fa-google-plus {
         /* padding: 10px !important;*/}
         .btn-success{
-            background: #F27906 !important;
-            border: 1px solid #F27906 ;
+            background: #ed1c24 !important;
+            border: 1px solid #ed1c24 ;
 
         }
         .demo_cred {
@@ -252,7 +252,7 @@ line-height: 55px;
         color: #FFD109;
     }
     .nemi{
-        color: #F27906 ;
+        color: #ed1c24 ;
     }
 
 }
@@ -277,7 +277,7 @@ line-height: 55px;
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container-fluid">
-  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/cocreataz-final-logo-black.svg'); ?>" style="" alt="header-logo"></a>
+  <a class="navbar-brand" href="#"><img class="login-header-logo" src="<?php echo URL::to('/assets/img/co-creataz-final.svg'); ?>" width=75 height=75 alt="header-logo"></a>
   <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button> -->

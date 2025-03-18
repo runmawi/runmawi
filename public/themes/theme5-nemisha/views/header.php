@@ -540,7 +540,7 @@
     }
 
     #toggleIcon{
-        width: 175px;
+        width: 75px;
         height: auto;
     }
 
