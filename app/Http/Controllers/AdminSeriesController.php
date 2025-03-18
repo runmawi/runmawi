@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Series as Series;
@@ -2663,6 +2666,26 @@ class AdminSeriesController extends Controller
             $series_id = Episode::find($id)->series_id;
             $season_id = Episode::find($id)->season_id;
             $Episode   = Episode::find($id);
+            $series_name = Series::where('id', $series_id)->pluck('title')->first();
+            $season_name = SeriesSeason::where('id', $season_id)->pluck('series_seasons_name')->first();
+            // dd($season_name);
+            // Initialize DomPDF with options
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+            $dompdf = new Dompdf($options);
+            $html = view('pdf.episode_details', ['episode' => $Episode, 'user' => Auth::user(), 'seriesName' => $series_name, 'SeasonName' => $season_name ])->render();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            $pdfFileName = "episode_{$Episode->id}.pdf";
+            $pdfPath = public_path("deletedPDF/{$pdfFileName}");
+
+            if (!file_exists(public_path('deletedPDF'))) {
+                mkdir(public_path('deletedPDF'), 0777, true);
+            }
+
+            file_put_contents($pdfPath, $dompdf->output());
 
             // dd(Auth::user()->id);
 
@@ -2674,6 +2697,7 @@ class AdminSeriesController extends Controller
                 'deleted_item'    => 'episode',
                 'created_at'      => now(),
                 'updated_at'      => now(),
+                'pdf_path'        => $pdfFileName,
             ]);
 
                     //  Delete Existing  Image
@@ -2717,7 +2741,7 @@ class AdminSeriesController extends Controller
         
         } catch (\Throwable $th) {
 
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
         }
     }
@@ -4253,9 +4277,73 @@ class AdminSeriesController extends Controller
             $dropzone_url =  URL::to('admin/EpisodeVideoUpload');
         }
 
+        if(!empty($StorageSetting) && $StorageSetting->bunny_cdn_storage == 1 
+        && !empty($StorageSetting->bunny_cdn_hostname) && !empty($StorageSetting->bunny_cdn_storage_zone_name) 
+        && !empty($StorageSetting->bunny_cdn_ftp_access_key)  ){
+
+            $url = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$StorageSetting->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            
+            if (!$response) {
+                die("Error: " . curl_error($ch));
+            } else {
+                $decodedResponse = json_decode($response, true);
+            
+                if ($decodedResponse === null) {
+                    die("Error decoding JSON response: " . json_last_error_msg());
+                }
+        
+            }
+            curl_close($ch);
+            // dd($decodedResponse);
+
+            
+            $videolibraryurl = "https://api.bunny.net/videolibrary?page=0&perPage=1000&includeAccessKey=false/";
+            
+            $ch = curl_init();
+            
+            $options = array(
+                CURLOPT_URL => $videolibraryurl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => array(
+                    "AccessKey: {$StorageSetting->bunny_cdn_access_key}",
+                    'Content-Type: application/json',
+                ),
+            );
+            
+            curl_setopt_array($ch, $options);
+            
+            $response = curl_exec($ch);
+            $videolibrary = json_decode($response, true);
+            curl_close($ch);
+            // dd($videolibrary); ApiKey
+
+        }else{
+            $decodedResponse = [];
+            $videolibrary = [];
+
+        }
+
+
         $data = array(
             'videos' => $video,
             'dropzone_url' => $dropzone_url,
+            'videolibrary' => $videolibrary,
+            'theme_settings' => SiteTheme::first()
             );
 
         return View('admin.series.edit_episode_video', $data);
@@ -4275,6 +4363,17 @@ class AdminSeriesController extends Controller
         $mp4_url = $data['file'];
         $settings = Setting::first();
 
+        $storage_settings = StorageSetting::first();
+        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        $libraryid = $data['UploadlibraryID'];
+        // dd($libraryid);
+        $type = "upload";
+        if($enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                $type = "bunny_cdn";
+            }
+        }
+// dd(( !empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url) ));
         if($pack != "Business" || $pack == "Business" && $settings->transcoding_access  == 0){
 
         if($file != '') {        
@@ -4295,7 +4394,7 @@ class AdminSeriesController extends Controller
             $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
             $episode = Episode::findOrFail($id);
             $episode->mp4_url = $storepath;
-            $episode->type = 'upload';
+            $episode->type = $type;
             $episode->save(); 
             $episode_id = $episode->id;
         $episode_title = Episode::find($episode_id);
@@ -4322,6 +4421,13 @@ class AdminSeriesController extends Controller
         $file_folder_name = $newfile[0];
         $storepath  = URL::to('/storage/app/public/'.$path);
 
+        $type = "m3u8";
+        if($enable_bunny_cdn == 1){
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 && !empty($libraryid) && !empty($mp4_url)){
+                $type = "bunny_cdn";
+            }
+        }
+
         $original_name = ($request->file->getClientOriginalName()) ? $request->file->getClientOriginalName() : '';
             
         $storepath  = URL::to('/storage/app/public/'.$path);
@@ -4334,7 +4440,7 @@ class AdminSeriesController extends Controller
 
             $video = Episode::findOrFail($id);
             $video->mp4_url = $path;
-            $video->type = 'm3u8';
+            $video->type = $type;
             $video->status = 0;
             $video->active = 0;
             $video->disk = 'public';

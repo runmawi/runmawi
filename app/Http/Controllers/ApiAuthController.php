@@ -5444,7 +5444,7 @@ public function verifyandupdatepassword(Request $request)
     
       if (  !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type ]
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type,'status'=> 1 ]
         );
         DB::table('ppv_purchases')->insert(
           
