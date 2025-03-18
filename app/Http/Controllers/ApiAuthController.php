@@ -6461,7 +6461,7 @@ public function verifyandupdatepassword(Request $request)
           'amount'   => $request->amount * 100, 
           'currency' => $request->currency,
           'payment_method' => $request->pm_id,
-          'confirmation_method' => 'manual',
+          'confirmation_method' => 'automatic',
           'confirm' => true,
         ]);
 
