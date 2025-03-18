@@ -6445,6 +6445,43 @@ public function verifyandupdatepassword(Request $request)
       return response()->json($data, 200);
     }
 
+    public function stripe_auth_subscriber(Request $request)
+    {
+      try{
+
+        $this->validate($request, [
+          'amount'  => 'required' ,
+          'currency'  => 'required',
+          'pm_id' => 'required'
+        ]);
+
+        $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET'));
+
+        $paymentIntent = \Stripe\PaymentIntent::create([
+          'amount' => $request->amount,
+          'currency' => $request->currency,
+          'payment_method' => $request->pm_id,
+          'confirmation_method' => 'manual',
+          'confirm' => true,
+        ]);
+
+        $data = array(
+          'status'        => "true",
+          'status_code'   =>  200,
+          'message'       => "Your Payment done Successfully!",
+          'paymentIntent' =>  $paymentIntent ,
+        );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status'    => "false",
+            'status_code' => 404,
+            'message'   => $th->getMessage(),
+          );
+      }
+      return response()->json($data, $data['status_code']);
+    }
     
     public function stripe_become_subscriber(Request $request)
     {
