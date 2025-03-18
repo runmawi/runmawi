@@ -901,6 +901,11 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <span>Upload Log Activity</span>
                      </a>
                   </li>
+                  <li><a href="{{ URL::to('admin/EpisodeDeleteLog') }}" class="iq-waves-effect">
+                        <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
+                        <span>Delete Episode Log</span>
+                     </a>
+                  </li>
 
                   <li><a href="{{ URL::to('admin/logActivity') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
@@ -1369,6 +1374,12 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <span>{{ (__('Upload Log Activity')) }}</span>
                      </a>
                   </li>
+
+                  <li><a href="{{ URL::to('admin/EpisodeDeleteLog') }}" class="iq-waves-effect">
+                     <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
+                     <span>Delete Episode Log</span>
+                  </a>
+               </li>
                   
                   <li><a href="{{ URL::to('admin/logActivity') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/geo.svg')?>">
