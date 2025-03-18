@@ -6457,8 +6457,8 @@ public function verifyandupdatepassword(Request $request)
 
         $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET'));
 
-        $paymentIntent = \Stripe\PaymentIntent::create([
-          'amount' => $request->amount,
+        $paymentIntent = $stripe->paymentIntents->create([
+          'amount'   => $request->amount * 100, 
           'currency' => $request->currency,
           'payment_method' => $request->pm_id,
           'confirmation_method' => 'manual',
