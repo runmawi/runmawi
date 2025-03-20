@@ -7,7 +7,7 @@
         background-color: transparent;
     }
     .profilcard:hover{
-        background-color: #ED563C;
+        background-color: #ed1c24;
         border-radius: 10px;
         box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.2);
         transition: transform 0.5s ease-in-out;

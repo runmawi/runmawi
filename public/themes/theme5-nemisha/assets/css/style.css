@@ -544,7 +544,7 @@ ul.f-link li a:hover { color: var(--iq-primary)!important; }
 .banner-caption, .overlay-s-name { position: absolute; bottom: 30px; left: 80px; }
 .movie-detail .trending-info { padding: 0 0 20px 0; border: 1px solid; border-image-slice: 1; border-width: 0 0 1px 0; }
 .movie-detail .trending-info.g-border { border-image-source: linear-gradient(to left, rgba(209, 208, 207, 0), rgba(209, 208, 207, 0.6), rgba(209, 208, 207, 0)); }
-.share-icons.music-play-lists li { display: inline-flex; margin-right: 5px; width: 90px; height: 40px; }
+.share-icons.music-play-lists li { display: inline-flex; margin-right: 5px; width: 40px; height: 40px; }
 .share-icons.music-play-lists li span { width: 32px; height: 32px; }
 .share-icons.music-play-lists li  i { font-size: 18px; }
 .movie-detail .trending-info .trending-text { font-size: 50px; line-height: 1.5; margin: 0; }
@@ -966,6 +966,14 @@ footer, .home footer {
     border-color: #45c5e1 !important;
         border-radius: 3px !important;
 }
+
+.btn-style {
+    color: #fff;
+    background-color: #ed1c24 !important;
+    border-color: #ed1c24 !important;
+    border-radius: 20px !important;
+}
+
 .iq-card {
 background: var(--iq-light-card);
 -webkit-border-radius: 5px;
