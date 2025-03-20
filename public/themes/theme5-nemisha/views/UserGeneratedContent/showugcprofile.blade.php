@@ -33,7 +33,7 @@
 	}
 
     ul.ugc-tabs li.ugc-current{
-		background: #ED563C;
+		background: #ed1c24;
 		color: #fff;
 	}
 
@@ -272,7 +272,7 @@
                             <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                             </div>
                             <div>
-                            <button style="background:#ED563C!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
+                            <button style="background:#ed1c24!important;color: #ffff!important; padding: 5px 100px !important; margin:0%; cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
                             </div>
                             <div class="shareprofile">
                                 <div class="d-flex bg-white p-2" style="width: 100px; border-radius:10px;  "> 
