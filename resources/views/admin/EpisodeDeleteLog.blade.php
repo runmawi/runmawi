@@ -22,57 +22,103 @@
 
     <div id="content-page" class="content-page">
         <div class="iq-card" id="file_log_data">
-            <div class="iq-card-header  justify-content-between">
-                <div class="iq-header-title p-0">
-                    <h4>Episode Deleted Logs</h4>
+
+            <div class="iq-header-title p-0">
+                <h4>Deleted Logs</h4>
+            </div>
+
+            <div class="select-type col-lg-4 col-12 mt-3 pl-0">
+                <select id="log-value" class="form-control" aria-label="Default select example">
+                    {{-- <option value="3">Show All</option> --}}
+                    <option selected value="1">Video</option>
+                    <option value="2">Episode</option>
+                </select>
+            </div>
+
+            <!-- Video Logs -->
+            <div id="video-log">
+                <div class="iq-card-header justify-content-between">
+                    <div class="iq-header-title text-center p-0">
+                        <h6>Videos Deleted Logs</h6>
+                    </div>
+                </div>
+                <div id="video-logs-container">
+                    @include('admin.partials.video_delete_log_table')
                 </div>
             </div>
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                    {{-- <th scope="col">#</th> --}}
-                    <th scope="col">Episode Id</th>
-                    {{-- <th scope="col">Episode Title</th> --}}
-                    <th scope="col">Series Id</th>
-                    <th scope="col">Season Id</th>
-                    <th scope="col">User Id</th>
-                    <th scope="col">Deleted At</th>
-                    <th scope="col">Pdf file</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($datas as $key => $data )
-                        <tr>
-                            <td>{{ $data->id }}</td>
-                            <td>{{ $data->series_id }}</td>
-                            <td>{{ $data->season_id }}</td>
-                            <td>{{ $data->user_id }}</td>
-                            <td>{{ $data->updated_at }}</td>
-                            <td>
-                                <a href="{{ $data->pdf_path ? asset('public/deletedPDF/' . $data->pdf_path) : '#' }}" target="_blank">
-                                   {{ $data->pdf_path ? "Click to view" : 'N/A'}}
-                                </a>
-                            </td>
-                            
-                            {{-- <td><a href="{{ $data->pdf_path ? URL::to('storage/app/public/deletedPDF/deleted_episodes/'.$data->pdf_path) : '#' }}">{{ "Click to view" }}</a></td> --}}
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-                        <!-- Pagination Links -->
-            <div class="d-flex justify-content-end">
-                {{ $datas->links() }}
+            <!-- Episode Logs -->
+            <div id="episode-log">
+                <div class="iq-card-header justify-content-between">
+                    <div class="iq-header-title text-center p-0">
+                        <h6>Episode Deleted Logs</h6>
+                    </div>
+                </div>
+                <div id="episode-logs-container">
+                    @include('admin.partials.episode_delete_log_table')
+                </div>
             </div>
+
         </div> 
     </div> 
+
 @stop
+
+<script>
+    $(document).ready(function(){
+        console.log("select value: " + $('#log-value').val());
+        
+        $('#log-value').change(function(){
+            let selectedValue = $(this).val();
+            if (selectedValue == "1") {
+                $('#episode-log').hide();
+                $('#video-log').show();
+            } else if (selectedValue == "2") {
+                $('#episode-log').show();
+                $('#video-log').hide();
+            } else {
+                $('#video-log').show();
+                $('#episode-log').show();
+            }
+        });
+    });
+</script>
+
+
+<script>
+
+    $(document).on('click', '.pagination a', function(event) {
+        event.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        let logType = $('#log-value').val() == "1" ? 'video' : 'episode';
+
+        fetchPage(page, logType);
+    });
+
+    function fetchPage(page, logType) {
+        $.ajax({
+            url: "{{ route('deleted-logs') }}?page=" + page + "&type=" + logType,
+            success: function(response) {
+                console.log("res type: " + response.html);
+                
+                if (response.type === 'video') {
+                    $('#video-logs-container').html(response.html);
+                } else {
+                    $('#episode-logs-container').html(response.html);
+                }
+            }
+        });
+    }
+</script>
+
 
 <style>
     #file_log_data thead {background-color: #e4ecfe;}
     #file_log_data .table thead th {font-size: 13px;}
     .table td, .table th{text-align: center;}
+    #episode-log{display:none;}
+    /* #episode-logs-table table{display:block !important;}
+    .table-hover{display:none;} */
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
