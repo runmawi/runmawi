@@ -901,9 +901,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <span>Upload Log Activity</span>
                      </a>
                   </li>
-                  <li><a href="{{ URL::to('admin/EpisodeDeleteLog') }}" class="iq-waves-effect">
+                  <li><a href="{{ URL::to('admin/deleted-log') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
-                        <span>Delete Episode Log</span>
+                        <span>Delete Log</span>
                      </a>
                   </li>
 
@@ -1375,9 +1375,9 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
-                  <li><a href="{{ URL::to('admin/EpisodeDeleteLog') }}" class="iq-waves-effect">
+                  <li><a href="{{ URL::to('admin/deleted-log') }}" class="iq-waves-effect">
                      <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
-                     <span>Delete Episode Log</span>
+                     <span>Delete Log</span>
                   </a>
                </li>
                   
