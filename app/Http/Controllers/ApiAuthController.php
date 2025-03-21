@@ -14443,6 +14443,7 @@ $cpanel->end();
                   }
   
                   $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+                  $livestream->publish_type = $recurring_program_live_animation == true ? 'publish_now' : $livestream->publish_type ;
   
                   $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
           
