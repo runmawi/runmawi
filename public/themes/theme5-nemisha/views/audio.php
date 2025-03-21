@@ -153,7 +153,7 @@ border-radius: 25px !important;
 }
 .vjs-texttrack-settings { display: none; }
 .audio-js .vjs-big-play-button{ border: none !important; }
-.bd{padding:10px 15px;background: #ed563c !important;}
+.bd{padding:10px 15px;background: #ed1c24 !important;}
 .bd:hover{
 }
 th,td {
