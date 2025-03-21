@@ -36,27 +36,43 @@
             </div>
 
             <!-- Video Logs -->
-            <div id="video-log">
-                <div class="iq-card-header justify-content-between">
-                    <div class="iq-header-title text-center p-0">
-                        <h6>Videos Deleted Logs</h6>
+            <div id="video-log" class="mt-5">
+                @if(!empty($videoLogs->count() > 0))
+                    <div class="iq-card-header justify-content-between">
+                        <div class="iq-header-title text-center p-0">
+                            <h6>Videos Deleted Logs</h6>
+                        </div>
                     </div>
-                </div>
-                <div id="video-logs-container">
-                    @include('admin.partials.video_delete_log_table')
-                </div>
+                    <div id="video-logs-container">
+                        @include('admin.partials.video_delete_log_table')
+                    </div>
+                @else
+                    <h6 class="text-center mt-3">There are no deleted video items. Please select Episode deleted items instead.</h6>
+                    <div class="no-data-img" style="height: 200px;">
+                        <img class="" src="<?php echo  URL::to('/assets/img/no-data.webp')?>" style="width: 100%;height:100%;object-fit:contain;">
+                    </div>
+
+                @endif
             </div>
 
             <!-- Episode Logs -->
             <div id="episode-log">
-                <div class="iq-card-header justify-content-between">
-                    <div class="iq-header-title text-center p-0">
-                        <h6>Episode Deleted Logs</h6>
+                @if(!empty($episodeLogs->count() > 0))
+                    <div class="iq-card-header justify-content-between">
+                        <div class="iq-header-title text-center p-0">
+                            <h6>Episode Deleted Logs</h6>
+                        </div>
                     </div>
-                </div>
-                <div id="episode-logs-container">
-                    @include('admin.partials.episode_delete_log_table')
-                </div>
+                    <div id="episode-logs-container">
+                        @include('admin.partials.episode_delete_log_table')
+                    </div>
+                @else
+                    <h6 class="text-center mt-3">There are no deleted episode items. Please select Video deleted items instead.</h6>
+                    <div class="no-data-img" style="height: 200px;">
+                        <img class="" src="<?php echo  URL::to('/assets/img/no-data.webp')?>" style="width: 100%;height:100%;object-fit:contain;">
+                    </div>
+
+                @endif
             </div>
 
         </div> 
