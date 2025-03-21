@@ -90,7 +90,7 @@
         border-bottom-left-radius: 8px;
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
-        background:#000000!important;
+        background: #ed1c24!important;
         color: #fff!important;
         padding: 5px 100px!important;
         margin:0%; 
@@ -280,17 +280,21 @@
         <div>
         <h6>{{$videodetail->user->username}}</h6>
         </div>
-        <div class="py-2" >
-            @if($subscriber_count == 0 )
-               <p style="color: white; font-size:18px;" >No Subscribers</p>
-            @elseif($subscriber_count == 1 )
-               <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
-            @else
-            <p style="color: white; font-size:18px;" >
-                <span id="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
-            </p>
+        @if(auth()->check())
+            @if(auth()->user()->id != $profileUser->id)
+                <div class="py-2" >
+                    @if($subscriber_count == 0 )
+                    <p style="color: white; font-size:18px;" >No Subscribers</p>
+                    @elseif($subscriber_count == 1 )
+                    <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
+                    @else
+                    <p style="color: white; font-size:18px;" >
+                        <span id="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
+                    </p>
+                    @endif
+                </div>
             @endif
-        </div>
+        @endif
         </a>
        </div>
     </div>
