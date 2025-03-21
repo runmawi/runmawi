@@ -107,6 +107,10 @@ use App\Jobs\ConvertEpisodeVideo;
 use App\Jobs\ConvertSerieTrailer;
 use App\UploadErrorLog;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use App\DeleteLog;
+
 class AdminVideosController extends Controller
 {
 
@@ -1482,6 +1486,8 @@ class AdminVideosController extends Controller
         
             $videos = Video::find($id);
 
+            
+
             $image_name_WithoutExtension     = substr($videos->image, 0, strrpos($videos->image, '.'));
             $ply_image_name_WithoutExtension = substr($videos->player_image, 0, strrpos($videos->player_image, '.'));
             $tv_image_name_WithoutExtension  = substr($videos->video_tv_image, 0, strrpos($videos->video_tv_image, '.'));
@@ -1627,6 +1633,35 @@ class AdminVideosController extends Controller
             } catch (\Throwable $th) {
                 
             }
+
+            //log
+            $options = new Options();
+            $options->set('defaultFont', 'Courier');
+            $dompdf = new Dompdf($options);
+            $html = view('pdf.video_details', ['video' => $videos, 'user' => Auth::user()])->render();
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            $pdfFileName = "video_{$id}.pdf";
+            $pdfPath = public_path("deletedPDF/{$pdfFileName}");
+
+            if (!file_exists(public_path('deletedPDF'))) {
+                mkdir(public_path('deletedPDF'), 0777, true);
+            }
+
+            file_put_contents($pdfPath, $dompdf->output());
+
+            // dd(Auth::user()->id);
+
+            DeleteLog::create([
+                'video_id'      => $id,
+                'user_id'         => Auth::user()->id,
+                'deleted_item'    => 'video',
+                'created_at'      => now(),
+                'updated_at'      => now(),
+                'pdf_path'        => $pdfFileName,
+            ]);
 
                     // Video Destroy
             \LogActivity::addVideodeleteLog("Deleted Video.", $id);
