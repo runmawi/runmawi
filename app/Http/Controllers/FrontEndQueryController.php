@@ -474,7 +474,8 @@ class FrontEndQueryController extends Controller
                                             'recurring_program', 'program_start_time', 'program_end_time', 'custom_start_program_time', 'custom_end_program_time',
                                             'recurring_timezone', 'recurring_program_week_day', 'recurring_program_month_day','uploaded_by','user_id')
                                         ->where('active', '1')
-                                        ->where('status', 1)->latest()
+                                        ->where('status', 1)
+                                        ->orderBy('created_at', 'desc') 
                                         ->get()->map(function ($item) use ($default_vertical_image_url,$default_horizontal_image_url) {
                                             $item['image_url'] = !is_null($item->image) ? $this->BaseURL.('/images/'.$item->image) : $default_vertical_image_url ;
                                             $item['Player_image_url'] = !is_null($item->player_image) ?  $this->BaseURL.('/images/'.$item->player_image) : $default_horizontal_image_url ;
@@ -1184,20 +1185,24 @@ class FrontEndQueryController extends Controller
             }
     
             // Process episodes
-            $episode_data = Episode::select('id', 'title', 'slug', 'rating', 'access', 'series_id', 'season_id', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'episode_description',
-                                            'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'uploaded_by', 'user_id')
+            $episode_data = collect([]);
+    
+            if (!empty($Watchlater_episode)) {
+                $episode_data = Episode::select('id', 'title', 'slug', 'rating', 'access', 'series_id', 'season_id', 'ppv_price', 'responsive_image', 'responsive_player_image', 'responsive_tv_image', 'episode_description',
+                                                'duration', 'rating', 'image', 'featured', 'tv_image', 'player_image', 'uploaded_by', 'user_id')
                                     ->where('active', '1')
                                     ->where('status', '1')
                                     ->whereIn('id', $Watchlater_episode);
     
-            if (!Auth::guest() && $check_Kidmode == 1) {
-                $episode_data = $episode_data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
-            }
+                if (!Auth::guest() && $check_Kidmode == 1) {
+                    $episode_data = $episode_data->whereNull('age_restrict')->orWhereNotBetween('age_restrict', [0, 12]);
+                }
     
-            $episode_data = $episode_data->latest()->limit(30)->get()->map(function ($item) {
-                $item['series'] = Series::where('id', $item->series_id);
-                return $item;
-            });
+                $episode_data = $episode_data->latest()->get()->map(function ($item) {
+                    $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only necessary fields
+                    return $item;
+                });
+            }
     
             // Process livestreams
             $livestreams_data = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',

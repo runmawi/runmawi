@@ -3976,8 +3976,8 @@ class ChannelController extends Controller
                             )
                             ->where('active', 1)
                             ->where('status', 1)
-                            ->latest()->get()
-                            ->filter(function ($livestream) use ($current_timezone) {
+                            ->orderBy('created_at', 'desc') 
+                            ->get()->filter(function ($livestream) use ($current_timezone) {
 
                                 if ($livestream->publish_type === 'recurring_program') {
 
@@ -4995,14 +4995,14 @@ class ChannelController extends Controller
 
             $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
 
-            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->paypal_live_mode : null;
 
             $paypal_password = null;
             $paypal_signature = null;
 
             if (!is_null($PayPalpayment)) {
 
-                switch ($PayPalpayment->live_mode) {
+                switch ($PayPalpayment->paypal_live_mode) {
                     case 0:
                         $paypal_password = $PayPalpayment->test_paypal_password;
                         $paypal_signature = $PayPalpayment->test_paypal_signature;

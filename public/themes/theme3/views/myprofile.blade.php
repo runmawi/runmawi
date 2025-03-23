@@ -331,7 +331,9 @@ $settings = App\Setting::first();
                            <p class="mb-0"><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></p>
                         </div>
                         <div class="edit-butns col-3">
-                           <a href="javascript:;" onclick="jQuery('#add-profile').modal('show');" class="btn btn-primary">Edit</a>
+                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-profile">
+                              Edit
+                            </button>                            
                         </div>
 
                         <form action="{{ URL::to('/profileupdate') }}" method="POST"  enctype="multipart/form-data">
@@ -700,7 +702,7 @@ $settings = App\Setting::first();
           </div>
             </div></div>
               <!-- Add New Modal -->
-                  <div class="modal fade" id="add-profile">
+                  <div class="modal fade" id="add-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog">
                         <div class="modal-content">
                            
@@ -732,10 +734,11 @@ $settings = App\Setting::first();
                                     <input type="number" id="mobile" pattern="/^-?\d+\.?\d*$/" onkeypress="if(this.value.length==10) return false;" name="mobile" value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>" class="form-control" placeholder="Mobile Number">
                                  </div>
                                  <div class="form-group">
-                                    <label> DOB:</label>
-                                    <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
-                                       <!-- <input type="text" id="DOB" name="DOB" value="" class="form-control" placeholder="DOB"> -->
-                                 </div>
+                                    <label for="DOB">DOB:</label>
+                                    <input type="date" id="DOB" name="DOB" value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>" required>
+                                    <span id="dob-error" style="color: red; display: none;">Please select a valid date (not a future date or today's date).</span>
+                                </div>
+                                
 
                               </form>
                            </div>
@@ -783,6 +786,31 @@ border-radius: 4px;
        opacity: 0.5;
    }
 </style>
+
+<script>
+   document.getElementById('DOB').addEventListener('change', function () {
+      const dob = new Date(this.value); // Convert the input value to a Date object
+      const today = new Date();
+      
+      // Set the time to 00:00:00 to compare only the date, not the time
+      today.setHours(0, 0, 0, 0);
+      
+      const errorMsg = document.getElementById('dob-error');
+      const subBtn = document.getElementById('submit-new-cat');
+      
+      // Check if the selected date is today or a future date
+      if (dob >= today) {
+         errorMsg.style.display = 'block';
+         subBtn.style.cursor = 'not-allowed';
+         this.setCustomValidity("Please select a valid date (not a future date or today's date).");
+      } else {
+         errorMsg.style.display = 'none';
+         subBtn.style.cursor = 'pointer';
+         this.setCustomValidity("");
+      }
+   });
+
+</script>
   
   <?php $settings = App\Setting::first(); ?>
 

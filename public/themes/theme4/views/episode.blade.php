@@ -21,9 +21,8 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 <?php endif; ?>
 
 <!-- video-js Style  -->
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-ima/1.11.0/videojs.ima.css" rel="stylesheet">
-<link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
+<link href="<?= asset('public/themes/theme4/assets/css/video-js/videojs.min.css') ?>" rel="stylesheet">
 <!-- <link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css" rel="stylesheet"> -->
 <link href="https://cdn.jsdelivr.net/npm/videojs-hls-quality-selector@1.1.4/dist/videojs-hls-quality-selector.min.css"
     rel="stylesheet">
@@ -241,9 +240,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                             <?= __($episode->title) ?>
                         </p>
 
-                        <p class="desc-name text-left m-0 mt-1">
-                            {!! nl2br(e($episode->episode_description)) !!}
-                        </p>
+                        @if(!empty($episode->episode_description))
+                            @php
+                                $description = preg_replace('/#(\w+)/', '<span class="d-flex">#$1</span>', $episode->episode_description);
+                            @endphp
+                            <p class="desc-name text-left m-0 mt-1"> <p>{!! nl2br($description) !!}</p></p>
+                        @endif
+
                         @if (Auth::check() && Auth::user()->role == 'subscriber')
                             <a class="btn mt-3" data-toggle="modal" data-target="#season-purchase-now-modal">
                                 <div class="playbtn text-white" style="gap:5px">
@@ -389,7 +392,10 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
                     @if(!empty($episode->episode_description))
-                        <p class="">{!! nl2br(e($episode->episode_description)) !!}</p>
+                        @php
+                            $description = preg_replace('/#(\w+)/', '<span class="d-flex">#$1</span>', $episode->episode_description);
+                        @endphp
+                        <p class=""> <p>{!! nl2br($description) !!}</p></p>
                     @endif
 
                     <?php

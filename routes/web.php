@@ -98,6 +98,8 @@ Route::get('admin/contact-us/', 'ContactController@ViewRequest');
 
 Route::get('add-to-log', 'HomeController@myTestAddToLog');
 Route::get('admin/logActivity', 'HomeController@logActivity');
+Route::get('admin/UploadlogActivity', 'HomeController@UploadlogActivity');
+Route::get('admin/deleted-logs', 'HomeController@EpisodeDeleteLog')->name('deleted-logs');
 
 Route::get('/scheduled-videos', 'HomeController@ScheduledVideo');
 Route::post('/user/tv-code', 'AdminUsersController@TVCode');
@@ -622,6 +624,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('get-storage-data', 'AdminDashboardController@getStorageData');
+    Route::get('get-folder-storage-data', 'AdminDashboardController@getFolderStorageData')->name('admin.getFolderStorageData');
 
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
@@ -1240,6 +1243,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/episode/edit/{id}', 'AdminSeriesController@edit_episode');
     Route::post('/episode/update', 'AdminSeriesController@update_episode');
     Route::post('/episode_upload', 'AdminSeriesController@EpisodeUpload');
+    Route::post('/DeleteEpisodeRecord', 'AdminSeriesController@DeleteEpisodeRecord');
     Route::get('/episode/episode_edit/{id}', 'AdminSeriesController@EpisodeUploadEdit');
     Route::post('/EpisodeVideoUpload', 'AdminSeriesController@EpisodeVideoUpload');
     Route::get('/episode/subtitle/delete/{id}', ['before' => 'demo', 'uses' => 'AdminSeriesController@subtitledestroy']);
@@ -3120,3 +3124,4 @@ Route::get('/series/image/{series_id}', function ($series_id) {
 
 Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
+Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');

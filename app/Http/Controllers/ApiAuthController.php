@@ -4165,29 +4165,34 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Wishlist::select('video_id')->where('user_id','=',$user_id)->latest()->get();
-    $video_ids_count = Wishlist::where('user_id','=',$user_id)->whereNotNull('video_id')->pluck('video_id')->count();
+    $wishlist_videos = Wishlist::where('user_id', $user_id)
+                                  ->whereNotNull('video_id')
+                                  ->orderBy('id', 'desc')
+                                  ->get();
 
-    if ( $video_ids_count  > 0) {
+                              if ($wishlist_videos->isNotEmpty()) {
+                                  $video_ids = $wishlist_videos->pluck('video_id')->toArray();
 
-      foreach ($video_ids as $key => $value1) {
-        $k2[] = $value1->video_id;
-      }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'video';
-        return $item;
-      });
-      if(count($channel_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $channel_videos = [];
-    }
+                                  // Fetch all video details while preserving order
+                                  $videos = Video::whereIn('id', $video_ids)->get()->keyBy('id');
+
+                                  // Map wishlist order to videos
+                                  $channel_videos = $wishlist_videos->map(function ($wishlist) use ($videos) {
+                                      if (isset($videos[$wishlist->video_id])) {
+                                          $item = $videos[$wishlist->video_id];
+                                          $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                                          $item['video_url'] = URL::to('/') . '/storage/app/public/';
+                                          $item['source'] = 'video';
+                                          return $item;
+                                      }
+                                  })->filter(); // Remove null values if any
+// Remove null values if any
+
+                                  $status = $channel_videos->isNotEmpty() ? "true" : "false";
+                              } else {
+                                  $status = "false";
+                                  $channel_videos = [];
+                              }
 
     //UGC Videos
     $ugc_video_ids = Wishlist::select('ugc_video_id')->where('user_id','=',$user_id)->get();
@@ -4250,7 +4255,7 @@ public function verifyandupdatepassword(Request $request)
       $audios = [];
     }
 
-    if($video_ids_count  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
+    if(count($video_ids)  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
       $status = "true";
     }else{
       $status = "false";
@@ -4737,30 +4742,59 @@ public function verifyandupdatepassword(Request $request)
     $user_id = $request->user_id;
 
     /*channel videos*/
-    $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
-    $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->count();
+    // $video_ids = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->orderBy('created_at', 'desc')->get();
+    // $video_ids_count = Favorite::select('video_id')->where('user_id',$user_id)->whereNotNull('video_id')->count();
 
-    if ( $video_ids_count  > 0) {
+    // if ( $video_ids_count  > 0) {
 
-      foreach ($video_ids as $key => $value) {
-        $k2[] = $value->video_id;
-      }
-      $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-        $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
-        $item['video_url'] = URL::to('/').'/storage/app/public/';
-        $item['source'] = 'videos';
-        return $item;
-      });
+    //   foreach ($video_ids as $key => $value) {
+    //     $k2[] = $value->video_id;
+    //   }
+    //   $channel_videos = Video::whereIn('id', $k2)->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    //     $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
+    //     $item['video_url'] = URL::to('/').'/storage/app/public/';
+    //     $item['source'] = 'videos';
+    //     return $item;
+    //   });
 
-      if(count($channel_videos) > 0){
-        $status = "true";
-      }else{
-        $status = "false";
-      }
-    }else{
-            $status = "false";
-      $channel_videos = [];
-    }
+    //   if(count($channel_videos) > 0){
+    //     $status = "true";
+    //   }else{
+    //     $status = "false";
+    //   }
+    // }else{
+    //         $status = "false";
+    //   $channel_videos = [];
+    // }
+
+    $watchlater_videos = Favorite::where('user_id', $user_id)
+                                  ->whereNotNull('video_id')
+                                  ->orderBy('id', 'desc')
+                                  ->get();
+
+                              if ($watchlater_videos->isNotEmpty()) {
+                                  $video_ids = $watchlater_videos->pluck('video_id')->toArray();
+
+                                  // Fetch all video details while preserving order
+                                  $videos = Video::whereIn('id', $video_ids)->get()->keyBy('id');
+
+                                  // Map wishlist order to videos
+                                  $channel_videos = $watchlater_videos->map(function ($watchlaterlist) use ($videos) {
+                                      if (isset($videos[$watchlaterlist->video_id])) {
+                                          $item = $videos[$watchlaterlist->video_id];
+                                          $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+                                          $item['video_url'] = URL::to('/') . '/storage/app/public/';
+                                          $item['source'] = 'video';
+                                          return $item;
+                                      }
+                                  })->filter(); // Remove null values if any
+                              // Remove null values if any
+
+                                    $status = $channel_videos->isNotEmpty() ? "true" : "false";
+                                } else {
+                                    $status = "false";
+                                    $channel_videos = [];
+                                }
 
     // Episode
 
@@ -5410,7 +5444,7 @@ public function verifyandupdatepassword(Request $request)
     
       if (  !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type ]
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type,'status'=> 1 ]
         );
         DB::table('ppv_purchases')->insert(
           
@@ -6411,6 +6445,43 @@ public function verifyandupdatepassword(Request $request)
       return response()->json($data, 200);
     }
 
+    public function stripe_auth_subscriber(Request $request)
+    {
+      try{
+
+        $this->validate($request, [
+          'amount'  => 'required' ,
+          'currency'  => 'required',
+          'pm_id' => 'required'
+        ]);
+
+        $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET'));
+
+        $paymentIntent = $stripe->paymentIntents->create([
+          'amount'   => $request->amount * 100, 
+          'currency' => $request->currency,
+          'payment_method' => $request->pm_id,
+          'confirmation_method' => 'automatic',
+          'confirm' => true,
+        ]);
+
+        $data = array(
+          'status'        => "true",
+          'status_code'   =>  200,
+          'message'       => "Your Payment done Successfully!",
+          'paymentIntent' =>  $paymentIntent ,
+        );
+
+      } catch (\Throwable $th) {
+
+          $data = array(
+            'status'    => "false",
+            'status_code' => 404,
+            'message'   => $th->getMessage(),
+          );
+      }
+      return response()->json($data, $data['status_code']);
+    }
     
     public function stripe_become_subscriber(Request $request)
     {
@@ -7096,6 +7167,11 @@ public function checkEmailExists(Request $request)
          $item['series_name'] = $item['series']->title;
 
          $item['Share_url'] = URL::to('episode/'.$item['series']->slug.'/'.$item['slug']);
+
+         $details = html_entity_decode($item->episode_description);
+         $description = strip_tags($details);
+         $item['episode_description'] = str_replace("\r", '', $description);
+        // $item['episode_description'] = nl2br($desc);
 
           //Continue Watchings
 
@@ -8073,6 +8149,16 @@ return response()->json($response, 200);
       $item['image_url'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
       $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
       $item['tv_image_url'] = !is_null($item->tv_image) && $item->tv_image != "default_image"? URL::to('public/uploads/images/'.$item->tv_image) : default_horizontal_image_url();
+      $description = html_entity_decode($item['description']);
+      $description = strip_tags($description);
+      $description = str_replace("\r", '', $description);
+
+      $details = html_entity_decode($item['details']);
+      $details = strip_tags($details);
+      $details = str_replace("\r", '', $details);
+
+      $item['description'] = $description;
+      $item['details'] = $details;
                                           
       return $item ;
     })->first();
@@ -8115,6 +8201,12 @@ return response()->json($response, 200);
         }
         $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
         $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
+
+        $epi_description = html_entity_decode($item['episode_description']);
+        $description = strip_tags($epi_description);
+        $item['episode_description'] =  str_replace("\r", '', $description);
+
+        
         return $item;
       });
 
@@ -8125,6 +8217,12 @@ return response()->json($response, 200);
         $msg = 'nodata';
         $count_episode = count($episodes);
       }
+
+      
+      $details = html_entity_decode($series->description);
+      $description = strip_tags($details);
+      $series->description = str_replace("\r", '', $description);
+
 
       $season_name = $season['series_seasons_name'];
       $settings = Setting::first();
@@ -8920,34 +9018,44 @@ return response()->json($response, 200);
                     }
       $video_id_query = $video_id_query->pluck('videoid');
 
-      $videos = Video::join('continue_watchings', 'videos.id', '=', 'continue_watchings.videoid')
-                      ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
-                              'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.rating', 'videos.image', 
-                              'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
-                              'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
-                              'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
-                              'continue_watchings.currentTime','continue_watchings.updated_at')
-                      ->whereIn('videos.id', $video_id_query)
-                      ->orderBy('continue_watchings.updated_at', 'desc') 
-                      ->groupBy('continue_watchings.videoid');
-                 
+      $videos = Video::join('continue_watchings', function($join) {
+                          $join->on('videos.id', '=', 'continue_watchings.videoid')
+                              ->whereRaw('continue_watchings.updated_at = (
+                                  SELECT MAX(updated_at) 
+                                  FROM continue_watchings 
+                                  WHERE continue_watchings.videoid = videos.id
+                              )');
+                      })
+                  ->select('videos.id', 'videos.title', 'videos.slug', 'videos.year', 'videos.rating', 'videos.access', 'videos.publish_type', 
+                          'videos.global_ppv', 'videos.publish_time', 'videos.ppv_price', 'videos.duration', 'videos.image', 
+                          'videos.featured', 'videos.age_restrict', 'videos.video_tv_image', 'videos.description', 'videos.player_image', 
+                          'videos.expiry_date', 'videos.responsive_image', 'videos.responsive_player_image', 'videos.responsive_tv_image', 
+                          'videos.user_id', 'videos.uploaded_by', 'continue_watchings.watch_percentage', 'continue_watchings.skip_time',
+                          'continue_watchings.currentTime','continue_watchings.updated_at')
+                  ->whereIn('videos.id', $video_id_query)
+                  ->orderBy('continue_watchings.updated_at', 'desc'); 
 
+                  // Filter videos by expiry date if enabled
                   if ($this->videos_expiry_date_status == 1) {
-                      $videos = $videos->where(function($query) {
-                          $query->whereNull('videos.expiry_date')
-                                ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
-                      });
-                  }
-
-                  if ($check_Kidmode == 1) {
-                      $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
-                  }
-
-                  $videos = $videos->get()->map(function ($item) {
-                      $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
-                      $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
-                      return $item;
+                  $videos = $videos->where(function($query) {
+                  $query->whereNull('videos.expiry_date')
+                  ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
                   });
+                  }
+
+                  // Apply Kid Mode filter
+                  if ($check_Kidmode == 1) {
+                  $videos = $videos->whereBetween('videos.age_restrict', [0, 12]);
+                  }
+
+                  // Fetch and modify results
+                  $videos = $videos->get()->map(function ($item) {
+                  $item['image_url'] = (!is_null($item->image) && $item->image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->image) : default_vertical_image_url();
+                  $item['player_image_url'] = (!is_null($item->player_image) && $item->player_image != 'default_image.jpg') ? URL::to('public/uploads/images/' . $item->player_image) : default_horizontal_image_url();
+                  return $item;
+                  });
+
+
 
 
       // Episode 
@@ -13696,13 +13804,13 @@ $cpanel->end();
             }else{
               $main_genre = "";
             }
+            if ($videos->isEmpty()) {
+              continue;
+          }
 
-            if(count($videos) > 0){
-              $msg = 'success';
-            }else{
-              $msg = 'nodata';
-            }
+          $msg = 'success';
 
+           
             $myData[] = array(
               "message" => $msg,
               'gener_name' =>  VideoCategory::where('id',$videocategoryid)->pluck('name')->first(),
@@ -14335,6 +14443,7 @@ $cpanel->end();
                   }
   
                   $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+                  $livestream->publish_type = $recurring_program_live_animation == true ? 'publish_now' : $livestream->publish_type ;
   
                   $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
           

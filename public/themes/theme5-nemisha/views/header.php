@@ -540,7 +540,7 @@
     }
 
     #toggleIcon{
-        width: 175px;
+        width: 75px;
         height: auto;
     }
 
@@ -1603,7 +1603,7 @@
                                             value="<?= Auth::user()->email ?>" autocomplete="email" autofocus>
                                         <input id="password" type="hidden" name="password"
                                             value="<?= @$ModeratorsUser->password ?>" autocomplete="current-password">
-                                        <button type="submit" class="btn btn-primary "
+                                        <button type="submit" class="btn btn-style "
                                             style="margin-top: -14%;margin-left: -14%;font-size: 14px;">Visit Content Portal </button>
                                     </form>
                                 </div>                    
@@ -1616,7 +1616,7 @@
                                         <input id="password" type="hidden" name="password"
                                             value="<?= @$Channel->unhased_password ?>"
                                             autocomplete="current-password">
-                                        <button type="submit" class="btn btn-primary"
+                                        <button type="submit" class="btn btn-style"
                                             style="margin-top: -11%;margin-left: -8%;font-size: 14px;">Visit Channel Portal </button>
                                     </form>
                                 </div>
@@ -1627,10 +1627,10 @@
                                         <?php if(Auth::guest()): ?>
                                             <div class="iq-search-bar ml-auto" id="hid">
                                                 <a href="<?php echo URL::to('channel/login') ?>">
-                                                    <button class="btn btn-primary" ><?= __('Visit Channel Portal') ?></button>
+                                                    <button class="btn btn-style" ><?= __('Visit Channel Portal') ?></button>
                                                 </a>
                                             </div> 
-                                            <div class="bg-primary text-right p-1" style="border-radius:20px; font-size: 15px; font-weight:bold; margin:0px 10px; " >
+                                            <div class="text-right p-1" style="border-radius:20px; font-size: 15px; font-weight:bold; margin:0px 10px; background-color: #ed1c24 " >
                                                 <a href="<?php echo URL::to('login'); ?>" style="padding: 15px;">Upload Your Own Content</a>  
                                             </div>
                                         <?php endif ; ?>

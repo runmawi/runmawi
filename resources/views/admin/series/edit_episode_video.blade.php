@@ -63,37 +63,76 @@
   </head>
   <body>
   @section('content')
-  
+
     <div id=" content_videopage" class="content-page">
                 <div class="container-fluid p-0" id="content_videopage">
                     <div class="admin-section-title">
                         <div class="iq-card">
                             <div class="row">
-                            @if (Session::has('message'))
-                                <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
+                              <h3 class="card-title upload-ui">Upload Full Episode Here</h3>
+                                @if (Session::has('message'))
+                                    <div id="successMessage" class="alert alert-info">{{ Session::get('message') }}</div>
                                 @endif
                                 @if(count($errors) > 0)
-                                @foreach( $errors->all() as $message )
-                                <div class="alert alert-danger display-hide" id="successMessage" >
-                                    <button id="successMessage" class="close" data-close="alert"></button>
-                                    <span>{{ $message }}</span>
-                                </div>
-                                @endforeach
+                                    @foreach( $errors->all() as $message )
+                                      <div class="alert alert-danger display-hide" id="successMessage" >
+                                          <button id="successMessage" class="close" data-close="alert"></button>
+                                          <span>{{ $message }}</span>
+                                      </div>
+                                    @endforeach
                                 @endif
-                                </div>
-            <div class="row">
-                  <div class='content' id="video_upload" style="margin-left: 36%;">
-                    <form action="{{ $dropzone_url }}" method= "post"  class='dropzone' >
-                    </form> 
-                </div> 
-             </div>
-        </div>
+                            </div>
+                        <div class="">
+                              <div class='content' id="video_upload">
+                                  @if(@$theme_settings->enable_bunny_cdn == 1)
+      
+                                      <label for="stream_bunny_cdn_episode">BunnyCDN URL:</label>
+                                          <!-- videolibrary -->
+                                          <select class="phselect form-control" name="UploadlibraryID" id="UploadlibraryID" >
+                                                  <option value="">{{ __('Choose Stream Library from Bunny CDN') }}</option>
+                                                  @foreach($videolibrary as $library)
+                                                  <option value="{{  @$library['Id'] }}" data-library-ApiKey="{{ @$library['ApiKey'] }}">{{ @$library['Name'] }}</option>
+                                                  @endforeach
+                                          </select> 
+                                          @else
+                                          
+                                              <input type="hidden" name="UploadlibraryID" id="UploadlibraryID" value="">
+                                          @endif 
+                                          <br>
+                                        <div class="content file UploadEnable">
+                                                
+                                                <!-- Dropzone -->
+                                                <form action="{{ $dropzone_url }}" method="post" class="dropzone" id="my-dropzone"></form>
+                                            </div>
+                            </div> 
+                        </div>
+                    </div>
 
         </div>
       </div>
    </div>
    </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+          var enable_bunny_cdn = '<?= @$theme_settings->enable_bunny_cdn ?>';
+           var enable_Flussonic_Upload = '<?= Enable_Flussonic_Upload() ?>';
+  
+           if(enable_bunny_cdn == 1 || enable_Flussonic_Upload == 1){
+              $('.UploadEnable').hide();
+           }
+  
+              $('#UploadlibraryID').change(function(){
+                 if($('#UploadlibraryID').val() != null && $('#UploadlibraryID').val() != ''){
+                    // alert($('#UploadlibraryID').val());
+                    $('.UploadEnable').show();
+                 }else{
+                  // alert($('#UploadlibraryID').val());
+                    $('.UploadEnable').hide();
+                 }
+              });
+      </script>
  
     <!-- Script -->
     <script>
@@ -136,6 +175,7 @@
       myDropzone.on("sending", function(file, xhr, formData) {
           formData.append('Episodeid', Episodeid);
           formData.append("_token", CSRF_TOKEN);
+          formData.append("UploadlibraryID", $('#UploadlibraryID').val());
       });
   
       myDropzone.on("success", function(file, response) {

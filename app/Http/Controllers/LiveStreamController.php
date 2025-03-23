@@ -759,14 +759,14 @@ class LiveStreamController extends Controller
 
             $PayPalpayment = PaymentSetting::where('payment_type', 'PayPal')->where('status',1)->first();
 
-            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->live_mode : null;
+            $PayPalmode = !is_null($PayPalpayment) ? $PayPalpayment->paypal_live_mode : null;
 
             $paypal_password = null;
             $paypal_signature = null;
 
             if (!is_null($PayPalpayment)) {
 
-                switch ($PayPalpayment->live_mode) {
+                switch ($PayPalpayment->paypal_live_mode ) {
                     case 0:
                         $paypal_password = $PayPalpayment->test_paypal_password;
                         $paypal_signature = $PayPalpayment->test_paypal_signature;
@@ -872,7 +872,7 @@ class LiveStreamController extends Controller
                 );   
                 // dd($data);        
 
-                if(  $Theme == "default" || $Theme == "theme6" || $Theme == "theme4" ){
+                if(  $Theme == "default" || $Theme == "theme3" || $Theme == "theme6" || $Theme == "theme4" ){
                     // dd($data['default_vertical_image_url ']);
                     return Theme::view('video-js-Player.Livestream.live', $data);
                 }else{
@@ -883,7 +883,7 @@ class LiveStreamController extends Controller
             }
             
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
         }

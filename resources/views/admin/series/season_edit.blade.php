@@ -357,7 +357,7 @@
                                     @else
                                         <p class="p1">{{ "Select the episodes image (720 X 1280px )"}}:</p> 
                                     @endif
-                                    <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/webp"/>
+                                    <input type="file" multiple="true" class="form-control" name="image" id="image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                                     <span>
                                         <p id="season_image_error_msg" style="color:red !important; display:none;">
                                             * Please upload an image with the correct dimensions.
@@ -386,7 +386,7 @@
                                 @if(!empty($episodes->player_image))
                                     <img src="{{ URL::to('/') . '/public/uploads/images/' . $episodes->player_image }}" class="episodes-img" width="200" />
                                 @endif
-                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/webp"/>
+                                <input type="file" multiple="true" class="form-group" name="player_image" id="player_image" accept="image/png, image/webp, image/jpeg, image/jpg"/>
                                 <span>
                                     <p id="season_thum_image_error_msg" style="color:red !important; display:none;">
                                         * Please upload an image with the correct dimensions.
@@ -1497,6 +1497,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
 
                 // Display a cancel message temporarily
+                deleteEpisodeRecord(file.name);
                 alert("Upload canceled for file: " + file.name);
                 handleError(file, "Upload canceled by user.");
                 var cancelMessage = "Upload canceled for file: " + file.name;
@@ -1534,13 +1535,16 @@ document.getElementById('select-all').addEventListener('change', function() {
             if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
                 file.retryCount++;
                 setTimeout(function() {
+                    deleteEpisodeRecord(file.name);
                     myDropzone.removeFile(file);  // Remove the failed file from Dropzone
                     myDropzone.addFile(file);     // Requeue the file for upload
                 }, 1000); 
             } else if (file.userCanceled) {
+                    deleteEpisodeRecord(file.name);
                     sendErrorLog(file.name, "File upload canceled by user");
                     console.log("File upload canceled by user: " + file.name);
             } else {
+                deleteEpisodeRecord(file.name);
                 sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
             }
@@ -1576,6 +1580,27 @@ document.getElementById('select-all').addEventListener('change', function() {
                 // console.log("Error log submitted:", response);
             }).fail(function(xhr) {
                 // console.error("Failed to log error:", xhr.response/Text);
+            });
+        }
+
+        myDropzone.on("removedfile", function(file) {
+            console.log("File removed by user: " + file.name);
+            deleteEpisodeRecord(file.name);
+        });
+
+        function deleteEpisodeRecord(file_folder_name) {
+            console.log("delete fun called..");
+            $.post("<?php echo URL::to('/admin/DeleteEpisodeRecord'); ?>", {        
+                _token: CSRF_TOKEN,
+                file_folder_name: file_folder_name
+            }, function(response) {
+                if (response.success) {
+                    console.log("Episode record deleted successfully.");
+                } else {
+                    console.log("Failed to delete episode record.");
+                }
+            }).fail(function(xhr) {
+                console.error("Failed to delete episode:", xhr.responseText);
             });
         }
 

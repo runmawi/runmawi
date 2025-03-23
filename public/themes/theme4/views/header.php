@@ -1707,7 +1707,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a> -->
 
-                                                         <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/wishlist_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -1716,7 +1716,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a>
 
-                                                         <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/watchlater_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -1765,7 +1765,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a>
 
-                                                         <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/wishlist_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -1774,7 +1774,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a>
 
-                                                         <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/watchlater_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -1815,7 +1815,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a>
 
-                                                         <a href="<?= URL::to('/mywishlists') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/wishlist_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
@@ -1824,7 +1824,7 @@ header .navbar-collapse .offcanvas-collapse ul.navbar-nav {
                                                             </div>
                                                          </a>
 
-                                                         <a href="<?= URL::to('/watchlater') ?>" class="iq-sub-card setting-dropdown">
+                                                         <a href="<?= URL::to('/watchlater_list') ?>" class="iq-sub-card setting-dropdown">
                                                             <div class="media align-items-center">
                                                                   <div class="right-icon"><i class="ri-file-list-line text-primary"></i></div>
                                                                   <div class="media-body ml-3">
