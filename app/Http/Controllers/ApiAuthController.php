@@ -1186,14 +1186,14 @@ class ApiAuthController extends Controller
 
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
       $user = Auth::user();
-      if ($user->active == 0) {
-          Auth::logout();
-          return response()->json([
-              'message' => 'Your account is deactivated.',
-              'note_type' => 'error',
-              'status' => 'verifyemail',
-          ], 200);
-      }
+      // if ($user->active == 0) {
+      //     Auth::logout();
+      //     return response()->json([
+      //         'message' => 'Your account is deactivated.',
+      //         'note_type' => 'error',
+      //         'status' => 'verifyemail',
+      //     ], 200);
+      // }
 
       LoggedDevice::where('user_id', '=', Auth::user()->id)->delete();
       $user_id = Auth::user()->id;
