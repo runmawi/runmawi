@@ -40,13 +40,13 @@
 <style>
 .reveal{
 margin-left: -57px;
-height: 45px !important;
+height: 47px !important;
 background: #ED553B !important;
 color: #fff !important;
 position: absolute;
 right: 0px;
 border-radius: 0!important;
-top: -61px;
+top: -64px;
 }
 .sign-in-page .btn{
 border-radius: 0!important;
