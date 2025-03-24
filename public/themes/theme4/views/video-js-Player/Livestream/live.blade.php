@@ -376,15 +376,7 @@
                     </ul>
                 </div>
         
-                <div class="col-sm-3 col-md-3 col-xs-12">
-                    <div class=" d-flex mt-4 pull-right"> 
-                        <div class="views">
-                            <span class="view-count"><i class="fa fa-eye"></i> 
-                                <?php if(isset($view_increment) && $view_increment == true ): ?><?= $video->views + 1 ?><?php else: ?><?= $video->views ?><?php endif; ?> <?php echo __('Views');?> 
-                            </span>
-                        </div>
-                    </div>
-                </div>  
+                 
             </div>  
 
             <?php 
