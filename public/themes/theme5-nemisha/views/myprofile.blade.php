@@ -853,21 +853,21 @@
                             <label> Username:</label>
                             <input type="text" id="username" name="username"
                                 value="<?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?>"
-                                class="form-control" placeholder="username">
+                                class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;" placeholder="username" >
                         </div>
 
                         <div class="form-group">
                             <label> Email:</label>
                             <input type="email" id="email" name="email"
                                 value="<?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?>"
-                                class="form-control" placeholder="Email">
+                                class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;" placeholder="Email">
                         </div>
 
 
                         <div class="form-group">
                         <label>Password:</label><br>
                             <div class="input-group">
-                                <input type="password" id="profile_password" name="password" placeholder="Password" class="form-control">
+                                <input type="password" id="profile_password" name="password" placeholder="Password" class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;">
                                 <div class="input-group-append" style="margin-left: 70px;">
                                     <button class="btn btn-default reveal" onclick="visibility1(event)" type="button" id="togglePassword">
                                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
@@ -881,12 +881,12 @@
                             <label> Cell Phone:</label>
                             <input type="number" id="mobile" name="mobile"
                                 value="<?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?>"
-                                class="form-control" placeholder="Mobile Number" maxlength="10" oninput="limitInput(this)">
+                                class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;" placeholder="Mobile Number" maxlength="10" oninput="limitInput(this)">
                         </div>
 
                         <div class="form-group">
                             <label> Gender:</label>
-                            <select class="form-control" id="gender" name="gender">
+                            <select class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;" id="gender" name="gender">
                                 <option value="null" @if(!empty($user->gender) && $user->gender == "null" ){{ 'selected' }}@endif>  Select the Gender </option>
                                 <option value="Male" @if(!empty($user->gender) && $user->gender == 'Male'){{ 'selected' }}@endif>  Male </option>
                                 <option value="Female" @if(!empty($user->gender) && $user->gender == 'Female'){{ 'selected' }}@endif> Female </option>
@@ -895,17 +895,17 @@
                         </div>
                         <div class="form-group">
                         <label> Profile Image:</label>
-                            <input type="file" multiple="true" class="form-control"
+                            <input type="file" multiple="true" class="form-control" style="border: 1px solid #000000; padding: 5px; border-radius: 4px;"
                                 name="avatar" id="avatar" required />
                         </div>
                         <div class="form-group">
                             <label> Banner Image:</label>
-                                <input type="file" multiple="true" class="form-control"
+                                <input type="file" multiple="true" class="form-control" style="border: 1px solid #000000; padding: 5px; border-radius: 4px;"
                                     name="ugc_banner" id="ugc_banner" required />
                         </div>
                         <div class="form-group">
                             <label> DOB:</label>
-                            <input type="date" id="DOB" name="DOB" class="form-control" max="<?php echo date("Y-m-d"); ?>"
+                            <input type="date" id="DOB" name="DOB" class="form-control" style="border: 1px solid #000000; padding: 10px; border-radius: 4px;" max="<?php echo date("Y-m-d"); ?>"
                                 value="<?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?>">
                         </div>
 

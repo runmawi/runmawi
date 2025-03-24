@@ -444,7 +444,8 @@ ul.share-icon-aud li {display: inline-block; padding: 0 6px;}
             <form  id="my-playlist-form" accept-charset="UTF-8"  enctype="multipart/form-data"  action="<?= URL::to('/playlist/store') ?>" method="post">
                <div class="col-sm-10 p-0">
                   <label for="name">PlayList Title</label>
-                  <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black"  />
+                  <input name="title" id="title" placeholder="PlayList Title" class="form-control text-black" />
+                  <small id="title-error" class="text-danger" style="display: none;">Playlist title is required.</small>
                </div>
                <div class="col-sm-10 p-0">
                   <label for="name">PlayList Image</label>
@@ -596,10 +597,17 @@ ul.share-icon-aud li {display: inline-block; padding: 0 6px;}
 <?php } ?>
 </div>
 <script type="text/javascript">
-   $('#store-play-list').click(function(){
-   				$('#my-playlist-form').submit();
-   			});
-   
+   $('#store-play-list').click(function (e) {
+      e.preventDefault();
+      let title = $('#title').val().trim();
+      if (title === '') {
+         $('#title-error').show();
+         return false;
+      } else {
+         $('#title-error').hide();
+      }
+      $('#my-playlist-form').submit();
+   });
    var base_url = $('#base_url').val();
    
    $(document).ready(function(){
