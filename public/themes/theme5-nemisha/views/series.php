@@ -1,4 +1,5 @@
 <?php include('header.php'); ?>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.5.10/plyr.css" />
 <style type="text/css">
 	.nav-pills li a {color: #fff !important;}
     nav{
