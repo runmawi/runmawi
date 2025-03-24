@@ -213,8 +213,8 @@
             </div>
 
         </div>
-        <div class="py-2" style="font-size: 30px; font-weight:bold; color:white;" >
-            <p>{{$videodetail->title}}</p>
+        <div class="py-2" style="font-size: 30px; font-weight:bold;" >
+            <p class="ugc-text" >{{$videodetail->title}}</p>
         </div>
         <div class="d-flex flex-column flex-lg-row justify-content-between" >
             <div class="d-flex align-items-center">
@@ -318,13 +318,13 @@
     @if($videodetail->description)
     <div class="ugc-description m-3"  style="overflow-y: scroll; max-height: 180px; scrollbar-width: none; color:#fff !important;">
 
-        <p class="desc" id="description" class="description-text">
+        <p class="desc" id="description" class="description-text ugc-text">
             {!! html_entity_decode($videodetail->description) !!} 
         </p>
 
         @if(strlen($videodetail->description) > 300)
-            <span class="des-more-less-btns p-0 read-button" id="read-more-btn" onclick="toggleReadMore()">{{ __('...SHOW MORE') }}</span>
-            <span class="des-more-less-btns p-0 read-button" id="read-less-btn" onclick="toggleReadMore()" style="display: none;">{{ __('SHOW LESS') }}</span>
+            <span class="des-more-less-btns p-0 read-button ugc-text" id="read-more-btn" onclick="toggleReadMore()">{{ __('...SHOW MORE') }}</span>
+            <span class="des-more-less-btns p-0 read-button ugc-text" id="read-less-btn" onclick="toggleReadMore()" style="display: none;">{{ __('SHOW LESS') }}</span>
         @endif
 
     </div>
@@ -402,7 +402,7 @@
                          <div class="ugc-videos">
                              <img src="{{ URL::to('/') . '/public/uploads/images/' . $eachugcvideos->image }}" alt="{{ $eachugcvideos->title }}">
                          </div>
-                         <div class="text-white pt-3">
+                         <div class="text-white pt-3 ugc-text">
                              <h6>{{$eachugcvideos->title}}</h6>
                              <p style="margin:5px 0px;">{{$eachugcvideos->user->username}}</p>
                              <p>        
