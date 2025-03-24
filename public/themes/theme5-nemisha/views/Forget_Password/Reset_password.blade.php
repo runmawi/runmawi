@@ -94,7 +94,7 @@
                     <div class="sign-user_card ">
                         <div class="sign-in-page-data">
                             <div class="sign-in-from w-100 m-auto" align="center">
-                                <img src="<?php echo URL::to('/assets/img/nem.png'); ?>" style="margin-bottom:1rem;">
+                                <img src="<?php echo URL::to('/assets/img/co-creataz-white.svg'); ?>" style="width:100px; height: 100px;">
                                 <h2 class="mb-3 text-center h">{{ __('Forgot Password') }}</h2>
 
                                 <div class="">

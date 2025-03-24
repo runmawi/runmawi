@@ -120,7 +120,7 @@
                             </div>
                             @endif
                             <div class="col-md-12">
-                                <button class="btn btn-block nextBtn p-2" style="display: block; font-size:15px; background: #ED563C; color:white;" type="button"
+                                <button class="btn btn-block nextBtn p-2" style="display: block; font-size:15px; background: #ed1c24; color:white;" type="button"
                                     >{{ __('Next') }}</button>
                             </div>
                         </div>
@@ -370,7 +370,7 @@ i.fa.fa-google-plus {
    .reveal {
     margin-left: -57px;
     height: 45px !important;
-    background: #ED553B !important;
+    background: #ed1c24 !important;
     color: #fff !important;
 }
     .modal-content {
