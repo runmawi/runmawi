@@ -14,6 +14,15 @@
                             </div>
 
                             <div class="form-group col-md-6">
+                                <label>Url Type:</label>
+                                <select name="url_type" id="url_type" class="form-control">
+                                    <option value="" {{ $footer->url_type == ' ' ? 'selected':'' }} > Select the type</option>
+                                    <option value="base_url" {{ $footer->url_type == 'base_url' ? 'selected':'' }} > Base Url</option>
+                                    <option value="custom_url" {{ $footer->url_type == 'custom_url' ? 'selected':'' }} > Custome Url</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
                                 <label>Link:</label>
                                 <input type="text" id="footer_link" name="footer_link" value=" {{ $footer->link  }}" class="form-control" placeholder="Enter the Link">
                             </div>
