@@ -106,6 +106,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Url Type:</label>
+                        <select name="url_type" id="url_type" class="form-control">
+                            <option value=""> Select the type</option>
+                            <option value="base_url"> Base Url</option>
+                            <option value="custom_url"> Custome Url</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label>Link:</label>
                         <input type="text" id="footer_link" name="footer_link" value="" class="form-control" placeholder="Enter the Link">
                     </div>

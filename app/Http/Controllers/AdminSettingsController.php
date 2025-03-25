@@ -1018,7 +1018,10 @@ class AdminSettingsController extends Controller
             'column_position' => $request->column_position,
         ]);
 
+        // dd( $FooterLink);
+
         $FooterLink->order = $FooterLink->id;
+        $FooterLink->url_type = $request->url_type ?? 'base_url';
         $FooterLink->save();
 
         return redirect()->route('footer_link');
@@ -1048,6 +1051,7 @@ class AdminSettingsController extends Controller
     {
         $footer_menu = FooterLink::find($request->id);
         $footer_menu->name = $request->get('footer_name');
+        $footer_menu->url_type = $request->get('url_type');
         $footer_menu->link = $request->get('footer_link');
         $footer_menu->column_position = $request->get('column_position');
         $footer_menu->update();
