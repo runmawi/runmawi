@@ -102,7 +102,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-12">
                         <ul class="f-link list-unstyled mb-0">
                             <?php foreach ($footerLinks as $key => $footerLink) { ?>
-                                <?php if($footerLink->name == 'Contact-Us'): ?>
+                                <?php if($footerLink->name == 'Contact-Us' || $footerLink->name == 'Contact Us'): ?>
                                     <li><a href="https://e360tvhosthub.com/contact-us"><?= $footerLink->name ?></a></li>
                                 <?php else: ?>
                                     <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>

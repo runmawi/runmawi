@@ -4255,7 +4255,7 @@ public function verifyandupdatepassword(Request $request)
       $audios = [];
     }
 
-    if(count($video_ids)  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
+    if(count($wishlist_videos)  > 0 || $ugc_video_ids_count  > 0 || count($episode_id) > 0 || count($audio_id) > 0){
       $status = "true";
     }else{
       $status = "false";
