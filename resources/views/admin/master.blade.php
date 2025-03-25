@@ -350,7 +350,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -572,7 +572,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -921,7 +921,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -1394,7 +1394,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -1742,7 +1742,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       <div class="iq-navbar-logo d-flex justify-content-between">
                          <a href="<?php echo URL::to('home') ?>" class="header-logo">
                             <div class="logo-title">
-                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="200"  alt="" style="object-fit:contain;"></span>
+                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="150"  alt="" style="object-fit:contain;"></span>
                             </div>
                          </a>
                       </div>
