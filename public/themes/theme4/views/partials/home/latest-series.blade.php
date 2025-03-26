@@ -1,18 +1,66 @@
 @php
-    $data->map(function($item) use($default_horizontal_image_url,$BaseURL,$default_vertical_image_url){
-        $item['Series_depends_episodes'] = App\Series::find($item->id)->Series_depends_episodes
-                                                    ->map(function ($item) use ($default_horizontal_image_url,$BaseURL,$default_vertical_image_url) {
-                                                        $item['image_url'] = $item->image != null ? $BaseURL.('/images/'.$item->image ) : $default_vertical_image_url ;
-                                                        $item['player_image_url'] = $item->banner_image != null ?  $BaseURL.('/images/'.$item->banner_image ) : $default_horizontal_image_url;
+    $data = App\Series::
+                where('active', 1)
+                ->get()
+                ->map(function ($series) use ($default_horizontal_image_url,$BaseURL,$default_vertical_image_url) {
+                    
+                    $series->id = $series->id;
+                    $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+                        ? $BaseURL.'/images/' . $series->image
+                        : $default_vertical_image;
 
-                                                        $item['season_name'] = App\SeriesSeason::where('id',$item->season_id)->pluck('series_seasons_name')->first();
-                                                        return $item;
-                                                });
-        $item['has_more'] = App\Series::find($item->id)->Series_depends_episodes->count() > 14;
+                    $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
+                        ? $BaseURL.'/images/' . $series->player_image
+                        : $default_horizontal_image_url;
 
-        return $item;
-    });
+                    $series['upload_on'] = Carbon\Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY');
+                    $series['duration_format'] = !is_null($series->duration)
+                        ? Carbon\Carbon::parse($series->duration)->format('G\H i\M')
+                        : null;
+
+                    // Get season IDs sorted by `order`
+                    $season_ids = App\SeriesSeason::where('series_id', $series->id)
+                        ->orderBy('order', 'desc')
+                        ->pluck('id');
+
+                    if ($season_ids->isNotEmpty()) {
+                        $first_season_id = $season_ids->first();
+                        $season_epi_count = App\Episode::where('season_id', $first_season_id)
+                            ->where('active', 1)
+                            ->count();
+
+                        $series['Series_depends_episodes'] = App\Episode::where('series_id', $series->id)
+                            ->whereIn('season_id', $season_ids)
+                            ->where('active', 1)
+                            ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")")
+                            ->orderBy('episode_order', 'desc')
+                            ->take(15)
+                            ->get()
+                            ->map(function ($episode) use ($default_horizontal_image_url,$BaseURL,$default_vertical_image_url) {
+                                $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
+                                    ? $BaseURL.'/images/' . $episode->image
+                                    : $default_vertical_image;
+
+                                $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg')
+                                    ? $BaseURL.'/images/' . $episode->player_image
+                                    : $default_horizontal_image_url;
+
+                                $episode['season_name'] = App\SeriesSeason::where('id', $episode->season_id)->value('series_seasons_name');
+
+                                return $episode;
+                            });
+                    } else {
+                        $series['Series_depends_episodes'] = collect(); // Return empty collection if no seasons found
+                    }
+
+                    $totalEpisodes = App\Episode::where('series_id', $series->id)->where('active', 1)->count();
+                    $series['has_more'] = $totalEpisodes > 14;
+                    $series['source'] = 'Series';
+
+                    return $series;
+                });
 @endphp
+
 
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">

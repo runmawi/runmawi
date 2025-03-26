@@ -365,7 +365,7 @@ class FrontEndQueryController extends Controller
                                                                 ->whereIn('season_id', $season_ids)
                                                                 ->where('active', 1)
                                                                 ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
-                                                                ->latest()
+                                                                ->orderBy('episode_order','desc')
                                                                 ->take(15)
                                                                 ->get()
                                 ->map(function ($episode) {

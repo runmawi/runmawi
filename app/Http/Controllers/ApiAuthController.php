@@ -8173,42 +8173,53 @@ return response()->json($response, 200);
 
     }
 
-    $seasonlist = SeriesSeason::where('series_id',$seriesid)->orderBy('order')->get()->toArray();
+    $seasonlist = SeriesSeason::where('series_id',$seriesid)->orderBy('order','desc')->get()->toArray();
   
     $seriesimage = Series::where('id',$seriesid)->pluck('image')->first();
     $series_player_image =  $series->player_image ? $series->player_image :default_vertical_image_url();
     $image = !empty( $seriesimage ) ? URL::to('public/uploads/images/'.$seriesimage) : default_horizontal_image_url();
 
-    foreach ($seasonlist as $key => $season) {
+    $season_ids = SeriesSeason::where('series_id', $series->id)
+                        ->orderBy('order', 'desc')
+                        ->pluck('id');
 
+
+    foreach ($seasonlist as $key => $season) {
+      
       $seasonid = $season['id'];
       $season_access = $season['access'];
+      if ($season_ids->isNotEmpty()) {
 
-      $episodes= Episode::where('series_id',$season['series_id'])->where('season_id',$seasonid)->where('status', 1)->where('active',1)->orderBy('episode_order')->get()->map(function ($item)  {
+          $episodes= Episode::where('series_id',$season['series_id'])->where('season_id',$seasonid)->where('status', 1)->where('active',1) ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")")
+          ->orderBy('episode_order', 'desc')->get()->map(function ($item)  {
 
-        $item['image'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
-        $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_horizontal_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
-        $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
-       
-        $item['episode_id'] =$item->id;
-        if($this->Theme == 'theme4'){
-          unset($item['mp4_url']);
-          $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public-latest/').'/'.$item->path . '.m3u8' : " ";
-          $item['mp4_url'] = URL::to('/storage/app/public-latest/'. $item->path .'.mp4');
-        }
-        else{
-          $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
-        }
-        $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
-        $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
+            $item['image'] = !is_null($item->image) && $item->image != "default_image" ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url();
+            $item['player_image_url'] = !is_null($item->player_image) && $item->player_image != "default_horizontal_image"? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+            $item['tv_image_url'] = !is_null($item->tv_image) ? URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url();
+          
+            $item['episode_id'] =$item->id;
+            if($this->Theme == 'theme4'){
+              unset($item['mp4_url']);
+              $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public-latest/').'/'.$item->path . '.m3u8' : " ";
+              $item['mp4_url'] = URL::to('/storage/app/public-latest/'. $item->path .'.mp4');
+            }
+            else{
+              $item['transcoded_url'] = $item->type == 'm3u8' ? URL::to('/storage/app/public/').'/'.$item->path . '.m3u8' : " ";
+            }
+            $series_slug = Series::where('id',$item->series_id)->pluck('slug')->first();
+            $item['render_site_url'] = URL::to('episode/'.$series_slug.'/'.$item->slug);
 
-        $epi_description = html_entity_decode($item['episode_description']);
-        $description = strip_tags($epi_description);
-        $item['episode_description'] =  str_replace("\r", '', $description);
+            $epi_description = html_entity_decode($item['episode_description']);
+            $description = strip_tags($epi_description);
+            $item['episode_description'] =  str_replace("\r", '', $description);
 
-        
-        return $item;
-      });
+            
+            return $item;
+          });
+        }else {
+          $episodes = collect(); // Return empty collection if no seasons found
+      }
+    
 
       if(count($episodes) > 0){
         $msg = 'success';
@@ -13866,11 +13877,17 @@ $cpanel->end();
             }
             $item['series_share_url'] = $series_share_url;
 
+            $season_ids = SeriesSeason::where('series_id',$item->id)->orderBy('order','desc')->pluck('id');
+                    $first_season_id = $season_ids->first();
+                    $season_epi_count = Episode::where('season_id',$first_season_id)->where('active','1')->count();
+                    // dd($season_ids);
 
+                    if ($season_ids->isNotEmpty()) {
                                 $item['seasons'] = SeriesSeason::where('series_id', $item->id)
+                                    ->orderBy('order','desc')
                                     ->limit(15)
                                     ->get()
-                                    ->map(function ($season) use($user_id, $item) {
+                                    ->map(function ($season) use($user_id, $item, $season_ids) {
                                         $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
                                         $ppv_exists_check_query = 0;
                                         if($ppv_purchase){
@@ -13887,7 +13904,8 @@ $cpanel->end();
                                           $season_access = 'PPV';
                                         }
                                         $episodes = Episode::where('season_id', $season->id)
-                                            ->orderBy('episode_order')
+                                            ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
+                                            ->orderBy('episode_order','desc')
                                             ->get()
                                             ->map(function ($episode) use ($season_access) {
                                               // return $episode;
@@ -13959,9 +13977,10 @@ $cpanel->end();
                                 if ($item['seasons']->isEmpty()) {
                                     unset($item['seasons']);
                                 }
-
+                              }
                                 return $item;
                             });
+                          
 
           
 
@@ -14073,7 +14092,7 @@ $cpanel->end();
                                                                                           }
                                                                                           $series['series_share_url'] = $series_share_url;
                                                                                           $series['series_count'] = $series->count();
-                                                                                          $series['seasons'] = SeriesSeason::where('series_id', $series->id)
+                                                                                          $series['seasons'] = SeriesSeason::where('series_id', $series->id)->orderBy('order','desc')
                                                                                                                           ->get()
                                                                                                                           ->map(function ($season) use($user_id, $series) {
                                                                                                                               $ppv_purchase = !empty($user_id) ? PpvPurchase::where('season_id',$season->id)->where('user_id',$user_id)->orderBy('created_at', 'desc')->first() : null;
@@ -14091,8 +14110,14 @@ $cpanel->end();
                                                                                                                               }else{
                                                                                                                                 $season_access = 'PPV';
                                                                                                                               }
+
+                                                                                                                              $season_ids = SeriesSeason::where('series_id',$series->id)->orderBy('order','desc')->pluck('id');
+                                                                                                                              $first_season_id = $season_ids->first();
+                                                                                                                              $season_epi_count = Episode::where('season_id',$first_season_id)->where('active','1')->count();
+                                                                                                                              if ($season_ids->isNotEmpty()) {
                                                                                                                               $episodes = Episode::where('season_id', $season->id)
-                                                                                                                                  ->orderBy('episode_order')
+                                                                                                                                  ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
+                                                                                                                                  ->orderBy('episode_order','desc')
                                                                                                                                   ->limit(15)
                                                                                                                                   ->get()
                                                                                                                                   ->map(function ($episode) use($season_access) {
@@ -14142,6 +14167,9 @@ $cpanel->end();
                                                                                                                                       'status'                   => $episode->status,
                                                                                                                                     ];
                                                                                                                                   });
+                                                                                                                                }else {
+                                                                                                                                  $episodes = collect(); // Return empty collection if no seasons found
+                                                                                                                              }
 
                                                                                                                               // Only include the season if it has episodes
                                                                                                                               if ($episodes->isNotEmpty()) {
