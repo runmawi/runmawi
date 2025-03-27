@@ -130,7 +130,7 @@
                                         @php
                                             $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
                                         @endphp
-                                        <p class="text-white col-lg-8"> <p>{!! nl2br($description) !!}</p></p>
+                                        <p class="text-white col-lg-8"> <p>{!! nl2br(substr($description, 0, 10)) !!}</p></p>
                                     @endif
 
                                     <h4 class=""><?php echo __('Subscribe to view more'); ?>
@@ -174,7 +174,7 @@
                                         @php
                                             $description = preg_replace('/#(\w+)/', '<a href="/tag/$1" class="hashtag">#$1</a>', $episode->episode_description);
                                         @endphp
-                                        <p class="mt-2 text-white"> <p>{!! nl2br($description) !!}</p></p>
+                                        <p class="mt-2 text-white"> <p>{!! nl2br(substr($description, 0, 600)) !!}</p></p>
                                     @endif
                                     
                                     <h4 class="">
@@ -296,10 +296,7 @@
                     <div class="col-md-12 pl-0">
                         <span class="text-white"
                             style="font-size: 120%;font-weight: 700;"><?php echo __("You're watching"); ?>:</span>
-                        <p class="mb-0" style=";font-size: 80%;color: white;">
-                            <?php 
-                    if(!empty($SeriesSeason)){ echo __('Season').' '.$SeriesSeason->id.' ';} if(!empty($episode)){ echo __('Episode').' '.$episode->id;} ?>
-                        </p>
+                       
                         <p class="" style=";font-size: 100%;color: white;font-weight: 700;"><?=$episode->title
                     ?></p>
                     @if(!empty($episode->episode_description))
@@ -447,8 +444,12 @@
 
             <?php
                 include public_path('themes/theme4/views/partials/Episode/Other_episodes_list.blade.php');
-                include public_path('themes/theme4/views/partials/Episode/Recommend_series_episode_page.blade.php');
             ?>
+            @if(count($series_lists) > 0)
+                @php
+                    include public_path('themes/theme4/views/partials/Episode/Recommend_series_episode_page.blade.php');
+                @endphp
+            @endif
 
             <!-- <div class="iq-main-header ">
                 <h4 class="main-title"><?php echo __('Season'); ?></h4>
