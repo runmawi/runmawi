@@ -94,7 +94,7 @@
                 <?php
                 for ($i = 1; $i <= 3; $i++) {
 
-                    $footerLinks = App\FooterLink::where('column_position', $i)
+                    $footerLinks = App\FooterLink::where('active','1')->where('column_position', $i)
                         ->orderBy('order')
                         ->get();
                 ?>

@@ -110,7 +110,7 @@
                         <select name="url_type" id="url_type" class="form-control">
                             <option value=""> Select the type</option>
                             <option value="base_url"> Base Url</option>
-                            <option value="custom_url"> Custome Url</option>
+                            <option value="custom_url"> Custom Url</option>
                         </select>
                     </div>
 

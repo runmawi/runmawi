@@ -123,11 +123,11 @@
                                                             
                                                             <a href="{{ URL::to('episode/'.$latest_series->slug.'/'.$episode_details->slug ) }}">
                                                                 <i class="playBTN fas fa-play"></i>
-                                                            </a>
 
                                                             <nav ><button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-latest-series-Modal-'.$key.'-'.$episode_key  }}"><i class="fas fa-info-circle"></i><span>More info</span></button></nav>
                                                             
                                                             <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                {{-- <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $episode_details->season_name ." - Episode ".$episode_details->episode_order  }}</span> <br> --}}
                                                                 {!! (strip_tags(substr(optional($episode_details)->title, 0, 150))) !!}
                                                             </p>
 

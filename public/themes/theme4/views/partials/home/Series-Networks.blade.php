@@ -94,6 +94,7 @@
 
                                                                 
                                                                 <p class="trending-dec">
+                                                                    {{-- <span class="season_episode_numbers">{{ $series_details->season_count . " Seasons " . $series_details->episode_count . ' Episodes' }}</span><br> --}}
                                                                     {{ optional($series_details)->title }}
                                                                 </p>
                                                             </div>

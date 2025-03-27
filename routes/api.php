@@ -104,6 +104,9 @@ Route::group(
         Route::post('renewsubscription', 'ApiAuthController@renewsubscription');
 
         // Stripe become_subscriber New
+        
+        Route::post('stripe-auth-subscriber', 'ApiAuthController@stripe_auth_subscriber');
+
         Route::post('stripe-become-subscriber', 'ApiAuthController@stripe_become_subscriber');
         Route::post('retrieve_stripe_coupon', 'ApiAuthController@retrieve_stripe_coupon');
 

@@ -624,6 +624,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/', 'AdminDashboardController@index');
     Route::get('get-storage-data', 'AdminDashboardController@getStorageData');
+    Route::get('get-folder-storage-data', 'AdminDashboardController@getFolderStorageData')->name('admin.getFolderStorageData');
 
     Route::get('/mobileapp', 'AdminUsersController@mobileapp')->name('admin.mobileapp');
     Route::post('/admin_translate_language', 'AdminDashboardController@AdminTranslateLanguage');
