@@ -289,6 +289,61 @@ class AdminDashboardController extends Controller
         
     }
 
+    public function getFolderStorageData(Request $request)
+    {
+        try {
+           
+            $depends_id = $request->id;
+            
+            if ($depends_id == "view_image_storage_size") {
+                $directory = 'public/uploads';
+            }
+
+            if ($depends_id == "view_content_storage_size") {
+                $directory = 'storage/app/public';
+            }
+
+            if ($depends_id == "view_root_folder_storage_size") {
+                $directory = 'public_html';
+            }
+
+            $command = ['du', '-h', '--max-depth=1', $directory];
+            
+            $directoryProcess = new Process($command);
+            $directoryProcess->run();
+            
+            if (!$directoryProcess->isSuccessful()) {
+                throw new ProcessFailedException($directoryProcess);
+            }
+            
+            $directoryOutput = $directoryProcess->getOutput();
+
+            $directoryLines = explode("\n", trim($directoryOutput));
+            $directoryDetails = [];
+
+            foreach ($directoryLines as $line) {
+                list($size, $path) = preg_split('/\s+/', $line, 2);
+                $directoryDetails[] = [
+                    'size' => $size,
+                    'path' => $path,
+                ];
+            }
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Retrieved memory and directory details successfully.',
+                'data'    => $directoryDetails,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'An error occurred.',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function getStorageData(): JsonResponse
     {
         try {

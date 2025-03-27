@@ -169,7 +169,7 @@ class AdminAdvertiserController extends Controller
             return Redirect::back()->with(['message' => 'Successfully Updated Advertiser Details', 'note_type' => 'success']);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }

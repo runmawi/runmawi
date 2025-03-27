@@ -77,6 +77,7 @@
                                                                         @endphp
 
                                                                         <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                            {{-- <span class="season_episode_numbers" style="opacity: 0.8;font-size:90%;">{{ $episode->season_name ." - Episode ".$episode->episode_order  }}</span> <br> --}}
                                                                             {!! (strip_tags(substr(optional($episode)->title, 0, 150))) !!}
                                                                         </p>
 
