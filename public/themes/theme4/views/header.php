@@ -79,7 +79,7 @@
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($series)){ echo (strip_tags($series->description)) ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
@@ -123,8 +123,8 @@
     <meta name="twitter:description" content="<?php 
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
-      elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($episdoe)){ echo (strip_tags($episdoe->description))  ;}
+      elseif(!empty($series)){ echo (strip_tags($series->description)) ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>">
@@ -161,7 +161,7 @@
       if(!empty($videos_data)){ echo $videos_data->description  ;
       }
       elseif(!empty($episdoe)){ echo $episdoe->description  ;}
-      elseif(!empty($series)){ echo $series->description ;}
+      elseif(!empty($series)){ echo (strip_tags($series->description)) ;}
       elseif(!empty($livestream)){ echo $livestream->description  ;}
       elseif(!empty($SiteMeta_page)){ echo $SiteMeta_page->meta_description .' | '. $settings->website_name ; }
       else{ echo $settings->website_description   ;} //echo $settings; ?>" />
