@@ -7,18 +7,18 @@
       ?>
 <div class="iq-main-header d-flex align-items-center justify-content-between">
   <h4 class="main-title">
-    <!-- Recently Added Series -->
-<a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>">
-    <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
-  <?php if ($my_video_play_list_settings_list->header_name) 
-      {
-        echo $my_video_play_list_settings_list->header_name ;
-        }
-        else {
-            echo "" ; 
-        } 
-  ?>
-  </a>
+
+      <a href="<?php if ($my_video_play_list_settings_list->header_name) { echo URL::to('/').'/'.$my_video_play_list_settings_list->url ;} else { echo "" ; } ?>">
+          <!-- <a href="<?php //echo URL::to('/Series-list' ) ?>"> -->
+        <?php if ($my_video_play_list_settings_list->header_name) 
+            {
+              echo $my_video_play_list_settings_list->header_name ;
+              }
+              else {
+                  echo "" ; 
+              } 
+        ?>
+      </a>
   </h4>  
 </div>
 <div class="favorites-contens"> 

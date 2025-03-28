@@ -284,11 +284,11 @@
             @if(auth()->user()->id != $profileUser->id)
                 <div class="py-2" >
                     @if($subscriber_count == 0 )
-                    <p style="color: white; font-size:18px;" >No Subscribers</p>
+                    <p class="ugc-text" style="font-size:18px;" >No Subscribers</p>
                     @elseif($subscriber_count == 1 )
-                    <p style="color: white; font-size:18px;" >1 Member Subscribed</p>
+                    <p class="ugc-text" style="font-size:18px;" >1 Member Subscribed</p>
                     @else
-                    <p style="color: white; font-size:18px;" >
+                    <p class="ugc-text" style="font-size:18px;" >
                         <span id="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
                     </p>
                     @endif
