@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme5-nemisha/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 

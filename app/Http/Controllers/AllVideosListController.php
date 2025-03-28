@@ -292,6 +292,7 @@ class AllVideosListController extends Controller
     {
         try {
 
+            $FrontEndQueryController = new FrontEndQueryController();
             if($this->settings->enable_landing_page == 1 && Auth::guest()){
 
                 $landing_page_slug = AdminLandingPage::where('status',1)->pluck('slug')->first() ? AdminLandingPage::where('status',1)->pluck('slug')->first() : "landing-page" ;
@@ -299,11 +300,13 @@ class AllVideosListController extends Controller
                 return redirect()->route('landing_page', $landing_page_slug );
             }
 
-            $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
-                ->join('videos', 'videos.id', '=', 'recent_views.video_id')
-                ->where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
-                ->groupBy('video_id')
-                ->orderByRaw('count DESC');
+            // $videos = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+            //     ->join('videos', 'videos.id', '=', 'recent_views.video_id')
+            //     ->where('active', '=', '1')->where('status', '=', '1')->where('draft', '=', '1')
+            //     ->groupBy('video_id')
+            //     ->orderByRaw('count DESC');
+
+                $videos = $FrontEndQueryController->Most_watched_videos_country();
 
                 if (check_Kidmode() == 1)
                 {
@@ -315,7 +318,7 @@ class AllVideosListController extends Controller
                     $videos = $videos->whereNotIn('videos.id',Block_videos());
                 }
 
-            $videos = $videos->where('country', Country_name())->Paginate($this->settings->videos_per_page);
+            // $videos = $videos->where('country', Country_name())->Paginate($this->settings->videos_per_page);
 
             $respond_data = array(
                 'videos'    => $videos,
