@@ -247,8 +247,8 @@
     <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>" as="style">
     <link rel="stylesheet" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>">
     <!--Flickity JavaScript -->
-    <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+    <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 
     <!-- Responsive -->
     <!-- <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
