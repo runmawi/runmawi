@@ -2,7 +2,7 @@
 <?php 
       $order_settings = App\OrderHomeSetting::orderBy('order_id', 'asc')->get();  
       $my_play_list_settings_list = App\OrderHomeSetting::where('video_name', 'my_play_list')->first(); 
-      $MyPlaylist = App\MyPlaylist::where('user_id', Auth::user()->id)->get();
+      $MyPlaylist = Auth::check() ? App\MyPlaylist::where('user_id', Auth::user()->id)->get(): collect();
     // dd($MyPlaylist);
 ?>
 
@@ -19,7 +19,7 @@
     <?php if (isset($MyPlaylist)) : 
         foreach($MyPlaylist as $VideoPlaylist): ?>
         <div class="items">
-          <a href="<?php echo URL::to('/playlist'.'/play'.'/'.$VideoPlaylist->slug  ); ?>">
+          <a href="<?php echo URL::to('/playlist/play/'.$VideoPlaylist->slug  ); ?>">
             <div class="block-images position-relative">
               <div class="img-box">
                 <img src="<?php echo !empty($VideoPlaylist->image) ? URL::to('/').'/public/uploads/images/'.$VideoPlaylist->image : $default_vertical_image_url; ?>" 
@@ -28,10 +28,10 @@
               </div>
 
               <div class="block-description">
-                <a href="<?php echo URL::to('/playlist'.'/play'.'/'.$VideoPlaylist->slug  ); ?>">
+                <a href="<?php echo URL::to('/playlist/play/'.$VideoPlaylist->slug  ); ?>">
                   <h6><?php echo __($VideoPlaylist->name); ?></h6>
                   <div class="hover-buttons d-flex">
-                    <a class="text-white" href="<?php echo URL::to('/playlist'.'/play'.'/'.$VideoPlaylist->slug  ); ?>">
+                    <a class="text-white" href="<?php echo URL::to('/playlist/play/'.$VideoPlaylist->slug  ); ?>">
                       <i class="fa fa-play mr-1" aria-hidden="true"></i>
                       Visit Video PlayList
                     </a>

@@ -50,10 +50,7 @@
       <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
    <?php endif; ?>
 
-   <?php if ( $home_settings->my_playlist == 1): ?>
-         <?php 
-            $MyPlaylist = App\MyPlaylist::where('user_id', Auth::user()->id)->limit(15)->get(); 
-         ?>
+   <?php if ( !Auth::guest() && $home_settings->my_playlist == 1): ?>
          <section id="iq-continue overflow-hidden">
             <div class="container-fluid">
                   <div class="row">
