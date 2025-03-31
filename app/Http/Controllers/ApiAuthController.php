@@ -5587,7 +5587,7 @@ public function verifyandupdatepassword(Request $request)
 
           }
           else{
-            if ($userdata->subscription($stripe_plan)) {
+            if ($userdata && $userdata->subscription($stripe_plan)) {
                   $timestamp = $userdata->asStripeCustomer()["subscriptions"]->data[0]["current_period_end"];
                   $nextPaymentAttemptDate = Carbon::createFromTimeStamp($timestamp)->toFormattedDateString();
               }else{
