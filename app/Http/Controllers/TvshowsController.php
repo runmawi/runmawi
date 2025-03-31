@@ -1595,6 +1595,7 @@ class TvshowsController extends Controller
         
             $season = SeriesSeason::where('series_id', '=', $id)
                 ->with('episodes')
+                ->orderBy('order','desc')
                 ->get();
 
             $season_trailer = SeriesSeason::where('series_id', '=', $id)->get();
@@ -2108,7 +2109,7 @@ public function RemoveDisLikeEpisode(Request $request)
         $episode = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
-        $id = $episode->id;
+        $id = !empty($episode->id) ? $episode->id : null;
         $season = SeriesSeason::where('series_id', '=', $episode->series_id)
             ->with('episodes')
             ->get();
