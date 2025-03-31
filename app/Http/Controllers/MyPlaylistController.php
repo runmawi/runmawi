@@ -186,35 +186,35 @@ class MyPlaylistController extends Controller
         return Theme::view('Playlist', $data);
     }
 
-    public function Add_Audio_Playlist(Request $request){
+    public function Add_Audio_Playlist(Request $request) {
         try {
-            //code...
-          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)->where('user_id',Auth::user()->id)->first();
-            if(empty($AudioUserPlaylist)){
+            $AudioUserPlaylist = AudioUserPlaylist::where('audio_id', $request->audioid)
+                ->where('playlist_id', $request->playlistid)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+    
+            if (empty($AudioUserPlaylist)) {
                 $AudioUserPlaylist = new AudioUserPlaylist();
                 $AudioUserPlaylist->audio_id = $request->audioid;
                 $AudioUserPlaylist->playlist_id = $request->playlistid;
                 $AudioUserPlaylist->user_id = Auth::user()->id;
                 $AudioUserPlaylist->save();
-            $data = 1;
-
-            }else{
-                AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
-                ->where('user_id',Auth::user()->id)->delete();
-                // print_r('test');exit;
-
-            $data = 0;
-        }
-            // $data = 1;
-    
+                $data = 1; 
+            } else {
+                AudioUserPlaylist::where('audio_id', $request->audioid)
+                    ->where('playlist_id', $request->playlistid)
+                    ->where('user_id', Auth::user()->id)
+                    ->delete();
+                $data = 0;
+            }
         } catch (\Throwable $th) {
-            //throw $th;
-            AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
-            ->where('user_id',Auth::user()->id)->delete();
+            \Log::error('Error in Add_Audio_Playlist: ' . $th->getMessage()); 
             $data = 0;
         }
-        return $data;
+    
+        return response()->json(['status' => $data]); 
     }
+    
 
     
     public function GetMY_Audio_Playlist($slug){
