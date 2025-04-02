@@ -3656,11 +3656,23 @@ class AdminSeriesController extends Controller
     public function DeleteEpisodeRecord(Request $request)
     {
         $file_folder_name = $request->input('file_folder_name');
+        // dd($request->series_id);
         $file_folder_name_without_extension = pathinfo($file_folder_name, PATHINFO_FILENAME);
         // dd($file_folder_name_without_extension);
+        
+        $storage_settings = StorageSetting::first();
+        $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
+        $season_id = $request->season_id;
+        if($enable_bunny_cdn == 1){
+            $data = null;
+            $libraryid = null;
+            if(!empty($storage_settings) && $storage_settings->bunny_cdn_storage == 1 ){
+                return $this->UploadEpisodeBunnyCDNStream( $storage_settings, $libraryid, $data, $season_id);
+            }
+        }
 
         // Find the episode based on the uploaded file name
-        $episode = Episode::where('title', $file_folder_name_without_extension)->first();
+        $episode = Episode::where('title', $file_folder_name_without_extension)->where('series_id',$request->series_id)->where('series_id',$request->season_id)->orderBy('id','desc')->first();
 
         if ($episode) {
             $episode->delete();
