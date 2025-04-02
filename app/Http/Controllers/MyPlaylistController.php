@@ -130,8 +130,14 @@ class MyPlaylistController extends Controller
             if (Auth::guest()) {
                 return redirect("/login");
             }
-          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
-          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+            //   $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $playlist = MyPlaylist::where('slug', $slug)->first();
+ 
+            if (!$playlist) {
+                return redirect()->back()->with('error', 'Playlist not found.');
+            }
+            $MyPlaylist_id = $playlist->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $AudioUserPlaylist = AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$MyPlaylist_id)->get();
           $excludedAudioIds = AudioUserPlaylist::where('user_id', Auth::user()->id)
@@ -234,8 +240,14 @@ class MyPlaylistController extends Controller
     public function Play_Playlist($slug){
         try {
             //code...
-          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
-          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+            //   $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $playlist = MyPlaylist::where('slug', $slug)->first();
+ 
+            if (!$playlist) {
+                return redirect()->back()->with('error', 'Playlist not found.');
+            }
+            $MyPlaylist_id = $playlist->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $All_Audios = Audio::get();
           $playlist_audio = Audio::Select('audio.title as name','audio.mp3_url as file','audio.*')->Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')
