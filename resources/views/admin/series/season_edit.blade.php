@@ -1497,7 +1497,7 @@ document.getElementById('select-all').addEventListener('change', function() {
                 file.previewElement.querySelector('.dz-cancel').innerHTML = " "; // Clear cancel button text
 
                 // Display a cancel message temporarily
-                deleteEpisodeRecord(file.name);
+                deleteEpisodeRecord(file.name,series_id,season_id);
                 alert("Upload canceled for file: " + file.name);
                 handleError(file, "Upload canceled by user.");
                 var cancelMessage = "Upload canceled for file: " + file.name;
@@ -1535,16 +1535,16 @@ document.getElementById('select-all').addEventListener('change', function() {
             if (!file.userCanceled && file.retryCount < MAX_RETRIES) {
                 file.retryCount++;
                 setTimeout(function() {
-                    deleteEpisodeRecord(file.name);
+                    deleteEpisodeRecord(file.name,series_id,season_id);
                     myDropzone.removeFile(file);  // Remove the failed file from Dropzone
                     myDropzone.addFile(file);     // Requeue the file for upload
                 }, 1000); 
             } else if (file.userCanceled) {
-                    deleteEpisodeRecord(file.name);
+                    deleteEpisodeRecord(file.name,series_id,season_id);
                     sendErrorLog(file.name, "File upload canceled by user");
                     console.log("File upload canceled by user: " + file.name);
             } else {
-                deleteEpisodeRecord(file.name);
+                deleteEpisodeRecord(file.name,series_id,season_id);
                 sendErrorLog(file.name, "Failed to upload the file after " + MAX_RETRIES + " attempts.");
                 alert("Failed to upload the file after " + MAX_RETRIES + " attempts.");
             }
@@ -1585,14 +1585,16 @@ document.getElementById('select-all').addEventListener('change', function() {
 
         myDropzone.on("removedfile", function(file) {
             console.log("File removed by user: " + file.name);
-            deleteEpisodeRecord(file.name);
+            deleteEpisodeRecord(file.name,series_id,season_id);
         });
 
-        function deleteEpisodeRecord(file_folder_name) {
+        function deleteEpisodeRecord(file_folder_name,series_id,season_id) {
             console.log("delete fun called..");
             $.post("<?php echo URL::to('/admin/DeleteEpisodeRecord'); ?>", {        
                 _token: CSRF_TOKEN,
-                file_folder_name: file_folder_name
+                file_folder_name: file_folder_name,
+                series_id: series_id,
+                season_id: season_id,
             }, function(response) {
                 if (response.success) {
                     console.log("Episode record deleted successfully.");
