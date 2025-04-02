@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
+use App\PayRequestTranscation;
 
 
 class RazorpayController extends Controller
@@ -46,6 +47,7 @@ class RazorpayController extends Controller
         $PaymentSetting = PaymentSetting::where('payment_type','Razorpay')->first();
 
         if($PaymentSetting != null){
+
             if($PaymentSetting->live_mode == 0){
                 $this->razorpaykeyId = $PaymentSetting->test_publishable_key;
                 $this->razorpaykeysecret = $PaymentSetting->test_secret_key;
@@ -97,6 +99,19 @@ class RazorpayController extends Controller
     {
         try {
 
+            
+        PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'source_name' => null,
+            'source_id'   => null,
+            'source_type' => 'subscription',
+            'platform'    => "razorpay",
+            'transform_form' => "subscription",
+            'amount' => $amount,
+            'date' => Carbon::now()->toDateString(),
+            'status' => 'hold' ,
+        ]);
+        
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
@@ -226,6 +241,7 @@ class RazorpayController extends Controller
 
         return Redirect::route('home');
     }
+
     public function RazorpaySubscriptionUpdate(Request $request,$planId){
 
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
@@ -323,6 +339,18 @@ class RazorpayController extends Controller
     }
 
     public function RazorpayVideoRent(Request $request,$video_id,$amount){
+
+            PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'source_name' => $video_id,
+            'source_id'   => $video_id,
+            'source_type' => 'videos',
+            'platform'    => "razorpay",
+            'transform_form' => "PPV",
+            'amount' => $amount,
+            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+            'status' => 'hold' ,
+        ]);
 
         $recept_id = Str::random(10);
 
@@ -580,6 +608,18 @@ class RazorpayController extends Controller
     }
 
     public function RazorpayLiveRent(Request $request,$live_id,$amount){
+
+        PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'source_name' => $live_id,
+            'source_id'   => $live_id,
+            'source_type' => 'livestream',
+            'platform'    => "razorpay",
+            'transform_form' => "PPV",
+            'amount' => $amount,
+            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+            'status' => 'hold' ,
+        ]);
 
         $recept_id = Str::random(10);
 
@@ -1074,6 +1114,20 @@ class RazorpayController extends Controller
     
     public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
 
+       
+        PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'ppv_plan'    => $ppv_plan,
+            'source_name' => $video_id,
+            'source_id'   => $video_id,
+            'source_type' => 'videos',
+            'platform'    => "razorpay",
+            'transform_form' => "PPV",
+            'amount' => $amount,
+            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+            'status' => 'hold' ,
+        ]);
+
         $recept_id = Str::random(10);
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
@@ -1109,6 +1163,18 @@ class RazorpayController extends Controller
 
     
     public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
+
+        PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'source_name' => $SeriesSeason_id,
+            'source_id'   => $SeriesSeason_id,
+            'source_type' => 'series season',
+            'platform'    => "razorpay",
+            'transform_form' => "PPV",
+            'amount' => $amount,
+            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+            'status' => 'hold' ,
+        ]);
 
         $recept_id = Str::random(10);
 
@@ -1382,6 +1448,19 @@ class RazorpayController extends Controller
     }
 
     public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
+
+        PayRequestTranscation::create([
+            'user_id'     => Auth::user()->id,
+            'ppv_plan'    => $ppv_plan,
+            'source_name' => $SeriesSeason_id,
+            'source_id'   => $SeriesSeason_id,
+            'source_type' => 'series season',
+            'platform'    => "razorpay",
+            'transform_form' => "PPV",
+            'amount' => $amount,
+            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+            'status' => 'hold' ,
+        ]);
 
         $recept_id = Str::random(10);
 
