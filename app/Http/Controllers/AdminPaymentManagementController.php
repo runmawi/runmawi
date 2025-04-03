@@ -26,6 +26,9 @@ use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\PayRequestTransaction;
+use App\SeriesSeason;
+use App\Series;
+use App\Livestream;
 
 class AdminPaymentManagementController extends Controller
 {
@@ -509,9 +512,30 @@ class AdminPaymentManagementController extends Controller
     public function Pay_Request_Transaction(Request $request)
     {
         try {
+            
+            $Pay_Request_Transaction = PayRequestTransaction::query()->latest()->get()->map(function($item) {
+                switch ($item->source_type) {
+                    case 'videos':
+                        $item->source_name = optional(Video::find($item->source_id))->title ?? 'N/A';
+                        break;
+                    case 'series season':
+                        $item->source_name = optional(SeriesSeason::find($item->source_id))->title ?? 'N/A';
+                        break;
+                    case 'series':
+                        $item->source_name = optional(Series::find($item->source_id))->title ?? 'N/A';
+                        break;
+                    case 'livestream':
+                        $item->source_name = optional(Livestream::find($item->source_id))->title ?? 'N/A';
+                        break;
+                    default:
+                        $item->source_name = 'N/A';
+                        break;
+                }
 
-            $Pay_Request_Transaction = PayRequestTransaction::query()->latest()->get();
-
+                $item->username = optional(User::find($item->user_id))->username ?? 'N/A';
+                return $item;
+            });
+            
             $data = array('Pay_Request_Transaction' => $Pay_Request_Transaction,);
     
             return View('admin.payment.pay-request-transaction', $data);
