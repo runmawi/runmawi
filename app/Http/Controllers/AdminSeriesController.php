@@ -3346,6 +3346,10 @@ class AdminSeriesController extends Controller
 
         // dd($data);
 
+        if (!$request->hasFile('file')) {
+            return response()->json(['error' => 'No file uploaded. Upload was likely canceled.'], 400);
+        }
+
         $validator = Validator::make($request->all(), [
            'file' => 'required|mimes:video/mp4,video/x-m4v,video/*'
         ]);
@@ -3659,7 +3663,7 @@ class AdminSeriesController extends Controller
         // dd($request->series_id);
         $file_folder_name_without_extension = pathinfo($file_folder_name, PATHINFO_FILENAME);
         // dd($file_folder_name_without_extension);
-        
+
         $storage_settings = StorageSetting::first();
         $enable_bunny_cdn = SiteTheme::pluck('enable_bunny_cdn')->first();
         $season_id = $request->season_id;
