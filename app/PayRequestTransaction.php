@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PayRequestTranscation extends Model
+class PayRequestTransaction extends Model
 {
     protected $guarded = array();
 
-    protected $table = 'pay_request_transcation_details';
+    protected $table = 'pay_request_transaction';
 
     public static $rules = array();
 }

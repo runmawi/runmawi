@@ -36,8 +36,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
-use App\PayRequestTranscation;
-
+use App\PayRequestTransaction;
 
 class RazorpayController extends Controller
 {
@@ -99,8 +98,7 @@ class RazorpayController extends Controller
     {
         try {
 
-            
-        PayRequestTranscation::create([
+        PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'source_name' => null,
             'source_id'   => null,
@@ -340,7 +338,7 @@ class RazorpayController extends Controller
 
     public function RazorpayVideoRent(Request $request,$video_id,$amount){
 
-            PayRequestTranscation::create([
+            PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'source_name' => $video_id,
             'source_id'   => $video_id,
@@ -609,7 +607,7 @@ class RazorpayController extends Controller
 
     public function RazorpayLiveRent(Request $request,$live_id,$amount){
 
-        PayRequestTranscation::create([
+        PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'source_name' => $live_id,
             'source_id'   => $live_id,
@@ -1115,7 +1113,7 @@ class RazorpayController extends Controller
     public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
 
        
-        PayRequestTranscation::create([
+        PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'ppv_plan'    => $ppv_plan,
             'source_name' => $video_id,
@@ -1164,7 +1162,7 @@ class RazorpayController extends Controller
     
     public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
 
-        PayRequestTranscation::create([
+        PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'source_name' => $SeriesSeason_id,
             'source_id'   => $SeriesSeason_id,
@@ -1449,7 +1447,7 @@ class RazorpayController extends Controller
 
     public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
 
-        PayRequestTranscation::create([
+        PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
             'ppv_plan'    => $ppv_plan,
             'source_name' => $SeriesSeason_id,

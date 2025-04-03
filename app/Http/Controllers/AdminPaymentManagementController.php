@@ -25,6 +25,7 @@ use Laravel\Cashier\Invoice;
 use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\PayRequestTransaction;
 
 class AdminPaymentManagementController extends Controller
 {
@@ -505,6 +506,18 @@ class AdminPaymentManagementController extends Controller
      }
 }
 
+    public function Pay_Request_Transaction(Request $request)
+    {
+        try {
 
+            $Pay_Request_Transaction = PayRequestTransaction::query()->latest()->get();
 
+            $data = array('Pay_Request_Transaction' => $Pay_Request_Transaction,);
+    
+            return View('admin.payment.pay-request-transaction', $data);
+           
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
+    }
 }

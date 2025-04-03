@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePayRequestTranscationDetailsTable extends Migration
+class CreatePayRequestTransactionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePayRequestTranscationDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pay_request_transcation_details', function (Blueprint $table) {
+        Schema::create('pay_request_transaction', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->string('source_name')->nullable();
@@ -21,6 +21,7 @@ class CreatePayRequestTranscationDetailsTable extends Migration
             $table->string('source_type')->nullable();
             $table->string('platform')->nullable();
             $table->string('transform_form')->nullable();
+            $table->string('currency_symbol')->nullable();
             $table->string('ppv_plan')->nullable();
             $table->string('amount')->nullable();
             $table->string('date')->nullable();
@@ -37,6 +38,6 @@ class CreatePayRequestTranscationDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pay_request_transcation_details');
+        Schema::dropIfExists('pay_request_transaction');
     }
 }
