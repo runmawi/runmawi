@@ -1,5 +1,5 @@
 @php
-include(public_path('themes/default/views/header.php'));
+include(public_path('themes/theme5-nemisha/views/header.php'));
 $settings = App\Setting::first(); 
 @endphp
 
@@ -287,7 +287,7 @@ $settings = App\Setting::first();
                     </div>
                     <div class="col-lg-4 p-0">
                 <p>PLAYLIST</p>
-                <h2>My Playlist</h2>
+                <h3>My Playlist</h3>
                         
 
 

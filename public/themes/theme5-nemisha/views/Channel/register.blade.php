@@ -120,7 +120,7 @@
                             </div>
                             @endif
                             <div class="col-md-12">
-                                <button class="btn btn-block nextBtn p-2" style="display: block; font-size:15px; background: #ED563C; color:white;" type="button"
+                                <button class="btn btn-block nextBtn p-2" style="display: block; font-size:15px; background: #ed1c24; color:white;" type="button"
                                     >{{ __('Next') }}</button>
                             </div>
                         </div>
@@ -205,7 +205,13 @@
                                     <label for="password-confirm" class="col-form-label text-md-right" style="display: inline-block;">{{ __('Yes') }} ,<a data-toggle="modal" data-target="#terms" style="text-decoration:none;color: #fff;"> {{ __('I Agree to Terms and  Conditions' ) }}</a></label>
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn btn-block prevBtn p-2" style="display: block; font-size:15px; background:transparent; border:white solid 1px; color:white; margin: 10px 0px 10px 0px;" type="button">{{ __('Previous') }}</button>
+                                    <button class="btn btn-block prevBtn p-2" 
+                                        style="display: block; font-size:15px; background:transparent; border:white solid 1px; color:white; margin: 10px 0px 10px 0px;" 
+                                        type="button" 
+                                        onmouseover="this.style.background=' #ed1c24'" 
+                                        onmouseout="this.style.background='transparent'">
+                                        {{ __('Previous') }}
+                                    </button>
                                 </div>
                                 <div class="sign-up-buttons col-md-12" align="right">
                                       <button type="button" value="Verify Profile" id="submit" class="btn btn-primary btn-login verify-profile" style="display: none;"> Verify Profile</button>
@@ -370,7 +376,7 @@ i.fa.fa-google-plus {
    .reveal {
     margin-left: -57px;
     height: 45px !important;
-    background: #ED553B !important;
+    background: #ed1c24 !important;
     color: #fff !important;
 }
     .modal-content {

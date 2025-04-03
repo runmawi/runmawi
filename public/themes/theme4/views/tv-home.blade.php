@@ -15,6 +15,7 @@
                                 'currency' => $currency,
                                 'default_vertical_image_url' => $default_vertical_image_url,
                                 'default_horizontal_image_url' => $default_horizontal_image_url,
+                                'BaseURL'                      => $BaseURL
                             ]; 
 
 @endphp

@@ -1510,6 +1510,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
     Route::get('/PayPerView_search', 'AdminPaymentManagementController@PayPerView_search')->name('PayPerView_search');
     Route::post('/Paymentfailed', 'SignupController@PaymentFailed');
 
+    Route::get('/payment/pay-request-transaction', 'AdminPaymentManagementController@Pay_Request_Transaction')->name('admin.Pay_Request_Transaction');
+
     // Revenue Settings
 
     Route::get('/revenue_settings/index', 'AdminRevenueSettings@Index');

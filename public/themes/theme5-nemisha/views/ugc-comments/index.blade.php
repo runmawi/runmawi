@@ -38,24 +38,24 @@
             <h6 class="mt-0 mb-1"><?= ucfirst(App\User::where('id',$comment->user_id)->pluck('username')->first()); ?> | <?= $comment->created_at->diffForHumans() ?></h6>
         </div>
 
-        <div style="white-space: pre-wrap;" class="mt-2 text-white"><?= $comment->comment ?></div>
+        <div style="white-space: pre-wrap;" class="mt-2 ugc-text"><?= $comment->comment ?></div>
 
         
         <div>
             <?php if( Auth::user() != null ):?>
             <div class="d-flex py-2">   
-                <div class="text-white" data-comment-id="<?= $comment->id ?>" onclick="comment_like(this)">
+                <div class="ugc-text" data-comment-id="<?= $comment->id ?>" onclick="comment_like(this)">
                     <i class="comment-like <?= $comment->likes()->where('user_id', auth()->id())->exists() ? 'ri-thumb-up-fill' : 'ri-thumb-up-line' ?>"></i>
                     <span id="like-count-<?= $comment->id ?>"><?= $comment->likes()->count() ?></span>
                 </div>
-                <div class="text-white px-3"  data-comment-id="<?= $comment->id ?>" onclick="comment_dislike(this)" > 
+                <div class="ugc-text px-3"  data-comment-id="<?= $comment->id ?>" onclick="comment_dislike(this)" > 
                     <i class="comment-dislike <?= $comment->dislikes()->where('user_id', auth()->id())->exists() ? 'ri-thumb-down-fill' : 'ri-thumb-down-line' ?>"></i>
                     <span id="dislike-count-<?= $comment->id ?>"><?= $comment->dislikes()->count() ?></span>
                 </div>
             
                 <div class="px-3">
                     <a data-toggle="modal" data-target="#reply-modal-<?= $comment->id ?>"
-                    class=" text-uppercase text-white" style="font-size: 14px; font-weight:700;" >Reply</a>
+                    class=" text-uppercase ugc-text" style="font-size: 14px; font-weight:700;" >Reply</a>
                 </div>
             </div>
             <?php endif; ?>
@@ -98,7 +98,7 @@
                     </h5>
                 </div>
 
-                <div style="white-space: pre-wrap;" class="rep text-white"><?= $reply_comments->comment ?></div>
+                <div style="white-space: pre-wrap;" class="rep ugc-text"><?= $reply_comments->comment ?></div>
 
             <div>
                 <?php if( Auth::user() != null && Auth::user()->id == $reply_comments->user_id && Auth::user()->role != 'register' ):?>

@@ -350,7 +350,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -572,7 +572,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -901,7 +901,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                         <span>Upload Log Activity</span>
                      </a>
                   </li>
-                  <li><a href="{{ URL::to('admin/deleted-log') }}" class="iq-waves-effect">
+                  <li><a href="{{ URL::to('admin/deleted-logs') }}" class="iq-waves-effect">
                         <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
                         <span>Delete Log</span>
                      </a>
@@ -921,7 +921,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -1122,6 +1122,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            <li><a href="{{ URL::to('admin/payment/total_revenue') }}">{{ (__('Total Revenues')) }}</a></li>
                            <li><a href="{{ URL::to('admin/payment/subscription') }}">{{ (__('Subscription Payments')) }}</a></li>
                             <li><a href="{{ URL::to('admin/payment/PayPerView') }}">{{ (__('PayPerView Payments')) }}</a></li>
+                           <li><a href="{{ route('admin.Pay_Request_Transaction') }}">{{ (__('Pay Request Transaction')) }}</a></li>
                         </ul>
 
                         <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
@@ -1375,7 +1376,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                      </a>
                   </li>
 
-                  <li><a href="{{ URL::to('admin/deleted-log') }}" class="iq-waves-effect">
+                  <li><a href="{{ URL::to('admin/deleted-logs') }}" class="iq-waves-effect">
                      <img class="ply" height="30" width="30" class="" src="<?php echo  URL::to('/assets/img/icon/delete.svg')?>">
                      <span>Delete Log</span>
                   </a>
@@ -1394,7 +1395,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
       <div class="iq-sidebar">
          <div class="iq-sidebar- d-flex justify-content-between align-items-center mt-2">
             <a href="<?php echo URL::to('home') ?>" class="header-logo">
-               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="200px" height="100px" style="object-fit:contain;">
+               <img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" alt="" width="150px" height="100px" style="object-fit:contain;">
                <div class="logo-title">
                   <span class="text-primary text-uppercase"></span>
                </div>
@@ -1742,7 +1743,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                       <div class="iq-navbar-logo d-flex justify-content-between">
                          <a href="<?php echo URL::to('home') ?>" class="header-logo">
                             <div class="logo-title">
-                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="200"  alt="" style="object-fit:contain;"></span>
+                               <span class="text-primary text-uppercase"><img src="<?php echo URL::to('/').'/public/uploads/settings/'. $settings->logo ; ?>" class="c-logo" width="150"  alt="" style="object-fit:contain;"></span>
                             </div>
                          </a>
                       </div>

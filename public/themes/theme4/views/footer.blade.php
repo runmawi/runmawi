@@ -94,7 +94,7 @@
                 <?php
                 for ($i = 1; $i <= 3; $i++) {
 
-                    $footerLinks = App\FooterLink::where('column_position', $i)
+                    $footerLinks = App\FooterLink::where('active','1')->where('column_position', $i)
                         ->orderBy('order')
                         ->get();
                 ?>
@@ -102,8 +102,8 @@
                     <div class="col-lg-3 col-md-4 col-sm-12">
                         <ul class="f-link list-unstyled mb-0">
                             <?php foreach ($footerLinks as $key => $footerLink) { ?>
-                                <?php if($footerLink->name == 'Contact-Us'): ?>
-                                    <li><a href="https://e360tvhosthub.com/contact-us"><?= $footerLink->name ?></a></li>
+                                <?php if($footerLink->url_type == 'custom_url'): ?>
+                                    <li><a href="<?= $footerLink->link ?>"><?= $footerLink->name ?></a></li>
                                 <?php else: ?>
                                     <li><a href="<?= URL::to('/' . $footerLink->link) ?>"><?= $footerLink->name ?></a></li>
                                 <?php endif; ?>
