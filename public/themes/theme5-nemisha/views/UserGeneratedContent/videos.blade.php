@@ -157,6 +157,12 @@
     }
     }
 
+    .vjs-big-play-button .vjs-icon-placeholder {
+        color: black !important;
+    }
+    body.light-theme span {
+        color:rgb(255, 255, 255) !important;
+    }
     #my-video_ima-ad-container div{ overflow:hidden;}
     #my-video{ position:relative; }
     /* .staticback-btn{display:none;} */
