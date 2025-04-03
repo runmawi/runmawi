@@ -1122,6 +1122,7 @@ if($package == "Basic" && auth()->user()->role == "subscriber" || $package == "B
                            <li><a href="{{ URL::to('admin/payment/total_revenue') }}">{{ (__('Total Revenues')) }}</a></li>
                            <li><a href="{{ URL::to('admin/payment/subscription') }}">{{ (__('Subscription Payments')) }}</a></li>
                             <li><a href="{{ URL::to('admin/payment/PayPerView') }}">{{ (__('PayPerView Payments')) }}</a></li>
+                           <li><a href="{{ route('admin.Pay_Request_Transaction') }}">{{ (__('Pay Request Transaction')) }}</a></li>
                         </ul>
 
                         <a href="#parnter_monetization_payouts" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">

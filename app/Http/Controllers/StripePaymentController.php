@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\PayRequestTransaction;
 use App\Subscription;
 use App\SubscriptionPlan;
 use App\PaymentSetting;
@@ -42,6 +43,18 @@ class StripePaymentController extends Controller
     public function Stripe_authorization_url(Request $request)
     {
         try {
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'source_name' => null,
+                'source_id'   => null,
+                'source_type' => 'subscription',
+                'platform'    => "Stripe",
+                'transform_form' => "subscription",
+                'amount' => $amount,
+                'date' => Carbon::now()->toDateString(),
+                'status' => 'hold' ,
+            ]);
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
         
@@ -299,21 +312,38 @@ class StripePaymentController extends Controller
                 return redirect('login');
             }
 
+            $default_Currency = CurrencySetting::first();
+
+            $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
+            
+            if ($enable_multi_currency == 1) {
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            }
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'source_name' => $live_id,
+                'source_id'   => $live_id,
+                'source_type' => 'livestream',
+                'platform'    => "Stripe",
+                'transform_form' => "PPV",
+                'amount' => $amount,
+                'currency_symbol' => $enable_multi_currency == 1 ? @$To_Currency_symbol : @$default_Currency->symbol ,
+                'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+                'status' => 'hold' ,
+            ]);
+
             $rokuTvCode = request()->get('roku_tvcode');
             session(['roku_tvcode' => $rokuTvCode]);
             
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_live_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$live_id ) ;
 
-            $default_Currency = CurrencySetting::first();
-
                // Checkout Page Creation 
                 
-            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-
-                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-
-                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            if($enable_multi_currency == 1){                
 
                 $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
@@ -526,27 +556,46 @@ class StripePaymentController extends Controller
             if( Auth::guest()){
                 return redirect('login');
             }
+
+            $default_Currency = CurrencySetting::first();
+
+            $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
             
+            if ($enable_multi_currency == 1) {
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            }
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'source_name' => $video_id,
+                'source_id'   => $video_id,
+                'source_type' => 'videos',
+                'platform'    => "Stripe",
+                'transform_form' => "PPV",
+                'amount' => $amount,
+                'currency_symbol' => $enable_multi_currency == 1 ? @$To_Currency_symbol : @$default_Currency->symbol ,
+                'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+                'status' => 'hold' ,
+            ]);
+
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_video_PPV_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id ) ;
             $default_Currency = CurrencySetting::first();
 
                // Checkout Page Creation 
                 
-            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-
-                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-
-                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            if($enable_multi_currency == 1){
 
                 $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
                 try {
 
-                    $response = Http::get($api_url);
-                
+                    $response = Http::withoutVerifying()->get($api_url);
+
                     $exchangeRates = $response->json();
-                
+
                     if (isset($exchangeRates['rates'])) {
                         $targetCurrency = $To_Currency_symbol;
                 
@@ -572,6 +621,7 @@ class StripePaymentController extends Controller
                     }
                 
                 } catch (\Exception $e) {
+
                         $video = Video::where('id',$video_id)->first();
 
                         $Error_msg = $e->getMessage();
@@ -726,6 +776,27 @@ class StripePaymentController extends Controller
                 return redirect('login');
             }
 
+            $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
+            
+            if ($enable_multi_currency == 1) {
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            }
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'source_name' => $SeriesSeason_id,
+                'source_id'   => $SeriesSeason_id,
+                'source_type' => 'series season',
+                'platform'    => "Stripe",
+                'transform_form' => "PPV",
+                'amount' => $amount,
+                'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+                'currency_symbol' => $enable_multi_currency == 1 ? @$To_Currency_symbol : @$default_Currency->symbol ,
+                'status' => 'hold' ,
+            ]);
+
             $rokuTvCode = request()->get('roku_tvcode');
             session(['roku_tvcode' => $rokuTvCode]);
             
@@ -737,15 +808,9 @@ class StripePaymentController extends Controller
             $series_id = $SeriesSeason->series_id;
             $series = Series::find($series_id);
 
-            $default_Currency = CurrencySetting::first();
-
                // Checkout Page Creation 
                 
-            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-
-                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-
-                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            if ($enable_multi_currency == 1) {
 
                 $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
@@ -926,8 +991,6 @@ class StripePaymentController extends Controller
 
         return Theme::view('stripe_payment.message',compact('respond'),$respond);
     }
-
-
     
     // PPV Series
 
@@ -939,6 +1002,27 @@ class StripePaymentController extends Controller
                 return redirect('login');
             }
 
+            $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
+            
+            if ($enable_multi_currency == 1) {
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            }
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'source_name' => $Series_id,
+                'source_id'   => $Series_id,
+                'source_type' => 'series',
+                'platform'    => "Stripe",
+                'transform_form' => "PPV",
+                'amount' => $amount,
+                'date'   => Carbon::now()->format('Y-m-d H:i:s a'),
+                'currency_symbol' => $enable_multi_currency == 1 ? @$To_Currency_symbol : @$default_Currency->symbol ,
+                'status' => 'hold' ,
+            ]);
+
             // $amount = 100 ;
 
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
@@ -946,15 +1030,10 @@ class StripePaymentController extends Controller
 
             $Series = Series::where('id',$Series_id)->first();
 
-            $default_Currency = CurrencySetting::first();
 
                // Checkout Page Creation 
                 
-            if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-
-                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-
-                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            if ($enable_multi_currency == 1) {
 
                 $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
@@ -1126,8 +1205,6 @@ class StripePaymentController extends Controller
 
         return Theme::view('stripe_payment.message',compact('respond'),$respond);
     }
-
-
     
     // PPV Video
 
@@ -1139,18 +1216,34 @@ class StripePaymentController extends Controller
                 return redirect('login');
             }
             
+            $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
+            
+            if ($enable_multi_currency == 1) {
+                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+
+                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+            }
+
+            PayRequestTransaction::create([
+                'user_id'     => Auth::user()->id,
+                'ppv_plan'    => $ppv_plan,
+                'source_name' => $video_id,
+                'source_id'   => $video_id,
+                'source_type' => 'videos',
+                'platform'    => "Stripe",
+                'transform_form' => "PPV",
+                'amount' => $amount,
+                'date' => Carbon::now()->toDateString(),
+                'currency_symbol' => $enable_multi_currency == 1 ? @$To_Currency_symbol : @$default_Currency->symbol ,
+                'status' => 'hold' ,
+            ]);
+
             $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
             $success_url = URL::to('Stripe_payment_video_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$video_id.'/'. $ppv_plan) ;
-
-            $default_Currency = CurrencySetting::first();
 
                // Checkout Page Creation 
                 
             if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-
-                $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-
-                $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
 
                 $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
 
@@ -1351,6 +1444,29 @@ class StripePaymentController extends Controller
                 if( Auth::guest()){
                     return redirect('login');
                 }
+
+                $default_Currency = CurrencySetting::first();
+
+                $enable_multi_currency = CurrencySetting::pluck('enable_multi_currency')->first() ;
+                
+                if ($enable_multi_currency == 1) {
+                    $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
+    
+                    $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
+                }
+
+                PayRequestTransaction::create([
+                    'user_id'     => Auth::user()->id,
+                    'ppv_plan'    => $ppv_plan,
+                    'source_name' => $SeriesSeason_id,
+                    'source_id'   => $SeriesSeason_id,
+                    'source_type' => 'series season',
+                    'platform'    => "Stripe",
+                    'transform_form' => "PPV",
+                    'amount' => $amount,
+                    'date' => Carbon::now()->toDateString(),
+                    'status' => 'hold' ,
+                ]);
                 
                 $stripe = new \Stripe\StripeClient( env('STRIPE_SECRET') );
                 $success_url = URL::to('Stripe_payment_series_season_PPV_Plan_Purchase_verify/{CHECKOUT_SESSION_ID}/'.$SeriesSeason_id ,$ppv_plan) ;
@@ -1359,15 +1475,9 @@ class StripePaymentController extends Controller
                 $series_id = $SeriesSeason->series_id;
                 $series = Series::find($series_id);
     
-                $default_Currency = CurrencySetting::first();
-    
                    // Checkout Page Creation 
                     
                 if(CurrencySetting::pluck('enable_multi_currency')->first() == 1 ){
-    
-                    $To_Currency_symbol = Currency::where('country',Country_name())->pluck('code')->first();
-    
-                    $From_Currency_symbol = Currency::where('country',@$default_Currency->country)->pluck('code')->first();
     
                     $api_url = "https://open.er-api.com/v6/latest/{$From_Currency_symbol}";
     
@@ -1547,5 +1657,4 @@ class StripePaymentController extends Controller
     
             return Theme::view('stripe_payment.message',compact('respond'),$respond);
         }
-
 }
