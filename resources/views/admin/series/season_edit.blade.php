@@ -1473,6 +1473,10 @@ document.getElementById('select-all').addEventListener('change', function() {
     previewTemplate: document.getElementById('template').innerHTML,
     init: function() {
         this.on("sending", function(file, xhr, formData) {
+            if (file.userCanceled) {
+                xhr.abort(); // Stop the request
+                return;
+            }
             formData.append('series_id', series_id);
             formData.append('season_id', season_id);
             formData.append("UploadlibraryID", $('#UploadlibraryID').val());
