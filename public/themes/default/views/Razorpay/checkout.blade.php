@@ -73,6 +73,8 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="cityName"    id="cityName" value= {{ $respond['cityName'] }} />
     <input type="text"  name="regionName"  id="regionName" value= {{ $respond['regionName'] }}   />
 
+    <input type="text"  name="Subscription_primary_id"  id="Subscription_primary_id" value= {{ $respond['Subscription_primary_id'] }}   />
+
     <button type="submit" id="razorpay_respond">{{ __('Pay')  }}</button>
 </form>
 

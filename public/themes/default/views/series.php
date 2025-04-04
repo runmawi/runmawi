@@ -1354,7 +1354,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
                         <?php if( @$settings->ppv_price !=null &&  @$settings->ppv_price != " "  ){ ?>
                             <div class="Razorpay_button">
                                 <!-- Razorpay Button -->
-                                <button onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . @$series->id . '/' . @$settings->ppv_price) ?>' ;"
+                                <button onclick="location.href ='<?= URL::to('RazorpaySeriesSeasonRent/' . @$series->id . '/' . @$settings->ppv_price) ?>' ;"
                                     id="" class="btn2  btn-outline-primary"> Continue</button>
                             </div>
                         <?php }?>
@@ -1509,7 +1509,7 @@ $media_url = URL::to('/play_series/') . '/' . $series->slug ;
 
                                         <div div class="row mt-3 justify-content-around">  <!-- Razorpay Button -->
                                             <?php if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay'): ?>
-                                            <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpayVideoRent/' . $seasons->id . '/' . $seasons->ppv_price) ?>' ;">
+                                            <div class="Razorpay_button col-md-6 col-6 btn text-white" type="button" onclick="location.href ='<?= URL::to('RazorpaySeriesSeasonRent/' . $seasons->id . '/' . $seasons->ppv_price) ?>' ;">
                                                 <?= ("Continue") ?>
                                             </div>
                                             <?php endif; ?>
