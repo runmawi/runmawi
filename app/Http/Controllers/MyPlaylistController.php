@@ -130,8 +130,14 @@ class MyPlaylistController extends Controller
             if (Auth::guest()) {
                 return redirect("/login");
             }
-          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
-          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+            //   $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $playlist = MyPlaylist::where('slug', $slug)->first();
+ 
+            if (!$playlist) {
+                return redirect()->back()->with('error', 'Playlist not found.');
+            }
+            $MyPlaylist_id = $playlist->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $AudioUserPlaylist = AudioUserPlaylist::where('user_id',Auth::user()->id)->where('playlist_id',$MyPlaylist_id)->get();
           $excludedAudioIds = AudioUserPlaylist::where('user_id', Auth::user()->id)
@@ -186,35 +192,35 @@ class MyPlaylistController extends Controller
         return Theme::view('Playlist', $data);
     }
 
-    public function Add_Audio_Playlist(Request $request){
+    public function Add_Audio_Playlist(Request $request) {
         try {
-            //code...
-          $AudioUserPlaylist = AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)->where('user_id',Auth::user()->id)->first();
-            if(empty($AudioUserPlaylist)){
+            $AudioUserPlaylist = AudioUserPlaylist::where('audio_id', $request->audioid)
+                ->where('playlist_id', $request->playlistid)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+    
+            if (empty($AudioUserPlaylist)) {
                 $AudioUserPlaylist = new AudioUserPlaylist();
                 $AudioUserPlaylist->audio_id = $request->audioid;
                 $AudioUserPlaylist->playlist_id = $request->playlistid;
                 $AudioUserPlaylist->user_id = Auth::user()->id;
                 $AudioUserPlaylist->save();
-            $data = 1;
-
-            }else{
-                AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
-                ->where('user_id',Auth::user()->id)->delete();
-                // print_r('test');exit;
-
-            $data = 0;
-        }
-            // $data = 1;
-    
+                $data = 1; 
+            } else {
+                AudioUserPlaylist::where('audio_id', $request->audioid)
+                    ->where('playlist_id', $request->playlistid)
+                    ->where('user_id', Auth::user()->id)
+                    ->delete();
+                $data = 0;
+            }
         } catch (\Throwable $th) {
-            //throw $th;
-            AudioUserPlaylist::where('audio_id',$request->audioid)->where('playlist_id',$request->playlistid)
-            ->where('user_id',Auth::user()->id)->delete();
+            \Log::error('Error in Add_Audio_Playlist: ' . $th->getMessage()); 
             $data = 0;
         }
-        return $data;
+    
+        return response()->json(['status' => $data]); 
     }
+    
 
     
     public function GetMY_Audio_Playlist($slug){
@@ -234,8 +240,14 @@ class MyPlaylistController extends Controller
     public function Play_Playlist($slug){
         try {
             //code...
-          $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
-          $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $MyPlaylist = MyPlaylist::where('user_id',Auth::user()->id)->get();
+            //   $MyPlaylist_id = MyPlaylist::where('slug', $slug)->first()->id;
+            $playlist = MyPlaylist::where('slug', $slug)->first();
+ 
+            if (!$playlist) {
+                return redirect()->back()->with('error', 'Playlist not found.');
+            }
+            $MyPlaylist_id = $playlist->id;
           $MyPlaylist = MyPlaylist::where('id', $MyPlaylist_id)->first();
           $All_Audios = Audio::get();
           $playlist_audio = Audio::Select('audio.title as name','audio.mp3_url as file','audio.*')->Join('audio_user_playlist','audio_user_playlist.audio_id','=','audio.id')

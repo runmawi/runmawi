@@ -43,7 +43,7 @@ border-radius: 0px 4px 4px 0px;
                         <div class="iq-card-header-toolbar d-flex justify-content-between d-flex align-items-baseline">
                         <div class="form-group mr-2">                  
                            <select id="cpp_user_videos" name="cpp_user_videos"  class="form-control" >
-                              <option value="">Select Videos By CPP</option>
+                              <option value="">Select Videos By</option>
                                  <option value="cpp_videos">Videos ( Uploaded By CPP Users )</option>
                               </select>
                         </div>

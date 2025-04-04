@@ -63,6 +63,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\CountryCode;
+use App\StorageSetting;
 
 
 class TvshowsController extends Controller
@@ -91,6 +92,11 @@ class TvshowsController extends Controller
 
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
+
+        $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
+
+        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('/public/uploads') ;
+
     }
 
     public function paginateCollection(Collection $collection, $perPage)
@@ -219,6 +225,7 @@ class TvshowsController extends Controller
                         'order_settings_list' => $OrderHomeSetting, 
                         'home_settings'  => HomeSetting::first() ,
                         'Slider_array_data' => $Slider_array_data ,
+                        'BaseURL'                            => $this->BaseURL
                     ];
                     return Theme::view('tv-home', $data);
 
@@ -240,6 +247,7 @@ class TvshowsController extends Controller
                     'default_horizontal_image_url' => default_horizontal_image_url(),
                     'order_settings_list' => $OrderHomeSetting, 
                     'home_settings'  => HomeSetting::first() ,
+                    'BaseURL'                            => $this->BaseURL
                 ];
     
                 return Theme::view('tv-home', $data);
@@ -272,13 +280,14 @@ class TvshowsController extends Controller
                     'order_settings_list' => $OrderHomeSetting, 
                     'home_settings'  => HomeSetting::first() ,
                     'Slider_array_data' => $Slider_array_data ,
+                    'BaseURL'                            => $this->BaseURL
                 ];
     
                 return Theme::view('tv-home', $data);
             }
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
+            return $th->getMessage();
             return abort(404);
             return Theme::view('tv-home-empty-data');
         }
@@ -1586,6 +1595,7 @@ class TvshowsController extends Controller
         
             $season = SeriesSeason::where('series_id', '=', $id)
                 ->with('episodes')
+                ->orderBy('order','desc')
                 ->get();
 
             $season_trailer = SeriesSeason::where('series_id', '=', $id)->get();
@@ -2099,7 +2109,7 @@ public function RemoveDisLikeEpisode(Request $request)
         $episode = Episode::where('slug', '=', $episode_name)
             ->orderBy('id', 'DESC')
             ->first();
-        $id = $episode->id;
+        $id = !empty($episode->id) ? $episode->id : null;
         $season = SeriesSeason::where('series_id', '=', $episode->series_id)
             ->with('episodes')
             ->get();

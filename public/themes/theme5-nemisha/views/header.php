@@ -247,8 +247,8 @@
     <link rel="preload" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>" as="style">
     <link rel="stylesheet" href="<?= URL::to('public/themes/theme5-nemisha/assets/css/flickity.css') ?>">
     <!--Flickity JavaScript -->
-    <link rel="preload" href="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" as="script">
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script defer src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
+    <script src="<?= URL::to('/assets/js/flick-popper-magnific.js') ;?>"></script>
 
     <!-- Responsive -->
     <!-- <link rel="preload" as="style" href="<?= URL::to('/') . '/assets/css/slick.css' ?>" /> -->
@@ -510,6 +510,13 @@
     body.light-theme #translator-table_filter input[type="search"]{
         color: <?php echo GetLightText(); ?>;
     }
+    body.light-theme .ugc-text{
+        color:<?php echo GetLightText(); ?> !important;
+    }
+   .ugc-text{
+        color:rgb(255, 255, 255) !important;
+    }
+
     body.light-theme footer {
         background-color: <?php echo GetLightBg(); ?> !important;
         color: <?php echo GetLightText(); ?>;
@@ -531,11 +538,7 @@
         border-right: 1px solid #000!important;
     } 
     body.light-theme .music-play-lists li {
-        background: linear-gradient(
-        to bottom, 
-        rgba(0, 0, 0, 0.9),
-        rgba(15, 15, 15, 0.9)     
-        )!important;
+        background: #ed1c24 !important;
         color: #fff!important;
     }
 
@@ -1660,9 +1663,9 @@
                                             <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar"></div>
                                         </li>
                                         <li>
-                                            <?php if(!Auth::guest()): ?>
-                                                <?php if( $home_settings->user_generated_content == '1' ): ?>
-                                                    <div class="bg-primary text-right p-1" style="border-radius:10px;" >
+                                        <?php if(!Auth::guest()): ?>
+                                            <?php if( $home_settings->user_generated_content == '1' ): ?>
+                                                    <div class="bg-cocreataz text-right p-1" style="border-radius:10px;" >
                                                         <a href="<?php echo URL::to('ugc-create'); ?>" >
                                                             <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                                 <g>
@@ -1672,9 +1675,9 @@
                                                             </svg>
                                                         </a>
                                                     </div>
+                                                   
                                                 <?php endif ; ?>
                                             <?php endif ; ?>
-                                   
                                         </li>
  
                                         <li class="nav-item nav-icon">

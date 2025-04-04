@@ -50,7 +50,20 @@
       <?php include 'partials/home/ugc-shorts-minis.blade.php'; ?>
    <?php endif; ?>
 
+   <?php if ( !Auth::guest() && $home_settings->my_playlist == 1): ?>
+         <section id="iq-continue overflow-hidden">
+            <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <?php include 'partials/home/my-playlist.blade.php'; ?>
+                     </div>
+                  </div>
+            </div>
+         </section>
+   <?php endif; ?>
+
    <?php foreach($order_settings as $key => $item): ?>
+
       <?php if( $item->video_name == 'latest_videos' && $home_settings->latest_videos == '1' ): ?>
          <section id="iq-continue overflow-hidden">
             <div class="container-fluid ">
@@ -406,20 +419,6 @@
                   <div class="row">
                      <div class="col-sm-12 ">
                         <?php include 'partials/home/radio-station.php'; ?>
-                     </div>
-                  </div>
-            </div>
-         </section>
-      <?php endif; ?>
-
-
-      <?php if (!Auth::guest() && $item->video_name == 'my_play_list' && $home_settings->my_playlist == 1): ?>
-         <?php $MyPlaylist = !Auth::guest() ? App\MyPlaylist::where('user_id', Auth::user()->id)->limit(15)->get() : []; ?>
-         <section id="iq-continue overflow-hidden">
-            <div class="container-fluid ">
-                  <div class="row">
-                     <div class="col-sm-12 ">
-                        <?php include 'partials/home/playlist-videos.php'; ?>
                      </div>
                   </div>
             </div>

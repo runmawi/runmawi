@@ -1159,7 +1159,7 @@ class LiveStreamController extends Controller
 
           // dd($Theme );
           $categoryVideos = LiveStream::where('slug',$vid)->first();
-          $vid =  $categoryVideos->id;
+          $vid =  !empty($categoryVideos) ? $categoryVideos->id : null;
            $settings = Setting::first();
 
 

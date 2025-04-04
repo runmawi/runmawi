@@ -135,6 +135,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
       left: 50%;
       transform: translate(-50%, -50%);
   }
+  .skips{display: none;}
 
   @media only screen and (max-width: 600px) {
     .my-video.vjs-fluid {
@@ -298,7 +299,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
                 <li class="breadcrumb-item">
                     <a class="black-text"
-                        href="{{ route('play_series', [@$series->slug]) }}">{{ strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title) }}
+                        href="{{ URL::to('/play_series/'.$series->slug) }}">{{ strlen(@$series->title) > 50 ? ucwords(substr(@$series->title, 0, 120) . '...') : ucwords(@$series->title) }}
                     </a>
                     <i class="fa fa-angle-double-right mx-2" aria-hidden="true"></i>
                 </li>
@@ -378,17 +379,7 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
                         
                         ?>
 
-                        @foreach ($seasons as $key => $seasons_value)
-                            @if (!empty($SeriesSeason) && $SeriesSeason->id == $seasons_value->id)
-                                {{ 'Season' . ' ' . ($key + 1) . ' ' }}
-                            @endif
-                        @endforeach
-
-                        @foreach ($Episode as $key => $Episode_value)
-                            @if (!empty($episode) && $episode->id == $Episode_value->id)
-                                {{ 'Episode' . ' ' . $episode->episode_order . ' ' }}
-                            @endif
-                        @endforeach
+                        
 
                     <p class="" style=";font-size: 100%;color: white;font-weight: 700;">{{ $episode->title }}</p>
                     @if(!empty($episode->episode_description))
@@ -622,9 +613,13 @@ $CinetPay_payment_settings = App\PaymentSetting::where('payment_type', 'CinetPay
 
             <?php
                 include public_path('themes/theme4/views/partials/Episode/Other_episodes_list.blade.php');
-                include public_path('themes/theme4/views/partials/Episode/Recommend_series_episode_page.blade.php');
             ?>
-
+            
+                @if(count($series_lists) > 0)
+                    @php
+                        include public_path('themes/theme4/views/partials/Episode/Recommend_series_episode_page.blade.php');
+                    @endphp
+                @endif
         </div>
     </div>
     <div class="clear">

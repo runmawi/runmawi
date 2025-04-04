@@ -365,7 +365,7 @@ class FrontEndQueryController extends Controller
                                                                 ->whereIn('season_id', $season_ids)
                                                                 ->where('active', 1)
                                                                 ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
-                                                                ->latest()
+                                                                ->orderBy('episode_order','desc')
                                                                 ->take(15)
                                                                 ->get()
                                 ->map(function ($episode) {
@@ -749,42 +749,36 @@ class FrontEndQueryController extends Controller
         return $multiple_compress_image ;
     }
 
-    public function Most_watched_videos_country(){
-
+    public function Most_watched_videos_country() {
         $Most_watched_videos_country = [];
-
-        if (!Auth::guest() && $this->HomeSetting->Recommendation = 1 ) {
-        
-            $Most_watched_videos_country = RecentView::select('video_id', 'videos.*', DB::raw('COUNT(video_id) AS count'))
+        if (!Auth::guest() && $this->HomeSetting->Recommendation == 1) {  
+            $Most_watched_videos_country = RecentView::select(
+                    'video_id', 'videos.*', DB::raw('COUNT(video_id) AS count')
+                )
                 ->join('videos', 'videos.id', '=', 'recent_views.video_id')
                 ->where([
                     ['videos.status', '=', 1],
                     ['videos.draft', '=', 1],
                     ['videos.active', '=', 1],
-                    ['recent_views.country_name', $this->countryName]
+                    ['recent_views.country_name', '=', $this->countryName]
                 ])
-                ->groupBy('video_id')
+                ->groupBy('video_id', 'videos.id', 'videos.title', 'videos.age_restrict')
                 ->orderByRaw('count DESC');
-
             if ($this->getfeching != null && $this->getfeching->geofencing == 'ON') {
-                $Most_watched_videos_country->whereNotIn('videos.id', $this->blockVideos);
+                $Most_watched_videos_country->whereNotIn(DB::raw('videos.id'), $this->blockVideos); 
             }
-
             if ($this->videos_expiry_date_status == 1) {
-                $Most_watched_videos_country->where(function($query) {
-                    $query->whereNull('videos.expiry_date')->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
+                $Most_watched_videos_country->where(function ($query) {
+                    $query->whereNull('videos.expiry_date')
+                          ->orWhere('videos.expiry_date', '>=', Carbon::now()->format('Y-m-d\TH:i'));
                 });
             }
-
             if ($this->check_Kidmode == 1) {
                 $Most_watched_videos_country->whereBetween('videos.age_restrict', [0, 12]);
             }
-
-            $Most_watched_videos_country = $Most_watched_videos_country->get();
-
+            $Most_watched_videos_country = $Most_watched_videos_country->paginate($this->settings->videos_per_page ?? 10);
         }
-
-        return $Most_watched_videos_country ;
+        return $Most_watched_videos_country;
     }
 
     public function Most_watched_videos_users()

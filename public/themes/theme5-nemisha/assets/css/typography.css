@@ -124,6 +124,7 @@ loading
 Background Color
 ------------------------------------------------*/
 .bg-primary, .badge-primary { color: var(--iq-white) !important; background: var(--iq-primary) !important; }
+.bg-cocreataz, .badge-primary { color: var(--iq-white) !important; background: #ed1c24 !important; }
 .bg-body, .badge-body { color: var(--iq-body-text); background: var(--iq-body-bg); }
 .bg-box, .badge-box { color: var(--iq-white); background: var(--iq-bg-box); }
 
