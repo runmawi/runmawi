@@ -36,7 +36,6 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Encryption\DecryptException;
 use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
-use App\PayRequestTransaction;
 
 class RazorpayController extends Controller
 {
@@ -98,18 +97,16 @@ class RazorpayController extends Controller
     {
         try {
 
-        PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'source_name' => null,
-            'source_id'   => null,
-            'source_type' => 'subscription',
-            'platform'    => "razorpay",
-            'transform_form' => "subscription",
-            'amount' => $amount,
-            'date' => Carbon::now()->toDateString(),
-            'status' => 'hold' ,
+        $Subscription = Subscription::create([
+            'user_id'        =>  Auth::user()->id,
+            'stripe_plan'    =>  $Plan_Id,   
+            'PaymentGateway' =>  'Razorpay',
+            'platform'       => 'WebSite',
+            'stripe_status'  => 'hold',
         ]);
-        
+
+        $Subscription_primary_id = $Subscription->id;
+
         $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
         $countryName = $geoip->getCountry();
         $regionName = $geoip->getregion();
@@ -131,9 +128,9 @@ class RazorpayController extends Controller
         $planId = $api->plan->fetch($plan_Id);
 
         $subscription = $api->subscription->create(array(
-        'plan_id' =>  $planId->id, 
-        'customer_notify' => 1,
-        'total_count' => 6, 
+            'plan_id' =>  $planId->id, 
+            'customer_notify' => 1,
+            'total_count' => 6, 
         ));
 
         $respond=array(
@@ -153,11 +150,13 @@ class RazorpayController extends Controller
             'cityName'       =>  $cityName,
             'PaymentGateway' =>  'razorpay',
             'redirection_back' => $redirection_back ,
+            'Subscription_primary_id'  => $Subscription_primary_id
         );
 
         return Theme::view('Razorpay.checkout',compact('respond'),$respond);
 
         } catch (\Throwable $th) {
+            // dd($th->getMessage());
 
             return abort(404);
         }
@@ -175,7 +174,8 @@ class RazorpayController extends Controller
             $userId = $request->user_id;
             $RazorpaySubscription = $request->razorpay_subscription_id;
             $RazorpayPayment_ID = $request->razorpay_payment_id;
-            return Redirect::route('RazorpaySubscriptionStore',['RazorpaySubscription' => $RazorpaySubscription,'userId' => $userId, 'RazorpayPayment_ID' => $RazorpayPayment_ID, ]);     
+            $Subscription_primary_id = $request->Subscription_primary_id;
+            return Redirect::route('RazorpaySubscriptionStore',['RazorpaySubscription' => $RazorpaySubscription,'userId' => $userId, 'RazorpayPayment_ID' => $RazorpayPayment_ID, 'Subscription_primary_id' => $Subscription_primary_id ]);     
         }
         else{
             echo 'fails';
@@ -208,7 +208,7 @@ class RazorpayController extends Controller
         $Sub_Endday    = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
         $trial_ends_at = Carbon::createFromTimestamp($subscription['current_end'])->toDateTimeString(); 
     
-        Subscription::create([
+        Subscription::find($request->Subscription_primary_id)->update([
             'user_id'        =>  $request->userId,
             'name'           =>  $plan_id['item']->name,
             // 'days'        =>  $fileName_zip,
@@ -338,17 +338,16 @@ class RazorpayController extends Controller
 
     public function RazorpayVideoRent(Request $request,$video_id,$amount){
 
-            PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'source_name' => $video_id,
-            'source_id'   => $video_id,
-            'source_type' => 'videos',
-            'platform'    => "razorpay",
-            'transform_form' => "PPV",
-            'amount' => $amount,
-            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+        $PpvPurchase = PpvPurchase::create([
+            'user_id'      => Auth::user()->id,
+            'video_id'     => $video_id,
+            'total_amount' => $amount ,
+            'platform'     =>'website',
+            'payment_gateway' => 'razoray',
             'status' => 'hold' ,
         ]);
+
+        $PpvPurchase_id = $PpvPurchase->id;
 
         $recept_id = Str::random(10);
 
@@ -362,6 +361,7 @@ class RazorpayController extends Controller
             'notes'           => [
                 'video_id' => $request->video_id,
                 'ppv_plan' => $request->ppv_plan,
+                'PpvPurchase_id' => $request->PpvPurchase_id,
                 'user_id'  => Auth::user()->id,
             ],
         ];
@@ -384,6 +384,7 @@ class RazorpayController extends Controller
             'Video_slug'     => $Video_slug ,
             'address'        =>   null ,
             'ppv_plan'       =>   null ,
+            'PpvPurchase_id' => $PpvPurchase_id ,
         );
 
         return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
@@ -427,7 +428,6 @@ class RazorpayController extends Controller
             $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
             $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
             $commission_percentage_value = $video->CPP_commission_percentage;
-            // dd((600 * $commission_percentage_value)/100);
             
             if($commission_btn === 0){
                 $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
@@ -458,12 +458,11 @@ class RazorpayController extends Controller
                 $moderator_commssion = null;
                 $moderator_id = null;
             }
-            // dd($ppv_price);
-
-            $purchase = new PpvPurchase;
-            $purchase->user_id      = $request->user_id ;
-            $purchase->video_id     = $request->video_id ;
-            $purchase->total_amount = $request->amount /100 ;
+            
+            $purchase = PpvPurchase::find($request->PpvPurchase_id);
+            $purchase->user_id = $request->user_id;
+            $purchase->video_id = $request->video_id;
+            $purchase->total_amount = $request->amount / 100;
             $purchase->admin_commssion = $admin_commssion;
             $purchase->moderator_commssion = $moderator_commssion;
             $purchase->status = $payment_status;
@@ -472,7 +471,7 @@ class RazorpayController extends Controller
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
             $purchase->payment_id = $request->rzp_paymentid;
-            $purchase->payment_gateway= 'razorpay';
+            $purchase->payment_gateway = 'razorpay';
             $purchase->save();
 
             $respond=array(
@@ -573,7 +572,7 @@ class RazorpayController extends Controller
             $moderator_id = null;
         }
 
-        $purchase = new PpvPurchase;
+        $purchase = PpvPurchase::find($request->PpvPurchase_id);
         $purchase->user_id = $validatedData['user_id'];
         $purchase->video_id = $validatedData['video_id'];
         $purchase->total_amount = $validatedData['amount'] / 100;
@@ -607,17 +606,27 @@ class RazorpayController extends Controller
 
     public function RazorpayLiveRent(Request $request,$live_id,$amount){
 
-        PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'source_name' => $live_id,
-            'source_id'   => $live_id,
-            'source_type' => 'livestream',
-            'platform'    => "razorpay",
-            'transform_form' => "PPV",
-            'amount' => $amount,
-            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+        $PpvPurchase = PpvPurchase::create([
+            'user_id'      => Auth::user()->id,
+            'live_id'      => $live_id,
+            'total_amount' => $amount ,
+            'platform'     =>'website',
+            'payment_gateway' => 'razoray',
             'status' => 'hold' ,
         ]);
+
+        $livepurchase = LivePurchase::create([
+            'user_id'   => Auth::user()->id,
+            'video_id'  => $live_id,
+            'amount'    => $amount ,
+            'platform'  =>'website',
+            'payment_gateway' => 'razoray',
+            'status' => 0 ,
+            'payment_status' => 'hold',
+        ]);
+
+        $PpvPurchase_id = $PpvPurchase->id;
+        $livepurchase_id = $livepurchase->id;
 
         $recept_id = Str::random(10);
 
@@ -632,6 +641,8 @@ class RazorpayController extends Controller
                 'live_id' => $request->live_id,
                 'user_id'  => Auth::user()->id,
                 'ppv_plan' => $request->ppv_plan,
+                'PpvPurchase_id' => $PpvPurchase_id,
+                'livepurchase_id' => $livepurchase_id,
             ],
         ];
 
@@ -650,6 +661,8 @@ class RazorpayController extends Controller
             'description'    =>   null,
             'address'        =>   null ,
             'live_slug'      =>  $live_slug,
+            'PpvPurchase_id' => $PpvPurchase_id,
+            'livepurchase_id'   => $livepurchase_id,
         );
 
         return Theme::view('Razorpay.Live_rent_checkout',compact('response'),$response);
@@ -717,7 +730,7 @@ class RazorpayController extends Controller
                 $moderator_id = null;
             }
 
-            $purchase = new PpvPurchase;
+            $purchase = PpvPurchase::find($request->PpvPurchase_id);
             $purchase->user_id      = $request->user_id ;
             $purchase->live_id     = $request->live_id ;
             $purchase->total_amount = $request->get('amount')/100 ;
@@ -732,7 +745,7 @@ class RazorpayController extends Controller
             $purchase->save();
 
 
-            $livepurchase = new LivePurchase;
+            $livepurchase = LivePurchase::find($request->livepurchase_id);
             $livepurchase->user_id = $request->user_id;
             $livepurchase->video_id = $request->live_id;
             $livepurchase->to_time = $to_time;
@@ -838,7 +851,7 @@ class RazorpayController extends Controller
             $moderator_id = null;
         }
 
-        $purchase = new PpvPurchase;
+        $purchase = PpvPurchase::find($request->PpvPurchase_id);
         $purchase->user_id = $validatedData['user_id'];
         $purchase->live_id = $validatedData['live_id'];
         $purchase->total_amount = $validatedData['amount'] / 100;
@@ -1113,18 +1126,17 @@ class RazorpayController extends Controller
     public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
 
        
-        PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'ppv_plan'    => $ppv_plan,
-            'source_name' => $video_id,
-            'source_id'   => $video_id,
-            'source_type' => 'videos',
-            'platform'    => "razorpay",
-            'transform_form' => "PPV",
-            'amount' => $amount,
-            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+        $PpvPurchase = PpvPurchase::create([
+            'user_id'      => Auth::user()->id,
+            'video_id'     => $video_id,
+            'total_amount' => $amount ,
+            'platform'     =>'website',
+            'ppv_plan'     => $ppv_plan,
+            'payment_gateway' => 'razoray',
             'status' => 'hold' ,
         ]);
+
+        $PpvPurchase_id = $PpvPurchase->id;
 
         $recept_id = Str::random(10);
 
@@ -1153,6 +1165,7 @@ class RazorpayController extends Controller
             'address'        =>   null ,
             'Video_slug'     => $Video_slug ,
             'ppv_plan'       => $ppv_plan ,
+            'PpvPurchase_id' => $PpvPurchase_id ,
         );
 
         return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
@@ -1162,17 +1175,18 @@ class RazorpayController extends Controller
     
     public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
 
-        PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'source_name' => $SeriesSeason_id,
-            'source_id'   => $SeriesSeason_id,
-            'source_type' => 'series season',
-            'platform'    => "razorpay",
-            'transform_form' => "PPV",
-            'amount' => $amount,
-            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
+        $PpvPurchase = PpvPurchase::create([
+            'user_id'      => Auth::user()->id,
+            'season_id'   => $SeriesSeason_id,
+            'series_id'   => null,
+            'total_amount' => $amount ,
+            'platform'     =>'website',
+            'ppv_plan'     => null,
+            'payment_gateway' => 'razoray',
             'status' => 'hold' ,
         ]);
+
+        $PpvPurchase_id = $PpvPurchase->id;
 
         $recept_id = Str::random(10);
 
@@ -1209,6 +1223,7 @@ class RazorpayController extends Controller
             'Series_slug'     => $Series_slug ,
             'address'        =>   null ,
             'ppv_plan'       =>   null ,
+            'PpvPurchase_id' => $PpvPurchase_id,
         );
 
         return Theme::view('Razorpay.SeriesSeason_rent_checkout',compact('response'),$response);
