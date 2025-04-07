@@ -182,7 +182,7 @@
                                            {{-- <option value="PROMOTIONAL_HIGH" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "PROMOTIONAL_HIGH" ? 'selected'  : null }}  > PROMOTIONAL_HIGH </option>
                                            <option value="PROMOTIONAL_SPL" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "PROMOTIONAL_SPL" ? 'selected'  : null }}  > PROMOTIONAL_SPL </option>
                                            <option value="OPTIN_OPTOUT" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "OPTIN_OPTOUT" ? 'selected'  : null }}  > OPTIN_OPTOUT </option> --}}
-                                           <option value="INTERNATIONAL" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "INTERNATIONAL" ? 'selected'  : null }}  > INTERNATIONAL </option>
+                                           <option value="INTL_TEMPLATE" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "INTL_TEMPLATE" ? 'selected'  : null }}  > INTERNATIONAL </option>
                                         </select>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@
                             </div>
                         </div>
                         
-                        <div class="row col-md-12 24x7sms_div INTERNATIONAL_div" style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' &&  @$AdminOTPCredentials->otp_24x7sms_sevicename == 'INTERNATIONAL' ? 'display=none !important;' : 'display: none !important' }} ">
+                        <div class="row col-md-12 24x7sms_div INTL_TEMPLATE_div" style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' &&  @$AdminOTPCredentials->otp_24x7sms_sevicename == 'INTL_TEMPLATE' ? 'display=none !important;' : 'display: none !important' }} ">
                             <div class="col-md-6">
                                 <div class="panel panel-primary" data-collapsed="0">
                                     <div class="panel-heading">
@@ -261,10 +261,10 @@
 
                 if (otp_vai_div == "24x7sms") {
 
-                    $('.TEMPLATE_BASED_div,.INTERNATIONAL_div').hide();
+                    $('.TEMPLATE_BASED_div,.INTL_TEMPLATE_div').hide();
                     var currentServiceName = $('.sevicename').val();
 
-                    if ( currentServiceName == "INTERNATIONAL")  $('.INTERNATIONAL_div').show();
+                    if ( currentServiceName == "INTL_TEMPLATE")  $('.INTL_TEMPLATE_div').show();
 
                     if ( currentServiceName == "TEMPLATE_BASED")  $('.TEMPLATE_BASED_div').show();
                     
@@ -273,7 +273,7 @@
 
             $('.sevicename').on('change', function() {
 
-                $('.TEMPLATE_BASED_div,.INTERNATIONAL_div').hide();
+                $('.TEMPLATE_BASED_div,.INTL_TEMPLATE_div').hide();
                 let TEMPLATE_div= ( $(this).find(":selected").val() );
 
                 $( '.' + TEMPLATE_div +'_div' ).show();
