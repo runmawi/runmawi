@@ -122,6 +122,10 @@ class OTPController extends Controller
                     );
                 }
 
+                if ($ServiceName == "INTERNATIONAL") {
+                    $inputs += array('Message' => $message );
+                }
+
                 $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
                 if (str_contains($response->body(), 'success')) {
@@ -288,7 +292,9 @@ class OTPController extends Controller
                     );
                 }
 
-
+                if ($ServiceName == "INTERNATIONAL") {
+                    $inputs += array('Message' => $message );
+                }
 
                 $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
