@@ -287,7 +287,7 @@ class TvshowsController extends Controller
             }
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
             return Theme::view('tv-home-empty-data');
         }
@@ -1020,9 +1020,8 @@ class TvshowsController extends Controller
             $episode_details = Episode::where('id',$source_id)->get()->map( function ($item)   {
 
                 $item['Thumbnail']  =   !is_null($item->image)  ? URL::to('public/uploads/images/'.$item->image) : default_vertical_image_url() ;
-                $item['Player_thumbnail'] = !is_null($item->player_image)  ? URL::to('public/uploads/images/'.$item->player_image ) : default_horizontal_image_url() ;
+                $item['Player_thumbnail'] = !is_null($item->player_image)  ? $this->BaseURL . '/images/' . $item->player_image  : default_horizontal_image_url() ;
                 $item['TV_Thumbnail'] = !is_null($item->tv_image)  ? URL::to('public/uploads/images/'.$item->tv_image)  : default_horizontal_image_url() ;
-  
 
                 $item['video_skip_intro_seconds']        = $item->skip_intro  ? Carbon::parse($item->skip_intro)->secondsSinceMidnight() : null ;
                 $item['video_intro_start_time_seconds']  = $item->intro_start_time ? Carbon::parse($item->intro_start_time)->secondsSinceMidnight() : null ;
@@ -3326,7 +3325,7 @@ public function RemoveDisLikeEpisode(Request $request)
     
         } catch (\Throwable $th) {
     
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
@@ -3464,7 +3463,7 @@ public function RemoveDisLikeEpisode(Request $request)
         }
         catch (\Throwable $th) {
 
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }
