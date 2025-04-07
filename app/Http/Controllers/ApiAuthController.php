@@ -29478,6 +29478,10 @@ public function TV_login(Request $request)
                 'ServiceName' => $ServiceName,
             );
 
+            if ($ServiceName == "INTERNATIONAL") {
+                $inputs += array('Message' => $message );
+            }
+
             if ($ServiceName == "TEMPLATE_BASED") {
                 $inputs += array(
                     // 'DLTTemplateID' => $DLTTemplateID,
@@ -29485,7 +29489,7 @@ public function TV_login(Request $request)
                 );
             }
 
-            $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
+            $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
             if (str_contains($response->body(), 'success')) {
 
