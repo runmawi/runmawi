@@ -260,10 +260,9 @@
         });
     });
 });
-</script>
 
-<script>
     $(document).on('click', '#top-slider-img', function () {
+
         const seriesId = $(this).data('series-id');
         const sectionKey = $(this).data('section-index');
 
@@ -296,19 +295,17 @@
                 response.episode_images.forEach((image, index) => {
                     const imgId = '#episode_player_img-' + seriesId + '-' + sectionKey + '-' + index;
                     $(imgId).attr('src', image);
-                    // console.log("img height: " + image.height);
+                   
                     const img = new Image();
                     img.src = image;
 
                     img.onload = function() {
                         const imgHeight = $(imgId).height();
-                        // console.log("img height: " + imgHeight);
 
                         if (imgHeight > maxHeight) {
                             maxHeight = imgHeight;
                         }
                         
-                        // console.log("Current max height: " + maxHeight);
                         $(heightdiv).attr('style', 'height:' + maxHeight + 'px !important;');
                         $(imgId).attr('style', 'opacity:' + '1 !important;');
                     };
@@ -320,10 +317,7 @@
             }
         });
     });
-</script>
 
-
-<script>
     $(document).on('click', '#data-modal-based-network', function() {
         const episodeId = $(this).data('episode-id');
         // console.log("modal opened.");
