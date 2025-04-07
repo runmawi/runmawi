@@ -122,7 +122,7 @@ class OTPController extends Controller
                     );
                 }
 
-                if ($ServiceName == "INTERNATIONAL") {
+                if ($ServiceName == "INTL_TEMPLATE") {
                     $inputs += array('Message' => $message );
                 }
 
@@ -295,7 +295,7 @@ class OTPController extends Controller
                     );
                 }
 
-                if ($ServiceName == "INTERNATIONAL") {
+                if ($ServiceName == "INTL_TEMPLATE") {
                     $inputs += array('Message' => $message );
                 }
 

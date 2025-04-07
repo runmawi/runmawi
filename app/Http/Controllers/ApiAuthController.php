@@ -29385,13 +29385,13 @@ public function TV_login(Request $request)
         
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
-        if(is_null($AdminOTPCredentials)){
+        // if(is_null($AdminOTPCredentials)){
 
-            return response()->json( array(
-                "status"     => 'false' ,
-                "message"    => 'Please, Check the Admin OTP Credentials',
-              ) , 422);
-        }
+        //     return response()->json( array(
+        //         "status"     => 'false' ,
+        //         "message"    => 'Please, Check the Admin OTP Credentials',
+        //       ) , 422);
+        // }
 
         $random_otp_number = random_int(1000, 9999);
         $user_id           = $request->user_id;
@@ -29478,7 +29478,7 @@ public function TV_login(Request $request)
                 'ServiceName' => $ServiceName,
             );
 
-            if ($ServiceName == "INTERNATIONAL") {
+            if ($ServiceName == "INTL_TEMPLATE") {
                 $inputs += array('Message' => $message );
             }
 
