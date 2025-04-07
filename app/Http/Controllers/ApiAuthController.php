@@ -29467,9 +29467,6 @@ public function TV_login(Request $request)
             $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
             $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
 
-            $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
-            $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
-
             $inputs = array(
                 'APIKEY' => $API_key_24x7sms,
                 'MobileNo' => $Mobile_number,
@@ -29478,10 +29475,15 @@ public function TV_login(Request $request)
             );
 
             if ($ServiceName == "INTL_TEMPLATE") {
+                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->INTL_template_message) ;
                 $inputs += array('Message' => $message );
             }
 
             if ($ServiceName == "TEMPLATE_BASED") {
+
+                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
+                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+
                 $inputs += array(
                     // 'DLTTemplateID' => $DLTTemplateID,
                     'Message' => $message,
