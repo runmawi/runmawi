@@ -364,8 +364,8 @@ class FrontEndQueryController extends Controller
                             $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
                                                                 ->whereIn('season_id', $season_ids)
                                                                 ->where('active', 1)
-                                                                ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
-                                                                ->orderBy('episode_order','desc')
+                                                                ->orderBy('season_id', 'desc')
+                                                                ->orderBy('episode_order', 'desc')
                                                                 ->take(15)
                                                                 ->get()
                                 ->map(function ($episode) {
@@ -1517,14 +1517,12 @@ class FrontEndQueryController extends Controller
                         ? $this->BaseURL.('/images/' . $image)
                         : $this->default_vertical_image;
 
-        $seasonIds = SeriesSeason::where('series_id', $seriesId)->pluck('id')->map(function($id) {
-            return (int) $id; 
-        });
+        $seasonIds = SeriesSeason::where('series_id', $seriesId)->pluck('id');
 
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->orderByRaw("FIELD(season_id, ?)", [implode(',', $seasonIds->toArray())]) // Use parameter binding for safety
+                                    ->orderBy('season_id', 'desc')
                                     ->orderBy('episode_order', 'desc')
                                     ->take(15)
                                     ->pluck('player_image')
@@ -1553,7 +1551,8 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->orderBy('episode_order','desc')
+                                    ->orderBy('season_id', 'desc')
+                                    ->orderBy('episode_order', 'desc')
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {
