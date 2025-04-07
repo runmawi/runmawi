@@ -1522,7 +1522,7 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->latest()
+                                    ->orderBy('episode_order','desc')
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {
@@ -1530,9 +1530,6 @@ class FrontEndQueryController extends Controller
                                             ? $this->BaseURL . '/images/' . $playerImage 
                                             : $this->default_horizontal_image_url;
                                     });
-
-
-            // dd($episodeImages);
 
         return response()->json([
             'series_image' => $image,
@@ -1553,7 +1550,7 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->latest()
+                                    ->orderBy('episode_order','desc')
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {

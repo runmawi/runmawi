@@ -49,6 +49,7 @@ rzp1.on('payment.failed', function (response) {
             user_id: "{{ $response['user_id'] }}",
             video_id: "{{ $response['SeriesSeason_id'] }}",
             amount: "{{ $response['amount'] }}",
+            PpvPurchase_id: "{{ $response['PpvPurchase_id'] }}",
             order_id: response.error.metadata.order_id,
             payment_id: response.error.metadata.payment_id,
             error_code: response.error.code,
@@ -71,15 +72,17 @@ document.getElementById('rzp-button1').onclick = function(e){
 
 <!-- This form is hidden -->
 <form action="{{url('/RazorpaySeriesSeasonRent_Payment')}}" method="POST" hidden>
-        <input type="hidden" value="{{csrf_token()}}" name="_token" /> 
-        <input type="text" class="form-control" id="rzp_paymentid"  name="rzp_paymentid">
-        <input type="text" class="form-control" id="rzp_orderid" name="rzp_orderid">
-        <input type="text" class="form-control" id="rzp_signature" name="rzp_signature">
+    <input type="hidden" value="{{csrf_token()}}" name="_token" /> 
+    <input type="text" class="form-control" id="rzp_paymentid"  name="rzp_paymentid">
+    <input type="text" class="form-control" id="rzp_orderid" name="rzp_orderid">
+    <input type="text" class="form-control" id="rzp_signature" name="rzp_signature">
 
-        <input type="text"  name="user_id"   value= {{ $response['user_id'] }} />
-        <input type="text"  name="SeriesSeason_id"  value= {{ $response['SeriesSeason_id'] }} />
-        <input type="text"  name="amount"    value= {{ $response['amount'] }} />
-        <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
+    <input type="text"  name="user_id"   value= {{ $response['user_id'] }} />
+    <input type="text"  name="SeriesSeason_id"  value= {{ $response['SeriesSeason_id'] }} />
+    <input type="text"  name="amount"    value= {{ $response['amount'] }} />
+    <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
+
+    <input type="text"  name="PpvPurchase_id"  value= {{ $response['PpvPurchase_id'] }} />
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
