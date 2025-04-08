@@ -40,6 +40,7 @@ class AdminOTPCredentialsController extends Controller
             'DLTTemplateID'    => $request->DLTTemplateID ,
             'template_message' => $request->template_message ,
             'INTL_template_message' => $request->INTL_template_message ,
+            'otp_24x7sms_INTL_sender_id' => $request->otp_24x7sms_INTL_sender_id ,
             'status' => !empty($request->status) && $request->status == "on" ? 1 : 0  ,
         );
 
