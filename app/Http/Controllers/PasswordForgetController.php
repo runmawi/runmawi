@@ -14,11 +14,17 @@ use App\User;
 use Theme;
 use Mail ;
 use URL;
+use App\Setting ;
+use App\EmailSetting ;
+use App\Services\MicrosoftGraphAuth;
+use Microsoft\Graph\Graph;
+use Microsoft\Graph\Model\Message;
 
 class PasswordForgetController extends Controller
 {
     public function __construct()
     {
+        $this->email_settings = EmailSetting::first();
         $this->Theme = HomeSetting::pluck('theme_choosen')->first();
         Theme::uses($this->Theme);
     }
@@ -36,14 +42,12 @@ class PasswordForgetController extends Controller
 
         $reset_token = str_random(15).random_int(1000000, 9999999).str_random(20).random_int(100000, 999999).str_random(1);
         $base64_encode_email = base64_encode($request->email);
-
         $user =  User::where('email',$request->email)->first() ;
 
         try {
 
             $email_template_subject =  EmailTemplate::where('id',4)->pluck('heading')->first() ;
             $email_subject  =  $email_template_subject;
-
             $data = array(
                 'email_subject' => $email_subject,
                 'email_id'      => $request->email,
@@ -51,21 +55,29 @@ class PasswordForgetController extends Controller
                 'reset_token'   =>  $reset_token ,
             );
 
-            Mail::send('emails.forget_password', array(
-                'Name'  =>  $user != null && $user->username ? $user->username : $user->name ,
-                'Date'  =>  Carbon::now(),
-                'link'  =>  URL::to('confirm-Reset-password/'.$data['crypt_email'].'/'.$data['reset_token']),
-                'website_name' =>  GetWebsiteName(),
-            ), 
-            function($message) use ($data) {
-                $message->from(AdminMail(),GetWebsiteName());
-                $message->to($data['email_id'])->subject($data['email_subject']);
-            });
+
+            if ($this->email_settings->enable_microsoft365 == 1) {
+                sendMicrosoftMail($data['email_id'], $data['email_subject'], 'emails.forget_password', [
+                    'Name' => $user != null && $user->username ? $user->username : $user->name,
+                    'Date' => Carbon::now(),
+                    'link' => URL::to('confirm-Reset-password/'.$data['crypt_email'].'/'.$data['reset_token']),
+                    'website_name' => GetWebsiteName(),
+                ]);
+            } else {
+                Mail::send('emails.forget_password', [
+                    'Name' => $user != null && $user->username ? $user->username : $user->name,
+                    'Date' => Carbon::now(),
+                    'link' => URL::to('confirm-Reset-password/'.$data['crypt_email'].'/'.$data['reset_token']),
+                    'website_name' => GetWebsiteName(),
+                ], function($message) use ($data) {
+                    $message->from(AdminMail(), GetWebsiteName());
+                    $message->to($data['email_id'])->subject($data['email_subject']);
+                });
+            }
 
             $email_log      = 'Mail Sent Successfully from Reset password for your account';
             $email_template = "4";
             $user_id        =  $user->id;
-
             Email_sent_log($user_id,$email_log,$email_template);
 
             $inputs =array(
@@ -74,21 +86,15 @@ class PasswordForgetController extends Controller
                 'email'   => $user->email,
                 'status'  => "Active"
             );
-
             $ForgetPasswordLog = ForgetPasswordLog::where('user_id',$user->id)->first();
-
             $ForgetPasswordLog == null ? ForgetPasswordLog::create($inputs) : ForgetPasswordLog::where('user_id',$user->id)->update($inputs) ;
-
             return redirect()->back()->with('status-success', 'A Password Reset link has been sent to your E-mail account');
-
         } catch (\Throwable $th) {
-
+            dd($th->getMessage());
             $email_log      = $th->getMessage();    
             $user_id        =  $user->id;
             $email_template = "4";
-
             Email_notsent_log($user_id, $email_log, $email_template);
-
             return redirect()->back()->with('status-fails', 'Sorry we cannot send you an email now. Kindly, check your email settings');
         }
 

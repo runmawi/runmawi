@@ -1330,6 +1330,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin', 'restrictIp
 
     Route::get('/email_settings', 'AdminEmailSettingsController@index')->name('email_settings');
     Route::post('/email_settings/save', 'AdminEmailSettingsController@store');
+    Route::post('/email_settings/microsoftsave', 'AdminEmailSettingsController@microsoftstore');
     Route::post('/Testing_EmailSettting', 'AdminEmailSettingsController@Testing_EmailSettting');
     Route::get('/email_logs', 'AdminEmailSettingsController@email_logs')->name('email_logs');
     Route::get('/email_template_testing', 'AdminEmailSettingsController@email_template_testing')->name('email_template_testing');
@@ -3110,3 +3111,4 @@ Route::get('/series/image/{series_id}', function ($series_id) {
 Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
 Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');
+Route::get('/send-email', 'HomeController@sendEmail');

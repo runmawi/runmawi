@@ -39,7 +39,7 @@
 {{-- Video Banner --}}
 @if (!empty($video_banners) && $video_banners->isNotEmpty())
     @foreach ($video_banners as $key => $videos)
-        <div class="s-bg-1">
+        <div class="s-bg-1" onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" >
             <div class="_banner_img">
                 <img class="flickity-lazyloaded" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}">
 
@@ -120,7 +120,7 @@
 {{-- Series  --}}
 @if (!empty($series_sliders) && $series_sliders->isNotEmpty())
     @foreach ($series_sliders as $key => $series)
-        <div class="s-bg-1">
+        <div class="s-bg-1" onclick="window.location.href='{{ url('play_series/'. $series->slug) }}'" >
             <div class="_banner_img">
                 <img class="flickity-lazyloaded" src="{{ URL::to('/public/uploads/images/' . $series->player_image) }}" alt="{{ $series->title }}" loading="lazy" >
             </div>
@@ -171,7 +171,7 @@
             ->where('series_trailer', '1')
             ->first();
         ?>
-        <div class="s-bg-1">
+        <div class="s-bg-1" onclick="window.location.href='{{ URL::to('episode/' . $Episode_slider->series_title->slug . '/' . $Episode_slider->slug) }}'">
             <div class="_banner_img">
                 <img class="flickity-lazyloaded" src="{{ URL::to('/public/uploads/images/' . $Episode_slider->player_image) }}" alt="{{ $Episode_slider->title }}" loading="lazy" >
             </div>
@@ -214,7 +214,7 @@
 
 @if (!empty($live_banner) && $live_banner->isNotEmpty())
     @foreach ($live_banner as $key => $slider_live)
-        <div class="s-bg-1">
+        <div class="s-bg-1" onclick="window.location.href='{{ url('live/' . $slider_live->slug) }}'">
             <div class="_banner_img">
                 <img class="flickity-lazyloaded" src="{{ URL::to('/public/uploads/images/' . $slider_live->player_image) }}" alt="{{ $slider_live->title }}" loading="lazy">
             </div>
@@ -256,7 +256,7 @@
 @if (!empty($live_event_banners) && $live_event_banners->isNotEmpty())
     @foreach ($live_event_banners as $live_event_banner)
         <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $live_event_banner->player_image) }}')">
+        <div class="s-bg-1 lazyloaded" onclick="window.location.href='{{ route('live_event_play', $live_event_banner->slug) }}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
@@ -298,7 +298,7 @@
 @if (!empty($VideoCategory_banner) && $VideoCategory_banner->isNotEmpty())
     @forelse ($VideoCategory_banner as $key => $videos)
         <!-- <div class="s-bg-1 lazyloaded" style="background:linear-gradient(1deg, rgb(0, 0, 0) 0%, transparent 0%), linear-gradient(90deg, rgb(24, 24, 24) 25%, transparent 50%),url('{{ URL::to('/public/uploads/images/' . $videos->player_image) }}');"> -->
-        <div class="s-bg-1 lazyloaded" style=" background: url('{{ URL::to('/public/uploads/images/' . $videos->player_image)}}')">
+        <div class="s-bg-1 lazyloaded" onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" style=" background: url('{{ URL::to('/public/uploads/images/' . $videos->player_image)}}')">
             <div class="container-fluid position-relative h-100" style="padding:0px 100px">
                 <div class="slider-inner h-100">
                     <div class="row align-items-center bl h-100">
