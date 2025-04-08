@@ -3,6 +3,8 @@
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\URL; 
+use App\Services\MicrosoftGraphAuth;
+use Microsoft\Graph\Graph;
 
 function changeDateFormate($date,$date_format){
     
@@ -2134,5 +2136,48 @@ function payment_status($item) {
             return 'succeeded';  
         default:
             return null;  
+    }
+}
+
+function sendMicrosoftMail($to, $subject, $bladeTemplate, $data)
+{
+    try {
+        $accessToken = MicrosoftGraphAuth::getAccessToken();
+        if (!$accessToken) {
+            Log::error("Failed to retrieve Microsoft Graph access token.");
+            return false;
+        }
+
+        $graph = new Graph();
+        $graph->setAccessToken($accessToken);
+
+        $body = view($bladeTemplate, $data)->render();
+
+        $emailMessage = [
+            "message" => [
+                "subject" => $subject,
+                "body" => [
+                    "contentType" => "HTML",
+                    "content" => $body
+                ],
+                "toRecipients" => [
+                    [
+                        "emailAddress" => [
+                            "address" => $to
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $graph->createRequest("POST", "/users/" . env('MICROSOFT_SENDER_EMAIL') . "/sendMail")
+            ->attachBody($emailMessage)
+            ->execute();
+
+        return true;
+    } catch (\Exception $e) {
+        dd($e->getMessage());
+        Log::error("Microsoft Mail Error: " . $e->getMessage());
+        return false;
     }
 }

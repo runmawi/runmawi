@@ -39,6 +39,7 @@
         "laravelium/sitemap": "^7.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "^3.1",
+        "microsoft/microsoft-graph": "1.85",
         "paydunya/paydunya": "^1.0",
         "paypal/rest-api-sdk-php": "^1.14",
         "pbmedia/laravel-ffmpeg": "^7.4",

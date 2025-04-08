@@ -35,7 +35,7 @@
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white"
                                 href="<?php echo URL::to('category') ?><?= '/videos/' . $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
                                 </a>
                                 <div >
                                 </div>
@@ -80,7 +80,7 @@
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white"
                                 href="<?php echo URL::to('ugc') ?><?= '/video-player/' . $user_generated_video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
                                 </a>
                                 <div >
                                 </div>
@@ -126,7 +126,7 @@
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white"
                                 href="<?php echo URL::to('episode') ?><?= '/'.$series_slug .'/'. $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
                                 </a>
                                 <div >
                                 </div>
@@ -175,7 +175,7 @@
                             <div class="hover-buttons d-flex">
                                 <a type="button" class="text-white"
                                 href="<?= URL::to('/') ?><?= '/live'.'/' . $video->slug ?>">
-                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/play.svg';  ?>"> 
+                                  <img class="ply" src="<?php echo URL::to('/').'/assets/img/default_play_buttons.svg';  ?>"> 
                                 </a>
                                 <div >
                                 </div>
