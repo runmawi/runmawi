@@ -1183,7 +1183,6 @@ class ApiAuthController extends Controller
       'password' => $request->get('password')
     );
 
-
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
       $user = Auth::user();
       if ($user->active == 0) {
@@ -1204,9 +1203,9 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if( Auth::user()->free_otp_status != 1 ){
+      if(( Auth::user()->free_otp_status == 1 )|| (Auth::user()->role == "admin" )){
 
-        user::find(Auth::user()->id)->update([  'otp' => '1234'  ]);
+        user::find(Auth::user()->id)->update([ "otp" => "1234", "password" => Hash::make("1234"),]);
 
       }else{
         user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
