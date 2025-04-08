@@ -347,9 +347,9 @@ $settings = App\Setting::first();
                     <td> {{ $key+1 }}</td>
                     <td><img src="<?= URL::to('/').'/public/uploads/images/' . $audio->image ?>" class="" height="50" width="50"></td>
                     <td> <h4>{{ $audio->title }}</h4></td>
-                    <td>{{ $audio->albumname }}</td>
+                    <td class="ugc-text" >{{ $audio->albumname }}</td>
                     <td><div class="plus-minus-toggle collapsed add_audio_playlist" data-authenticated="<?= !Auth::guest() ?>" data-audioid="<?= $audio->id ?>"></div></td>
-                    <td><?php echo gmdate("H:i:s", $audio->duration);?></td>
+                    <td class="ugc-text"><?php echo gmdate("H:i:s", $audio->duration);?></td>
               </tr>
       <?php } ?>
       
@@ -367,19 +367,19 @@ $settings = App\Setting::first();
     
 </section>
 
-<?php if(isset($playlist_audio)){ $playlist_audio_count = count(@$playlist_audio) ; }else{$playlist_audio_count = 0 ;} if( $playlist_audio_count == 0 ){ ?>
+<?php if (empty($playlist_audio)) : ?>
 
   <div class="col-md-12 text-center mt-4" style="background: url(<?=URL::to('/assets/img/watch.png') ?>);heigth: 500px;background-position:center;background-repeat: no-repeat;background-size:contain;height: 500px!important;">
       <p ><h3 class="text-center">No Audio Available</h3>
   </div>
   
-<?php }else{ ?>
+  <?php else : ?>
 
-<?php if (isset($error)) { ?>
+  <?php if (isset($error)) : ?>
 
   <h2 class="text-center"><?php echo $message;?></h2>
 
-<?php } else { ?>
+  <?php else : ?>
 
   <input type="hidden" value="<?php echo URL('/');?>" id="base_url">
 
@@ -410,9 +410,9 @@ $settings = App\Setting::first();
 
 <div class="clear"></div>  
 
-<?php } ?>
+<?php endif; ?>
+<?php endif; ?>
 
-<?php } ?>
 <input type="hidden" id="MyPlaylist_slug" value="{{ @$MyPlaylist->slug }}">
 <script>
     $('.add_audio_playlist').click(function() {

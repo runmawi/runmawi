@@ -155,7 +155,7 @@ use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use App\RokuHomeSetting;
-
+use App\OTPLog;
 
 class ApiAuthController extends Controller
 {
@@ -29371,32 +29371,24 @@ public function TV_login(Request $request)
     {
       try {
 
-          $validator = Validator::make($request->all(), [
-            'user_id'        =>  'required|numeric' ,
-          ]);
+        $validator = Validator::make($request->all(), [ 'user_id' => 'required|numeric' ,]);
 
         if ($validator->fails()) {
-
-            return response()->json([
-              'status'    => 'false',
-                'message'    => $validator->errors()->first(),
-            ], 422); 
+            return response()->json(['status' => 'false', 'message' => $validator->errors()->first(),], 422); 
         }
         
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
-        // if(is_null($AdminOTPCredentials)){
-
-        //     return response()->json( array(
-        //         "status"     => 'false' ,
-        //         "message"    => 'Please, Check the Admin OTP Credentials',
-        //       ) , 422);
-        // }
-
+        if(is_null($AdminOTPCredentials))
+           return response()->json( array( "status" => 'false' , "message" => 'Please, Check the Admin OTP Credentials', ) , 422);
+        
         $random_otp_number = random_int(1000, 9999);
         $user_id           = $request->user_id;
 
         $user = User::find($user_id);
+
+        if (is_null($user->ccode) ||  (empty($user->ccode)) )
+          return response()->json( array( "status" => 'false' , "message" => 'Ccode Missing', ) , 422);
 
         $ccode = str_replace('+','',$user->ccode );
         $mobile          = $user->mobile;
@@ -29405,12 +29397,7 @@ public function TV_login(Request $request)
         // Only for Play Store Testing 
         if( $mobile == "0987654321"){
 
-          $user = User::Where('id',$user_id)->where('mobile',$mobile)
-                        ->update([
-                          "otp" => "1234",
-                          "password" => Hash::make("1234"),
-                        ]);         
-
+          $user = User::Where('id',$user_id)->where('mobile',$mobile)->update([ "otp" => "1234", "password" => Hash::make("1234"),]);         
 
           return response()->json( [
             "status"     => 'true' ,
@@ -29435,11 +29422,16 @@ public function TV_login(Request $request)
 
           if ($response->failed()) {
               
-              $response = array(
-                "status"  => 'false' ,
-                "status_code" => 400,
-                "message" => $response['message'] ,
-              );
+              OTPLog::create([
+                'status' => 'false' ,
+                'message'=> 'SMS Not Sent' ,
+                'request_id' => null,
+                'Mobile_number' =>  $Mobile_number,
+                'User_id'       =>  $user->id, 
+                'otp_vai'       => 'fast2sms'
+              ]);
+
+              $response = array( "status"  => 'false' , "status_code" => 400,"message" => $response['message'] ,);
 
           } else {
 
@@ -29449,6 +29441,15 @@ public function TV_login(Request $request)
                 'otp_through' => $AdminOTPCredentials->otp_vai ,
                 'password'    => Hash::make($random_otp_number),
                 'email'       => 'No email for this id - '.$user_id,
+              ]);
+
+              OTPLog::create([
+                'status' => "true" ,
+                'message'=>'SMS Send Successfully' ,
+                'request_id' => $response['request_id'],
+                'Mobile_number' =>  $Mobile_number,
+                'User_id'       =>  $user->id, 
+                'otp_vai'       => 'fast2sms'
               ]);
 
               $response = array(
@@ -29464,32 +29465,38 @@ public function TV_login(Request $request)
         if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
 
             $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
-            $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
-            $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
 
-            $inputs = array(
-                'APIKEY' => $API_key_24x7sms,
-                'MobileNo' => $Mobile_number,
-                'SenderID' => $SenderID,
-                'ServiceName' => $ServiceName,
-            );
+              // For Indian Numbers
+            if ($ccode == "91" ) {
 
-            if ($ServiceName == "INTL_TEMPLATE") {
-                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->INTL_template_message) ;
-                $inputs += array('Message' => $message );
-            }
-
-            if ($ServiceName == "TEMPLATE_BASED") {
-
-                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
-                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
-
-                $inputs += array(
-                    // 'DLTTemplateID' => $DLTTemplateID,
+                $ServiceName = "TEMPLATE_BASED";
+                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID;
+                $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->template_message);
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                
+                $inputs = array(
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $Mobile_number,
+                    'SenderID' => $SenderID,
+                    'ServiceName' => $ServiceName,
+                    'DLTTemplateID' => $DLTTemplateID, 
+                    'Message' => $message,
+                );
+            } else {
+                // For international Numbers
+                $ServiceName = "INTL_TEMPLATE";
+                $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->INTL_template_message);
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_INTL_sender_id ;
+                
+                $inputs = array(
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $Mobile_number,
+                    'SenderID' => $SenderID,
+                    'ServiceName' => $ServiceName,
                     'Message' => $message,
                 );
             }
-
+           
             $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
             if (str_contains($response->body(), 'success')) {
@@ -29505,6 +29512,15 @@ public function TV_login(Request $request)
                   // 'email'       => 'No email for this id - '.$user_id,
                 ]);
 
+                OTPLog::create([
+                  'status' => 'true' ,
+                  'message' =>'SMS Send Successfully' ,
+                  'request_id' => $msgId,
+                  'Mobile_number' =>  $Mobile_number,
+                  'User_id'       =>  $user->id, 
+                  'otp_vai'       => '24x7sms'
+                ]);
+
                 $response = array(
                   "status"     => 'true' ,
                   "status_code" => 200,
@@ -29515,11 +29531,16 @@ public function TV_login(Request $request)
 
             }else {
 
-                $response = array(
-                  "status"  => 'false' ,
-                  "status_code" => 400,
-                  "message" => 'OTP Not Sent' ,
-                );
+                OTPLog::create([
+                  'status' => 'false' ,
+                  'message'=> $response->body() ,
+                  'request_id' => null,
+                  'Mobile_number' =>  $Mobile_number,
+                  'User_id'       =>  $user->id, 
+                  'otp_vai'       => '24x7sms'
+                ]);
+
+                $response = array( "status"  => 'false' , "status_code" => 400, "message" => 'OTP Not Sent' , );
             }      
         }
 
