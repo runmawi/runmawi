@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTemplateToAdminOtpCredentialsTable extends Migration
+class AddOtp24x7smsINTLSenderIdToAdminOtpCredentialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddTemplateToAdminOtpCredentialsTable extends Migration
     public function up()
     {
         Schema::table('admin_otp_credentials', function (Blueprint $table) {
-            $table->longText('INTL_template_message')->nullable()->after('template_message');
+            $table->string('otp_24x7sms_INTL_sender_id')->nullable()->after('INTL_template_message');
         });
     }
 
@@ -26,7 +26,7 @@ class AddTemplateToAdminOtpCredentialsTable extends Migration
     public function down()
     {
         Schema::table('admin_otp_credentials', function (Blueprint $table) {
-            $table->dropColumn('INTL_template_message');
+            $table->dropColumn('otp_24x7sms_INTL_sender_id');
         });
     }
 }

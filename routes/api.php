@@ -694,7 +694,7 @@ Route::group(
             // Sending OTP
             Route::addRoute(['GET', 'POST'], 'Mobile-exists-verify', 'ApiAuthController@Mobile_exists_verify');
  
-            Route::addRoute(['GET', 'POST'],'Sending-OTP', 'ApiAuthController@Sending_OTP'); 
+            Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
             Route::addRoute(['GET', 'POST'], 'Verify-OTP', 'ApiAuthController@Verify_OTP');
 
             Route::post('send-video-push-notifications', 'ApiAuthController@SendVideoPushNotification'); 
