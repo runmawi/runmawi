@@ -67,6 +67,11 @@ class OTPController extends Controller
             return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
         }
 
+            // Check Free OTP exists
+        if ( !is_null($user) && $user->free_otp_status == 1 && $user->otp == "1234") {
+            return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+        }
+
         try {
             
             $random_otp_number = random_int(1000, 9999);
@@ -236,11 +241,15 @@ class OTPController extends Controller
                         break;
                 }
                 
-                User::find($user_verify->id)->update([
-                    'otp' => null ,
-                    'otp_request_id' => null ,
-                    'otp_through' => null ,
-                ]);
+                 // Check Free OTP exists
+                if ( !is_null($user_verify) && $user_verify->free_otp_status == 0 ) {
+                
+                    User::find($user_verify->id)->update([
+                        'otp' => null ,
+                        'otp_request_id' => null ,
+                        'otp_through' => null ,
+                    ]);
+                }
 
                 return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
             }
