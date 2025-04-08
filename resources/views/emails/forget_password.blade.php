@@ -3,7 +3,7 @@
             
     $template = App\EmailTemplate::where('id','=',4)->first(); 
     $template_description = $template->description ;
-    $emailSetting = EmailSetting::first();
+    $emailSetting = App\EmailSetting::first();
 
     $template_change = array( 
         "{Name}", 
