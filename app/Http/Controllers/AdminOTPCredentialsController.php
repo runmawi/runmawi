@@ -4,13 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\AdminOTPCredentials;
+use App\OTPLog;
+use App\User;
 
 class AdminOTPCredentialsController extends Controller
 {
     public function index()
     {
-        $data = array('AdminOTPCredentials' => AdminOTPCredentials::first(), );
+        $OTP_Logs =  OTPLog::get()->map(function($item){
+            $item['name'] = User::where('id', $item->User_id)->pluck('username')->first();
+            $item['created_at_format'] = Carbon::parse($item->created_at)->isoFormat('Do MMM YYYY hh:mm A');
+            return $item ;
+        });
+
+        $data = array(
+            'AdminOTPCredentials' => AdminOTPCredentials::first(),
+            'OTP_Logs' => $OTP_Logs,
+        );
 
         return view('admin.OTP.index',$data);
     }
