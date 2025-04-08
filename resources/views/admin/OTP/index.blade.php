@@ -151,22 +151,26 @@
                         <br>
 
                         {{-- 24x7sms div --}}
-
-                        <button type="button" data-toggle="collapse" data-target="#TEMPLATE-BASED-div" aria-expanded="true" 
-                            class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link TEMPLATE-BASED-button" >
-                            TEMPLATE BASED
-                        </button>
-
-                        <button type="button" data-toggle="collapse" data-target="#INTL-TEMPLATE-div" aria-expanded="true" 
-                            class="btn btn-link text-dark font-weight-bold text-uppercase collapsible-link INTL-TEMPLATE-button" >
-                            INTL TEMPLATE
-                        </button>
-            
-                        <div id="accordionExample" class="accordion">
-                            <div id="TEMPLATE-BASED-div" data-parent="#accordionExample" class="row collapse " >
-
-                                <div class="row col-md-12 24x7sms_div " style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' ? 'display=none !important;' : 'display: none !important' }} ">
-                            
+                        <div class="24x7sms_div" style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' ? '' : 'display: none;' }}">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-link text-dark font-weight-bold text-uppercase" 
+                                        data-toggle="collapse" data-target="#TEMPLATE-BASED-div" 
+                                        aria-expanded="false" aria-controls="TEMPLATE-BASED-div">
+                                    TEMPLATE BASED
+                                </button>
+                                
+                                <button type="button" class="btn btn-link text-dark font-weight-bold text-uppercase" 
+                                        data-toggle="collapse" data-target="#INTL-TEMPLATE-div" 
+                                        aria-expanded="false" aria-controls="INTL-TEMPLATE-div">
+                                    INTL TEMPLATE
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion" id="smsTemplatesAccordion">
+                            <!-- TEMPLATE BASED SECTION -->
+                            <div id="TEMPLATE-BASED-div" class="collapse" aria-labelledby="headingOne" data-parent="#smsTemplatesAccordion">
+                                <div class="row col-md-12">
                                     <div class="col-md-6">
                                         <div class="panel panel-primary" data-collapsed="0">
                                             <div class="panel-heading">
@@ -176,62 +180,31 @@
                                                 </div>
                                             </div>
                                             <div class="panel-body" style="display: block;">
-                                                <input type="text" class="form-control" name="otp_24x7sms_sender_id" id="otp_24x7sms_sender_id" value="{{ !empty($AdminOTPCredentials->otp_24x7sms_sender_id) ? $AdminOTPCredentials->otp_24x7sms_sender_id : null }}" placeholder="xxxxxxxxxxxxxx" />
+                                                <input type="text" class="form-control" name="otp_24x7sms_sender_id" id="otp_24x7sms_sender_id" 
+                                                       value="{{ !empty($AdminOTPCredentials->otp_24x7sms_sender_id) ? $AdminOTPCredentials->otp_24x7sms_sender_id : null }}" 
+                                                       placeholder="xxxxxxxxxxxxxx" />
                                             </div>
                                         </div>
                                     </div>
-
+                        
                                     <div class="col-md-6">
                                         <div class="panel panel-primary" data-collapsed="0">
                                             <div class="panel-heading">
-                                                <div class="panel-title"><label> DLT Template ID  </label></div>
-                                                <div class="panel-options">
-                                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                                </div>
-                                            </div>
-        
-                                            <div class="panel-body" style="display: block;">
-                                                <input type="text" class="form-control" name="DLTTemplateID"  id="DLTTemplateID" value="{{ !empty($AdminOTPCredentials->DLTTemplateID) ? $AdminOTPCredentials->DLTTemplateID : null }}" placeholder="xxxxxxxxxxxxxx" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="panel panel-primary" data-collapsed="0">
-                                            <div class="panel-heading">
-                                                <div class="panel-title"><label> Template Message  </label></div>
+                                                <div class="panel-title"><label> DLT Template ID </label></div>
                                                 <div class="panel-options">
                                                     <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                                 </div>
                                             </div>
                                             <div class="panel-body" style="display: block;">
-                                                <textarea class="form-control" name="template_message" id="" cols="30" rows="10" placeholder="Template custom Message">  {{ @$AdminOTPCredentials->template_message }}
-                                                </textarea>
+                                                <input type="text" class="form-control" name="DLTTemplateID" id="DLTTemplateID" 
+                                                       value="{{ !empty($AdminOTPCredentials->DLTTemplateID) ? $AdminOTPCredentials->DLTTemplateID : null }}" 
+                                                       placeholder="xxxxxxxxxxxxxx" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <br>
 
-                        <div id="accordionExample1" class="accordion">
-                            <div id="INTL-TEMPLATE-div" data-parent="#accordionExample1" class="row collapse " >
-                                <div class="row col-md-12 24x7sms_div " style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' ? 'display=none !important;' : 'display: none !important' }} ">
-                                    <div class="col-md-6">
-                                        <div class="panel panel-primary" data-collapsed="0">
-                                            <div class="panel-heading">
-                                                <div class="panel-title"><label> Sender ID </label></div>
-                                                <div class="panel-options">
-                                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="panel-body" style="display: block;">
-                                                <input type="text" class="form-control" name="otp_24x7sms_INTL_sender_id" id="otp_24x7sms_INTL_sender_id" value="{{ !empty($AdminOTPCredentials->otp_24x7sms_INTL_sender_id) ? $AdminOTPCredentials->otp_24x7sms_INTL_sender_id : null }}" placeholder="xxxxxxxxxxxxxx" />
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <div class="row col-md-12 mt-10">
                                     <div class="col-md-6">
                                         <div class="panel panel-primary" data-collapsed="0">
                                             <div class="panel-heading">
@@ -241,9 +214,44 @@
                                                 </div>
                                             </div>
                                             <div class="panel-body" style="display: block;">
-                                                <textarea class="form-control" name="INTL_template_message" id="" cols="30" rows="10"
-                                                    placeholder="Template custom Message">
-                                                    {{ @$AdminOTPCredentials->INTL_template_message }}
+                                                <textarea class="form-control" name="template_message" cols="30" rows="5" 
+                                                        placeholder="Template custom Message">{{ @$AdminOTPCredentials->template_message }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- INTL TEMPLATE SECTION -->
+                            <div id="INTL-TEMPLATE-div" class="collapse" aria-labelledby="headingTwo" data-parent="#smsTemplatesAccordion">
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-primary" data-collapsed="0">
+                                            <div class="panel-heading">
+                                                <div class="panel-title"><label> Sender ID </label></div>
+                                                <div class="panel-options">
+                                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body" style="display: block;">
+                                                <input type="text" class="form-control" name="otp_24x7sms_INTL_sender_id" id="otp_24x7sms_INTL_sender_id" 
+                                                       value="{{ !empty($AdminOTPCredentials->otp_24x7sms_INTL_sender_id) ? $AdminOTPCredentials->otp_24x7sms_INTL_sender_id : null }}" 
+                                                       placeholder="xxxxxxxxxxxxxx" />
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="col-md-6">
+                                        <div class="panel panel-primary" data-collapsed="0">
+                                            <div class="panel-heading">
+                                                <div class="panel-title"><label> Template Message </label></div>
+                                                <div class="panel-options">
+                                                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body" style="display: block;">
+                                                <textarea class="form-control" name="INTL_template_message" cols="30" rows="5" 
+                                                    placeholder="Template custom Message">{{ @$AdminOTPCredentials->INTL_template_message }}
                                                 </textarea>
                                             </div>
                                         </div>
@@ -251,8 +259,7 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
-
+                        
                         <div class="panel-body mt-3 ml-2 text-right">
                             <input type="submit" value="Update" class="btn btn-primary" />
                         </div>
@@ -318,16 +325,22 @@
 
     <script>
         $(document).ready(function() {
-
-            $('.otp_vai').on('change', function() {
-                $('.24x7sms_div,.fast2sms_div').hide();
-                var otp_vai_div = ($(this).find(":selected").val());
-                $('.' + otp_vai_div + '_div').show();
+            $('.collapse').on('show.bs.collapse', function() {
+                $('.collapse').not(this).collapse('hide');
             });
-        });
-
-        $(document).ready(function() {
-            $('#otp-logs-table').DataTable();
+        
+            $('.otp_vai').on('change', function() {
+                $('#smsTemplatesAccordion .collapse').not(this).collapse('hide');
+                $('.24x7sms_div, .fast2sms_div').hide();
+                var selectedProvider = $(this).val();
+                $('.' + selectedProvider + '_div').show();
+                
+                $('.collapse').collapse('hide');
+            });
+        
+            $('#smsTemplatesAccordion .collapse').on('shown.bs.collapse', function() {
+                $('#smsTemplatesAccordion .collapse').not(this).collapse('hide');
+            });
         });
     </script>
 @stop

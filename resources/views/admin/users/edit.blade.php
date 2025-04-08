@@ -159,7 +159,7 @@
 								</div>
 							</div>
 						</div>
-
+						
 						@if ( Auth::user()->role != "admin" )
 							<div class="col-sm-6 mt-2"> 
 								<div class="panel panel-primary" data-collapsed="0"> 
@@ -176,15 +176,41 @@
 								</div>
 							</div>
 						@endif
-						
-						<div class="col-sm-6 mt-2"> 
-							<div class="panel panel-primary" data-collapsed="0"> <div class="panel-heading"> 
-								<!--<div class="panel-title">User Active Status</div>--> <div class="panel-options"> <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a> </div></div> 
-								<div class="panel-body" style="display: block;"> 
-									<label class="mb-1">User Active Status </label>
-									<input type="checkbox" id="active" name="active" @if(isset($user->active) && $user->active == 1)checked="checked" value="1" @else value="0" @endif />
+
+						<div class="col-md-3">
+							<label for="">User Active </label>
+							<div class="d-flex justify-content-around align-items-center" style="width:50%;">
+
+								<div style="color:red;">OFF</div>
+
+								<div class="mt-1">
+									<label class="switch">
+										<input type="checkbox" id="active" name="active" @if(isset($user->active) && $user->active == 1)checked="checked" value="1" @else value="0" @endif />
+										<span class="slider round"></span>
+									</label>
 								</div>
+
+								<div style="color:green;">ON</div>
 							</div>
+							<div class="make-switch" data-on="success" data-off="warning"></div>
+						</div>
+
+						<div class="col-md-3">
+							<label for="">Free OTP Status</label>
+							<div class="d-flex justify-content-around align-items-center" style="width:50%;">
+
+								<div style="color:red;">OFF</div>
+
+								<div class="mt-1">
+									<label class="switch">
+										<input type="checkbox" id="free_otp_status" name="free_otp_status" {{ $user->free_otp_status == 1 ? 'checked' : '' }}>
+										<span class="slider round"></span>
+									</label>
+								</div>
+
+								<div style="color:green;">ON</div>
+							</div>
+							<div class="make-switch" data-on="success" data-off="warning"></div>
 						</div>
 
 						<div class="col-md-6 mt-2" id="SubscriptionPlan">

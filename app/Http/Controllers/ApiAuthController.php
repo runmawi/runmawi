@@ -1204,15 +1204,13 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if ( Auth::user()->mobile != "9962743248" && Auth::user()->role != "admin" ) {
+      if( Auth::user()->free_otp_status != 1 ){
 
-          User::find(Auth::user()->id)->update([
-              'otp' => null,
-              'otp_request_id' => null,
-              'otp_through' => null,
-          ]);
+        user::find(Auth::user()->id)->update([  'otp' => '1234'  ]);
+
+      }else{
+        user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
       }
-    
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -29394,9 +29392,7 @@ public function TV_login(Request $request)
         $mobile          = $user->mobile;
         $Mobile_number   = $ccode.$mobile ;
 
-        // Only for Play Store Testing 
-
-        if ( ($user->mobile == "9962743248" ) || ( $user->role == "admin") ) {
+        if( !is_null($user) && ( $user->role ==  "admin" || $user->free_otp_status == 1 ) ){
 
           $user = User::Where('id',$user_id)->where('mobile',$mobile)->update([ "otp" => "1234", "password" => Hash::make("1234"),]);         
 
@@ -29576,17 +29572,11 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
-        $user_check = User::where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)->first();
+        $user_verify = User::find($request->user_id);
 
-        // Only for Play Store Testing 
+        if( !is_null($user_verify) && ( $user_verify->role ==  "admin" || $user_verify->free_otp_status == 1 ) ){
 
-        if (  (!is_null($user_check) && $user_check->mobile == "9962743248" ) || (!is_null($user_check) && $user_check->role == "admin")) {
-
-          $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
-                        ->update([
-                          "otp" => "1234",
-                          "password" => Hash::make("1234"),
-                        ]);         
+          $user_verify->update(["otp" => "1234", "password" => Hash::make("1234") ]);         
 
           return response()->json( [
             'status'    => 'true',

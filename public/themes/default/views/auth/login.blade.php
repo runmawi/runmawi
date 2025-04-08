@@ -13,8 +13,14 @@
 
     $AdminOTPCredentials =  App\AdminOTPCredentials::where('status',1)->first();
     
-    $country_json_data = json_decode(file_get_contents(base_path('assets/country_code.json')), true);
+    $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+    $country_json_data = json_decode($jsonString, true);
+    
+    usort($country_json_data, function ($a, $b) {
+        return strcmp($a['code'], $b['code']);
+    });
 
+    
     if(Auth::guest()){
        $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
        $userIp = $geoip->getip();

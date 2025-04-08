@@ -361,14 +361,8 @@ class AdminUsersController extends Controller
 
         $input = $request->all();
 
+        $active = !empty($input['active']) ? 1 : 0  ;
 
-        if(empty($input['active'])){
-            $active = 0 ;
-        }
-        else{
-            $active = 1 ;
-        }
-        
         $user = Auth::user();
 
         $path = public_path() . '/uploads/avatars/';
@@ -380,18 +374,15 @@ class AdminUsersController extends Controller
         $logo = $request['avatar'];
 
 
-
         if ($logo != ''  && $logo != null)
         {
             //code for remove old file
             if ($logo != '' && $logo != null)
             {
                 $file_old = $path . $logo;
-                if (file_exists($file_old))
-                {
-                    unlink($file_old);
-                }
+                if (file_exists($file_old)) { unlink($file_old);}
             }
+
             //upload new file
             $file = $logo;
             $input['avatar'] = $file->getClientOriginalName();
@@ -416,6 +407,8 @@ class AdminUsersController extends Controller
             $User->role = $request['role'];
             $User->activation_code = $string;
             $User->active = $active;
+            $User->free_otp_status = !empty($input['free_otp_status']) ? 1 : 0 ;
+            $User->otp = !empty($input['free_otp_status']) ? "1234" : null ;
             $User->avatar = $avatar;
             $User->password = $password;
             $User->save();
@@ -454,7 +447,7 @@ class AdminUsersController extends Controller
             $subscription->save();
 
         }else{
-            return Redirect::to('admin/user/create')->with(array(
+            return Redirect::to('admin/users')->with(array(
                 'message' => 'Added User Successfully',
                 'note_type' => 'failed'
             ));
@@ -508,22 +501,6 @@ class AdminUsersController extends Controller
         }
 
         $input['terms'] = 0;
-
-        //           if($request['passwords'] == ''){
-        
-
-        //             // echo "<pre>";
-        //             // print_r($password);
-        //             // exit();
-        //             $request['password'] = $password;
-        //         } else{
-        //             // echo "<pre>";
-        //             // print_r('$input');
-        //             // exit();
-        //             $password = Hash::make($request['passwords']);
-        //             $request['password'] = $password; }
-        // //
-        //         $user = User::create($input);
 
         // Welcome on sub-user registration
         $email_subject = EmailTemplate::where('id', '=', 9)->pluck('heading')->first();
@@ -622,7 +599,7 @@ class AdminUsersController extends Controller
         else{
             $avatar_image =  $user->avatar ;
         }
-        
+
         DB::table('users')->where('id', $id)->update(
             [
                 'username'  => $input['username'],
@@ -632,6 +609,8 @@ class AdminUsersController extends Controller
                 'password'  => $input['passwords'],
                 'role'      => $input['role'],
                 'active'    => $active_status,
+                'free_otp_status' =>  !empty($request['free_otp_status']) ? 1 : 0 , 
+                'otp' =>  !empty($request['free_otp_status']) ? "1234" : null , 
                 'terms'     => $input['terms'],
                 'avatar'    => $avatar_image,
                 'stripe_active' => $input['stripe_active'],
@@ -695,7 +674,6 @@ class AdminUsersController extends Controller
             return Redirect::to('admin/users')->with(array('message' => 'Need to Select Plan ID','note_type' => 'success'));
         }
         
-
         return Redirect::to('admin/users')->with(array('message' => 'Successfully Created New User','note_type' => 'success'));
     }
 
@@ -741,6 +719,7 @@ class AdminUsersController extends Controller
             return View::make('admin.expired_storage', $data);
         }else{
         $user = User::find($id);
+
         $data = array(
             'user' => $user,
             'post_route' => URL::to('admin/user/update') ,

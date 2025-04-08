@@ -266,14 +266,19 @@ i.fa.fa-google-plus {
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <?php $jsonString = file_get_contents(base_path('assets/country_code.json'));   
 
-    $jsondata = json_decode($jsonString, true); ?>
-<?php 
+<?php
+    $jsonString = file_get_contents(base_path('assets/country_code.json'));   
+    $jsondata = json_decode($jsonString, true);
+    
+    usort($jsondata, function ($a, $b) {
+        return strcmp($a['name'], $b['name']);
+    });
+  
     $ref = Request::get('ref');
     $coupon = Request::get('coupon');
-    // dd($SignupMenu);
 ?>
+
 <div class="container">
       <div class="row justify-content-center align-items-center height-self-center">
          <div class="col-sm-9 col-md-7 col-lg-5 align-self-center">
@@ -1499,7 +1504,6 @@ function format(item, state) {
       <script src="assets/js/custom.js"></script>
        <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.js';?>"></script>
       <script src="<?= URL::to('/'). '/assets/js/jquery.lazy.min.js';?>"></script>
-
 
 
 
