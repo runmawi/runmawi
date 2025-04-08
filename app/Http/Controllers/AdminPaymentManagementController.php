@@ -25,6 +25,9 @@ use Laravel\Cashier\Invoice;
 use GuzzleHttp\Message\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\SeriesSeason;
+use App\Series;
+use App\Livestream;
 
 class AdminPaymentManagementController extends Controller
 {
@@ -504,7 +507,5 @@ class AdminPaymentManagementController extends Controller
       echo json_encode($data);
      }
 }
-
-
 
 }

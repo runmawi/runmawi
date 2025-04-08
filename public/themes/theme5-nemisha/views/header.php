@@ -1663,7 +1663,8 @@
                                             <div class="iq-sub-dropdown search_content overflow-auto" id="sidebar-scrollbar"></div>
                                         </li>
                                         <li>
-                                          
+                                        <?php if(!Auth::guest()): ?>
+                                            <?php if( $home_settings->user_generated_content == '1' ): ?>
                                                     <div class="bg-cocreataz text-right p-1" style="border-radius:10px;" >
                                                         <a href="<?php echo URL::to('ugc-create'); ?>" >
                                                             <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1674,7 +1675,9 @@
                                                             </svg>
                                                         </a>
                                                     </div>
-                                              
+                                                   
+                                                <?php endif ; ?>
+                                            <?php endif ; ?>
                                         </li>
  
                                         <li class="nav-item nav-icon">

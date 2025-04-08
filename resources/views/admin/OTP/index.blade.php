@@ -179,9 +179,9 @@
                                         <select  class="form-control sevicename"  name="otp_24x7sms_sevicename" >
                                            <option value=" " > Select the Sevice Name</option>
                                            <option value="TEMPLATE_BASED" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "TEMPLATE_BASED" ? 'selected' : null }}  > TEMPLATE_BASED </option>
-                                           <option value="PROMOTIONAL_HIGH" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "PROMOTIONAL_HIGH" ? 'selected'  : null }}  > PROMOTIONAL_HIGH </option>
+                                           {{-- <option value="PROMOTIONAL_HIGH" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "PROMOTIONAL_HIGH" ? 'selected'  : null }}  > PROMOTIONAL_HIGH </option>
                                            <option value="PROMOTIONAL_SPL" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "PROMOTIONAL_SPL" ? 'selected'  : null }}  > PROMOTIONAL_SPL </option>
-                                           <option value="OPTIN_OPTOUT" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "OPTIN_OPTOUT" ? 'selected'  : null }}  > OPTIN_OPTOUT </option>
+                                           <option value="OPTIN_OPTOUT" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "OPTIN_OPTOUT" ? 'selected'  : null }}  > OPTIN_OPTOUT </option> --}}
                                            <option value="INTERNATIONAL" {{ @$AdminOTPCredentials->otp_24x7sms_sevicename == "INTERNATIONAL" ? 'selected'  : null }}  > INTERNATIONAL </option>
                                         </select>
                                     </div>
@@ -223,13 +223,29 @@
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div class="row col-md-12 24x7sms_div INTERNATIONAL_div" style="{{ @$AdminOTPCredentials->otp_vai == '24x7sms' &&  @$AdminOTPCredentials->otp_24x7sms_sevicename == 'INTERNATIONAL' ? 'display=none !important;' : 'display: none !important' }} ">
+                            <div class="col-md-6">
+                                <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                        <div class="panel-title"><label> Template Message - 24x7 Sms </label></div>
+                                        <div class="panel-options">
+                                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                        <textarea  class="form-control" name="INTL_template_message" id="" cols="30" rows="10" placeholder="Template custom Message">
+                                            {{  @$AdminOTPCredentials->INTL_template_message }}
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="panel-body mt-3 ml-2 text-right">
                             <input type="submit" value="Update" class="btn btn-primary" />
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -240,17 +256,28 @@
 
             $('.otp_vai').on('change', function() {
                 $('.24x7sms_div,.fast2sms_div').hide();
-                var otp_vai_div= ( $(this).find(":selected").val() );
+                var otp_vai_div = ( $(this).find(":selected").val() );
                 $( '.' + otp_vai_div +'_div' ).show();
+
+                if (otp_vai_div == "24x7sms") {
+
+                    $('.TEMPLATE_BASED_div,.INTERNATIONAL_div').hide();
+                    var currentServiceName = $('.sevicename').val();
+
+                    if ( currentServiceName == "INTERNATIONAL")  $('.INTERNATIONAL_div').show();
+
+                    if ( currentServiceName == "TEMPLATE_BASED")  $('.TEMPLATE_BASED_div').show();
+                    
+                }
             });
 
             $('.sevicename').on('change', function() {
 
-                $('.TEMPLATE_BASED_div').hide();
-                var TEMPLATE_BASED_div= ( $(this).find(":selected").val() );
-                $( '.' + TEMPLATE_BASED_div +'_div' ).show();
+                $('.TEMPLATE_BASED_div,.INTERNATIONAL_div').hide();
+                let TEMPLATE_div= ( $(this).find(":selected").val() );
+
+                $( '.' + TEMPLATE_div +'_div' ).show();
             });
         });
-
     </script>
 @stop
