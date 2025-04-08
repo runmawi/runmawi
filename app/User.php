@@ -40,7 +40,7 @@ class User extends Authenticatable
                             'coupon_expired', 'payment_type', 'paypal_end_at', 'ccode', 'mobile','city','country','preference_genres',
                             'avatar','terms','stripe_active','sub_admin','referral_token', 'password', 'role', 'status', 'disabled', 'activation_code','provider',
                             'provider_id','g-recaptcha-response','subscription_ends_at','package','package_ends','provider_avatar','gender','DOB','Password_Pin','ios_avatar',
-                            'otp','otp_request_id','otp_through','stripe_id','payment_status','payment_gateway','ugc_about','ugc_facebook','ugc_instagram','ugc_twitter'
+                            'otp','otp_request_id','otp_through','stripe_id','payment_status','payment_gateway','ugc_about','ugc_facebook','ugc_instagram','ugc_twitter','free_otp_status'
                         ];
    
         /**
