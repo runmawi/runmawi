@@ -26,7 +26,7 @@
         <div style=" background: #edf2f7;">
             <div class="content" style="background: #fff;margin: 5%;">
                     <?php $settings = App\Setting::first(); ?>
-                    <?php if ($emailSetting && $emailSetting->enable_microsoft365 == 1): ?>
+                    <?php if ($emailSetting && $emailSetting->enable_microsoft365 == 0): ?>
                     <a style="margin-left: 39%;" class="navbar-brand" href="<?php echo URL::to('/') ?>"> <img src="{{ $message->embed( Mail_Image() ) }}" class="c-logo" style="width: 50px; height:50px;"> </a>
                     <?php endif; ?>
             <div>
