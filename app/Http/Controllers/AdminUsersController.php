@@ -614,7 +614,7 @@ class AdminUsersController extends Controller
                 'terms'     => $input['terms'],
                 'avatar'    => $avatar_image,
                 'stripe_active' => $input['stripe_active'],
-                'otp' => $input['otp'],
+                // 'otp' => $input['otp'],
                 'payment_status'  =>   !empty($input['role']) && $input['role'] == 'subscriber' ? SubscriptionPlan::where('plan_id',$input['plan'])->pluck('type')->first() : null,
             ]);
 
