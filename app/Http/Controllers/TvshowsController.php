@@ -1167,8 +1167,8 @@ class TvshowsController extends Controller
             }
 
             // default episode play
-            $season_ide = Episode::where('slug', $episode_name)->pluck('season_id')->first();
-            $season_access_ppv = SeriesSeason::where('id', $season_ide)->pluck('access')->first();
+            $season_ide = Episode::where('slug', $episode_name)->pluck('season_id')->toArray();
+            $season_access_ppv = SeriesSeason::whereIn('id', $season_ide)->pluck('access')->first();
             $setting_subscirbe_series_access = Setting::pluck('enable_ppv_rent_series')->first();
 
             if(!Auth::guest()){
