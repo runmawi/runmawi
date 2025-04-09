@@ -75,100 +75,200 @@ border-radius: 0px 4px 4px 0px;
             </div>
 	         <div class="clear"></div>
 
-            <form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Email_setting_form">
-               <div class="row mt-4">
-                  <div class="col-md-6">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Admin Email</label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+            <div id="smtpsetting">
+               <div class="tab">
+                  <button class="tablinks1 btn btn-light">SMTP</button>
+                  <button class="tablinks2 btn btn-light">Microsoft 365</button>
+                  <form method="POST" action="{{ URL::to('admin/email_settings/save') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Email_setting_form">
+                        <div class="row mt-4">
+                           <div class="col-md-6">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Admin Email</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="admin_email" id="admin_email" value="@if(!empty($email_settings->admin_email)){{ $email_settings->admin_email }}@endif" />
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <input type="text" class="form-control" name="admin_email" id="admin_email" value="@if(!empty($email_settings->admin_email)){{ $email_settings->admin_email }}@endif" />
-                           </div>
-                     </div>
-                  </div>
-         
-                  <div class="col-md-6">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Email Host</label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                  
+                           <div class="col-md-6">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Email Host</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="email_host" id="email_host" value="@if(!empty($email_settings->host_email)){{ $email_settings->host_email }}@endif" />
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <input type="text" class="form-control" name="email_host" id="email_host" value="@if(!empty($email_settings->host_email)){{ $email_settings->host_email }}@endif" />
-                           </div>
-                     </div>
-                  </div>
 
-                  <div class="col-md-6 mt-3">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Email Port</label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Email Port</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="email_port" id="email_port" value="@if(!empty($email_settings->email_port)){{ $email_settings->email_port }}@endif" />
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <input type="text" class="form-control" name="email_port" id="email_port" value="@if(!empty($email_settings->email_port)){{ $email_settings->email_port }}@endif" />
-                           </div>
-                     </div>
-                  </div>
 
-                  <div class="col-md-6 mt-3">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Secure </label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Secure </label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <select id="secure" name="secure" class="form-control" required>
+                                          <option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'ssl'){{ 'selected' }}@endif> TRUE</option>
+                                          <option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'tls'){{ 'selected' }}@endif >FALSE</option>
+                                       </select>
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <select id="secure" name="secure" class="form-control" required>
-                                 <option value="ssl" @if(!empty($email_settings->secure) && $email_settings->secure == 'ssl'){{ 'selected' }}@endif> TRUE</option>
-                                 <option value="tls" @if(!empty($email_settings->secure) && $email_settings->secure == 'tls'){{ 'selected' }}@endif >FALSE</option>
-                              </select>
-                           </div>
-                     </div>
-                  </div>
 
-                  <div class="col-md-6 mt-3">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Email User</label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Email User</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="email_user" id="email_user" value="@if(!empty($email_settings->user_email)){{ $email_settings->user_email }}@endif" />
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <input type="text" class="form-control" name="email_user" id="email_user" value="@if(!empty($email_settings->user_email)){{ $email_settings->user_email }}@endif" />
-                           </div>
-                     </div>
-                  </div>
 
-                  <div class="col-md-6 mt-3">
-                     <div class="panel panel-primary" data-collapsed="0">
-                           <div class="panel-heading">
-                              <div class="panel-title"><label>Email Password</label></div>
-                              <div class="panel-options">
-                                 <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>Email Password</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="password" class="form-control" name="password" id="password" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif" />
+                                    </div>
                               </div>
                            </div>
-                           <div class="panel-body" style="display: block;">
-                              <input type="password" class="form-control" name="password" id="password" value="@if(!empty($email_settings->email_password)){{ $email_settings->email_password }}@endif" />
-                           </div>
-                     </div>
-                  </div>
+                        </div>
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <div class="panel-body mt-3 ml-2">
+                           <input type="submit" value="Update Email Settings" class="btn btn-primary" />
+                        </div>
+                     </form>
                </div>
-               <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
-               <div class="panel-body mt-3 ml-2">
-                  <input type="submit" value="Update Email Settings" class="btn btn-primary" />
+            </div>
+
+            <div id="officesetting">
+               <div class="tab">
+                  <button class="tablinks1 btn btn-light">SMTP</button>
+                  <button class="tablinks2 btn btn-light">Microsoft 365</button>
+                  <form method="POST" action="{{ URL::to('admin/email_settings/microsoftsave') }}" accept-charset="UTF-8" file="1" enctype="multipart/form-data" id="Microsoft365_email_setting_form">
+                        <div class="row mt-4">
+                           <div class="col-md-6">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>M365 Admin Email</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="microsoft365_admin_email" id="microsoft365_admin_email" value="@if(!empty($email_settings->microsoft365_admin_email)){{ $email_settings->microsoft365_admin_email }}@endif" />
+                                    </div>
+                              </div>
+                           </div>
+                  
+                           <div class="col-md-6">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>M365 Scope</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="microsoft365_scope" id="microsoft365_scope" value="@if(!empty($email_settings->microsoft365_scope)){{ $email_settings->microsoft365_scope }}@endif" />
+                                    </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>M365 Tenant ID</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="microsoft365_tenant_id" id="microsoft365_tenant_id" value="@if(!empty($email_settings->microsoft365_tenant_id)){{ $email_settings->microsoft365_tenant_id }}@endif" />
+                                    </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>M365 Client ID</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="microsoft365_client_id" id="microsoft365_client_id" value="@if(!empty($email_settings->microsoft365_client_id)){{ $email_settings->microsoft365_client_id }}@endif" />
+                                    </div>
+                              </div>
+                           </div>
+
+                           <div class="col-md-6 mt-3">
+                              <div class="panel panel-primary" data-collapsed="0">
+                                    <div class="panel-heading">
+                                       <div class="panel-title"><label>M365 Client Secret</label></div>
+                                       <div class="panel-options">
+                                          <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                                       </div>
+                                    </div>
+                                    <div class="panel-body" style="display: block;">
+                                       <input type="text" class="form-control" name="microsoft365_client_secret" id="microsoft365_client_secret" value="@if(!empty($email_settings->microsoft365_client_secret)){{ $email_settings->microsoft365_client_secret }}@endif" />
+                                    </div>
+                              </div>
+                           </div> 
+
+
+                           <div class="col-md-6 mt-3">
+                              <div>
+                                 <label for="enable_microsoft365">Enable M365:</label>
+                                 <input type="checkbox" @if(!empty($email_settings->enable_microsoft365) && $email_settings->enable_microsoft365 == 1){{ 'checked="checked"' }}@endif name="enable_microsoft365" value="1" id="enable_microsoft365" />
+                              </div>
+                           </div>
+
+
+                        </div>
+                        <input type="hidden" name="_token" value="<?= csrf_token() ?>" />
+                        <div class="panel-body mt-3 ml-2">
+                           <input type="submit" value="Update Email Settings" class="btn btn-primary" />
+                        </div>
+                     </form>
                </div>
-            </form>
+            </div>
      
          </div>
       </div>
@@ -289,6 +389,21 @@ $('form[id="Email_setting_form"]').validate({
         },
     });
 
+
+$('form[id="Microsoft365_email_setting_form"]').validate({
+   rules: {
+      microsoft365_admin_email: "required",
+      microsoft365_scope: "required",
+      microsoft365_tenant_id: "required",
+      microsoft365_client_id: "required",
+      microsoft365_client_secret: "required",
+   },
+   submitHandler: function (form) {
+      form.submit();
+   },
+});
+
+
 $(document).ready(function(){
 
    $('#template').DataTable();
@@ -317,6 +432,20 @@ $(document).ready(function(){
 });
 </script>
 
+<script src="{{ URL::to('/assets/admin/js/jquery.nestable.js') }}"></script>
+<script>
+   $('#smtpsetting').show();
+   $('#officesetting').hide();
+  
+   $('.tablinks1').click(function() {
+      $('#smtpsetting').show();
+      $('#officesetting').hide();
+   });
+   $('.tablinks2').click(function() {
+      $('#smtpsetting').hide();
+      $('#officesetting').show();
+   });
+</script>
 
 
  

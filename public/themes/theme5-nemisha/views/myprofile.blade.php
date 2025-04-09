@@ -370,7 +370,7 @@
         margin-left: -65px;
         /* position: absolute; */
         height: 45px !important;
-        background: #ED553B !important;
+        background: #ed1c24 !important;
         color: #fff !important;
         top: 0px;
     }
@@ -602,21 +602,21 @@
                                 <div class="col-lg-6 col-md-12 mb-4"> 
                                     <h2>Profile Details</h2>
                                     <div class="text-white pt-4">
-                                    <p style="font-weight: 600; font-size: 18px;">Profile link: <span style="font-weight: 100; font-size:15px;" >
+                                    <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >Profile link: <span style="font-weight: 100; font-size:15px;" >
                                     <a href="{{ route('profile.show', ['username' => $user->username]) }}"> {{ route('profile.show', ['username' => $user->username]) }} </a>
                                     </span></p> 
                                     </div>
                                     <div class=" text-white">
-                                    <p style="font-weight: 600; font-size: 18px;">Total videos: <span style="font-weight: 100; font-size:15px;" >{{ $totalVideos ? $totalVideos : 0 }}</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >Total videos: <span style="font-weight: 100; font-size:15px;" >{{ $totalVideos ? $totalVideos : 0 }}</span></p> 
                                     </div>
                                     <div class=" text-white">
-                                    <p style="font-weight: 600; font-size: 18px;" >Total views: <span style="font-weight: 100; font-size:15px;" >{{ $totalViews ? $totalViews : 0 }} views</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;" class="ugc-text"  >Total views: <span style="font-weight: 100; font-size:15px;" >{{ $totalViews ? $totalViews : 0 }} views</span></p> 
                                     </div>
                                     <div class=" text-white">
-                                    <p style="font-weight: 600; font-size: 18px;" >Joined: <span style="font-weight: 100; font-size:15px;" >{{ $user->created_at ? $user->created_at->format('d F Y') : '' }}</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;" class="ugc-text"  >Joined: <span style="font-weight: 100; font-size:15px;" >{{ $user->created_at ? $user->created_at->format('d F Y') : '' }}</span></p> 
                                     </div>
                                     <div class=" text-white">
-                                    <p style="font-weight: 600; font-size: 18px;" >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
+                                    <p style="font-weight: 600; font-size: 18px;" class="ugc-text"  >Location: <span style="font-weight: 100; font-size:15px;" >{{ $user->location ? $user->location : '' }}</span></p> 
                                     </div>
                                     <div>
                                     <button style="background:#ed1c24 !important;color: #ffff!important; padding: 5px 100px !important; margin:0%;  cursor:pointer; border:none; "  class="ugc-button" >Share Profile</button>
@@ -651,19 +651,19 @@
                                             </a>
                                         </h2>
                                         <div class=" text-white pt-4">
-                                        <p style="font-weight: 600; font-size: 18px;">First Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
+                                        <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >First Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                        <p style="font-weight: 600; font-size: 18px;">User Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
+                                        <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >User Name: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->username)): ?><?= $user->username ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                        <p style="font-weight: 600; font-size: 18px;">Email-id: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p> 
+                                        <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >Email-id: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->email)): ?><?= $user->email ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                        <p style="font-weight: 600; font-size: 18px;">Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
+                                        <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >Cell Phone: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->mobile)): ?><?= $user->mobile ?><?php endif; ?></span></p> 
                                         </div>
                                         <div class=" text-white">
-                                            <p style="font-weight: 600; font-size: 18px;">Gender:
+                                            <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >Gender:
                                                 <span style="font-weight: 100; font-size:17px;"> 
                                                     @if(!empty($user->gender) && $user->gender == "null")
                                                         {{__("Male")}}
@@ -674,7 +674,7 @@
                                             </p>
                                         </div>
                                         <div class=" text-white">
-                                        <p style="font-weight: 600; font-size: 18px;">DOB: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span></p> 
+                                        <p style="font-weight: 600; font-size: 18px;" class="ugc-text" >DOB: <span style="font-weight: 100; font-size:15px;" ><?php if(!empty($user->DOB)): ?><?= $user->DOB ?><?php endif; ?></span></p> 
                                         </div>
                                 </div>
                             </div>

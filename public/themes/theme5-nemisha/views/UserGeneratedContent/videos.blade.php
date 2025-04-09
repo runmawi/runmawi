@@ -294,9 +294,7 @@
                     @elseif($subscriber_count == 1 )
                     <p class="ugc-text" style="font-size:18px;" >1 Member Subscribed</p>
                     @else
-                    <p class="ugc-text" style="font-size:18px;" >
-                        <span id="subscriber-count"> {{ $subscriber_count }} </span> Members Subscribed
-                    </p>
+                    <p class="ugc-text" id="subscriber-count" style="font-size:18px;" >{{ $subscriber_count }} Members Subscribed </p>
                     @endif
                 </div>
             @endif
