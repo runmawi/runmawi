@@ -320,6 +320,8 @@ Route::group(
         Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
         Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
 
+        Route::post('payment-transaction-log', 'ApiAuthController@Payment_Transaction_logs');
+
         // Paystack
         Route::post('Paystack-become-subscriber', 'ApiAuthController@Paystack_become_subscriber');
         Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
