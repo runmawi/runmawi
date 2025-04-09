@@ -30622,4 +30622,82 @@ public function SendVideoPushNotification(Request $request)
          }
     }
 
+    public function Payment_Transaction_logs(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+              'user_id'          => 'required|integer',
+              'total_amount'     => 'required',
+              'payment_for'      => 'required|string|in:ppv,Subscription',
+              'platform'         => 'required|in:android,Inapp',
+              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack',
+            ], [
+              'user_id.required'         => 'User ID is required.',
+              'user_id.integer'          => 'User ID must be an integer.',
+              'total_amount.required'    => 'Total amount is required.',
+              'payment_for.required'     => 'Payment type is required.',
+              'payment_for.in'           => 'Payment type must be either PPV or Subscription.',
+              'platform.required'        => 'Platform is required.',
+              'payment_gateway.required' => 'Payment gateway is required.',
+              'payment_gateway.in'       => 'Payment gateway must be one of: razoray, Stripe, Paypal, Paystack.',
+            ]);
+            
+            if ($validator->fails()) {
+              return response()->json([
+                  'status' => 'false',
+                  'message'=> $validator->errors()->first(),
+                ], 400);
+            }
+        
+            $data = null;
+    
+            if ($request->payment_for === 'ppv') {
+                $data = PpvPurchase::create([
+                    'user_id'         => $request->user_id,
+                    'video_id'        => $request->video_id,
+                    'live_id'         => $request->live_id,
+                    'season_id'       => $request->SeriesSeason_id,
+                    'series_id'       => null,
+                    'total_amount'    => $request->total_amount,
+                    'platform'        => $request->platform,
+                    'payment_gateway' => $request->payment_gateway,
+                    'status'          => 'hold',
+                ]);
+            }
+    
+            if (!is_null($request->live_id)) {
+                $data = LivePurchase::create([
+                    'user_id'         => Auth::id(),
+                    'video_id'        => $request->live_id,
+                    'amount'          => $request->total_amount,
+                    'platform'        => 'website',
+                    'payment_gateway' => 'razoray',
+                    'status'          => 0,
+                    'payment_status'  => 'hold',
+                ]);
+            }
+    
+            if ($request->payment_for === 'Subscription') {
+                $data = Subscription::create([
+                    'user_id'         => $request['user_id'],
+                    'stripe_plan'     => $request->Plan_Id,
+                    'PaymentGateway'  => $request['payment_gateway'],
+                    'platform'        => $request['platform'],
+                    'stripe_status'   => 'hold',
+                ]);
+            }
+    
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Transaction logged successfully.',
+                'data'    => $data,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
