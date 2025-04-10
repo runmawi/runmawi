@@ -16,6 +16,8 @@ use App\OrderHomeSetting;
 use App\VideoCategory;
 use App\Channel;
 use App\ButtonText;
+use App\StorageSetting;
+use Illuminate\Support\Facades\URL; 
 
 class PageListController extends Controller
 {
@@ -28,6 +30,11 @@ class PageListController extends Controller
 
         $this->current_theme = $this->HomeSetting->theme_choosen ;
         Theme::uses($this->current_theme);
+
+        $this->BunnyCDNEnable = StorageSetting::pluck('bunny_cdn_storage')->first();
+
+        $this->BaseURL = $this->BunnyCDNEnable == 1 ? StorageSetting::pluck('bunny_cdn_base_url')->first() : URL::to('public/uploads') ;
+
     }
 
     function paginateCollection(Collection $items, $perPage)
@@ -202,6 +209,7 @@ class PageListController extends Controller
                 'page_list' => $live_list_paginate,
                 'base_url' => 'live',
                 'header_name' => $order_settings_list[3]->header_name,
+                'BaseURL'                            => $this->BaseURL
             );
         
             if ($this->current_theme == 'theme5-nemisha') {

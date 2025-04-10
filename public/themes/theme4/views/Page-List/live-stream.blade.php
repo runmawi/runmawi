@@ -23,7 +23,7 @@
                             @forelse($live_list_pagelist as $key => $livestream_videos)
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
-                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $livestream_videos->title }}" width="300" height="200">
+                                        <img src="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $livestream_videos->title }}" width="300" height="200">
                     
                                         @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && $livestream_videos->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i'))) 
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
