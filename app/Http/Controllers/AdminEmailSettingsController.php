@@ -207,7 +207,7 @@ class AdminEmailSettingsController extends Controller
         $email_settings->microsoft365_tenant_id = $request->microsoft365_tenant_id;
         $email_settings->microsoft365_client_id = $request->microsoft365_client_id;
         $email_settings->microsoft365_client_secret = $request->microsoft365_client_secret;
-        $email_settings->enable_microsoft365 = $request->microsoft365_client_secret;
+        $email_settings->enable_microsoft365 = $request->enable_microsoft365;
         $email_settings->save();
 
         // Replacing the Env file
