@@ -14,7 +14,6 @@ class MicrosoftGraphAuth
 
         try {
             $response = $client->post('https://login.microsoftonline.com/' . env('MICROSOFT_TENANT_ID') . '/oauth2/v2.0/token', [
-                'verify' => false,
                 'form_params' => [
                     'client_id' => env('MICROSOFT_CLIENT_ID'),
                     'client_secret' => env('MICROSOFT_CLIENT_SECRET'),
