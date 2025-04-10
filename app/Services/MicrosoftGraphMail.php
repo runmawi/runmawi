@@ -31,8 +31,12 @@ class MicrosoftGraphMail
             ]
         ];
 
+        $senderEmail = env('MICROSOFT_SENDER_EMAIL');
+        if (empty($senderEmail)) {
+            return 'MICROSOFT_SENDER_EMAIL is missing in .env.';
+        }
         try {
-            $graph->createRequest("POST", "/users/your-email@yourdomain.com/sendMail")
+            $graph->createRequest("POST", '/users/' . $senderEmail . '/sendMail')
                 ->attachBody($emailMessage)
                 ->execute();
             return 'Email sent successfully.';
