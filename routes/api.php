@@ -320,6 +320,8 @@ Route::group(
         Route::post('RazorpaySubscriptionCancel', 'ApiAuthController@RazorpaySubscriptionCancel');
         Route::post('RazorpaySubscriptionUpdate', 'ApiAuthController@RazorpaySubscriptionUpdate');
 
+        Route::post('payment-transaction-log', 'ApiAuthController@Payment_Transaction_logs');
+
         // Paystack
         Route::post('Paystack-become-subscriber', 'ApiAuthController@Paystack_become_subscriber');
         Route::post('Paystack-liveRent-Paymentverify', 'ApiAuthController@Paystack_liveRent_Paymentverify')->name('Paystack_liveRent_Paymentverify');
@@ -694,7 +696,7 @@ Route::group(
             // Sending OTP
             Route::addRoute(['GET', 'POST'], 'Mobile-exists-verify', 'ApiAuthController@Mobile_exists_verify');
  
-            Route::addRoute(['GET', 'POST'],'Sending-OTP', 'ApiAuthController@Sending_OTP'); 
+            Route::post('Sending-OTP', 'ApiAuthController@Sending_OTP'); 
             Route::addRoute(['GET', 'POST'], 'Verify-OTP', 'ApiAuthController@Verify_OTP');
 
             Route::post('send-video-push-notifications', 'ApiAuthController@SendVideoPushNotification'); 

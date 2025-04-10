@@ -4,13 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\AdminOTPCredentials;
+use App\OTPLog;
+use App\User;
 
 class AdminOTPCredentialsController extends Controller
 {
     public function index()
     {
-        $data = array('AdminOTPCredentials' => AdminOTPCredentials::first(), );
+        $OTP_Logs =  OTPLog::get()->map(function($item){
+            $item['name'] = User::where('id', $item->User_id)->pluck('username')->first();
+            $item['created_at_format'] = Carbon::parse($item->created_at)->isoFormat('Do MMM YYYY hh:mm A');
+            return $item ;
+        });
+
+        $data = array(
+            'AdminOTPCredentials' => AdminOTPCredentials::first(),
+            'OTP_Logs' => $OTP_Logs,
+        );
 
         return view('admin.OTP.index',$data);
     }
@@ -28,6 +40,7 @@ class AdminOTPCredentialsController extends Controller
             'DLTTemplateID'    => $request->DLTTemplateID ,
             'template_message' => $request->template_message ,
             'INTL_template_message' => $request->INTL_template_message ,
+            'otp_24x7sms_INTL_sender_id' => $request->otp_24x7sms_INTL_sender_id ,
             'status' => !empty($request->status) && $request->status == "on" ? 1 : 0  ,
         );
 

@@ -155,7 +155,7 @@ use AmrShawky\LaravelCurrency\Currency as LaravelCurrency;
 use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use App\RokuHomeSetting;
-
+use App\OTPLog;
 
 class ApiAuthController extends Controller
 {
@@ -1183,7 +1183,6 @@ class ApiAuthController extends Controller
       'password' => $request->get('password')
     );
 
-
     if ( (!empty($users) && Auth::attempt($email_login)) || (!empty($users) && Auth::attempt($username_login)) || !empty($users_mobile) && Auth::attempt($mobile_login)  ){
       $user = Auth::user();
       if ($user->active == 0) {
@@ -1204,16 +1203,13 @@ class ApiAuthController extends Controller
       $adddevice->save();
 
       // Only for Play Store Testing 
-      if( $request->mobile != "0987654321"){
+      if(( Auth::user()->free_otp_status == 1 )|| (Auth::user()->role == "admin" )){
 
-        user::find(Auth::user()->id)->update([
-          'otp' => null ,
-          'otp_request_id' => null ,
-          'otp_through' => null ,
-        ]);
+        user::find(Auth::user()->id)->update([ "otp" => "1234", "password" => Hash::make("1234"),]);
+
+      }else{
+        user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
       }
-
-      user::find(Auth::user()->id)->update(['otp' => null ,'otp_request_id' => null ,'otp_through' => null ]);
 
       Paystack_Andriod_UserId::truncate();
       Paystack_Andriod_UserId::create([ 'user_id' => Auth::user()->id ]);
@@ -29371,46 +29367,32 @@ public function TV_login(Request $request)
     {
       try {
 
-          $validator = Validator::make($request->all(), [
-            'user_id'        =>  'required|numeric' ,
-          ]);
+        $validator = Validator::make($request->all(), [ 'user_id' => 'required|numeric' ,]);
 
         if ($validator->fails()) {
-
-            return response()->json([
-              'status'    => 'false',
-                'message'    => $validator->errors()->first(),
-            ], 422); 
+            return response()->json(['status' => 'false', 'message' => $validator->errors()->first(),], 422); 
         }
         
         $AdminOTPCredentials =  AdminOTPCredentials::where('status',1)->first();
 
-        if(is_null($AdminOTPCredentials)){
-
-            return response()->json( array(
-                "status"     => 'false' ,
-                "message"    => 'Please, Check the Admin OTP Credentials',
-              ) , 422);
-        }
-
+        if(is_null($AdminOTPCredentials))
+           return response()->json( array( "status" => 'false' , "message" => 'Please, Check the Admin OTP Credentials', ) , 422);
+        
         $random_otp_number = random_int(1000, 9999);
         $user_id           = $request->user_id;
 
         $user = User::find($user_id);
 
+        if (is_null($user->ccode) ||  (empty($user->ccode)) )
+          return response()->json( array( "status" => 'false' , "message" => 'Ccode Missing', ) , 422);
+
         $ccode = str_replace('+','',$user->ccode );
         $mobile          = $user->mobile;
         $Mobile_number   = $ccode.$mobile ;
 
-        // Only for Play Store Testing 
-        if( $mobile == "0987654321"){
+        if( !is_null($user) && ( $user->role ==  "admin" || $user->free_otp_status == 1 ) ){
 
-          $user = User::Where('id',$user_id)->where('mobile',$mobile)
-                        ->update([
-                          "otp" => "1234",
-                          "password" => Hash::make("1234"),
-                        ]);         
-
+          $user = User::Where('id',$user_id)->where('mobile',$mobile)->update([ "otp" => "1234", "password" => Hash::make("1234"),]);         
 
           return response()->json( [
             "status"     => 'true' ,
@@ -29435,11 +29417,16 @@ public function TV_login(Request $request)
 
           if ($response->failed()) {
               
-              $response = array(
-                "status"  => 'false' ,
-                "status_code" => 400,
-                "message" => $response['message'] ,
-              );
+              OTPLog::create([
+                'status' => 'false' ,
+                'message'=> 'SMS Not Sent' ,
+                'request_id' => null,
+                'Mobile_number' =>  $Mobile_number,
+                'User_id'       =>  $user->id, 
+                'otp_vai'       => 'fast2sms'
+              ]);
+
+              $response = array( "status"  => 'false' , "status_code" => 400,"message" => $response['message'] ,);
 
           } else {
 
@@ -29449,6 +29436,15 @@ public function TV_login(Request $request)
                 'otp_through' => $AdminOTPCredentials->otp_vai ,
                 'password'    => Hash::make($random_otp_number),
                 'email'       => 'No email for this id - '.$user_id,
+              ]);
+
+              OTPLog::create([
+                'status' => "true" ,
+                'message'=>'SMS Send Successfully' ,
+                'request_id' => $response['request_id'],
+                'Mobile_number' =>  $Mobile_number,
+                'User_id'       =>  $user->id, 
+                'otp_vai'       => 'fast2sms'
               ]);
 
               $response = array(
@@ -29464,30 +29460,38 @@ public function TV_login(Request $request)
         if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
 
             $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
-            $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
-            $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
 
-            $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
-            $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+              // For Indian Numbers
+            if ($ccode == "91" ) {
 
-            $inputs = array(
-                'APIKEY' => $API_key_24x7sms,
-                'MobileNo' => $Mobile_number,
-                'SenderID' => $SenderID,
-                'ServiceName' => $ServiceName,
-            );
-
-            if ($ServiceName == "INTERNATIONAL") {
-                $inputs += array('Message' => $message );
-            }
-
-            if ($ServiceName == "TEMPLATE_BASED") {
-                $inputs += array(
-                    // 'DLTTemplateID' => $DLTTemplateID,
+                $ServiceName = "TEMPLATE_BASED";
+                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID;
+                $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->template_message);
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                
+                $inputs = array(
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $Mobile_number,
+                    'SenderID' => $SenderID,
+                    'ServiceName' => $ServiceName,
+                    'DLTTemplateID' => $DLTTemplateID, 
+                    'Message' => $message,
+                );
+            } else {
+                // For international Numbers
+                $ServiceName = "INTL_TEMPLATE";
+                $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->INTL_template_message);
+                $SenderID = $AdminOTPCredentials->otp_24x7sms_INTL_sender_id ;
+                
+                $inputs = array(
+                    'APIKEY' => $API_key_24x7sms,
+                    'MobileNo' => $Mobile_number,
+                    'SenderID' => $SenderID,
+                    'ServiceName' => $ServiceName,
                     'Message' => $message,
                 );
             }
-
+           
             $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
             if (str_contains($response->body(), 'success')) {
@@ -29503,6 +29507,15 @@ public function TV_login(Request $request)
                   // 'email'       => 'No email for this id - '.$user_id,
                 ]);
 
+                OTPLog::create([
+                  'status' => 'true' ,
+                  'message' =>'SMS Send Successfully' ,
+                  'request_id' => $msgId,
+                  'Mobile_number' =>  $Mobile_number,
+                  'User_id'       =>  $user->id, 
+                  'otp_vai'       => '24x7sms'
+                ]);
+
                 $response = array(
                   "status"     => 'true' ,
                   "status_code" => 200,
@@ -29513,11 +29526,16 @@ public function TV_login(Request $request)
 
             }else {
 
-                $response = array(
-                  "status"  => 'false' ,
-                  "status_code" => 400,
-                  "message" => 'OTP Not Sent' ,
-                );
+                OTPLog::create([
+                  'status' => 'false' ,
+                  'message'=> $response->body() ,
+                  'request_id' => null,
+                  'Mobile_number' =>  $Mobile_number,
+                  'User_id'       =>  $user->id, 
+                  'otp_vai'       => '24x7sms'
+                ]);
+
+                $response = array( "status"  => 'false' , "status_code" => 400, "message" => 'OTP Not Sent' , );
             }      
         }
 
@@ -29552,14 +29570,11 @@ public function TV_login(Request $request)
                 ], 422); 
         }
 
-        // Only for Play Store Testing 
-        if( $request->mobile_number == "0987654321"){
+        $user_verify = User::find($request->user_id);
 
-          $user = User::Where('id',$request->user_id)->where('mobile',$request->mobile_number)->where('ccode',$request->ccode)
-                        ->update([
-                          "otp" => "1234",
-                          "password" => Hash::make("1234"),
-                        ]);         
+        if( !is_null($user_verify) && ( $user_verify->role ==  "admin" || $user_verify->free_otp_status == 1 ) ){
+
+          $user_verify->update(["otp" => "1234", "password" => Hash::make("1234") ]);         
 
           return response()->json( [
             'status'    => 'true',
@@ -30607,4 +30622,82 @@ public function SendVideoPushNotification(Request $request)
          }
     }
 
+    public function Payment_Transaction_logs(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+              'user_id'          => 'required|integer',
+              'total_amount'     => 'required',
+              'payment_for'      => 'required|string|in:ppv,Subscription',
+              'platform'         => 'required|in:android,Inapp',
+              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack',
+            ], [
+              'user_id.required'         => 'User ID is required.',
+              'user_id.integer'          => 'User ID must be an integer.',
+              'total_amount.required'    => 'Total amount is required.',
+              'payment_for.required'     => 'Payment type is required.',
+              'payment_for.in'           => 'Payment type must be either PPV or Subscription.',
+              'platform.required'        => 'Platform is required.',
+              'payment_gateway.required' => 'Payment gateway is required.',
+              'payment_gateway.in'       => 'Payment gateway must be one of: razoray, Stripe, Paypal, Paystack.',
+            ]);
+            
+            if ($validator->fails()) {
+              return response()->json([
+                  'status' => 'false',
+                  'message'=> $validator->errors()->first(),
+                ], 400);
+            }
+        
+            $data = null;
+    
+            if ($request->payment_for === 'ppv') {
+                $data = PpvPurchase::create([
+                    'user_id'         => $request->user_id,
+                    'video_id'        => $request->video_id,
+                    'live_id'         => $request->live_id,
+                    'season_id'       => $request->SeriesSeason_id,
+                    'series_id'       => null,
+                    'total_amount'    => $request->total_amount,
+                    'platform'        => $request->platform,
+                    'payment_gateway' => $request->payment_gateway,
+                    'status'          => 'hold',
+                ]);
+            }
+    
+            if (!is_null($request->live_id)) {
+                $data = LivePurchase::create([
+                    'user_id'         => Auth::id(),
+                    'video_id'        => $request->live_id,
+                    'amount'          => $request->total_amount,
+                    'platform'        => 'website',
+                    'payment_gateway' => 'razoray',
+                    'status'          => 0,
+                    'payment_status'  => 'hold',
+                ]);
+            }
+    
+            if ($request->payment_for === 'Subscription') {
+                $data = Subscription::create([
+                    'user_id'         => $request['user_id'],
+                    'stripe_plan'     => $request->Plan_Id,
+                    'PaymentGateway'  => $request['payment_gateway'],
+                    'platform'        => $request['platform'],
+                    'stripe_status'   => 'hold',
+                ]);
+            }
+    
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Transaction logged successfully.',
+                'data'    => $data,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

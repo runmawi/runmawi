@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTemplateToAdminOtpCredentialsTable extends Migration
+class AddFreeOtpStatusToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTemplateToAdminOtpCredentialsTable extends Migration
      */
     public function up()
     {
-        Schema::table('admin_otp_credentials', function (Blueprint $table) {
-            $table->longText('INTL_template_message')->nullable()->after('template_message');
+        Schema::table('users', function (Blueprint $table) {
+            $table->tinyInteger('free_otp_status')->default(0)->after('otp_through');
         });
     }
 
@@ -25,8 +25,8 @@ class AddTemplateToAdminOtpCredentialsTable extends Migration
      */
     public function down()
     {
-        Schema::table('admin_otp_credentials', function (Blueprint $table) {
-            $table->dropColumn('INTL_template_message');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('free_otp_status');
         });
     }
 }

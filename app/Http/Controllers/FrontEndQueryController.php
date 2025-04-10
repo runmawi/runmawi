@@ -365,8 +365,8 @@ class FrontEndQueryController extends Controller
                             $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
                                                                 ->whereIn('season_id', $season_ids)
                                                                 ->where('active', 1)
-                                                                ->orderByRaw("FIELD(season_id, " . implode(',', $season_ids->toArray()) . ")") // Orders by given season order
-                                                                ->orderBy('episode_order','desc')
+                                                                ->orderBy('season_id', 'desc')
+                                                                ->orderBy('episode_order', 'desc')
                                                                 ->take(15)
                                                                 ->get()
                                 ->map(function ($episode) {
@@ -1546,9 +1546,10 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->latest()
+                                    ->orderBy('season_id', 'desc')
+                                    ->orderBy('episode_order', 'desc')
                                     ->take(15)
-                                    ->pluck('player_image') // Fetch only the player_image column
+                                    ->pluck('player_image')
                                     ->map(function ($playerImage) {
                                         return (!is_null($playerImage) && $playerImage != 'default_horizontal_image.jpg') 
                                             ? $this->BaseURL . '/images/' . $playerImage 
@@ -1577,7 +1578,8 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->latest()
+                                    ->orderBy('season_id', 'desc')
+                                    ->orderBy('episode_order', 'desc')
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {
@@ -1585,9 +1587,6 @@ class FrontEndQueryController extends Controller
                                             ? $this->BaseURL . '/images/' . $playerImage 
                                             : $this->default_horizontal_image_url;
                                     });
-
-
-            // dd($episodeImages);
 
         return response()->json([
             'series_image' => $image,
@@ -1615,8 +1614,6 @@ class FrontEndQueryController extends Controller
                                     });
 
 
-            // dd($episodeImages);
-
         return response()->json([
             'network_image' => $image,
             'series_images' => $seriesImages
@@ -1637,7 +1634,6 @@ class FrontEndQueryController extends Controller
         $image = (!is_null($episode->player_image) && $episode->player_image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $episode->player_image)
                         : $this->default_vertical_image;
-            // dd($image);
 
         return response()->json([
             'image'       => $image,
@@ -1653,7 +1649,6 @@ class FrontEndQueryController extends Controller
 
         $Series = Series::where('id',$Id)->select('id', 'title', 'slug', 'player_image', 'description')
                             ->first();
-                            // dd($Series);
 
         $description   = strip_tags(html_entity_decode($Series->description));
         $slug          = URL::to('play_series/'.$Series->slug );
@@ -1661,7 +1656,6 @@ class FrontEndQueryController extends Controller
         $image = (!is_null($Series->player_image) && $Series->player_image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $Series->player_image)
                         : $this->default_vertical_image;
-            // dd($image);
 
         return response()->json([
             'image'       => $image,
@@ -1674,13 +1668,12 @@ class FrontEndQueryController extends Controller
     public function getLiveDropImg(Request $request)
     {
         $liveId = $request->live_id;
-        // dd($liveId);
+      
         $image = livestream::where('id', $liveId)->pluck('player_image')->first();
 
         $image = (!is_null($image) && $image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $image)
                         : $this->default_vertical_image;
-            // dd($image);
 
         return response()->json([
             'live_images' => $image
@@ -1690,7 +1683,7 @@ class FrontEndQueryController extends Controller
     public function getLiveModal(Request $request)
     {
         $liveId = $request->live_id;
-        // dd($liveId);
+       
         $live       = livestream::where('id', $liveId)->select('player_image','title','description','slug')->first();
         $description =  !empty($live->description) ? strip_tags(html_entity_decode($live->description)) : '';
         $slug          = URL::to('live/'.$live->slug);
@@ -1698,7 +1691,6 @@ class FrontEndQueryController extends Controller
         $image = (!is_null($live->player_image) && $live->player_image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $live->player_image)
                         : $this->default_vertical_image;
-            // dd($image);
 
         return response()->json([
             'image'       => $image,

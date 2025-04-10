@@ -13,6 +13,7 @@ use App\User;
 use App\SignupOtp;
 use Theme;
 use URL;   
+use App\OTPLog;
 
 class OTPController extends Controller
 {
@@ -66,6 +67,11 @@ class OTPController extends Controller
             return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
         }
 
+            // Check Free OTP exists
+        if ( !is_null($user) && $user->free_otp_status == 1 && $user->otp == "1234") {
+            return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
+        }
+
         try {
             
             $random_otp_number = random_int(1000, 9999);
@@ -95,6 +101,15 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
+                    OTPLog::create([
+                        'status' => 'true' ,
+                        'message' =>'SMS Send Successfully' ,
+                        'request_id' => $response['request_id'],
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  $user->id, 
+                        'otp_vai'       => 'fast2sms'
+                    ]);
+
                 return response()->json(['exists' => true]);
 
             }
@@ -102,31 +117,39 @@ class OTPController extends Controller
             if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
 
                 $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
-                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
-                $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
 
-                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
-                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+                // For Indian Numbers
+                if ($ccode == "91" ) {
 
-                $inputs = array(
-                    'APIKEY' => $API_key_24x7sms,
-                    'MobileNo' => $Mobile_number,
-                    'SenderID' => $SenderID,
-                    'ServiceName' => $ServiceName,
-                );
-
-                if ($ServiceName == "TEMPLATE_BASED") {
-                    $inputs += array(
-                        // 'DLTTemplateID' => $DLTTemplateID,
+                    $ServiceName = "TEMPLATE_BASED";
+                    $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID;
+                    $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->template_message);
+                    $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                    
+                    $inputs = array(
+                        'APIKEY' => $API_key_24x7sms,
+                        'MobileNo' => $Mobile_number,
+                        'SenderID' => $SenderID,
+                        'ServiceName' => $ServiceName,
+                        'DLTTemplateID' => $DLTTemplateID, 
+                        'Message' => $message,
+                    );
+                } else {
+                    // For international Numbers
+                    $ServiceName = "INTL_TEMPLATE";
+                    $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->INTL_template_message);
+                    $SenderID = $AdminOTPCredentials->otp_24x7sms_INTL_sender_id ;
+                    
+                    $inputs = array(
+                        'APIKEY' => $API_key_24x7sms,
+                        'MobileNo' => $Mobile_number,
+                        'SenderID' => $SenderID,
+                        'ServiceName' => $ServiceName,
                         'Message' => $message,
                     );
                 }
 
-                if ($ServiceName == "INTERNATIONAL") {
-                    $inputs += array('Message' => $message );
-                }
-
-                $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
+                $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
                 if (str_contains($response->body(), 'success')) {
 
@@ -139,14 +162,42 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     ]);
 
+                    OTPLog::create([
+                        'status' => 'true' ,
+                        'message' =>'SMS Send Successfully' ,
+                        'request_id' => $msgId,
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  $user->id, 
+                        'otp_vai'       => '24x7sms'
+                    ]);
+
                     return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!', 'error_note' => " "]);
 
                 }else {
+
+                    OTPLog::create([
+                        'status' => 'false' ,
+                        'message'=> $response->body() ,
+                        'request_id' => null,
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  $user->id, 
+                        'otp_vai'       => '24x7sms'
+                    ]);
+
                     return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!' , 'error_note' => " " ]);
                 }         
             }
            
         } catch (\Throwable $th) {
+
+            OTPLog::create([
+                'status' => 'false' ,
+                'message'=> $th->getMessage() ,
+                'request_id' => null,
+                'Mobile_number' => null ,
+                'User_id'       =>  null, 
+                'otp_vai'       => '24x7sms'
+            ]);
             
             return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!','error_note' => $th->getMessage()]);
 
@@ -190,11 +241,15 @@ class OTPController extends Controller
                         break;
                 }
                 
-                User::find($user_verify->id)->update([
-                    'otp' => null ,
-                    'otp_request_id' => null ,
-                    'otp_through' => null ,
-                ]);
+                 // Check Free OTP exists
+                if ( !is_null($user_verify) && $user_verify->free_otp_status == 0 ) {
+                
+                    User::find($user_verify->id)->update([
+                        'otp' => null ,
+                        'otp_request_id' => null ,
+                        'otp_through' => null ,
+                    ]);
+                }
 
                 return response()->json( [ 'status' => true , 'redirection_url' => $redirection_url , 'message_note' => 'OTP verify successfully!' ] );
             }
@@ -263,6 +318,15 @@ class OTPController extends Controller
                         'otp_through' =>  $AdminOTPCredentials->otp_vai ,
                     );
 
+                    OTPLog::create([
+                        'status' => 'true' ,
+                        'message' =>'SMS Send Successfully' ,
+                        'request_id' => $response['request_id'],
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  $user->id, 
+                        'otp_vai'       => 'fast2sms'
+                    ]);
+
                     SignupOtp::updateOrCreate(['id' => $user->id ?? null], $SignupOtp_inputs);
 
                     return response()->json(['exists' => true]);
@@ -272,31 +336,40 @@ class OTPController extends Controller
             if( $AdminOTPCredentials->otp_vai == "24x7sms" ){
 
                 $API_key_24x7sms  = $AdminOTPCredentials->otp_24x7sms_api_key ;
-                $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
-                $ServiceName = $AdminOTPCredentials->otp_24x7sms_sevicename ;
 
-                $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID ;
-                $message = Str_replace('{#var#}', $random_otp_number , $AdminOTPCredentials->template_message) ;
+                // For Indian Numbers
+                if ($ccode == "91" ) {
 
-                $inputs = array(
-                    'APIKEY' => $API_key_24x7sms,
-                    'MobileNo' => $Mobile_number,
-                    'SenderID' => $SenderID,
-                    'ServiceName' => $ServiceName,
-                );
+                    $ServiceName = "TEMPLATE_BASED";
+                    $DLTTemplateID = $AdminOTPCredentials->DLTTemplateID;
+                    $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->template_message);
+                    $SenderID = $AdminOTPCredentials->otp_24x7sms_sender_id ;
+                    
+                    $inputs = array(
+                        'APIKEY' => $API_key_24x7sms,
+                        'MobileNo' => $Mobile_number,
+                        'SenderID' => $SenderID,
+                        'ServiceName' => $ServiceName,
+                        'DLTTemplateID' => $DLTTemplateID, 
+                        'Message' => $message,
+                    );
 
-                if ($ServiceName == "TEMPLATE_BASED") {
-                    $inputs += array(
-                        // 'DLTTemplateID' => $DLTTemplateID,
+                } else {
+                    // For international Numbers
+                    $ServiceName = "INTL_TEMPLATE";
+                    $message = Str_replace('{#var#}', $random_otp_number, $AdminOTPCredentials->INTL_template_message);
+                    $SenderID = $AdminOTPCredentials->otp_24x7sms_INTL_sender_id ;
+                    
+                    $inputs = array(
+                        'APIKEY' => $API_key_24x7sms,
+                        'MobileNo' => $Mobile_number,
+                        'SenderID' => $SenderID,
+                        'ServiceName' => $ServiceName,
                         'Message' => $message,
                     );
                 }
 
-                if ($ServiceName == "INTERNATIONAL") {
-                    $inputs += array('Message' => $message );
-                }
-
-                $response = Http::get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
+                $response = Http::withOptions(['verify' => false, ])->get('https://smsapi.24x7sms.com/api_2.0/SendSMS.aspx', $inputs);
 
                 if (str_contains($response->body(), 'success')) {
 
@@ -313,15 +386,43 @@ class OTPController extends Controller
 
                     SignupOtp::updateOrCreate(['id' => $user->id ?? null], $SignupOtp_inputs);
 
+                    OTPLog::create([
+                        'status' => 'true' ,
+                        'message' =>'SMS Send Successfully' ,
+                        'request_id' => $msgId,
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  null, 
+                        'otp_vai'       => '24x7sms'
+                    ]);
+
                     return response()->json(['exists' => true, 'message_note' => 'OTP Sent Successfully!']);
 
                 }else {
+
+                    OTPLog::create([
+                        'status' => 'false' ,
+                        'message'=> $response->body() ,
+                        'request_id' => null,
+                        'Mobile_number' =>  $Mobile_number,
+                        'User_id'       =>  null, 
+                        'otp_vai'       => '24x7sms'
+                    ]);
+
                     return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!']);
                 }         
             }
            
         } catch (\Throwable $th) {
             
+            OTPLog::create([
+                'status' => 'false' ,
+                'message'=> $th->getMessage() ,
+                'request_id' => null,
+                'Mobile_number' =>  null,
+                'User_id'       =>  null, 
+                'otp_vai'       => '24x7sms'
+            ]);
+
             return response()->json(['exists' => false, 'message_note' => 'OTP Not Sent!','error_note' => $th->getMessage()]);
 
         }
