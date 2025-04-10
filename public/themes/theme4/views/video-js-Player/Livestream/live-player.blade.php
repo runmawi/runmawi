@@ -49,9 +49,9 @@
 
         $live_publish_later_status = true ;
 
-        $Current_time = Carbon\Carbon::now(current_timezone());
-
-        if ( Carbon\Carbon::parse($Livestream_details->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i')) {
+        $Current_time = App\Setting::pluck('default_time_zone')->first();
+        
+        if ( $Livestream_details->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i')) {
             $live_publish_later_status =  false ;
         }
     }
