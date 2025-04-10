@@ -91,6 +91,7 @@ use App\StorageSetting;
 use App\Menu;
 use App\UploadErrorLog;
 use App\DeleteLog;
+use App\EmailSetting ;
 
 class HomeController extends Controller
 {
@@ -105,6 +106,7 @@ class HomeController extends Controller
     {
         $this->settings = Setting::first();
         $this->videos_per_page = $this->settings->videos_per_page;
+        $this->email_settings = EmailSetting::first();
 
         $this->HomeSetting = HomeSetting::first();
         Theme::uses($this->HomeSetting->theme_choosen);
@@ -1831,7 +1833,7 @@ class HomeController extends Controller
             $email_count = User::where('email', '=', $email)->count();
             $string = Str::random(60);
             if ($email_count == 0)
-            {
+            {             
                 $new_user = new User();
                 $new_user->name = $name;
                 $new_user->username = $name;
@@ -1855,18 +1857,25 @@ class HomeController extends Controller
                 $new_user->gender = $request->get('gender');
                 $new_user->save();
                 $settings = Setting::first();
+                $email_subject = "Verify your email address";
 
                 // verify email
                 try {
-                    \Mail::send('emails.verify', array(
-                        'activation_code' => $string,
-                        'website_name' => $settings->website_name
-                    ) , 
-
-                    function($message) use ($request) {
-                        $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($request->email, $request->name)->subject('Verify your email address');
-                    });
+                    if ($this->email_settings->enable_microsoft365 == 1) {
+                        sendMicrosoftMail( $email, $email_subject, 'emails.verify', [
+                            'activation_code' => $string,
+                            'website_name' => $settings->website_name,
+                        ]);
+                    } else {
+                        \Mail::send('emails.verify', array(
+                            'activation_code' => $string,
+                            'website_name' => $settings->website_name
+                        ) , 
+                        function($message) use ($request) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->email, $request->name)->subject('Verify your email address');
+                        });
+                    }
 
                     $email_log      = 'Mail Sent Successfully from Verify';
                     $email_template = "verify";
@@ -1877,7 +1886,7 @@ class HomeController extends Controller
                     return redirect('/verify-request');
 
                } catch (\Throwable $th) {
-
+            
                     $email_log      = $th->getMessage();
                     $email_template = "verify";
                     $user_id = $new_user->id;
@@ -1897,17 +1906,27 @@ class HomeController extends Controller
                         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
                     );
 
-                    Mail::send('emails.welcome', array(
-                        'username' => $name,
-                        'website_name' => GetWebsiteName(),
-                        'url' => URL::to('/'),
-                        'useremail' => $email,
-                        'password' => $get_password,
-                    ),
-                    function($message) use ($data,$request) {
-                        $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($request->email, $request->name)->subject($data['email_subject']);
-                    });
+                    if ($this->email_settings->enable_microsoft365 == 1) {
+                        sendMicrosoftMail($request->email, $data['email_subject'], 'emails.welcome', [
+                            'username' => $name,
+                            'website_name' => GetWebsiteName(),
+                            'url' => URL::to('/'),
+                            'useremail' => $email,
+                            'password' => $get_password,
+                        ]);
+                    } else {
+                        Mail::send('emails.welcome', array(
+                            'username' => $name,
+                            'website_name' => GetWebsiteName(),
+                            'url' => URL::to('/'),
+                            'useremail' => $email,
+                            'password' => $get_password,
+                        ),
+                        function($message) use ($data,$request) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->email, $request->name)->subject($data['email_subject']);
+                        });
+                    }
 
                     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
                     $email_template = "1";
@@ -1965,17 +1984,27 @@ class HomeController extends Controller
                         'email_subject' =>  EmailTemplate::where('id',1)->pluck('heading')->first() ,
                     );
 
-                    Mail::send('emails.welcome', array(
-                        'username' => $name,
-                        'website_name' => GetWebsiteName(),
-                        'url' => URL::to('/'),
-                        'useremail' => $email,
-                        'password' => $get_password,
-                    ),
-                    function($message) use ($data,$request) {
-                        $message->from(AdminMail(),GetWebsiteName());
-                        $message->to($request->email, $request->name)->subject($data['email_subject']);
-                    });
+                      if ($this->email_settings->enable_microsoft365 == 1) {
+                        sendMicrosoftMail($request->email, $data['email_subject'], 'emails.welcome', [
+                            'username' => $name,
+                            'website_name' => GetWebsiteName(),
+                            'url' => URL::to('/'),
+                            'useremail' => $email,
+                            'password' => $get_password,
+                        ]);
+                    } else {
+                        Mail::send('emails.welcome', array(
+                            'username' => $name,
+                            'website_name' => GetWebsiteName(),
+                            'url' => URL::to('/'),
+                            'useremail' => $email,
+                            'password' => $get_password,
+                        ),
+                        function($message) use ($data,$request) {
+                            $message->from(AdminMail(),GetWebsiteName());
+                            $message->to($request->email, $request->name)->subject($data['email_subject']);
+                        });
+                    }
 
                     $email_log      = 'Mail Sent Successfully from Welcome E-Mail';
                     $email_template = "1";
