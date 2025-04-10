@@ -79,7 +79,8 @@ class FrontEndQueryController extends Controller
 
         $this->default_vertical_image_url = default_vertical_image_url();
         $this->default_horizontal_image_url = default_horizontal_image_url();
-        $this->current_timezone = current_timezone();
+        $this->current_timezone = Setting::pluck('default_time_zone')->first();
+        
 
         $this->blockVideos = Block_videos();
         $this->countryName = Country_name();
@@ -464,7 +465,7 @@ class FrontEndQueryController extends Controller
     
     public function livestreams()
     {
-        $current_timezone = current_timezone();
+        $current_timezone = $this->current_timezone;
 
         $default_vertical_image_url = default_vertical_image_url();
         $default_horizontal_image_url = default_horizontal_image_url();
@@ -484,19 +485,47 @@ class FrontEndQueryController extends Controller
                                             $item['source']    = "Livestream";
                                             return $item;
                                         });
-    
+    // dd($livestreams);
         $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
+            if ($livestream->publish_type === 'publish_later') {
+
+                $Current_time = Carbon::now($current_timezone);
+                
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+                $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+
+                $livestream->publish_later_live_animation = $publish_later_live_animation;
+                
+                $livestream->recurring_program_live_animation_mobile = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+
+                return $publish_later_Status;
+            }
+            
             if ($livestream->publish_type === 'recurring_program') {
         
                 $Current_time = Carbon::now($current_timezone);
+                
                 $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
                 $convert_time = $Current_time->copy()->timezone($recurring_timezone);
                 $midnight = $convert_time->copy()->startOfDay();
+                $endmidnight = $convert_time->copy()->endOfDay();
+
+                $live_end_date = new \DateTime($livestream->custom_end_program_time);
+
+                $program_end_date = clone $live_end_date;
+                $program_end_date->modify('+1 day');
+                $program_end_date->setTime(0, 0, 0);
+
+                // dd($convert_time->format('d') );
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                        $recurring_program_Status =  ($livestream->custom_start_program_time >= $midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time < $program_end_date->format('Y-m-d\TH:i')) ;
+                        $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $live_end_date->format('Y-m-d\TH:i')) ;
+                        // $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                        // $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
                         break;
                     case 'daily':
                         $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
@@ -516,6 +545,8 @@ class FrontEndQueryController extends Controller
                         break;
                 }
 
+                // dd($recurring_program_live_animation);
+
                 $livestream->recurring_program_live_animation = $recurring_program_live_animation;
 
                 $livestream->recurring_program_live_animation_mobile = $recurring_program_live_animation == true ? 'true' : 'false' ;
@@ -525,47 +556,40 @@ class FrontEndQueryController extends Controller
                 return $recurring_program_Status;
             }
         
-            if ($livestream->publish_type === 'publish_later') {
-
-                $Current_time = Carbon::now($current_timezone);
-                
-                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-                $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-
-                $livestream->publish_later_live_animation = $publish_later_live_animation;
-                
-                $livestream->recurring_program_live_animation_mobile = $publish_later_live_animation  == true ? 'true' : 'false' ;
-
-                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
-
-                return $publish_later_Status;
-            }
+          
         
             return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
         });
+        
+
 
         $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-
+            // Assign priority
             if ($livestream->publish_type === 'publish_now') {
-
-                return $livestream->created_at;
-
-            } elseif ($livestream->publish_type === 'publish_later' ) {
-
-                return $livestream->publish_time;
-
+                $priority = 1;
+                $time = Carbon::parse($livestream->created_at)->timestamp;
+            } elseif ($livestream->publish_type === 'publish_later') {
+                $priority = 2;
+                $time = Carbon::parse($livestream->publish_time)->timestamp;
             } elseif ($livestream->publish_type === 'recurring_program') {
-                
-                $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
-                
-                return $custom_start_time ?? $livestream->program_start_time;
+                $priority = 2; // same as publish_later so time will decide order
+        
+                // Use custom start time if available, otherwise construct today's start time
+                if (!empty($livestream->custom_start_program_time)) {
+                    $time = Carbon::parse($livestream->custom_start_program_time)->timestamp;
+                } else {
+                    $time = Carbon::parse(Carbon::today()->format('Y-m-d') . ' ' . $livestream->program_start_time)->timestamp;
+                }
+            } else {
+                $priority = 3;
+                $time = 0;
             }
-
-            return $livestream->publish_type;
-        })
-        ->values();  
-        // dd($livestreams_sort);
+        
+            return [$priority, $time];
+        })->values();
+        
         return $livestreams_sort;
+        
     }
 
 
@@ -1522,7 +1546,7 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->orderBy('episode_order','desc')
+                                    ->latest()
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {
@@ -1530,6 +1554,9 @@ class FrontEndQueryController extends Controller
                                             ? $this->BaseURL . '/images/' . $playerImage 
                                             : $this->default_horizontal_image_url;
                                     });
+
+
+            // dd($episodeImages);
 
         return response()->json([
             'series_image' => $image,
@@ -1550,7 +1577,7 @@ class FrontEndQueryController extends Controller
         $episodeImages = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
-                                    ->orderBy('episode_order','desc')
+                                    ->latest()
                                     ->take(15)
                                     ->pluck('player_image') // Fetch only the player_image column
                                     ->map(function ($playerImage) {
