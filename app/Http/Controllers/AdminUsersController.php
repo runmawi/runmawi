@@ -5176,7 +5176,7 @@ class AdminUsersController extends Controller
                 'subscriptionData' => $subscriptionData,
             ]);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }

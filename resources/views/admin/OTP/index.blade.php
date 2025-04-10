@@ -341,6 +341,9 @@
             $('#smsTemplatesAccordion .collapse').on('shown.bs.collapse', function() {
                 $('#smsTemplatesAccordion .collapse').not(this).collapse('hide');
             });
+            
+            $('#otp-logs-table').DataTable();
+
         });
     </script>
 @stop
