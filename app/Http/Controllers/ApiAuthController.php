@@ -18638,23 +18638,23 @@ public function QRCodeMobileLogout(Request $request)
 
       $user_generated_content_status = $homepage_input_array['MobileHomeSetting']->user_generated_content;
       $homepage_geofencing = $homepage_input_array['Geofencing'];
-
+      $homepage_default_image_url = array(
+        'homepage_default_vertical_image_url' => $homepage_input_array['default_vertical_image_url'],
+        'homepage_default_horizontal_image_url' => $homepage_input_array['default_horizontal_image_url'],
+      );
 
         if( $user_generated_content_status == null || $user_generated_content_status == 0 ):    
 
             $data = array();      // Note - if the home-setting (user_generated_content) is turned off in the admin panel
-
         else:
-
-          $data = UGCVideo::where('active',1)->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) {
-              $item['image_url'] = $item->image;
-              $item['Player_image_url'] = $item->player_image; 
-              $item['tv_image_url'] = $item->player_image; 
+          $data = UGCVideo::where('active',1)->latest()->limit($homepage_input_array['limit'])->get()->map(function ($item) use ($homepage_default_image_url) {
+              $item['image_url'] = !is_null($item->image) ? URL::to('/public/uploads/images/'.$item->image) : $homepage_default_image_url['homepage_default_vertical_image_url'] ;
+              $item['Player_image_url'] = !is_null($item->player_image) ?  URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'] ;
+              $item['tv_image_url'] = !is_null($item->player_image) ? URL::to('/public/uploads/images/'.$item->player_image) : $homepage_default_image_url['homepage_default_horizontal_image_url'];
               $item['description'] = null ;
               $item['source']    = "User Generated Content";
               return $item;
-          });
-        
+          });        
         endif;
 
       return $data ;
