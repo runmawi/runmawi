@@ -84,6 +84,7 @@ use App\Episode;
 use App\ChannelSubscription;
 use App\ChannelSubscriptionPlan;
 use App\SiteTheme;
+use App\EmailSetting ;
 
 class ChannelLoginController extends Controller
 {
@@ -93,6 +94,7 @@ class ChannelLoginController extends Controller
         //$this->middleware('auth');
         $settings = Setting::first();
         $this->videos_per_page = $settings->videos_per_page;
+        $this->email_settings = EmailSetting::first();
 
         $this->Theme = HomeSetting::pluck('theme_choosen')
             ->first();
@@ -283,32 +285,40 @@ class ChannelLoginController extends Controller
             // });
             // return redirect('/channel/verify-request')
             //     ->with('message', 'Successfully Users saved!.');
-            try
-            {
-                $data = array(
-                    'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
-                );
+            // try
+            // {
+            //     $data = array(
+            //         'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
+            //     );
 
-                Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
-                    function ($message) use ($data, $request){
-                        $message->from(AdminMail() , GetWebsiteName());
-                        $message->to($request->email_id, $request->username)->subject($data['email_subject']);
-                    });
+            //     if ($this->email_settings->enable_microsoft365 == 1) {
+            //         sendMicrosoftMail($request->email_id, $data['email_subject'], 'emails.partner_welcome', [
+            //             'Partner_Name' =>$request->username,
+            //             'website_name' => GetWebsiteName(),
+            //         ]);
+            //     } else {
 
-                $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
-                $email_template = "43";
-                $user_id = $channel->id;
+            //     Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
+            //         function ($message) use ($data, $request){
+            //             $message->from(AdminMail() , GetWebsiteName());
+            //             $message->to($request->email_id, $request->username)->subject($data['email_subject']);
+            //         });
+            //     }
 
-                Email_sent_log($user_id, $email_log, $email_template);
-            }
-            catch(\Exception $e)
-            {
-                $email_log = $e->getMessage();
-                $email_template = "43";
-                $user_id = 1;
+            //     $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
+            //     $email_template = "43";
+            //     $user_id = $channel->id;
 
-                Email_notsent_log($user_id, $email_log, $email_template);
-            }
+            //     Email_sent_log($user_id, $email_log, $email_template);
+            // }
+            // catch(\Exception $e)
+            // {
+            //     $email_log = $e->getMessage();
+            //     $email_template = "43";
+            //     $user_id = 1;
+
+            //     Email_notsent_log($user_id, $email_log, $email_template);
+            // }
 
 
                     // Note: While CPP Signup Email - Template for CPP registered user and Admin
@@ -318,11 +328,18 @@ class ChannelLoginController extends Controller
                     'email_subject' => EmailTemplate::where('id', 43)->pluck('heading')->first() ,
                 );
 
+                if ($this->email_settings->enable_microsoft365 == 1) {
+                    sendMicrosoftMail($request->email_id, $data['email_subject'], 'emails.partner_welcome', [
+                        'Partner_Name' =>$request->username,
+                        'website_name' => GetWebsiteName(),
+                    ]);
+                } else {
                 Mail::send('emails.partner_welcome', array('Partner_Name' => $request->username,'website_name' => GetWebsiteName() ,) ,
                     function ($message) use ($data, $request){
                         $message->from(AdminMail() , GetWebsiteName());
                         $message->to(AdminMail())->subject($data['email_subject']);
                     });
+                }
 
                 $email_log = 'Mail Sent Successfully from Welcome on Partner’s Registration';
                 $email_template = "43";
@@ -626,16 +643,25 @@ Please recheck the credentials before you try again!');
 
                 $data = array( 'email_subject' => $email_subject,);
 
-                Mail::send('emails.Channel_user_approved', array(
-                    'partner_name' => $users->username,
-                    'partner_account_name' => $users->username,
-                    'login_link' => URL::to("/channel/login"),
-                    'website_name' => GetWebsiteName(),
-                ), 
-                function($message) use ($data,$users) {
-                    $message->from(AdminMail(),GetWebsiteName());
-                    $message->to($users->email, $users->username)->subject($data['email_subject']);
-                });
+                if ($this->email_settings->enable_microsoft365 == 1) {
+                    sendMicrosoftMail($users->email, $data['email_subject'], 'emails.Channel_user_approved', [
+                        'partner_name' => $users->username,
+                        'partner_account_name' => $users->username,
+                        'login_link' => URL::to("/channel/login"),
+                        'website_name' => GetWebsiteName(),
+                    ]);
+                } else {
+                    Mail::send('emails.Channel_user_approved', array(
+                        'partner_name' => $users->username,
+                        'partner_account_name' => $users->username,
+                        'login_link' => URL::to("/channel/login"),
+                        'website_name' => GetWebsiteName(),
+                    ), 
+                    function($message) use ($data,$users) {
+                        $message->from(AdminMail(),GetWebsiteName());
+                        $message->to($users->email, $users->username)->subject($data['email_subject']);
+                    });
+                }
 
                 $email_log      = "Mail Sent Successfully from Congratulations! Your Partner's (Channel Partner) request has been Approved.";
                 $email_template = "44";

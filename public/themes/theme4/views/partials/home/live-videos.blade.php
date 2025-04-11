@@ -1,3 +1,7 @@
+@php 
+    $Current_time = App\Setting::pluck('default_time_zone')->first(); 
+@endphp
+
 @if (!empty($data) && $data->isNotEmpty())
     <section id="iq-trending" class="s-margin">
         <div class="container-fluid pl-0" id="home-live-videos-container">
@@ -17,7 +21,7 @@
                                     <div id="live-top-img" class="item" data-index="{{ $key }}" data-live-id="{{ $livestream_videos->id}}">
                                         <div>
                                             <img data-flickity-lazyload="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="flickity-lazyloaded" alt="{{$livestream_videos->title}}"  width="300" height="200">
-                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                            @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && $livestream_videos->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i'))) 
                                                 <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                             @elseif( $livestream_videos->recurring_program_live_animation  == true )
                                                 <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
@@ -35,7 +39,7 @@
                                     <div class="caption" data-index="{{ $key }}">
                                         <h2 class="caption-h2">{{ optional($livestream_videos)->title }}</h2>
 
-                                        @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                        @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && $livestream_videos->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i'))) 
                                             
                                             <ul class="vod-info">
                                                 <li><span></span> LIVE NOW</li>

@@ -3353,8 +3353,10 @@
         </div>
     </div>
     @endif
+</div>
 
-
+</div>
+</div>
 
 
 
@@ -3453,9 +3455,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     <input type="hidden" id="_token" name="_token" value="<?= csrf_token() ?>" />

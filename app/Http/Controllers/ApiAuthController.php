@@ -30632,7 +30632,7 @@ public function SendVideoPushNotification(Request $request)
               'total_amount'     => 'required',
               'payment_for'      => 'required|string|in:ppv,Subscription',
               'platform'         => 'required|in:android,Inapp',
-              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack',
+              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack,Applepay',
             ], [
               'user_id.required'         => 'User ID is required.',
               'user_id.integer'          => 'User ID must be an integer.',

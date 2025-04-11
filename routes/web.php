@@ -355,6 +355,7 @@ Route::group(['middleware' => ['restrictIp', 'CheckAuthTheme5']], function () {
     Route::get('Most_watched_site_videos', 'PageListController@MostWatchedVideoSite_list')->name('pagelist.most-watched-videos-site');
     Route::get('shorts_minis', 'PageListController@ShortsMinis')->name('pagelist.shorts-minis');
     Route::get('artists_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
+    Route::get('host_list', 'PageListController@Artist_list')->name('pagelist.artists-list');
     Route::get('latest_episodes', 'PageListController@Latest_episodes')->name('pagelist.latest_episodes');
     // Route::get('continue-watching-list', 'PageListController@ContinueWatching_list')->name('pagelist.continue-watching');
     //Top most Watched Videos need to add
@@ -3104,6 +3105,8 @@ Route::post('getnetworkSeriesImg','FrontEndQueryController@getnetworkSeriesImg')
 Route::post('getSeriesNetworkModalImg','FrontEndQueryController@getSeriesNetworkModalImg')->name('getSeriesNetworkModalImg');
 Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->name('getLatestSeriesImg');
 Route::post('getLiveModal','FrontEndQueryController@getLiveModal')->name('getLiveModal');
+Route::post('getartistSeriesImg','FrontEndQueryController@getartistSeriesImg')->name('getartistSeriesImg');
+Route::post('getSeriesArtistModalImg','FrontEndQueryController@getSeriesArtistModalImg')->name('getSeriesArtistModalImg');
 
 Route::get('/series/image/{series_id}', function ($series_id) {
     $image = Series::where('id', $series_id)->pluck('image')->first();
