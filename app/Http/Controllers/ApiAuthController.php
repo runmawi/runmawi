@@ -230,6 +230,8 @@ class ApiAuthController extends Controller
         $this->default_vertical_image_url = default_vertical_image_url();
         $this->default_horizontal_image_url = default_horizontal_image_url();
 
+        $this->current_timezone = Setting::pluck('default_time_zone')->first();
+
 
   }
 
@@ -14438,15 +14440,27 @@ $cpanel->end();
   
               if ($livestream->publish_type === 'recurring_program') {
           
-                  $Current_time = Carbon::now($current_timezone);
-                  $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                  $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                  $midnight = $convert_time->copy()->startOfDay();
-
+                $Current_time = Carbon::now($current_timezone);
+                $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+                $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+                $midnight = $convert_time->copy()->startOfDay();
+                $endmidnight = $convert_time->copy()->endOfDay();
+    
+                $custom_start_midnight = new \DateTime($livestream->custom_start_program_time);
+                $custom_start_midnight = clone $custom_start_midnight;
+                $custom_start_midnight->setTime(0, 0, 0);
+                
+                // dd($custom_start_midnight->format('Y-m-d\TH:i'));
+                
+                $live_end_date = new \DateTime($livestream->custom_end_program_time);
+                $program_end_date = clone $live_end_date;
+                $program_end_date->modify('+1 day');
+                $program_end_date->setTime(0, 0, 0);
+          
                   switch ($livestream->recurring_program) {
                       case 'custom':
-                          $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                          $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                          $recurring_program_Status =  ($livestream->custom_start_program_time >= $custom_start_midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time > $convert_time->format('Y-m-d\TH:i')) ;
+                          $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i')) ;
                           break;
                       case 'daily':
                           $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
@@ -14475,40 +14489,48 @@ $cpanel->end();
               }
           
               if ($livestream->publish_type === 'publish_later') {
-  
-                  $Current_time = Carbon::now($current_timezone);
-                  
-                  $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-                  $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-  
-                  $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
-  
-                  $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
-  
-                  return $publish_later_Status;
-              }
+
+                $Current_time = Carbon::now($current_timezone);
+                
+                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+                $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+    
+                $livestream->publish_later_live_animation = $publish_later_live_animation;
+                
+                $livestream->recurring_program_live_animation_mobile = $publish_later_live_animation  == true ? 'true' : 'false' ;
+    
+                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+    
+                return $publish_later_Status;
+            }
           
               return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
           });
     
           $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-          
-              if ($livestream->publish_type === 'publish_now') {
+
+            if ($livestream->publish_type === 'publish_now') {
+                $priority = 1;
+                $time = Carbon::parse($livestream->created_at)->timestamp;
   
-                  return $livestream->created_at;
+            } elseif ($livestream->publish_type === 'publish_later') {
+                $priority = 2;
+                $time = Carbon::parse($livestream->publish_time)->timestamp;
   
-              } elseif ($livestream->publish_type === 'publish_later' ) {
-  
-                  return $livestream->publish_time;
-  
-              } elseif ($livestream->publish_type === 'recurring_program') {
-                  $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
-                  
-                  return $custom_start_time ?? $livestream->program_start_time;
-              }
-  
-              return $livestream->publish_type;
-          })->values()->take(15);
+            } elseif ($livestream->publish_type === 'recurring_program') {
+              
+                $priority = 2;
+                if (!empty($livestream->custom_start_program_time)) {
+                    $time = Carbon::parse($livestream->custom_start_program_time)->timestamp;
+                } else {
+                    $time = Carbon::parse(Carbon::today()->format('Y-m-d') . ' ' . $livestream->program_start_time)->timestamp;
+                }
+            } else {
+                $priority = 3;
+                $time = 0;
+            }
+            return [$priority, $time];
+        })->values()->take(15);
 
         }
         else{
@@ -18497,7 +18519,7 @@ public function QRCodeMobileLogout(Request $request)
 
       else:
 
-        $current_timezone = current_timezone();
+        $current_timezone = Setting::pluck('default_time_zone')->first();
 
         $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                             'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
@@ -18516,82 +18538,100 @@ public function QRCodeMobileLogout(Request $request)
     
         $livestreams_filter = $livestreams->filter(function ($livestream) use ($current_timezone) {
 
-            $livestream->live_animation = 'true' ;
+          $livestream->live_animation = 'true' ;
 
-            if ($livestream->publish_type === 'recurring_program') {
-        
-                $Current_time = Carbon::now($current_timezone);
-                $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
-                $convert_time = $Current_time->copy()->timezone($recurring_timezone);
-                $midnight = $convert_time->copy()->startOfDay();
-        
-                switch ($livestream->recurring_program) {
-                    case 'custom':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                        $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                        break;
-                    case 'daily':
-                        $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    case 'weekly':
-                        $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
-                        $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    case 'monthly':
-                        $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
-                        $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
-                        break;
-                    default:
-                        $recurring_program_Status = false;
-                        $recurring_program_live_animation = false;
-                        break;
-                }
+          if ($livestream->publish_type === 'recurring_program') {
 
-                $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+            $Current_time = Carbon::now($current_timezone);
+            $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
+            $convert_time = $Current_time->copy()->timezone($recurring_timezone);
+            $midnight = $convert_time->copy()->startOfDay();
+            $endmidnight = $convert_time->copy()->endOfDay();
 
-                $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
-        
-                return $recurring_program_Status;
-            }
-        
-            if ($livestream->publish_type === 'publish_later') {
+            $custom_start_midnight = new \DateTime($livestream->custom_start_program_time);
+            $custom_start_midnight = clone $custom_start_midnight;
+            $custom_start_midnight->setTime(0, 0, 0);
+            
+            // dd($custom_start_midnight->format('Y-m-d\TH:i'));
+            
+            $live_end_date = new \DateTime($livestream->custom_end_program_time);
+            $program_end_date = clone $live_end_date;
+            $program_end_date->modify('+1 day');
+            $program_end_date->setTime(0, 0, 0);
+      
+              switch ($livestream->recurring_program) {
+                  case 'custom':
+                      $recurring_program_Status =  ($livestream->custom_start_program_time >= $custom_start_midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time > $convert_time->format('Y-m-d\TH:i')) ;
+                      $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i')) ;
+                      break;
+                  case 'daily':
+                      $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'weekly':
+                      $recurring_program_Status =  ( $livestream->recurring_program_week_day == $convert_time->format('N') ) && $convert_time->greaterThanOrEqualTo($midnight)  && ( $livestream->program_end_time >= $convert_time->format('H:i') );
+                      $recurring_program_live_animation = $livestream->recurring_program_week_day == $convert_time->format('N') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  case 'monthly':
+                      $recurring_program_Status = $livestream->recurring_program_month_day == $convert_time->format('d') && $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
+                      $recurring_program_live_animation = $livestream->recurring_program_month_day == $convert_time->format('d') && $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
+                      break;
+                  default:
+                      $recurring_program_Status = false;
+                      $recurring_program_live_animation = false;
+                      break;
+              }
 
-                $Current_time = Carbon::now($current_timezone);
-                
-                $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
-                $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+              $livestream->recurring_program_live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
 
-                $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+              $livestream->live_animation = $recurring_program_live_animation == true ? 'true' : 'false' ;
+      
+              return $recurring_program_Status;
+          }
+      
+          if ($livestream->publish_type === 'publish_later') {
 
-                $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+            $Current_time = Carbon::now($current_timezone);
+            
+            $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
+            $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
-                return $publish_later_Status;
-            }
-        
-            return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
-        });
+            $livestream->publish_later_live_animation = $publish_later_live_animation;
+            
+            $livestream->recurring_program_live_animation_mobile = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
-        $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-        
-            if ($livestream->publish_type === 'publish_now') {
+            $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
-                return $livestream->created_at;
+            return $publish_later_Status;
+        }
+      
+          return $livestream->publish_type === 'publish_now' || $livestream->publish_type === 'publish_later' && $livestream->publish_later_Status || ($livestream->publish_type === 'recurring_program' && $recurring_program_Status);
+      });
 
-            } elseif ($livestream->publish_type === 'publish_later' ) {
+      $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
 
-                return $livestream->publish_time;
+          if ($livestream->publish_type === 'publish_now') {
+              $priority = 1;
+              $time = Carbon::parse($livestream->created_at)->timestamp;
 
-            } elseif ($livestream->publish_type === 'recurring_program') {
+          } elseif ($livestream->publish_type === 'publish_later') {
+              $priority = 2;
+              $time = Carbon::parse($livestream->publish_time)->timestamp;
 
-              $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
-             
-              return $custom_start_time ?? $livestream->program_start_time;
-            }
-
-            return $livestream->publish_type;
-        })
-        ->values();
+          } elseif ($livestream->publish_type === 'recurring_program') {
+            
+              $priority = 2;
+              if (!empty($livestream->custom_start_program_time)) {
+                  $time = Carbon::parse($livestream->custom_start_program_time)->timestamp;
+              } else {
+                  $time = Carbon::parse(Carbon::today()->format('Y-m-d') . ' ' . $livestream->program_start_time)->timestamp;
+              }
+          } else {
+              $priority = 3;
+              $time = 0;
+          }
+          return [$priority, $time];
+      })->values();
         
         return $livestreams_sort->take($homepage_input_array['limit']);
 
@@ -20323,7 +20363,7 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function Livestream_Pagelist(){
 
-    $current_timezone = current_timezone();
+    $current_timezone = Setting::pluck('default_time_zone')->first();
 
     $livestreams = LiveStream::select('id', 'title', 'slug', 'year', 'rating', 'access', 'publish_type', 'publish_time', 'publish_status', 'ppv_price',
                                               'duration', 'rating', 'image', 'featured', 'Tv_live_image', 'player_image', 'details', 'description', 'free_duration',
@@ -20347,15 +20387,32 @@ public function QRCodeMobileLogout(Request $request)
         if ($livestream->publish_type === 'recurring_program') {
 
             $Current_time = Carbon::now($current_timezone);
+                  
             $recurring_timezone = TimeZone::where('id', $livestream->recurring_timezone)->value('time_zone');
             $convert_time = $Current_time->copy()->timezone($recurring_timezone);
             $midnight = $convert_time->copy()->startOfDay();
+            $endmidnight = $convert_time->copy()->endOfDay();
+
+            $custom_start_midnight = new \DateTime($livestream->custom_start_program_time);
+            $custom_start_midnight = clone $custom_start_midnight;
+            $custom_start_midnight->setTime(0, 0, 0);
+            
+            // dd($custom_start_midnight->format('Y-m-d\TH:i'));
+            
+            $live_end_date = new \DateTime($livestream->custom_end_program_time);
+            $program_end_date = clone $live_end_date;
+            $program_end_date->modify('+1 day');
+            $program_end_date->setTime(0, 0, 0);
+
+            // dd($convert_time->format('d') );
 
             switch ($livestream->recurring_program) {
                 case 'custom':
-                    $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
-                    $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
-                break;
+                    $recurring_program_Status =  ($livestream->custom_start_program_time >= $custom_start_midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time > $convert_time->format('Y-m-d\TH:i')) ;
+                    $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i')) ;
+                    // $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
+                    // $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
+                    break;
                 case 'daily':
                     $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->program_end_time >= $convert_time->format('H:i');
                     $recurring_program_live_animation = $livestream->program_start_time <= $convert_time->format('H:i') && $livestream->program_end_time >= $convert_time->format('H:i');
@@ -20382,14 +20439,16 @@ public function QRCodeMobileLogout(Request $request)
             return $recurring_program_Status;
         }
 
-        if( $livestream->publish_type === 'publish_later' ){
+        if ($livestream->publish_type === 'publish_later') {
 
             $Current_time = Carbon::now($current_timezone);
-
+            
             $publish_later_Status = Carbon::parse($livestream->publish_time)->startOfDay()->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
             $publish_later_live_animation = Carbon::parse($livestream->publish_time)->format('Y-m-d\TH:i')  <=  $Current_time->format('Y-m-d\TH:i') ;
 
-            $livestream->publish_later_live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
+            $livestream->publish_later_live_animation = $publish_later_live_animation;
+            
+            $livestream->recurring_program_live_animation_mobile = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
             $livestream->live_animation = $publish_later_live_animation  == true ? 'true' : 'false' ;
 
@@ -20400,24 +20459,29 @@ public function QRCodeMobileLogout(Request $request)
     });
 
     $livestreams_sort = $livestreams_filter->sortBy(function ($livestream) {
-    
-        if ($livestream->publish_type === 'publish_now') {
-
-              return $livestream->created_at;
-
-          } elseif ($livestream->publish_type === 'publish_later' ) {
-
-              return $livestream->publish_time;
-
+          // Assign priority
+          if ($livestream->publish_type === 'publish_now') {
+              $priority = 1;
+              $time = Carbon::parse($livestream->created_at)->timestamp;
+          } elseif ($livestream->publish_type === 'publish_later') {
+              $priority = 2;
+              $time = Carbon::parse($livestream->publish_time)->timestamp;
           } elseif ($livestream->publish_type === 'recurring_program') {
-
-              $custom_start_time = !empty($livestream->custom_start_program_time) ?  Carbon::parse($livestream->custom_start_program_time)->format('H:i') : null;
-              
-              return $custom_start_time ?? $livestream->program_start_time;
+              $priority = 2; // same as publish_later so time will decide order
+      
+              // Use custom start time if available, otherwise construct today's start time
+              if (!empty($livestream->custom_start_program_time)) {
+                  $time = Carbon::parse($livestream->custom_start_program_time)->timestamp;
+              } else {
+                  $time = Carbon::parse(Carbon::today()->format('Y-m-d') . ' ' . $livestream->program_start_time)->timestamp;
+              }
+          } else {
+              $priority = 3;
+              $time = 0;
           }
-
-          return $livestream->publish_type;
-      })->values(); 
+      
+          return [$priority, $time];
+      })->values();
         
     return $livestreams_sort->values();
   }
