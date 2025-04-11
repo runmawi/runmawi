@@ -513,8 +513,13 @@ class FrontEndQueryController extends Controller
                 $midnight = $convert_time->copy()->startOfDay();
                 $endmidnight = $convert_time->copy()->endOfDay();
 
+                $custom_start_midnight = new \DateTime($livestream->custom_start_program_time);
+                $custom_start_midnight = clone $custom_start_midnight;
+                $custom_start_midnight->setTime(0, 0, 0);
+                
+                // dd($custom_start_midnight->format('Y-m-d\TH:i'));
+                
                 $live_end_date = new \DateTime($livestream->custom_end_program_time);
-
                 $program_end_date = clone $live_end_date;
                 $program_end_date->modify('+1 day');
                 $program_end_date->setTime(0, 0, 0);
@@ -523,8 +528,8 @@ class FrontEndQueryController extends Controller
 
                 switch ($livestream->recurring_program) {
                     case 'custom':
-                        $recurring_program_Status =  ($livestream->custom_start_program_time >= $midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time < $program_end_date->format('Y-m-d\TH:i')) ;
-                        $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $live_end_date->format('Y-m-d\TH:i')) ;
+                        $recurring_program_Status =  ($livestream->custom_start_program_time >= $custom_start_midnight->format('Y-m-d\TH:i') && $livestream->custom_start_program_time <= $endmidnight->format('Y-m-d\TH:i')) && ($livestream->custom_end_program_time > $convert_time->format('Y-m-d\TH:i')) ;
+                        $recurring_program_live_animation =  ($livestream->custom_start_program_time <= $convert_time->format('Y-m-d\TH:i') && $livestream->custom_end_program_time >= $convert_time->format('Y-m-d\TH:i')) ;
                         // $recurring_program_Status = $convert_time->greaterThanOrEqualTo($midnight) && $livestream->custom_end_program_time >=  Carbon::parse($convert_time)->format('Y-m-d\TH:i') ;
                         // $recurring_program_live_animation = $livestream->custom_start_program_time <= $convert_time && $livestream->custom_end_program_time >= $convert_time;
                         break;
