@@ -49,6 +49,7 @@ use App\ContinueWatching;
 use App\CountryCode;
 use App\SeriesSeason;
 use App\StorageSetting;
+use App\Seriesartist;
 
 class FrontEndQueryController extends Controller
 {
@@ -1695,6 +1696,56 @@ class FrontEndQueryController extends Controller
         return response()->json([
             'image'       => $image,
             'title'       => $live->title,
+            'description' => $description,
+            'slug'        => $slug
+        ]);
+    }
+
+    public function getartistSeriesImg(Request $request)
+    {
+        $artistId = $request->artist_id;
+        $image = Artist::where('id', $artistId)->pluck('image')->first();
+
+        $image = (!is_null($image) && $image != 'default_image.jpg')
+                        ? $this->BaseURL.('/artists/' . $image)
+                        : $this->default_vertical_image;
+        $series_artist = Seriesartist::where('artist_id',$artistId)->groupBy('series_id')->pluck('series_id');
+
+        $seriesImages = Series::whereIn('id',$series_artist)
+                                    ->where('active', 1)
+                                    ->latest()
+                                    ->take(15)
+                                    ->pluck('image')
+                                    ->map(function ($Image) {
+                                        return (!is_null($Image) && $Image != 'default_horizontal_image.jpg') 
+                                            ? $this->BaseURL . '/images/' . $Image 
+                                            : $this->default_horizontal_image_url;
+                                    });
+
+
+        return response()->json([
+            'artist_image' => $image,
+            'series_images' => $seriesImages
+        ]);
+    }
+
+    public function getSeriesArtistModalImg(Request $request)
+    {
+        $Id = $request->Series_id;
+
+        $Series = Series::where('id',$Id)->select('id', 'title', 'slug', 'player_image', 'description')
+                            ->first();
+
+        $description   = strip_tags(html_entity_decode($Series->description));
+        $slug          = URL::to('play_series/'.$Series->slug );
+
+        $image = (!is_null($Series->player_image) && $Series->player_image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $Series->player_image)
+                        : $this->default_vertical_image;
+
+        return response()->json([
+            'image'       => $image,
+            'title'       => $Series->title,
             'description' => $description,
             'slug'        => $slug
         ]);
