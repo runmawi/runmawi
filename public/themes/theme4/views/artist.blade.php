@@ -40,7 +40,7 @@
 
 <div class="mt-5 container-fluid pl-0 mar-left">
 
-    <div class="row justify-content-between  align-items-center">
+    <div class="d-flex justify-content-between  align-items-center">
 
         <div class="col-md-3">
             <img src="{{ URL::to('public/uploads/artists/' . $artist->image) }}" alt="" class="w-100">
@@ -118,323 +118,66 @@
     </div>
 </div>
 
-<!-- Latest Videos -->
 
-@if (count($latest_audios) > 0)
-    <div class="container-fluid mt-3 pl-0 mar-left">
-        <h4 class="main-title iq-main-header"><?php echo __('Latest Release'); ?></h4>
-    </div>
-
-    <div class="container-fluid mt-2 pl-0 mar-left">
-        <div class="favorites-contens">
-            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                @foreach ($latest_audios as $key => $latest_audio)
-                    <li class="slide-item">
-                        <a href="{{ URL::to('audio/' . $latest_audio[0]['slug']) }}">
-                            <div class="block-images position-relative">
-                                <!-- block-images -->
-                                <div class="img-box">
-                                    <img loading="lazy" data-src="<?php echo URL::to('/') . '/public/uploads/images/' . $latest_audio[0]['image']; ?>" alt=""
-                                        class="img-fluid loading w-100">
-                                </div>
-
-                                <div class="block-description">
-                                    <div class="hover-buttons text-white">
-                                        <a href="{{ URL::to('audio/' . $latest_audio[0]['slug']) }}">
-                                            <h6 class="dc">{{ $latest_audio[0]['title'] }}</h6>
-                                            <p>{{ $latest_audio[0]['year'] }}</p>
-                                        </a>
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-@endif
-
-<!-- Album Videos -->
-
-@if (count($albums) > 0)
-
-    <div class="container-fluid mt-3 pl-0 mar-left">
-        <h4 class="main-title iq-main-header">{{ __('Album') }}</h4>
-    </div>
-
-    <div class="container-fluid mt-2 pl-0 mar-left">
-        <div class="favorites-contens">
-            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                @foreach ($albums as $key => $album)
-                    <li class="slide-item">
-                        <a href="{{ URL::to('album/' . $album->slug) }}">
-                            <div class="block-images position-relative">
-
-                                <div class="img-box">
-                                    <img loading="lazy"
-                                        data-src="{{ URL::to('public/uploads/albums/' . $album->album) }}"
-                                        alt="" class="img-fluid loading w-100">
-                                </div>
-
-                                <div class="block-description">
-
-                                    <div class="hover-buttons text-white">
-                                        <a href="<?php echo URL::to('/') . '/album/' . $album->slug; ?>">
-                                            <h6 class=""><?php echo $album->albumname; ?></h6>
-                                        </a>
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-@endif
-
-<!-- Artist Audios -->
-
-@if (count($artist_audios) > 0)
-    <div class="container-fluid mt-3 pl-0 mar-left">
-        <h4 class="main-title iq-main-header">{{ __('Audio') }}</h4>
-    </div>
-
-    <div class="container-fluid mt-2 pl-0 mar-left">
-        <div class="favorites-contens">
-            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                @foreach ($artist_audios as $key => $artist_audio)
-                    <li class="slide-item">
-                        <a href="{{ URL::to('audio/' . $artist_audio->slug) }}">
-                            <div class="block-images position-relative">
-                                <!-- block-images -->
-                                <div class="img-box">
-                                    <img loading="lazy"
-                                        data-src="{{ URL::to('/') . '/public/uploads/images/' . $artist_audio->image }}"
-                                        alt="" class="img-fluid loading w-100">
-                                </div>
-
-                                <div class="block-description">
-
-                                    <div class="hover-buttons text-white">
-                                        <a href="{{ URL::to('audio/' . $artist_audio->slug) }}">
-                                            <h6 class="dc">{{ $artist_audio->title }}</h6>
-                                            <p>{{ $artist_audio->year }}</p>
-                                        </a>
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-@endif
 
 <!-- Artist Series -->
 
 @if (count($artist_series) > 0)
 
-    <div class="container-fluid mt-3 pl-0 mar-left">
+    <div class="mt-3 mar-left">
         <h4 class="main-title iq-main-header">{{ 'Series' }}</h4>
     </div>
 
-   
-
-        <div class="trending-contens">
-            <ul id="trending-slider-nav" class="Series-Episode-slider-nav list-inline p-0 mar-left row align-items-center">
+    <div class="channels-list">
+        <div class="channel-row">
+            <div id="trending-slider-nav" class="video-list latest-series-video" data-flickity>
                 @foreach ($artist_series as $key => $artist_serie)
-                    <li>
-                        <a href="javascript:void(0);">
-                            <div class="movie-slick position-relative">
-                                <img src="{{ URL::to('public/uploads/images/' . $artist_serie->image) }}" class="img-fluid" alt="">
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-
-            <ul id="trending-slider Series-Episode-slider" class="list-inline p-0 m-0 align-items-center Series-Episode-slider">
-                @foreach ($artist_series as $key => $artist_serie)
-                    <li>
-                        <div class="tranding-block position-relative trending-thumbnail-image">
-                            <button class="drp-close">×</button>
-
-                            <div class="trending-custom-tab">
-                                <div class="trending-content">
-                                    <div id="" class="overview-tab tab-pane fade active show">
-                                        <div class="trending-info align-items-center w-100 animated fadeInUp">
-
-                                            <div class="caption pl-4">
-                                                <h2 class="caption-h2">{{ $artist_serie->title }}</h2>
-
-                                                @if (optional($artist_serie)->description)
-                                                    <div class="trending-dec">{!! html_entity_decode( optional($artist_serie)->description) !!}</div>
-                                                @endif
-
-
-                                                <div class="p-btns">
-                                                    <div class="d-flex align-items-center p-0">
-                                                        <a href="{{ URL::to('play_series/' . $artist_serie->id) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                        <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Home-Series-Episodes-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="dropdown_thumbnail">
-                                                <img  src="{{ URL::to('public/uploads/images/' . $artist_serie->player_image) }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-
-
-        @foreach ($artist_series as $key => $artist_serie)
-            <div class="modal fade info_model" id="{{ "Home-Series-Episodes-Modal-".$key }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
-                    <div class="container">
-                        <div class="modal-content" style="border:none;">
-                            <div class="modal-body">
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <img  src="{{ URL::to('public/uploads/images/' . $artist_serie->player_image) }}" alt="" width="100%">
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                                    <h2 class="caption-h2">{{ $artist_serie->title }}</h2>
-
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
-                                                        <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            
-
-                                            @if (optional($artist_serie)->description)
-                                                <div class="trending-dec mt-4">{!! html_entity_decode( optional($artist_serie)->description) !!}</div>
-                                            @endif
-
-                                            <a href="{{ URL::to('play_series/' . $artist_serie->id) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div id="latest-series-slider-img" class="item" data-index="{{ $key }}" data-series-id="{{ $artist_serie->id }}">
+                        <div class="movie-sdivck position-relative">
+                            <img data-flickity-lazyload="{{ URL::to('public/uploads/images/' . $artist_serie->image) }}"  class="flickity-lazyloaded" alt="{{ $artist_serie->title }}">
+                            <div class="controls">        
+                                <a href="{{ URL::to('play_series/'.$artist_serie->slug) }}">
+                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                </a>
+                                <nav>
+                                    <button id="data-modal-artist-series" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Artist-series-Modal" data-series-id="{{ $artist_serie->id }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
+                                </nav>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-        @endforeach
-
-
-            
-@endif
-<!-- Artist videos -->
-
-@if (count($artist_videos) > 0)
-
-    <div class="container-fluid mt-3 pl-0 mar-left">
-        <h4 class="main-title iq-main-header">{{ 'Videos' }}</h4>
+        </div>
     </div>
 
-
-    <div class="trending-contens">
-        <ul id="trending-slider-nav" class="artist-videos-slider-nav list-inline p-0 mar-left row align-items-center">
-            @foreach ($artist_videos as $key => $artist_video)
-                <li>
-                    <a href="javascript:void(0);">
-                        <div class="movie-slick position-relative">
-                            <img src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}" class="img-fluid" >
-                        </div>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-
-    <ul id="trending-slider artist-videos-slider" class="list-inline p-0 m-0 align-items-center artist-videos-slider">
-        @foreach ($artist_videos as $key => $artist_video)
-                <li>
-                    <div class="tranding-block position-relative trending-thumbnail-image" >
-                        <button class="drp-close">×</button>
-
-                        <div class="trending-custom-tab">
-                            <div class="trending-content">
-                                <div id="" class="overview-tab tab-pane fade active show">
-                                    <div class="trending-info align-items-center w-100 animated fadeInUp">
-
-                                    <div class="caption pl-4">
-                                            <h2 class="caption-h2">{{ $artist_video->title }}</h2>
-
-
-                                        @if (optional($artist_video)->description)
-                                            <div class="trending-dec">{!! html_entity_decode( optional($artist_video)->description) !!}</div>
-                                        @endif
-
-                                        <div class="p-btns">
-                                            <div class="d-flex align-items-center p-0">
-                                                <a href="{{ URL::to('category/videos/' . $artist_video->slug) }}" class="button-groups btn btn-hover  mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                <a class="btn btn-hover button-groups mr-2" tabindex="0" data-bs-toggle="modal" data-bs-target="{{ '#Artist-videos-Modal-'.$key }}"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i> More Info </a>
-                                            </div>
-                                        </div>
-                                        </div>
-
-                                        <div class="dropdown_thumbnail">
-                                            <img  src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-    </div>
-
-    @foreach ($artist_videos as $key => $artist_video)
-        <div class="modal fade info_model" id="{{ "Artist-videos-Modal-".$key }}" tabindex="-1" aria-hidden="true">
+       {{-- series modal --}}
+       <div class="modal fade info_model" id="Artist-series-Modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="max-width:100% !important;">
                 <div class="container">
-                    <div class="modal-content" style="border:none;">
+                    <div class="modal-content" style="border:none; background:transparent;">
                         <div class="modal-body">
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <img  src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}" alt="" width="100%">
+                                        <img id="series_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-10 col-md-10 col-sm-10">
-                                                <h2 class="caption-h2">{{ $artist_video->title }}</h2>
-
+                                                <h2 class="modal-title caption-h2"></h2>
                                             </div>
+
                                             <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <button type="button" class="btn-close-white" aria-label="Close"  data-bs-dismiss="modal">
+                                                <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
                                                     <span aria-hidden="true"><i class="fas fa-times" aria-hidden="true"></i></span>
                                                 </button>
                                             </div>
                                         </div>
-                                        
 
-                                        @if (optional($artist_video)->description)
-                                            <div class="trending-dec mt-4">{!! html_entity_decode( optional($artist_video)->description) !!}</div>
-                                        @endif
+                                            <div class="modal-desc trending-dec mt-4"></div>
 
-                                        <a href="{{ URL::to('category/videos/' . $artist_video->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0" ><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+                                        <a href="" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0"><i class="far fa-eye mr-2" aria-hidden="true"></i> View Content </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -443,42 +186,70 @@
                 </div>
             </div>
         </div>
-    @endforeach
 
 
 
-
-    <!-- <div class="container-fluid mt-2">
-        <div class="favorites-contens">
-            <ul class="favorites-slider list-inline  row p-0 mb-0">
-                @foreach ($artist_videos as $key => $artist_video)
-                    <li class="slide-item">
-                        <a href="{{ URL::to('category/videos/' . $artist_video->slug) }}">
-                            <div class="block-images position-relative">
-                                <div class="img-box">
-                                    <img loading="lazy"
-                                        data-src="{{ URL::to('public/uploads/images/' . $artist_video->image) }}"
-                                        class="img-fluid loading w-100">
-                                </div>
-
-                                <div class="block-description">
-                                    <div class="hover-buttons text-white">
-                                        <a href="{{ URL::to('category/videos/' . $artist_video->slug) }}">
-                                            <h6 class="dc">{{ $artist_video->title }}</h6>
-                                            <p> {{ $artist_video->year }}</p>
-                                        </a>
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div> -->
-
+            
 @endif
+
+<script>
+    var elem = document.querySelector('.latest-series-video');
+        var flkty = new Flickity(elem, {
+            cellAlign: 'left',
+            contain: true,
+            groupCells: false,
+            pageDots: false,
+            draggable: true,
+            freeScroll: true,
+            imagesLoaded: true,
+            lazyLoad: 6,
+            setGallerySize: true,
+            resize: true,   
+        });
+</script>
+
+
+<script>
+    $(document).on('click', '#data-modal-artist-series', function() {
+        const SeriesId = $(this).data('series-id');
+        // console.log("modal opened.");
+        $.ajax({
+            url: '{{ route("getSeriesArtistModalImg") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                Series_id : SeriesId
+            },
+            success: function (response) {
+                // console.log("image: " + response.image);
+                // console.log("title: " + response.title);
+                // console.log("description: " + response.description);
+                // const slug = 'live/' + response.slug;
+                console.log("slug: " + response.slug);
+                $('#series_modal-img').attr('src', response.image);
+                $('#series_modal-img').attr('alt', response.title);
+                $('.modal-title').text(response.title);
+                $('.modal-desc').text(response.description);
+                $('.btn.btn-hover').attr('href', response.slug);
+                
+
+            },
+            error: function () {
+                console.log('Failed to load images. Please try again.');
+            }
+        });
+
+        $('.btn-close-white').on('click', function () {
+            $('#series_modal-img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
+            $('.modal-title').text('');
+            $('.modal-desc').text('');
+            $('.btn.btn-hover').attr('href', '');
+        });
+
+
+    });
+</script>
+
 
 @php
     include public_path('themes/theme4/views/footer.blade.php');
@@ -668,3 +439,40 @@
         });
     });
 </script>
+
+<style>
+     #latest-series-slider-img:hover .controls {
+        opacity: 1;
+        background-image: linear-gradient(0deg, black, transparent);
+        border: 2px solid #2578c0 !important;
+    }
+
+    .controls {
+        position: absolute;
+        padding: 4px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 3;
+        opacity: 0;
+        -webkit-transition: all .15s ease;
+        transition: all .15s ease;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+    .controls nav {
+        position: absolute;
+        -webkit-box-align: end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+        right: 4px;
+        top: 4px;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+</style>
