@@ -23,7 +23,7 @@
                                         <img src="{{ $artist->image ? URL::to('public/uploads/artists/'.$artist->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $artist->artist_name}}">                                        
                                         
                                         <div class="controls">        
-                                            <a href="{{ URL::to('category/videos/'.$artist->slug) }}">
+                                            <a href="{{ URL::to('artist/'.$artist->artist_slug) }}">
                                                 <button class="playBTN"> <i class="fas fa-play"></i></button>
                                             </a>
                                             <nav>
