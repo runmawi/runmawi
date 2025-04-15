@@ -5597,7 +5597,7 @@ public function verifyandupdatepassword(Request $request)
 
           $stripe_plan = SubscriptionPlan();
 
-            if ( !empty($userdata) && $userdata->role == "subscriber" || $userdata->subscribed($stripe_plan) && $userdata->role == "subscriber")
+            if ( !empty($userdata) && $userdata->role == "subscriber" || !empty($userdata) && ($userdata->subscribed($stripe_plan) && $userdata->role == "subscriber"))
             {
 
                 $paymode_type =  Subscription::where('user_id',$user_id)->latest()->pluck('PaymentGateway')->first();
