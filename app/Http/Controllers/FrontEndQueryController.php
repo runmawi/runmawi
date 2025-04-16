@@ -1223,6 +1223,7 @@ class FrontEndQueryController extends Controller
                 }
     
                 $episode_data = $episode_data->latest()->get()->map(function ($item) {
+                    $item['source_type'] = "Episode";
                     $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only necessary fields
                     return $item;
                 });
@@ -1246,6 +1247,7 @@ class FrontEndQueryController extends Controller
                 $item['Player_image_url'] = $item->player_image != null ? $this->BaseURL . ('s/images/' . $item->player_image) : default_horizontal_image_url();
                 $item['tv_image_url'] = $item->video_tv_image != null ? $this->BaseURL . ('s/images/' . $item->Tv_live_image) : default_horizontal_image_url();
                 $item['source'] = "Livestream";
+                $item['source_type'] = "Livestream";
                 return $item;
             });
     
@@ -1317,6 +1319,7 @@ class FrontEndQueryController extends Controller
                 }
     
                 $episode_data = $episode_data->latest()->get()->map(function ($item) {
+                    $item['source_type'] = "Episode";
                     $item['series'] = Series::select('id', 'slug')->where('id', $item->series_id)->first(); // Select only necessary fields
                     return $item;
                 });
