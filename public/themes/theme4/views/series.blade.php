@@ -196,6 +196,7 @@
 div#video-js-trailer-player {
     height: 65vh !important;
 }
+#trailer_season{display: none;}
 </style>
 
 <?php
@@ -284,14 +285,13 @@ div#video-js-trailer-player {
                                                 <?= __('Share') ?>
                                             </ul>
                                         </div>
-
-                                        <?php if(!empty($season->first()->trailer)) {?>
-                                            <div class="trailerbutton pl-4">  
-                                                <a class="btn btn-hover" data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
-                                                    <?= __("Play Trailer") ?>
-                                                </a>
-                                            </div>
-                                        <?php } ?>
+                                        
+                                        
+                                        <div class="trailerbutton pl-4" id="trailer_season">  
+                                            <a class="btn btn-hover" data-video="<?= $series->trailer;?>" data-toggle="modal" data-target="#videoModal">	
+                                                <?= __("Play Trailer") ?>
+                                            </a>
+                                        </div>
 
                                         <?php if( Auth::guest() && $series->access == 'guest' || $ppv_exits > 0 || $video_access == "free" || $series->access == 'guest' && $series->ppv_status != 1 || ( ($series->access == 'subscriber' && $series->ppv_status != 1 || $series->access == 'registered' && $series->ppv_status != 1 ) 
                                             && !Auth::guest() && Auth::user()->subscribed()) && $series->ppv_status != 1 || (!Auth::guest() && (Auth::user()->role == 'demo' && $series->ppv_status != 1 || 
@@ -1070,7 +1070,16 @@ div#video-js-trailer-player {
 var purchase_series = $('#purchase_url').val();
 var publishable_key = $('#publishable_key').val();
 
-$(document).ready(function () {  
+$(document).ready(function () { 
+    
+    var season_trailer = '<?= $season[0]->trailer ?>';
+    if(season_trailer){
+        // alert('trailer: '+ season_trailer);
+        $('#trailer_season').show();
+    }else{
+        // alert('empty: '+ season_trailer);
+        $('#trailer_season').hide();
+    }
 
 	var imageseason = '<?= $season_trailer ?>' ;
 var obj = JSON.parse(imageseason);
@@ -1095,6 +1104,12 @@ $('#season_id').change(function(){
       const parts = player_url.split('.');
       const extension = parts[parts.length - 1];
       const player_type = extension === "mp4" ? "video/mp4" : (extension === "m3u8" ? "application/x-mpegURL" : "unknown");
+
+      if(player_url){
+        $('#trailer_season').show();
+      }else{
+        $('#trailer_season').hide();
+      }
 
       var player = videojs('video-js-trailer-player', {  // Video Js Player  - Trailer
           aspectRatio: '16:9',

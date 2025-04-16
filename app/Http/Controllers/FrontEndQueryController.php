@@ -757,7 +757,7 @@ class FrontEndQueryController extends Controller
 
     public function artist()
     {
-        $Artist = Artist::limit(15)->get();
+        $Artist = Artist::get();
         return $Artist ;
     }
 
