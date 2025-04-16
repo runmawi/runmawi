@@ -1412,6 +1412,19 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                 }
             });
 
+            player.on('mouseout', function() {
+                // console.log("hover out..");
+                $('.vjs-big-play-button').hide();
+                $('.vjs-control-bar').attr('style', 'display: none !important;');
+            });
+
+            // Show controls when mouse enters
+            player.on('mouseover', function() {
+                // console.log("hovering..");
+                $('.vjs-big-play-button').show();
+                $('.vjs-control-bar').show();
+            });
+
             // Close button functionality
             $(".btn-close").click(function() {
                 player.pause();

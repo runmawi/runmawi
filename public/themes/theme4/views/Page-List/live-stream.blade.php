@@ -1,5 +1,7 @@
 @php
     include public_path("themes/{$current_theme}/views/header.php");
+
+    $Current_time = App\Setting::pluck('default_time_zone')->first(); 
 @endphp
 
 <section id="iq-favorites">
@@ -16,14 +18,14 @@
                 @if (($live_list_pagelist)->isNotEmpty())
 
                     <div class="trending-contens sub_dropdown_image mt-3" id="home-live-videos-container">
-                        <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
+                        <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left">
                        
                             @forelse($live_list_pagelist as $key => $livestream_videos)
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
-                                        <img src="{{ $livestream_videos->image ?  URL::to('public/uploads/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="Videos" width="300" height="200">
+                                        <img src="{{ $livestream_videos->image ?  $BaseURL.('/images/'.$livestream_videos->image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $livestream_videos->title }}" width="300" height="200">
                     
-                                        @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                        @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && $livestream_videos->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i'))) 
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
                                         @elseif( $livestream_videos->recurring_program_live_animation  == true )
                                             <div ><img class="blob lazy" src="public\themes\theme4\views\img\Live-Icon.webp" alt="livestream_videos" width="100%"></div>
@@ -68,7 +70,7 @@
                                                                         </button>
                                                                     </div>
                                                                 </div>
-                                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && Carbon\Carbon::today()->now()->greaterThanOrEqualTo($livestream_videos->publish_time))) 
+                                                                @if ($livestream_videos->publish_type == "publish_now" || ($livestream_videos->publish_type == "publish_later" && $livestream_videos->publish_time <=  Carbon\Carbon::now($Current_time)->format('Y-m-d\TH:i'))) 
                                                                 
                                                                     <ul class="vod-info">
                                                                         <li><span></span> LIVE NOW</li>
