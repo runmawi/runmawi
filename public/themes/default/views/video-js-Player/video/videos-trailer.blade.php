@@ -70,7 +70,7 @@
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen>
                             </iframe>
-                        <?php elseif($videodetail->trailer_type == "m3u8" ): ?>
+                        <?php elseif($videodetail->trailer_type == "m3u8_url" ): ?>
                             <video id="video-js-trailer-player" class="vjs-theme-city my-video video-js vjs-big-play-centered vjs-fluid" poster="<?= URL::to('public/uploads/images/'.$videodetail->player_image) ?>" controls width="100%" height="auto">
                                 <source src="<?= $videodetail->trailer ?>" type="application/x-mpegURL">
                             </video>
@@ -133,6 +133,20 @@
                 }
             }
         });
+
+        player.on('mouseout', function() {
+            // console.log("hover out..");
+            $('.vjs-big-play-button').hide();
+            $('.vjs-control-bar').attr('style', 'display: none !important;');
+        });
+
+        // Show controls when mouse enters
+        player.on('mouseover', function() {
+            // console.log("hovering..");
+            $('.vjs-big-play-button').show();
+            $('.vjs-control-bar').show();
+        });
+
         $(".btn-close").click(function(){
                 player.pause();  
         });

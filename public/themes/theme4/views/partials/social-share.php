@@ -55,7 +55,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'" framebo
                                         <!-- Share -->
                                 <li class="share sharemobres">
                                     <span >
-                                    <i class="fal fa-external-link-alt"></i>
+                                    <i class="fa fa-external-link-alt"></i>
                                     </span>
                                     <div class="share-box">
        <div class="d-flex align-items-center"> 
