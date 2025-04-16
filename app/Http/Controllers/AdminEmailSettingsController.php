@@ -45,6 +45,12 @@ use App\EmaillogsDetail;
 
 class AdminEmailSettingsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->email_settings = EmailSetting::first();
+    }
+
     public function index()
     {
         if(!Auth::guest() && Auth::user()->package == 'Channel' ||  Auth::user()->package == 'CPP'){
@@ -184,9 +190,85 @@ class AdminEmailSettingsController extends Controller
        
     }
 
+
+    public function microsoftstore(Request $request)
+    {
+        $data = $request->all();
+    
+
+        $email_settings = EmailSetting::first();
+        
+        if($email_settings == null){
+            $email_settings = new EmailSetting;  
+        }
+
+        $email_settings->microsoft365_admin_email = $request->microsoft365_admin_email;
+        $email_settings->microsoft365_scope = $request->microsoft365_scope;
+        $email_settings->microsoft365_tenant_id = $request->microsoft365_tenant_id;
+        $email_settings->microsoft365_client_id = $request->microsoft365_client_id;
+        $email_settings->microsoft365_client_secret = $request->microsoft365_client_secret;
+        $email_settings->enable_microsoft365 = $request->enable_microsoft365;
+        $email_settings->save();
+
+        // Replacing the Env file
+
+        try {
+            $Env_path = realpath(('.env'));
+
+            $Replace_data =array(
+                'MICROSOFT_SENDER_EMAIL'         =>  $request->microsoft365_admin_email,
+                'MICROSOFT_SCOPE'                =>  $request->microsoft365_scope,
+                'MICROSOFT_TENANT_ID'            =>  $request->microsoft365_tenant_id,
+                'MICROSOFT_CLIENT_ID'            =>  $request->microsoft365_client_id,
+                'MICROSOFT_CLIENT_SECRET'        =>  $request->microsoft365_client_secret,
+            );
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MICROSOFT_SENDER_EMAIL') ? "MICROSOFT_SENDER_EMAIL=".$Replace_data['MICROSOFT_SENDER_EMAIL']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MICROSOFT_SCOPE') ? "MICROSOFT_SCOPE=".$Replace_data['MICROSOFT_SCOPE']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MICROSOFT_TENANT_ID') ? "MICROSOFT_TENANT_ID=".$Replace_data['MICROSOFT_TENANT_ID']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MICROSOFT_CLIENT_ID') ? "MICROSOFT_CLIENT_ID=".$Replace_data['MICROSOFT_CLIENT_ID']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            file_put_contents($Env_path, implode('', 
+                    array_map(function($Env_path) use ($Replace_data) {
+                        return   stristr($Env_path,'MICROSOFT_CLIENT_SECRET') ? "MICROSOFT_CLIENT_SECRET=".$Replace_data['MICROSOFT_CLIENT_SECRET']."\n" : $Env_path;
+                    }, file($Env_path))
+            ));
+
+            return Redirect::back();
+
+        }catch (\Exception $e) {
+            $Error_msg = "While ! Changing Microsoft365 Email Configuration Some Error Occurs";
+            $url = URL::to('/admin/email_settings');
+            echo "<script type='text/javascript'>alert('$Error_msg'); window.location.href = '$url' </script>";
+        }
+       
+    }
+
+
     public function Testing_EmailSettting(Request $request)
     {
         EmailSetting::where("id", 1)->update(["TestEmail" => $request->test_mail]);
+        $email_template_subject =  EmailTemplate::where('id',1)->pluck('heading')->first() ;
+        $email_subject  =  $email_template_subject;
 
         $username      = Setting::pluck('website_name')->first();
         $Testing_email = $request->test_mail;
@@ -197,11 +279,18 @@ class AdminEmailSettingsController extends Controller
         );
 
         try {
+
+            if ($this->email_settings->enable_microsoft365 == 1) {
+                sendMicrosoftMail($Testing_email, $email_subject, 'admin.Email.TestingEmail', [
+                    'Testing_Email' => $username
+                ]);
+            } else {
             Mail::send('admin.Email.TestingEmail', array('Testing_Email' => $username ), 
             function($message) use ($data) {
                 $message->from(AdminMail(),GetWebsiteName());
                 $message->to($data['email'], $data['username'])->subject('Testing the Email');
             });
+        }
 
             $email_log      = 'Mail Sent Successfully from Testing E-Mail';
             $email_template = "0";

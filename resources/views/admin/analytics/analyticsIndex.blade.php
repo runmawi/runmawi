@@ -401,6 +401,7 @@ tr td:nth-last-child(9) {
                             <th scope="col">Date</th>
                             <th scope="col">Video Name</th>
                             <th scope="col">Type</th>
+                            <th scope="col">Payment Status</th>
                             <th scope="col">Platform</th>
                             <th scope="col">Transaction ID</th>
                             <th scope="col">Amount</th>
@@ -418,7 +419,8 @@ tr td:nth-last-child(9) {
                                 <td>{{ !empty($data->season_id) 
                                   ? $data->series_name . ' - ' . $data->season_name 
                                   : $data->video_name ?? 'N/A' }}</td>
-                                <td>{{ $data->payment_gateway ? $data->payment_gateway : 'N/A' }}</td>
+                                  <td>{{ $data->payment_gateway ? $data->payment_gateway : 'N/A' }}</td>
+                                  <td>{{ $data->status ? $data->status : 'N/A' }}</td>
                                 <td>{{ $data->platform ? $data->platform : 'N/A' }}</td>
                                 <td>{{ $data->payment_id ? $data->payment_id : 'N/A' }}</td>
                                 <td>${{ number_format($data->total_amount, 2) }}</td>
