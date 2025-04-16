@@ -56,9 +56,9 @@
 
 .pageWrapper {
     width: 100%;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 66px;
 }
 
 .vpageBanner .content {
@@ -89,7 +89,7 @@
 .vpageBanner .content .right .utilities {
     color: #fff;
     opacity: 1;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -127,7 +127,7 @@
 }
 .genres .genre:last-child { border-right: 0px solid #848484; }
 
-.vpageBanner .content .right .watch_buttons .row {
+.vpageBanner .content .right  .plays_btn_res  {
     display: flex;
     align-items: center;
     gap: 25px;
@@ -138,6 +138,9 @@
     background-color: var(--black);
     border-radius: 50%;
     padding: 2px;
+}
+.circleRating svg.CircularProgressbar{
+    width: 63px;
 }
 
 .vpageBanner .content .right .circleRating {
@@ -214,6 +217,7 @@
 .vpageBanner .content .right .playbtn .text {
     font-size: 20px;
     transition: all .7s ease-in-out;
+    /* text-transform: uppercase; */
 }
 
 .vpageBanner .content .right .overview {
@@ -361,9 +365,16 @@ ul.breadcrumb.breadcrumb-csp{
 li.breadcrumb-item a{
     color: #fff;
 }
-.modal-dialog-centered .modal-content {
-    background: transparent;
+
+@media (min-width: 1400px) and (max-width: 2565px) {
+    .my-video.vjs-fluid {
+        height: 50vh !important;
+    }
+    .video-js-trailer-modal-dialog {
+        max-width: 1400px;
+    }
 }
+
 
 @media only screen and (min-width: 768px) {
     .vpageBanner {
@@ -382,7 +393,7 @@ li.breadcrumb-item a{
     }
 
     .vpageBanner .content .right .title {
-        font-size: 25px;
+        font-size: 34px;
         line-height: 44px;
     }
 
@@ -391,7 +402,7 @@ li.breadcrumb-item a{
         line-height: 22px;
     }
 
-    .vpageBanner .content .right .playbtn svg {
+    .vpageBanner .content .right .playbtn svg,.vpageBanner .content .right svg {
         width: 40px;
     }
 
@@ -424,7 +435,73 @@ li.breadcrumb-item a{
         line-height: 24px;
     }
 }
-li.slide-item {
-    position: relative;
-    padding: 0 15px 0 15px;
+
+/* Broadcast */
+
+
+
+.titleoverflow{
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 115px;
+}
+.traileroverflow{
+    display: block;
+}
+
+@media (max-width:1600px){
+    .modal-dialog{ max-width: 700px;}
+}
+
+@media (max-width:920px){
+    .modal-dialog{ max-width: 600px;}
+}
+
+@media (max-width:765px){
+    .vpageBanner .content{
+        gap: 0px;
+    }
+    .vpageBanner .content .right .row{
+        margin-bottom: 0;
+        gap: 10px;
+    }
+    .vpageBanner .content .right .genres{
+        margin-bottom: 10px;
+    }
+    .vpageBanner .content .right .playbtn{
+        width: 117px;
+    }
+
+
+    .vpageBanner .content .right .subtitle{
+        margin-bottom: 6px;
+    }
+    .vpageBanner .content .right .subtitle p{
+        margin-bottom: 0px;
+    }
+    .vpageBanner .content .right .overview .description{
+        padding-right: 0px;
+    }
+    .vpageBanner .content .right .overview .heading{
+        font-size: 21px;
+    }
+    .pageWrapper{padding:0 25px;}
+    .modal-dialog{ max-width: 600px;}
+    .vpageBanner .content .right .playbtn .text{font-size: 13px;}
+    .col-sm-7.col-12.details{padding: 0;}
+    .descript {white-space: normal;word-wrap: break-word;}
+    h3#price-display{font-size: 1.2em;}
+    .col-8{padding: 0;}
+    .quality-options-group{display: flow;}
+}
+
+@media (max-width:425px){
+    .share-icons.music-play-lists .sharemobres{
+        margin: 0px;
+    }
+    .circleRating svg.CircularProgressbar{
+        width: 48px;
+    }
+
 }

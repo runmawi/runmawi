@@ -138,9 +138,9 @@
                                                                 </button>
 
                                                                
-                                                                <p class="trending-dec" >
-                                                                    {{ optional($artist_series_content)->title}}
-                                                                    {!! (strip_tags(substr(optional($artist_series_content)->description, 0, 50))) !!}
+                                                                <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                    {!! (strip_tags(substr(optional($artist_series_content)->title, 0, 150))) !!}
+                                                                    {{-- {!! (strip_tags(substr(optional($artist_series_content)->description, 0, 50))) !!} --}}
                                                                 </p>
                                                                 
                                                             </div>
@@ -171,7 +171,7 @@
                                     <div class="col-lg-12">
                                         <div class="row">
                                             <div class="col-lg-6">
-                                                <img id="series_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
+                                                <img id="artist_series_modal-img" src="https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp" width="460" height="259">
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -338,8 +338,8 @@
                 // console.log("description: " + response.description);
                 // const slug = 'live/' + response.slug;
                 console.log("slug: " + response.slug);
-                $('#series_modal-img').attr('src', response.image);
-                $('#series_modal-img').attr('alt', response.title);
+                $('#artist_series_modal-img').attr('src', response.image);
+                $('#artist_series_modal-img').attr('alt', response.title);
                 $('.modal-title').text(response.title);
                 $('.modal-desc').text(response.description);
                 $('.btn.btn-hover').attr('href', response.slug);
@@ -352,7 +352,7 @@
         });
 
         $('.btn-close-white').on('click', function () {
-            $('#series_modal-img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
+            $('#artist_series_modal-img').attr('src', 'https://e360tvmain.b-cdn.net/css/assets/img/gradient.webp');
             $('.modal-title').text('');
             $('.modal-desc').text('');
             $('.btn.btn-hover').attr('href', '');
