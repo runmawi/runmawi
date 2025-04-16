@@ -29304,7 +29304,7 @@ public function TV_login(Request $request)
           
         $validator = Validator::make($request->all(), [
           'mobile_number' => 'required|numeric',
-          'ccode'         => ['required', 'regex:/^\+[\d]+$/'], // Ensure ccode starts with + followed by numbers
+          'ccode'         => 'required',
         ]);
     
         if ($validator->fails()) {
@@ -29321,11 +29321,21 @@ public function TV_login(Request $request)
 
         if(!is_null($user)  ){
 
-          $mobile_number_status = "mobile_number_exists";
-          $message = Str::title('this mobile number already exists !!');
-          $redirect_api     = URL::to('api/auth/login');
+          if ($user->active != 1 ) {
+            $mobile_number_status = "mobile_number_exists";
+            $message = Str::title('this mobile number in inactive status !!');
+            $redirect_api     = URL::to('api/auth/login');
+  
+            $user_detail = null ;
 
-          $user_detail = $user ;
+          }else{
+
+            $mobile_number_status = "mobile_number_exists";
+            $message = Str::title('this mobile number already exists !!');
+            $redirect_api     = URL::to('api/auth/login');
+  
+            $user_detail = $user ;
+          }
 
         }else{
 
