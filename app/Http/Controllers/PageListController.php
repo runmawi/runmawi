@@ -545,7 +545,7 @@ class PageListController extends Controller
             return Theme::view('Page-List.watchlater', $data);
 
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            // return $th->getMessage();
             return abort(404);
         }
     }

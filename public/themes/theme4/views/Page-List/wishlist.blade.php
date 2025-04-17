@@ -2,7 +2,6 @@
 @php
     include public_path("themes/{$current_theme}/views/header.php");
 @endphp
-
 <section id="iq-favorites" class="pagelist">
     <div class="container-fluid">
         <div class="row">
@@ -18,15 +17,25 @@
 
                     <div class="trending-contens sub_dropdown_image mt-3" id="home-latest-videos-container">
                         <div id="trending-slider-nav" class="series-networks-slider-nav list-inline p-0 mar-left row align-items-center">
-                            @forelse($wishlist_pagelist as $key => $episodes)
+                            @forelse($wishlist_pagelist as $key => $item)
                                 <div class="network-image">
                                     <div class="movie-sdivck position-relative">
-                                        <img src="{{ $episodes->player_image ?  URL::to('public/uploads/images/'.$episodes->player_image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $episodes->title }}" width="300" height="200">                                        
+                                        <img src="{{ $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : $default_vertical_image_url }}" class="img-fluid w-100" alt="{{ $item->title }}" width="300" height="200">                                        
                                         
-                                        <div class="controls">        
-                                            <a href="{{ URL::to('episode/'. $episodes->series->slug.'/'.$episodes->slug ) }}">
-                                                <button class="playBTN"> <i class="fas fa-play"></i></button>
-                                            </a>
+                                        <div class="controls"> 
+                                            @if($item->source_type == 'Videos')       
+                                                <a href="{{ URL::to('category/videos/'.$item->slug) }}">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+                                            @elseif($item->source_type == 'Episode')
+                                                <a href="{{ URL::to('episode/'. $item->series->slug.'/'.$item->slug ) }}">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+                                            @else
+                                                <a href="{{ URL::to('live/'.$item->slug) }}">
+                                                    <button class="playBTN"> <i class="fas fa-play"></i></button>
+                                                </a>
+                                            @endif
                                             <nav>
                                                 <button class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#wish-list-{{ $key }}"><i class="fas fa-info-circle"></i><span>More info</span></button>
                                             </nav>
@@ -48,12 +57,12 @@
                                                     <div class="col-lg-12">
                                                         <div class="row">
                                                             <div class="col-lg-6 mb-3">
-                                                                <img  src="{{ $episodes->player_image ?  URL::to('public/uploads/images/'.$episodes->player_image) : $default_vertical_image_url }}" alt="modal">
+                                                                <img  src="{{ $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : $default_vertical_image_url }}" alt="modal">
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <div class="row">
                                                                     <div class="col-lg-10 col-md-10 col-sm-10">
-                                                                        <h2 class="caption-h2">{{ optional($episodes)->title }}</h2>
+                                                                        <h2 class="caption-h2">{{ optional($item)->title }}</h2>
                                                                     </div>
                                                                     <div class="res-view-show col-lg-2 col-md-2 col-sm-2">
                                                                         <button type="button" class="btn-close-white" aria-label="Close" data-bs-dismiss="modal">
@@ -62,14 +71,25 @@
                                                                     </div>
                                                                 </div>
                     
-                                                                <div class="trending-dec">{!! html_entity_decode( $episodes->episode_description ) ??  $episodes->episode_description  !!}</div>
-                                                            
-                                                                    <a href="{{ URL::to('episode/'. $episodes->series->slug.'/'.$episodes->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
+                                                                @if($item->source_type == 'Videos')       
+                                                                    <div class="trending-dec">{!! html_entity_decode( $item->description ) ??  $item->description  !!}</div>
+                                                                    <a href="{{ URL::to('category/videos/'.$item->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
                                                                         <i class="far fa-eye mr-2" aria-hidden="true"></i> {{ "View Content" }}
                                                                     </a>
-                                                                </div>
+                                                                @elseif($item->source_type == 'Episode')
+                                                                    <div class="trending-dec">{!! html_entity_decode( $item->episode_description ) ??  $item->episode_description  !!}</div>
+                                                                    <a href="{{ URL::to('episode/'. $item->series->slug.'/'.$item->slug ) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
+                                                                        <i class="far fa-eye mr-2" aria-hidden="true"></i> {{ "View Content" }}
+                                                                    </a>
+                                                                @else
+                                                                    <div class="trending-dec">{!! html_entity_decode( $item->description ) ??  $item->description  !!}</div>
+                                                                    <a href="{{ URL::to('live/'.$item->slug) }}" class="btn btn-hover button-groups mr-2 mt-3" tabindex="0">
+                                                                        <i class="far fa-eye mr-2" aria-hidden="true"></i> {{ "View Content" }}
+                                                                    </a>
+                                                                @endif
                                                             </div>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
