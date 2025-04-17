@@ -29510,6 +29510,7 @@ public function TV_login(Request $request)
                 'otp_through' => $AdminOTPCredentials->otp_vai ,
                 'password'    => Hash::make($random_otp_number),
                 'email'       => 'No email for this id - '.$user_id,
+                'active'      => 1,
               ]);
 
               OTPLog::create([
@@ -29578,6 +29579,7 @@ public function TV_login(Request $request)
                   'otp_request_id' => $msgId ,
                   'otp_through' => $AdminOTPCredentials->otp_vai ,
                   'password'    => Hash::make($random_otp_number),
+                  'active'      => 1,
                   // 'email'       => 'No email for this id - '.$user_id,
                 ]);
 
