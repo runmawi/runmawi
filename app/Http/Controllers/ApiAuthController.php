@@ -17874,7 +17874,7 @@ public function QRCodeMobileLogout(Request $request)
    
       $user_id = $request->user_id;
 
-      $homepage_input_array = ['limit' => 15, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing() , 'default_vertical_image_url' => default_vertical_image_url() , 'default_horizontal_image_url' => default_horizontal_image_url() ];
+      $homepage_input_array = ['limit' => 15, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing() , 'default_vertical_image_url' => default_vertical_image_url() , 'default_horizontal_image_url' => default_horizontal_image_url() , 'LiveStream_based_categories_status' => 0];
 
       $All_Homepage_homesetting =  $this->All_Homepage_homesetting( $user_id, $homepage_input_array );
 
@@ -19447,10 +19447,11 @@ public function QRCodeMobileLogout(Request $request)
 
   private static function All_Homepage_category_livestream($homepage_input_array){
 
-    $live_category_status = $homepage_input_array['MobileHomeSetting']->live_category;
-    $homepage_geofencing = $homepage_input_array['Geofencing'];
+      $live_category_status = $homepage_input_array['MobileHomeSetting']->live_category;
+      $homepage_geofencing = $homepage_input_array['Geofencing'];
+      $LiveStream_based_categories_status =  $homepage_input_array['LiveStream_based_categories_status'];
 
-      if( $live_category_status == null || $live_category_status == 0 ): 
+      if(( $live_category_status == null || $live_category_status == 0 ) && $LiveStream_based_categories_status == 0 ): 
 
           $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
       else:
@@ -30775,6 +30776,28 @@ public function SendVideoPushNotification(Request $request)
                 'status'  => 'error',
                 'message' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    public function LiveStream_based_categories(){
+
+      try {
+
+        $homepage_input_array = ['limit' => 30, 'MobileHomeSetting' => MobileHomeSetting::first(),  'Geofencing' => Geofencing() , 'default_vertical_image_url' => default_vertical_image_url() , 'default_horizontal_image_url' => default_horizontal_image_url() , "LiveStream_based_categories_status" => 1 ];
+
+        $data = $this->All_Homepage_category_livestream($homepage_input_array);
+
+        return response()->json([
+          'status'  => 'success',
+          'message' => 'Retreived LiveStream based categories.',
+          'data'    => $data,
+        ]);
+
+        } catch (\Throwable $th) {
+          return response()->json([
+            'status'  => 'error',
+            'message' => $th->getMessage(),
+          ], 500);
         }
     }
 }
