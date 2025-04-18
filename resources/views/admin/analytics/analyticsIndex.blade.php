@@ -404,6 +404,7 @@ tr td:nth-last-child(9) {
                             <th scope="col">Payment Status</th>
                             <th scope="col">Platform</th>
                             <th scope="col">Transaction ID</th>
+                            <th scope="col">PPV Plan</th>
                             <th scope="col">Amount</th>
                         </tr>
                         </thead>
@@ -423,6 +424,7 @@ tr td:nth-last-child(9) {
                                   <td>{{ $data->status ? $data->status : 'N/A' }}</td>
                                 <td>{{ $data->platform ? $data->platform : 'N/A' }}</td>
                                 <td>{{ $data->payment_id ? $data->payment_id : 'N/A' }}</td>
+                                <td>{{ $data->ppv_plan ? $data->ppv_plan : 'N/A' }}</td>
                                 <td>${{ number_format($data->total_amount, 2) }}</td>
                             </tr>
                         @empty
