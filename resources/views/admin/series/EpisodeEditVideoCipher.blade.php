@@ -322,7 +322,7 @@ $url_path = '<iframe width="853" height="480" src="'.$embed_media_url.'"  allowf
                         <div class="panel-body">
                             <select id="type" name="type" class="form-control">
                                 <!-- <option value="embed">Embed Code</option> -->
-                                <option value="embed" @if(!empty($episodes->type) && $episodes->type == 'embed'){{ 'selected' }}@endif>Episode File</option>
+                                <option value="embed_video_url" @if(!empty($episodes->type) && $episodes->type == 'embed_video_url'){{ 'selected' }}@endif>Episode File</option>
                                 <option value="file" @if(!empty($episodes->type) && $episodes->type == 'file'){{ 'selected' }}@endif>Episode File</option>
                                 <option value="upload" @if(!empty($episodes->type) && $episodes->type == 'upload'){{ 'selected' }}@endif>Upload Episode</option>
                                 <option value="aws_m3u8" @if(!empty($episodes->type) && $episodes->type == 'aws_m3u8'){{ 'selected' }}@endif>AWS Upload Episode</option>

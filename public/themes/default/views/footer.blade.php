@@ -68,17 +68,17 @@
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" src="<?php echo  URL::to('/assets/img/lan/inst.webp')?>" alt="inst" loading="lazy"  />
+                          <img id="instImage" data-src="<?php echo URL::to('/assets/img/lan/inst.webp')?>" alt="instagram" width="40" height="40" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
                       <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" src="<?php echo  URL::to('/assets/img/lan/twitter-x.webp')?>" alt="t" loading="lazy"  />
+                      <img id="twitterImage" data-src="<?php echo URL::to('/assets/img/lan/twitter-x.webp')?>" alt="twitter" width="40" height="40" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
                       <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" data-src="<?php echo  URL::to('/assets/img/lan/fb.webp')?>" alt="fb" loading="lazy"  />
+                      <img id="fbImage" data-src="<?php echo URL::to('/assets/img/lan/fb.webp')?>" alt="facebook" width="40" height="40" />
                       </a>
                       <?php } ?>
 
@@ -90,7 +90,7 @@
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
                       <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/link.webp')?>" src="<?php echo  URL::to('/assets/img/link.webp')?>" alt="link" loading="lazy"  />
+                      <img id="linkedinImage" data-src="<?php echo URL::to('/assets/img/lan/link.webp')?>" alt="linkedin" width="40" height="40" />
                       </a>
                       <?php } ?>
 
@@ -102,7 +102,7 @@
 
                       <?php if(!empty($settings->youtube_page_id)){?>
                       <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" src="<?php echo  URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" loading="lazy"  />
+                      <img id="youtubeImage" data-src="<?php echo URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" width="40" height="40" />
                       </a>
                       <?php } ?>
 
@@ -114,7 +114,7 @@
 
                       <?php if(!empty($settings->tiktok_page_id)){?>
                         <a href="https://www.tiktok.com/<?php echo $settings->tiktok_page_id;?>" aria-label="tiktok" target="_blank" class="ml-2">
-                          <img class="lazy" width="40" height="40" data-src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" src="<?php echo  URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" loading="lazy"  />
+                        <img id="tiktokImage" data-src="<?php echo URL::to('/assets/img/lan/tiktok.webp')?>" alt="tiktok" width="40" height="40" />
                         </a>
                         <?php } ?>
 
@@ -127,6 +127,10 @@
       </div>
 
   </div>
+
+  <!-- <div class="container-fluid">
+  <div id="footerLinks" class="footer_links_container text-center">
+  </div> -->
 
   <div class="container-fluid">
       <div class="footer_links_container text-center">
@@ -196,6 +200,35 @@ function about(evt , id) {
 }
 </script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $.ajax({
+        url: "{{ url('/footer-links') }}",
+        method: 'GET',
+        success: function (response) {
+            $('#footerLinks').html(response.html);
+        },
+        alert(success)
+        error: function () {
+          alert(error)
+            console.error('Failed to load footer links.');
+        }
+    });
+  });
+</script>
+<script>
+    function loadDeferredImages() {
+        const ids = ["instImage", "twitterImage", "fbImage", "linkedinImage", "youtubeImage", "tiktokImage"];
+        ids.forEach(function(id) {
+            const img = document.getElementById(id);
+            if (img && img.getAttribute("data-src")) {
+                img.src = img.getAttribute("data-src");
+            }
+        });
+    }
+    setTimeout(loadDeferredImages, 20000);
+</script>
 <?php  $search_dropdown_setting = $theme->search_dropdown_setting ; ?>
 <input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
 
