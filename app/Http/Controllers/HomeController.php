@@ -92,6 +92,9 @@ use App\Menu;
 use App\UploadErrorLog;
 use App\DeleteLog;
 use App\EmailSetting ;
+use Illuminate\Support\Facades\File;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class HomeController extends Controller
 {
@@ -5062,6 +5065,55 @@ public function uploadExcel(Request $request)
             'audioCategories' => $audioCategories,
             'tvShows' => $tvShows
         ]);
+    }
+
+    public function Storagelogs(Request $request)
+    {
+        $logPath = storage_path('logs/laravel.log');
+
+        if (!File::exists($logPath)) {
+            return view('logs.index', ['logs' => [], 'paginator' => null]);
+        }
+
+        $logContent = File::get($logPath);
+
+        $entries = preg_split('/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\].*/', $logContent, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        
+        preg_match_all('/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\].*/', $logContent, $timestamps);
+
+        $logs = [];
+        for ($i = 0; $i < count($timestamps[0]); $i++) {
+            $logs[] = $timestamps[0][$i] . (isset($entries[$i + 1]) ? $entries[$i + 1] : '');
+        }
+
+        $logs = array_reverse($logs); 
+
+        // dd($logs);
+        $perPage = 10;
+        $page = $request->input('page', 1);
+        $offset = ($page - 1) * $perPage;
+
+        $paginatedLogs = array_slice($logs, $offset, $perPage);
+        $paginator = new LengthAwarePaginator($paginatedLogs, count($logs), $perPage, $page, [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
+        return view('logs.index', ['logs' => $paginatedLogs, 'paginator' => $paginator]);
+    }
+    
+    public function getFooterLinks()
+    {
+        $cmspages = Page::where('footer_active', 1)->get();
+        $html = '';
+
+        foreach ($cmspages as $page) {
+            $url = ($page->slug === 'contact-us') ? '/' . $page->slug : 'page/' . $page->slug;
+            $html .= '<a href="' . URL::to($url) . '" target="_blank" class="ml-1 footer_link">'
+                   . e(__($page->title)) . '</a>';
+        }
+
+        return response()->json(['html' => $html]);
     }
 
 

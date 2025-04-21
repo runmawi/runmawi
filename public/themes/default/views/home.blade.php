@@ -37,6 +37,12 @@ $homepage_array_data = [
 
 <!-- Slider Start -->
 
+@php
+    if (!empty($video_banners) && count($video_banners) > 0) {
+        $lcpImageUrl = asset('public/uploads/images/' . $video_banners[0]->player_image);
+        echo '<link rel="preload" as="image" href="' . $lcpImageUrl . '" type="image/webp">';
+    }
+@endphp
 <section id="home" class="iq-main-slider m-0 p-0">
 
     <!-- Skeleton Loader -->

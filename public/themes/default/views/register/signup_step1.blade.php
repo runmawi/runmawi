@@ -1405,7 +1405,11 @@ function format(item, state) {
             $('#send_otp_button,#resend_otp_button').click(function(){ 
 
                 $('#mobile').attr('readonly', true);
-                $('#ccode').attr('disabled', true);
+                // $('#ccode').attr('disabled', true);
+                $('#ccode').on('mousedown', function(e) {
+                e.preventDefault();
+                });
+
 
                 $('.otp_send_message').text("");
 

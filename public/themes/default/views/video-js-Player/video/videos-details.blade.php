@@ -535,14 +535,16 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </a>
                             @endif
                             
-                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
-                                @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
-                                    <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
-                                        <div class="playbtn" style="gap:5px">
-                                            {!! $play_btn_svg !!}
-                                            <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
-                                        </div>
-                                    </a>
+                            @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber'))
+                                @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
+                                    @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
+                                        <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
                                 @endif
                             @endif
                             
