@@ -47,7 +47,8 @@ border-radius: 0px 4px 4px 0px;
 #unassignedepisodes .modal-dialog{max-width: 900px;}
 #ppv_price_plan select,
 #ios_ppv_price_plan select,
-#ios_ppv_price_old select {
+#ios_ppv_price_old select 
+{
     width: 100%;
     box-sizing: border-box;
     max-width: 100%;
