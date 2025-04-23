@@ -1258,6 +1258,7 @@ class RazorpayController extends Controller
     
     public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
 
+       $setting = Setting::first(); 
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
             'season_id'   => $SeriesSeason_id,
@@ -1279,8 +1280,25 @@ class RazorpayController extends Controller
         // }
 
         $Series = Series::where('id',$series_id)->first();
-        if(!empty($Series)){
+        if(!empty($Series) && $Series->uploaded_by == 'CPP'){
             $moderators_id = $Series->user_id;
+        }
+        $moderators_user_id = Series::where('id',$series_id)->pluck('user_id')->first();
+        $CPP_commission_percentage = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
+
+        $moderators_id = null;
+        if(!empty($moderators_user_id)){
+            $moderators_id = $moderators_user_id;
+        }
+
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $CPP_commission_percentage;
+        // dd((600 * $commission_percentage_value)/100);
+
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
         }
         
         if(!empty($moderators_id)){
@@ -1293,8 +1311,8 @@ class RazorpayController extends Controller
             $total_amount        =  $SeriesSeason->ppv_price;
             $title               =  $SeriesSeason->series_seasons_name;
             $commssion           =  VideoCommission::where('type','CPP')->first();
-            $ppv_price           =  $SeriesSeason->ppv_price;
-            $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            $ppv_price           =  $amount;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
             $admin_commssion     =  $ppv_price - $moderator_commssion;
             $moderator_id        =  $moderators_id;
         }
@@ -1397,59 +1415,60 @@ class RazorpayController extends Controller
             // $moderators_id = Auth::User()->id;
             // }
 
-            $Series = Series::where('id',$series_id)->first();
+            // $Series = Series::where('id',$series_id)->first();
 
-            if(!empty($Series) && $Series->uploaded_by == 'CPP'){
-                $moderators_id = $Series->user_id;
-            }
+            // if(!empty($Series) && $Series->uploaded_by == 'CPP'){
+            //     $moderators_id = $Series->user_id;
+            // }
 
-            $moderators_user_id = Series::where('id',$series_id)->pluck('user_id')->first();
-            $CPP_commission_percentage = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
+            // $moderators_user_id = Series::where('id',$series_id)->pluck('user_id')->first();
+            // $CPP_commission_percentage = Series::where('id',$series_id)->pluck('CPP_commission_percentage')->first();
 
-            $moderators_id = null;
-            if(!empty($moderators_user_id)){
-                $moderators_id = $moderators_user_id;
-            }
+            // $moderators_id = null;
+            // if(!empty($moderators_user_id)){
+            //     $moderators_id = $moderators_user_id;
+            // }
     
-            $commission_btn = $setting->CPP_Commission_Status;
-            $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
-            $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
-            $commission_percentage_value = $CPP_commission_percentage;
-            // dd((600 * $commission_percentage_value)/100);
+            // $commission_btn = $setting->CPP_Commission_Status;
+            // $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+            // $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+            // $commission_percentage_value = $CPP_commission_percentage;
+            // // dd((600 * $commission_percentage_value)/100);
 
-            if($commission_btn === 0){
-                $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-            }
+            // if($commission_btn === 0){
+            //     $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+            // }
             
             
-            if(!empty($moderators_id)){
-                $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                if ($moderator) {
-                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-                } else {
-                    $percentage = 0;
-                }
-                $total_amount        =  $video->ppv_price;
-                $title               =  $video->title;
-                $commssion           =  VideoCommission::where('type','CPP')->first();
-                $ppv_price           =  $request->amount/100;
-                $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
-                $admin_commssion     =  $ppv_price - $moderator_commssion;
-                $moderator_id        =  $moderators_id;
-            }
-            else
-            {
-                $total_amount = $request->amount;
-                $title =  $SeriesSeason->title;
-                $commssion  =  VideoCommission::where('type','CPP')->first();
-                $percentage = null; 
-                $ppv_price = $request->amount;
-                $admin_commssion =  null;
-                $moderator_commssion = null;
-                $moderator_id = null;
-            }
+            // if(!empty($moderators_id)){
+            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            //     if ($moderator) {
+            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            //     } else {
+            //         $percentage = 0;
+            //     }
+            //     $total_amount        =  $video->ppv_price;
+            //     $title               =  $video->title;
+            //     $commssion           =  VideoCommission::where('type','CPP')->first();
+            //     $ppv_price           =  $request->amount/100;
+            //     $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            //     $admin_commssion     =  $ppv_price - $moderator_commssion;
+            //     $moderator_id        =  $moderators_id;
+            // }
+            // else
+            // {
+            //     $total_amount = $request->amount;
+            //     $title =  $SeriesSeason->title;
+            //     $commssion  =  VideoCommission::where('type','CPP')->first();
+            //     $percentage = null; 
+            //     $ppv_price = $request->amount;
+            //     $admin_commssion =  null;
+            //     $moderator_commssion = null;
+            //     $moderator_id = null;
+            // }
 // dd($moderator_commssion);
-            $purchase = new PpvPurchase;
+            $purchase = PpvPurchase::find($request->PpvPurchase_id);
+            // $purchase = new PpvPurchase;
             $purchase->user_id      = $request->user_id ;
             $purchase->season_id     = $request->SeriesSeason_id ;
             $purchase->series_id    = $series_id ;
@@ -1479,6 +1498,7 @@ class RazorpayController extends Controller
             return view('Razorpay.Rent_message',compact('respond'),$respond);
 
         } catch (\Exception $e) {
+            // dd($e->getMessage());
             // $e->getMessage();
             $respond=array(
                 'status'  => 'false',
