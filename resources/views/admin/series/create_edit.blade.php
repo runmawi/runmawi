@@ -570,7 +570,39 @@ $settings  = App\Setting::first();?>
 								<p style="font-size: 14px!important;height: 30%!important;">Drop and drag the video file</p>
 								</div>
 							</div>
-					
+						
+							<div class="form-group">
+								@php 
+									$player_width = $compress_image_settings->width_validation_season;
+									$player_heigth = $compress_image_settings->height_validation_season
+								@endphp
+								@if($player_width !== null && $player_heigth !== null)
+									<p class="p1">{{ ("Select Season Thumbnail (".''.$player_width.' x '.$player_heigth.'px)')}}:</p> 
+								@else
+									<p class="p1">{{ "Select Season Thumbnail ( 1280x720px )"}}:</p> 
+								@endif
+								{{-- <label>Season Thumbnail <span>(16:9 Ratio or 1280X720px)</span></label><br> --}}
+								<input type="file" class="season_image" name="image" id="season_img" accept="image/png, image/webp, image/jpeg">
+								<p class="text-danger" id="season_img_error" style="display: none;color:red !important;">*Please upload the Season image.</p>
+								<span>
+									<p id="season_image_error_msg" style="color:red !important; display:none;">
+										* Please upload an image with the correct dimensions.
+									</p>
+								</span>
+							</div>
+							@if(Enable_PPV_Plans() == 1)
+								<div class="form-group">
+									<label> Choose Episode Type:</label>
+									<select class="form-control" id="series_seasons_type" name="series_seasons_type">
+										<option value="">Choose Upload Type</option>
+										<option value="VideoCipher" >VideoCipher Episode</option>
+										<option value="m3u8">Episode Upload Url m3u8</option>
+										<option value="videomp4">Episode Upload Url MP4</option>
+										<option value="embed_video">Embed Episode</option>
+									</select>
+									<span class="ErrorText"> *User Access Series is set as Subscriber. </span>
+								</div>
+							@endif
 						    <div class="form-group">
 		                        <label> Choose User Access:</label>
 								<select class="form-control" id="ppv_access" name="ppv_access">
