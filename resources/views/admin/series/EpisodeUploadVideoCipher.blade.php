@@ -770,7 +770,9 @@
                                              <?php } ?>
                                     <td>
                                         <div class=" align-items-center">
+                                            <?php if($theme_settings->enable_video_cipher_upload == 1){ ?>
                                             <a href="{{ URL::to('admin/episode/episode_edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span>Edit Video</a>
+                                            <?php } ?>
                                             <a href="{{ URL::to('admin/episode/edit') . '/' . $episode->id }}" class="btn btn-xs btn-primary"><span class="fa fa-edit"></span> Edit</a>
                                             <a href="{{ URL::to('admin/episode/delete') . '/' . $episode->id }}" class="btn btn-xs btn-danger delete" onclick="return confirm('Are you sure?')" ><span class="fa fa-trash"></span> Delete</a>
                                         </div>
