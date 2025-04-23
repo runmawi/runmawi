@@ -45,6 +45,14 @@ border-radius: 0px 4px 4px 0px;
 
 .form-select{border: 1px solid #ced4da;border-radius: .25rem;font-size: 14px;padding: 10px;height: 38px;}
 #unassignedepisodes .modal-dialog{max-width: 900px;}
+#ppv_price_plan select,
+#ios_ppv_price_plan select,
+#ios_ppv_price_old select 
+{
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+}
 </style>
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

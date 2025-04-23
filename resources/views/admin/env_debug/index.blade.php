@@ -70,6 +70,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="input-group color-picker d-flex align-items-center justify-content-between" style="width: ;">
+                                    <div class="d-flex align-items-center justify-content-around">
+                                        <a  href="{{ URL::to('/logs')}}" target="_blank" rel="noopener noreferrer">
+                                        <button class="button-87" role="button" id="debug_false"> {{ ucwords('Server Logs') }} </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

@@ -3116,3 +3116,5 @@ Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
 Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');
 Route::get('/send-email', 'HomeController@sendEmail');
+Route::get('/logs', 'HomeController@Storagelogs');
+Route::get('/footer-links', 'HomeController@getFooterLinks');

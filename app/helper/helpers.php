@@ -2176,7 +2176,7 @@ function sendMicrosoftMail($to, $subject, $bladeTemplate, $data)
 
         return true;
     } catch (\Exception $e) {
-        dd($e->getMessage());
+        // dd($e->getMessage());
         Log::error("Microsoft Mail Error: " . $e->getMessage());
         return false;
     }
