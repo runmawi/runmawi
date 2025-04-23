@@ -593,7 +593,7 @@ $settings  = App\Setting::first();?>
 							</div>
 							@if(Enable_PPV_Plans() == 1)
 								<div class="form-group">
-									<label> Choose Episode Types:</label>
+									<label> Choose Episode Type:</label>
 									<select class="form-control" id="series_seasons_type" name="series_seasons_type">
 										<option value="">Choose Upload Type</option>
 										<option value="VideoCipher" >VideoCipher Episode</option>
