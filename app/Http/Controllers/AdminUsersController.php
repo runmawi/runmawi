@@ -5198,8 +5198,9 @@ class AdminUsersController extends Controller
     public function deleteSelected(Request $request)
     {
         $ids = $request->input('ids');
-
+        
         try {
+            \DB::table('continue_watchings')->whereIn('user_id', $ids)->delete();
             User::whereIn('id', $ids)->delete();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {

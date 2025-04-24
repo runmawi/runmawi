@@ -181,6 +181,46 @@ class HomeController extends Controller
         if ($settings->access_free == 1 && Auth::guest() && !isset($data['user']))
         {
 
+
+            if($this->HomeSetting->theme_choosen == "theme4"){
+                $FrontEndQueryController = new FrontEndQueryController();
+                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
+                $order_settings = $order_settings->paginate($pagination_value);  
+                
+                $data = array(
+                    'order_settings_list' => OrderHomeSetting::get(),
+                    'order_settings'  => $order_settings ,
+                    'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
+                    'getfeching'      => $getfeching ,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'current_page'      => 1,
+                    'pagination_url' => '/videos',
+                    'pages'             => Page::all(),
+                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                    'home_settings'       => $this->HomeSetting ,
+                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'videos_expiry_date_status' => $videos_expiry_date_status,
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'BaseURL'                            => $this->BaseURL,
+                    'Series_Networks_Status' => Series_Networks_Status(),
+                );
+
+                if($request->ajax()) {
+                    return $data = [
+                        "view" => Theme::watchPartial('home_sections', $data ),
+                        'url' => $data['order_settings']->nextPageUrl()
+                    ];
+                }
+
+                return Theme::view('home', $data);
+                
+            }
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $userIp = $geoip->getip();
             $countryName = $geoip->getCountry();
@@ -256,122 +296,81 @@ class HomeController extends Controller
 
             $currency = CurrencySetting::first();
 
-           
-
-            
-
             $FrontEndQueryController = new FrontEndQueryController();
             $button_text = ButtonText::first();
 
-            if($this->HomeSetting->theme_choosen == "theme4"){
-
-                $data = array(
-                    'currency' => $currency,
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
-                    'Epg'                 => $FrontEndQueryController->Epg()->take(15),
-                    'current_page'      => 1,
-                    'pagination_url' => '/videos',
-                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                    'featured_episodes' => $FrontEndQueryController->featured_episodes(),
-                    'settings'            => $settings,
-                    'pages'               => $pages,
-                    'home_settings'       => $this->HomeSetting ,
-                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                    'Family_Mode'           => $Family_Mode = 2,
-                    'Kids_Mode'             => $Kids_Mode = 2,
-                    'ThumbnailSetting'      => $ThumbnailSetting,
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
-                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
-                    'order_settings_list' => OrderHomeSetting::get(),
-                    'order_settings'  => $order_settings ,
-                    'getfeching'      => $getfeching ,
-                    'videos_expiry_date_status' => $videos_expiry_date_status,
-                    'Series_Networks_Status' => Series_Networks_Status(),
-                    'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
-                    'default_vertical_image_url' => $default_vertical_image_url,
-                    'default_horizontal_image_url' => $default_horizontal_image_url,
-                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                    'button_text'         => $button_text,
-                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'BaseURL'                            => $this->BaseURL
-                );
-            }else{
-                $data = array(
-                    'currency' => $currency,
-                    'videos'    =>$FrontEndQueryController->Latest_videos(),
-                    'current_theme'     => $this->HomeSetting->theme_choosen,
-                    'sliders'            => $FrontEndQueryController->sliders(),
-                    'live_banner'        => $FrontEndQueryController->live_banners(),
-                    'video_banners'      => $FrontEndQueryController->video_banners(),
-                    'series_sliders'     => $FrontEndQueryController->series_sliders(),
-                    'live_event_banners' => $FrontEndQueryController->live_event_banners(),
-                    'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
-                    'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
-                    'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
-                    'Epg'                 => $FrontEndQueryController->Epg()->take(15),
-                    'current_page'      => 1,
-                    'pagination_url' => '/videos',
-                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
-                    'cnt_watching'      => $cnt_watching,
-                    'trendings'         => $trending_videos,
-                    'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
-                    'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
-                    'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
-                    'latest_movies'     => $FrontEndQueryController->Latest_videos(),
-                    'trending_audios'   => $trending_audios,
-                    'latest_audios'     => $latest_audios,
-                    'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
-                    'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
-                    'genre_video_display' => $genre_video_display,
-                    'genres'              => $genre_video_display ,
-                    'settings'            => $settings,
-                    'pages'               => $pages,
-                    'trending_videos'     => $trending_videos,
-                    'suggested_videos'    => $trending_videos,
-                    'video_categories'    => $genre_video_display ,
-                    'home_settings'       => $this->HomeSetting ,
-                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
-                    'audios'              => $latest_audios ,
-                    'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get()->take(15) ,
-                    'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
-                    'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
-                    'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
-                    'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
-                    'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
-                    'Family_Mode'           => $Family_Mode = 2,
-                    'Kids_Mode'             => $Kids_Mode = 2,
-                    'ThumbnailSetting'      => $ThumbnailSetting,
-                    'artist'                => Artist::all(),
-                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
-                    'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category(),
-                    'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
-                    'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
-                    'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
-                    'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
-                    'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
-                    'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
-                    'order_settings_list' => OrderHomeSetting::get(),
-                    'order_settings'  => $order_settings ,
-                    'getfeching'      => $getfeching ,
-                    'videos_expiry_date_status' => $videos_expiry_date_status,
-                    'Series_Networks_Status' => Series_Networks_Status(),
-                    'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
-                    'default_vertical_image_url' => $default_vertical_image_url,
-                    'default_horizontal_image_url' => $default_horizontal_image_url,
-                    'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
-                    'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
-                    'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
-                    'ugc_users'         => $FrontEndQueryController->UGCUsers(),
-                    'button_text'         => $button_text,
-                    'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
-                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
-                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
-                    'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
-                );
-            }
+            $data = array(
+                'currency' => $currency,
+                'videos'    =>$FrontEndQueryController->Latest_videos(),
+                'current_theme'     => $this->HomeSetting->theme_choosen,
+                'sliders'            => $FrontEndQueryController->sliders(),
+                'live_banner'        => $FrontEndQueryController->live_banners(),
+                'video_banners'      => $FrontEndQueryController->video_banners(),
+                'series_sliders'     => $FrontEndQueryController->series_sliders(),
+                'live_event_banners' => $FrontEndQueryController->live_event_banners(),
+                'Episode_sliders'    => $FrontEndQueryController->Episode_sliders(),
+                'VideoCategory_banner' => $FrontEndQueryController->VideoCategory_banner(),
+                'Video_Based_Category'    => $FrontEndQueryController->Video_Based_Category()->take(15) ,
+                'Epg'                 => $FrontEndQueryController->Epg()->take(15),
+                'current_page'      => 1,
+                'pagination_url' => '/videos',
+                'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                'cnt_watching'      => $cnt_watching,
+                'trendings'         => $trending_videos,
+                'latest_video'      => $FrontEndQueryController->Latest_videos()->take(15),
+                'latest_videos'     => $FrontEndQueryController->Latest_videos()->take(15),
+                'latestViewedVideos'     => $FrontEndQueryController->latestViewedVideos()->take(15),
+                'latest_movies'     => $FrontEndQueryController->Latest_videos(),
+                'trending_audios'   => $trending_audios,
+                'latest_audios'     => $latest_audios,
+                'featured_videos'   => $FrontEndQueryController->featured_videos()->take(15),
+                'featured_episodes' => $FrontEndQueryController->featured_episodes()->take(15),
+                'genre_video_display' => $genre_video_display,
+                'genres'              => $genre_video_display ,
+                'settings'            => $settings,
+                'pages'               => $pages,
+                'trending_videos'     => $trending_videos,
+                'suggested_videos'    => $trending_videos,
+                'video_categories'    => $genre_video_display ,
+                'home_settings'       => $this->HomeSetting ,
+                'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                'audios'              => $latest_audios ,
+                'albums'              => AudioAlbums::orderBy('created_at', 'DESC')->get()->take(15) ,
+                'most_watch_user'     => !empty($most_watch_user) ? $most_watch_user : [],
+                'top_most_watched'    => !empty($top_most_watched) ? $top_most_watched : [],
+                'Most_watched_country'   => !empty($Most_watched_country) ? $Most_watched_country : [],
+                'preference_genres'      => !empty($preference_gen) ? $preference_gen : [],
+                'preference_Language'    => !empty($preference_Lan) ? $preference_Lan : [],
+                'Family_Mode'           => $Family_Mode = 2,
+                'Kids_Mode'             => $Kids_Mode = 2,
+                'ThumbnailSetting'      => $ThumbnailSetting,
+                'artist'                => Artist::all(),
+                'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                'Series_based_on_category' => $FrontEndQueryController->Series_based_on_category(),
+                'VideoSchedules'        => VideoSchedules::where('in_home',1)->limit(15)->get(),
+                'LiveCategory'         => LiveCategory::orderBy('order','ASC')->limit(15)->get(),
+                'AudioCategory'         => AudioCategory::orderBy('order','ASC')->limit(15)->get(),
+                'multiple_compress_image' => CompressImage::pluck('enable_multiple_compress_image')->first() ? CompressImage::pluck('enable_multiple_compress_image')->first() : 0,
+                'SeriesGenre' =>  SeriesGenre::orderBy('order','ASC')->limit(15)->get(),
+                'admin_advertistment_banners' => AdminAdvertistmentBanners::first(),
+                'order_settings_list' => OrderHomeSetting::get(),
+                'order_settings'  => $order_settings ,
+                'getfeching'      => $getfeching ,
+                'videos_expiry_date_status' => $videos_expiry_date_status,
+                'Series_Networks_Status' => Series_Networks_Status(),
+                'latest_episode'  => $FrontEndQueryController->latest_episodes() ,
+                'default_vertical_image_url' => $default_vertical_image_url,
+                'default_horizontal_image_url' => $default_horizontal_image_url,
+                'artist_live_event' => LiveEventArtist::where("active",1)->where('status',1)->latest()->get(),
+                'ugc_videos'        => $FrontEndQueryController->UGCVideos(),
+                'ugc_shorts_minis'  => $FrontEndQueryController->UGCShortsMinis(),
+                'ugc_users'         => $FrontEndQueryController->UGCUsers(),
+                'button_text'         => $button_text,
+                'top_ten_videos'      => $FrontEndQueryController->TopTenVideos(),
+                'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                'radiostations'            => $FrontEndQueryController->RadioStation()->take(15),
+            );
 
             if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
                 if($request->ajax()) {
@@ -404,6 +403,48 @@ class HomeController extends Controller
             }
             else
             {
+
+                if($this->HomeSetting->theme_choosen == "theme4"){
+                    $FrontEndQueryController = new FrontEndQueryController();
+                    $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                    $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
+                    $order_settings = $order_settings->paginate($pagination_value);  
+                    
+                    $data = array(
+                        'order_settings_list' => OrderHomeSetting::get(),
+                        'order_settings'  => $order_settings ,
+                        'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
+                        'getfeching'      => $getfeching ,
+                        'current_theme'     => $this->HomeSetting->theme_choosen,
+                        'current_page'      => 1,
+                        'pagination_url' => '/videos',
+                        'pages'             => Page::all(),
+                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                        'home_settings'       => $this->HomeSetting ,
+                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                        'videos_expiry_date_status' => $videos_expiry_date_status,
+                        'default_vertical_image_url' => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'BaseURL'                            => $this->BaseURL,
+                        'Series_Networks_Status' => Series_Networks_Status(),
+                    );
+    
+                    if($request->ajax()) {
+                        return $data = [
+                            "view" => Theme::watchPartial('home_sections', $data ),
+                            'url' => $data['order_settings']->nextPageUrl()
+                        ];
+                    }
+    
+                    return Theme::view('home', $data);
+                    
+                }
+
+                
+
                 $device_name = '';
                 switch (true) {
                     case $agent->isDesktop():
@@ -1196,6 +1237,79 @@ class HomeController extends Controller
 
         }else {
 
+            $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
+                return $value === '1' || $value === 1;
+            })->map(function ($value, $key) {
+                switch ($key) {
+                    case 'channel_partner':
+                        return 'ChannelPartner';
+                    case 'content_partner':
+                        return 'ContentPartner';
+                    case 'video_schedule':
+                        return 'video_schedule';
+                    case 'SeriesGenre':
+                        return 'Series_Genre';
+                    case 'SeriesGenre_videos':
+                        return 'Series_Genre_videos';
+                    case 'AudioGenre':
+                        return 'Audio_Genre';
+                    case 'AudioGenre_audios':
+                        return 'Audio_Genre_audios';
+                    case 'my_playlist':
+                        return 'Audio_Genre_audios';
+                    default:
+                        return $key;
+                }
+            })->values()->toArray();
+
+            $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+            $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
+
+            if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
+                $order_settings = $order_settings->paginate($pagination_value);    // Pagination
+            }else{
+                $order_settings = $order_settings->get();
+            }
+
+            $FrontEndQueryController = new FrontEndQueryController();
+
+
+            if($this->HomeSetting->theme_choosen == "theme4"){
+                $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
+                
+                $data = array(
+                    'order_settings_list' => OrderHomeSetting::get(),
+                    'order_settings'  => $order_settings ,
+                    'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
+                    'getfeching'      => $getfeching ,
+                    'current_theme'     => $this->HomeSetting->theme_choosen,
+                    'current_page'      => 1,
+                    'pagination_url' => '/videos',
+                    'pages'             => Page::all(),
+                    'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                    'home_settings'       => $this->HomeSetting ,
+                    'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                    'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                    'videos_expiry_date_status'    => videos_expiry_date_status(),
+                    'default_vertical_image_url' => $default_vertical_image_url,
+                    'default_horizontal_image_url' => $default_horizontal_image_url,
+                    'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                    'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                    'BaseURL'                            => $this->BaseURL,
+                    'Series_Networks_Status' => Series_Networks_Status(),
+                );
+
+                if($request->ajax()) {
+                    return $data = [
+                        "view" => Theme::watchPartial('home_sections', $data ),
+                        'url' => $data['order_settings']->nextPageUrl()
+                    ];
+                }
+
+                return Theme::view('home', $data);
+                
+            }
+
             $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
             $userIp = $geoip->getip();
             $countryName = $geoip->getCountry();
@@ -1452,41 +1566,9 @@ class HomeController extends Controller
                 // Order Setting
 
 
-                $home_settings_on_value = collect($this->HomeSetting)->filter(function ($value, $key) {
-                    return $value === '1' || $value === 1;
-                })->map(function ($value, $key) {
-                    switch ($key) {
-                        case 'channel_partner':
-                            return 'ChannelPartner';
-                        case 'content_partner':
-                            return 'ContentPartner';
-                        case 'video_schedule':
-                            return 'video_schedule';
-                        case 'SeriesGenre':
-                            return 'Series_Genre';
-                        case 'SeriesGenre_videos':
-                            return 'Series_Genre_videos';
-                        case 'AudioGenre':
-                            return 'Audio_Genre';
-                        case 'AudioGenre_audios':
-                            return 'Audio_Genre_audios';
-                        case 'my_playlist':
-                            return 'Audio_Genre_audios';
-                        default:
-                            return $key;
-                    }
-                })->values()->toArray();
+                
 
-                $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
-                $pagination_value = HomeSetting::pluck('web_pagination_count')->first();
-
-                if($this->HomeSetting->theme_choosen == "theme4" || $this->HomeSetting->theme_choosen == "default"){
-                    $order_settings = $order_settings->paginate($pagination_value);    // Pagination
-                }else{
-                    $order_settings = $order_settings->get();
-                }
-
-                $FrontEndQueryController = new FrontEndQueryController();
+                
                 $button_text = ButtonText::first();
 
                 if($this->HomeSetting->theme_choosen == "theme4"){
