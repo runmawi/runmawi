@@ -5,23 +5,7 @@
 
    $check_Kidmode = 0;
 
-   $video_banner = App\Video::where('banner', 1)->where('active', 1)->where('status', 1)->where('draft', 1);
-
-      if ($getfeching != null && $getfeching->geofencing == 'ON') {
-         $video_banner = $video_banner->whereNotIn('videos.id', Block_videos());
-      }
-
-      if ($check_Kidmode == 1) {
-         $video_banner = $video_banner->whereBetween('videos.age_restrict', [0, 12]);
-      }
-
-      if ($videos_expiry_date_status == 1) {
-         $video_banner = $video_banner->where(function ($query) {
-            $query->whereNull('expiry_date')->orWhere('expiry_date', '>=', now()->format('Y-m-d\TH:i'));
-         });
-      }
-
-   $video_banner = $video_banner->latest()->limit(15)->get();
+   
 
             // Video Category Banner
 
@@ -81,7 +65,9 @@
    
    <!-- Loader -->
    <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
-      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" data-src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;" loading="lazy">
+      <div class="ring-spinner">Loading
+         <span></span>
+       </div>
    </div>
 
    {{-- End Ads banners --}}
@@ -183,6 +169,88 @@
    .button-groups:before{
       margin-bottom: 0;
       margin-right: 0;
+   }
+
+   .ring-spinner
+   {
+      /* position:absolute;
+      top:50%;
+      left:50%; */
+      transform:translate(-50%,-50%);
+      width:70px;
+      height:70px;
+      background:transparent;
+      border:3px solid #3c3c3c;
+      border-radius:50%;
+      text-align:center;
+      line-height:70px;
+      font-family:sans-serif;
+      font-size:10px;
+      color:#ffff;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      text-shadow:0 0 10px #2578c0;
+      box-shadow:0 0 20px rgba(0,0,0,.5);
+   }
+   .ring-spinner:before
+   {
+   content:'';
+   position:absolute;
+   top:-3px;
+   left:-3px;
+   width:110%;
+   height:110%;
+   border:3px solid transparent;
+   border-top:3px solid #2578c0;
+   border-right:3px solid #2578c0;
+   border-radius:50%;
+   animation:animateC 2s linear infinite;
+   }
+   .ring-spinner span
+   {
+   display:block;
+   position:absolute;
+   top:calc(50% - 2px);
+   left:50%;
+   width:50%;
+   height:4px;
+   background:transparent;
+   transform-origin:left;
+   animation:animate 2s linear infinite;
+   }
+   .ring-spinner span:before
+   {
+   content:'';
+   position:absolute;
+   width:16px;
+   height:16px;
+   border-radius:50%;
+   background:#2578c0;
+   top:-6px;
+   right:-8px;
+   box-shadow:0 0 20px #2578c0;
+   }
+   @keyframes animateC
+   {
+   0%
+   {
+      transform:rotate(0deg);
+   }
+   100%
+   {
+      transform:rotate(360deg);
+   }
+   }
+   @keyframes animate
+   {
+   0%
+   {
+      transform:rotate(45deg);
+   }
+   100%
+   {
+      transform:rotate(405deg);
+   }
    }
 </style>
 
