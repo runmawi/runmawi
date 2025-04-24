@@ -404,6 +404,48 @@ class HomeController extends Controller
             }
             else
             {
+
+                if($this->HomeSetting->theme_choosen == "theme4"){
+                    $FrontEndQueryController = new FrontEndQueryController();
+                    $order_settings = OrderHomeSetting::select('video_name')->whereIn('video_name',$home_settings_on_value)->orderBy('order_id', 'asc');
+                    $enableMultipleCompressImage = CompressImage::pluck('enable_multiple_compress_image')->first();
+                    $order_settings = $order_settings->paginate($pagination_value);  
+                    
+                    $data = array(
+                        'order_settings_list' => OrderHomeSetting::get(),
+                        'order_settings'  => $order_settings ,
+                        'multiple_compress_image' => $enableMultipleCompressImage ?: 0,
+                        'getfeching'      => $getfeching ,
+                        'current_theme'     => $this->HomeSetting->theme_choosen,
+                        'current_page'      => 1,
+                        'pagination_url' => '/videos',
+                        'pages'             => Page::all(),
+                        'latest_series'          => $FrontEndQueryController->latest_Series()->take(15),
+                        'home_settings'       => $this->HomeSetting ,
+                        'livetream'              => $FrontEndQueryController->livestreams()->take(15),
+                        'Series_based_on_Networks' => $FrontEndQueryController->Series_based_on_Networks(),
+                        'videos_expiry_date_status' => $videos_expiry_date_status,
+                        'default_vertical_image_url' => $default_vertical_image_url,
+                        'default_horizontal_image_url' => $default_horizontal_image_url,
+                        'VideoJsContinueWatching'             => $FrontEndQueryController->VideoJsContinueWatching(),
+                        'VideoJsEpisodeContinueWatching'      => $FrontEndQueryController->VideoJsEpisodeContinueWatching(),
+                        'BaseURL'                            => $this->BaseURL,
+                        'Series_Networks_Status' => Series_Networks_Status(),
+                    );
+    
+                    if($request->ajax()) {
+                        return $data = [
+                            "view" => Theme::watchPartial('home_sections', $data ),
+                            'url' => $data['order_settings']->nextPageUrl()
+                        ];
+                    }
+    
+                    return Theme::view('home', $data);
+                    
+                }
+
+                
+
                 $device_name = '';
                 switch (true) {
                     case $agent->isDesktop():
