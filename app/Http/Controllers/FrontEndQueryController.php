@@ -1780,21 +1780,12 @@ class FrontEndQueryController extends Controller
                     ->where('series.active', 1)
                     ->where('series_network_order.network_id', $item->id)
                     ->orderBy('series_network_order.order', 'asc')
+                    ->select('series.image', 'series.title', 'series.id','series.slug')
                     ->get()
                     ->map(function ($series) {
-                        $series->id = $series->series_id;
                         $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
                             ? $this->BaseURL.('/images/' . $series->image)
                             : $this->default_vertical_image;
-        
-                        $series['Player_image_url'] = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
-                            ? $this->BaseURL.('/images/' . $series->player_image)
-                            : $this->default_horizontal_image_url;
-        
-                        $series['upload_on'] = Carbon::parse($series->created_at)->isoFormat('MMMM Do YYYY');
-                        $series['duration_format'] = !is_null($series->duration)
-                            ? Carbon::parse($series->duration)->format('G\H i\M')
-                            : null;
                         
                             $season_ids = SeriesSeason::where('series_id',$series->id)->orderBy('order','desc')->pluck('id');
                             $first_season_id = $season_ids->first();
@@ -1807,12 +1798,10 @@ class FrontEndQueryController extends Controller
                                                                         ->where('active', 1)
                                                                         ->orderBy('season_id', 'desc')
                                                                         ->orderBy('episode_order', 'desc')
+                                                                        ->select('episodes.id', 'episodes.player_image', 'episodes.title', 'episodes.slug')
                                                                         ->take(15)
                                                                         ->get()
                                         ->map(function ($episode) {
-                                            $episode['image_url'] = (!is_null($episode->image) && $episode->image != 'default_image.jpg')
-                                                ? $this->BaseURL.('/images/' . $episode->image)
-                                                : $this->default_vertical_image;
                                             $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? $this->BaseURL.('/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
                     
                                             $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
@@ -1843,6 +1832,45 @@ class FrontEndQueryController extends Controller
             'data' => $Series_based_on_Networks
         ]);
     }
+
+    // public function loadMoreNetworkSection(Request $request){
+    //     $offset = $request->input('offset');
+    //     $limit = $request->input('limit');
+    //     $sectionKey = $request->input('section_key') ?? null;
+
+    //     $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
+    //         ->orderBy('order')
+    //         ->skip($offset)
+    //         ->take($limit)
+    //         ->get()
+    //         ->map(function ($item) use ($sectionKey) {
+    //             $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+    //                 ->where('series.active', 1)
+    //                 ->where('series_network_order.network_id', $item->id)
+    //                 ->orderBy('series_network_order.order', 'asc')
+    //                 ->select('series.id', 'series.image', 'series.title')
+    //                 ->get()
+    //                 ->map(function ($series) {
+    //                     $series->id = $series->series_id;
+    //                     $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+    //                         ? $this->BaseURL.('/images/' . $series->image)
+    //                         : $this->default_vertical_image;
+
+    //                     $series['source'] = 'Series';
+        
+    //                     return $series;
+    //                 });
+    //                 $item['sectionKey'] = $sectionKey;
+
+    //                 $sectionKey +=1;
+        
+    //             return $item;
+    //     });
+
+    //     return response()->json([
+    //         'data' => $Series_based_on_Networks
+    //     ]);
+    // }
 
     
 }
