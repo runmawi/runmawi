@@ -1217,6 +1217,7 @@ class RazorpayController extends Controller
             'status' => 'hold' ,
         ]);
 
+        $setting = Setting::first();  
         $PpvPurchase_id = $PpvPurchase->id;
 
         $video = Video::where('id','=',$video_id)->first();
