@@ -170,106 +170,108 @@
                     if (response.data.length > 0) {
                         response.data.forEach(function(newSection, index) {
                             const newSectionKey = offset + index;
+                            // console.log("series data: " + (if(newSection.Series_depends_Networks)));
                             
-                            const sectionHtml = `
-                                <section id="iq-trending-${newSectionKey}" class="s-margin">
-                                    <div class="container-fluid pl-0">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="iq-main-header d-flex align-items-center justify-content-between">
-                                                    <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks', ['']) }}/${newSection.slug}">${newSection.name}</a></h4>
-                                                    <h4 class="main-title"><a href="{{ route('Specific_Series_Networks', ['']) }}/${newSection.slug}">View all</a></h4>
-                                                </div>
-
-                                                <div class="channels-list">
-                                                    <div class="channel-row">
-                                                        <div id="trending-slider-nav-${newSectionKey}" class="video-list series-based-network-video flickity-slider new-networks-sections" data-new-sectionkey="${newSectionKey}">
-                                                            ${newSection.Series_depends_Networks.map((series, seriesIndex) => `
-                                                                <div class="item" id="top-slider-img" data-index="${seriesIndex}" data-section-index="${newSectionKey}" data-series-id="${series.id}">
-                                                                    <div>
-                                                                        <img data-flickity-lazyload="${series.image_url}" class="flickity-lazyloaded" alt="${series.title}" width="300" height="200">
-                                                                    </div>
-                                                                </div>
-                                                            `).join('')}
-                                                        </div>
+                            if (newSection.Series_depends_Networks && newSection.Series_depends_Networks.length > 0) {
+                                const sectionHtml = `
+                                    <section id="iq-trending-${newSectionKey}" class="s-margin">
+                                        <div class="container-fluid pl-0">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="iq-main-header d-flex align-items-center justify-content-between">
+                                                        <h4 class="main-title mar-left"><a href="{{ route('Specific_Series_Networks', ['']) }}/${newSection.slug}">${newSection.name}</a></h4>
+                                                        <h4 class="main-title"><a href="{{ route('Specific_Series_Networks', ['']) }}/${newSection.slug}">View all</a></h4>
                                                     </div>
 
-                                                    <div id="videoInfo-${newSectionKey}" class="series-based-network-dropdown" style="display:none;">
-                                                        <button class="drp-close">×</button>
-                                                        <div class="vib" style="display:block;">
-                                                            ${newSection.Series_depends_Networks.map((series, seriesIndex) => `
-                                                                <div class="w-100" data-index="${seriesIndex}">
-                                                                    <div class="caption" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
-                                                                        <h2 id="series_title-${series.id}-${newSectionKey}" class="caption-h2"></h2>
-
-                                                                        <div id="series_description-${series.id}-${newSectionKey}" class="trending-dec"></div>
-                                                                       
-                                                                        <div class="p-btns">
-                                                                            <div class="d-flex align-items-center p-0">
-                                                                                <a href="" id="series_slug-${series.id}-${newSectionKey}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
-                                                                            </div>
+                                                    <div class="channels-list">
+                                                        <div class="channel-row">
+                                                            <div id="trending-slider-nav-${newSectionKey}" class="video-list series-based-network-video flickity-slider new-networks-sections" data-new-sectionkey="${newSectionKey}">
+                                                                ${newSection.Series_depends_Networks.map((series, seriesIndex) => `
+                                                                    <div class="item" id="top-slider-img" data-index="${seriesIndex}" data-section-index="${newSectionKey}" data-series-id="${series.id}">
+                                                                        <div>
+                                                                            <img data-flickity-lazyload="${series.image_url}" class="flickity-lazyloaded" alt="${series.title}" width="300" height="200">
                                                                         </div>
                                                                     </div>
+                                                                `).join('')}
+                                                            </div>
+                                                        </div>
 
-                                                                    <div class="thumbnail" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
-                                                                        <img id="series_player_img-${series.id}-${newSectionKey}" class="flickity-lazyloaded" alt="" width="300" height="200">
-                                                                    </div>
+                                                        <div id="videoInfo-${newSectionKey}" class="series-based-network-dropdown" style="display:none;">
+                                                            <button class="drp-close">×</button>
+                                                            <div class="vib" style="display:block;">
+                                                                ${newSection.Series_depends_Networks.map((series, seriesIndex) => `
+                                                                    <div class="w-100" data-index="${seriesIndex}">
+                                                                        <div class="caption" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
+                                                                            <h2 id="series_title-${series.id}-${newSectionKey}" class="caption-h2"></h2>
 
-                                                                    <div id="network-slider-${newSectionKey}-${seriesIndex}" class="network-based-depends-slider networks-depends-series-slider-${newSectionKey}-${seriesIndex} content-list height-${series.id}-${newSectionKey}" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
-                                                                        ${Array.isArray(series.Series_depends_episodes) ? series.Series_depends_episodes.map((episode, episode_key) => `
-                                                                            <div class="depends-row">
-                                                                                <div class="depend-items">
-                                                                                    <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}">
-                                                                                        <div class="position-relative">
-                                                                                            <img id="episode_player_img-${series.id}-${newSectionKey}-${episode_key}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="${episode.title}">
-                                                                                            <div class="controls">
-                                                                                                <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}" class="playBTN">
-                                                                                                    <i class="fas fa-play"></i>
-                                                                                                </a>
-                                                                                                <button id="data-modal-based-network" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="${episode.id}">
-                                                                                                    <i class="fas fa-info-circle"></i><span>More info</span>
-                                                                                                </button>
-                                                                                                <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                                                    ${episode.title}
-                                                                                                </p>
+                                                                            <div id="series_description-${series.id}-${newSectionKey}" class="trending-dec"></div>
+                                                                        
+                                                                            <div class="p-btns">
+                                                                                <div class="d-flex align-items-center p-0">
+                                                                                    <a href="" id="series_slug-${series.id}-${newSectionKey}" class="button-groups btn btn-hover mr-2" tabindex="0"><i class="fa fa-play mr-2" aria-hidden="true"></i> Play Now </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="thumbnail" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
+                                                                            <img id="series_player_img-${series.id}-${newSectionKey}" class="flickity-lazyloaded" alt="" width="300" height="200">
+                                                                        </div>
+
+                                                                        <div id="network-slider-${newSectionKey}-${seriesIndex}" class="network-based-depends-slider networks-depends-series-slider-${newSectionKey}-${seriesIndex} content-list height-${series.id}-${newSectionKey}" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
+                                                                            ${Array.isArray(series.Series_depends_episodes) ? series.Series_depends_episodes.map((episode, episode_key) => `
+                                                                                <div class="depends-row">
+                                                                                    <div class="depend-items">
+                                                                                        <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}">
+                                                                                            <div class="position-relative">
+                                                                                                <img id="episode_player_img-${series.id}-${newSectionKey}-${episode_key}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="${episode.title}">
+                                                                                                <div class="controls">
+                                                                                                    <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}" class="playBTN">
+                                                                                                        <i class="fas fa-play"></i>
+                                                                                                    </a>
+                                                                                                    <button id="data-modal-based-network" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="${episode.id}">
+                                                                                                        <i class="fas fa-info-circle"></i><span>More info</span>
+                                                                                                    </button>
+                                                                                                    <p class="trending-dec" style="font-weight: 600;height:auto;">
+                                                                                                        ${episode.title}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            `).join('') : ''}
+                                                                            ${series.has_more ? `
+                                                                                <div class="depends-row last-elmnt" style="height: 100% !important;">
+                                                                                    <a href="{{ URL::to('networks/play_series/') }}/${series.slug}">
+                                                                                        <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
+                                                                                            <div class="position-relative">
+                                                                                                <p class="text-white">View all</p>
                                                                                             </div>
                                                                                         </div>
                                                                                     </a>
                                                                                 </div>
-                                                                            </div>
-                                                                        `).join('') : ''}
-                                                                        ${series.has_more ? `
-                                                                            <div class="depends-row last-elmnt" style="height: 100% !important;">
-                                                                                <a href="${window.location.origin}/network/play-series/${series.slug}">
-                                                                                    <div class="depend-items d-flex align-items-center justify-content-center" style="height: 100%;background-color:#000;">
-                                                                                        <div class="position-relative">
-                                                                                            <p class="text-white">View all</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a>
-                                                                            </div>
-                                                                        ` : ''}
+                                                                            ` : ''}
+                                                                        </div>
+
+
                                                                     </div>
-
-
-                                                                </div>
-                                                            `).join('')}
+                                                                `).join('')}
+                                                            </div>
                                                         </div>
-                                                    </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </section>`;
+                                    </section>`;
                             
-                            $('#network-sections-container').append(sectionHtml);
+                                $('#network-sections-container').append(sectionHtml);
 
-                            // Initialize Flickity for this new section
-                            initializeFlickityForSection(newSectionKey);
+                                // Initialize Flickity for this new section
+                                initializeFlickityForSection(newSectionKey);
 
-                            setupSectionClickHandlers(newSectionKey);
-                            
+                                setupSectionClickHandlers(newSectionKey);
+                            }
                         });
                         
                         offset += response.data.length;
@@ -458,6 +460,9 @@
 
         const seriesId = $(this).data('series-id');
         const sectionKey = $(this).data('section-index');
+
+        // console.log("series id: " + seriesId);
+        
 
         const isLoaded = $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded');
         
