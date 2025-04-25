@@ -1545,11 +1545,14 @@ class FrontEndQueryController extends Controller
     public function getSeriesEpisodeImg(Request $request)
     {
         $seriesId = $request->series_id;
-        $series = Series::select('player_image', 'title', 'description', 'slug')->where('id', $seriesId)->first();
+        
+        $series = Series::find($seriesId, ['player_image', 'title', 'description', 'slug']);
 
         $image = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $series->player_image)
                         : $this->default_vertical_image;
+
+        $series_desc = !empty($series->description) ?  strip_tags(html_entity_decode($series->description, ENT_QUOTES | ENT_HTML5, 'UTF-8'))  : null;
 
         $series_slug  = URL::to('networks/play_series/'.$series->slug);
 
@@ -1585,7 +1588,7 @@ class FrontEndQueryController extends Controller
 
         return response()->json([
             'series_title' => $series->title,
-            'series_description' => $series->description,
+            'series_description' => $series_desc,
             'series_slug' => $series_slug,
             'series_image' => $image,
             'episodes' => $episodeData,
