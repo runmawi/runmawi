@@ -2512,11 +2512,11 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
     Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
     Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 
-    Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
+    Route::get('/RazorpayVideoRent/{video_id}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
     Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
     Route::post('/RazorpayVideoRent_Paymentfailure', 'RazorpayController@RazorpayVideoRent_Paymentfailure')->name('RazorpayVideoRent_Paymentfailure');
 
-    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
+    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
 
     Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
