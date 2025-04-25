@@ -3257,7 +3257,7 @@ public function verifyandupdatepassword(Request $request)
       $current_date = new \DateTime(); 
 
       
-        $ppv_exist =!empty($user_id) ? LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->where('status','captured')->count() : 0;
+        $ppv_exist =!empty($user_id) ? LivePurchase::where('video_id',$liveid)->where('user_id',$user_id)->where('payment_status','captured')->count() : 0;
 
         if ($ppv_exist > 0) {
 
@@ -5301,7 +5301,7 @@ public function verifyandupdatepassword(Request $request)
           $payment_type == 'Stripe';
           $status = 1;
           DB::table('live_purchases')->insert(
-            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'status' => $status, 'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'payment_status' => 'succeeded', 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
+            ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_status' => $status, 'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'payment_failure_reason' => $payment_failure_reason,'ppv_plan'=> $ppv_plan ]
           );
           DB::table('ppv_purchases')->insert(
             ['user_id' => $user_id ,'live_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'total_amount'=> $amount,'payment_gateway'=>$payment_type,'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
@@ -5443,7 +5443,7 @@ public function verifyandupdatepassword(Request $request)
     
       if (  !empty($live_id) && $live_id != '') {
         DB::table('live_purchases')->insert(
-          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type,'status'=> 1 ]
+          ['user_id' => $user_id ,'video_id' => $live_id,'to_time' => $date,'platform' => $platform,'created_at'=>now(),'updated_at'=>now(),'amount'=> $amount,'payment_gateway'=>$payment_type,'status'=> 1, 'payment_id' => $payment_id, 'payment_status' => $status, 'payment_failure_reason' => $payment_failure_reason ]
         );
         DB::table('ppv_purchases')->insert(
           
