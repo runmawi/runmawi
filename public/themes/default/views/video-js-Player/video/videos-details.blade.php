@@ -1049,7 +1049,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                             <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
                                                 @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
                                                     <button class="btn btn-primary w-100"
-                                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id]) }}' ;">
                                                         {{ __('Pay now') }}
                                                     </button>
                                                 @endif
@@ -1288,10 +1288,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                         }else if(payment_gateway == "Razorpay"){
 
-                            const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                            const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__']) }}`
                             .replace('__PPV_PLAN__', selectedQuality)
                             .replace('__VIDEO_ID__', videoId)
-                            .replace('__AMOUNT__', amount);
 
                             const continueButtonHtml = `
                                 <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"

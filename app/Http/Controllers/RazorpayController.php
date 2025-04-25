@@ -336,7 +336,11 @@ class RazorpayController extends Controller
         
     }
 
-    public function RazorpayVideoRent(Request $request,$video_id,$amount){
+    public function RazorpayVideoRent(Request $request,$video_id){
+
+        
+        $video = Video::where('id','=',$video_id)->first();
+        $amount = $video->ppv_price;
 
         $setting = Setting::first();    
         $PpvPurchase = PpvPurchase::create([
@@ -350,7 +354,6 @@ class RazorpayController extends Controller
 
         $PpvPurchase_id = $PpvPurchase->id;
 
-        $video = Video::where('id','=',$video_id)->first();
         if(!empty($video)){
             $moderators_id = $video->user_id;
         }
@@ -400,7 +403,7 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
             'notes'           => [
@@ -418,7 +421,7 @@ class RazorpayController extends Controller
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'user_id'           =>   Auth::user()->id ? Auth::user()->id : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,
@@ -1204,9 +1207,9 @@ class RazorpayController extends Controller
 
 
     
-    public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
-
-       
+    public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id){
+        $video = Video::where('id','=',$video_id)->first();
+        $amount = $video->ppv_price;
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
             'video_id'     => $video_id,
@@ -1220,7 +1223,6 @@ class RazorpayController extends Controller
         $setting = Setting::first();  
         $PpvPurchase_id = $PpvPurchase->id;
 
-        $video = Video::where('id','=',$video_id)->first();
         if(!empty($video)){
             $moderators_id = $video->user_id;
         }
@@ -1272,7 +1274,7 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
         ];
@@ -1283,7 +1285,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,

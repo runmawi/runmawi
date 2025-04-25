@@ -170,7 +170,7 @@
                     if (response.data.length > 0) {
                         response.data.forEach(function(newSection, index) {
                             const newSectionKey = offset + index;
-                            // console.log("series data: " + (if(newSection.Series_depends_Networks)));
+                            // console.log("series data: " + (JSON.stringify(newSection.Series_depends_Networks)));
                             
                             if (newSection.Series_depends_Networks && newSection.Series_depends_Networks.length > 0) {
                                 const sectionHtml = `
@@ -218,28 +218,30 @@
                                                                         </div>
 
                                                                         <div id="network-slider-${newSectionKey}-${seriesIndex}" class="network-based-depends-slider networks-depends-series-slider-${newSectionKey}-${seriesIndex} content-list height-${series.id}-${newSectionKey}" data-index="${seriesIndex}" data-section-index="${newSectionKey}">
-                                                                            ${Array.isArray(series.Series_depends_episodes) ? series.Series_depends_episodes.map((episode, episode_key) => `
-                                                                                <div class="depends-row">
-                                                                                    <div class="depend-items">
-                                                                                        <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}">
-                                                                                            <div class="position-relative">
-                                                                                                <img id="episode_player_img-${series.id}-${newSectionKey}-${episode_key}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="${episode.title}">
-                                                                                                <div class="controls">
-                                                                                                    <a href="{{ URL::to('networks/episode/') }}/${series.slug}/${episode.slug}" class="playBTN">
-                                                                                                        <i class="fas fa-play"></i>
-                                                                                                    </a>
-                                                                                                    <button id="data-modal-based-network" class="moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="${episode.id}">
-                                                                                                        <i class="fas fa-info-circle"></i><span>More info</span>
-                                                                                                    </button>
-                                                                                                    <p class="trending-dec" style="font-weight: 600;height:auto;">
-                                                                                                        ${episode.title}
-                                                                                                    </p>
+                                                                            ${Number.isInteger(series.Series_depends_episodes)
+                                                                                ? Array.from({ length: Math.min(series.Series_depends_episodes, 15) }).map((_, episode_key) => `
+                                                                                    <div class="depends-row">
+                                                                                        <div class="depend-items">
+                                                                                            <a class="dropdown-episode-slider-slug-${series.id}-${newSectionKey}-${episode_key}" href="">
+                                                                                                <div class="position-relative">
+                                                                                                    <img id="episode_player_img-${series.id}-${newSectionKey}-${episode_key}" class="flickity-lazyloaded drop-slider-img" width="300" height="200" alt="Episode ${episode_key + 1}">
+                                                                                                    <div class="controls">
+                                                                                                        <a href="" class="dropdown-episode-slider-slug-${series.id}-${newSectionKey}-${episode_key} playBTN">
+                                                                                                            <i class="fas fa-play"></i>
+                                                                                                        </a>
+                                                                                                        <button id="data-modal-based-network" class="dropdown-episode-slider-moreinfo-${series.id}-${newSectionKey}-${episode_key} moreBTN" tabindex="0" data-bs-toggle="modal" data-bs-target="#Home-Networks-based-categories-episode-Modal" data-episode-id="">
+                                                                                                            <i class="fas fa-info-circle"></i><span>More info</span>
+                                                                                                        </button>
+                                                                                                        <p class="dropdown-episode-slider-title-${series.id}-${newSectionKey}-${episode_key} trending-dec" style="font-weight: 600;height:auto;">
+                                                                                                            
+                                                                                                        </p>
+                                                                                                    </div>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                        </a>
+                                                                                            </a>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            `).join('') : ''}
+                                                                                `).join('') : ''
+                                                                            }
                                                                             ${series.has_more ? `
                                                                                 <div class="depends-row last-elmnt" style="height: 100% !important;">
                                                                                     <a href="{{ URL::to('networks/play_series/') }}/${series.slug}">
@@ -250,7 +252,7 @@
                                                                                         </div>
                                                                                     </a>
                                                                                 </div>
-                                                                            ` : ''}
+                                                                            ` : '' }
                                                                         </div>
 
 
@@ -481,7 +483,7 @@
                 // console.log('series img: ' + response.episode_images);
                 // console.log('series_title: ', response.series_title);
                 // console.log('series_description: ' + response.series_description);
-                console.log('series_slug: ' + response.series_slug);
+                // console.log('series_slug: ' + JSON.stringify(response.episodes));
 
                 let maxHeight = 0;
                 const heightdiv = '.height-' + seriesId + '-' + sectionKey + ' .flickity-viewport' ;
@@ -493,12 +495,18 @@
                 $('#series_slug-' + seriesId + '-' + sectionKey).attr('href', response.series_slug);
                 $('#series_player_img-' + seriesId + '-' + sectionKey).data('loaded', true);
                
-                response.episode_images.forEach((image, index) => {
+                response.episodes.forEach((episode, index) => {
                     const imgId = '#episode_player_img-' + seriesId + '-' + sectionKey + '-' + index;
-                    $(imgId).attr('src', image);
+                    const episodeSlug = '.dropdown-episode-slider-slug-' + seriesId + '-' + sectionKey + '-' + index;
+                    const episodeTitle = '.dropdown-episode-slider-title-' + seriesId + '-' + sectionKey + '-' + index;
+                    const episodeMoreinfo = '.dropdown-episode-slider-moreinfo-' + seriesId + '-' + sectionKey + '-' + index;
+                    $(episodeMoreinfo).attr('data-episode-id', episode.episode_id);
+                    $(imgId).attr('src', episode.episode_image);
+                    $(episodeSlug).attr('href', episode.episode_slug);
+                    $(episodeTitle).text(episode.episode_title);
                    
                     const img = new Image();
-                    img.src = image;
+                    img.src = episode.episode_image;
 
                     img.onload = function() {
                         const imgHeight = $(imgId).height();
