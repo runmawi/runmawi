@@ -1545,38 +1545,53 @@ class FrontEndQueryController extends Controller
     public function getSeriesEpisodeImg(Request $request)
     {
         $seriesId = $request->series_id;
-        $series = Series::select('player_image', 'title', 'description', 'slug')->where('id', $seriesId)->first();
+        
+        $series = Series::find($seriesId, ['player_image', 'title', 'description', 'slug']);
 
         $image = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
                         ? $this->BaseURL.('/images/' . $series->player_image)
                         : $this->default_vertical_image;
 
+        $series_desc = !empty($series->description) ?  strip_tags(html_entity_decode($series->description, ENT_QUOTES | ENT_HTML5, 'UTF-8'))  : null;
+
         $series_slug  = URL::to('networks/play_series/'.$series->slug);
 
         $seasonIds = SeriesSeason::where('series_id', $seriesId)->pluck('id');
 
-        $episodeImages = Episode::where('series_id', $seriesId)
+        $episode = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
                                     ->orderBy('season_id', 'desc')
                                     ->orderBy('episode_order', 'desc')
                                     ->take(15)
-                                    ->pluck('player_image')
-                                    ->map(function ($playerImage) {
-                                        return (!is_null($playerImage) && $playerImage != 'default_horizontal_image.jpg') 
-                                            ? $this->BaseURL . '/images/' . $playerImage 
+                                    ->select('player_image', 'title', 'slug', 'id')
+                                    ->get()
+                                    ->map(function ($item) use($series) {
+                                        $item['player_image'] =  (!is_null($item->player_image) && $item->player_image != 'default_horizontal_image.jpg') 
+                                            ? $this->BaseURL . '/images/' . $item->player_image 
                                             : $this->default_horizontal_image_url;
+
+                                        $item['slug'] = URL::to('networks/episode/'.$series->slug.'/'.$item->slug);
+
+                                        return $item;
                                     });
 
 
-            // dd($episodeImages);
+        $episodeData = $episode->map(function ($ep) {
+            return [
+                'episode_id' => $ep['id'],
+                'episode_image' => $ep['player_image'],
+                'episode_slug' => $ep['slug'],
+                'episode_title' => $ep['title'],
+            ];
+        });
 
         return response()->json([
             'series_title' => $series->title,
-            'series_description' => $series->description,
+            'series_description' => $series_desc,
             'series_slug' => $series_slug,
             'series_image' => $image,
-            'episode_images' => $episodeImages
+            'episodes' => $episodeData,
         ]);
     }
     public function getLatestSeriesImg(Request $request)
@@ -1789,33 +1804,12 @@ class FrontEndQueryController extends Controller
                         
                             $season_ids = SeriesSeason::where('series_id',$series->id)->orderBy('order','desc')->pluck('id');
                             $first_season_id = $season_ids->first();
-                            $season_epi_count = Episode::where('season_id',$first_season_id)->where('active','1')->count();
-                            // dd($season_ids);
+                            
+                            
+                            $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
 
-                            if ($season_ids->isNotEmpty()) {
-                                    $series['Series_depends_episodes'] = Episode::where('series_id', $series->id)
-                                                                        ->whereIn('season_id', $season_ids)
-                                                                        ->where('active', 1)
-                                                                        ->orderBy('season_id', 'desc')
-                                                                        ->orderBy('episode_order', 'desc')
-                                                                        ->select('episodes.id', 'episodes.player_image', 'episodes.title', 'episodes.slug')
-                                                                        ->take(15)
-                                                                        ->get()
-                                        ->map(function ($episode) {
-                                            $episode['player_image_url'] = (!is_null($episode->player_image) && $episode->player_image != 'default_horizontal_image.jpg') ? $this->BaseURL.('/images/' . $episode->player_image)  : $this->default_horizontal_image_url;
-                    
-                                            $episode['season_name'] = SeriesSeason::where('id', $episode->season_id)
-                                                ->pluck('series_seasons_name')
-                                                ->first();
-                    
-                                            return $episode;
-                                        });
-                            } else {
-                                $series['Series_depends_episodes'] = collect(); // Return empty collection if no seasons found
-                            }
-                                $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
-
-                                $series['has_more'] = $totalEpisodes > 14;
+                            $series['Series_depends_episodes'] = $totalEpisodes;
+                            $series['has_more'] = $totalEpisodes > 14;
 
                         $series['source'] = 'Series';
         
