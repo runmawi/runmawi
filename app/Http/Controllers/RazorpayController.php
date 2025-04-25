@@ -1227,6 +1227,7 @@ class RazorpayController extends Controller
                 break;
             default:
                 $amount = $video->ppv_price;
+                
         }
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
