@@ -650,7 +650,10 @@ class RazorpayController extends Controller
     }
     }
 
-    public function RazorpayLiveRent(Request $request,$live_id,$amount){
+    public function RazorpayLiveRent(Request $request,$live_id){
+
+        $video = LiveStream::where('id','=',$live_id)->first();
+        $amount = $video->ppv_price;
 
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
@@ -674,7 +677,6 @@ class RazorpayController extends Controller
         $PpvPurchase_id = $PpvPurchase->id;
         $livepurchase_id = $livepurchase->id;
 
-        $video = LiveStream::where('id','=',$live_id)->first();
         if(!empty($video)){
         $moderators_id = $video->user_id;
         }
@@ -717,7 +719,7 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
             'notes'           => [
@@ -737,7 +739,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'live_id'        =>  $request->live_id,
             'user_id'        =>  Auth::user()->id ,
@@ -1320,7 +1322,10 @@ class RazorpayController extends Controller
 
 
     
-    public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
+    public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id){
+
+        $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
+        $amount = $SeriesSeason->ppv_price;
 
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
@@ -1335,7 +1340,6 @@ class RazorpayController extends Controller
 
         $PpvPurchase_id = $PpvPurchase->id;
 
-        $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
         $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
         $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
         // if(!empty($SeriesSeason)){
@@ -1386,7 +1390,7 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'notes'           => [
                 'series_id' => $SeriesSeason_id,
@@ -1406,7 +1410,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'SeriesSeason_id'=>  $request->SeriesSeason_id,
             'user_id'        =>  Auth::user()->id ,
@@ -1652,7 +1656,30 @@ class RazorpayController extends Controller
 
     }
 
-    public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
+    public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id){
+
+        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+
+        switch ($ppv_plan) {
+            case '240p':
+                $amount = $SeriesSeason->ppv_price_240p;
+                break;
+            case '360p':
+                $amount = $SeriesSeason->ppv_price_360p;
+                break;
+            case '480p':
+                $amount = $SeriesSeason->ppv_price_480p;
+                break;
+            case '720p':
+                $amount = $SeriesSeason->ppv_price_720p;
+                break;
+            case '1080p':
+                $amount = $SeriesSeason->ppv_price_1080p;
+                break;
+            default:
+                $amount = $SeriesSeason->ppv_price;
+                
+        }
 
         PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
@@ -1673,14 +1700,13 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
         ];
         
         $razorpayOrder = $api->order->create($orderData);
 
-        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
         $series_id = SeriesSeason::where('id',$SeriesSeason_id)->pluck('series_id')->first();
         $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
 
@@ -1689,7 +1715,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'SeriesSeason_id'=>  $request->SeriesSeason_id,
             'user_id'        =>  Auth::user()->id ,
