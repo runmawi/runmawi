@@ -1209,7 +1209,25 @@ class RazorpayController extends Controller
     
     public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id){
         $video = Video::where('id','=',$video_id)->first();
-        $amount = $video->ppv_price;
+        switch ($ppv_plan) {
+            case '240p':
+                $amount = $video->ppv_price_240p;
+                break;
+            case '360p':
+                $amount = $video->ppv_price_360p;
+                break;
+            case '480p':
+                $amount = $video->ppv_price_480p;
+                break;
+            case '720p':
+                $amount = $video->ppv_price_720p;
+                break;
+            case '1080p':
+                $amount = $video->ppv_price_1080p;
+                break;
+            default:
+                $amount = $video->ppv_price;
+        }
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
             'video_id'     => $video_id,
