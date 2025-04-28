@@ -27,6 +27,7 @@ Route::group(
 
         Route::post('All_Pagelist', 'ApiAuthController@All_Pagelist');
         Route::post('Network_depends_series', 'ApiAuthController@Network_depends_series');
+        Route::post('Livestream-based-categories', 'ApiAuthController@LiveStream_based_categories');
 
         Route::get('Interest-Genre-list', 'ApiAuthController@Interest_Genre_list');
         Route::post('Users-Interest-Genres', 'ApiAuthController@users_interest_genres');
