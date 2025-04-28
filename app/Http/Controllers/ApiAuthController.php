@@ -19464,7 +19464,7 @@ public function QRCodeMobileLogout(Request $request)
               $live_stream_videos
                   ->select('live_streams.id','live_streams.title','live_streams.slug','live_streams.year','live_streams.rating','live_streams.access','live_streams.ppv_price','live_streams.publish_type','live_streams.publish_status','live_streams.publish_time','live_streams.duration','live_streams.rating','live_streams.image','live_streams.featured','live_streams.player_image','live_streams.description')
                   ->where('live_streams.active',1)->where('live_streams.status', 1)
-                  ->latest('live_streams.created_at')
+                  ->orderBy('live_streams.created_at', 'desc')
                   ->limit($homepage_input_array['limit']);
           }])
           ->select('live_categories.id','live_categories.name', 'live_categories.slug', 'live_categories.order')
