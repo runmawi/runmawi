@@ -293,6 +293,10 @@
         transition: background-color 0.3s ease; 
     }
 
+    .custom-hover-dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
 
     .modal{
         right: 0;
@@ -433,9 +437,11 @@
                                                      </a>
                                                 </li>
                                                 <li>
-                                                    <div class="dropdown">
-                                                        <i id="ff" class="fa fa-share-alt" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background-color: white; border: 1px solid white; padding: 0;">
+                                                    <div class="dropdown custom-hover-dropdown">
+                                                        <span id="ff" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-share-alt"></i>
+                                                        </span>
+                                                        <div class="dropdown-menu" style="background-color: white; border: 1px solid white; padding: 0;">
                                                             <a class="dropdown-item popup" href="https://twitter.com/intent/tweet?text=<?= $media_url ?>" target="_blank">
                                                                 <i class="fa fa-twitter" style="color: #00acee; padding: 10px 5px; border-radius: 50%; display: inline;"></i> Twitter
                                                             </a>
