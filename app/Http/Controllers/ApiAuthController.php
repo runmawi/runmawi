@@ -30738,8 +30738,9 @@ public function SendVideoPushNotification(Request $request)
                     'season_id'       => $request->SeriesSeason_id,
                     'series_id'       => null,
                     'total_amount'    => $amount,
-                    'platform'        => $request->platform,
-                    'payment_gateway' => $request->payment_gateway,
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 'hold',
                 ]);
             }
@@ -30808,8 +30809,9 @@ public function SendVideoPushNotification(Request $request)
                     'user_id'         => Auth::id(),
                     'video_id'        => $request->live_id,
                     'amount'          => $request->total_amount,
-                    'platform'        => 'website',
-                    'payment_gateway' => 'razorpay',
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 0,
                     'payment_status'  => 'hold',
                 ]);
