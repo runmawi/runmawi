@@ -30708,7 +30708,7 @@ public function SendVideoPushNotification(Request $request)
               'total_amount'     => 'required',
               'payment_for'      => 'required|string|in:ppv,Subscription',
               'platform'         => 'required|in:android,Inapp',
-              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack,Applepay',
+              'payment_gateway'  => 'required|in:razorpay,Stripe,Paypal,Paystack,Applepay',
             ], [
               'user_id.required'         => 'User ID is required.',
               'user_id.integer'          => 'User ID must be an integer.',
@@ -30717,7 +30717,7 @@ public function SendVideoPushNotification(Request $request)
               'payment_for.in'           => 'Payment type must be either PPV or Subscription.',
               'platform.required'        => 'Platform is required.',
               'payment_gateway.required' => 'Payment gateway is required.',
-              'payment_gateway.in'       => 'Payment gateway must be one of: razoray, Stripe, Paypal, Paystack.',
+              'payment_gateway.in'       => 'Payment gateway must be one of: razorpay, Stripe, Paypal, Paystack.',
             ]);
             
             if ($validator->fails()) {
@@ -30738,8 +30738,9 @@ public function SendVideoPushNotification(Request $request)
                     'season_id'       => $request->SeriesSeason_id,
                     'series_id'       => null,
                     'total_amount'    => $amount,
-                    'platform'        => $request->platform,
-                    'payment_gateway' => $request->payment_gateway,
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 'hold',
                 ]);
             }
@@ -30808,8 +30809,9 @@ public function SendVideoPushNotification(Request $request)
                     'user_id'         => Auth::id(),
                     'video_id'        => $request->live_id,
                     'amount'          => $request->total_amount,
-                    'platform'        => 'website',
-                    'payment_gateway' => 'razoray',
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 0,
                     'payment_status'  => 'hold',
                 ]);
