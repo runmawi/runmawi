@@ -156,6 +156,8 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use App\RokuHomeSetting;
 use App\OTPLog;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class ApiAuthController extends Controller
 {
@@ -3314,12 +3316,39 @@ public function verifyandupdatepassword(Request $request)
 
                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
+                          $item['videocipher_storage'] = StorageSetting::pluck('videocipher_storage')->first();
+                          $item['enable_video_cipher_upload'] = SiteTheme::pluck('enable_video_cipher_upload')->first();
+
                           if( $item['livestream_format'] == "mp4"){
                             $item['livestream_url'] =  $item->mp4_url ;
                           }
 
                           elseif( $item['livestream_format'] == "embed"){
-                            $item['livestream_url'] =  $item->embed_url ;
+
+                            if($item['videocipher_storage'] == 1 && $item['enable_video_cipher_upload'] == 1 && !empty($item->embed_url)){
+
+                              $item['livestream_url'] =  $item->embed_url ;
+                              $url = $item->embed_url;
+                              $parsedUrl = parse_url($item->embed_url);
+                              parse_str($parsedUrl['query'], $queryParams);
+                              $liveId = $queryParams['liveId'] ?? null;
+                              if ($liveId) {
+                                  $client = new \GuzzleHttp\Client();
+                                  try {
+                                      $response = $client->request('GET', "https://www.vdocipher.com/api/livestream/details/{$liveId}");
+                                      $result = json_decode($response->getBody()->getContents(), true);
+                                      $item['vdocipherTVstatus']  = $result['status'];
+                                      $item['vdocipherTV_hls_url']  = $result['playbackUrl']['hls'];
+
+                                  } catch (\GuzzleHttp\Exception\RequestException $e) {
+                                    $item['vdocipherTVstatus']  = null;
+                                    $item['vdocipherTV_hls_url']  = null;
+                                  }
+                              }
+
+                            }else{
+                              $item['livestream_url'] =  $item->embed_url ;
+                            }
                           }
 
                           elseif( $item['livestream_format'] == "live_stream_video"){
