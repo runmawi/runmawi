@@ -44,8 +44,6 @@
                 @if ($key === 0)
                     <img src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}"
                         alt="{{ $videos->title }}"
-                        width="100%"
-                        height="auto"
                         fetchpriority="high"
                         class="banner-image">
                 @else
@@ -556,6 +554,13 @@
         opacity: 1;
     }
 
+    img.banner-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9; /* Adjust as needed */
+        object-fit: cover;
+    }
+    
     @media(max-width:768px){
         ._meta_desc_data_{display:none;}
     }
