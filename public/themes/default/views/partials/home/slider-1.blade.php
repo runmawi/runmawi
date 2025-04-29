@@ -556,6 +556,12 @@
         opacity: 1;
     }
 
+    img.banner-image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    
     @media(max-width:768px){
         ._meta_desc_data_{display:none;}
     }
