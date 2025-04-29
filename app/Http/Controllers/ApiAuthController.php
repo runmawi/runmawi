@@ -30717,7 +30717,7 @@ public function SendVideoPushNotification(Request $request)
               'payment_for.in'           => 'Payment type must be either PPV or Subscription.',
               'platform.required'        => 'Platform is required.',
               'payment_gateway.required' => 'Payment gateway is required.',
-              'payment_gateway.in'       => 'Payment gateway must be one of: razoray, Stripe, Paypal, Paystack.',
+              'payment_gateway.in'       => 'Payment gateway must be one of: razorpay, Stripe, Paypal, Paystack.',
             ]);
             
             if ($validator->fails()) {
@@ -30809,7 +30809,7 @@ public function SendVideoPushNotification(Request $request)
                     'video_id'        => $request->live_id,
                     'amount'          => $request->total_amount,
                     'platform'        => 'website',
-                    'payment_gateway' => 'razoray',
+                    'payment_gateway' => 'razorpay',
                     'status'          => 0,
                     'payment_status'  => 'hold',
                 ]);

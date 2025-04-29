@@ -68,8 +68,10 @@ $homepage_array_data = [
       @partial('home_sections')
 </div>
    <!-- Loader -->
-   <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader">
-      <img src="{{ URL::to('assets/images/Spinner_loader.gif') }}" data-src="{{ URL::to('assets/images/Spinner_loader.gif') }}" alt="Loading..." style="width: 50px; height: 50px;" loading="lazy">
+   <div id="loader" class="auto-load text-center d-flex align-items-center justify-content-center hidden-loader pt-5">
+      <div class="ring-spinner">Loading
+         <span></span>
+       </div>
    </div>
 
 <script>
@@ -285,6 +287,94 @@ $(".home-search").hide();
       .descp{max-height: 320px !important;}
    }
    .hidden-loader {display: none !important;}
+
+   .button-groups:before{
+      margin-bottom: 0;
+      margin-right: 0;
+   }
+
+   .ring-spinner
+   {
+      /* position:absolute;
+      top:50%;
+      left:50%; */
+      transform:translate(-50%,-50%);
+      width:70px;
+      height:70px;
+      background:transparent;
+      border:3px solid #3c3c3c;
+      border-radius:50%;
+      text-align:center;
+      line-height:70px;
+      font-family:sans-serif;
+      font-size:10px;
+      color:#ffff;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      text-shadow:0 0 10px #e8080b;
+      box-shadow:0 0 20px rgba(0,0,0,.5);
+   }
+   .ring-spinner:before
+   {
+   content:'';
+   position:absolute;
+   top:-3px;
+   left:-3px;
+   width:110%;
+   height:110%;
+   border:3px solid transparent;
+   border-top:3px solid #e8080b;
+   border-right:3px solid #e8080b;
+   border-radius:50%;
+   animation:animateC 2s linear infinite;
+   }
+   .ring-spinner span
+   {
+   display:block;
+   position:absolute;
+   top:calc(50% - 2px);
+   left:50%;
+   width:50%;
+   height:4px;
+   background:transparent;
+   transform-origin:left;
+   animation:animate 2s linear infinite;
+   }
+   .ring-spinner span:before
+   {
+   content:'';
+   position:absolute;
+   width:16px;
+   height:16px;
+   border-radius:50%;
+   background:#e8080b;
+   top:-6px;
+   right:-8px;
+   box-shadow:0 0 20px #e8080b;
+   }
+   @keyframes animateC
+   {
+   0%
+   {
+      transform:rotate(0deg);
+   }
+   100%
+   {
+      transform:rotate(360deg);
+   }
+   }
+   @keyframes animate
+   {
+   0%
+   {
+      transform:rotate(45deg);
+   }
+   100%
+   {
+      transform:rotate(405deg);
+   }
+   }
+
 </style>
 
 <!-- flickity -->
