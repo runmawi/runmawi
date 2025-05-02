@@ -415,13 +415,16 @@ class RazorpayController extends Controller
         ];
         
         $razorpayOrder = $api->order->create($orderData);
+        $plainAmount = $amount * 100;
+        $encryptedAmount = encrypt($plainAmount);
 
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'user_id'           =>   Auth::user()->id ? Auth::user()->id : null,
             'currency'       =>  'INR',
-            'amount'         =>  $amount * 100 ,
+            'amount'         =>  $plainAmount ,
+            'encrypted_amount'  =>  $encryptedAmount,
             'orderId'        =>  $razorpayOrder['id'],
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,
@@ -438,7 +441,7 @@ class RazorpayController extends Controller
 
     public function RazorpayVideoRent_Payment(Request $request)
     {
-        
+       $decryptedAmount = decrypt($request->amount);
        $setting = Setting::first();  
        $ppv_hours = $setting->ppv_hours;
        $d = new \DateTime('now');
@@ -508,7 +511,7 @@ class RazorpayController extends Controller
             $purchase = PpvPurchase::find($request->PpvPurchase_id);
             $purchase->user_id = $request->user_id;
             $purchase->video_id = $request->video_id;
-            $purchase->total_amount = $request->amount / 100;
+            $purchase->total_amount = $decryptedAmount / 100;
             // $purchase->admin_commssion = $admin_commssion;
             // $purchase->moderator_commssion = $moderator_commssion;
             // $purchase->moderator_id = $moderator_id;
@@ -532,7 +535,7 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
@@ -1302,12 +1305,15 @@ class RazorpayController extends Controller
         
         $razorpayOrder = $api->order->create($orderData);
 
+        $plainAmount = $amount * 100;
+        $encryptedAmount = encrypt($plainAmount);
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $amount * 100 ,
-            'orderId'        =>  $razorpayOrder['id'],
+            'amount'         =>  $plainAmount ,// for Razorpay JS
+            'encrypted_amount'=>  $encryptedAmount , // for form/backend
+            'orderId'        =>  $razorpayOrder['id'], 
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,
             'description'    =>   null,

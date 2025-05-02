@@ -3594,7 +3594,7 @@ public function verifyandupdatepassword(Request $request)
 
       $response = array(
         'status' => 'true',
-        'shareurl' => URL::to('live').'/'.$liveid,
+        'shareurl' => URL::to('live').'/'.$livestreamSlug,
         'livedetail' => $livestream_details,
         'like' => $like,
         'dislike' => $dislike,
