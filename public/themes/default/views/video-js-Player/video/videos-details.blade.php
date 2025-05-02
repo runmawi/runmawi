@@ -454,7 +454,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                     <div class="row plays_btn_res m-0">
                         @if ( $videodetail->users_video_visibility_status == false && $videodetail->type == 'VideoCipher')
-
+                        
                             @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) && $videodetail->access == 'ppv'
                             || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) && $videodetail->access == 'ppv'
                             || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) && $videodetail->access == 'ppv') 
@@ -503,24 +503,24 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                              || Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'subscriber' && $videodetail->type == 'VideoCipher'
                              || !Auth::guest() && Auth::user()->role == 'admin' && Enable_PPV_Plans() == 1 && Enable_videoCipher_Upload() == 1 &&  $videodetail->access == 'ppv' && $videodetail->type == 'VideoCipher')
                              
-                            <div class="dropdown btn" id="guest-qualitys-selct">
-                                <div class="playbtn" style="gap:5px;">
-                                    {!! $play_btn_svg !!}
-                                    <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ __( $videodetail->users_video_visibility_status_button ) }}
-                                    </span>
+                                <div class="dropdown btn" id="guest-qualitys-selct">
+                                    <div class="playbtn" style="gap:5px;">
+                                        {!! $play_btn_svg !!}
+                                        <span class="playbtn" class="playbtn" style="gap:5px" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ __( $videodetail->users_video_visibility_status_button ) }}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="guest-qualitys">
-                                <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
-                                    @if(!empty($videodetail->video_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
-                                    @if(!empty($videodetail->video_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
-                                    @if(!empty($videodetail->video_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                <div id="guest-qualitys">
+                                    <div class="quality-dropdown-menu d-flex"  aria-labelledby="dropdownMenuButton" style="gap:5px;">
+                                        @if(!empty($videodetail->video_id_480p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/480p' }}">Watch In 480P</a></span> @endif
+                                        @if(!empty($videodetail->video_id_720p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/720p' }}">Watch In 720P</a></span> @endif
+                                        @if(!empty($videodetail->video_id_1080p)) <span class="text pr-2 btn btn-primary"><a class="dropdown-item btn btn-primary" href="{{ $videodetail->users_video_visibility_redirect_url.'/1080p' }}">Watch In 1080P</a></span> @endif
+                                    </div>
                                 </div>
-                            </div>
                             
-                            @elseif(Enable_PPV_Plans() == 0 && $videodetail->access == 'ppv')
-                            <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                            @elseif(Enable_PPV_Plans() == 0 && $videodetail->access == 'ppv' && $videodetail->users_video_visibility_status == false)
+                                <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
                                     <div class="playbtn" style="gap:5px">
                                         {!! $play_btn_svg !!}
                                         <span class="text pr-2 text-white"> {{ __( !empty($button_text->purchase_text) ? $button_text->purchase_text : 'Purchase Now' ) }} </span>
@@ -535,14 +535,16 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                 </a>
                             @endif
                             
-                            @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
-                                @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
-                                    <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
-                                        <div class="playbtn" style="gap:5px">
-                                            {!! $play_btn_svg !!}
-                                            <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
-                                        </div>
-                                    </a>
+                            @if(Auth::check() && (Auth::user()->role == 'registered' || Auth::user()->role == 'subscriber'))
+                                @if ( Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_480p) &&  $videodetail->users_video_visibility_status == true || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_720p) &&  $videodetail->users_video_visibility_status == true  || Enable_PPV_Plans() == 1 && !is_null($videodetail->ppv_price_1080p) &&  $videodetail->users_video_visibility_status == true )
+                                    @if ( !is_null($videodetail->PPV_Access) && $videodetail->PPV_Access != '1080p')
+                                        <a class="btn play_button" data-toggle="modal" data-target="#video-purchase-now-modal">
+                                            <div class="playbtn" style="gap:5px">
+                                                {!! $play_btn_svg !!}
+                                                <span class="text pr-2 text-white"> {{ __( 'Upgrade Now' ) }} </span>
+                                            </div>
+                                        </a>
+                                    @endif
                                 @endif
                             @endif
                             
@@ -1047,7 +1049,7 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
                                             <div class="Razorpay_button col-md-6 col-6 btn"> <!-- Razorpay Button -->
                                                 @if ($Razorpay_payment_setting && $Razorpay_payment_setting->payment_type == 'Razorpay')
                                                     <button class="btn btn-primary w-100"
-                                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id, $videodetail->ppv_price]) }}' ;">
+                                                        onclick="location.href ='{{ route('RazorpayVideoRent', [$videodetail->id]) }}' ;">
                                                         {{ __('Pay now') }}
                                                     </button>
                                                 @endif
@@ -1286,10 +1288,9 @@ input[type="radio"].payment_btn:checked::before, input[type="radio"].quality_opt
 
                         }else if(payment_gateway == "Razorpay"){
 
-                            const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__', 'amount' => '__AMOUNT__']) }}`
+                            const routeUrl = `{{ route('RazorpayVideoRent_PPV', ['ppv_plan' => '__PPV_PLAN__','video_id' => '__VIDEO_ID__']) }}`
                             .replace('__PPV_PLAN__', selectedQuality)
                             .replace('__VIDEO_ID__', videoId)
-                            .replace('__AMOUNT__', amount);
 
                             const continueButtonHtml = `
                                 <button class="btn btn-primary col-12 ppv_price_${selectedQuality}"

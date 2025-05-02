@@ -41,7 +41,17 @@
     @foreach ($video_banners as $key => $videos)
         <div class="s-bg-1" onclick="window.location.href='{{ url('/category/videos/' . $videos->slug) }}'" >
             <div class="_banner_img">
-                <img class="flickity-lazyloaded" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}">
+                @if ($key === 0)
+                    <img src="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}"
+                        alt="{{ $videos->title }}"
+                        fetchpriority="high"
+                        class="banner-image">
+                @else
+                    <img class="flickity-lazyloaded"
+                        data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}"
+                        alt="{{ $videos->title }}">
+                @endif
+                {{-- <img class="flickity-lazyloaded" data-flickity-lazyload="{{ URL::to('/public/uploads/images/' . $videos->player_image) }}" alt="{{ $videos->title }}"> --}}
 
                 @if($settings->slider_trailer == 1 && !empty($videos->trailer))
                     <?php if (!empty($videos->trailer) && ($videos->trailer_type == 'video_mp4')): ?>
@@ -544,6 +554,13 @@
         opacity: 1;
     }
 
+    img.banner-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9; /* Adjust as needed */
+        object-fit: cover;
+    }
+    
     @media(max-width:768px){
         ._meta_desc_data_{display:none;}
     }

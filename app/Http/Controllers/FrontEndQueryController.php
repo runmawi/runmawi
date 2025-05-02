@@ -336,6 +336,7 @@ class FrontEndQueryController extends Controller
     {
         $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
         ->orderBy('order')
+        ->limit(2)
         ->get()
         ->map(function ($item) {
             $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
@@ -1544,33 +1545,53 @@ class FrontEndQueryController extends Controller
     public function getSeriesEpisodeImg(Request $request)
     {
         $seriesId = $request->series_id;
-        $image = Series::where('id', $seriesId)->pluck('player_image')->first();
+        
+        $series = Series::find($seriesId, ['player_image', 'title', 'description', 'slug']);
 
-        $image = (!is_null($image) && $image != 'default_image.jpg')
-                        ? $this->BaseURL.('/images/' . $image)
+        $image = (!is_null($series->player_image) && $series->player_image != 'default_image.jpg')
+                        ? $this->BaseURL.('/images/' . $series->player_image)
                         : $this->default_vertical_image;
+
+        $series_desc = !empty($series->description) ?  strip_tags(html_entity_decode($series->description, ENT_QUOTES | ENT_HTML5, 'UTF-8'))  : null;
+
+        $series_slug  = URL::to('networks/play_series/'.$series->slug);
 
         $seasonIds = SeriesSeason::where('series_id', $seriesId)->pluck('id');
 
-        $episodeImages = Episode::where('series_id', $seriesId)
+        $episode = Episode::where('series_id', $seriesId)
                                     ->whereIn('season_id', $seasonIds)
                                     ->where('active', 1)
                                     ->orderBy('season_id', 'desc')
                                     ->orderBy('episode_order', 'desc')
                                     ->take(15)
-                                    ->pluck('player_image')
-                                    ->map(function ($playerImage) {
-                                        return (!is_null($playerImage) && $playerImage != 'default_horizontal_image.jpg') 
-                                            ? $this->BaseURL . '/images/' . $playerImage 
+                                    ->select('player_image', 'title', 'slug', 'id')
+                                    ->get()
+                                    ->map(function ($item) use($series) {
+                                        $item['player_image'] =  (!is_null($item->player_image) && $item->player_image != 'default_horizontal_image.jpg') 
+                                            ? $this->BaseURL . '/images/' . $item->player_image 
                                             : $this->default_horizontal_image_url;
+
+                                        $item['slug'] = URL::to('networks/episode/'.$series->slug.'/'.$item->slug);
+
+                                        return $item;
                                     });
 
 
-            // dd($episodeImages);
+        $episodeData = $episode->map(function ($ep) {
+            return [
+                'episode_id' => $ep['id'],
+                'episode_image' => $ep['player_image'],
+                'episode_slug' => $ep['slug'],
+                'episode_title' => $ep['title'],
+            ];
+        });
 
         return response()->json([
+            'series_title' => $series->title,
+            'series_description' => $series_desc,
+            'series_slug' => $series_slug,
             'series_image' => $image,
-            'episode_images' => $episodeImages
+            'episodes' => $episodeData,
         ]);
     }
     public function getLatestSeriesImg(Request $request)
@@ -1758,6 +1779,92 @@ class FrontEndQueryController extends Controller
             'slug'        => $slug
         ]);
     }
+
+    public function loadMoreNetworkSection(Request $request){
+        $offset = $request->input('offset');
+        $limit = $request->input('limit');
+        $sectionKey = $request->input('section_key') ?? null;
+
+        $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
+            ->orderBy('order')
+            ->skip($offset)
+            ->take($limit)
+            ->get()
+            ->map(function ($item) use ($sectionKey) {
+                $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+                    ->where('series.active', 1)
+                    ->where('series_network_order.network_id', $item->id)
+                    ->orderBy('series_network_order.order', 'asc')
+                    ->select('series.image', 'series.title', 'series.id','series.slug')
+                    ->get()
+                    ->map(function ($series) {
+                        $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+                            ? $this->BaseURL.('/images/' . $series->image)
+                            : $this->default_vertical_image;
+                        
+                            $season_ids = SeriesSeason::where('series_id',$series->id)->orderBy('order','desc')->pluck('id');
+                            $first_season_id = $season_ids->first();
+                            
+                            
+                            $totalEpisodes = Episode::where('series_id', $series->id)->where('active',1)->count();
+
+                            $series['Series_depends_episodes'] = $totalEpisodes;
+                            $series['has_more'] = $totalEpisodes > 14;
+
+                        $series['source'] = 'Series';
+        
+                        return $series;
+                    });
+                    $item['sectionKey'] = $sectionKey;
+
+                    $sectionKey +=1;
+        
+                return $item;
+        });
+
+        return response()->json([
+            'data' => $Series_based_on_Networks
+        ]);
+    }
+
+    // public function loadMoreNetworkSection(Request $request){
+    //     $offset = $request->input('offset');
+    //     $limit = $request->input('limit');
+    //     $sectionKey = $request->input('section_key') ?? null;
+
+    //     $Series_based_on_Networks = SeriesNetwork::where('in_home', 1)
+    //         ->orderBy('order')
+    //         ->skip($offset)
+    //         ->take($limit)
+    //         ->get()
+    //         ->map(function ($item) use ($sectionKey) {
+    //             $item['Series_depends_Networks'] = Series::join('series_network_order', 'series.id', '=', 'series_network_order.series_id')
+    //                 ->where('series.active', 1)
+    //                 ->where('series_network_order.network_id', $item->id)
+    //                 ->orderBy('series_network_order.order', 'asc')
+    //                 ->select('series.id', 'series.image', 'series.title')
+    //                 ->get()
+    //                 ->map(function ($series) {
+    //                     $series->id = $series->series_id;
+    //                     $series['image_url'] = (!is_null($series->image) && $series->image != 'default_image.jpg')
+    //                         ? $this->BaseURL.('/images/' . $series->image)
+    //                         : $this->default_vertical_image;
+
+    //                     $series['source'] = 'Series';
+        
+    //                     return $series;
+    //                 });
+    //                 $item['sectionKey'] = $sectionKey;
+
+    //                 $sectionKey +=1;
+        
+    //             return $item;
+    //     });
+
+    //     return response()->json([
+    //         'data' => $Series_based_on_Networks
+    //     ]);
+    // }
 
     
 }

@@ -156,6 +156,8 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFProbe as FFProbe;
 use Unicodeveloper\Paystack\Exceptions\PaymentVerificationFailedException;
 use App\RokuHomeSetting;
 use App\OTPLog;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class ApiAuthController extends Controller
 {
@@ -3314,12 +3316,39 @@ public function verifyandupdatepassword(Request $request)
 
                           $item['recurring_timezone_details'] = TimeZone::where('id', $item->recurring_timezone)->get();
 
+                          $item['videocipher_storage'] = StorageSetting::pluck('videocipher_storage')->first();
+                          $item['enable_video_cipher_upload'] = SiteTheme::pluck('enable_video_cipher_upload')->first();
+
                           if( $item['livestream_format'] == "mp4"){
                             $item['livestream_url'] =  $item->mp4_url ;
                           }
 
                           elseif( $item['livestream_format'] == "embed"){
-                            $item['livestream_url'] =  $item->embed_url ;
+
+                            if($item['videocipher_storage'] == 1 && $item['enable_video_cipher_upload'] == 1 && !empty($item->embed_url)){
+
+                              $item['livestream_url'] =  $item->embed_url ;
+                              $url = $item->embed_url;
+                              $parsedUrl = parse_url($item->embed_url);
+                              parse_str($parsedUrl['query'], $queryParams);
+                              $liveId = $queryParams['liveId'] ?? null;
+                              if ($liveId) {
+                                  $client = new \GuzzleHttp\Client();
+                                  try {
+                                      $response = $client->request('GET', "https://www.vdocipher.com/api/livestream/details/{$liveId}");
+                                      $result = json_decode($response->getBody()->getContents(), true);
+                                      $item['vdocipherTVstatus']  = $result['status'];
+                                      $item['vdocipherTV_hls_url']  = $result['playbackUrl']['hls'];
+
+                                  } catch (\GuzzleHttp\Exception\RequestException $e) {
+                                    $item['vdocipherTVstatus']  = null;
+                                    $item['vdocipherTV_hls_url']  = null;
+                                  }
+                              }
+
+                            }else{
+                              $item['livestream_url'] =  $item->embed_url ;
+                            }
                           }
 
                           elseif( $item['livestream_format'] == "live_stream_video"){
@@ -3397,8 +3426,8 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
-      $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
-      $livestreamAccess = LiveStream::where('user_id','=',$liveid)->pluck('access')->first();
+      $livestreamSlug = LiveStream::where('id','=',$liveid)->pluck('slug')->first();
+      $livestreamAccess = LiveStream::where('id','=',$liveid)->pluck('access')->first();
 
       // Reccuring Program 
 
@@ -3564,7 +3593,7 @@ public function verifyandupdatepassword(Request $request)
 
       $response = array(
         'status' => 'true',
-        'shareurl' => URL::to('live').'/'.$liveid,
+        'shareurl' => URL::to('live').'/'.$livestreamSlug,
         'livedetail' => $livestream_details,
         'like' => $like,
         'dislike' => $dislike,
@@ -30739,7 +30768,7 @@ public function SendVideoPushNotification(Request $request)
               'total_amount'     => 'required',
               'payment_for'      => 'required|string|in:ppv,Subscription',
               'platform'         => 'required|in:android,Inapp',
-              'payment_gateway'  => 'required|in:razoray,Stripe,Paypal,Paystack,Applepay',
+              'payment_gateway'  => 'required|in:razorpay,Stripe,Paypal,Paystack,Applepay',
             ], [
               'user_id.required'         => 'User ID is required.',
               'user_id.integer'          => 'User ID must be an integer.',
@@ -30748,7 +30777,7 @@ public function SendVideoPushNotification(Request $request)
               'payment_for.in'           => 'Payment type must be either PPV or Subscription.',
               'platform.required'        => 'Platform is required.',
               'payment_gateway.required' => 'Payment gateway is required.',
-              'payment_gateway.in'       => 'Payment gateway must be one of: razoray, Stripe, Paypal, Paystack.',
+              'payment_gateway.in'       => 'Payment gateway must be one of: razorpay, Stripe, Paypal, Paystack.',
             ]);
             
             if ($validator->fails()) {
@@ -30759,6 +30788,7 @@ public function SendVideoPushNotification(Request $request)
             }
         
             $data = null;
+            $amount = $request->total_amount;
     
             if ($request->payment_for === 'ppv') {
                 $data = PpvPurchase::create([
@@ -30767,20 +30797,81 @@ public function SendVideoPushNotification(Request $request)
                     'live_id'         => $request->live_id,
                     'season_id'       => $request->SeriesSeason_id,
                     'series_id'       => null,
-                    'total_amount'    => $request->total_amount,
-                    'platform'        => $request->platform,
-                    'payment_gateway' => $request->payment_gateway,
+                    'total_amount'    => $amount,
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 'hold',
                 ]);
             }
-    
+
+            if ($request->payment_for === 'ppv' && $data) {
+              $moderators_id = null;
+              $admin_commssion = null;
+              $moderator_commssion = null;
+              $commission_percentage_value = null;
+          
+              $setting = Setting::first();
+              $commission_btn = $setting->CPP_Commission_Status;
+              $commssion = VideoCommission::where('type', 'Cpp')->first();
+        
+              if (!is_null($request->video_id)) {
+                  $video = Video::find($request->video_id);
+                  if ($video) {
+                      $moderators_id = $video->user_id;
+                      $CppUser_details = ModeratorsUser::find($moderators_id);
+                      $default_percentage = $commssion->percentage ?? 0;
+                      $commission_percentage_value = $video->CPP_commission_percentage;
+          
+                      if ($commission_btn === 0) {
+                          $commission_percentage_value = $CppUser_details->commission_percentage ?? $default_percentage;
+                      }
+          
+                      $moderator_commssion = ($amount * $commission_percentage_value) / 100;
+                      $admin_commssion = $amount - $moderator_commssion;
+                  }
+              }
+          
+              else if (!is_null($request->live_id)) {
+                  $video = LiveStream::find($request->live_id);
+                  if ($video) {
+                      $moderators_id = $video->user_id;
+                      $moderator = ModeratorsUser::find($moderators_id);
+                      $percentage = $moderator->commission_percentage ?? 0;
+                      $moderator_commssion = ($percentage / 100) * $video->ppv_price;
+                      $admin_commssion = $video->ppv_price - $moderator_commssion;
+                  }
+              }
+          
+              else if (!is_null($request->SeriesSeason_id)) {
+                  $SeriesSeason = SeriesSeason::find($request->SeriesSeason_id);
+                  $series_id = $SeriesSeason->series_id ?? null;
+                  $Series = Series::find($series_id);
+          
+                  if ($Series) {
+                      $moderators_id = $Series->user_id;
+                      $moderator = ModeratorsUser::find($moderators_id);
+                      $percentage = $moderator->commission_percentage ?? 0;
+                      $moderator_commssion = ($percentage / 100) * $SeriesSeason->ppv_price;
+                      $admin_commssion = $SeriesSeason->ppv_price - $moderator_commssion;
+                  }
+              }
+          
+              $data->moderator_id = $moderators_id;
+              $data->admin_commssion = $admin_commssion;
+              $data->moderator_commssion = $moderator_commssion;
+              $data->ppv_plan = $request->ppv_plan ?? null;
+              $data->save();
+          }
+
             if (!is_null($request->live_id)) {
                 $data = LivePurchase::create([
                     'user_id'         => Auth::id(),
                     'video_id'        => $request->live_id,
                     'amount'          => $request->total_amount,
-                    'platform'        => 'website',
-                    'payment_gateway' => 'razoray',
+                    'platform'        => $request['platform'],
+                    'payment_gateway' => $request['payment_gateway'],
+                    'ppv_plan' => $request['ppv_plan'],
                     'status'          => 0,
                     'payment_status'  => 'hold',
                 ]);

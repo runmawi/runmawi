@@ -44,7 +44,7 @@
                                                 <div class="block-images position-relative">
                                               
                                                 <div class="img-box">
-                                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"class="img-fluid" alt="">
+                                                        <img src="<?php echo URL::to('/').'/public/uploads/images/'.$category_video->image;  ?>"class="img-fluid" alt=""  loading="lazy">
                                             
                                                         @if($ThumbnailSetting->free_or_cost_label == 1) 
 
@@ -118,7 +118,7 @@
                                                             </div>
                                                         @endif
                     
-                                                        <div class="movie-time d-flex align-items-center pt-1">  <!-- Category Thumbnail  setting -->        
+                                                        <div class="movie-time text-white ugc-text d-flex align-items-center pt-1">  <!-- Category Thumbnail  setting -->        
                                                           <?php
                                                           $CategoryThumbnail_setting =  App\CategoryVideo::join('video_categories','video_categories.id','=','categoryvideos.category_id')
                                                                       ->where('categoryvideos.video_id',$category_video->video_id)
@@ -126,7 +126,6 @@
                                                           ?>
 
                                                         @if ( ($ThumbnailSetting->category == 1 ) &&  ( count($CategoryThumbnail_setting) > 0 ) )
-                                                          <span class="text-white">
                                                               <i class="fa fa-list-alt" aria-hidden="true"></i>
                                                               <?php
                                                                   $Category_Thumbnail = array();
@@ -135,7 +134,6 @@
                                                                       }
                                                                   echo implode(','.' ', $Category_Thumbnail);
                                                               ?>
-                                                          </span>
                                                         @endif
                                                       </div>
                     

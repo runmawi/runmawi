@@ -336,8 +336,13 @@ class RazorpayController extends Controller
         
     }
 
-    public function RazorpayVideoRent(Request $request,$video_id,$amount){
+    public function RazorpayVideoRent(Request $request,$video_id){
 
+        
+        $video = Video::where('id','=',$video_id)->first();
+        $amount = $video->ppv_price;
+
+        $setting = Setting::first();    
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
             'video_id'     => $video_id,
@@ -349,13 +354,56 @@ class RazorpayController extends Controller
 
         $PpvPurchase_id = $PpvPurchase->id;
 
-        $recept_id = Str::random(10);
+        if(!empty($video)){
+            $moderators_id = $video->user_id;
+        }
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $video->CPP_commission_percentage;
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
+            $total_amount        = $video->ppv_price;
+            $title               =  $video->title;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $ppv_price           =  $amount;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount = $video->ppv_price;
+            $title =  $video->title;
+            $commssion  =  VideoCommission::where('type','CPP')->first();
+            $percentage = null; 
+            $ppv_price = $video->ppv_price;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+        $purchase = PpvPurchase::find($PpvPurchase_id );
+        $purchase->total_amount = $amount;
+        $purchase->moderator_id = $moderators_id;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->ppv_plan = $request->ppv_plan;
+        $purchase->save();
 
+        $recept_id = Str::random(10);
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
             'notes'           => [
@@ -367,21 +415,22 @@ class RazorpayController extends Controller
         ];
         
         $razorpayOrder = $api->order->create($orderData);
-
-        $Video_slug = Video::where('id',$request->video_id)->pluck('slug')->first();
+        $plainAmount = $amount * 100;
+        $encryptedAmount = encrypt($plainAmount);
 
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'user_id'           =>   Auth::user()->id ? Auth::user()->id : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $plainAmount ,
+            'encrypted_amount'  =>  $encryptedAmount,
             'orderId'        =>  $razorpayOrder['id'],
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,
             'description'    =>   null,
             'address'        =>   null ,
-            'Video_slug'     => $Video_slug ,
+            'Video_slug'     =>  $video->slug ,
             'address'        =>   null ,
             'ppv_plan'       =>   null ,
             'PpvPurchase_id' => $PpvPurchase_id ,
@@ -392,7 +441,7 @@ class RazorpayController extends Controller
 
     public function RazorpayVideoRent_Payment(Request $request)
     {
-
+       $decryptedAmount = decrypt($request->amount);
        $setting = Setting::first();  
        $ppv_hours = $setting->ppv_hours;
        $d = new \DateTime('now');
@@ -418,58 +467,58 @@ class RazorpayController extends Controller
             } 
             $payment_status = $payment->status; 
 
-            $video = Video::where('id','=',$request->video_id)->first();
+            // $video = Video::where('id','=',$request->video_id)->first();
 
-            if(!empty($video)){
-            $moderators_id = $video->user_id;
-            }
+            // if(!empty($video)){
+            // $moderators_id = $video->user_id;
+            // }
 
-            $commission_btn = $setting->CPP_Commission_Status;
-            $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
-            $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
-            $commission_percentage_value = $video->CPP_commission_percentage;
+            // $commission_btn = $setting->CPP_Commission_Status;
+            // $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+            // $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+            // $commission_percentage_value = $video->CPP_commission_percentage;
             
-            if($commission_btn === 0){
-                $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-            }
-            if(!empty($moderators_id)){
-                $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                if ($moderator) {
-                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-                } else {
-                    $percentage = 0;
-                }
-                $total_amount        = $video->ppv_price;
-                $title               =  $video->title;
-                $commssion           =  VideoCommission::where('type','CPP')->first();
-                $ppv_price           =  $request->amount/100;
-                $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
-                $admin_commssion     =  $ppv_price - $moderator_commssion;
-                $moderator_id        =  $moderators_id;
-            }
-            else
-            {
-                $total_amount = $video->ppv_price;
-                $title =  $video->title;
-                $commssion  =  VideoCommission::where('type','CPP')->first();
-                $percentage = null; 
-                $ppv_price = $video->ppv_price;
-                $admin_commssion =  null;
-                $moderator_commssion = null;
-                $moderator_id = null;
-            }
+            // if($commission_btn === 0){
+            //     $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+            // }
+            // if(!empty($moderators_id)){
+            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            //     if ($moderator) {
+            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            //     } else {
+            //         $percentage = 0;
+            //     }
+            //     $total_amount        = $video->ppv_price;
+            //     $title               =  $video->title;
+            //     $commssion           =  VideoCommission::where('type','CPP')->first();
+            //     $ppv_price           =  $request->amount/100;
+            //     $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            //     $admin_commssion     =  $ppv_price - $moderator_commssion;
+            //     $moderator_id        =  $moderators_id;
+            // }
+            // else
+            // {
+            //     $total_amount = $video->ppv_price;
+            //     $title =  $video->title;
+            //     $commssion  =  VideoCommission::where('type','CPP')->first();
+            //     $percentage = null; 
+            //     $ppv_price = $video->ppv_price;
+            //     $admin_commssion =  null;
+            //     $moderator_commssion = null;
+            //     $moderator_id = null;
+            // }
             
             $purchase = PpvPurchase::find($request->PpvPurchase_id);
             $purchase->user_id = $request->user_id;
             $purchase->video_id = $request->video_id;
-            $purchase->total_amount = $request->amount / 100;
-            $purchase->admin_commssion = $admin_commssion;
-            $purchase->moderator_commssion = $moderator_commssion;
+            $purchase->total_amount = $decryptedAmount / 100;
+            // $purchase->admin_commssion = $admin_commssion;
+            // $purchase->moderator_commssion = $moderator_commssion;
+            // $purchase->moderator_id = $moderator_id;
+            // $purchase->ppv_plan = $request->ppv_plan;
             $purchase->status = $payment_status;
             $purchase->to_time = $to_time;
-            $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
-            $purchase->ppv_plan = $request->ppv_plan;
             $purchase->payment_id = $request->rzp_paymentid;
             $purchase->payment_gateway = 'razorpay';
             $purchase->save();
@@ -486,7 +535,7 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
@@ -604,7 +653,10 @@ class RazorpayController extends Controller
     }
     }
 
-    public function RazorpayLiveRent(Request $request,$live_id,$amount){
+    public function RazorpayLiveRent(Request $request,$live_id){
+
+        $video = LiveStream::where('id','=',$live_id)->first();
+        $amount = $video->ppv_price;
 
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
@@ -628,13 +680,49 @@ class RazorpayController extends Controller
         $PpvPurchase_id = $PpvPurchase->id;
         $livepurchase_id = $livepurchase->id;
 
+        if(!empty($video)){
+        $moderators_id = $video->user_id;
+        }
+
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
+            $total_amount        =  $video->ppv_price;
+            $title               =  $video->title;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $ppv_price           =  $video->ppv_price;
+            $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount   = $video->ppv_price;
+            $title          =  $video->title;
+            $commssion      =  VideoCommission::where('type','CPP')->first();
+            $percentage     = null; 
+            $ppv_price       = $video->ppv_price;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+        $purchase = PpvPurchase::find($PpvPurchase_id );
+        $purchase->total_amount = $amount;
+        $purchase->moderator_id = $moderators_id;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->save();
         $recept_id = Str::random(10);
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
             'notes'           => [
@@ -654,7 +742,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'live_id'        =>  $request->live_id,
             'user_id'        =>  Auth::user()->id ,
@@ -697,48 +785,48 @@ class RazorpayController extends Controller
             } 
             $payment_status = $payment->status; 
 
-            $video = LiveStream::where('id','=',$request->live_id)->first();
+            // $video = LiveStream::where('id','=',$request->live_id)->first();
 
-            if(!empty($video)){
-            $moderators_id = $video->user_id;
-            }
+            // if(!empty($video)){
+            // $moderators_id = $video->user_id;
+            // }
 
-            if(!empty($moderators_id)){
-                $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                if ($moderator) {
-                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-                } else {
-                    $percentage = 0;
-                }
-                $total_amount        =  $video->ppv_price;
-                $title               =  $video->title;
-                $commssion           =  VideoCommission::where('type','CPP')->first();
-                $ppv_price           =  $video->ppv_price;
-                $moderator_commssion =  ($percentage/100) * $ppv_price ;
-                $admin_commssion     =  $ppv_price - $moderator_commssion;
-                $moderator_id        =  $moderators_id;
-            }
-            else
-            {
-                $total_amount   = $video->ppv_price;
-                $title          =  $video->title;
-                $commssion      =  VideoCommission::where('type','CPP')->first();
-                $percentage     = null; 
-                $ppv_price       = $video->ppv_price;
-                $admin_commssion =  null;
-                $moderator_commssion = null;
-                $moderator_id = null;
-            }
+            // if(!empty($moderators_id)){
+            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            //     if ($moderator) {
+            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            //     } else {
+            //         $percentage = 0;
+            //     }
+            //     $total_amount        =  $video->ppv_price;
+            //     $title               =  $video->title;
+            //     $commssion           =  VideoCommission::where('type','CPP')->first();
+            //     $ppv_price           =  $video->ppv_price;
+            //     $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            //     $admin_commssion     =  $ppv_price - $moderator_commssion;
+            //     $moderator_id        =  $moderators_id;
+            // }
+            // else
+            // {
+            //     $total_amount   = $video->ppv_price;
+            //     $title          =  $video->title;
+            //     $commssion      =  VideoCommission::where('type','CPP')->first();
+            //     $percentage     = null; 
+            //     $ppv_price       = $video->ppv_price;
+            //     $admin_commssion =  null;
+            //     $moderator_commssion = null;
+            //     $moderator_id = null;
+            // }
 
             $purchase = PpvPurchase::find($request->PpvPurchase_id);
             $purchase->user_id      = $request->user_id ;
             $purchase->live_id     = $request->live_id ;
             $purchase->total_amount = $request->get('amount')/100 ;
-            $purchase->admin_commssion = $admin_commssion;
-            $purchase->moderator_commssion = $moderator_commssion;
+            // $purchase->admin_commssion = $admin_commssion;
+            // $purchase->moderator_commssion = $moderator_commssion;
+            // $purchase->moderator_id = $moderator_id;
             $purchase->status = $payment_status;
             $purchase->to_time = $to_time;
-            $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->payment_id = $request->rzp_paymentid;
             $purchase->payment_gateway= 'razorpay';
@@ -857,6 +945,7 @@ class RazorpayController extends Controller
         $purchase->total_amount = $validatedData['amount'] / 100;
         $purchase->admin_commssion = $admin_commssion;
         $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->moderator_id = $moderators_id;
         $purchase->status = 'failed';
         $purchase->payment_failure_reason = $validatedData['error_description'];
         $purchase->platform = 'website';
@@ -1123,9 +1212,28 @@ class RazorpayController extends Controller
 
 
     
-    public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id,$amount){
-
-       
+    public function RazorpayVideoRent_PPV(Request $request,$ppv_plan,$video_id){
+        $video = Video::where('id','=',$video_id)->first();
+        switch ($ppv_plan) {
+            case '240p':
+                $amount = $video->ppv_price_240p;
+                break;
+            case '360p':
+                $amount = $video->ppv_price_360p;
+                break;
+            case '480p':
+                $amount = $video->ppv_price_480p;
+                break;
+            case '720p':
+                $amount = $video->ppv_price_720p;
+                break;
+            case '1080p':
+                $amount = $video->ppv_price_1080p;
+                break;
+            default:
+                $amount = $video->ppv_price;
+                
+        }
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
             'video_id'     => $video_id,
@@ -1136,7 +1244,53 @@ class RazorpayController extends Controller
             'status' => 'hold' ,
         ]);
 
+        $setting = Setting::first();  
         $PpvPurchase_id = $PpvPurchase->id;
+
+        if(!empty($video)){
+            $moderators_id = $video->user_id;
+        }
+        $commission_btn = $setting->CPP_Commission_Status;
+        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
+        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+        $commission_percentage_value = $video->CPP_commission_percentage;
+        if($commission_btn === 0){
+            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
+        }
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
+            $total_amount        = $video->ppv_price;
+            $title               =  $video->title;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $ppv_price           =  $amount;
+            $moderator_commssion =  ($ppv_price * $commission_percentage_value) / 100;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount = $video->ppv_price;
+            $title =  $video->title;
+            $commssion  =  VideoCommission::where('type','CPP')->first();
+            $percentage = null; 
+            $ppv_price = $video->ppv_price;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+
+        $purchase = PpvPurchase::find($PpvPurchase_id );
+        $purchase->total_amount = $amount;
+        $purchase->moderator_id = $moderators_id;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->ppv_plan = $request->ppv_plan;
+        $purchase->save();
 
         $recept_id = Str::random(10);
 
@@ -1144,26 +1298,27 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
         ];
         
         $razorpayOrder = $api->order->create($orderData);
 
-        $Video_slug = Video::where('id',$request->video_id)->pluck('slug')->first();
-
+        $plainAmount = $amount * 100;
+        $encryptedAmount = encrypt($plainAmount);
         $response=array(
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
-            'orderId'        =>  $razorpayOrder['id'],
+            'amount'         =>  $plainAmount ,// for Razorpay JS
+            'encrypted_amount'=>  $encryptedAmount , // for form/backend
+            'orderId'        =>  $razorpayOrder['id'], 
             'video_id'       =>  $request->video_id,
             'user_id'        =>  Auth::user()->id ,
             'description'    =>   null,
             'address'        =>   null ,
-            'Video_slug'     => $Video_slug ,
+            'Video_slug'     =>  $video->slug ,
             'ppv_plan'       => $ppv_plan ,
             'PpvPurchase_id' => $PpvPurchase_id ,
         );
@@ -1173,7 +1328,10 @@ class RazorpayController extends Controller
 
 
     
-    public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id,$amount){
+    public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id){
+
+        $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
+        $amount = $SeriesSeason->ppv_price;
 
         $PpvPurchase = PpvPurchase::create([
             'user_id'      => Auth::user()->id,
@@ -1188,13 +1346,57 @@ class RazorpayController extends Controller
 
         $PpvPurchase_id = $PpvPurchase->id;
 
+        $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
+        $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
+        // if(!empty($SeriesSeason)){
+        // $moderators_id = Auth::User()->id;
+        // }
+
+        $Series = Series::where('id',$series_id)->first();
+        if(!empty($Series)){
+            $moderators_id = $Series->user_id;
+        }
+        
+        if(!empty($moderators_id)){
+            $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            if ($moderator) {
+                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            } else {
+                $percentage = 0;
+            }
+            $total_amount        =  $SeriesSeason->ppv_price;
+            $title               =  $SeriesSeason->series_seasons_name;
+            $commssion           =  VideoCommission::where('type','CPP')->first();
+            $ppv_price           =  $SeriesSeason->ppv_price;
+            $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            $admin_commssion     =  $ppv_price - $moderator_commssion;
+            $moderator_id        =  $moderators_id;
+        }
+        else
+        {
+            $total_amount = $amount;
+            $title =  $SeriesSeason->title;
+            $commssion  =  VideoCommission::where('type','CPP')->first();
+            $percentage = null; 
+            $ppv_price = $amount;
+            $admin_commssion =  null;
+            $moderator_commssion = null;
+            $moderator_id = null;
+        }
+
+        $purchase = PpvPurchase::find($PpvPurchase_id );
+        $purchase->total_amount = $amount;
+        $purchase->moderator_id = $moderators_id;
+        $purchase->admin_commssion = $admin_commssion;
+        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->save();
         $recept_id = Str::random(10);
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'notes'           => [
                 'series_id' => $SeriesSeason_id,
@@ -1214,7 +1416,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'SeriesSeason_id'=>  $request->SeriesSeason_id,
             'user_id'        =>  Auth::user()->id ,
@@ -1270,47 +1472,47 @@ class RazorpayController extends Controller
 
             $Series = Series::where('id',$series_id)->first();
 
-            if(!empty($Series) && $Series->uploaded_by == 'CPP'){
-                $moderators_id = $Series->user_id;
-            }
+            // if(!empty($Series) && $Series->uploaded_by == 'CPP'){
+            //     $moderators_id = $Series->user_id;
+            // }
             
-            if(!empty($moderators_id)){
-                $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-                if ($moderator) {
-                    $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-                } else {
-                    $percentage = 0;
-                }
-                $total_amount        =  $video->ppv_price;
-                $title               =  $video->title;
-                $commssion           =  VideoCommission::where('type','CPP')->first();
-                $ppv_price           =  $video->ppv_price;
-                $moderator_commssion =  ($percentage/100) * $ppv_price ;
-                $admin_commssion     =  $ppv_price - $moderator_commssion;
-                $moderator_id        =  $moderators_id;
-            }
-            else
-            {
-                $total_amount = $request->amount;
-                $title =  $SeriesSeason->title;
-                $commssion  =  VideoCommission::where('type','CPP')->first();
-                $percentage = null; 
-                $ppv_price = $request->amount;
-                $admin_commssion =  null;
-                $moderator_commssion = null;
-                $moderator_id = null;
-            }
+            // if(!empty($moderators_id)){
+            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
+            //     if ($moderator) {
+            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
+            //     } else {
+            //         $percentage = 0;
+            //     }
+            //     $total_amount        =  $SeriesSeason->ppv_price;
+            //     $title               =  $SeriesSeason->series_seasons_name;
+            //     $commssion           =  VideoCommission::where('type','CPP')->first();
+            //     $ppv_price           =  $SeriesSeason->ppv_price;
+            //     $moderator_commssion =  ($percentage/100) * $ppv_price ;
+            //     $admin_commssion     =  $ppv_price - $moderator_commssion;
+            //     $moderator_id        =  $moderators_id;
+            // }
+            // else
+            // {
+            //     $total_amount = $request->amount;
+            //     $title =  $SeriesSeason->title;
+            //     $commssion  =  VideoCommission::where('type','CPP')->first();
+            //     $percentage = null; 
+            //     $ppv_price = $request->amount;
+            //     $admin_commssion =  null;
+            //     $moderator_commssion = null;
+            //     $moderator_id = null;
+            // }
 
             $purchase = new PpvPurchase;
             $purchase->user_id      = $request->user_id ;
             $purchase->season_id     = $request->SeriesSeason_id ;
             $purchase->series_id    = $series_id ;
             $purchase->total_amount = $request->amount /100 ;
-            $purchase->admin_commssion = $admin_commssion;
-            $purchase->moderator_commssion = $moderator_commssion;
+            // $purchase->admin_commssion = $admin_commssion;
+            // $purchase->moderator_commssion = $moderator_commssion;
             $purchase->status =  $payment_status;
             $purchase->to_time = $to_time;
-            $purchase->moderator_id = $moderator_id;
+            // $purchase->moderator_id = $moderator_id;
             $purchase->platform = 'website';
             $purchase->ppv_plan = $request->ppv_plan;
             $purchase->payment_id = $request->rzp_paymentid;
@@ -1460,7 +1662,30 @@ class RazorpayController extends Controller
 
     }
 
-    public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id,$amount){
+    public function RazorpaySeriesSeasonRent_PPV(Request $request,$ppv_plan,$SeriesSeason_id){
+
+        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
+
+        switch ($ppv_plan) {
+            case '240p':
+                $amount = $SeriesSeason->ppv_price_240p;
+                break;
+            case '360p':
+                $amount = $SeriesSeason->ppv_price_360p;
+                break;
+            case '480p':
+                $amount = $SeriesSeason->ppv_price_480p;
+                break;
+            case '720p':
+                $amount = $SeriesSeason->ppv_price_720p;
+                break;
+            case '1080p':
+                $amount = $SeriesSeason->ppv_price_1080p;
+                break;
+            default:
+                $amount = $SeriesSeason->ppv_price;
+                
+        }
 
         PayRequestTransaction::create([
             'user_id'     => Auth::user()->id,
@@ -1481,14 +1706,13 @@ class RazorpayController extends Controller
 
         $orderData = [
             'receipt'         => $recept_id,
-            'amount'          => $request->amount * 100, 
+            'amount'          => $amount * 100, 
             'currency'        => 'INR',
             'payment_capture' => 1 ,
         ];
         
         $razorpayOrder = $api->order->create($orderData);
 
-        $SeriesSeason = SeriesSeason::where('id',$SeriesSeason_id)->first();
         $series_id = SeriesSeason::where('id',$SeriesSeason_id)->pluck('series_id')->first();
         $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
 
@@ -1497,7 +1721,7 @@ class RazorpayController extends Controller
             'razorpaykeyId'  =>   $this->razorpaykeyId,
             'name'           =>   Auth::user()->name ? Auth::user()->name : null,
             'currency'       =>  'INR',
-            'amount'         =>  $request->amount * 100 ,
+            'amount'         =>  $amount * 100 ,
             'orderId'        =>  $razorpayOrder['id'],
             'SeriesSeason_id'=>  $request->SeriesSeason_id,
             'user_id'        =>  Auth::user()->id ,

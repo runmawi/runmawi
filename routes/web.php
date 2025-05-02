@@ -2512,22 +2512,22 @@ Route::group(['middleware' => ['RazorpayMiddleware']], function () {
     Route::get('/RazorpaySubscriptionStore', 'RazorpayController@RazorpaySubscriptionStore')->name('RazorpaySubscriptionStore');
     Route::get('/RazorpaySubscriptionUpdate/{planId}', 'RazorpayController@RazorpaySubscriptionUpdate')->name('RazorpaySubscriptionUpdate');
 
-    Route::get('/RazorpayVideoRent/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
+    Route::get('/RazorpayVideoRent/{video_id}', 'RazorpayController@RazorpayVideoRent')->name('RazorpayVideoRent');
     Route::POST('/RazorpayVideoRent_Payment', 'RazorpayController@RazorpayVideoRent_Payment')->name('RazorpayVideoRent_Payment');
     Route::post('/RazorpayVideoRent_Paymentfailure', 'RazorpayController@RazorpayVideoRent_Paymentfailure')->name('RazorpayVideoRent_Paymentfailure');
 
-    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}/{amount}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
+    Route::get('/RazorpayVideoRent_PPV/{ppv_plan}/{video_id}', 'RazorpayController@RazorpayVideoRent_PPV')->name('RazorpayVideoRent_PPV');
 
-    Route::get('/RazorpayLiveRent/{live_id}/{amount}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
+    Route::get('/RazorpayLiveRent/{live_id}', 'RazorpayController@RazorpayLiveRent')->name('RazorpayLiveRent');
     Route::POST('/RazorpayLiveRent_Payment', 'RazorpayController@RazorpayLiveRent_Payment')->name('RazorpayLiveRent_Payment');
     Route::post('/RazorpayLiveRent_Paymentfailure', 'RazorpayController@RazorpayLiveRent_Paymentfailure')->name('RazorpayLiveRent_Paymentfailure');
 
 
-    Route::get('/RazorpaySeriesSeasonRent/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent')->name('RazorpaySeriesSeasonRent');
+    Route::get('/RazorpaySeriesSeasonRent/{SeriesSeason_id}', 'RazorpayController@RazorpaySeriesSeasonRent')->name('RazorpaySeriesSeasonRent');
     Route::POST('/RazorpaySeriesSeasonRent_Payment', 'RazorpayController@RazorpaySeriesSeasonRent_Payment')->name('RazorpaySeriesSeasonRent_Payment');
     Route::POST('/RazorpaySeriesSeasonRent_Paymentfailure', 'RazorpayController@RazorpaySeriesSeasonRent_Paymentfailure')->name('RazorpaySeriesSeasonRent_Paymentfailure');
 
-    Route::get('/RazorpaySeriesSeasonRent_PPV/{ppv_plan}/{SeriesSeason_id}/{amount}', 'RazorpayController@RazorpaySeriesSeasonRent_PPV')->name('RazorpaySeriesSeasonRent_PPV');
+    Route::get('/RazorpaySeriesSeasonRent_PPV/{ppv_plan}/{SeriesSeason_id}', 'RazorpayController@RazorpaySeriesSeasonRent_PPV')->name('RazorpaySeriesSeasonRent_PPV');
 
 
     // Route::get('/RazorpayModeratorPayouts/{user_id}/{amount}', 'RazorpayController@RazorpayModeratorPayouts')->name('RazorpayModeratorPayouts');
@@ -3092,6 +3092,7 @@ Route::post('getLatestSeriesImg','FrontEndQueryController@getLatestSeriesImg')->
 Route::post('getLiveModal','FrontEndQueryController@getLiveModal')->name('getLiveModal');
 Route::post('getartistSeriesImg','FrontEndQueryController@getartistSeriesImg')->name('getartistSeriesImg');
 Route::post('getSeriesArtistModalImg','FrontEndQueryController@getSeriesArtistModalImg')->name('getSeriesArtistModalImg');
+Route::post('loadMoreNetworksSections', 'FrontEndQueryController@loadMoreNetworkSection')->name('loadMoreNetworksSections');
 
 Route::get('/series/image/{series_id}', function ($series_id) {
     $image = Series::where('id', $series_id)->pluck('image')->first();
@@ -3115,3 +3116,5 @@ Route::get('/header_menus','HomeController@header_menus')->name('header_menus');
 Route::get('/fetch-menus', 'HomeController@fetchMenus');
 Route::get('/admin/livestream/search', 'AdminLiveStreamController@search' )->name('admin.livestream.search');
 Route::get('/send-email', 'HomeController@sendEmail');
+Route::get('/logs', 'HomeController@Storagelogs');
+Route::get('/footer-links', 'HomeController@getFooterLinks');
