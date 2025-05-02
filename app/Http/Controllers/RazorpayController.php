@@ -441,7 +441,7 @@ class RazorpayController extends Controller
 
     public function RazorpayVideoRent_Payment(Request $request)
     {
-        
+       $decryptedAmount = decrypt($request->amount);
        $setting = Setting::first();  
        $ppv_hours = $setting->ppv_hours;
        $d = new \DateTime('now');
@@ -535,7 +535,7 @@ class RazorpayController extends Controller
 
         } catch (\Exception $e) {
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             $respond=array(
                 'status'  => 'false',
             );
