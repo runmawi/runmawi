@@ -3427,8 +3427,8 @@ public function verifyandupdatepassword(Request $request)
           return $item;
         });
 
-      $livestreamSlug = LiveStream::where('user_id','=',$liveid)->pluck('slug')->first();
-      $livestreamAccess = LiveStream::where('user_id','=',$liveid)->pluck('access')->first();
+      $livestreamSlug = LiveStream::where('id','=',$liveid)->pluck('slug')->first();
+      $livestreamAccess = LiveStream::where('id','=',$liveid)->pluck('access')->first();
 
       // Reccuring Program 
 
