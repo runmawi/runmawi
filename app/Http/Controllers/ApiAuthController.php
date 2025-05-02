@@ -6973,6 +6973,37 @@ public function checkEmailExists(Request $request)
       }
     }
 
+    if($login_type == 'apple'){ //Google
+      $check_exists = User::where('email', $email)->count();
+      if($check_exists > 0) {//Login
+        $user_details = User::where('email', $email)->get();
+        $response = array(
+          'status'      =>'true',
+          'message'     =>'Login Success',
+          'user_details'=>$user_details
+        );
+      }else{//Signup
+        $data = array(
+          'username' =>$username,
+          'email'    =>$email,
+          'user_type'=>$login_type,
+          'avatar'   =>$name,
+          'active'   => 1 ,
+          'role'     =>'registered',
+          'password' =>'null'
+        );
+
+        $user = new User;
+        $user->insert($data);
+        $user_details = User::where('username', '=', $username)->get();
+        $response = array(
+          'status'       =>'true',
+          'message'      =>'Account Created ',
+          'user_details' => $user_details
+        );
+      }
+    }
+
     if($username == null || $login_type == null){
       $response = array(
           'status'       =>'false',
