@@ -59,7 +59,7 @@ rzp1.on('payment.failed', function (response) {
         body: JSON.stringify({
             user_id: "{{ $response['user_id'] }}",
             video_id: "{{ $response['video_id'] }}",
-            amount: "{{ $response['amount'] }}",
+            amount: "{{ $response['encrypted_amount'] }}",
             PpvPurchase_id: "{{ $response['PpvPurchase_id'] }}",
             order_id: response.error.metadata.order_id,
             payment_id: response.error.metadata.payment_id,
@@ -93,7 +93,7 @@ document.getElementById('rzp-button1').onclick = function(e){
 
     <input type="text"  name="user_id"   value= {{ $response['user_id'] }} />
     <input type="text"  name="video_id"  value= {{ $response['video_id'] }} />
-    <input type="text"  name="amount"    value= {{ $response['amount'] }} />
+    <input type="text"  name="amount"    value= {{ $response['encrypted_amount'] }} /> <!-- encrypted -->
     <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
 
     <input type="text"  name="PpvPurchase_id"  value= {{ $response['PpvPurchase_id'] }} />
