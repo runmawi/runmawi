@@ -18,3 +18,8 @@
 /ads.txt 
 /robots.txt 
 /public/deletedPDF/*
+/vendor
+/storage/*.key
+/storage/app/public
+/storage/framework/cache/data
+
