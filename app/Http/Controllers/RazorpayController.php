@@ -39,6 +39,9 @@ use AmrShawky\LaravelCurrency\Facade\Currency as PaymentCurreny;
 
 class RazorpayController extends Controller
 {
+    protected $razorpaykeyId;
+    protected $razorpaykeysecret;
+    protected $Theme;
 
     public function __construct()
     {
@@ -2030,4 +2033,495 @@ class RazorpayController extends Controller
         }
     }
 
+    /**
+     * Handle Razorpay webhook events
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function handleWebhook(Request $request)
+    {
+        \Log::info('Razorpay Webhook Received', ['payload' => $request->all()]);
+
+        // Verify the webhook signature
+        $webhookSignature = $request->header('X-Razorpay-Signature');
+        $webhookBody = $request->getContent();
+
+        if (!$this->verifyWebhookSignature($webhookBody, $webhookSignature)) {
+            \Log::error('Razorpay Webhook: Invalid signature');
+            return response()->json(['error' => 'Invalid signature'], 400);
+        }
+
+        $payload = json_decode($webhookBody, true);
+        $event = $payload['event'] ?? null;
+
+        if (!$event) {
+            \Log::error('Razorpay Webhook: No event specified');
+            return response()->json(['error' => 'No event specified'], 400);
+        }
+
+        \Log::info('Razorpay Webhook: Processing event', ['event' => $event]);
+
+        try {
+            // Handle different event types
+            switch ($event) {
+                case 'payment.authorized':
+                    $this->handlePaymentAuthorized($payload);
+                    break;
+                case 'payment.captured':
+                    $this->handlePaymentCaptured($payload);
+                    break;
+                case 'payment.failed':
+                    $this->handlePaymentFailed($payload);
+                    break;
+                case 'subscription.authenticated':
+                    $this->handleSubscriptionAuthenticated($payload);
+                    break;
+                case 'subscription.activated':
+                    $this->handleSubscriptionActivated($payload);
+                    break;
+                case 'subscription.charged':
+                    $this->handleSubscriptionCharged($payload);
+                    break;
+                case 'subscription.cancelled':
+                    $this->handleSubscriptionCancelled($payload);
+                    break;
+                default:
+                    \Log::info('Razorpay Webhook: Unhandled event', ['event' => $event]);
+                    break;
+            }
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Razorpay Webhook: Error processing event', [
+                'event' => $event,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Error processing webhook'], 500);
+        }
+    }
+
+    /**
+     * Verify webhook signature
+     *
+     * @param string $webhookBody
+     * @param string $webhookSignature
+     * @return bool
+     */
+    private function verifyWebhookSignature($webhookBody, $webhookSignature)
+    {
+        if (empty($webhookSignature)) {
+            return false;
+        }
+
+        $PaymentSetting = \App\PaymentSetting::where('payment_type', 'Razorpay')->first();
+        $webhookSecret = $PaymentSetting->webhook_secret ?? env('RAZORPAY_WEBHOOK_SECRET');
+
+        if (empty($webhookSecret)) {
+            \Log::error('Razorpay Webhook: Webhook secret not configured');
+            return false;
+        }
+
+        $expectedSignature = hash_hmac('sha256', $webhookBody, $webhookSecret);
+        return hash_equals($expectedSignature, $webhookSignature);
+    }
+
+    private function handlePaymentAuthorized($payload)
+    {
+        $payment = $payload['payload']['payment']['entity'] ?? null;
+        if (!$payment) {
+            \Log::error('Razorpay Webhook: Invalid payment data in payload');
+            return;
+        }
+
+        DB::beginTransaction();
+        try {
+            // Log the webhook event
+            DB::table('payment_webhook')->insert([
+                'order_id' => $payment['order_id'] ?? null,
+                'payment_id' => $payment['id'] ?? null,
+                'amount' => ($payment['amount'] ?? 0) / 100, // Convert from paisa to rupees
+                'status' => 'AUTHORIZED',
+                'event_type' => 'payment.authorized',
+                'payload' => json_encode($payload),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Check if there's already a purchase record
+            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
+                ->orWhere('payment_id', $payment['order_id'])
+                ->first();
+
+            if ($purchase) {
+                // Update the existing purchase to 'pending'
+                $purchase->status = 'pending';
+                $purchase->payment_id = $payment['id']; // Ensure payment ID is set
+                $purchase->save();
+
+                \Log::info('Razorpay Webhook: Purchase marked as pending', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id
+                ]);
+            } else {
+                // If no purchase record exists yet, check if we need to create one based on notes
+                $notes = $payment['notes'] ?? [];
+
+                if (isset($notes['video_id']) && isset($notes['user_id'])) {
+                    // Create a pending purchase record
+                    \App\PpvPurchase::create([
+                        'user_id' => $notes['user_id'],
+                        'video_id' => $notes['video_id'],
+                        'payment_id' => $payment['id'],
+                        'total_amount' => ($payment['amount'] ?? 0) / 100,
+                        'status' => 'pending',
+                        'payment_gateway' => 'razorpay',
+                        'platform' => 'website',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+
+                    \Log::info('Razorpay Webhook: Created pending purchase record', [
+                        'payment_id' => $payment['id'],
+                        'user_id' => $notes['user_id'],
+                        'video_id' => $notes['video_id']
+                    ]);
+                }
+            }
+
+            // Try to capture the payment if it's not already captured
+            try {
+                $api = new \Razorpay\Api\Api($this->razorpaykeyId, $this->razorpaykeysecret);
+                $razorpayPayment = $api->payment->fetch($payment['id']);
+
+                if ($razorpayPayment->status === 'authorized') {
+                    $razorpayPayment->capture(['amount' => $razorpayPayment->amount]);
+                    \Log::info('Razorpay Webhook: Payment captured from authorized webhook', [
+                        'payment_id' => $payment['id']
+                    ]);
+                }
+            } catch (\Exception $captureError) {
+                // Just log the error, don't throw - we'll let Razorpay retry
+                \Log::warning('Razorpay Webhook: Could not capture payment', [
+                    'payment_id' => $payment['id'],
+                    'error' => $captureError->getMessage()
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Razorpay Webhook: Error processing authorized payment', [
+                'error' => $e->getMessage(),
+                'payment_id' => $payment['id'] ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    private function handlePaymentCaptured($payload)
+    {
+        $payment = $payload['payload']['payment']['entity'] ?? null;
+        if (!$payment) {
+            \Log::error('Razorpay Webhook: Invalid payment data in payload');
+            return;
+        }
+
+        DB::beginTransaction();
+        try {
+            // Log the webhook event
+            DB::table('payment_webhook')->insert([
+                'order_id' => $payment['order_id'] ?? null,
+                'payment_id' => $payment['id'] ?? null,
+                'amount' => ($payment['amount'] ?? 0) / 100, // Convert from paisa to rupees
+                'status' => 'TXN_SUCCESS',
+                'event_type' => 'payment.captured',
+                'payload' => json_encode($payload),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Get payment type from notes
+            $notes = $payment['notes'] ?? [];
+
+            // Create base request data
+            $requestData = [
+                'rzp_paymentid' => $payment['id'],
+                'rzp_orderid' => $payment['order_id'],
+                'rzp_signature' => $payload['payload']['payment']['signature'] ?? null,
+                'amount' => $payment['amount']
+            ];
+
+            // Add specific IDs based on payment type
+            if (isset($notes['video_id'])) {
+                $requestData['video_id'] = $notes['video_id'];
+                $requestData['user_id'] = $notes['user_id'] ?? null;
+                $requestData['ppv_plan'] = $notes['ppv_plan'] ?? null;
+                $requestData['PpvPurchase_id'] = $notes['PpvPurchase_id'] ?? null;
+                $this->RazorpayVideoRent_PPV(new \Illuminate\Http\Request($requestData));
+                \Log::info('Razorpay Webhook: Video rent payment processed', ['payment_id' => $payment['id']]);
+            } elseif (isset($notes['series_id']) && isset($notes['season_id'])) {
+                $requestData['series_id'] = $notes['series_id'];
+                $requestData['SeriesSeason_id'] = $notes['season_id'];
+                $requestData['user_id'] = $notes['user_id'] ?? null;
+                $this->RazorpaySeriesSeasonRent_PPV(new \Illuminate\Http\Request($requestData));
+                \Log::info('Razorpay Webhook: Series season rent payment processed', ['payment_id' => $payment['id']]);
+            } elseif (isset($notes['live_id'])) {
+                $requestData['live_id'] = $notes['live_id'];
+                $requestData['user_id'] = $notes['user_id'] ?? null;
+                $this->RazorpayLiveRent_Payment(new \Illuminate\Http\Request($requestData));
+                \Log::info('Razorpay Webhook: Live event payment processed', ['payment_id' => $payment['id']]);
+            } elseif (isset($notes['subscription_id'])) {
+                $requestData['subscription_id'] = $notes['subscription_id'];
+                $requestData['user_id'] = $notes['user_id'] ?? null;
+                $this->RazorpaySubscriptionStore(new \Illuminate\Http\Request($requestData));
+                \Log::info('Razorpay Webhook: Subscription payment processed', ['payment_id' => $payment['id']]);
+            } else {
+                // If no specific type is found, try to find and update any purchase with this payment ID
+                $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
+                    ->orWhere('payment_id', $payment['order_id'])
+                    ->first();
+
+                if ($purchase) {
+                    $purchase->status = 'captured';
+                    $purchase->save();
+                    \Log::info('Razorpay Webhook: Generic purchase updated', [
+                        'payment_id' => $payment['id'],
+                        'purchase_id' => $purchase->id
+                    ]);
+                } else {
+                    \Log::warning('Razorpay Webhook: Unknown payment type', [
+                        'payment_id' => $payment['id'],
+                        'notes' => $notes
+                    ]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Razorpay Webhook: Error processing payment', [
+                'error' => $e->getMessage(),
+                'payment_id' => $payment['id'] ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    private function handlePaymentFailed($payload)
+    {
+        $payment = $payload['payload']['payment']['entity'] ?? null;
+        if (!$payment) {
+            \Log::error('Razorpay Webhook: Invalid payment data in payload');
+            return;
+        }
+
+        DB::beginTransaction();
+        try {
+            // Log the webhook event
+            DB::table('payment_webhook')->insert([
+                'order_id' => $payment['order_id'] ?? null,
+                'payment_id' => $payment['id'] ?? null,
+                'amount' => ($payment['amount'] ?? 0) / 100, // Convert from paisa to rupees
+                'status' => 'TXN_FAILURE',
+                'event_type' => 'payment.failed',
+                'payload' => json_encode($payload),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Check if there's already a purchase record
+            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
+                ->orWhere('payment_id', $payment['order_id'])
+                ->first();
+            
+            if ($purchase) {
+                // Update the existing purchase to 'failed'
+                $purchase->status = 'failed';
+                $purchase->payment_failure_reason = $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error';
+                $purchase->save();
+                
+                \Log::info('Razorpay Webhook: Purchase marked as failed', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id,
+                    'reason' => $purchase->payment_failure_reason
+                ]);
+            } else {
+                // If no purchase record exists yet, check if we need to create one based on notes
+                $notes = $payment['notes'] ?? [];
+                
+                if (isset($notes['video_id']) && isset($notes['user_id'])) {
+                    // Create a failed purchase record for tracking purposes
+                    \App\PpvPurchase::create([
+                        'user_id' => $notes['user_id'],
+                        'video_id' => $notes['video_id'],
+                        'payment_id' => $payment['id'],
+                        'total_amount' => ($payment['amount'] ?? 0) / 100,
+                        'status' => 'failed',
+                        'payment_failure_reason' => $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error',
+                        'payment_gateway' => 'razorpay',
+                        'platform' => 'website',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    
+                    \Log::info('Razorpay Webhook: Created failed purchase record', [
+                        'payment_id' => $payment['id'],
+                        'user_id' => $notes['user_id'],
+                        'video_id' => $notes['video_id'],
+                        'reason' => $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error'
+                    ]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Razorpay Webhook: Error processing failed payment', [
+                'error' => $e->getMessage(),
+                'payment_id' => $payment['id'] ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    /**
+     * Handle subscription.authenticated event
+     *
+     * @param array $payload
+     * @return void
+     */
+    private function handleSubscriptionAuthenticated($payload)
+    {
+        $subscription = $payload['payload']['subscription']['entity'] ?? null;
+        if (!$subscription) {
+            \Log::error('Razorpay Webhook: Invalid subscription data in payload');
+            return;
+        }
+
+        // Log the webhook event
+        DB::table('payment_webhook')->insert([
+            'order_id' => null,
+            'payment_id' => null,
+            'subscription_id' => $subscription['id'] ?? null,
+            'amount' => 0, // No amount at this stage
+            'status' => 'SUBSCRIPTION_AUTHENTICATED',
+            'event_type' => 'subscription.authenticated',
+            'payload' => json_encode($payload),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        \Log::info('Razorpay Webhook: Subscription authenticated', ['subscription_id' => $subscription['id'] ?? null]);
+    }
+
+    /**
+     * Handle subscription.activated event
+     *
+     * @param array $payload
+     * @return void
+     */
+    private function handleSubscriptionActivated($payload)
+    {
+        $subscription = $payload['payload']['subscription']['entity'] ?? null;
+        if (!$subscription) {
+            \Log::error('Razorpay Webhook: Invalid subscription data in payload');
+            return;
+        }
+
+        // Log the webhook event
+        DB::table('payment_webhook')->insert([
+            'order_id' => null,
+            'payment_id' => null,
+            'subscription_id' => $subscription['id'] ?? null,
+            'amount' => 0, // No amount at this stage
+            'status' => 'SUBSCRIPTION_ACTIVATED',
+            'event_type' => 'subscription.activated',
+            'payload' => json_encode($payload),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        \Log::info('Razorpay Webhook: Subscription activated', ['subscription_id' => $subscription['id'] ?? null]);
+    }
+
+    /**
+     * Handle subscription.charged event
+     *
+     * @param array $payload
+     * @return void
+     */
+    private function handleSubscriptionCharged($payload)
+    {
+        $subscription = $payload['payload']['subscription']['entity'] ?? null;
+        $payment = $payload['payload']['payment']['entity'] ?? null;
+        
+        if (!$subscription || !$payment) {
+            \Log::error('Razorpay Webhook: Invalid subscription or payment data in payload');
+            return;
+        }
+
+        // Log the webhook event
+        DB::table('payment_webhook')->insert([
+            'order_id' => null,
+            'payment_id' => $payment['id'] ?? null,
+            'subscription_id' => $subscription['id'] ?? null,
+            'amount' => ($payment['amount'] ?? 0) / 100, // Convert from paisa to rupees
+            'status' => 'TXN_SUCCESS',
+            'event_type' => 'subscription.charged',
+            'payload' => json_encode($payload),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Update subscription status in our database
+        $subscriptionRecord = Subscription::where('razorpay_subscription_id', $subscription['id'])->first();
+        if ($subscriptionRecord) {
+            $subscriptionRecord->stripe_status = 'active';
+            $subscriptionRecord->save();
+        }
+
+        \Log::info('Razorpay Webhook: Subscription charged', [
+            'subscription_id' => $subscription['id'] ?? null,
+            'payment_id' => $payment['id'] ?? null
+        ]);
+    }
+
+    /**
+     * Handle subscription.cancelled event
+     *
+     * @param array $payload
+     * @return void
+     */
+    private function handleSubscriptionCancelled($payload)
+    {
+        $subscription = $payload['payload']['subscription']['entity'] ?? null;
+        if (!$subscription) {
+            \Log::error('Razorpay Webhook: Invalid subscription data in payload');
+            return;
+        }
+
+        // Log the webhook event
+        DB::table('payment_webhook')->insert([
+            'order_id' => null,
+            'payment_id' => null,
+            'subscription_id' => $subscription['id'] ?? null,
+            'amount' => 0,
+            'status' => 'SUBSCRIPTION_CANCELLED',
+            'event_type' => 'subscription.cancelled',
+            'payload' => json_encode($payload),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Update subscription status in our database
+        $subscriptionRecord = Subscription::where('razorpay_subscription_id', $subscription['id'])->first();
+        if ($subscriptionRecord) {
+            $subscriptionRecord->stripe_status = 'cancelled';
+            $subscriptionRecord->save();
+        }
+
+        \Log::info('Razorpay Webhook: Subscription cancelled', ['subscription_id' => $subscription['id'] ?? null]);
+    }
 }

@@ -28,9 +28,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if (Schema::hasTable('system_settings'))
-        {
-           config()->set('social', \App\SystemSetting::first());
+        if (!$this->app->runningInConsole()) {
+            if (Schema::hasTable('system_settings'))
+            {
+               config()->set('social', \App\SystemSetting::first());
+            }
         }
     }
 }

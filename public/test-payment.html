@@ -1,0 +1,28 @@
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    var options = {
+        "key": "rzp_test_798bpYwl6pkvae",
+        "amount": "50000",
+        "currency": "INR",
+        "name": "Test Video Rental",
+        "description": "Test Payment",
+        "order_id": "order_QTlN5vdWnBZou2",
+        "handler": function (response) {
+            alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+        },
+        "prefill": {
+            "name": "Test User",
+            "email": "test@example.com",
+            "contact": "9999999999"
+        },
+        "theme": {
+            "color": "#F37254"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    window.onload = function() {
+        rzp1.open();
+    }
+    </script>
+    

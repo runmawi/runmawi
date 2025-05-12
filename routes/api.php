@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Razorpay Webhook - No CSRF or auth required
+Route::post('/razorpay/webhook', 'RazorpayController@handleWebhook');
+
 Route::group(
     [
         'prefix' => 'auth',
