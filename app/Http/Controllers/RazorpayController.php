@@ -628,12 +628,12 @@ class RazorpayController extends Controller
         $purchase->user_id = $validatedData['user_id'];
         $purchase->video_id = $validatedData['video_id'];
         $purchase->total_amount = $validatedData['amount'] / 100;
-        $purchase->admin_commssion = $admin_commssion;
-        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->admin_commssion = null;
+        $purchase->moderator_commssion = null;
         $purchase->status = 'failed';
         $purchase->payment_failure_reason = $validatedData['error_description'] ?? 'Unknown error';
         $purchase->platform = 'website';
-        $purchase->to_time = $to_time;
+        $purchase->to_time = null;
         $purchase->payment_id = $paymentId; 
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
@@ -946,13 +946,13 @@ class RazorpayController extends Controller
         $purchase->user_id = $validatedData['user_id'];
         $purchase->live_id = $validatedData['live_id'];
         $purchase->total_amount = $validatedData['amount'] / 100;
-        $purchase->admin_commssion = $admin_commssion;
-        $purchase->moderator_commssion = $moderator_commssion;
+        $purchase->admin_commssion = null;
+        $purchase->moderator_commssion = null;
         $purchase->moderator_id = $moderators_id;
         $purchase->status = 'failed';
         $purchase->payment_failure_reason = $validatedData['error_description'];
         $purchase->platform = 'website';
-        $purchase->to_time = $to_time;
+        $purchase->to_time = null;
         $purchase->payment_id = $paymentId;
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
@@ -1670,25 +1670,26 @@ class RazorpayController extends Controller
 
         $purchase = new PpvPurchase;
         $purchase->user_id = $validatedData['user_id'];
-        $purchase->season_id     = $validatedData['SeriesSeason_id'] ;
-        $purchase->series_id    = $series_id ;
+        $purchase->season_id     = $validatedData['SeriesSeason_id'];
+        $purchase->series_id    = $series_id;
         $purchase->total_amount = $validatedData['amount'] / 100;
-        $purchase->admin_commssion = $admin_commssion;
-        $purchase->moderator_commssion = $moderator_commssion;
+        // Don't set commission values for failed payments
+        $purchase->admin_commssion = null;
+        $purchase->moderator_commssion = null;
         $purchase->status = 'failed';
         $purchase->payment_failure_reason = $validatedData['error_description'];
         $purchase->platform = 'website';
-        $purchase->to_time = $to_time;
+        // Don't set to_time for failed payments
+        $purchase->to_time = null;
         $purchase->payment_id = $paymentId;
         $purchase->payment_gateway = 'razorpay';
         $purchase->save();
 
         SiteLogs::create([
             'level' => 'success',
-            'message' => 'Razorpay SeriesSeason rent payment failure stored successfully! '. $paymentId ,
+            'message' => 'Razorpay SeriesSeason rent payment failure stored successfully! '. $paymentId,
             'context' => 'RazorpaySeriesSeasonRent_Paymentfailure'
         ]);
-
 
         return response()->json(['status' => 'failure_logged']);
 
@@ -2156,7 +2157,7 @@ class RazorpayController extends Controller
 
             if ($purchase) {
                 // Update the existing purchase to 'pending'
-                $purchase->status = 'pending';
+                $purchase->status = 'hold';
                 $purchase->payment_id = $payment['id']; // Ensure payment ID is set
                 $purchase->save();
 
@@ -2175,7 +2176,7 @@ class RazorpayController extends Controller
                         'video_id' => $notes['video_id'],
                         'payment_id' => $payment['id'],
                         'total_amount' => ($payment['amount'] ?? 0) / 100,
-                        'status' => 'pending',
+                        'status' => 'hold',
                         'payment_gateway' => 'razorpay',
                         'platform' => 'website',
                         'created_at' => now(),
@@ -2244,6 +2245,34 @@ class RazorpayController extends Controller
 
             // Get payment type from notes
             $notes = $payment['notes'] ?? [];
+            
+            // First, try to find an existing purchase record for this payment
+            $existingPurchase = \App\PpvPurchase::where('payment_id', $payment['id'])
+                ->orWhere('payment_id', $payment['order_id'])
+                ->first();
+                
+            // Calculate to_time for successful payments
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+            $d = new \DateTime('now');
+            $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+            $now = $d->format('Y-m-d h:i:s a');
+            $to_time = date('Y-m-d h:i:s a', strtotime('+'.$ppv_hours.' hour', strtotime($now)));
+            
+            if ($existingPurchase) {
+                // Update the existing purchase record
+                $existingPurchase->status = 'captured';
+                $existingPurchase->to_time = $to_time;
+                $existingPurchase->save();
+                
+                \Log::info('Razorpay Webhook: Existing purchase updated to captured', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $existingPurchase->id
+                ]);
+                
+                DB::commit();
+                return;
+            }
 
             // Create base request data
             $requestData = [
@@ -2252,8 +2281,27 @@ class RazorpayController extends Controller
                 'rzp_signature' => $payload['payload']['payment']['signature'] ?? null,
                 'amount' => $payment['amount']
             ];
+            
+            // If no existing purchase is found, check for PpvPurchase_id in notes
+            if (isset($notes['PpvPurchase_id']) && $notes['PpvPurchase_id']) {
+                $purchase = \App\PpvPurchase::find($notes['PpvPurchase_id']);
+                if ($purchase) {
+                    $purchase->status = 'captured';
+                    $purchase->payment_id = $payment['id'];
+                    $purchase->to_time = $to_time;
+                    $purchase->save();
+                    
+                    \Log::info('Razorpay Webhook: Purchase updated using PpvPurchase_id', [
+                        'payment_id' => $payment['id'],
+                        'purchase_id' => $purchase->id
+                    ]);
+                    
+                    DB::commit();
+                    return;
+                }
+            }
 
-            // Add specific IDs based on payment type
+            // If we still don't have a purchase record, process based on payment type
             if (isset($notes['video_id'])) {
                 $requestData['video_id'] = $notes['video_id'];
                 $requestData['user_id'] = $notes['user_id'] ?? null;
@@ -2278,24 +2326,10 @@ class RazorpayController extends Controller
                 $this->RazorpaySubscriptionStore(new \Illuminate\Http\Request($requestData));
                 \Log::info('Razorpay Webhook: Subscription payment processed', ['payment_id' => $payment['id']]);
             } else {
-                // If no specific type is found, try to find and update any purchase with this payment ID
-                $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
-                    ->orWhere('payment_id', $payment['order_id'])
-                    ->first();
-
-                if ($purchase) {
-                    $purchase->status = 'captured';
-                    $purchase->save();
-                    \Log::info('Razorpay Webhook: Generic purchase updated', [
-                        'payment_id' => $payment['id'],
-                        'purchase_id' => $purchase->id
-                    ]);
-                } else {
-                    \Log::warning('Razorpay Webhook: Unknown payment type', [
-                        'payment_id' => $payment['id'],
-                        'notes' => $notes
-                    ]);
-                }
+                \Log::warning('Razorpay Webhook: Unknown payment type', [
+                    'payment_id' => $payment['id'],
+                    'notes' => $notes
+                ]);
             }
 
             DB::commit();
@@ -2362,6 +2396,9 @@ class RazorpayController extends Controller
                         'payment_failure_reason' => $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error',
                         'payment_gateway' => 'razorpay',
                         'platform' => 'website',
+                        'to_time' => null,
+                        'admin_commssion' => null,
+                        'moderator_commssion' => null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
