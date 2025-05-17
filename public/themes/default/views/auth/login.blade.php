@@ -59,7 +59,8 @@
     \App::setLocale(@$translate_language);
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta charset="UTF-8">
@@ -89,6 +90,86 @@
         </script>
 
         <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page-wrapper {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .sign-in-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 15px;
+            position: relative;
+            margin: 0;
+            flex: 1;
+            min-height: 0; /* Allows content to shrink below its minimum height */
+        }
+
+        .footer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1.5rem 0;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+        
+        /* Ensure container-fluid in footer has proper padding */
+        .footer .container-fluid {
+            padding-left: 15px;
+            padding-right: 15px;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+        
+        /* Ensure content doesn't overflow */
+        .sign-in-page .card {
+            max-width: 100%;
+            width: 100%;
+        }
 
         .otp-input-fields {
             margin: auto;
@@ -187,11 +268,13 @@
     @endphp
 
     <body>
-        @if($login_bgimg)
-            <section class="sign-in-page" style="background:url('{{ asset('public/uploads/settings/' . $settings->login_content) }}') no-repeat scroll 0 0; background-size: cover;">
-        @else
-            <section class="sign-in-page bg-set">
-        @endif
+        <div class="page-wrapper">
+            @if($login_bgimg)
+                <section class="sign-in-page" style="background:url('{{ asset('public/uploads/settings/' . $settings->login_content) }}') no-repeat center center fixed; background-size: cover; width: 100%;">
+                    <div class="overlay"></div>
+            @else
+                <section class="sign-in-page bg-set">
+            @endif
         <div class="container">
             <div class="row mb-4  align-items-center height-self-center">
                 <div class="col-lg-7  col-12 mb-4">
@@ -382,7 +465,30 @@
                 </div>
             </div>
         </div>
-        </section>
+                </section>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    @php
+                        include(public_path('themes/default/views/footer.blade.php'));
+                    @endphp
+                </footer>
+        </div>
+            <style>
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }
+            .container {
+                position: relative;
+                z-index: 2;
+            }
+        </style>
         <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script defer src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"async defer></script>     
 
@@ -631,28 +737,18 @@
         </script>
 
     </body>
-    @php
-        include(public_path('themes/default/views/footer.blade.php'));
-    @endphp
 
-    <!-- jQuery, Popper JS -->
-    <script defer src="assets/js/jquery-3.4.1.min.js"></script>
-    <script defer src="assets/js/popper.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script defer src="assets/js/bootstrap.min.js"></script>
-    <!-- Slick JS -->
-    <script defer src="assets/js/slick.min.js"></script>
-    <!-- owl carousel Js -->
-    <script defer src="assets/js/owl.carousel.min.js"></script>
-    <!-- select2 Js -->
-    <script defer src="assets/js/select2.min.js"></script>
-    <!-- Magnific Popup-->
-    <script defer src="assets/js/jquery.magnific-popup.min.js"></script>
-    <!-- Slick Animation-->
-    <script defer src="assets/js/slick-animation.min.js"></script>
-    <!-- Custom JS-->
-    <script defer src="assets/js/custom.js"></script>
-    <script defer src="assets/js/jquery.lazy.js"></script>
-    <script defer src="assets/js/jquery.lazy.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/jquery-3.4.1.min.js"><\/script>')</script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/select2.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/slick-animation.min.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/jquery.lazy.min.js"></script>
 
 </html>
