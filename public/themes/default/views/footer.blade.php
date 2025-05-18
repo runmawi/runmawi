@@ -68,17 +68,41 @@
                       <p><?php echo (__('Follow us')) .' :'; ?> </p>
                            <?php if(!empty($settings->instagram_page_id)){?>
                       <a href="https://www.instagram.com/<?php echo InstagramId();?>" aria-label="Instagram" target="_blank" class="ml-2">
-                          <img id="instImage" data-src="<?php echo URL::to('/assets/img/lan/inst.webp')?>" alt="instagram" width="40" height="40" />
+                          <img id="instImage" 
+                               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3C/svg%3E" 
+                               data-src="<?php echo URL::to('/assets/img/lan/inst.webp')?>" 
+                               alt="Instagram" 
+                               width="40" 
+                               height="40" 
+                               loading="lazy" 
+                               fetchpriority="low"
+                               class="lazy" />
                       </a>
                       <?php } ?>
                          <?php if(!empty($settings->twitter_page_id)){?>
-                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="twitter" target="_blank" class="ml-2">
-                      <img id="twitterImage" data-src="<?php echo URL::to('/assets/img/lan/twitter-x.webp')?>" alt="twitter" width="40" height="40" />
+                      <a href="https://twitter.com/<?php echo TwiterId();?>" aria-label="Twitter" target="_blank" class="ml-2">
+                          <img id="twitterImage" 
+                               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3C/svg%3E" 
+                               data-src="<?php echo URL::to('/assets/img/lan/twitter-x.webp')?>" 
+                               alt="Twitter" 
+                               width="40" 
+                               height="40" 
+                               loading="lazy" 
+                               fetchpriority="low"
+                               class="lazy" />
                       </a>
                       <?php } ?>
                       <?php if(!empty($settings->facebook_page_id)){?>
-                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="facebook" target="_blank" class="ml-2">
-                      <img id="fbImage" data-src="<?php echo URL::to('/assets/img/lan/fb.webp')?>" alt="facebook" width="40" height="40" />
+                      <a href="https://www.facebook.com/<?php echo FacebookId();?>" aria-label="Facebook" target="_blank" class="ml-2">
+                          <img id="fbImage" 
+                               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3C/svg%3E" 
+                               data-src="<?php echo URL::to('/assets/img/lan/fb.webp')?>" 
+                               alt="Facebook" 
+                               width="40" 
+                               height="40" 
+                               loading="lazy" 
+                               fetchpriority="low"
+                               class="lazy" />
                       </a>
                       <?php } ?>
 
@@ -89,8 +113,16 @@
                       <?php } ?>
 
                       <?php if(!empty($settings->linkedin_page_id)){?>
-                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="linkedin" target="_blank" class="ml-2">
-                      <img id="linkedinImage" data-src="<?php echo URL::to('/assets/img/lan/link.webp')?>" alt="linkedin" width="40" height="40" />
+                      <a href="https://www.linkedin.com/<?php echo linkedinId();?>" aria-label="LinkedIn" target="_blank" class="ml-2">
+                          <img id="linkedinImage" 
+                               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3C/svg%3E" 
+                               data-src="<?php echo URL::to('/assets/img/lan/link.webp')?>" 
+                               alt="LinkedIn" 
+                               width="40" 
+                               height="40" 
+                               loading="lazy" 
+                               fetchpriority="low"
+                               class="lazy" />
                       </a>
                       <?php } ?>
 
@@ -101,8 +133,16 @@
                       <?php } ?>
 
                       <?php if(!empty($settings->youtube_page_id)){?>
-                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="youtube" target="_blank" class="ml-2">
-                      <img id="youtubeImage" data-src="<?php echo URL::to('/assets/img/lan/youtube.webp')?>" alt="youtube" width="40" height="40" />
+                      <a href="https://www.youtube.com/<?php echo YoutubeId();?>" aria-label="YouTube" target="_blank" class="ml-2">
+                          <img id="youtubeImage" 
+                               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3C/svg%3E" 
+                               data-src="<?php echo URL::to('/assets/img/lan/youtube.webp')?>" 
+                               alt="YouTube" 
+                               width="40" 
+                               height="40" 
+                               loading="lazy" 
+                               fetchpriority="low"
+                               class="lazy" />
                       </a>
                       <?php } ?>
 
@@ -219,15 +259,9 @@ function about(evt , id) {
 </script>
 <script>
     function loadDeferredImages() {
-        const ids = ["instImage", "twitterImage", "fbImage", "linkedinImage", "youtubeImage", "tiktokImage"];
-        ids.forEach(function(id) {
-            const img = document.getElementById(id);
-            if (img && img.getAttribute("data-src")) {
-                img.src = img.getAttribute("data-src");
-            }
-        });
+        // This function is no longer needed as we're using the lazy loading implementation above
+        // which handles all lazy-loaded images including YouTube
     }
-    setTimeout(loadDeferredImages, 20000);
 </script>
 <?php  $search_dropdown_setting = $theme->search_dropdown_setting ; ?>
 <input type="hidden" value="<?= $search_dropdown_setting ?>" id="search_dropdown_setting" >
@@ -428,7 +462,69 @@ function about(evt , id) {
         });
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {var lazyloadImages = document.querySelectorAll("img.lazy");var lazyloadThrottleTimeout;function lazyload () {if(lazyloadThrottleTimeout) {clearTimeout(lazyloadThrottleTimeout);}lazyloadThrottleTimeout = setTimeout(function() {var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;lazyloadImages.forEach(function(img) {if (img.offsetTop < (document.documentElement.clientHeight + scrollTop)) {img.src = img.dataset.src;img.classList.remove('lazy');}});if (lazyloadImages.length == 0) {document.removeEventListener("scroll", lazyload);document.body.removeEventListener("resize", lazyload);globalThis.matchMedia("(orientation: portrait)").removeListener(lazyload);}}, 20);}document.addEventListener("scroll", lazyload);document.body.addEventListener("resize", lazyload);globalThis.matchMedia("(orientation: portrait)").addListener(lazyload);});
+document.addEventListener('DOMContentLoaded', function() {
+    let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
+    let active = false;
+
+    const lazyLoad = function() {
+        if (active === false) {
+            active = true;
+
+            setTimeout(function() {
+                lazyImages.forEach(function(img) {
+                    if ((img.getBoundingClientRect().top <= window.innerHeight && 
+                         img.getBoundingClientRect().bottom >= 0) && 
+                        getComputedStyle(img).display !== 'none') {
+                        
+                        // Load the image
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        
+                        // Remove from array once loaded
+                        lazyImages = lazyImages.filter(function(image) {
+                            return image !== img;
+                        });
+
+                        // If no more images to load, remove event listeners
+                        if (lazyImages.length === 0) {
+                            document.removeEventListener('scroll', lazyLoad);
+                            window.removeEventListener('resize', lazyLoad);
+                            window.removeEventListener('orientationchange', lazyLoad);
+                        }
+                    }
+                });
+
+                active = false;
+            }, 200);
+        }
+    };
+
+    // Initial load
+    lazyLoad();
+    
+    // Event listeners
+    document.addEventListener('scroll', lazyLoad);
+    window.addEventListener('resize', lazyLoad);
+    window.addEventListener('orientationchange', lazyLoad);
+    
+    // Use IntersectionObserver if available for better performance
+    if ('IntersectionObserver' in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
+                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.classList.remove('lazy');
+                    lazyImageObserver.unobserve(lazyImage);
+                }
+            });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    }
+});
 </script>
 <?php } ?>
   <?php if( get_image_loader() == 1) { ?>
