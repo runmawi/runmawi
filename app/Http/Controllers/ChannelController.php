@@ -4652,17 +4652,12 @@ class ChannelController extends Controller
 
                         $current_date = Carbon::now()->format('Y-m-d H:i:s a');
 
-                            $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
-                                                        ->where('user_id', Auth::user()->id)
-                                                        ->where('to_time','>',$current_date)
-                                                        ->orderBy('created_at', 'desc')
-                                                        ->get()->map(function ($item){
-                                                            $payment_status = payment_status($item);
-                                                            if ($payment_status === null || $item->status === $payment_status) {
-                                                                return $item;
-                                                            }
-                                                                return null;
-                                                        })->first();
+                        $ppv_exists_check_query = PpvPurchase::where('video_id', $item['id'])
+                                                    ->where('user_id', Auth::user()->id)
+                                                    ->whereIn('status', ['captured', 'succeeded'])
+                                                    ->where('to_time', '>', $current_date)
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->first();
 
                         $PPV_exists = $ppv_exists_check_query ? true : false; 
 
