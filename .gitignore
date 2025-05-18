@@ -1,5 +1,4 @@
 /public/uploads/avatars/*
-/public/uploads/tmp/*
 !/public/uploads/images/
 /storage/app/*
 /dev/*
