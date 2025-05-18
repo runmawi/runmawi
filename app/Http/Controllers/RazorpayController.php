@@ -2156,12 +2156,12 @@ class RazorpayController extends Controller
                 ->first();
 
             if ($purchase) {
-                // Update the existing purchase to 'pending'
+                // Update the existing purchase to 'hold'
                 $purchase->status = 'hold';
                 $purchase->payment_id = $payment['id']; // Ensure payment ID is set
                 $purchase->save();
 
-                \Log::info('Razorpay Webhook: Purchase marked as pending', [
+                \Log::info('Razorpay Webhook: Purchase marked as hold', [
                     'payment_id' => $payment['id'],
                     'purchase_id' => $purchase->id
                 ]);

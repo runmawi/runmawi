@@ -3842,17 +3842,16 @@ public function verifyandupdatepassword(Request $request)
         $item['image_url'] = URL::to('/').'/public/uploads/images/'.$item->image;
         return $item;
       });
-      $ppv_status = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')
-      ->where('ppv_purchases.user_id', '=', $user_id)
-      ->where('ppv_purchases.video_id', '=', $ppvvideoid)->orderBy('ppv_purchases.created_at', 'desc')->get()->map(function ($item) {
-        $item['ppv_videos_status'] = ($item->to_time > Carbon::now() )?"Can View":"Expired";
-        return $item;
-      });
-      if(!$ppv_status->isEmpty()){
-        $ppvstatus = $ppv_status[0]->ppv_videos_status;
-      }else{
-        $ppvstatus = 'Purchase';
-      }
+      // Get the most recent valid purchase that's not expired
+      $ppv_purchase = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')
+          ->where('ppv_purchases.user_id', '=', $user_id)
+          ->where('ppv_purchases.video_id', '=', $ppvvideoid)
+          ->whereIn('ppv_purchases.status', ['captured', 'succeeded'])
+          ->where('ppv_purchases.to_time', '>', now())
+          ->orderBy('ppv_purchases.created_at', 'desc')
+          ->first();
+      
+      $ppvstatus = $ppv_purchase ? 'Can View' : 'Purchase';
 
       if ( $request->user_id != '' ) {
       $user_id = $request->user_id;
