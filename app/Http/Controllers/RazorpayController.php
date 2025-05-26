@@ -345,17 +345,7 @@ class RazorpayController extends Controller
         $video = Video::where('id','=',$video_id)->first();
         $amount = $video->ppv_price;
 
-        $setting = Setting::first();    
-        $PpvPurchase = PpvPurchase::create([
-            'user_id'      => Auth::user()->id,
-            'video_id'     => $video_id,
-            'total_amount' => $amount ,
-            'platform'     =>'website',
-            'payment_gateway' => 'razoray',
-            'status' => 'hold' ,
-        ]);
-
-        $PpvPurchase_id = $PpvPurchase->id;
+        $setting = Setting::first();
 
         if(!empty($video)){
             $moderators_id = $video->user_id;
@@ -656,36 +646,6 @@ class RazorpayController extends Controller
     }
     }
 
-    public function RazorpayLiveRent(Request $request,$live_id){
-
-        $video = LiveStream::where('id','=',$live_id)->first();
-        $amount = $video->ppv_price;
-
-        $PpvPurchase = PpvPurchase::create([
-            'user_id'      => Auth::user()->id,
-            'live_id'      => $live_id,
-            'total_amount' => $amount ,
-            'platform'     =>'website',
-            'payment_gateway' => 'razoray',
-            'status' => 'hold' ,
-        ]);
-
-        $livepurchase = LivePurchase::create([
-            'user_id'   => Auth::user()->id,
-            'video_id'  => $live_id,
-            'amount'    => $amount ,
-            'platform'  =>'website',
-            'payment_gateway' => 'razoray',
-            'status' => 0 ,
-            'payment_status' => 'hold',
-        ]);
-
-        $PpvPurchase_id = $PpvPurchase->id;
-        $livepurchase_id = $livepurchase->id;
-
-        if(!empty($video)){
-        $moderators_id = $video->user_id;
-        }
 
         if(!empty($moderators_id)){
             $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
@@ -1220,42 +1180,13 @@ class RazorpayController extends Controller
         switch ($ppv_plan) {
             case '240p':
                 $amount = $video->ppv_price_240p;
-                break;
-            case '360p':
-                $amount = $video->ppv_price_360p;
-                break;
-            case '480p':
-                $amount = $video->ppv_price_480p;
-                break;
-            case '720p':
-                $amount = $video->ppv_price_720p;
-                break;
-            case '1080p':
-                $amount = $video->ppv_price_1080p;
-                break;
-            default:
-                $amount = $video->ppv_price;
-                
-        }
-        $PpvPurchase = PpvPurchase::create([
-            'user_id'      => Auth::user()->id,
-            'video_id'     => $video_id,
-            'total_amount' => $amount ,
-            'platform'     =>'website',
-            'ppv_plan'     => $ppv_plan,
-            'payment_gateway' => 'razoray',
-            'status' => 'hold' ,
-        ]);
 
-        $setting = Setting::first();  
-        $PpvPurchase_id = $PpvPurchase->id;
-
-        if(!empty($video)){
-            $moderators_id = $video->user_id;
-        }
-        $commission_btn = $setting->CPP_Commission_Status;
-        $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
-        $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
+    $orderData = [
+        'receipt'         => $recept_id,
+        'amount'          => $amount * 100, 
+        'currency'        => 'INR',
+        'payment_capture' => 1 ,
+    ];
         $commission_percentage_value = $video->CPP_commission_percentage;
         if($commission_btn === 0){
             $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
@@ -1332,28 +1263,6 @@ class RazorpayController extends Controller
 
     
     public function RazorpaySeriesSeasonRent(Request $request,$SeriesSeason_id){
-
-        $SeriesSeason = SeriesSeason::where('id',$request->SeriesSeason_id)->first();
-        $amount = $SeriesSeason->ppv_price;
-
-       $setting = Setting::first(); 
-        $PpvPurchase = PpvPurchase::create([
-            'user_id'      => Auth::user()->id,
-            'season_id'   => $SeriesSeason_id,
-            'series_id'   => null,
-            'total_amount' => $amount ,
-            'platform'     =>'website',
-            'ppv_plan'     => null,
-            'payment_gateway' => 'razoray',
-            'status' => 'hold' ,
-        ]);
-
-        $PpvPurchase_id = $PpvPurchase->id;
-
-        $series_id = SeriesSeason::where('id',$request->SeriesSeason_id)->pluck('series_id')->first();
-        $Series_slug = Series::where('id',$series_id)->pluck('slug')->first();
-        // if(!empty($SeriesSeason)){
-        // $moderators_id = Auth::User()->id;
         // }
 
         $Series = Series::where('id',$series_id)->first();
@@ -1728,30 +1637,6 @@ class RazorpayController extends Controller
                 break;
             default:
                 $amount = $SeriesSeason->ppv_price;
-                
-        }
-
-        PayRequestTransaction::create([
-            'user_id'     => Auth::user()->id,
-            'ppv_plan'    => $ppv_plan,
-            'source_name' => $SeriesSeason_id,
-            'source_id'   => $SeriesSeason_id,
-            'source_type' => 'series season',
-            'platform'    => "razorpay",
-            'transform_form' => "PPV",
-            'amount' => $amount,
-            'date' => Carbon::now()->format('Y-m-d H:i:s a'),
-            'status' => 'hold' ,
-        ]);
-
-        $recept_id = Str::random(10);
-
-        $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
-
-        $orderData = [
-            'receipt'         => $recept_id,
-            'amount'          => $amount * 100, 
-            'currency'        => 'INR',
             'payment_capture' => 1 ,
         ];
         
@@ -2138,11 +2023,29 @@ class RazorpayController extends Controller
 
         DB::beginTransaction();
         try {
+            try {
+                $api = new \Razorpay\Api\Api($this->razorpaykeyId, $this->razorpaykeysecret);
+                $razorpayPayment = $api->payment->fetch($payment['id']);
+
+                if ($razorpayPayment->status !== 'authorized') {
+                    \Log::error('Razorpay Webhook: Payment not in authorized state', [
+                        'payment_id' => $payment['id'],
+                        'status' => $razorpayPayment->status
+                    ]);
+                    return;
+                }
+            } catch (\Exception $e) {
+                \Log::error('Razorpay Webhook: Error fetching payment', [
+                    'payment_id' => $payment['id'],
+                    'error' => $e->getMessage()
+                ]);
+                return;
+            }
             // Log the webhook event
             DB::table('payment_webhook')->insert([
                 'order_id' => $payment['order_id'] ?? null,
                 'payment_id' => $payment['id'] ?? null,
-                'amount' => ($payment['amount'] ?? 0) / 100, // Convert from paisa to rupees
+                'amount' => ($payment['amount'] ?? 0) / 100,
                 'status' => 'TXN_AUTHORIZED',
                 'event_type' => 'payment.authorized',
                 'payload' => json_encode($payload),
@@ -2150,54 +2053,9 @@ class RazorpayController extends Controller
                 'updated_at' => now(),
             ]);
 
-            // For ppv_purchase table, we only want to create/update entries
-            // when a payment is actually authorized by Razorpay, not when payment is initiated
-            
-            // Check if there's already a purchase record
-            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
-                ->orWhere('payment_id', $payment['order_id'])
-                ->first();
-
-            if ($purchase) {
-                // Update the existing purchase to 'hold'
-                $purchase->status = 'hold';
-                $purchase->payment_id = $payment['id']; // Ensure payment ID is set
-                $purchase->save();
-
-                \Log::info('Razorpay Webhook: Purchase marked as hold', [
-                    'payment_id' => $payment['id'],
-                    'purchase_id' => $purchase->id
-                ]);
-            } else {
-                // If no purchase record exists yet, create one based on notes
-                // but ONLY for authorized payments (we're already in the authorized webhook)
-                $notes = $payment['notes'] ?? [];
-
-                if (isset($notes['video_id']) && isset($notes['user_id'])) {
-                    // Create a purchase record with 'hold' status
-                    \App\PpvPurchase::create([
-                        'user_id' => $notes['user_id'],
-                        'video_id' => $notes['video_id'],
-                        'payment_id' => $payment['id'],
-                        'total_amount' => ($payment['amount'] ?? 0) / 100,
-                        'status' => 'hold',
-                        'payment_gateway' => 'razorpay',
-                        'platform' => isset($notes['platform']) ? $notes['platform'] : 'website',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
-
-                    \Log::info('Razorpay Webhook: Created authorized purchase record', [
-                        'payment_id' => $payment['id'],
-                        'user_id' => $notes['user_id'],
-                        'video_id' => $notes['video_id']
-                    ]);
-                }
-            }
-
-            try {
-                $api = new \Razorpay\Api\Api($this->razorpaykeyId, $this->razorpaykeysecret);
-                $razorpayPayment = $api->payment->fetch($payment['id']);
+            \Log::info('Razorpay Webhook: Subscription created', [
+                'payment_id' => $payment['id'],
+                'subscription_id' => $purchase->id
 
                 if ($razorpayPayment->status === 'authorized') {
                     $razorpayPayment->capture(['amount' => $razorpayPayment->amount]);
@@ -2268,24 +2126,97 @@ class RazorpayController extends Controller
             $now = $d->format('Y-m-d h:i:s a');
             $to_time = date('Y-m-d h:i:s a', strtotime('+'.$ppv_hours.' hour', strtotime($now)));
 
-            // First, try to find an existing purchase record
-            $existingPurchase = \App\PpvPurchase::where('payment_id', $payment['id'])
-                ->orWhere('payment_id', $payment['order_id'])
+            // Try to find existing purchase record using multiple criteria
+            $notes = $payment['notes'] ?? [];
+            $video_id = $notes['video_id'] ?? null;
+            $user_id = $notes['user_id'] ?? null;
+            $series_id = $notes['series_id'] ?? null;
+            $season_id = $notes['season_id'] ?? null;
+            $live_id = $notes['live_id'] ?? null;
+            $platform = $notes['platform'] ?? 'website';
+            $ppv_plan = $notes['ppv_plan'] ?? null;
+
+            // Comprehensive search for existing records
+            $purchase = null;
+
+            // 1. Try by payment_id
+            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])->first();
+            
+            // 2. Try by order_id
+            if (!$purchase && isset($payment['order_id'])) {
+                $purchase = \App\PpvPurchase::where('payment_id', $payment['order_id'])->first();
+            }
+            
+            // 3. Try by video_id and user_id with recent timestamp
+            if (!$purchase && $video_id && $user_id) {
+                $purchase = \App\PpvPurchase::where([
+                    ['video_id', '=', $video_id],
+                    ['user_id', '=', $user_id]
+                ])
+                ->where('created_at', '>=', now()->subMinutes(15))
+                ->orderBy('created_at', 'desc')
                 ->first();
+            }
 
-            if ($existingPurchase) {
-                // Only update if not already captured
-                if ($existingPurchase->status !== 'captured') {
-                    $existingPurchase->status = 'captured';
-                    $existingPurchase->to_time = $to_time;
-                    $existingPurchase->save();
+            // 4. Try by series/season and user_id with recent timestamp
+            if (!$purchase && $user_id && ($series_id || $season_id)) {
+                $query = \App\PpvPurchase::where('user_id', $user_id)
+                    ->where('created_at', '>=', now()->subMinutes(15));
+                if ($series_id) $query->where('series_id', $series_id);
+                if ($season_id) $query->where('season_id', $season_id);
+                $purchase = $query->orderBy('created_at', 'desc')->first();
+            }
 
-                    \Log::info('Razorpay Webhook: Existing purchase updated to captured', [
-                        'payment_id' => $payment['id'],
-                        'purchase_id' => $existingPurchase->id
-                    ]);
-                }
-                DB::commit();
+            // 5. Try by live_id and user_id with recent timestamp
+            if (!$purchase && $live_id && $user_id) {
+                $purchase = \App\PpvPurchase::where([
+                    ['live_id', '=', $live_id],
+                    ['user_id', '=', $user_id]
+                ])
+                ->where('created_at', '>=', now()->subMinutes(15))
+                ->orderBy('created_at', 'desc')
+                ->first();
+            }
+
+            if ($purchase) {
+                // Update existing record
+                $purchase->payment_id = $payment['id'];
+                $purchase->status = 'hold';
+                if ($ppv_plan) $purchase->ppv_plan = $ppv_plan;
+                $purchase->save();
+
+                \Log::info('Razorpay Webhook: Updated existing purchase record', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id,
+                    'previous_status' => $purchase->getOriginal('status')
+                ]);
+            } else {
+                // Create new record only if no existing record found
+                $purchaseData = [
+                    'user_id' => $user_id,
+                    'payment_id' => $payment['id'],
+                    'total_amount' => ($payment['amount'] ?? 0) / 100,
+                    'status' => 'hold',
+                    'payment_gateway' => 'razorpay',
+                    'platform' => $platform,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // Add conditional fields
+                if ($video_id) $purchaseData['video_id'] = $video_id;
+                if ($series_id) $purchaseData['series_id'] = $series_id;
+                if ($season_id) $purchaseData['season_id'] = $season_id;
+                if ($live_id) $purchaseData['live_id'] = $live_id;
+                if ($ppv_plan) $purchaseData['ppv_plan'] = $ppv_plan;
+
+                $purchase = \App\PpvPurchase::create($purchaseData);
+
+                \Log::info('Razorpay Webhook: Created new purchase record', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id
+                ]);
+            }    DB::commit();
                 return response()->json(['success' => true]);
             }
 
