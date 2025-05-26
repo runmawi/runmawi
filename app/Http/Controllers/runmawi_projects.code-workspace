@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../Downloads/Runmavi"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
