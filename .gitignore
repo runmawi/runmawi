@@ -29,5 +29,10 @@
 /assets/img/*.mp4
 /public/uploads/videos/*.mp4
 /node_modules
+/public/*
 .env
 *.log
+node_modules
+node_modules
+node_modules
+/public/vendor/
