@@ -432,56 +432,156 @@ class RazorpayController extends Controller
         return Theme::view('Razorpay.video_rent_checkout',compact('response'),$response);
     }
 
-    public function RazorpayVideoRent_Payment(Request $request)
+    /**
+     * Check if a status transition is valid
+     * 
+     * @param string|null $currentStatus Current payment status
+     * @param string $newStatus New payment status
+     * @return bool Whether the transition is valid
+     */
+    private function isValidStatusTransition($currentStatus, $newStatus)
     {
-       $decryptedAmount = decrypt($request->amount);
-       $setting = Setting::first();  
-       $ppv_hours = $setting->ppv_hours;
-       $d = new \DateTime('now');
-       $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
-       $now = $d->format('Y-m-d h:i:s a');
-       $time = date('h:i:s', strtotime($now));
-       $to_time = date('Y-m-d h:i:s a',strtotime('+'.$ppv_hours.' hour',strtotime($now))); 
+        $validTransitions = [
+            null => ['hold', 'captured', 'failed'],
+            'hold' => ['captured', 'failed'],
+            // Keep 'authorized' transition for backward compatibility
+            'authorized' => ['captured', 'failed'],
+            'captured' => ['refunded', 'failed'], // Once captured, can only be refunded or marked as failed
+            'failed' => [] // Terminal state, no transitions allowed
+        ];
+        
+        return isset($validTransitions[$currentStatus]) && 
+               in_array($newStatus, $validTransitions[$currentStatus]);
+    }
+
+    /**
+     * Retry failed payment capture with exponential backoff
+     * 
+     * @param string $paymentId Razorpay payment ID
+     * @param int $attempt Current attempt number
+     * @param int $maxAttempts Maximum number of attempts
+     * @return bool Success status
+     */
+    private function retryPaymentCapture($paymentId, $attempt = 1, $maxAttempts = 3)
+    {
+        if ($attempt > $maxAttempts) {
+            \Log::error("Razorpay: Max capture retry attempts reached for payment {$paymentId}");
+            return false;
+        }
 
         try {
+            // Exponential backoff - wait longer between each retry
+            $backoffSeconds = pow(2, $attempt - 1);
+            if ($attempt > 1) {
+                sleep($backoffSeconds);
+            }
+
             $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            $payment = $api->payment->fetch($paymentId);
             
-            $attributes  = array(
-                'razorpay_signature'   => $request->rzp_signature,  
-                'razorpay_payment_id'  => $request->rzp_paymentid ,  
-                'razorpay_order_id'    => $request->rzp_orderid
-            );
-            $order  = $api->utility->verifyPaymentSignature($attributes);
-
-            $payment = $api->payment->fetch($request->rzp_paymentid);
-
+            // Only attempt capture if not already captured
             if ($payment->status !== 'captured') {
                 $payment->capture(['amount' => $payment->amount]);
-            } 
-            $payment_status = $payment->status; 
-
-            // $video = Video::where('id','=',$request->video_id)->first();
-
-            // if(!empty($video)){
-            // $moderators_id = $video->user_id;
-            // }
-
-            // $commission_btn = $setting->CPP_Commission_Status;
-            // $CppUser_details = ModeratorsUser::where('id',$moderators_id)->first();
-            // $video_commission_percentage = VideoCommission::where('type','Cpp')->pluck('percentage')->first();
-            // $commission_percentage_value = $video->CPP_commission_percentage;
+                \Log::info("Razorpay: Successfully captured payment {$paymentId} on attempt {$attempt}");
+                return true;
+            }
             
-            // if($commission_btn === 0){
-            //     $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-            // }
-            // if(!empty($moderators_id)){
-            //     $moderator           =  ModeratorsUser::where('id',$moderators_id)->first();  
-            //     if ($moderator) {
-            //         $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-            //     } else {
-            //         $percentage = 0;
-            //     }
-            //     $total_amount        = $video->ppv_price;
+            \Log::info("Razorpay: Payment {$paymentId} already captured");
+            return true;
+        } catch (\Exception $e) {
+            \Log::warning("Razorpay: Capture retry attempt {$attempt} failed for payment {$paymentId}: {$e->getMessage()}");
+            
+            // Retry with incrementing attempt counter
+            return $this->retryPaymentCapture($paymentId, $attempt + 1, $maxAttempts);
+        }
+    }
+
+    public function RazorpayVideoRent_Payment(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $decryptedAmount = decrypt($request->amount);
+            $setting = Setting::first();  
+            $ppv_hours = $setting->ppv_hours;
+            $d = new \DateTime('now');
+            $d->setTimezone(new \DateTimeZone('Asia/Kolkata'));
+            $now = $d->format('Y-m-d h:i:s a');
+            $to_time = date('Y-m-d h:i:s a', strtotime('+'.$ppv_hours.' hour', strtotime($now))); 
+
+            // Verify payment with Razorpay
+            $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
+            
+            $attributes = [
+                'razorpay_signature'  => $request->rzp_signature,  
+                'razorpay_payment_id' => $request->rzp_paymentid,  
+                'razorpay_order_id'   => $request->rzp_orderid
+            ];
+
+            // This will throw an exception if signature verification fails
+            $order = $api->utility->verifyPaymentSignature($attributes);
+
+            // Fetch payment details
+            $payment = $api->payment->fetch($request->rzp_paymentid);
+
+            // Attempt to capture if not already captured with retry mechanism
+            if ($payment->status !== 'captured') {
+                $captureSuccess = false;
+                try {
+                    $captureSuccess = $this->retryPaymentCapture($request->rzp_paymentid);
+                    if (!$captureSuccess) {
+                        throw new \Exception("Failed to capture payment after multiple attempts");
+                    }
+                    // Refresh payment data after capture
+                    $payment = $api->payment->fetch($request->rzp_paymentid);
+                } catch (\Exception $captureError) {
+                    \Log::error('Razorpay capture failed after retries: ' . $captureError->getMessage(), [
+                        'payment_id' => $request->rzp_paymentid
+                    ]);
+                    throw $captureError;
+                }
+            }
+
+            $payment_status = $payment->status;
+
+            // Find existing purchase record using multiple criteria with locking
+            $purchase = null;
+
+            // 1. Try by payment_id
+            $purchase = \App\PpvPurchase::where('payment_id', $request->rzp_paymentid)
+                ->lockForUpdate()
+                ->first();
+
+            // 2. Try by order_id
+            if (!$purchase) {
+                $purchase = \App\PpvPurchase::where('payment_id', $request->rzp_orderid)
+                    ->lockForUpdate()
+                    ->first();
+            }
+
+            // 3. Try by video_id and user_id with recent timestamp
+            if (!$purchase && $request->video_id && $request->user_id) {
+                $purchase = \App\PpvPurchase::where([
+                    ['video_id', '=', $request->video_id],
+                    ['user_id', '=', $request->user_id]
+                ])
+                ->where('created_at', '>=', now()->subMinutes(15))
+                ->orderBy('created_at', 'desc')
+                ->lockForUpdate()
+                ->first();
+            }
+
+            // Create new record if none found
+            if (!$purchase) {
+                $purchase = new \App\PpvPurchase();
+            } else if (!$this->isValidStatusTransition($purchase->status, $payment_status)) {
+                \Log::warning("Invalid status transition from {$purchase->status} to {$payment_status}", [
+                    'payment_id' => $request->rzp_paymentid,
+                    'purchase_id' => $purchase->id
+                ]);
+                // Continue anyway since this is frontend callback and user is waiting
+            }
+
+            // Update purchase record
             //     $title               =  $video->title;
             //     $commssion           =  VideoCommission::where('type','CPP')->first();
             //     $ppv_price           =  $request->amount/100;
@@ -493,22 +593,9 @@ class RazorpayController extends Controller
             // {
             //     $total_amount = $video->ppv_price;
             //     $title =  $video->title;
-            //     $commssion  =  VideoCommission::where('type','CPP')->first();
-            //     $percentage = null; 
-            //     $ppv_price = $video->ppv_price;
-            //     $admin_commssion =  null;
-            //     $moderator_commssion = null;
-            //     $moderator_id = null;
-            // }
-            
-            $purchase = PpvPurchase::find($request->PpvPurchase_id);
             $purchase->user_id = $request->user_id;
             $purchase->video_id = $request->video_id;
             $purchase->total_amount = $decryptedAmount / 100;
-            // $purchase->admin_commssion = $admin_commssion;
-            // $purchase->moderator_commssion = $moderator_commssion;
-            // $purchase->moderator_id = $moderator_id;
-            // $purchase->ppv_plan = $request->ppv_plan;
             $purchase->status = $payment_status;
             $purchase->to_time = $to_time;
             $purchase->platform = 'website';
@@ -516,30 +603,43 @@ class RazorpayController extends Controller
             $purchase->payment_gateway = 'razorpay';
             $purchase->save();
 
-            $respond=array(
-                'status'  => 'true',
-            );
+            // Log successful payment
+            \Log::info('Razorpay payment successful', [
+                'payment_id' => $request->rzp_paymentid,
+                'purchase_id' => $purchase->id,
+                'status' => $payment_status
+            ]);
+
             SiteLogs::create([
-                'level' => 'success,'. $purchase->status,
+                'level' => 'success,' . $purchase->status,
                 'message' => 'Razorpay video rent payment stored successfully!',
                 'context' => 'RazorpayVideoRent_Payment'
             ]);
-            return view('Razorpay.Rent_message',compact('respond'),$respond);
+
+            DB::commit();
+
+            return view('Razorpay.Rent_message', [
+                'respond' => ['status' => 'true']
+            ]);
 
         } catch (\Exception $e) {
+            DB::rollback();
 
-            dd($e->getMessage());
-            $respond=array(
-                'status'  => 'false',
-            );
+            // Log the error
+            \Log::error('Razorpay payment error: ' . $e->getMessage(), [
+                'payment_id' => $request->rzp_paymentid ?? null,
+                'trace' => $e->getTraceAsString()
+            ]);
 
             SiteLogs::create([
                 'level' => 'fails',
-                'message' => $e->getMessage(),
+                'message' => 'Payment failed: ' . $e->getMessage(),
                 'context' => 'RazorpayVideoRent_Payment'
             ]);
 
-            return Theme::view('Razorpay.Rent_message',compact('respond'),$respond); 
+            return Theme::view('Razorpay.Rent_message', [
+                'respond' => ['status' => 'false']
+            ]); 
         }
     }
 
@@ -2023,16 +2123,19 @@ class RazorpayController extends Controller
 
         DB::beginTransaction();
         try {
+            // Verify payment with Razorpay API
             try {
                 $api = new \Razorpay\Api\Api($this->razorpaykeyId, $this->razorpaykeysecret);
                 $razorpayPayment = $api->payment->fetch($payment['id']);
 
-                if ($razorpayPayment->status !== 'authorized') {
-                    \Log::error('Razorpay Webhook: Payment not in authorized state', [
+                // Accept both 'authorized' and 'created' status from Razorpay as valid
+                if (!in_array($razorpayPayment->status, ['authorized', 'created'])) {
+                    \Log::warning('Razorpay Webhook: Payment not in valid state', [
                         'payment_id' => $payment['id'],
                         'status' => $razorpayPayment->status
                     ]);
-                    return;
+                    DB::commit();
+                    return response()->json(['success' => false, 'error' => 'Payment not in valid state']);
                 }
             } catch (\Exception $e) {
                 \Log::error('Razorpay Webhook: Error fetching payment', [
@@ -2041,6 +2144,7 @@ class RazorpayController extends Controller
                 ]);
                 return;
             }
+
             // Log the webhook event
             DB::table('payment_webhook')->insert([
                 'order_id' => $payment['order_id'] ?? null,
@@ -2053,17 +2157,103 @@ class RazorpayController extends Controller
                 'updated_at' => now(),
             ]);
 
-            \Log::info('Razorpay Webhook: Subscription created', [
-                'payment_id' => $payment['id'],
-                'subscription_id' => $purchase->id
+            \Log::info('Razorpay Webhook: Payment authorized', [
+                'payment_id' => $payment['id']
+            ]);
 
-                if ($razorpayPayment->status === 'authorized') {
-                    $razorpayPayment->capture(['amount' => $razorpayPayment->amount]);
-                    \Log::info('Razorpay Webhook: Payment captured from authorized webhook', [
-                        'payment_id' => $payment['id']
-                    ]);
+            // Extract payment details from notes
+            $notes = $payment['notes'] ?? [];
+            $video_id = $notes['video_id'] ?? null;
+            $user_id = $notes['user_id'] ?? null;
+            $series_id = $notes['series_id'] ?? null;
+            $season_id = $notes['season_id'] ?? null;
+            $live_id = $notes['live_id'] ?? null;
+            $platform = $notes['platform'] ?? 'website';
+            $ppv_plan = $notes['ppv_plan'] ?? null;
+
+            // Find existing purchase record with locking
+            $purchase = null;
+
+            // 1. Try by payment_id
+            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])->lockForUpdate()->first();
+            
+            // 2. Try by order_id
+            if (!$purchase && isset($payment['order_id'])) {
+                $purchase = \App\PpvPurchase::where('payment_id', $payment['order_id'])->lockForUpdate()->first();
+            }
+            
+            // 3. Try by content ID and user_id with recent timestamp
+            if (!$purchase && $user_id) {
+                $query = \App\PpvPurchase::where('user_id', $user_id)
+                    ->where('created_at', '>=', now()->subMinutes(15));
+
+                if ($video_id) {
+                    $query->where('video_id', $video_id);
+                } elseif ($series_id) {
+                    $query->where('series_id', $series_id);
+                } elseif ($season_id) {
+                    $query->where('season_id', $season_id);
+                } elseif ($live_id) {
+                    $query->where('live_id', $live_id);
                 }
-            } catch (\Exception $captureError) {
+
+                $purchase = $query->orderBy('created_at', 'desc')->lockForUpdate()->first();
+            }
+
+            if ($purchase) {
+                // Verify valid status transition
+                if (!$this->isValidStatusTransition($purchase->status, 'hold')) {
+                    \Log::warning("Razorpay Webhook: Invalid status transition to hold", [
+                        'payment_id' => $payment['id'],
+                        'purchase_id' => $purchase->id,
+                        'current_status' => $purchase->status
+                    ]);
+                    DB::commit();
+                    return response()->json(['success' => false, 'error' => 'Invalid status transition']);
+                }
+                // Update existing record
+                $purchase->payment_id = $payment['id'];
+                $purchase->status = 'hold';
+                if ($ppv_plan) $purchase->ppv_plan = $ppv_plan;
+                $purchase->save();
+
+                \Log::info("Razorpay Webhook: Updated existing purchase record", [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id,
+                    'previous_status' => $purchase->getOriginal('status')
+                ]);
+            } else {
+                // Create new record
+                $purchaseData = [
+                    'user_id' => $user_id,
+                    'payment_id' => $payment['id'],
+                    'total_amount' => ($payment['amount'] ?? 0) / 100,
+                    'status' => 'hold',
+                    'payment_gateway' => 'razorpay',
+                    'platform' => $platform,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // Add conditional fields
+                if ($video_id) $purchaseData['video_id'] = $video_id;
+                if ($series_id) $purchaseData['series_id'] = $series_id;
+                if ($season_id) $purchaseData['season_id'] = $season_id;
+                if ($live_id) $purchaseData['live_id'] = $live_id;
+                if ($ppv_plan) $purchaseData['ppv_plan'] = $ppv_plan;
+
+                $purchase = \App\PpvPurchase::create($purchaseData);
+
+                \Log::info('Razorpay Webhook: Created new purchase record', [
+                    'payment_id' => $payment['id'],
+                    'purchase_id' => $purchase->id
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
                 \Log::warning('Razorpay Webhook: Could not capture payment', [
                     'payment_id' => $payment['id'],
                     'error' => $captureError->getMessage()
@@ -2089,21 +2279,23 @@ class RazorpayController extends Controller
             return;
         }
 
-        // Check for duplicate webhook event
-        $existingWebhookRecord = DB::table('payment_webhook')
-            ->where('payment_id', $payment['id'])
-            ->where('event_type', 'payment.captured')
-            ->first();
-
-        if ($existingWebhookRecord) {
-            \Log::info('Razorpay Webhook: Duplicate payment.captured event, skipping', [
-                'payment_id' => $payment['id']
-            ]);
-            return response()->json(['success' => true, 'message' => 'Duplicate event']);
-        }
-
         DB::beginTransaction();
         try {
+            // Check for duplicate webhook event with locking
+            $existingWebhookRecord = DB::table('payment_webhook')
+                ->where('payment_id', $payment['id'])
+                ->where('event_type', 'payment.captured')
+                ->lockForUpdate()
+                ->first();
+
+            if ($existingWebhookRecord) {
+                DB::commit();
+                \Log::info('Razorpay Webhook: Duplicate payment.captured event, skipping', [
+                    'payment_id' => $payment['id']
+                ]);
+                return response()->json(['success' => true, 'message' => 'Duplicate event']);
+            }
+
             // Log the webhook event
             DB::table('payment_webhook')->insert([
                 'order_id' => $payment['order_id'] ?? null,
@@ -2136,15 +2328,19 @@ class RazorpayController extends Controller
             $platform = $notes['platform'] ?? 'website';
             $ppv_plan = $notes['ppv_plan'] ?? null;
 
-            // Comprehensive search for existing records
+            // Comprehensive search for existing records with locking
             $purchase = null;
 
             // 1. Try by payment_id
-            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])->first();
+            $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
+                ->lockForUpdate()
+                ->first();
             
             // 2. Try by order_id
             if (!$purchase && isset($payment['order_id'])) {
-                $purchase = \App\PpvPurchase::where('payment_id', $payment['order_id'])->first();
+                $purchase = \App\PpvPurchase::where('payment_id', $payment['order_id'])
+                    ->lockForUpdate()
+                    ->first();
             }
             
             // 3. Try by video_id and user_id with recent timestamp
@@ -2155,6 +2351,7 @@ class RazorpayController extends Controller
                 ])
                 ->where('created_at', '>=', now()->subMinutes(15))
                 ->orderBy('created_at', 'desc')
+                ->lockForUpdate()
                 ->first();
             }
 
@@ -2164,7 +2361,7 @@ class RazorpayController extends Controller
                     ->where('created_at', '>=', now()->subMinutes(15));
                 if ($series_id) $query->where('series_id', $series_id);
                 if ($season_id) $query->where('season_id', $season_id);
-                $purchase = $query->orderBy('created_at', 'desc')->first();
+                $purchase = $query->orderBy('created_at', 'desc')->lockForUpdate()->first();
             }
 
             // 5. Try by live_id and user_id with recent timestamp
@@ -2175,13 +2372,25 @@ class RazorpayController extends Controller
                 ])
                 ->where('created_at', '>=', now()->subMinutes(15))
                 ->orderBy('created_at', 'desc')
+                ->lockForUpdate()
                 ->first();
             }
 
             if ($purchase) {
+                // Verify valid status transition
+                if (!$this->isValidStatusTransition($purchase->status, 'captured')) {
+                    \Log::warning("Razorpay Webhook: Invalid status transition from {$purchase->status} to captured", [
+                        'payment_id' => $payment['id'],
+                        'purchase_id' => $purchase->id,
+                        'current_status' => $purchase->status
+                    ]);
+                    DB::commit();
+                    return response()->json(['success' => false, 'error' => 'Invalid status transition']);
+                }
+
                 // Update existing record
                 $purchase->payment_id = $payment['id'];
-                $purchase->status = 'hold';
+                $purchase->status = 'captured';
                 if ($ppv_plan) $purchase->ppv_plan = $ppv_plan;
                 $purchase->save();
 
@@ -2196,9 +2405,10 @@ class RazorpayController extends Controller
                     'user_id' => $user_id,
                     'payment_id' => $payment['id'],
                     'total_amount' => ($payment['amount'] ?? 0) / 100,
-                    'status' => 'hold',
+                    'status' => 'captured',
                     'payment_gateway' => 'razorpay',
                     'platform' => $platform,
+                    'to_time' => $to_time,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
@@ -2343,6 +2553,21 @@ class RazorpayController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check for duplicate webhook event with locking
+            $existingWebhookRecord = DB::table('payment_webhook')
+                ->where('payment_id', $payment['id'])
+                ->where('event_type', 'payment.failed')
+                ->lockForUpdate()
+                ->first();
+
+            if ($existingWebhookRecord) {
+                DB::commit();
+                \Log::info('Razorpay Webhook: Duplicate payment.failed event, skipping', [
+                    'payment_id' => $payment['id']
+                ]);
+                return response()->json(['success' => true, 'message' => 'Duplicate event']);
+            }
+
             // Log the webhook event
             DB::table('payment_webhook')->insert([
                 'order_id' => $payment['order_id'] ?? null,
@@ -2355,12 +2580,24 @@ class RazorpayController extends Controller
                 'updated_at' => now(),
             ]);
 
-            // Check if there's already a purchase record
+            // Check if there's already a purchase record with locking
             $purchase = \App\PpvPurchase::where('payment_id', $payment['id'])
                 ->orWhere('payment_id', $payment['order_id'])
+                ->lockForUpdate()
                 ->first();
             
             if ($purchase) {
+                // Verify valid status transition
+                if (!$this->isValidStatusTransition($purchase->status, 'failed')) {
+                    \Log::warning("Razorpay Webhook: Invalid status transition from {$purchase->status} to failed", [
+                        'payment_id' => $payment['id'],
+                        'purchase_id' => $purchase->id,
+                        'current_status' => $purchase->status
+                    ]);
+                    DB::commit();
+                    return response()->json(['success' => false, 'error' => 'Invalid status transition']);
+                }
+
                 // Update the existing purchase to 'failed'
                 $purchase->status = 'failed';
                 $purchase->payment_failure_reason = $payment['error_description'] ?? $payment['error_code'] ?? 'Unknown error';
