@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModeratorsUser extends Model
 {
-    // use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

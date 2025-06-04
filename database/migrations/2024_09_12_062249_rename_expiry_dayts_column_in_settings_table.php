@@ -15,6 +15,9 @@ class RenameExpiryDaytsColumnInSettingsTable extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->renameColumn('started_video_expiry_datys', 'started_video_expiry_days');
+        });
+
+        Schema::table('settings', function (Blueprint $table) {
             $table->renameColumn('before_video_expiry_datys', 'before_video_expiry_days');
         });
     }
@@ -29,6 +32,9 @@ class RenameExpiryDaytsColumnInSettingsTable extends Migration
         Schema::table('settings', function (Blueprint $table) {
             // Reverse the renaming process
             $table->renameColumn('started_video_expiry_days', 'started_video_expiry_datys');
+        });
+
+        Schema::table('settings', function (Blueprint $table) {
             $table->renameColumn('before_video_expiry_days', 'before_video_expiry_datys');
         });
     }

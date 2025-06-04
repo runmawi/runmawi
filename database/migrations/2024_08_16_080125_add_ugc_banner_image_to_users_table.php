@@ -14,7 +14,7 @@ class AddUgcBannerImageToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('ugc_banner');
+            $table->string('ugc_banner')->nullable();
         });
     }
 

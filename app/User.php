@@ -14,11 +14,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    use  HasApiTokens,Notifiable;
-    
-    use HasPermissionsTrait; //Import The Trait
-    
-    use Billable;
+    use HasApiTokens, Notifiable, HasPermissionsTrait, Billable;
+
 
     /**
 	 * The database table used by the model.

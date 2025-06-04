@@ -120,6 +120,7 @@ Route::group(
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('subscriptiondetail', 'ApiAuthController@subscriptiondetail');
         Route::post('add_payperview', 'ApiAuthController@add_payperview');
+        Route::post('create_razorpay_order', 'ApiAuthController@create_razorpay_order');
         Route::post('add_livepayperview', 'ApiAuthController@add_livepayperview');
         Route::post('addppvpaypal', 'ApiAuthController@AddPpvPaypal');
         Route::get('splash', 'ApiAuthController@splash');
