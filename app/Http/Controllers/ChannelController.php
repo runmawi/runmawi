@@ -74,11 +74,13 @@ use FFMpeg\Coordinate\Dimension;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\PartnerMonetizationSetting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use FFMpeg\Filters\Video\VideoFilters;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Intervention\Image\ImageManagerStatic as Image;
+
 
 class ChannelController extends Controller
 {
@@ -5065,6 +5067,15 @@ class ChannelController extends Controller
 
     public function video_js_fullplayer( Request $request, $slug ,$plan = null)
     {
+        \Log::info('VIDEO PLAYER DEBUG - Entry Point', [
+            'method' => 'video_js_fullplayer',
+            'slug' => $slug,
+            'plan' => $plan,
+            'url' => request()->fullUrl(),
+            'user_authenticated' => Auth::check(),
+            'user_id' => Auth::id()
+        ]);
+
         try {
 
             $sub_user = Session::get('subuser_id');
@@ -5073,6 +5084,9 @@ class ChannelController extends Controller
             $getfeching = Geofencing::first();
             $setting = Setting::first();
             $countryName = $geoip->getCountry();
+            \Log::info('VIDEOCHIPHER DEBUG - Settings loaded', [
+                'settings_exists' => !is_null($setting)
+            ]);
 
                     // Adsvariables
 
@@ -5100,7 +5114,12 @@ class ChannelController extends Controller
             }
 
             $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
-
+            // Add this logging right after
+            \Log::info('VIDEOCHIPHER DEBUG - Video Query', [
+                'slug' => $slug,
+                'video_id' => $video_id,
+                'video_found' => !is_null($video_id)
+            ]);
             
             if (!Auth::guest() ) {
                 $view = new RecentView();
@@ -5155,7 +5174,14 @@ class ChannelController extends Controller
             $videodetail = Video::where('id',$video_id)->where('active', 1)->where('draft', 1 )->latest()
                                     ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url)  {
 
-                $item['users_video_visibility_status']         = true ;
+                // Add this at the very start of the map function
+                \Log::info('VIDEOCHIPHER DEBUG - Map Function Entry', [
+                    'item_id' => $item->id ?? 'null',
+                    'item_title' => $item->title ?? 'null',
+                    'item_type' => $item->type ?? 'null'
+                ]);
+                
+                                        $item['users_video_visibility_status']         = true ;
                 $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                 $item['users_video_visibility_free_duration_status']  = 0 ;
 
@@ -5543,8 +5569,25 @@ class ChannelController extends Controller
             }
 
         } catch (\Throwable $th) {
-            // return $th->getMessage();
-            return abort(404);
+            \Log::error('VIDEOCHIPHER FULLPLAYER DEBUG - Exception Details', [
+                'error_message' => $th->getMessage(),
+                'error_file' => $th->getFile(),
+                'error_line' => $th->getLine(),
+                'error_code' => $th->getCode(),
+                'slug' => $slug,
+                'plan' => $plan,
+                'stack_trace' => $th->getTraceAsString()
+            ]);
+            
+            // For debugging, return the actual error instead of abort
+            return response()->json([
+                'error' => 'VideoCipher error',
+                'message' => $th->getMessage(),
+                'file' => $th->getFile(),
+                'line' => $th->getLine()
+            ], 500);
+            
+            // return abort(404); 
         }
     }
 
@@ -5743,10 +5786,14 @@ class ChannelController extends Controller
      
    public function VideoCipher_fullplayer( $slug ,$plan)
    {
-
+    \Log::info("VIDEOCHIPHER FULLPLAYER DEBUG - Method Start", [
+           "slug" => $slug,
+           "plan" => $plan
+    ]);
        try {
-
+        \Log::info("VIDEOCHIPHER FULLPLAYER DEBUG - Inside Try Block");
            $settings = Setting::first();
+           \Log::info('VIDEOCHIPHER DEBUG - Settings loaded successfully');
 
            $adsvariable_url = '';
 
@@ -5761,31 +5808,43 @@ class ChannelController extends Controller
                        $adsvariable_url .= "&" . $ads_variable->name . "=" . $ads_variable->website;
                    }
                }
-
-               $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category
-                                           ."&ads.content_genre=".$categoryVideos->ads_content_genre
-                                           ."&ads.content_id=".$categoryVideos->ads_content_id
-                                           ."&ads.content_language=".$categoryVideos->ads_content_language
-                                           ."&ads.content_title=".$categoryVideos->ads_content_title
-                                           ."&ads.channel_name=".$categoryVideos->title
-                                           ."&ads.network_name=".$categoryVideos->title;
+               \Log::info('VIDEOCHIPHER DEBUG - Ads variables processed');
+            //    $adsvariable_url .= "&ads.content_cat=".$categoryVideos->ads_content_category
+            //                                ."&ads.content_genre=".$categoryVideos->ads_content_genre
+            //                                ."&ads.content_id=".$categoryVideos->ads_content_id
+            //                                ."&ads.content_language=".$categoryVideos->ads_content_language
+            //                                ."&ads.content_title=".$categoryVideos->ads_content_title
+            //                                ."&ads.channel_name=".$categoryVideos->title
+            //                                ."&ads.network_name=".$categoryVideos->title;
            }
 
            $setting = Setting::first();
            $currency = CurrencySetting::first();
            $geoip = new \Victorybiz\GeoIPLocation\GeoIPLocation();
            $getfeching = Geofencing::first();
+           \Log::info('VIDEOCHIPHER DEBUG - All initial variables set');
 
            $video_id = Video::where('slug',$slug)->latest()->pluck('id')->first();
+           \Log::info('VIDEOCHIPHER DEBUG - Video ID retrieved', ['video_id' => $video_id]);
+           \Log::info('VIDEOCHIPHER DEBUG - About to query videodetail');
 
            $videodetail = Video::where('id',$video_id)->where('active', 1)->where('status', 1)->where('draft', 1 )->latest()
                                    ->get()->map(function ($item) use ( $video_id , $geoip , $setting , $currency , $getfeching , $adsvariable_url, $slug,$plan)  {
 
+                if (!empty($videodetail['_redirect_required'])) {
+                    return Redirect::to($videodetail['_redirect_required']);
+                }
+
+                \Log::info("VIDEOCHIPHER DEBUG - Map function started", ["item_id" => $item->id ?? "null"]);
                $item['users_video_visibility_status']         = true ;
                $item['users_video_visibility_redirect_url']   = route('video-js-fullplayer',[ optional($item)->slug ]);
                $item['users_video_visibility_free_duration_status']  = 0 ;
 
+               \Log::info("VIDEOCHIPHER DEBUG - Initial variables set in map");
+
+
                    // Check for guest user
+                \Log::info("VIDEOCHIPHER DEBUG - About to check guest user");
 
                if( Auth::guest()  && $item->access != "guest"  ){
 
@@ -5818,6 +5877,7 @@ class ChannelController extends Controller
 
                     
                         $current_date = Carbon::now()->format('Y-m-d H:i:s a');
+                        \Log::info("VIDEOCHIPHER DEBUG - About to check PPV exists");
 
                         // $ppv_exists_check_query = PpvPurchase::where('video_id',$item['id'])
                         //                             ->where('user_id', Auth::user()->id)
@@ -5834,16 +5894,17 @@ class ChannelController extends Controller
                                                             ->where('user_id', Auth::user()->id)
                                                             ->where('to_time','>',$current_date)
                                                             ->orderBy('created_at', 'desc')
-                                                            ->get()->map(function ($item){
-                                                                $payment_status = payment_status($item);
-                                                                if ($payment_status === null || $item->status === $payment_status) {
-                                                                    return $item;
+                                                            ->get()->map(function ($ppv_item){
+                                                                $payment_status = payment_status($ppv_item);
+                                                                if ($payment_status === null || $ppv_item->status === $payment_status) {
+                                                                    return $ppv_item;
                                                                 }
                                                                     return null;
                                                             })->first();
 
  
                         $PPV_exists = $ppv_exists_check_query ? true : false; 
+                        \Log::info("VIDEOCHIPHER DEBUG - PPV exists check completed", ["PPV_exists" => $PPV_exists]);
 
 
                        // free PPV access for subscriber status Condition
@@ -5918,10 +5979,12 @@ class ChannelController extends Controller
                    }
 
                        // Block Countries
+                       \Log::info("VIDEOCHIPHER DEBUG - About to check block countries");
+
 
                    if(  $getfeching !=null && $getfeching->geofencing == 'ON'){
 
-                       $block_videos_exists = $item->whereIn('videos.id', Block_videos())->exists();
+                        $block_videos_exists = in_array($item->id, Block_videos());
 
                        if ($block_videos_exists) {
 
@@ -5950,6 +6013,9 @@ class ChannelController extends Controller
                    }
                }
 
+               \Log::info("VIDEOCHIPHER DEBUG - About to set image URLs");
+
+
                $item['image_url']        = $item->image ? URL::to('public/uploads/images/'.$item->image ) : default_vertical_image_url();
                $item['player_image_url'] = $item->player_image ?  URL::to('public/uploads/images/'.$item->player_image) : default_horizontal_image_url() ;
                $item['pdf_files_url']      = URL::to('public/uploads/videoPdf/'.$item->pdf_files) ;
@@ -5962,7 +6028,8 @@ class ChannelController extends Controller
             //    $item['video_skip_recap_seconds']        = $item->skip_recap && ($item->skip_recap != null) ? Carbon::parse($item->skip_recap)->secondsSinceMidnight() : null ;
             //    $item['video_recap_start_time_seconds']  = $item->recap_start_time && ($item->recap_start_time != null) ? Carbon::parse($item->recap_start_time)->secondsSinceMidnight() : null ;
             //    $item['video_recap_end_time_seconds']    = $item->recap_end_time && ($item->recap_end_time != null) ? Carbon::parse($item->recap_end_time)->secondsSinceMidnight() : null ;
-               
+                \Log::info("VIDEOCHIPHER DEBUG - About to set video URLs");
+
                if( !Auth::guest() && Auth::user()->role == "admin"){
                     $item['videos_url'] =  $item->video_id_1080p ;
                }elseif(!empty(@$plan) && @$plan != '' && $item['access'] == 'guest'){
@@ -5979,7 +6046,8 @@ class ChannelController extends Controller
                     if($item['PPV_Plan'] > 0){
                         if($item['PPV_Plan'] == '480p'){ $item['videos_url'] =  $item->video_id_480p ; }elseif($item['PPV_Plan'] == '720p' ){$item['videos_url'] =  $item->video_id_720p ; }elseif($item['PPV_Plan'] == '1080p'){ $item['videos_url'] =  $item->video_id_1080p ; }else{ $item['videos_url'] =  '' ;}
                     }else{
-                        return Redirect::to('/category/videos'.'/'.$slug);
+                        $item['_redirect_required'] = '/category/videos'.'/'.$slug;
+                        $item['videos_url'] = '';
                    }
                }
                elseif( $item['access'] == 'ppv' && !Auth::guest() && Auth::user()->role == "subscriber"){
@@ -5993,8 +6061,59 @@ class ChannelController extends Controller
                    $item['PPV_Plan']   = '';
                }
                
-                $videoId = $item['videos_url']; 
+               $videoId = null;
+
+           
+               // Determine which quality to use based on plan parameter
+               if ($plan == '480p' && !empty($item['video_id_480p'])) {
+                   $videoId = $item['video_id_480p'];
+               } elseif ($plan == '720p' && !empty($item['video_id_720p'])) {
+                   $videoId = $item['video_id_720p'];
+               } elseif ($plan == '1080p' && !empty($item['video_id_1080p'])) {
+                   $videoId = $item['video_id_1080p'];
+               } else {
+                   // Default to highest available quality
+                   if (!empty($item['video_id_1080p'])) {
+                       $videoId = $item['video_id_1080p'];
+                   } elseif (!empty($item['video_id_720p'])) {
+                       $videoId = $item['video_id_720p'];
+                   } elseif (!empty($item['video_id_480p'])) {
+                       $videoId = $item['video_id_480p'];
+                   }
+               }
+
+               \Log::info("VIDEOCHIPHER DEBUG - Video ID Selection", [
+                "plan" => $plan,
+                "videoId" => $videoId,
+                "video_id_480p" => $item["video_id_480p"] ?? "null",
+                "video_id_720p" => $item["video_id_720p"] ?? "null",
+                "video_id_1080p" => $item["video_id_1080p"] ?? "null"
+            ]);
+               
+               // If no video ID found, skip API call
+               if (empty($videoId)) {
+                   $item['otp'] = null;
+                   $item['playbackInfo'] = null;
+                   return $item;
+               }
+
+                                // Log the video ID being used
+                Log::info('VideoCipher Debug - Video ID Selection', [
+                    'slug' => $slug,
+                    'plan' => $plan,
+                    'video_id_480p' => $item['video_id_480p'] ?? 'null',
+                    'video_id_720p' => $item['video_id_720p'] ?? 'null', 
+                    'video_id_1080p' => $item['video_id_1080p'] ?? 'null',
+                    'selected_videoId' => $videoId
+                ]);
+
                 $apiKey = videocipher_Key();
+
+                // Log API key (partially for security)
+                Log::info('VideoCipher Debug - API Key', [
+                    'api_key_length' => strlen($apiKey),
+                    'api_key_first_10' => substr($apiKey, 0, 10) . '...'
+                ]);
                 $curl = curl_init();
                 $watermarkText = Auth::user()->mobile; 
                 $annotateJson = json_encode([
@@ -6008,6 +6127,18 @@ class ChannelController extends Controller
                     ]
                 ]);
 
+                $requestData = [
+                    "ttl" => 30000, 
+                    "annotate" => $annotateJson
+                ];
+                
+                // Log the API request details
+                Log::info('VideoCipher Debug - API Request', [
+                    'url' => "https://dev.vdocipher.com/api/videos/$videoId/otp",
+                    'request_data' => $requestData,
+                    'watermark_text' => $watermarkText
+                ]);
+
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => "https://dev.vdocipher.com/api/videos/$videoId/otp",
                     CURLOPT_RETURNTRANSFER => true,
@@ -6016,10 +6147,7 @@ class ChannelController extends Controller
                     CURLOPT_TIMEOUT => 30,
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => "POST",
-                    CURLOPT_POSTFIELDS => json_encode([
-                        "ttl" => 30000, 
-                        "annotate" => $annotateJson
-                    ]),
+                    CURLOPT_POSTFIELDS => json_encode($requestData),
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
                         "Authorization: Apisecret $apiKey",
@@ -6031,27 +6159,52 @@ class ChannelController extends Controller
 
                 $response = curl_exec($curl);
                 $err = curl_error($curl);
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
 
                 curl_close($curl);
 
+                Log::info('VideoCipher Debug - API Response', [
+                    'curl_error' => $err,
+                    'http_code' => $httpCode,
+                    'raw_response' => $response,
+                    'response_length' => strlen($response)
+                ]);
+
                 if ($err) {
-                    // echo "cURL Error #:" . $err;
+                    Log::error('VideoCipher API - cURL Error', [
+                        'error' => $err,
+                        'video_id' => $videoId
+                    ]);
                     $item['otp'] = null;
                     $item['playbackInfo'] = null;
-                   
                 } else {
-
                     $responseObj = json_decode($response, true);
-
+                    
+                    // Log the parsed response
+                    Log::info('VideoCipher Debug - Parsed Response', [
+                        'response_obj' => $responseObj,
+                        'json_decode_error' => json_last_error_msg()
+                    ]);
+                
                     if(!empty($responseObj['message']) && $responseObj['message'] == "No new update parameters" || !empty($responseObj['message']) && $responseObj['message'] == "video not found"){
+                        Log::warning('VideoCipher API - Video Issue', [
+                            'message' => $responseObj['message'] ?? 'unknown',
+                            'video_id' => $videoId
+                        ]);
                         $item['otp'] = null;
                         $item['playbackInfo'] = null;
-                    }else{
-                        $item['otp'] = $responseObj['otp'];
-                        $item['playbackInfo'] = $responseObj['playbackInfo'];
+                    } else {
+                        $item['otp'] = $responseObj['otp'] ?? null;
+                        $item['playbackInfo'] = $responseObj['playbackInfo'] ?? null;
+                        
+                        Log::info('VideoCipher Debug - Final Result', [
+                            'otp_length' => $item['otp'] ? strlen($item['otp']) : 0,
+                            'playbackInfo_length' => $item['playbackInfo'] ? strlen($item['playbackInfo']) : 0,
+                            'otp_exists' => !empty($item['otp']),
+                            'playbackInfo_exists' => !empty($item['playbackInfo'])
+                        ]);
                     }
-
-                   
                 }
 
                return $item;
