@@ -1807,7 +1807,6 @@ Route::group(['prefix' => 'cpp', 'middleware' => ['cpp']], function () {
     Route::post('/videos/store', ['before' => 'demo', 'uses' => 'CPPAdminVideosController@CPPstore']);
     Route::post('/videos/update', ['before' => 'demo', 'uses' => 'CPPAdminVideosController@Cppupdate']);
     Route::get('/category/videos/{slug}', 'CPPChannelController@PlayVideo');
-    Route::get('/category/videos/{slug}', 'CPPChannelController@PlayVideo');
 
     Route::get('/cppusers_videodata', 'CPPAdminVideosController@CPPVideo');
     Route::get('/CPPlive_search', 'CPPAdminVideosController@CPPlive_search');
