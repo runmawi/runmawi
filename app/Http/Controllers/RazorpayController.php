@@ -605,8 +605,27 @@ class RazorpayController extends Controller
 
             DB::commit();
 
+            $video = Video::find($request->video_id);
+            $video_slug = $video ? $video->slug : null;
+
+            \Log::info('RazorpayVideoRent_Payment redirect debug:', [
+                'video_id' => $request->video_id,
+                'video_found' => $video ? 'yes' : 'no',
+                'video_slug' => $video_slug,
+                'video_title' => $video ? $video->title : 'N/A'
+            ]);
+
+            $redirect_url = $video_slug ? URL::to('category/videos/' . $video_slug) : URL::to('home');
+
+            \Log::info('Final redirect URL:', [
+                'redirect_url' => $redirect_url
+            ]);
+
             return view('Razorpay.Rent_message', [
-                'respond' => ['status' => 'true']
+                'respond' => [
+                    'status' => 'true',
+                    'redirect_url' => $redirect_url
+                ]
             ]);
 
         } catch (\Exception $e) {
@@ -1221,62 +1240,19 @@ class RazorpayController extends Controller
         $recept_id = Str::random(10);
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
-        // Create initial purchase record
-        $purchase = new PpvPurchase();
-        $purchase->user_id = Auth::user()->id;
-        $purchase->video_id = $video_id;
-        $purchase->total_amount = $amount;
-        $purchase->status = 'hold';
-        $purchase->platform = 'website';
-        $purchase->payment_gateway = 'razorpay';
-        $purchase->save();
-        $PpvPurchase_id = $purchase->id;
+        // // Create initial purchase record
+        // $purchase = new PpvPurchase();
+        // $purchase->user_id = Auth::user()->id;
+        // $purchase->video_id = $video_id;
+        // $purchase->total_amount = $amount;
+        // $purchase->status = 'hold';
+        // $purchase->platform = 'website';
+        // $purchase->payment_gateway = 'razorpay';
+        // $purchase->save();
+        // $PpvPurchase_id = $purchase->id;
 
-        $orderData = [
-            'receipt' => $recept_id,
-            'amount' => $amount * 100,
-            'currency' => 'INR',
-            'payment_capture' => 1,
-        ];
-        $commission_percentage_value = $video->CPP_commission_percentage;
-        if ($commission_btn === 0) {
-            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-        }
-        if (!empty($moderators_id)) {
-            $moderator = ModeratorsUser::where('id', $moderators_id)->first();
-            if ($moderator) {
-                $percentage = $moderator->commission_percentage ? $moderator->commission_percentage : 0;
-            } else {
-                $percentage = 0;
-            }
-            $total_amount = $video->ppv_price;
-            $title = $video->title;
-            $commssion = VideoCommission::where('type', 'CPP')->first();
-            $ppv_price = $amount;
-            $moderator_commssion = ($ppv_price * $commission_percentage_value) / 100;
-            $admin_commssion = $ppv_price - $moderator_commssion;
-            $moderator_id = $moderators_id;
-        } else {
-            $total_amount = $video->ppv_price;
-            $title = $video->title;
-            $commssion = VideoCommission::where('type', 'CPP')->first();
-            $percentage = null;
-            $ppv_price = $video->ppv_price;
-            $admin_commssion = null;
-            $moderator_commssion = null;
-            $moderator_id = null;
-        }
-
-        $purchase = PpvPurchase::find($PpvPurchase_id);
-        $purchase->total_amount = $amount;
-        $purchase->moderator_id = $moderators_id;
-        $purchase->admin_commssion = $admin_commssion;
-        $purchase->moderator_commssion = $moderator_commssion;
-        $purchase->ppv_plan = $request->ppv_plan;
-        $purchase->save();
 
         $recept_id = Str::random(10);
-
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
         $orderData = [
@@ -1303,7 +1279,6 @@ class RazorpayController extends Controller
             'address' => null,
             'Video_slug' => $video->slug,
             'ppv_plan' => $ppv_plan,
-            'PpvPurchase_id' => $PpvPurchase_id,
         );
 
         return Theme::view('Razorpay.video_rent_checkout', compact('response'), $response);
@@ -1364,13 +1339,13 @@ class RazorpayController extends Controller
             $moderator_id = null;
         }
 
-        $purchase = PpvPurchase::find($PpvPurchase_id);
-        $purchase->total_amount = $SeriesSeason->ppv_price;
-        $purchase->moderator_id = $moderators_id;
-        $purchase->admin_commssion = $admin_commssion;
-        $purchase->moderator_commssion = $moderator_commssion;
-        $purchase->save();
-        $recept_id = Str::random(10);
+        // $purchase = PpvPurchase::find($PpvPurchase_id);
+        // $purchase->total_amount = $SeriesSeason->ppv_price;
+        // $purchase->moderator_id = $moderators_id;
+        // $purchase->admin_commssion = $admin_commssion;
+        // $purchase->moderator_commssion = $moderator_commssion;
+        // $purchase->save();
+        // $recept_id = Str::random(10);
 
         $api = new Api($this->razorpaykeyId, $this->razorpaykeysecret);
 
