@@ -17,7 +17,7 @@ class AddRestreamUrlToLiveStreamsTable extends Migration
             $table->string('fb_restream_url')->nullable();
             $table->string('youtube_restream_url')->nullable();
             $table->string('twitter_restream_url')->nullable();
-            $table->tinyInteger('enable_restream')->defaule('0');
+            $table->tinyInteger('enable_restream')->default(0);
         });
     }
 

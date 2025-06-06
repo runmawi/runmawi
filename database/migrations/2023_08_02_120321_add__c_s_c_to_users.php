@@ -14,10 +14,10 @@ class AddCSCToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('city')->after('countryname');
-            $table->string('state')->after('city');
-            $table->string('country')->after('state');
-            $table->string('support_username')->after('country');
+            $table->string('city')->nullable()->after('countryname');
+            $table->string('state')->nullable()->after('city');
+            $table->string('country')->nullable()->after('state');
+            $table->string('support_username')->nullable()->after('country');
         });
     }
 

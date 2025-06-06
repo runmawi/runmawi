@@ -20,7 +20,7 @@ class AddRestreamStreamkeyToLiveEventArtistsTable extends Migration
             $table->string('youtube_streamkey')->nullable()->after('youtube_restream_url');
             $table->string('twitter_restream_url')->nullable()->after('youtube_streamkey');
             $table->string('twitter_streamkey')->nullable()->after('twitter_restream_url');
-            $table->tinyInteger('enable_restream')->defaule('0')->after('twitter_streamkey');
+            $table->tinyInteger('enable_restream')->default(0)->after('twitter_streamkey');
         });
     }
 

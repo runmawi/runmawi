@@ -14,8 +14,8 @@
 </div>    
 
 <?php
-    $URL   = URL::to('home');
-    $status =$respond['status'] ;
+    $URL = $respond['redirect_url'] ?? URL::to('home');
+    $status = $respond['status'];
 ?>
    
 <script type="text/javascript">
