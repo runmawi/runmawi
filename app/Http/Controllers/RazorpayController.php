@@ -814,7 +814,7 @@ class RazorpayController extends Controller
             //     $moderator_id = null;
             // }
 
-            $purchase = PpvPurchase::find($request->PpvPurchase_id);
+            $purchase = new PpvPurchase; // Simplified from find()
             $purchase->user_id = $request->user_id;
             $purchase->live_id = $request->live_id;
             $purchase->total_amount = $request->get('amount') / 100;
@@ -1380,7 +1380,6 @@ class RazorpayController extends Controller
             'Series_slug' => $Series_slug,
             'address' => null,
             'ppv_plan' => null,
-            'PpvPurchase_id' => $PpvPurchase_id,
         );
 
         return Theme::view('Razorpay.SeriesSeason_rent_checkout', compact('response'), $response);
@@ -1478,8 +1477,7 @@ class RazorpayController extends Controller
             //     $moderator_id = null;
             // }
 // dd($moderator_commssion);
-            $purchase = PpvPurchase::find($request->PpvPurchase_id);
-            // $purchase = new PpvPurchase;
+            $purchase = new PpvPurchase; // Simplified from find()
             $purchase->user_id = $request->user_id;
             $purchase->season_id = $request->SeriesSeason_id;
             $purchase->series_id = $series_id;

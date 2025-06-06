@@ -24,7 +24,9 @@ var options = {
         "name": "{{$response['name']}}",
     },
     "notes": {
-        "address": "{{$response['address']}}"
+        "SeriesSeason_id": "{{$response['SeriesSeason_id']}}",
+        "user_id": "{{$response['user_id']}}",
+        "ppv_plan": "{{$response['ppv_plan']}}"
     },
     "theme": {
         "color": "#F37254"
@@ -81,8 +83,6 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="SeriesSeason_id"  value= {{ $response['SeriesSeason_id'] }} />
     <input type="text"  name="amount"    value= {{ $response['amount'] }} />
     <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
-
-    <input type="text"  name="PpvPurchase_id"  value= {{ $response['PpvPurchase_id'] }} />
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
