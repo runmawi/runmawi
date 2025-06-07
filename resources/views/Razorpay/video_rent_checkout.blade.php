@@ -40,7 +40,7 @@ var rzp1 = new Razorpay(options);
 
 
 rzp1.on('payment.failed', function (response) {
-    console.error('Payment failed:', response); // Log full response
+    console.error('Payment failed:', response);
     
     fetch("{{ url('/RazorpayVideoRent_Paymentfailure') }}", {
         method: "POST",
@@ -52,12 +52,11 @@ rzp1.on('payment.failed', function (response) {
             user_id: "{{ $response['user_id'] }}",
             video_id: "{{ $response['video_id'] }}",
             amount: "{{ $response['amount'] }}",
-            PpvPurchase_id: "{{ $response['PpvPurchase_id'] }}",
             order_id: response.error.metadata.order_id,
             payment_id: response.error.metadata.payment_id,
             error_code: response.error.code,
             error_description: response.error.description,
-            error_full: JSON.stringify(response.error), // Log entire error object
+            error_full: JSON.stringify(response.error),
             failure_reason: response.error.reason 
         })
     }).then(res => res.json())
@@ -87,7 +86,6 @@ document.getElementById('rzp-button1').onclick = function(e){
     <input type="text"  name="video_id"  value= {{ $response['video_id'] }} />
     <input type="text"  name="amount"    value= {{ $response['amount'] }} />
     <input type="text"  name="ppv_plan"  value= {{ $response['ppv_plan'] }} />
-    <input type="hidden"  name="PpvPurchase_id"  value= {{ $response['PpvPurchase_id'] }} />
 
     <button type="submit" id="rzp-paymentresponse" class="btn btn-primary">Submit</button>
 </form>
