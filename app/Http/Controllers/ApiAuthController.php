@@ -2142,19 +2142,19 @@ class ApiAuthController extends Controller
             $item['PPV_Plan'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
             \Log::info('LOG_ PPV Debug', ['video_id' => $item['id'], 'user_id' => $data['user_id'], 'ppv_plan' => $item['PPV_Plan'], '480p_id' => $item->video_id_480p]);
             \Log::info('VIDEO DEBUG', [
-              'item_id' => $item['id']?? 'N/A',
+              'item_id' => $item['id'] ?? 'N/A',
               'item_title' => $item['title'] ?? 'N/A',
-              'actual_480p_from_db' => $item->video_id_480p ?? 'N/A'  ,
+              'actual_480p_from_db' => $item->video_id_480p ?? 'N/A',
               'actual_720p_from_db' => $item->video_id_720p ?? 'N/A',
               'actual_1080p_from_db' => $item->video_id_1080p ?? 'N/A'
-          ]);
-            if (!empty($item['PPV_Plan'])){
+            ]);
+            if (!empty($item['PPV_Plan'])) {
               if (strpos($item['PPV_Plan'], '480p') !== false) {
                 $item['videos_url'] = $item->video_id_480p;
               } elseif (strpos($item['PPV_Plan'], '720p') !== false) {
-                  $item['videos_url'] = $item->video_id_720p;  
+                $item['videos_url'] = $item->video_id_720p;
               } elseif (strpos($item['PPV_Plan'], '1080p') !== false) {
-                  $item['videos_url'] = $item->video_id_1080p;
+                $item['videos_url'] = $item->video_id_1080p;
               } else {
                 $item['videos_url'] = '';
               }
@@ -2167,11 +2167,11 @@ class ApiAuthController extends Controller
             if (!empty($item['PPV_Plan'])) {
               if (strpos($item['PPV_Plan'], '480p') !== false) {
                 $item['videos_url'] = $item->video_id_480p;
-            } elseif (strpos($item['PPV_Plan'], '720p') !== false) {
-                $item['videos_url'] = $item->video_id_720p;  
-            } elseif (strpos($item['PPV_Plan'], '1080p') !== false) {
+              } elseif (strpos($item['PPV_Plan'], '720p') !== false) {
+                $item['videos_url'] = $item->video_id_720p;
+              } elseif (strpos($item['PPV_Plan'], '1080p') !== false) {
                 $item['videos_url'] = $item->video_id_1080p;
-            } else {
+              } else {
                 $item['videos_url'] = '';
               }
             } else {
@@ -2825,65 +2825,65 @@ class ApiAuthController extends Controller
       if (isset($request->user_id) && $request->user_id != '') {
         $user_id = $request->user_id;
 
-      // Quality-specific PPV checking
-      if (isset($request->play_videoid) && !empty($request->play_videoid)) {
-        // Check if user has purchased this specific quality
-        \Log::info('QUALITY DEBUG START', [
-          'requested_quality' => $request->play_videoid,
-          'user_id' => $user_id,
-          'video_id' => $videoid,
-          'current_date' => $current_date
-        ]);
-        
-        // First, let's see ALL purchases for this user and video
-        $all_purchases = PpvPurchase::where('video_id', $videoid)
-          ->where('user_id', $user_id)
-          ->where('status', 'captured')
-          ->get(['ppv_plan', 'to_time', 'status', 'created_at']);
-          
-        \Log::info('ALL USER PURCHASES FOR VIDEO', [
-          'user_id' => $user_id,
-          'video_id' => $videoid,
-          'all_purchases' => $all_purchases->toArray()
-        ]);
-        
-        $ppv_purchase = PpvPurchase::where('video_id', $videoid)
-          ->where('user_id', $user_id)
-          ->where('status', 'captured')
-          ->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
-          ->first();
-          
-        $ppv_exist = $ppv_purchase ? 1 : 0;
-        $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
-        
-        \Log::info('QUALITY SPECIFIC PURCHASE RESULT', [
-          'ppv_exist_count' => $ppv_exist,
-          'requested_quality' => $request->play_videoid,
-          'found_purchase' => $ppv_purchase ? $ppv_purchase->toArray() : null,
-          'expiration' => $ppv_time_expire,
-          'is_expired' => $ppv_time_expire ? ($ppv_time_expire <= $current_date ? 'YES' : 'NO') : 'N/A'
-        ]);
-      } else {
-        // General PPV check (any quality)
-        \Log::info('GENERAL PPV CHECK - NO QUALITY SPECIFIED', [
-          'user_id' => $user_id,
-          'video_id' => $videoid
-        ]);
-        
-        $ppv_purchase = PpvPurchase::where('video_id', $videoid)
-          ->where('user_id', $user_id)
-          ->where('status', 'captured')
-          ->first();
-          
-        $ppv_exist = $ppv_purchase ? 1 : 0;
-        $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
-        
-        \Log::info('GENERAL PPV RESULT', [
-          'ppv_exist_count' => $ppv_exist,
-          'found_purchase' => $ppv_purchase ? $ppv_purchase->toArray() : null,
-          'expiration' => $ppv_time_expire
-        ]);
-      }
+        // Quality-specific PPV checking
+        if (isset($request->play_videoid) && !empty($request->play_videoid)) {
+          // Check if user has purchased this specific quality
+          \Log::info('QUALITY DEBUG START', [
+            'requested_quality' => $request->play_videoid,
+            'user_id' => $user_id,
+            'video_id' => $videoid,
+            'current_date' => $current_date
+          ]);
+
+          // First, let's see ALL purchases for this user and video
+          $all_purchases = PpvPurchase::where('video_id', $videoid)
+            ->where('user_id', $user_id)
+            ->where('status', 'captured')
+            ->get(['ppv_plan', 'to_time', 'status', 'created_at']);
+
+          \Log::info('ALL USER PURCHASES FOR VIDEO', [
+            'user_id' => $user_id,
+            'video_id' => $videoid,
+            'all_purchases' => $all_purchases->toArray()
+          ]);
+
+          $ppv_purchase = PpvPurchase::where('video_id', $videoid)
+            ->where('user_id', $user_id)
+            ->where('status', 'captured')
+            ->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
+            ->first();
+
+          $ppv_exist = $ppv_purchase ? 1 : 0;
+          $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
+
+          \Log::info('QUALITY SPECIFIC PURCHASE RESULT', [
+            'ppv_exist_count' => $ppv_exist,
+            'requested_quality' => $request->play_videoid,
+            'found_purchase' => $ppv_purchase ? $ppv_purchase->toArray() : null,
+            'expiration' => $ppv_time_expire,
+            'is_expired' => $ppv_time_expire ? ($ppv_time_expire <= $current_date ? 'YES' : 'NO') : 'N/A'
+          ]);
+        } else {
+          // General PPV check (any quality)
+          \Log::info('GENERAL PPV CHECK - NO QUALITY SPECIFIED', [
+            'user_id' => $user_id,
+            'video_id' => $videoid
+          ]);
+
+          $ppv_purchase = PpvPurchase::where('video_id', $videoid)
+            ->where('user_id', $user_id)
+            ->where('status', 'captured')
+            ->first();
+
+          $ppv_exist = $ppv_purchase ? 1 : 0;
+          $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
+
+          \Log::info('GENERAL PPV RESULT', [
+            'ppv_exist_count' => $ppv_exist,
+            'found_purchase' => $ppv_purchase ? $ppv_purchase->toArray() : null,
+            'expiration' => $ppv_time_expire
+          ]);
+        }
         //Wishlilst
         $cnt = Wishlist::select('video_id')->where('user_id', '=', $user_id)->where('video_id', '=', $videoid)->count();
         $wishliststatus = ($cnt == 1) ? "true" : "false";
@@ -30089,19 +30089,22 @@ class ApiAuthController extends Controller
         return response()->json($response, 422);
       }
 
-      $user = User::where('mobile', $request->mobile_number)->where('ccode', $request->ccode)->first();
+      // First find user by mobile number only
+      $user = User::where('mobile', $request->mobile_number)->first();
 
       if (!is_null($user)) {
+        // Update ccode if it's null or empty
+        if (empty($user->ccode)) {
+          $user->ccode = !empty($request->ccode) ? $request->ccode : '+91';
+          $user->save();
+        }
 
         if ($user->active != 1) {
           $mobile_number_status = "mobile_number_exists";
-          $message = Str::title('this mobile number in inactive status !!');
+          $message = Str::title('this mobile number is inactive !!');
           $redirect_api = URL::to('api/auth/login');
-
           $user_detail = null;
-
         } else {
-
           $mobile_number_status = "mobile_number_exists";
           $message = Str::title('this mobile number already exists !!');
           $redirect_api = URL::to('api/auth/login');
@@ -30165,8 +30168,12 @@ class ApiAuthController extends Controller
 
       $user = User::find($user_id);
 
-      if (is_null($user->ccode) || (empty($user->ccode)))
-        return response()->json(array("status" => 'false', "message" => 'Ccode Missing', ), 422);
+      // Handle missing ccode by defaulting to +91 for Indian numbers
+      if (empty($user->ccode)) {
+        // Default to India (+91) if ccode is not provided in request
+        $user->ccode = !empty($request->ccode) ? $request->ccode : '+91';
+        $user->save();
+      }
 
       $ccode = str_replace('+', '', $user->ccode);
       $mobile = $user->mobile;
@@ -31647,12 +31654,18 @@ class ApiAuthController extends Controller
       ];
 
       // Add content-specific IDs to notes for detailed reference
-      if (!empty($video_id)) $orderNotes['video_id'] = $video_id;
-      if (!empty($live_id)) $orderNotes['live_id'] = $live_id;
-      if (!empty($audio_id)) $orderNotes['audio_id'] = $audio_id;
-      if (!empty($series_id)) $orderNotes['series_id'] = $series_id;
-      if (!empty($season_id)) $orderNotes['season_id'] = $season_id;
-      if (!empty($episode_id)) $orderNotes['episode_id'] = $episode_id;
+      if (!empty($video_id))
+        $orderNotes['video_id'] = $video_id;
+      if (!empty($live_id))
+        $orderNotes['live_id'] = $live_id;
+      if (!empty($audio_id))
+        $orderNotes['audio_id'] = $audio_id;
+      if (!empty($series_id))
+        $orderNotes['series_id'] = $series_id;
+      if (!empty($season_id))
+        $orderNotes['season_id'] = $season_id;
+      if (!empty($episode_id))
+        $orderNotes['episode_id'] = $episode_id;
 
       // Create Razorpay order
       $orderData = [

@@ -61,6 +61,12 @@ class OTPController extends Controller
         if(is_null($user)){
             return response()->json(['exists' => false, 'message_note' => 'Invalid User, Please check this Mobile Number','error_note' => "Invalid User"]);
         }
+        
+        // Handle missing ccode by defaulting to +91 for Indian numbers
+        if (empty($user->ccode)) {
+            $user->ccode = !empty($request->ccode) ? $request->ccode : '+91';
+            $user->save();
+        }
 
             // Check Admin exists
         if (  (!is_null($user) && $user->mobile == "9962743248" ) || (!is_null($user) && $user->role == "admin")) {
