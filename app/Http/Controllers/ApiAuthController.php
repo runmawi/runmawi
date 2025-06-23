@@ -19963,35 +19963,32 @@ class ApiAuthController extends Controller
       $data = array();      // Note - if the home-setting (Live category status) is turned off in the admin panel
     else:
 
-      $data = LiveCategory::query()->whereHas('category_livestream', function ($query) use ($homepage_input_array) {
-        $query->where('live_streams.active', 1)->where('live_streams.status', 1)->limit($homepage_input_array['limit']);
-      })
-
-        ->with([
-          'category_livestream' => function ($live_stream_videos) use ($homepage_input_array) {
-            $live_stream_videos
-              ->select('live_streams.id', 'live_streams.title', 'live_streams.slug', 'live_streams.year', 'live_streams.rating', 'live_streams.access', 'live_streams.ppv_price', 'live_streams.publish_type', 'live_streams.publish_status', 'live_streams.publish_time', 'live_streams.duration', 'live_streams.rating', 'live_streams.image', 'live_streams.featured', 'live_streams.player_image', 'live_streams.description')
-              ->where('live_streams.active', 1)->where('live_streams.status', 1)
-              ->orderBy('live_streams.created_at', 'desc')
-              ->limit($homepage_input_array['limit']);
-          }
-        ])
-        ->select('live_categories.id', 'live_categories.name', 'live_categories.slug', 'live_categories.order')
-        ->orderBy('live_categories.order')
-        ->get();
-
-      $data->each(function ($category) {
-        $category->category_livestream->transform(function ($item) {
-          $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
-          $item['Player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
-          $item['tv_image_url'] = URL::to('public/uploads/images/' . $item->player_image);  // Note - No TV Image
-          $item['description'] = $item->description;
-          $item['source'] = "Livestream";
-          return $item;
-        });
-        $category->source = "live_category";
-        return $category;
-      });
+      // Use the same simple approach as "See All" to ensure consistency
+      $categories = LiveCategory::orderBy('order')->get();
+      $data = collect();
+      
+      foreach ($categories as $category) {
+        $livestreams = $category->specific_category_live()
+          ->where('active', 1)
+          ->where('status', 1)
+          ->latest()
+          ->get();
+          
+        if ($livestreams->count() > 0) {
+          $livestreams->transform(function ($item) {
+            $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
+            $item['Player_image_url'] = URL::to('public/uploads/images/' . $item->player_image);
+            $item['tv_image_url'] = URL::to('public/uploads/images/' . $item->player_image);  // Note - No TV Image
+            $item['description'] = $item->description;
+            $item['source'] = "Livestream";
+            return $item;
+          });
+          
+          $category->category_livestream = $livestreams;
+          $category->source = "live_category";
+          $data->push($category);
+        }
+      }
 
     endif;
 
@@ -31575,7 +31572,7 @@ class ApiAuthController extends Controller
 
     try {
 
-      $homepage_input_array = ['limit' => 30, 'MobileHomeSetting' => MobileHomeSetting::first(), 'Geofencing' => Geofencing(), 'default_vertical_image_url' => default_vertical_image_url(), 'default_horizontal_image_url' => default_horizontal_image_url(), "LiveStream_based_categories_status" => 1];
+      $homepage_input_array = ['limit' => 100, 'MobileHomeSetting' => MobileHomeSetting::first(), 'Geofencing' => Geofencing(), 'default_vertical_image_url' => default_vertical_image_url(), 'default_horizontal_image_url' => default_horizontal_image_url(), "LiveStream_based_categories_status" => 1];
 
       $data = $this->All_Homepage_category_livestream($homepage_input_array);
 
