@@ -3,7 +3,7 @@
 @section('producer.section')
     <div class="row center">
         <h4>SUMMARY</h4>
-        (Producer portal hi update a ni a, dik lo lai i hmuh chuan Runmawi lam min hriattir turin kan ngen a che.)
+        (Producer portal hi update a ni a, dik lo lai ilo hmuh chuan Runmawi lam min hriattir turin kan ngen a che.)
     </div>
 
     <div class="row">
