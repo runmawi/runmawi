@@ -578,6 +578,34 @@ class ProducerController extends Controller
                 'audios' => Audio::where('user_id', $cpp_user_id)->where('uploaded_by','CPP')->get(),
             ];
 
+            // Improved Line Chart Data - Single optimized query
+            $chart_data = PpvPurchase::where('moderator_id', $cpp_user_id)
+                ->where('created_at', '>=', $filter_date)
+                ->where('created_at', '>=', Carbon::now()->subDays(14)->startOfDay())
+                ->where(function ($query) {
+                    $query->where('status', 'captured')->orWhere('status', '1');
+                })
+                ->selectRaw('DATE(created_at) as purchase_date, COUNT(*) as daily_count, SUM(total_amount) as daily_amount')
+                ->groupBy('purchase_date')
+                ->orderBy('purchase_date', 'asc')
+                ->get()
+                ->keyBy('purchase_date');
+
+            // Generate consistent 15-day labels and data
+            $ppv_purchases_count_labels = [];
+            $ppv_purchases_count_data = [];
+            $ppv_purchases_amount_data = [];
+
+            for ($i = 14; $i >= 0; $i--) {
+                $date = Carbon::now()->subDays($i)->toDateString();
+                $ppv_purchases_count_labels[] = $date;
+                
+                // Use data from optimized query or default to 0
+                $daily_data = $chart_data->get($date);
+                $ppv_purchases_count_data[] = $daily_data ? $daily_data->daily_count : 0;
+                $ppv_purchases_amount_data[] = $daily_data ? $daily_data->daily_amount : 0;
+            }
+
             $data = array(
                 'ppv_purchases_count' => $ppv_purchases_count ,
                 'ppv_purchases_amount' => $ppv_purchases_amount ,
@@ -585,7 +613,11 @@ class ProducerController extends Controller
                 'currency_symbol'  => currency_symbol(),
                 'cpp_user_id'   => $cpp_user_id,
                 'Sales_Summary' => $Sales_Summary,
-                'monthly_Summary' => $monthly_Summary
+                'monthly_Summary' => $monthly_Summary,
+                // Add chart data to pass to view
+                'chart_labels' => json_encode($ppv_purchases_count_labels),
+                'chart_count_data' => json_encode($ppv_purchases_count_data),
+                'chart_amount_data' => json_encode($ppv_purchases_amount_data)
 
             );
 

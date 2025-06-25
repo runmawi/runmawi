@@ -208,29 +208,7 @@
         @endforeach
     </div>
 
-    <?php
-    
-    $ppv_purchases_count_labels = [];
-    $ppv_purchases_count_data = [];
-    
-    $ppv_purchases_amount_data = [];
-    
-    for ($i = 14; $i >= 0; $i--) {
-        $date = Carbon\Carbon::now()->subDays($i)->toDateString();
-    
-        $count = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->count();
-    
-        $amount = App\PpvPurchase::where('moderator_id', $cpp_user_id)->whereDate('created_at', $date)->sum('total_amount');
-    
-        $ppv_purchases_count_labels[] = $date;
-        $ppv_purchases_count_data[] = $count;
-        $ppv_purchases_amount_data[] = $amount;
-    }
-    
-    $ppv_purchases_count_labels = json_encode($ppv_purchases_count_labels);
-    $ppv_purchases_count_data = json_encode($ppv_purchases_count_data);
-    $ppv_purchases_amount_data = json_encode($ppv_purchases_amount_data);
-    ?>
+    {{-- Chart data is now prepared in the controller for better performance and consistency --}}
 
     <script>
         $(document).ready(function() {
@@ -241,10 +219,10 @@
             var myppv_purchases_count = new Chart(ctx1, {
                 type: 'line',
                 data: {
-                    labels: <?php echo $ppv_purchases_count_labels; ?>, // Labels (dates)
+                    labels: {!! $chart_labels !!}, // Use data from controller
                     datasets: [{
                         label: 'No of purchased',
-                        data: <?php echo $ppv_purchases_count_data; ?>,
+                        data: {!! $chart_count_data !!}, // Use data from controller
 
                         borderColor: 'rgb(54, 162, 235)',
                         backgroundColor: ['rgba(54, 162, 235, 0.5)'],
@@ -266,10 +244,10 @@
             var myChart2 = new Chart(ctx2, {
                 type: 'bar',
                 data: {
-                    labels: <?php echo $ppv_purchases_count_labels; ?>,
+                    labels: {!! $chart_labels !!}, // Use data from controller
                     datasets: [{
                         label: 'Earnings (Rs)',
-                        data: <?php echo $ppv_purchases_amount_data; ?>, // Total purchase amounts
+                        data: {!! $chart_amount_data !!}, // Use data from controller
 
                         borderColor: 'rgb(255, 99, 132)',
                         backgroundColor: ['rgba(255, 99, 132, 0.5)'],
