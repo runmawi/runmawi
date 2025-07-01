@@ -123,6 +123,7 @@ Route::group(
         Route::post('create_razorpay_order', 'ApiAuthController@create_razorpay_order');
         Route::post('verify_apple_receipt', 'ApiAuthController@verify_apple_receipt');
         Route::post('apple_server_notification', 'ApiAuthController@apple_server_notification');
+        Route::get('test_apple_webhook', 'ApiAuthController@test_apple_webhook');
         Route::post('add_livepayperview', 'ApiAuthController@add_livepayperview');
         Route::post('addppvpaypal', 'ApiAuthController@AddPpvPaypal');
         Route::get('splash', 'ApiAuthController@splash');

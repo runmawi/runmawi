@@ -5447,6 +5447,15 @@ class ApiAuthController extends Controller
 
   public function add_payperview(Request $request)
   {
+    // Log ALL incoming add_payperview requests
+    \Log::info('=== ADD PAYPERVIEW ENDPOINT HIT ===', [
+      'method' => $request->method(),
+      'ip_address' => $request->ip(),
+      'user_agent' => $request->userAgent(),
+      'all_parameters' => $request->all(),
+      'timestamp' => now()
+    ]);
+
     try {
 
       $payment_type = $request->payment_type;
@@ -5467,6 +5476,22 @@ class ApiAuthController extends Controller
       $payment_id = $request->py_id;
       $status = $request->py_status;
       $payment_failure_reason = $request->py_failure_reason;
+
+      // Special logging for Apple payments
+      if ($payment_type === 'Applepay') {
+        \Log::info('=== APPLE PAYMENT PROCESSING ===', [
+          'user_id' => $user_id,
+          'video_id' => $video_id,
+          'episode_id' => $episode_id,
+          'season_id' => $season_id,
+          'series_id' => $series_id,
+          'ppv_plan' => $ppv_plan,
+          'amount' => $amount,
+          'payment_id' => $payment_id,
+          'status' => $status,
+          'platform' => $platform
+        ]);
+      }
 
       $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
       $date = $ppv_expirytime_started != null ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
@@ -31783,6 +31808,15 @@ class ApiAuthController extends Controller
    */
   public function verify_apple_receipt(Request $request)
   {
+    // Log ALL incoming requests to verify_apple_receipt
+    \Log::info('=== VERIFY APPLE RECEIPT ENDPOINT HIT ===', [
+      'method' => $request->method(),
+      'ip_address' => $request->ip(),
+      'user_agent' => $request->userAgent(),
+      'all_parameters' => $request->all(),
+      'timestamp' => now()
+    ]);
+
     try {
       $receiptData = $request->receipt_data;
       $transactionId = $request->transaction_id;
@@ -31791,7 +31825,17 @@ class ApiAuthController extends Controller
       $videoId = $request->video_id;
       $platform = $request->platform ?: 'iOS';
 
+      \Log::info('Apple receipt verification request details', [
+        'user_id' => $userId,
+        'video_id' => $videoId,
+        'transaction_id' => $transactionId,
+        'product_id' => $productId,
+        'platform' => $platform,
+        'receipt_data_length' => strlen($receiptData ?? '')
+      ]);
+
       if (empty($receiptData)) {
+        \Log::warning('Receipt verification failed: empty receipt data');
         return response()->json([
           'status' => 'false',
           'message' => 'Receipt data is required'
@@ -32092,6 +32136,27 @@ class ApiAuthController extends Controller
   {
     // Process renewal
     \Log::info('Handling Apple renewal', ['receipt' => $receiptData]);
+  }
+
+  /**
+   * Test endpoint to verify Apple webhook URL is reachable
+   */
+  public function test_apple_webhook(Request $request)
+  {
+    \Log::info('=== APPLE WEBHOOK TEST ENDPOINT HIT ===', [
+      'method' => $request->method(),
+      'ip_address' => $request->ip(),
+      'user_agent' => $request->userAgent(),
+      'timestamp' => now(),
+      'message' => 'Webhook URL is reachable'
+    ]);
+
+    return response()->json([
+      'status' => 'success',
+      'message' => 'Apple webhook endpoint is reachable',
+      'timestamp' => now(),
+      'webhook_url' => 'https://runmawi.com/api/auth/apple_server_notification'
+    ]);
   }
 }
 
