@@ -45,4 +45,9 @@ return [
         
     'country_ip_check' => env('CountryIPcheck'),
 
+    'apple' => [
+        'shared_secret' => env('APPLE_SHARED_SECRET'),
+        'server_notification_url' => env('APPLE_SERVER_NOTIFICATION_URL', 'https://runmawi.com/api/auth/apple_server_notification'),
+    ],
+
 ];

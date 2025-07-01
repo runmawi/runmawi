@@ -31777,5 +31777,306 @@ class ApiAuthController extends Controller
       ]);
     }
   }
+
+  /**
+   * Verify Apple App Store receipt for robust payment verification
+   */
+  public function verify_apple_receipt(Request $request)
+  {
+    try {
+      $receiptData = $request->receipt_data;
+      $transactionId = $request->transaction_id;
+      $productId = $request->product_id;
+      $userId = $request->user_id;
+      $videoId = $request->video_id;
+      $platform = $request->platform ?: 'iOS';
+
+      if (empty($receiptData)) {
+        return response()->json([
+          'status' => 'false',
+          'message' => 'Receipt data is required'
+        ]);
+      }
+
+      // Verify receipt with Apple
+      $appleResponse = $this->verifyWithApple($receiptData);
+
+      if ($appleResponse['status'] === 0) { // Success
+        // Extract transaction info from receipt
+        $transaction = $this->findTransactionInReceipt($appleResponse, $transactionId, $productId);
+
+        if ($transaction) {
+          // Log successful verification
+          \Log::info('Apple receipt verified successfully', [
+            'user_id' => $userId,
+            'video_id' => $videoId,
+            'transaction_id' => $transactionId,
+            'product_id' => $productId
+          ]);
+
+          return response()->json([
+            'status' => 'true',
+            'message' => 'Receipt verified successfully',
+            'transaction_id' => $transactionId,
+            'verification_timestamp' => now()
+          ]);
+        } else {
+          \Log::warning('Transaction not found in Apple receipt', [
+            'transaction_id' => $transactionId,
+            'product_id' => $productId
+          ]);
+
+          return response()->json([
+            'status' => 'false',
+            'message' => 'Transaction not found in receipt'
+          ]);
+        }
+      } else {
+        \Log::error('Apple receipt verification failed', [
+          'status' => $appleResponse['status'],
+          'user_id' => $userId,
+          'video_id' => $videoId
+        ]);
+
+        return response()->json([
+          'status' => 'false',
+          'message' => 'Invalid receipt: ' . $this->getAppleErrorMessage($appleResponse['status'])
+        ]);
+      }
+
+    } catch (\Exception $e) {
+      \Log::error('Apple receipt verification exception', [
+        'error' => $e->getMessage(),
+        'user_id' => $request->user_id,
+        'video_id' => $request->video_id
+      ]);
+
+      return response()->json([
+        'status' => 'false',
+        'message' => 'Receipt verification failed: ' . $e->getMessage()
+      ]);
+    }
+  }
+
+  /**
+   * Verify receipt with Apple App Store
+   */
+  private function verifyWithApple($receiptData)
+  {
+    // Determine environment (production vs sandbox)
+    $isProduction = config('app.env') === 'production';
+    
+    // Start with production URL
+    $url = 'https://buy.itunes.apple.com/verifyReceipt';
+    
+    // Get shared secret from config
+    $sharedSecret = config('services.apple.shared_secret', env('APPLE_SHARED_SECRET'));
+
+    $postData = [
+      'receipt-data' => $receiptData,
+      'password' => $sharedSecret,
+      'exclude-old-transactions' => true
+    ];
+
+    try {
+      // Try production first
+      $response = Http::timeout(30)->post($url, $postData);
+      $result = $response->json();
+
+      // If production returns sandbox receipt error (21007), try sandbox
+      if ($result['status'] === 21007) {
+        $url = 'https://sandbox.itunes.apple.com/verifyReceipt';
+        $response = Http::timeout(30)->post($url, $postData);
+        $result = $response->json();
+      }
+
+      return $result;
+
+    } catch (\Exception $e) {
+      \Log::error('Apple receipt verification HTTP error', [
+        'error' => $e->getMessage(),
+        'url' => $url
+      ]);
+
+      return [
+        'status' => 99999,
+        'error' => 'Network error: ' . $e->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Find specific transaction in Apple receipt
+   */
+  private function findTransactionInReceipt($appleResponse, $transactionId, $productId)
+  {
+    // Check in-app purchase transactions
+    if (isset($appleResponse['receipt']['in_app'])) {
+      foreach ($appleResponse['receipt']['in_app'] as $transaction) {
+        if ($transaction['transaction_id'] === $transactionId && 
+            $transaction['product_id'] === $productId) {
+          return $transaction;
+        }
+      }
+    }
+
+    // Check latest receipt info (for auto-renewable subscriptions)
+    if (isset($appleResponse['latest_receipt_info'])) {
+      foreach ($appleResponse['latest_receipt_info'] as $transaction) {
+        if ($transaction['transaction_id'] === $transactionId && 
+            $transaction['product_id'] === $productId) {
+          return $transaction;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get Apple error message from status code
+   */
+  private function getAppleErrorMessage($status)
+  {
+    $messages = [
+      21000 => 'The App Store could not read the JSON object you provided.',
+      21002 => 'The data in the receipt-data property was malformed or missing.',
+      21003 => 'The receipt could not be authenticated.',
+      21004 => 'The shared secret you provided does not match the shared secret on file for your account.',
+      21005 => 'The receipt server is not currently available.',
+      21006 => 'This receipt is valid but the subscription has expired.',
+      21007 => 'This receipt is from the test environment, but it was sent to the production environment for verification.',
+      21008 => 'This receipt is from the production environment, but it was sent to the test environment for verification.',
+      21009 => 'Internal data access error.',
+      21010 => 'The user account cannot be found or has been deleted.'
+    ];
+
+    return $messages[$status] ?? 'Unknown error (status: ' . $status . ')';
+  }
+
+  /**
+   * Handle Apple App Store Server-to-Server notifications
+   */
+  public function apple_server_notification(Request $request)
+  {
+    try {
+      // Get the signed payload
+      $signedPayload = $request->getContent();
+      
+      if (empty($signedPayload)) {
+        \Log::warning('Empty Apple server notification payload');
+        return response('Empty payload', 400);
+      }
+
+      // Verify the notification signature (implement based on Apple's requirements)
+      if (!$this->verifyAppleSignature($signedPayload)) {
+        \Log::warning('Invalid Apple server notification signature');
+        return response('Invalid signature', 401);
+      }
+
+      // Decode the notification
+      $notification = json_decode($signedPayload, true);
+      
+      if (!$notification) {
+        \Log::warning('Invalid Apple server notification JSON');
+        return response('Invalid JSON', 400);
+      }
+
+      // Process the notification
+      $this->processAppleNotification($notification);
+
+      return response('OK', 200);
+
+    } catch (\Exception $e) {
+      \Log::error('Apple server notification processing error', [
+        'error' => $e->getMessage()
+      ]);
+
+      return response('Processing error', 500);
+    }
+  }
+
+  /**
+   * Verify Apple notification signature
+   */
+  private function verifyAppleSignature($signedPayload)
+  {
+    // TODO: Implement Apple's signature verification
+    // This requires Apple's public key and proper cryptographic verification
+    // For now, return true, but implement proper verification for production
+    
+    \Log::info('Apple notification signature verification (placeholder)', [
+      'payload_length' => strlen($signedPayload)
+    ]);
+    
+    return true;
+  }
+
+  /**
+   * Process Apple server notification
+   */
+  private function processAppleNotification($notification)
+  {
+    \Log::info('Processing Apple server notification', $notification);
+
+    // Extract notification type and data
+    $notificationType = $notification['notification_type'] ?? null;
+    $receiptData = $notification['unified_receipt'] ?? null;
+
+    if (!$receiptData) {
+      \Log::warning('No receipt data in Apple notification');
+      return;
+    }
+
+    // Process based on notification type
+    switch ($notificationType) {
+      case 'INITIAL_BUY':
+      case 'DID_RECOVER':
+        $this->handleApplePurchaseSuccess($receiptData);
+        break;
+        
+      case 'CANCEL':
+      case 'DID_FAIL_TO_RENEW':
+        $this->handleApplePurchaseFailure($receiptData);
+        break;
+        
+      case 'DID_RENEW':
+        $this->handleAppleRenewal($receiptData);
+        break;
+        
+      default:
+        \Log::info('Unhandled Apple notification type', ['type' => $notificationType]);
+    }
+  }
+
+  /**
+   * Handle successful Apple purchase
+   */
+  private function handleApplePurchaseSuccess($receiptData)
+  {
+    // Process successful purchase
+    \Log::info('Handling Apple purchase success', ['receipt' => $receiptData]);
+    
+    // Extract purchase details and update database
+    // This would mirror the logic in add_payperview but triggered by Apple's notification
+  }
+
+  /**
+   * Handle failed Apple purchase
+   */
+  private function handleApplePurchaseFailure($receiptData)
+  {
+    // Process failed purchase
+    \Log::info('Handling Apple purchase failure', ['receipt' => $receiptData]);
+  }
+
+  /**
+   * Handle Apple subscription renewal
+   */
+  private function handleAppleRenewal($receiptData)
+  {
+    // Process renewal
+    \Log::info('Handling Apple renewal', ['receipt' => $receiptData]);
+  }
 }
 
