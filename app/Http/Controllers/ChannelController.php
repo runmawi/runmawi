@@ -3439,6 +3439,10 @@ class ChannelController extends Controller
         // if (!Auth::guest()) {
             $get_video_id = \App\Video::where('slug', $slug)->first();
 
+            if (!$get_video_id) {
+                abort(404, 'Video not found');
+            }
+
             $vid = $get_video_id->id;
 
             // echo "<pre>";
