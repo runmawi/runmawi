@@ -31959,9 +31959,24 @@ class ApiAuthController extends Controller
    */
   public function apple_server_notification(Request $request)
   {
+    // Log ALL incoming requests to this endpoint
+    \Log::info('=== APPLE SERVER NOTIFICATION ENDPOINT HIT ===', [
+      'method' => $request->method(),
+      'headers' => $request->headers->all(),
+      'ip_address' => $request->ip(),
+      'user_agent' => $request->userAgent(),
+      'content_length' => strlen($request->getContent()),
+      'timestamp' => now()
+    ]);
+
     try {
       // Get the signed payload
       $signedPayload = $request->getContent();
+      
+      \Log::info('Apple notification payload received', [
+        'payload_length' => strlen($signedPayload),
+        'payload_preview' => substr($signedPayload, 0, 200) . '...'
+      ]);
       
       if (empty($signedPayload)) {
         \Log::warning('Empty Apple server notification payload');
