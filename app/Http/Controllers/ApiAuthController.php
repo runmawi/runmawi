@@ -4014,19 +4014,22 @@ class ApiAuthController extends Controller
       ->first();
 
     // Normalize the PPV plan to standard format (e.g., "480p", "720p", "1080p")
+    // Normalize the PPV plan to standard format (e.g., "480p", "720p", "1080p")
     if ($ppv_purchase && !empty($ppv_purchase->ppv_plan)) {
-      $ppv_plan = strtolower($ppv_purchase->ppv_plan);
+      // First, normalize the string: convert to lowercase and remove any non-alphanumeric characters except 'p'
+      $ppv_plan = strtolower(preg_replace('/[^a-z0-9p]/', '', $ppv_purchase->ppv_plan));
 
-      if (strpos($ppv_plan, '480') !== false) {
-        $ppv_purchase->ppv_plan = '480p';
-      } elseif (strpos($ppv_plan, '720') !== false) {
-        $ppv_purchase->ppv_plan = '720p';
-      } elseif (strpos($ppv_plan, '1080') !== false) {
+      // Now check for the quality patterns in order from highest to lowest
+      if (strpos($ppv_plan, '1080p') !== false) {
         $ppv_purchase->ppv_plan = '1080p';
-      } elseif (strpos($ppv_plan, '240') !== false) {
-        $ppv_purchase->ppv_plan = '240p';
-      } elseif (strpos($ppv_plan, '360') !== false) {
+      } elseif (strpos($ppv_plan, '720p') !== false) {
+        $ppv_purchase->ppv_plan = '720p';
+      } elseif (strpos($ppv_plan, '480p') !== false) {
+        $ppv_purchase->ppv_plan = '480p';
+      } elseif (strpos($ppv_plan, '360p') !== false) {
         $ppv_purchase->ppv_plan = '360p';
+      } elseif (strpos($ppv_plan, '240p') !== false) {
+        $ppv_purchase->ppv_plan = '240p';
       }
       // If no match found, leave as is
     }
