@@ -2856,6 +2856,24 @@ class ApiAuthController extends Controller
             })
             ->first();
 
+            // Normalize the ppv_plan to ensure it's in the format '480p', '720p', '1080p', etc.
+          if ($ppv_purchase && !empty($ppv_purchase->ppv_plan)) {
+            $ppv_plan = strtolower(preg_replace('/[^a-z0-9p]/', '', $ppv_purchase->ppv_plan));
+            
+            // Match the highest quality first (1080p > 720p > 480p > 360p > 240p)
+            if (strpos($ppv_plan, '1080p') !== false) {
+                $ppv_purchase->ppv_plan = '1080p';
+            } elseif (strpos($ppv_plan, '720p') !== false) {
+                $ppv_purchase->ppv_plan = '720p';
+            } elseif (strpos($ppv_plan, '480p') !== false) {
+                $ppv_purchase->ppv_plan = '480p';
+            } elseif (strpos($ppv_plan, '360p') !== false) {
+                $ppv_purchase->ppv_plan = '360p';
+            } elseif (strpos($ppv_plan, '240p') !== false) {
+                $ppv_purchase->ppv_plan = '240p';
+            }
+          }
+
           $ppv_exist = $ppv_purchase ? 1 : 0;
           $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
 
