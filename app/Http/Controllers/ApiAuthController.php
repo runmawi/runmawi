@@ -3090,7 +3090,7 @@ class ApiAuthController extends Controller
       } else {
         $ppv_video_status = "can_view";
       }
-
+      
 
       $videos_cat_id = Video::where('id', '=', $videoid)->pluck('video_category_id');
       $moviesubtitles = MoviesSubtitles::where('movie_id', $videoid)->get();
@@ -3192,6 +3192,33 @@ class ApiAuthController extends Controller
         $video_ads_tag_url = null;
       }
 
+      // Add PPV_Plan to videodetail if it's a PPV video
+      if (isset($ppv_purchase) && $ppv_purchase) {
+        $ppv_plan = $ppv_purchase->ppv_plan;
+        
+        // Normalize the plan if it's not already in the correct format
+        if (!empty($ppv_plan)) {
+            $ppv_plan = strtolower(preg_replace('/[^a-z0-9p]/', '', $ppv_plan));
+            
+            if (strpos($ppv_plan, '1080p') !== false) {
+                $ppv_plan = '1080p';
+            } elseif (strpos($ppv_plan, '720p') !== false) {
+                $ppv_plan = '720p';
+            } elseif (strpos($ppv_plan, '480p') !== false) {
+                $ppv_plan = '480p';
+            } elseif (strpos($ppv_plan, '360p') !== false) {
+                $ppv_plan = '360p';
+            } elseif (strpos($ppv_plan, '240p') !== false) {
+                $ppv_plan = '240p';
+            }
+        }
+        
+        // Add the normalized plan to the videodetail collection
+        $videodetail = $videodetail->map(function($item) use ($ppv_plan) {
+            $item->PPV_Plan = $ppv_plan;
+            return $item;
+        });
+      }
 
       $response = array(
         'status' => $status,
