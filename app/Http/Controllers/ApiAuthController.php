@@ -2848,10 +2848,13 @@ class ApiAuthController extends Controller
           ]);
 
           $ppv_purchase = PpvPurchase::where('video_id', $videoid)
-            ->where('user_id', $user_id)
-            ->where('status', 'captured')
-            ->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
-            ->first();
+          ->where('user_id', $user_id)
+          ->where('status', 'captured')
+          ->where(function($query) use ($request) {
+              $query->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
+                    ->orWhere('ppv_plan', 'LIKE', '%' . str_replace('p', '', $request->play_videoid) . '%');
+          })
+          ->first();
 
           $ppv_exist = $ppv_purchase ? 1 : 0;
           $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
@@ -5447,276 +5450,201 @@ class ApiAuthController extends Controller
 
   public function add_payperview(Request $request)
   {
-    // Log ALL incoming add_payperview requests
-    \Log::info('=== ADD PAYPERVIEW ENDPOINT HIT ===', [
-      'method' => $request->method(),
-      'ip_address' => $request->ip(),
+    // Log the request
+    \Log::info('=== ADD PAYPERVIEW REQUEST ===', [
+      'ip' => $request->ip(),
       'user_agent' => $request->userAgent(),
-      'all_parameters' => $request->all(),
+      'params' => $request->except(['_token', 'password']), // Exclude sensitive data
       'timestamp' => now()
     ]);
 
+    DB::beginTransaction();
+
     try {
+      // Common data
+      $data = $request->only([
+        'payment_type',
+        'video_id',
+        'live_id',
+        'episode_id',
+        'season_id',
+        'series_id',
+        'audio_id',
+        'user_id',
+        'ppv_plan',
+        'amount',
+        'platform',
+        'py_id',
+        'py_status',
+        'py_failure_reason'
+      ]);
 
-      $payment_type = $request->payment_type;
-      $video_id = $request->video_id;
-      $live_id = $request->live_id;
-      $episode_id = $request->episode_id;
-      $season_id = $request->season_id;
-      $series_id = $request->series_id;
-      $audio_id = $request->audio_id;
-      $user_id = $request->user_id;
-      $ppv_plan = $request->ppv_plan;
-      $daten = date('Y-m-d h:i:s a', time());
-      $setting = Setting::first();
-      $ppv_hours = $setting->ppv_hours;
-      $date = Carbon::parse($daten)->addHour($ppv_hours);
-      $amount = $request->amount;
-      $platform = $request->platform;
-      $payment_id = $request->py_id;
-      $status = $request->py_status;
-      $payment_failure_reason = $request->py_failure_reason;
+      // Set default values
+      $data = array_merge([
+        'payment_type' => null,
+        'video_id' => null,
+        'live_id' => null,
+        'episode_id' => null,
+        'season_id' => null,
+        'series_id' => null,
+        'audio_id' => null,
+        'user_id' => null,
+        'ppv_plan' => null,
+        'amount' => 0,
+        'platform' => 'web',
+        'py_id' => null,
+        'py_status' => 'pending',
+        'py_failure_reason' => null,
+      ], $data);
 
-      // Special logging for Apple payments
-      if ($payment_type === 'Applepay') {
-        \Log::info('=== APPLE PAYMENT PROCESSING ===', [
-          'user_id' => $user_id,
-          'video_id' => $video_id,
-          'episode_id' => $episode_id,
-          'season_id' => $season_id,
-          'series_id' => $series_id,
-          'ppv_plan' => $ppv_plan,
-          'amount' => $amount,
-          'payment_id' => $payment_id,
-          'status' => $status,
-          'platform' => $platform
-        ]);
+      // Validate required fields
+      if (empty($data['user_id'])) {
+        throw new \Exception('User ID is required');
       }
 
-      $ppv_expirytime_started = Setting::pluck('ppv_hours')->first();
-      $date = $ppv_expirytime_started != null ? Carbon::now()->addHours($ppv_expirytime_started)->format('Y-m-d h:i:s a') : Carbon::now()->addHours(3)->format('Y-m-d h:i:s a');
+      // Get PPV expiry time
+      $ppv_hours = Setting::value('ppv_hours') ?? 3;
+      $expiryDate = now()->addHours($ppv_hours);
 
-      $user = User::find($user_id);
-      $amount_ppv = Video::where('id', $video_id)->pluck('ppv_price')->first();
+      // Prepare base purchase data
+      $purchaseData = [
+        'user_id' => $data['user_id'],
+        'to_time' => $expiryDate,
+        'ppv_plan' => $data['ppv_plan'],
+        'created_at' => now(),
+        'updated_at' => now(),
+        'total_amount' => $data['amount'],
+        'payment_gateway' => $data['payment_type'],
+        'payment_id' => $data['py_id'],
+        'status' => $data['py_status'],
+        'payment_failure_reason' => $data['py_failure_reason'],
+        'platform' => $data['platform']
+      ];
 
-      if ($payment_type == 'stripe') {
+      // Check for existing purchases in a single query
+      $existingPurchase = DB::table('ppv_purchases')
+        ->where('user_id', $data['user_id'])
+        ->where(function ($query) use ($data) {
+          $query->where('video_id', $data['video_id'])
+            ->orWhere('live_id', $data['live_id'])
+            ->orWhere('audio_id', $data['audio_id'])
+            ->orWhere(function ($q) use ($data) {
+              $q->where('series_id', $data['series_id'])
+                ->where('season_id', $data['season_id']);
+            });
+        })
+        ->first();
 
-        $paymentMethod = $request->get('py_id');
-        $payment_settings = PaymentSetting::first();
-
-        $pay_amount = PvvPrice();
-        $pay_amount = $request->amount * 100;
-        $charge = $user->charge($pay_amount, $paymentMethod);
-        if ($charge != '') {
-          $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-          $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
-          $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
-          $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
-
-          if (!empty($video_id) && $video_id != '') {
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date, 'ppv_plan' => $ppv_plan, 'created_at' => now(), 'updated_at' => now(), 'total_amount' => $amount, 'payment_gateway' => $payment_type, 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason, 'ppv_plan' => $ppv_plan]
-            );
-            send_password_notification('Notification From ' . GetWebsiteName(), 'You have rented a video', 'You have rented a video', '', $user_id);
-
-          } else if (!empty($live_id) && $live_id != '') {
-            $payment_type == 'Stripe';
-            $status = 1;
-            DB::table('live_purchases')->insert(
-              ['user_id' => $user_id, 'video_id' => $live_id, 'to_time' => $date, 'platform' => $platform, 'created_at' => now(), 'updated_at' => now(), 'total_amount' => $amount, 'payment_status' => $status, 'payment_gateway' => $payment_type, 'payment_id' => $payment_id, 'payment_failure_reason' => $payment_failure_reason, 'ppv_plan' => $ppv_plan]
-            );
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'live_id' => $live_id, 'to_time' => $date, 'platform' => $platform, 'created_at' => now(), 'updated_at' => now(), 'total_amount' => $amount, 'payment_gateway' => $payment_type, 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-            );
-            send_password_notification('Notification From ' . GetWebsiteName(), 'You have rented a video', 'You have rented a video', '', $user_id);
-
-          } else if (!empty($audio_id) && $audio_id != '') {
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'audio_id' => $audio_id, 'to_time' => $date,]
-            );
-            send_password_notification('Notification From ' . GetWebsiteName(), 'You have rented a Audio', 'You have rented a Audio', '', $user_id);
-
-          } else if (!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
-
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'series_id' => $series_id, 'season_id' => $season_id, 'to_time' => $date, 'ppv_plan' => $ppv_plan, 'total_amount' => $amount, 'created_at' => now(), 'updated_at' => now(), 'payment_gateway' => $payment_type, 'platform' => $platform, 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-            );
-          }
-
-          $response = array(
-            'status' => 'true',
-            'message' => "video has been added"
-          );
-        } else {
-          $response = array(
-            'status' => 'false',
-            'message' => "Payment Failed"
-          );
-        }
-      } elseif ($payment_type == 'razorpay') {
-        // For Razorpay, Android should first call create_razorpay_order, then confirm payment
-        // This handles payment confirmation after Razorpay SDK completion
-
-        // Check if this is order creation or payment confirmation
-        if (empty($request->py_id)) {
-          return response()->json([
-            'status' => 'false',
-            'message' => 'For Razorpay payments, please use create_razorpay_order endpoint first'
-          ]);
-        }
-
-        // This is payment confirmation - webhook should handle this, so just return success
-        // The webhook will update the purchase record created during order creation
-        $response = array(
-          'status' => 'true',
-          'message' => "Payment confirmation received. Processing via webhook."
-        );
-
-      } elseif ($payment_type == 'paypal' || $payment_type == 'CinetPay' || $payment_type == 'Applepay' || $payment_type == 'recurring') {
-
-        $ppv_count = DB::table('ppv_purchases')->where('video_id', '=', $video_id)->where('user_id', '=', $user_id)->count();
-        $serie_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('user_id', '=', $user_id)->count();
-        $season_ppv_count = DB::table('ppv_purchases')->where('series_id', '=', $series_id)->where('season_id', '=', $season_id)->where('user_id', '=', $user_id)->count();
-        $live_ppv_count = DB::table('live_purchases')->where('video_id', '=', $live_id)->where('user_id', '=', $user_id)->count();
-        $audio_ppv_count = DB::table('ppv_purchases')->where('audio_id', '=', $audio_id)->where('user_id', '=', $user_id)->count();
-
-        $video_moderators_id = Video::where('id', $video_id)->pluck('user_id')->first();
-        $commission_percentage_value = Video::where('id', $video_id)->pluck('CPP_commission_percentage')->first();
-        $CppUser_details = ModeratorsUser::where('id', $video_moderators_id)->first();
-        $video_commission_percentage = VideoCommission::where('type', 'Cpp')->pluck('percentage')->first();
-        $commission_btn = Setting::pluck('CPP_Commission_Status')->first();
-        $series_moderators_id = Series::where('id', $series_id)->pluck('user_id')->first();
-        $series_commission_percentage_value = Series::where('id', $series_id)->pluck('CPP_commission_percentage')->first();
-
-
-        if ($commission_btn === 0) {
-          $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-        }
-
-        if (!empty($video_moderators_id)) {
-          $ppv_price = $request->amount;
-          $moderator_commssion = ($ppv_price * $commission_percentage_value) / 100;
-          $admin_commssion = $ppv_price - $moderator_commssion;
-          $moderator_id = $video_moderators_id;
-        }
-
-        if (!empty($video_id) && $video_id != '') {
-          if (Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1) {
-            DB::table('ppv_purchases')->insert(
-              [
-                'user_id' => $user_id,
-                'video_id' => $video_id,
-                'to_time' => $date,
-                'total_amount' => $amount,
-                'ppv_plan' => $ppv_plan,
-                'moderator_commssion' => $moderator_commssion,
-                'admin_commssion' => $admin_commssion,
-                'payment_gateway' => $payment_type,
-                'moderator_id' => $moderator_id,
-                'platform' => $platform,
-                'payment_id' => $payment_id,
-                'status' => $status,
-                'payment_failure_reason' => $payment_failure_reason,
-                'created_at' => now(),
-                'updated_at' => now()
-              ]
-            );
-          } else {
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'video_id' => $video_id, 'to_time' => $date, 'total_amount' => $amount, 'moderator_id' => $moderator_id, 'payment_gateway' => $payment_type, 'platform' => $platform, 'updated_at' => now(), 'created_at' => now(), 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-            );
-          }
-        }
-
-        if ($serie_ppv_count == 0 && !empty($series_id) && $series_id != '' && empty($season_id) && $season_id == '') {
-          DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id, 'series_id' => $series_id, 'to_time' => $date]
-          );
-        } else {
-          DB::table('ppv_purchases')
-            ->where('series_id', $series_id)
-            ->where('user_id', $user_id)
-            ->update(['to_time' => $date]);
-        }
-
-        if (!empty($series_id) && $series_id != '' && !empty($season_id) && $season_id != '') {
-          $CppUser_details = ModeratorsUser::where('id', $series_moderators_id)->first();
-          $commission_percentage_value = Series::where('id', $series_id)->pluck('CPP_commission_percentage')->first();
-
-          if ($commission_btn === 0) {
-            $commission_percentage_value = !empty($CppUser_details->commission_percentage) ? $CppUser_details->commission_percentage : $video_commission_percentage;
-          }
-
-          if (!empty($series_moderators_id)) {
-            $ppv_price = $request->amount;
-            $moderator_commssion = ($ppv_price * $commission_percentage_value) / 100;
-            $admin_commssion = $ppv_price - $moderator_commssion;
-            $moderator_id = $series_moderators_id;
-          }
-
-          if (Enable_videoCipher_Upload() == 1 && Enable_PPV_Plans() == 1) {
-            DB::table('ppv_purchases')->insert(
-              [
-                'user_id' => $user_id,
-                'series_id' => $series_id,
-                'season_id' => $season_id,
-                'to_time' => $date,
-                'total_amount' => $amount,
-                'ppv_plan' => $ppv_plan,
-                'moderator_commssion' => $moderator_commssion,
-                'admin_commssion' => $admin_commssion,
-                'payment_gateway' => $payment_type,
-                'moderator_id' => $series_moderators_id,
-                'platform' => $platform,
-                'payment_id' => $payment_id,
-                'payment_failure_reason' => $payment_failure_reason,
-                'status' => $status,
-                'created_at' => now(),
-                'updated_at' => now()
-              ]
-            );
-          } else {
-            DB::table('ppv_purchases')->insert(
-              ['user_id' => $user_id, 'moderator_id' => $series_moderators_id, 'series_id' => $series_id, 'season_id' => $season_id, 'to_time' => $date, 'ppv_plan' => $ppv_plan, 'total_amount' => $amount, 'created_at' => now(), 'updated_at' => now(), 'payment_gateway' => $payment_type, 'platform' => $platform, 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-            );
-          }
-        }
-
-        if (!empty($live_id) && $live_id != '') {
-          DB::table('live_purchases')->insert(
-            ['user_id' => $user_id, 'video_id' => $live_id, 'to_time' => $date, 'platform' => $platform, 'created_at' => now(), 'updated_at' => now(), 'amount' => $amount, 'payment_gateway' => $payment_type, 'status' => 1, 'payment_id' => $payment_id, 'payment_status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-          );
-          DB::table('ppv_purchases')->insert(
-
-            ['user_id' => $user_id, 'live_id' => $live_id, 'to_time' => $date, 'platform' => $platform, 'created_at' => now(), 'updated_at' => now(), 'total_amount' => $amount, 'payment_gateway' => $payment_type, 'payment_id' => $payment_id, 'status' => $status, 'payment_failure_reason' => $payment_failure_reason]
-          );
-        }
-
-        if ($audio_ppv_count == 0 && !empty($audio_id) && $audio_id != '') {
-          DB::table('ppv_purchases')->insert(
-            ['user_id' => $user_id, 'audio_id' => $audio_id, 'to_time' => $date, 'total_amount' => $amount_ppv,]
-          );
-        } else {
-          DB::table('ppv_purchases')->where('audio_id', $audio_id)->where('user_id', $user_id)->update(['to_time' => $date]);
-        }
-
-        $response = array(
-          'status' => 'true',
-          'message' => "video has been added"
-        );
+      if ($existingPurchase) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'You have already purchased this content'
+        ], 400);
       }
 
-      return response()->json($response, 200);
+      // Process based on content type
+      if (!empty($data['video_id'])) {
+        $this->processVideoPurchase($purchaseData, $data);
+      } elseif (!empty($data['live_id'])) {
+        $this->processLivePurchase($purchaseData, $data);
+      } elseif (!empty($data['audio_id'])) {
+        $this->processAudioPurchase($purchaseData, $data);
+      } elseif (!empty($data['series_id']) && !empty($data['season_id'])) {
+        $this->processSeriesPurchase($purchaseData, $data);
+      } else {
+        throw new \Exception('No valid content type specified');
+      }
 
-    } catch (\Throwable $th) {
+      // Send notification
+      $this->sendPurchaseNotification($data['user_id'], $data);
 
-      $response = array(
-        'status' => 'false',
-        'message' => "video has been added"
-      );
+      DB::commit();
 
-      return response()->json($response, 500);
+      return response()->json([
+        'status' => 'success',
+        'message' => 'Purchase completed successfully'
+      ]);
+
+    } catch (\Exception $e) {
+      DB::rollBack();
+      \Log::error('PPV Purchase Error: ' . $e->getMessage(), [
+        'trace' => $e->getTraceAsString()
+      ]);
+
+      return response()->json([
+        'status' => 'error',
+        'message' => 'Failed to process purchase: ' . $e->getMessage()
+      ], 500);
     }
+  }
+
+  // Helper methods for different purchase types
+  private function processVideoPurchase(array $baseData, array $requestData)
+  {
+    $purchaseData = array_merge($baseData, [
+      'video_id' => $requestData['video_id']
+    ]);
+
+    DB::table('ppv_purchases')->insert($purchaseData);
+  }
+
+  private function processLivePurchase(array $baseData, array $requestData)
+  {
+    $purchaseData = array_merge($baseData, [
+      'live_id' => $requestData['live_id'],
+      'status' => 1 // Assuming 1 means active for live purchases
+    ]);
+
+    DB::table('live_purchases')->insert($purchaseData);
+
+    // Also add to ppv_purchases for consistency
+    DB::table('ppv_purchases')->insert($purchaseData);
+  }
+
+  private function processAudioPurchase(array $baseData, array $requestData)
+  {
+    $purchaseData = array_merge($baseData, [
+      'audio_id' => $requestData['audio_id']
+    ]);
+
+    DB::table('ppv_purchases')->insert($purchaseData);
+  }
+
+  private function processSeriesPurchase(array $baseData, array $requestData)
+  {
+    $purchaseData = array_merge($baseData, [
+      'series_id' => $requestData['series_id'],
+      'season_id' => $requestData['season_id']
+    ]);
+
+    DB::table('ppv_purchases')->insert($purchaseData);
+  }
+
+  private function sendPurchaseNotification($userId, $purchaseData)
+  {
+    $contentType = $this->getContentType($purchaseData);
+    $message = "You have successfully rented a {$contentType}";
+
+    send_password_notification(
+      'Notification From ' . GetWebsiteName(),
+      $message,
+      $message,
+      '',
+      $userId
+    );
+  }
+
+  private function getContentType(array $data)
+  {
+    if (!empty($data['video_id']))
+      return 'video';
+    if (!empty($data['live_id']))
+      return 'live stream';
+    if (!empty($data['audio_id']))
+      return 'audio';
+    if (!empty($data['series_id']))
+      return 'series';
+    return 'content';
   }
 
   public function AddPpvPaypal(Request $request)
@@ -19991,14 +19919,14 @@ class ApiAuthController extends Controller
       // Use the same simple approach as "See All" to ensure consistency
       $categories = LiveCategory::orderBy('order')->get();
       $data = collect();
-      
+
       foreach ($categories as $category) {
         $livestreams = $category->specific_category_live()
           ->where('active', 1)
           ->where('status', 1)
           ->latest()
           ->get();
-          
+
         if ($livestreams->count() > 0) {
           $livestreams->transform(function ($item) {
             $item['image_url'] = URL::to('public/uploads/images/' . $item->image);
@@ -20008,7 +19936,7 @@ class ApiAuthController extends Controller
             $item['source'] = "Livestream";
             return $item;
           });
-          
+
           $category->category_livestream = $livestreams;
           $category->source = "live_category";
           $data->push($category);
@@ -31909,10 +31837,10 @@ class ApiAuthController extends Controller
   {
     // Determine environment (production vs sandbox)
     $isProduction = config('app.env') === 'production';
-    
+
     // Start with production URL
     $url = 'https://buy.itunes.apple.com/verifyReceipt';
-    
+
     // Get shared secret from config
     $sharedSecret = config('services.apple.shared_secret', env('APPLE_SHARED_SECRET'));
 
@@ -31957,8 +31885,10 @@ class ApiAuthController extends Controller
     // Check in-app purchase transactions
     if (isset($appleResponse['receipt']['in_app'])) {
       foreach ($appleResponse['receipt']['in_app'] as $transaction) {
-        if ($transaction['transaction_id'] === $transactionId && 
-            $transaction['product_id'] === $productId) {
+        if (
+          $transaction['transaction_id'] === $transactionId &&
+          $transaction['product_id'] === $productId
+        ) {
           return $transaction;
         }
       }
@@ -31967,8 +31897,10 @@ class ApiAuthController extends Controller
     // Check latest receipt info (for auto-renewable subscriptions)
     if (isset($appleResponse['latest_receipt_info'])) {
       foreach ($appleResponse['latest_receipt_info'] as $transaction) {
-        if ($transaction['transaction_id'] === $transactionId && 
-            $transaction['product_id'] === $productId) {
+        if (
+          $transaction['transaction_id'] === $transactionId &&
+          $transaction['product_id'] === $productId
+        ) {
           return $transaction;
         }
       }
@@ -32016,12 +31948,12 @@ class ApiAuthController extends Controller
     try {
       // Get the signed payload
       $signedPayload = $request->getContent();
-      
+
       \Log::info('Apple notification payload received', [
         'payload_length' => strlen($signedPayload),
         'payload_preview' => substr($signedPayload, 0, 200) . '...'
       ]);
-      
+
       if (empty($signedPayload)) {
         \Log::warning('Empty Apple server notification payload');
         return response('Empty payload', 400);
@@ -32035,7 +31967,7 @@ class ApiAuthController extends Controller
 
       // Decode the notification
       $notification = json_decode($signedPayload, true);
-      
+
       if (!$notification) {
         \Log::warning('Invalid Apple server notification JSON');
         return response('Invalid JSON', 400);
@@ -32063,11 +31995,11 @@ class ApiAuthController extends Controller
     // TODO: Implement Apple's signature verification
     // This requires Apple's public key and proper cryptographic verification
     // For now, return true, but implement proper verification for production
-    
+
     \Log::info('Apple notification signature verification (placeholder)', [
       'payload_length' => strlen($signedPayload)
     ]);
-    
+
     return true;
   }
 
@@ -32093,16 +32025,16 @@ class ApiAuthController extends Controller
       case 'DID_RECOVER':
         $this->handleApplePurchaseSuccess($receiptData);
         break;
-        
+
       case 'CANCEL':
       case 'DID_FAIL_TO_RENEW':
         $this->handleApplePurchaseFailure($receiptData);
         break;
-        
+
       case 'DID_RENEW':
         $this->handleAppleRenewal($receiptData);
         break;
-        
+
       default:
         \Log::info('Unhandled Apple notification type', ['type' => $notificationType]);
     }
@@ -32115,7 +32047,7 @@ class ApiAuthController extends Controller
   {
     // Process successful purchase
     \Log::info('Handling Apple purchase success', ['receipt' => $receiptData]);
-    
+
     // Extract purchase details and update database
     // This would mirror the logic in add_payperview but triggered by Apple's notification
   }
