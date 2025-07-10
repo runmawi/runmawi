@@ -2848,13 +2848,13 @@ class ApiAuthController extends Controller
           ]);
 
           $ppv_purchase = PpvPurchase::where('video_id', $videoid)
-          ->where('user_id', $user_id)
-          ->where('status', 'captured')
-          ->where(function($query) use ($request) {
+            ->where('user_id', $user_id)
+            ->where('status', 'captured')
+            ->where(function ($query) use ($request) {
               $query->where('ppv_plan', 'LIKE', '%' . $request->play_videoid . '%')
-                    ->orWhere('ppv_plan', 'LIKE', '%' . str_replace('p', '', $request->play_videoid) . '%');
-          })
-          ->first();
+                ->orWhere('ppv_plan', 'LIKE', '%' . str_replace('p', '', $request->play_videoid) . '%');
+            })
+            ->first();
 
           $ppv_exist = $ppv_purchase ? 1 : 0;
           $ppv_time_expire = $ppv_purchase ? $ppv_purchase->to_time : null;
@@ -3994,18 +3994,42 @@ class ApiAuthController extends Controller
   {
     $ppvvideoid = $request->ppvvideoid;
     $user_id = $request->user_id;
-    $ppvvideodetail = PpvVideo::where('id', $ppvvideoid)->orderBy('created_at', 'desc')->get()->map(function ($item) {
-      $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
-      return $item;
-    });
+
+    // Get the video details
+    $ppvvideodetail = PpvVideo::where('id', $ppvvideoid)
+      ->orderBy('created_at', 'desc')
+      ->get()
+      ->map(function ($item) {
+        $item['image_url'] = URL::to('/') . '/public/uploads/images/' . $item->image;
+        return $item;
+      });
+
     // Get the most recent valid purchase that's not expired
     $ppv_purchase = PpvPurchase::join('ppv_videos', 'ppv_videos.id', '=', 'ppv_purchases.video_id')
-      ->where('ppv_purchases.user_id', '=', $user_id)
-      ->where('ppv_purchases.video_id', '=', $ppvvideoid)
+      ->where('ppv_purchases.user_id', $user_id)
+      ->where('ppv_purchases.video_id', $ppvvideoid)
       ->whereIn('ppv_purchases.status', ['captured', 'succeeded'])
       ->where('ppv_purchases.to_time', '>', now())
       ->orderBy('ppv_purchases.created_at', 'desc')
       ->first();
+
+    // Normalize the PPV plan to standard format (e.g., "480p", "720p", "1080p")
+    if ($ppv_purchase && !empty($ppv_purchase->ppv_plan)) {
+      $ppv_plan = strtolower($ppv_purchase->ppv_plan);
+
+      if (strpos($ppv_plan, '480') !== false) {
+        $ppv_purchase->ppv_plan = '480p';
+      } elseif (strpos($ppv_plan, '720') !== false) {
+        $ppv_purchase->ppv_plan = '720p';
+      } elseif (strpos($ppv_plan, '1080') !== false) {
+        $ppv_purchase->ppv_plan = '1080p';
+      } elseif (strpos($ppv_plan, '240') !== false) {
+        $ppv_purchase->ppv_plan = '240p';
+      } elseif (strpos($ppv_plan, '360') !== false) {
+        $ppv_purchase->ppv_plan = '360p';
+      }
+      // If no match found, leave as is
+    }
 
     $ppvstatus = $ppv_purchase ? 'Can View' : 'Purchase';
 
