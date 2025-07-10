@@ -2139,44 +2139,85 @@ class ApiAuthController extends Controller
 
           } elseif ($userrole == "registered" && $item['access'] == 'ppv') {
 
-            $item['PPV_Plan'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
-            \Log::info('LOG_ PPV Debug', ['video_id' => $item['id'], 'user_id' => $data['user_id'], 'ppv_plan' => $item['PPV_Plan'], '480p_id' => $item->video_id_480p]);
-            \Log::info('VIDEO DEBUG', [
-              'item_id' => $item['id'] ?? 'N/A',
-              'item_title' => $item['title'] ?? 'N/A',
-              'actual_480p_from_db' => $item->video_id_480p ?? 'N/A',
-              'actual_720p_from_db' => $item->video_id_720p ?? 'N/A',
-              'actual_1080p_from_db' => $item->video_id_1080p ?? 'N/A'
+            $original_ppv_plan = PpvPurchase::where('video_id', $item['id'])
+                ->where('user_id', $data['user_id'])
+                ->orderBy('created_at', 'desc')
+                ->pluck('ppv_plan')
+                ->first();
+
+            $ppv_plan = $original_ppv_plan;
+            
+            // Normalize the ppv_plan to ensure it's in the format '480p', '720p', '1080p', etc.
+            if (!empty($ppv_plan)) {
+                $ppv_plan = strtolower(preg_replace('/[^a-z0-9p]/', '', $ppv_plan));
+                
+                if (strpos($ppv_plan, '1080p') !== false) {
+                    $ppv_plan = '1080p';
+                    $item['videos_url'] = $item->video_id_1080p;
+                } elseif (strpos($ppv_plan, '720p') !== false) {
+                    $ppv_plan = '720p';
+                    $item['videos_url'] = $item->video_id_720p;
+                } elseif (strpos($ppv_plan, '480p') !== false) {
+                    $ppv_plan = '480p';
+                    $item['videos_url'] = $item->video_id_480p;
+                } else {
+                    $ppv_plan = '';
+                    $item['videos_url'] = '';
+                }
+            } else {
+                $ppv_plan = '';
+                $item['videos_url'] = '';
+            }
+            
+            $item['PPV_Plan'] = $ppv_plan;
+            
+            \Log::info('PPV_DEBUG', [
+                'video_id' => $item['id'],
+                'user_id' => $data['user_id'],
+                'original_ppv_plan' => $original_ppv_plan,
+                'normalized_ppv_plan' => $item['PPV_Plan'],
+                'videos_url' => $item['videos_url']
             ]);
-            if (!empty($item['PPV_Plan'])) {
-              if (strpos($item['PPV_Plan'], '480p') !== false) {
-                $item['videos_url'] = $item->video_id_480p;
-              } elseif (strpos($item['PPV_Plan'], '720p') !== false) {
-                $item['videos_url'] = $item->video_id_720p;
-              } elseif (strpos($item['PPV_Plan'], '1080p') !== false) {
-                $item['videos_url'] = $item->video_id_1080p;
-              } else {
-                $item['videos_url'] = '';
-              }
-            } else {
-              $item['PPV_Plan'] = '';
-            }
           } elseif ($item['access'] == 'ppv' && $userrole == "subscriber") {
-            $item['PPV_Plan'] = PpvPurchase::where('video_id', $item['id'])->where('user_id', $data['user_id'])->orderBy('created_at', 'desc')->pluck('ppv_plan')->first();
-            \Log::info('LOG_ PPV Debug Subscriber', ['video_id' => $item['id'], 'user_id' => $data['user_id'], 'ppv_plan' => $item['PPV_Plan'], '480p_id' => $item->video_id_480p]);
-            if (!empty($item['PPV_Plan'])) {
-              if (strpos($item['PPV_Plan'], '480p') !== false) {
-                $item['videos_url'] = $item->video_id_480p;
-              } elseif (strpos($item['PPV_Plan'], '720p') !== false) {
-                $item['videos_url'] = $item->video_id_720p;
-              } elseif (strpos($item['PPV_Plan'], '1080p') !== false) {
-                $item['videos_url'] = $item->video_id_1080p;
-              } else {
-                $item['videos_url'] = '';
-              }
+            $original_ppv_plan = PpvPurchase::where('video_id', $item['id'])
+                ->where('user_id', $data['user_id'])
+                ->orderBy('created_at', 'desc')
+                ->pluck('ppv_plan')
+                ->first();
+
+            $ppv_plan = $original_ppv_plan;
+            
+            // Normalize the ppv_plan to ensure it's in the format '480p', '720p', '1080p', etc.
+            if (!empty($ppv_plan)) {
+                $ppv_plan = strtolower(preg_replace('/[^a-z0-9p]/', '', $ppv_plan));
+                
+                if (strpos($ppv_plan, '1080p') !== false) {
+                    $ppv_plan = '1080p';
+                    $item['videos_url'] = $item->video_id_1080p;
+                } elseif (strpos($ppv_plan, '720p') !== false) {
+                    $ppv_plan = '720p';
+                    $item['videos_url'] = $item->video_id_720p;
+                } elseif (strpos($ppv_plan, '480p') !== false) {
+                    $ppv_plan = '480p';
+                    $item['videos_url'] = $item->video_id_480p;
+                } else {
+                    $ppv_plan = '';
+                    $item['videos_url'] = '';
+                }
             } else {
-              $item['PPV_Plan'] = '';
+                $ppv_plan = '';
+                $item['videos_url'] = '';
             }
+            
+            $item['PPV_Plan'] = $ppv_plan;
+            
+            \Log::info('PPV_DEBUG_SUBSCRIBER', [
+                'video_id' => $item['id'],
+                'user_id' => $data['user_id'],
+                'original_ppv_plan' => $original_ppv_plan,
+                'normalized_ppv_plan' => $item['PPV_Plan'],
+                'videos_url' => $item['videos_url']
+            ]);
           } else {
             $item['PPV_Plan'] = '';
           }
@@ -3220,6 +3261,14 @@ class ApiAuthController extends Controller
         });
       }
 
+      // Add PPV_Plan to the response if it exists
+      $ppv_plan_response = '';
+      if (isset($ppv_plan)) {
+          $ppv_plan_response = $ppv_plan;
+      } elseif (isset($ppv_purchase) && $ppv_purchase && !empty($ppv_purchase->ppv_plan)) {
+          $ppv_plan_response = $ppv_purchase->ppv_plan;
+      }
+
       $response = array(
         'status' => $status,
         'wishlist' => $wishliststatus,
@@ -3236,6 +3285,7 @@ class ApiAuthController extends Controller
         'watchlater' => $watchlaterstatus,
         'favorite' => $favorite,
         'ppv_exist' => $ppv_exist,
+        'PPV_Plan' => $ppv_plan_response,
         'userrole' => $userrole,
         'like' => $like,
         'dislike' => $dislike,
